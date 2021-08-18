@@ -1,5 +1,6 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {BooleanConfigurator} from './BooleanConfigurator';
 import {getDefaultBooleanSource} from './model';
@@ -14,31 +15,11 @@ const attribute = {
   is_locale_specific: false,
   available_locales: [],
 };
-/**
-jest.mock('../common/BooleanReplacement', () => ({
-  ...jest.requireActual('../common/BooleanReplacement'),
-  BooleanReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: BooleanReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            true: 'activé',
-            false: 'désactivé',
-          },
-        })
-      }
-    >
-      Update replacement
-    </button>
-  ),
-}));
-*/
-test('it displays a boolean configurator', () => {
+
+jest.mock('../common/BooleanReplacement');
+jest.mock('../common/DefaultValue');
+
+test('it can update replacement operation', () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(
@@ -53,10 +34,6 @@ test('it displays a boolean configurator', () => {
     />
   );
 
-  expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
-  ).toBeInTheDocument();
-  /**
   userEvent.click(screen.getByText('Update replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
@@ -75,7 +52,35 @@ test('it displays a boolean configurator', () => {
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
-  */
+});
+
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <BooleanConfigurator
+      attribute={attribute}
+      source={{
+        ...getDefaultBooleanSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultBooleanSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
 });
 
 test('it tells when the source data is invalid', () => {

@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Format;
 
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class HandleConcatenateTest extends KernelTestCase
 {
-    public const ATTRIBUTE_CODE = 'test_attribute';
     public const TARGET_NAME = 'test_column';
 
-    private ?ProductMapper $productMapper;
+    private ?MapValuesQueryHandler $mapValuesQueryHandler;
 
     public function setUp(): void
     {
         self::bootKernel(['debug' => false]);
-        $this->productMapper = self::$container->get('Akeneo\Platform\TailoredExport\Application\ProductMapper');
+        $this->mapValuesQueryHandler = self::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
     public function test_it_can_concatenate_multiple_sources(): void
@@ -65,7 +65,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection->add(new EnabledValue(true), 'enabled', null, null);
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame([
             self::TARGET_NAME => '0 1'
@@ -91,7 +91,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection = new ValueCollection();
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame([
             self::TARGET_NAME => '0'

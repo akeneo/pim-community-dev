@@ -32,7 +32,6 @@ akeneo.tailored_export:
     sources:
       title: Quellen
       add: Quelle hinzufügen
-      no_result: Leider gibt es keine Ergebnisse.
       remove:
         title: Quelle
         text: Sind Sie sicher, dass Sie diese Quelle entfernen möchten?
@@ -77,5 +76,3 @@ akeneo.tailored_export:
       target:
         should_not_be_blank: Bitte geben Sie einen Spaltennamen an.
         should_be_unique: Dieser Spaltenname existiert bereits, bitte geben Sie einen neuen ein.
-    sources:
-      max_source_count_reached: Sie haben das Limit von {{ limit }} Quellen erreicht, Sie können keine Quellen mehr zu Ihrem Export hinzufügen.

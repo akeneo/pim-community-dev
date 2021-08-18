@@ -1204,10 +1204,11 @@ jobs:
               root: ~/
               paths:
                 - upgrades.tfplan.json
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              when: always
+#          - run:
+#              name: Remove env on kubernetes
+#              no_output_timeout: 30m
+#              command: make delete
+#              when: always
 
   test_deploy_grth:
       environment:
@@ -1252,6 +1253,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: always
 
   test_deploy_tria:
@@ -1293,6 +1295,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: always
 
   test_deploy_srnt_last_release:
@@ -1457,10 +1460,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: make uncommit-instance
-              when: always
+#          - run:
+#              name: Remove upgraded env
+#              command: make uncommit-instance
+#              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -1567,6 +1570,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
 
@@ -1827,6 +1831,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
   deploy_pr_grth_environment:
@@ -1872,6 +1877,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
   deploy_pr_tria_environment:
@@ -1917,6 +1923,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
   ##################
@@ -1938,6 +1945,7 @@ jobs:
                     echo export PIM_CONTEXT=deployment >> $BASH_ENV
           - run:
                 name: Delete environments
+                no_output_timeout: 30m
                 command: |
                     make delete_environments_hourly
 
