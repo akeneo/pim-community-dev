@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
 class FindProductModelLabelsSpec extends ObjectBehavior
