@@ -9,13 +9,14 @@ const StyledButton = styled(Button)`
 
 type Props = {
   onClick: () => void;
+  disabled: boolean;
 };
 
-const CompareTranslateButton: React.FC<Props> = ({onClick}) => {
+const CompareTranslateButton: React.FC<Props> = ({onClick, disabled}) => {
   const translate = useTranslate();
 
   return (
-    <StyledButton ghost level="secondary" onClick={onClick}>
+    <StyledButton ghost level="secondary" onClick={onClick} disabled={disabled}>
       {translate('free_trial.product-edit-form.compare_translate.button_title')}
     </StyledButton>
   );
