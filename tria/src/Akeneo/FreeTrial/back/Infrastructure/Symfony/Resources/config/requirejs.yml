@@ -11,5 +11,6 @@ config:
     pim/free-trial/user-edit-form/readonly-tab-content:  akeneofreetrial/js/invite-user/user-profile-readonly-tab-content.ts
     pim/menu/user-navigation: akeneofreetrial/js/menu/user-navigation.ts
     pim/template/menu/user-navigation: akeneofreetrial/templates/menu/user-navigation.html
+    pim/free-trial/user/create-button: akeneofreetrial/js/user/empty-create-user-button.ts
     pim/free-trial/menu/usergroups: akeneofreetrial/js/menu/user-groups-menu-item.ts
     pim/free-trial/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts

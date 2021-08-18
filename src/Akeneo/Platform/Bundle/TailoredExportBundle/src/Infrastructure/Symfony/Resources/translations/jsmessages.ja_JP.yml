@@ -43,7 +43,6 @@ akeneo.tailored_export:
     sources:
       title: ソース
       add: ソースを追加
-      no_result: 結果はありません。
       locale_specific: この属性はロケール固有です。
       remove:
         title: ソース
@@ -113,8 +112,8 @@ akeneo.tailored_export:
           placeholder: 置換値を定義する
           enabled: 有効な置換値
           disabled: 無効な置換値
-          yes: 値を置換する
-          no: 値を置換しない
+          yes: Yesの置換値
+          no: Noの置換値
   column:
     delete_message: この列を本当に削除しますか？
   validation:
@@ -127,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
         should_be_unique: この列名はすでに存在します。新しい列名を入力してください。
     sources:
-      max_source_count_reached: '{{ limit }} ソースの上限に達しました。これ以上エクスポートにソースを追加できません。'
       association_type_should_exist: 関連タイプ {{ association_type_code }} は存在しません。作成するか、別のソースを選択してください。
     locale:
       should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。

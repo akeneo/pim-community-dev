@@ -43,7 +43,6 @@ akeneo.tailored_export:
     sources:
       title: Fuentes
       add: Añadir fuente
-      no_result: Lo sentimos, no hay resultados.
       locale_specific: Este atributo es específico de la configuración regional.
       remove:
         title: fuente
@@ -127,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: El nombre de la columna es demasiado largo. Debe contener {{ limit }} caracteres o menos.
         should_be_unique: Este nombre de columna ya existe, introduzca uno nuevo.
     sources:
-      max_source_count_reached: Ha alcanzado el límite de {{ limit }} fuentes, ya no puede añadir fuentes a su exportación.
       association_type_should_exist: El tipo de asociación {{ association_type_code }} no existe. Cree o elija una fuente diferente.
     locale:
       should_be_active: La configuración regional {{ locale_code }} ha sido desactivada. Reactívela o seleccione otra configuración regional.
