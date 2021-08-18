@@ -13,11 +13,10 @@ const TableInputTh = styled.th`
   max-width: 250px;
 `;
 
-const TableInputHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
-  (
-    {children, ...rest}: React.TdHTMLAttributes<HTMLTableCellElement>,
-    forwardedRef: Ref<HTMLTableHeaderCellElement>
-  ) => {
+export type TableInputHeaderCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
+
+const TableInputHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableInputHeaderCellProps>(
+  ({children, ...rest}: TableInputHeaderCellProps, forwardedRef: Ref<HTMLTableHeaderCellElement>) => {
     return (
       <TableInputTh ref={forwardedRef} {...rest}>
         {children}

@@ -67,12 +67,12 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="With a high number of tags">
     {args => {
-      const columnsCount = 10;
+      const columnCount = 10;
       const linesCount = 6;
       return (
         <TableInput {...args}>
           <TableInput.Header>
-            {[...Array(columnsCount).keys()].map((_, i) => {
+            {[...Array(columnCount).keys()].map((_, i) => {
               return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
             })}
           </TableInput.Header>
@@ -80,7 +80,7 @@ Table input allows the user to input content in a table.
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
                 <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
-                {[...Array(columnsCount - 1).keys()].map((_, i) => {
+                {[...Array(columnCount - 1).keys()].map((_, i) => {
                   return <TableInput.Cell key={i}><TableInput.Text value={'Value'} onChange={() => {}}/></TableInput.Cell>
                 })}
               </TableInput.Row>
@@ -93,10 +93,10 @@ Table input allows the user to input content in a table.
   </Story>
 </Canvas>
 
-## With highlights
+## Highlight cells
 
 <Canvas>
-  <Story name="With highlights">
+  <Story name="Highlight cells">
     {args => {
       const linesCount = 5;
       return (
@@ -150,6 +150,78 @@ Table input allows the user to input content in a table.
                 <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"}/></TableInput.Cell>
               </TableInput.Row>
             })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Draggable
+
+<Canvas>
+  <Story name="Draggable">
+    {args => {
+      const columnCount = 10;
+      const rows = [0, 1, 2, 3, 4];
+      const [orderedRows, setOrderedRows] = React.useState(rows);
+      return (
+        <TableInput {...args} isDragAndDroppable={true} onReorder={newIndices => {
+          setOrderedRows(rows => newIndices.map(index => rows[index]));
+        }}>
+          <TableInput.Header>
+            {[...Array(columnCount).keys()].map((_, i) => {
+              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {orderedRows.map((row,r) => {
+              return <TableInput.Row key={r}>
+                {[...Array(columnCount).keys()].map((_, i) => {
+                  return i === 0 ? <TableInput.Cell key={i} rowTitle={true}>Row {row + 1}</TableInput.Cell> :
+                    <TableInput.Cell key={i}>
+                      <TableInput.Text value={'A value'}></TableInput.Text>
+                    </TableInput.Cell>
+                })}
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Highlighted rows
+
+<Canvas>
+  <Story name="Highlighted rows">
+    {args => {
+      const columnCount = 10;
+      const linesCount = 6;
+      const [highlighted, setHighlighted] = React.useState([true, false, false, true, false, false]);
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            {[...Array(columnCount).keys()].map((_, i) => {
+              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r} highlighted={highlighted[r]}>
+                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                {[...Array(columnCount - 1).keys()].map((_, i) => {
+                  return <TableInput.Cell key={i} onClick={() => {
+                    highlighted[r] = !highlighted[r];
+                    setHighlighted([...highlighted]);
+                  }}>
+                    <TableInput.Text value={'Value'} onChange={() => {}} />
+                  </TableInput.Cell>
+                })}
+              </TableInput.Row>
+            })
+            }
           </TableInput.Body>
         </TableInput>
       );

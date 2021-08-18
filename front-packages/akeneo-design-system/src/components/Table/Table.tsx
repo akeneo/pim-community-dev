@@ -43,7 +43,7 @@ type TableProps = Override<
       }
     | {
         /**
-         * Define if rows can be ordered
+         * Define if rows can be ordered by drag and drop
          */
         isDragAndDroppable: true;
 
