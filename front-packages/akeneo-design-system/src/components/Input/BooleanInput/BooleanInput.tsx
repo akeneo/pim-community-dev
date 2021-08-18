@@ -2,7 +2,7 @@ import React, {Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
-import {InputProps} from '../common/InputProps';
+import {InputProps} from '../common';
 import {Override} from '../../../shared';
 
 const BooleanInputContainer = styled.div``;
@@ -25,31 +25,66 @@ const BooleanButton = styled.button<
   text-overflow: ellipsis;
   background: ${getColor('white')};
 
-  ${({readOnly}) =>
-    readOnly
-      ? css`
-    border: 1px solid ${getColor('grey', 60)}}
-    color: ${getColor('grey', 80)}}
-  `
-      : css`
-    border: 1px solid ${getColor('grey', 80)}}
-    cursor: pointer;
-  `};
+  &:invalid {
+    border: 1px solid ${getColor('red', 100)};
+  }
+
+  ${({readOnly}) => {
+    switch (readOnly) {
+      case true:
+        return css`
+          border: 1px solid ${getColor('grey', 60)};
+          color: ${getColor('grey', 80)};
+
+          &:hover {
+            background: ${getColor('white')};
+            color: ${getColor('grey', 80)};
+          }
+        `;
+      default:
+        return css`
+          border: 1px solid ${getColor('grey', 80)};
+          cursor: pointer;
+
+          &:hover {
+            background: ${getColor('grey', 20)};
+            color: ${getColor('grey', 140)}
+          }
+        ;
+        }
+        `;
+    }
+  }}
 `;
 
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
 
-  ${({value, readOnly}) =>
-    value === false
-      ? css`
-          background: ${getColor('grey', readOnly ? 60 : 100)};
-          border-color: ${getColor('grey', readOnly ? 60 : 100)};
+  ${({value, readOnly}) => {
+    switch (value) {
+      case false:
+        return css`
+          background: ${getColor('grey', readOnly ? 80 : 100)};
+          border-color: ${getColor('grey', readOnly ? 80 : 100)};
           color: ${getColor('white')};
-        `
-      : css`
+
+          &:hover {
+            background: ${getColor('grey', readOnly ? 80 : 120)};
+            color: ${getColor('white')};
+          }
+
+          &:active {
+            background: ${getColor('grey', readOnly ? 80 : 140)};
+          }
+        `;
+      case true:
+        return css`
           border-right-width: 0;
-        `}
+        `;
+      default:
+        return '';
+    }
+  }}
 `;
 
 const YesButton = styled(BooleanButton)`
@@ -62,6 +97,15 @@ const YesButton = styled(BooleanButton)`
           background: ${getColor('green', readOnly ? 60 : 100)};
           border-color: ${getColor('green', readOnly ? 60 : 100)};
           color: ${getColor('white')};
+
+          &:hover {
+            background: ${getColor('green', readOnly ? 60 : 120)};
+            color: ${getColor('white')};
+          }
+
+          &:active {
+            background: ${getColor('green', readOnly ? 60 : 140)};
+          }
         `;
       case false:
         return css`
