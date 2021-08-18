@@ -47,6 +47,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState<Option[] | undefined>(undefined);
+
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
@@ -93,7 +94,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
       if (searchValue === '') {
         return true;
       }
-      return item.label.includes(searchValue);
+      return item.label.toLowerCase().includes(searchValue.toLowerCase());
     })
     .slice(0, numberOfDisplayedItems);
 
