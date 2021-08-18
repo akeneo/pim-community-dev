@@ -1,9 +1,9 @@
 import React from 'react';
 import {Table} from 'akeneo-design-system';
+import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration, ConcatElement} from '../../../../models';
 import {AssociationTypeSourceRow, AttributeSourceRow, PropertySourceRow} from './SourceRow';
 import {StringRow} from './StringRow';
-import {filterErrors, ValidationError} from "@akeneo-pim-community/shared";
 
 type ConcatElementListProps = {
   validationErrors: ValidationError[];
@@ -29,7 +29,7 @@ const ConcatElementList = ({
               <StringRow
                 key={element.uuid}
                 validationErrors={filterErrors(validationErrors, `[${element.uuid}]`)}
-                element={element}
+                concatElement={element}
                 onConcatElementChange={onConcatElementChange}
                 onConcatElementRemove={onConcatElementRemove}
               />

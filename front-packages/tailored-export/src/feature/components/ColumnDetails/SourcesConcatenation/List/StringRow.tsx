@@ -17,19 +17,25 @@ const Field = styled.div`
 
 type StringRowProps = {
   validationErrors: ValidationError[];
-  element: ConcatElement;
-  onConcatElementChange: (element: ConcatElement) => void;
-  onConcatElementRemove: (elementUuid: string) => void;
+  concatElement: ConcatElement;
+  onConcatElementChange: (concatElement: ConcatElement) => void;
+  onConcatElementRemove: (concatElementUuid: string) => void;
 };
 
-const StringRow = ({validationErrors, element, onConcatElementChange, onConcatElementRemove, ...rest}: StringRowProps) => {
+const StringRow = ({
+  validationErrors,
+  concatElement,
+  onConcatElementChange,
+  onConcatElementRemove,
+  ...rest
+}: StringRowProps) => {
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const valueErrors = filterErrors(validationErrors, '[value]');
 
-  const handleChange = (value: string) => onConcatElementChange({...element, value});
-  const handleRemove = () => onConcatElementRemove(element.uuid);
-  const handleBlur = () => '' === element.value && handleRemove();
+  const handleChange = (value: string) => onConcatElementChange({...concatElement, value});
+  const handleRemove = () => onConcatElementRemove(concatElement.uuid);
+  const handleBlur = () => '' === concatElement.value && handleRemove();
 
   useAutoFocus(inputRef);
 
@@ -40,7 +46,7 @@ const StringRow = ({validationErrors, element, onConcatElementChange, onConcatEl
           <TextInput
             ref={inputRef}
             placeholder={translate('akeneo.tailored_export.column_details.concatenation.text_placeholder')}
-            value={element.value}
+            value={concatElement.value}
             onChange={handleChange}
             onBlur={handleBlur}
           />
