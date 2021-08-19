@@ -6,23 +6,25 @@ namespace Pim\Upgrade\Schema;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
-use Webmozart\Assert\Assert;
 
 final class Version_6_0_20210818141014_add_source_concatenation_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
     private const MIGRATION_LABEL = '_6_0_20210818141014_add_source_concatenation';
+
     private Connection $connection;
+    private JobInstanceRepository $jobInstanceRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
+        $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
     }
 
     public function test_it_add_source_in_concat_element_list(): void
@@ -76,19 +78,17 @@ final class Version_6_0_20210818141014_add_source_concatenation_Integration exte
 
     private function assertConcatElementListContainUuid(array $expectedUuid)
     {
-        $findJobInstance = <<<SQL
-            SELECT raw_parameters 
-            FROM akeneo_batch_job_instance 
-            WHERE code = 'tailored_export';
-        SQL;
+        $this->jobInstanceRepository->clear();
 
-        $normalizedRawParameters = $this->get('database_connection')->executeQuery($findJobInstance)->fetchColumn();
-        if (false === $normalizedRawParameters) {
-            Assert::isEmpty($expectedUuid);
+        /** @var JobInstance $jobInstance */
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('tailored_export');
+        if (null == $jobInstance) {
+            $this->assertEmpty($expectedUuid);
+
             return;
         }
 
-        $rawParameters = json_decode(unserialize($normalizedRawParameters), true);
+        $rawParameters = $jobInstance->getRawParameters();
 
         $sourceUuidInConcatenation = [];
         foreach ($rawParameters['columns'] as $column) {
@@ -117,7 +117,7 @@ VALUES
 SQL;
 
         $this->connection->executeUpdate($sql, [
-            'raw_parameters' => serialize($rawParameters)
+            'raw_parameters' => serialize(json_decode($rawParameters, true))
         ]);
     }
 }

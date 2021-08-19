@@ -27,10 +27,10 @@ final class Version_6_0_20210818141014_add_source_concatenation extends Abstract
         $this->skipIf(empty($tailoredJobInstances), 'No tailored job instance to migrate.');
 
         foreach ($tailoredJobInstances as $tailoredJobInstance) {
-            $rawParameters = json_decode(unserialize($tailoredJobInstance['raw_parameters']), true);
+            $rawParameters = unserialize($tailoredJobInstance['raw_parameters']);
             $migratedRawParameters = $this->migrateRawParameters($rawParameters);
 
-            $this->updateJobInstance($tailoredJobInstance['id'], serialize(json_encode($migratedRawParameters)));
+            $this->updateJobInstance($tailoredJobInstance['id'], serialize($migratedRawParameters));
         }
     }
 
