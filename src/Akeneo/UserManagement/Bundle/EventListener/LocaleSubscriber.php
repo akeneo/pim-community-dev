@@ -88,7 +88,7 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
+        return null !== $request->getSession() && $request->getSession()->isStarted() && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
     }
 
