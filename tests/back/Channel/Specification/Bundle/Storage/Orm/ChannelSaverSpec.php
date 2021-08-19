@@ -222,8 +222,7 @@ class ChannelSaverSpec extends ObjectBehavior
                         && $event->previousCategoryCode() === 'previous-category-code'
                         && $event->newCategoryCode() === 'new-category-code';
                 }
-            ),
-            Argument::exact(ChannelCategoryHasBeenUpdated::class)
+            )
         )->shouldBeCalled();
 
         $this->save($channel);
