@@ -5,7 +5,7 @@ import {act} from 'react-test-renderer';
 
 describe('useCategoryTree', () => {
   const renderUseCategoryTree = (treeId: number) => {
-    return renderHookWithProviders(() => useCategoryTree(treeId));
+    return renderHookWithProviders(() => useCategoryTree(treeId, '1'));
   };
 
   beforeEach(() => {

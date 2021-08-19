@@ -48,6 +48,25 @@ const aCategoryTree = (
   };
 };
 
+const aCategoryTreeWithChildren = (
+  code: string,
+  children: CategoryTreeModel[],
+  isRoot: boolean = true,
+  isLeaf: boolean = false,
+  id: number = 1234,
+  productsNumber?: number
+): CategoryTreeModel => {
+  return {
+    id,
+    code,
+    label: `[${code}]`,
+    isRoot,
+    isLeaf,
+    children,
+    productsNumber,
+  };
+};
+
 const aBackendCategoryTree = (
   code: string,
   children: string[],
@@ -66,4 +85,4 @@ const aBackendCategoryTree = (
   };
 };
 
-export {aCategory, aListOfCategories, aCategoryTree, aBackendCategoryTree};
+export {aCategory, aListOfCategories, aCategoryTree, aBackendCategoryTree, aCategoryTreeWithChildren};
