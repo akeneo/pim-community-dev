@@ -66,18 +66,18 @@ class RemoveValuesFromProducts
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
                 new GenericEvent($product, [
                     'unitary' => false,
-                ])
+                ]),
+                StorageEvents::POST_SAVE
             );
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE_ALL,
             new GenericEvent($products, [
                 'unitary' => false,
-            ])
+            ]),
+            StorageEvents::POST_SAVE_ALL
         );
     }
 }

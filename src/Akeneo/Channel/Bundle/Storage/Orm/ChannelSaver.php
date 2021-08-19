@@ -130,7 +130,7 @@ final class ChannelSaver implements ChannelSaverInterface
         $channelsEvents = array_merge(...$channelsEvents);
 
         foreach ($channelsEvents as $channelEvent) {
-            $this->eventDispatcher->dispatch($channelEvent, get_class($channelEvent));
+            $this->eventDispatcher->dispatch($channelEvent);
         }
     }
 }

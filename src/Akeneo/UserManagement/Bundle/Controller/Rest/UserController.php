@@ -200,11 +200,11 @@ class UserController
     protected function update(UserInterface $user, ?string $previousUsername = null)
     {
         $this->eventDispatcher->dispatch(
-            UserEvent::POST_UPDATE,
             new GenericEvent($user, [
                 'current_user' => $this->tokenStorage->getToken()->getUser(),
                 'previous_username' => $previousUsername,
-            ])
+            ]),
+            UserEvent::POST_UPDATE
         );
 
         $this->session->remove('dataLocale');
