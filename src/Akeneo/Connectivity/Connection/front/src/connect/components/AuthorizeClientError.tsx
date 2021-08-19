@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {ClientErrorIllustration, Link} from 'akeneo-design-system';
+import {ClientErrorIllustration} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 
 const FullScreen = styled.div`
