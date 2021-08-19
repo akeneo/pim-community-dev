@@ -62,6 +62,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier',
+            'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter',
             'Akeneo\Tool\Component\Batch',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
