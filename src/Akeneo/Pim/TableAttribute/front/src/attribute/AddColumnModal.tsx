@@ -32,6 +32,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   const userContext = useUserContext();
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
+  const labelRef: React.RefObject<HTMLInputElement> = React.createRef();
 
   const [columnDefinition, setColumnDefinition] = React.useState<UndefinedColumnDefinition>({
     code: '',
@@ -45,6 +46,14 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   });
 
   const [dirtyCode, setDirtyCode] = React.useState<boolean>(false);
+
+  const focus = (labRef: React.RefObject<HTMLInputElement>) => {
+    labRef?.current?.focus();
+  };
+
+  React.useEffect(() => {
+    focus(labelRef);
+  }, []);
 
   const handleLabelChange = (label: string) => {
     setColumnDefinition(columnDefinition => {
@@ -129,6 +138,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       <FieldsList>
         <Field label={translate('pim_common.label')} locale={<LocaleLabel localeCode={catalogLocale} />}>
           <TextInput
+            ref={labelRef}
             value={columnDefinition.label}
             onChange={handleLabelChange}
             maxLength={250}
