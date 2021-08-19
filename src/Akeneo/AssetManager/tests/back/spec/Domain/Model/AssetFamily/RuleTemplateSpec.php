@@ -131,7 +131,7 @@ class RuleTemplateSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('Expected the key "actions" to exist.'))->duringInstantiation();
     }
 
-    public function it_should_be_able_to_compile_itself(PropertyAccessibleAsset $accessibleAsset)
+    public function it_should_be_able_to_compile_itself()
     {
         $content = [
             'conditions' => [
@@ -143,7 +143,7 @@ class RuleTemplateSpec extends ObjectBehavior
             ],
             'actions' => [
                 [
-                    'field'      => '{{attribute}}',
+                    'field'      => '{{asset_collection_code}}',
                     'type' => 'set',
                     'items' => ['{{code}}']
                 ]
@@ -151,9 +151,7 @@ class RuleTemplateSpec extends ObjectBehavior
         ];
         $this->beConstructedThrough('createFromNormalized', [$content]);
 
-        $accessibleAsset->hasValue(Argument::any())->willReturn(true);
-        $accessibleAsset->getValue('code')->willReturn('nice_asset');
-        $accessibleAsset->getValue('attribute')->willReturn('sku');
+        $accessibleAsset = new PropertyAccessibleAsset('nice_asset', ['code' => 'nice_asset', 'asset_collection_code' => 'asset_collection']);
         $compiledRule = $this->compile($accessibleAsset);
 
         $compiledRule->getConditions()->shouldReturn([
@@ -163,12 +161,19 @@ class RuleTemplateSpec extends ObjectBehavior
                 'value' => 'nice_asset',
                 'channel' => null,
                 'locale' => null
+            ],
+            [
+                'field' => 'asset_collection',
+                'operator' => 'NOT IN',
+                'value' => ['nice_asset'],
+                'channel' => null,
+                'locale' => null,
             ]
         ]);
 
         $compiledRule->getActions()->shouldReturn([
             [
-                'field' => 'sku',
+                'field' => 'asset_collection',
                 'type' => 'set',
                 'items' => ['nice_asset'],
                 'channel' => null,
