@@ -160,13 +160,14 @@ SQL;
     private function addWarningToStep(StepExecution $step, $number): void
     {
         $connection = $this->get('database_connection');
-        while (0 !== $number) {
             $sql = <<<SQL
-INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item)
-VALUES (:step_id, 'a reason', 'parameters', 'items');
+UPDATE akeneo_batch_step_execution 
+SET warning_count = :warningCount
+WHERE id = :stepId
 SQL;
-            $connection->executeQuery($sql, ['step_id' => $step->getId()]);
-            $number--;
-        }
+        $connection->executeQuery($sql, [
+            'stepId' => $step->getId(),
+            'warningCount' => $number,
+        ]);
     }
 }
