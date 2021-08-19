@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,18 @@ class LocaleSubscriber implements EventSubscriberInterface
     protected RequestStack $requestStack;
     protected LocaleAwareInterface $localeAware;
     protected EntityManager $em;
+    protected FirewallMap $firewall;
 
-    public function __construct(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        LocaleAwareInterface $localeAware,
+        EntityManager $em,
+        FirewallMap $firewall
+    ) {
         $this->requestStack = $requestStack;
         $this->localeAware = $localeAware;
         $this->em = $em;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -88,8 +95,19 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && $request->getSession()->isStarted() && null !== $request->getSession()->get('_locale') ?
+        return $this->hasActiveSession($request) && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
+    }
+
+    private function hasActiveSession(Request $request): bool
+    {
+        $firewallConfig = $this->firewall->getFirewallConfig($request);
+
+        if ($firewallConfig->isStateless()) {
+            return false;
+        }
+
+        return $request->hasSession();
     }
 
     /**

@@ -8,6 +8,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -51,6 +52,8 @@ class UserContext
     /** @var string */
     protected $defaultLocale;
 
+    protected FirewallMap $firewall;
+
     /**
      * @param TokenStorageInterface       $tokenStorage
      * @param LocaleRepositoryInterface   $localeRepository
@@ -65,7 +68,8 @@ class UserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        $defaultLocale
+        $defaultLocale,
+        FirewallMap $firewall
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->localeRepository = $localeRepository;
@@ -73,6 +77,7 @@ class UserContext
         $this->categoryRepository= $categoryRepository;
         $this->requestStack = $requestStack;
         $this->defaultLocale = $defaultLocale;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -112,10 +117,7 @@ class UserContext
             throw new \LogicException('There are no activated locales');
         }
 
-        if (null !== $this->getCurrentRequest()
-            && $this->getCurrentRequest()->hasSession()
-            && $this->getCurrentRequest()->getSession()->isStarted()
-        ) {
+        if ($this->hasActiveSession($this->getCurrentRequest())) {
             $this->getCurrentRequest()->getSession()->set('dataLocale', $locale->getCode());
             $this->getCurrentRequest()->getSession()->save();
         }
@@ -123,6 +125,21 @@ class UserContext
         $this->currentLocale = $locale;
 
         return $locale;
+    }
+
+    private function hasActiveSession(?Request $request): bool
+    {
+        if (null === $request) {
+            return false;
+        }
+
+        $firewallConfig = $this->firewall->getFirewallConfig($request);
+
+        if ($firewallConfig->isStateless()) {
+            return false;
+        }
+
+        return $request->hasSession();
     }
 
     /**
