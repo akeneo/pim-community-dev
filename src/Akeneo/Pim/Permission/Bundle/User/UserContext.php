@@ -19,6 +19,7 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -59,7 +60,8 @@ class UserContext extends BaseUserContext
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale,
-        $treeOptionKey
+        $treeOptionKey,
+        FirewallMap $firewall
     ) {
         parent::__construct(
             $tokenStorage,
@@ -67,7 +69,8 @@ class UserContext extends BaseUserContext
             $channelRepository,
             $categoryRepository,
             $requestStack,
-            $defaultLocale
+            $defaultLocale,
+            $firewall
         );
 
         $this->authorizationChecker = $authorizationChecker;
