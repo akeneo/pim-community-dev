@@ -46,7 +46,7 @@ class ColumnCollection implements \IteratorAggregate
     {
         $sources = array_reduce(
             $this->columns,
-            fn (array $result, Column $column) =>
+            static fn (array $result, Column $column) =>
             [...$result, ...$column->getSourceCollection()],
             []
         );

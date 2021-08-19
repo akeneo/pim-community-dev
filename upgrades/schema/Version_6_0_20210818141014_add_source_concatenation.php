@@ -63,7 +63,7 @@ SQL;
 
             $migratedRawParameters['columns'][$index]['format']['space_between'] = true;
             $sourceUuids = array_column($column['sources'], 'uuid');
-            $migratedRawParameters['columns'][$index]['format']['elements'] = array_map(fn($sourceUuid) => [
+            $migratedRawParameters['columns'][$index]['format']['elements'] = array_map(static fn ($sourceUuid) => [
                 'uuid' => $sourceUuid,
                 'type' => 'source',
                 'value' => $sourceUuid,
