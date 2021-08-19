@@ -13,7 +13,7 @@ final class Version_6_0_20210818084017_add_marketplace_public_app_id extends Abs
 {
     public function up(Schema $schema) : void
     {
-        $this->addSql('ALTER TABLE pim_api_client ADD marketplace_public_app_id VARCHAR(255) NULl DEFAULT NULL');
+        $this->addSql('ALTER TABLE pim_api_client ADD marketplace_public_app_id VARCHAR(255) NULL DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
