@@ -491,13 +491,12 @@ config:
     pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
 
     # Navigation
-    jquery.form:                      pimui/lib/jquery-form/jquery.form
-    pim/app:                            pimui/js/pim-app.ts
-    pim/router:                         pimui/js/router
-    pim/route-matcher:                  pimui/js/route-matcher
-    pim/page-title:                     pimui/js/page-title
-    pim/init-translator:                pimui/js/init-translator
-    pim/onboarding:                     pimui/js/onboarding/pim-onboarding.ts
+    jquery.form:         pimui/lib/jquery-form/jquery.form
+    pim/app:             pimui/js/pim-app.ts
+    pim/router:          pimui/js/router
+    pim/route-matcher:   pimui/js/route-matcher
+    pim/page-title:      pimui/js/page-title
+    pim/init-translator: pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
