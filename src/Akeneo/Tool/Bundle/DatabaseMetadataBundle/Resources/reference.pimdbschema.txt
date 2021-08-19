@@ -687,6 +687,9 @@ pim_datagrid_view | type | YES | varchar(10) |
 pim_datagrid_view | datagrid_alias | NO | varchar(255) |
 pim_datagrid_view | columns | NO | longtext |
 pim_datagrid_view | filters | YES | longtext |
+pim_index_migration | index_alias | NO | varchar(100) | PRI
+pim_index_migration | hash | NO | varchar(100) | PRI
+pim_index_migration | values | NO | json |
 pim_notification_notification | id | NO | int | PRI
 pim_notification_notification | route | YES | varchar(255) |
 pim_notification_notification | routeParams | NO | longtext |
@@ -858,6 +861,3 @@ supplier | name | NO | varchar(255) |
 supplier | allow_product_creation | NO | tinyint(1) |
 supplier_family | supplier_id | NO | varchar(36) | PRI
 supplier_family | family_id | NO | int | PRI
-pim_index_migration | index_alias | NO | varchar(100) | PRI
-pim_index_migration | hash | NO | varchar(100) | PRI
-pim_index_migration | values | NO | json |
