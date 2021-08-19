@@ -130,6 +130,7 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')-> willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+        $session->isStarted()->willReturn(true);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
         $locale->isActivated()->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)->willReturn(true);
@@ -157,6 +158,7 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')-> willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+        $session->isStarted()->willReturn(true);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($sessionLocale);
         $sessionLocale->isActivated()->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $sessionLocale)->willReturn(false);
@@ -190,6 +192,7 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')-> willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+        $session->isStarted()->willReturn(true);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($sessionLocale);
         $sessionLocale->isActivated()->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $sessionLocale)->willReturn(false);
@@ -228,6 +231,7 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')-> willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+        $session->isStarted()->willReturn(true);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($sessionLocale);
         $sessionLocale->isActivated()->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $sessionLocale)->willReturn(false);
@@ -270,6 +274,7 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')-> willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+        $session->isStarted()->willReturn(true);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($sessionLocale);
         $sessionLocale->isActivated()->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $sessionLocale)->willReturn(false);
