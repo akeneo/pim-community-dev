@@ -33,6 +33,10 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
   );
 };
 
+const getDefaultMeasurementSelection = (): MeasurementSelection => ({type: 'unit_code'});
+
+const isDefaultMeasurementSelection = (selection?: MeasurementSelection): boolean => 'unit_code' === selection?.type;
+
 type MeasurementOperations = {
   default_value?: DefaultValueOperation;
 };
@@ -58,7 +62,7 @@ const getDefaultMeasurementSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'unit_code'},
+  selection: getDefaultMeasurementSelection(),
 });
 
 const isMeasurementOperations = (operations: Object): operations is MeasurementOperations =>
@@ -76,9 +80,10 @@ const isMeasurementSource = (source: Source): source is MeasurementSource =>
 
 export type {MeasurementSelection, MeasurementSource};
 export {
-  isMeasurementSelection,
-  getDefaultMeasurementSource,
-  isMeasurementSource,
-  isMeasurementDecimalSeparator,
   availableDecimalSeparators,
+  getDefaultMeasurementSource,
+  isDefaultMeasurementSelection,
+  isMeasurementDecimalSeparator,
+  isMeasurementSelection,
+  isMeasurementSource,
 };

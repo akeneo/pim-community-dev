@@ -1,5 +1,5 @@
 import {uuid} from 'akeneo-design-system';
-import {BooleanReplacementOperation} from '../common/BooleanReplacement';
+import {BooleanReplacementOperation} from '../common';
 import {Source} from '../../../models';
 
 type EnabledSource = {

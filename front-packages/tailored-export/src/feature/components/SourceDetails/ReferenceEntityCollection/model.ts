@@ -1,8 +1,12 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
-import {CodeLabelCollectionSelection, isCodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {
+  CodeLabelCollectionSelection,
+  isCodeLabelCollectionSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
 
 type ReferenceEntityCollectionOperations = {
   default_value?: DefaultValueOperation;

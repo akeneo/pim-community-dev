@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isAssetCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {DefaultValue, Operations} from '../common';
+import {CodeLabelCollectionSelector, DefaultValue, Operations} from '../common';
 
 const AssetCollectionConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isAssetCollectionSource(source)) {

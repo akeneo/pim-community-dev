@@ -10,6 +10,10 @@ type FileSelection = {
 const isFileSelection = (selection: any): selection is FileSelection =>
   'type' in selection && ('path' === selection.type || 'key' === selection.type || 'name' === selection.type);
 
+const getDefaultFileSelection = (): FileSelection => ({type: 'path'});
+
+const isDefaultFileSelection = (selection?: FileSelection): boolean => 'path' === selection?.type;
+
 type FileOperations = {
   default_value?: DefaultValueOperation;
 };
@@ -35,7 +39,7 @@ const getDefaultFileSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'path'},
+  selection: getDefaultFileSelection(),
 });
 
 const isFileOperations = (operations: Object): operations is FileOperations =>
@@ -51,5 +55,5 @@ const isFileOperations = (operations: Object): operations is FileOperations =>
 const isFileSource = (source: Source): source is FileSource =>
   isFileSelection(source.selection) && isFileOperations(source.operations);
 
-export {getDefaultFileSource, isFileSource};
+export {getDefaultFileSource, isDefaultFileSelection, isFileSource};
 export type {FileSelection, FileSource};

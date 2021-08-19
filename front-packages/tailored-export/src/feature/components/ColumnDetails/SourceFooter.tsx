@@ -8,7 +8,7 @@ const Container = styled.div`
   position: sticky;
   bottom: 0;
   background: ${getColor('white')};
-  padding-top: 10px;
+  padding-top: 20px;
   display: flex;
   justify-content: flex-end;
 `;

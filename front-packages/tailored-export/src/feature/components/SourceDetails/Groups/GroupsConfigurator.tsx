@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
-import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
+import {CodeLabelCollectionSelector, DefaultValue, Operations} from '../common';
 import {isGroupsSource} from './model';
 import {InvalidPropertySourceError} from '../error';
-import {DefaultValue, Operations} from '../common';
 
 const GroupsConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   if (!isGroupsSource(source)) {

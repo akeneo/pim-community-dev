@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -23,6 +23,12 @@ type CodeLabelSelection =
 const isCodeLabelSelection = (selection: any): selection is CodeLabelSelection =>
   'type' in selection && (selection.type === 'code' || (selection.type === 'label' && 'locale' in selection));
 
+const getDefaultCodeLabelSelection = (): CodeLabelSelection => ({
+  type: 'code',
+});
+
+const isDefaultCodeLabelSelection = (selection?: CodeLabelSelection): boolean => 'code' === selection?.type;
+
 type CodeLabelSelectorProps = {
   selection: CodeLabelSelection;
   validationErrors: ValidationError[];
@@ -30,7 +36,7 @@ type CodeLabelSelectorProps = {
 };
 
 const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: CodeLabelSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -40,7 +46,13 @@ const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: Cod
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultCodeLabelSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >
@@ -86,5 +98,5 @@ const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: Cod
   );
 };
 
-export {CodeLabelSelector, isCodeLabelSelection};
+export {CodeLabelSelector, getDefaultCodeLabelSelection, isCodeLabelSelection};
 export type {CodeLabelSelection};

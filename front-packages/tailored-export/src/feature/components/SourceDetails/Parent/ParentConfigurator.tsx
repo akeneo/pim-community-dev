@@ -4,6 +4,7 @@ import {PropertyConfiguratorProps} from '../../../models';
 import {ParentSelector} from './ParentSelector';
 import {isParentSource} from './model';
 import {InvalidPropertySourceError} from '../error';
+import {Operations} from '../common';
 
 const ParentConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   if (!isParentSource(source)) {
@@ -11,11 +12,13 @@ const ParentConfigurator = ({source, validationErrors, onSourceChange}: Property
   }
 
   return (
-    <ParentSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <ParentSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 

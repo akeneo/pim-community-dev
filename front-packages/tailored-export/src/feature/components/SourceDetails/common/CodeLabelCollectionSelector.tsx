@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -35,6 +35,14 @@ const isCodeLabelCollectionSelection = (selection: any): selection is CodeLabelC
   'separator' in selection &&
   isCollectionSeparator(selection.separator);
 
+const getDefaultCodeLabelCollectionSelection = (): CodeLabelCollectionSelection => ({
+  type: 'code',
+  separator: ',',
+});
+
+const isDefaultCodeLabelCollectionSelection = (selection?: CodeLabelCollectionSelection): boolean =>
+  'code' === selection?.type && ',' === selection?.separator;
+
 type CodeLabelCollectionSelectorProps = {
   selection: CodeLabelCollectionSelection;
   validationErrors: ValidationError[];
@@ -46,7 +54,7 @@ const CodeLabelCollectionSelector = ({
   validationErrors,
   onSelectionChange,
 }: CodeLabelCollectionSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -57,7 +65,15 @@ const CodeLabelCollectionSelector = ({
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultCodeLabelCollectionSelection(selection) && (
+            <Pill level="primary" />
+          )}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >
@@ -134,5 +150,11 @@ const CodeLabelCollectionSelector = ({
   );
 };
 
-export {CodeLabelCollectionSelector, isCodeLabelCollectionSelection, isCollectionSeparator, availableSeparators};
+export {
+  availableSeparators,
+  CodeLabelCollectionSelector,
+  getDefaultCodeLabelCollectionSelection,
+  isCodeLabelCollectionSelection,
+  isCollectionSeparator,
+};
 export type {CodeLabelCollectionSelection};

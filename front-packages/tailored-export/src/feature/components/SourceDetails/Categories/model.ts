@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {Source} from '../../../models';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
+import {CodeLabelCollectionSelection} from '../common';
 
 type CategoriesSource = {
   uuid: string;

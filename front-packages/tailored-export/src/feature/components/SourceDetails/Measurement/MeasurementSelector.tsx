@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -9,7 +9,12 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
-import {availableDecimalSeparators, isMeasurementDecimalSeparator, MeasurementSelection} from './model';
+import {
+  availableDecimalSeparators,
+  isDefaultMeasurementSelection,
+  isMeasurementDecimalSeparator,
+  MeasurementSelection,
+} from './model';
 
 type MeasurementSelectorProps = {
   selection: MeasurementSelection;
@@ -18,7 +23,7 @@ type MeasurementSelectorProps = {
 };
 
 const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: MeasurementSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -29,7 +34,13 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultMeasurementSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >

@@ -8,6 +8,10 @@ const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_c
 type NumberSeparator = keyof typeof availableDecimalSeparators;
 type NumberSelection = {decimal_separator: NumberSeparator};
 
+const getDefaultNumberSelection = (): NumberSelection => ({decimal_separator: '.'});
+
+const isDefaultNumberSelection = (selection?: NumberSelection): boolean => '.' === selection?.decimal_separator;
+
 type NumberOperations = {
   default_value?: DefaultValueOperation;
 };
@@ -33,7 +37,7 @@ const getDefaultNumberSource = (
   locale,
   channel,
   operations: {},
-  selection: {decimal_separator: '.'},
+  selection: getDefaultNumberSelection(),
 });
 
 const isNumberOperations = (operations: Object): operations is NumberOperations =>
@@ -54,4 +58,10 @@ const isNumberSource = (source: Source): source is NumberSource =>
   isNumberSelection(source.selection) && isNumberOperations(source.operations);
 
 export type {NumberSource, NumberSelection};
-export {getDefaultNumberSource, isNumberSource, isNumberDecimalSeparator, availableDecimalSeparators};
+export {
+  availableDecimalSeparators,
+  getDefaultNumberSource,
+  isDefaultNumberSelection,
+  isNumberDecimalSeparator,
+  isNumberSource,
+};

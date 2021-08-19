@@ -53,6 +53,15 @@ const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAs
   'separator' in selection &&
   isCollectionSeparator(selection.separator);
 
+const getDefaultSimpleAssociationTypeSelection = (): SimpleAssociationTypeSelection => ({
+  type: 'code',
+  separator: ',',
+  entity_type: 'products',
+});
+
+const isDefaultSimpleAssociationTypeSelection = (selection?: SimpleAssociationTypeSelection): boolean =>
+  'code' === selection?.type && ',' === selection?.separator && 'products' === selection?.entity_type;
+
 type SimpleAssociationTypeSource = {
   uuid: string;
   code: string;
@@ -70,7 +79,7 @@ const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType)
   locale: null,
   channel: null,
   operations: {},
-  selection: {type: 'code', separator: ',', entity_type: 'products'},
+  selection: getDefaultSimpleAssociationTypeSelection(),
 });
 
 const isSimpleAssociationTypeSource = (source: Source): source is SimpleAssociationTypeSource =>
@@ -80,6 +89,7 @@ export type {SimpleAssociationTypeSource, SimpleAssociationTypeSelection};
 export {
   availableSeparators,
   getDefaultSimpleAssociationTypeSource,
+  isDefaultSimpleAssociationTypeSelection,
   isSimpleAssociationTypeSource,
   isCollectionSeparator,
   isEntityType,

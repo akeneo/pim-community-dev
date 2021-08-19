@@ -1,7 +1,8 @@
 import React from 'react';
 import {CodeLabelSelection} from '../CodeLabelSelector';
 
-const {isCodeLabelSelection} = jest.requireActual('../CodeLabelSelector');
+const {isCodeLabelSelection, getDefaultCodeLabelSelection, isDefaultCodeLabelSelection} =
+  jest.requireActual('../CodeLabelSelector');
 
 const CodeLabelSelector = ({
   onSelectionChange,
@@ -20,4 +21,4 @@ const CodeLabelSelector = ({
   </button>
 );
 
-export {isCodeLabelSelection, CodeLabelSelector};
+export {isCodeLabelSelection, getDefaultCodeLabelSelection, isDefaultCodeLabelSelection, CodeLabelSelector};

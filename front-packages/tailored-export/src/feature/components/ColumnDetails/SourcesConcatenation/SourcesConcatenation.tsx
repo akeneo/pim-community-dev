@@ -18,7 +18,7 @@ const ConcatenationFooter = styled.div`
   position: sticky;
   bottom: 0;
   background: ${getColor('white')};
-  padding-top: 10px;
+  padding-top: 20px;
   display: flex;
   justify-content: flex-end;
 `;
@@ -69,18 +69,16 @@ const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange
 
   return (
     <SourcesConcatenationContainer>
-      <div>
-        <SectionTitle sticky={0}>
-          <SectionTitle.Title>
-            {translate('akeneo.tailored_export.column_details.concatenation.title')}
-          </SectionTitle.Title>
-        </SectionTitle>
-        {globalValidationErrors.map((error, index) => (
-          <Helper key={index} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </div>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>
+          {translate('akeneo.tailored_export.column_details.concatenation.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      {globalValidationErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
       <ColumnPreview sources={sources} format={format} />
       <Checkbox checked={format.space_between} onChange={handleSpacesBetweenChange}>
         {translate('akeneo.tailored_export.column_details.concatenation.space_between')}

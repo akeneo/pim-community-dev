@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Field, SelectInput, Helper, Collapse} from 'akeneo-design-system';
+import {Field, SelectInput, Helper, Collapse, Pill} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {isNumberDecimalSeparator, availableDecimalSeparators, NumberSelection} from './model';
+import {isNumberDecimalSeparator, availableDecimalSeparators, NumberSelection, isDefaultNumberSelection} from './model';
 
 type NumberSelectorProps = {
   selection: NumberSelection;
@@ -10,14 +10,20 @@ type NumberSelectorProps = {
 };
 
 const NumberSelector = ({selection, validationErrors, onSelectionChange}: NumberSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const decimalSeparatorErrors = filterErrors(validationErrors, '[decimal_separator]');
 
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultNumberSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >

@@ -1,8 +1,13 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
-import {CodeLabelSelection, isCodeLabelSelection} from '../common/CodeLabelSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {
+  CodeLabelSelection,
+  getDefaultCodeLabelSelection,
+  isCodeLabelSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
 
 type ReferenceEntityOperations = {
   default_value?: DefaultValueOperation;
@@ -29,7 +34,7 @@ const getDefaultReferenceEntitySource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultCodeLabelSelection(),
 });
 
 const isReferenceEntityOperations = (operations: Object): operations is ReferenceEntityOperations =>

@@ -12,6 +12,10 @@ type ParentSelection =
       locale: LocaleCode;
     };
 
+const getDefaultParentSelection = (): ParentSelection => ({type: 'code'});
+
+const isDefaultParentSelection = (selection?: ParentSelection): boolean => 'code' === selection?.type;
+
 type ParentSource = {
   uuid: string;
   code: 'parent';
@@ -29,10 +33,10 @@ const getDefaultParentSource = (): ParentSource => ({
   locale: null,
   channel: null,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultParentSelection(),
 });
 
 const isParentSource = (source: Source): source is ParentSource => 'parent' === source.code;
 
-export {getDefaultParentSource, isParentSource};
+export {getDefaultParentSource, isDefaultParentSelection, isParentSource};
 export type {ParentSource, ParentSelection};

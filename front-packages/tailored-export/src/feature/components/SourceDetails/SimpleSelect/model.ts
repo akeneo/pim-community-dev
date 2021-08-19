@@ -1,8 +1,13 @@
 import {uuid} from 'akeneo-design-system';
 import {LocaleReference, ChannelReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
-import {CodeLabelSelection, isCodeLabelSelection} from '../common/CodeLabelSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {
+  CodeLabelSelection,
+  getDefaultCodeLabelSelection,
+  isCodeLabelSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
 
 type SimpleSelectOperations = {
   default_value?: DefaultValueOperation;
@@ -29,7 +34,7 @@ const getDefaultSimpleSelectSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultCodeLabelSelection(),
 });
 
 const isSimpleSelectOperations = (operations: Object): operations is SimpleSelectOperations =>
