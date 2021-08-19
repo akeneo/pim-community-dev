@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 
@@ -34,13 +35,13 @@ final class HandleParentValueTest extends PropertyTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadParent();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }

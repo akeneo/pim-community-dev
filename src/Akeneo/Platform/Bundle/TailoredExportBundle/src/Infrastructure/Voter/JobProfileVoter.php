@@ -22,8 +22,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
  * a user depending on the attributes and locales in the sources of the job
- *
- * @author Julien Sanchez <julien@akeneo.com>
  */
 class JobProfileVoter extends Voter implements VoterInterface
 {

@@ -69,6 +69,7 @@ const EditForm = ({
           <SelectInput
             readOnly={!canEditAttributeAsMainMedia}
             emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+            openLabel={translate('pim_common.open')}
             clearable={false}
             value={assetFamily.attributeAsMainMedia}
             onChange={onAttributeAsMainMediaUpdated}

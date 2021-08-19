@@ -26,6 +26,9 @@ free_trial:
         invitation_already_sent:
           title: Invitation already sent
           description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!
+  product-edit-form:
+    compare_translate:
+      button_title: Compare
   menu:
     assets: Assets
     entities: Entities

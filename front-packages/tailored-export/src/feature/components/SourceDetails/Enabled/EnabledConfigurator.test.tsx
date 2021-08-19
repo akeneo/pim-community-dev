@@ -4,30 +4,9 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {EnabledConfigurator} from './EnabledConfigurator';
 import {getDefaultEnabledSource} from './model';
-import {BooleanReplacementOperation} from '../common/BooleanReplacement';
 import {getDefaultParentSource} from '../Parent/model';
 
-jest.mock('../common/BooleanReplacement', () => ({
-  BooleanReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: BooleanReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            true: 'activé',
-            false: 'désactivé',
-          },
-        })
-      }
-    >
-      Update replacement
-    </button>
-  ),
-}));
+jest.mock('../common/BooleanReplacement');
 
 test('it displays an enabled configurator', () => {
   const onSourceChange = jest.fn();

@@ -16,6 +16,8 @@ const attribute = {
   available_locales: [],
 };
 
+jest.mock('../common/DefaultValue');
+
 jest.mock('./DateSelector', () => ({
   DateSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: DateSelection) => void}) => (
     <button
@@ -51,6 +53,35 @@ test('it displays a date configurator', () => {
     ...getDefaultDateSource(attribute, null, null),
     selection: {
       format: 'dd/mm/yy',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <DateConfigurator
+      source={{
+        ...getDefaultDateSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultDateSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

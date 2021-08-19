@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: Exportar estructura
         filters:
           title: Defina su selección de producto
+      edit:
+        title: Para editar, compruebe sus permisos con el administrador de PIM.
+      launch:
+        title: Para exportar, compruebe sus permisos con el administrador de PIM.
   column_list:
     title: Columnas
     header:
@@ -39,12 +43,15 @@ akeneo.tailored_export:
     sources:
       title: Fuentes
       add: Añadir fuente
-      no_result: Lo sentimos, no hay resultados.
       locale_specific: Este atributo es específico de la configuración regional.
       remove:
         title: fuente
         text: '¿Está seguro de que quiere eliminar esta fuente?'
         button: Eliminar esta fuente
+      invalid_source:
+        attribute: Este atributo ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
+        association_type: Este tipo de asociación ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
+        property: Esta propiedad no es válida. Elimine esta fuente y añádala de nuevo.
       no_source_configuration:
         title: No hay operaciones disponibles para esta fuente. Su valor será exportado tal como está.
       deleted_attribute:
@@ -105,6 +112,8 @@ akeneo.tailored_export:
           placeholder: Definir el valor de reemplazo
           enabled: Valor de reemplazo habilitado
           disabled: Valor de reemplazo deshabilitado
+          yes: Valor de reemplazo de Sí
+          no: Valor de reemplazo de No
   column:
     delete_message: '¿Está seguro de que quiere eliminar esta columna?'
   validation:
@@ -117,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: El nombre de la columna es demasiado largo. Debe contener {{ limit }} caracteres o menos.
         should_be_unique: Este nombre de columna ya existe, introduzca uno nuevo.
     sources:
-      max_source_count_reached: Ha alcanzado el límite de {{ limit }} fuentes, ya no puede añadir fuentes a su exportación.
       association_type_should_exist: El tipo de asociación {{ association_type_code }} no existe. Cree o elija una fuente diferente.
     locale:
       should_be_active: La configuración regional {{ locale_code }} ha sido desactivada. Reactívela o seleccione otra configuración regional.

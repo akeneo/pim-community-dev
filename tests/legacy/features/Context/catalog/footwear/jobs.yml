@@ -52,6 +52,11 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation the affected products for the rules
         type:      mass_edit_rule
+    rule_engine_execute_rules:
+        connector: Akeneo Rule Engine Connector
+        alias: rule_engine_execute_rules
+        label: Rules execution
+        type: execute_rules
     project_calculation:
         connector: teamwork assistant
         alias:     project_calculation

@@ -1,26 +1,20 @@
-import React, {useState} from 'react';
-import {Collapse} from 'akeneo-design-system';
+import React from 'react';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanReplacement} from '../common/BooleanReplacement';
 import {PropertyConfiguratorProps} from '../../../models';
 import {isEnabledSource} from './model';
 import {InvalidPropertySourceError} from '../error';
+import {Operations} from '../common';
 
 const EnabledConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
-  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
 
   if (!isEnabledSource(source)) {
     throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for enabled configurator`);
   }
 
   return (
-    <Collapse
-      collapseButtonLabel={isReplacementCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.operation.replacement.title')}
-      isOpen={isReplacementCollapsed}
-      onCollapse={toggleReplacementCollapse}
-    >
+    <Operations>
       <BooleanReplacement
         trueLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.enabled')}
         falseLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.disabled')}
@@ -30,7 +24,7 @@ const EnabledConfigurator = ({source, validationErrors, onSourceChange}: Propert
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
-    </Collapse>
+    </Operations>
   );
 };
 

@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date;
 
-use Akeneo\Platform\TailoredExport\Domain\DateFormat;
+use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Date\DateFormat;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class DateSourceValidator extends ConstraintValidator
@@ -35,9 +36,9 @@ class DateSourceValidator extends ConstraintValidator
             ]
         );
 
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'default_value' => new Optional(new DefaultValueOperationConstraint()),
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

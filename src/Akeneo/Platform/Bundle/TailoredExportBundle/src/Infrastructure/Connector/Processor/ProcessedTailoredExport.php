@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 
 class ProcessedTailoredExport
 {
     private array $itemsToWrite;
 
-    /** @var MediaToExport[] */
+    /** @var ExtractedMedia[] */
     private array $mediaToExport;
 
     public function __construct(array $itemsToWrite, array $mediaToExport)
@@ -33,7 +33,7 @@ class ProcessedTailoredExport
         return $this->itemsToWrite;
     }
 
-    public function getMediaToExport(): array
+    public function getExtractedMediaCollection(): array
     {
         return $this->mediaToExport;
     }

@@ -4,28 +4,9 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CategoriesConfigurator} from './CategoriesConfigurator';
 import {getDefaultCategoriesSource} from './model';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
 import {getDefaultParentSource} from '../Parent/model';
 
-jest.mock('../common/CodeLabelCollectionSelector', () => ({
-  CodeLabelCollectionSelector: ({
-    onSelectionChange,
-  }: {
-    onSelectionChange: (updatedSelection: CodeLabelCollectionSelection) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-          separator: ',',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
+jest.mock('../common/CodeLabelCollectionSelector');
 
 test('it displays a categories configurator', () => {
   const onSourceChange = jest.fn();

@@ -18,7 +18,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
-        'Symfony\Bundle\FrameworkBundle\Controller\Controller',
+        'Symfony\Bundle\FrameworkBundle\Controller\AbstractController',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
         // TODO: the rule feature uses the datagrid

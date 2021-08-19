@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Groups;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class GroupsSourceValidator extends ConstraintValidator
@@ -32,9 +33,9 @@ class GroupsSourceValidator extends ConstraintValidator
             new CodeLabelCollectionSelectionConstraint()
         ];
 
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'default_value' => new Optional(new DefaultValueOperationConstraint()),
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

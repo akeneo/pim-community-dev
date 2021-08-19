@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: 导出结构
         filters:
           title: 定义您的产品选择
+      edit:
+        title: 要进行编辑，请向您的 PIM 管理员核实您的权限。
+      launch:
+        title: 要进行导出，请向您的 PIM 管理员核实您的权限。
   column_list:
     title: 列
     header:
@@ -39,12 +43,15 @@ akeneo.tailored_export:
     sources:
       title: 源
       add: 添加源
-      no_result: 抱歉，找不到结果 
       locale_specific: 此属性为区域特定。
       remove:
         title: 源
         text: 确定要删除该源吗？
         button: 删除该源
+      invalid_source:
+        attribute: 该属性已被删除并采用另一种类型重新创建，请移除此源并重新添加。
+        association_type: 此关联类型已被删除并采用另一种类型重新创建，请移除此源并重新添加。
+        property: 此属性无效，请移除此源并再次添加。
       no_source_configuration:
         title: 此源没有可用的运算。其值将原样导出。
       deleted_attribute:
@@ -105,6 +112,8 @@ akeneo.tailored_export:
           placeholder: 定义替换值
           enabled: 已启用替换值
           disabled: 已禁用替换值
+          yes: '“是”替换值'
+          no: '“否”替换值'
   column:
     delete_message: 确实要删除此列吗?
   validation:
@@ -117,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: 列名称太长。其不应超过 {{ limit }} 个字符。
         should_be_unique: 此列名称已存在，请输入一个新名称。
     sources:
-      max_source_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到导出中。
       association_type_should_exist: 关联类型 {{ association_type_code }} 不存在。请进行创建或选择其他的源。
     locale:
       should_be_active: 区域 {{ locale_code }} 已被停用。可以重新激活它或选择其他的区域。

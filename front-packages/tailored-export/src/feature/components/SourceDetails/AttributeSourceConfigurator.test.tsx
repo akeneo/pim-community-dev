@@ -22,9 +22,7 @@ test('it displays source configurator', async () => {
     <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
-  expect(
-    screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_configuration.title/i)
-  ).toBeInTheDocument();
+  expect(screen.getByText(/akeneo.tailored_export.column_details.sources.operation.header/i)).toBeInTheDocument();
 });
 
 test('it displays locale dropdown when attribute is localizable', async () => {

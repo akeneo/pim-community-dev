@@ -19,7 +19,7 @@ class ChannelShouldExist extends Constraint
 {
     public const NOT_EXIST_MESSAGE = 'akeneo.tailored_export.validation.channel.should_exist';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo.tailored_export.validation.channel_should_exist';
     }

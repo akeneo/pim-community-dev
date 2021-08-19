@@ -132,34 +132,40 @@ const AssetCollection = ({
         {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
         {0 !== assetCodes.length ? (
           <>
-            {assets.map((asset: ListAsset) => (
-              <AssetCard key={asset.code} data-asset={asset.code}>
-                <Thumbnail
-                  asset={asset}
-                  context={context}
-                  readonly={readonly}
-                  assetCollection={assets}
-                  onRemove={() => {
-                    const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
-                    setAssets(filteredAssets);
-                    onChange(getAssetCodes(filteredAssets));
-                  }}
-                  onMove={(direction: MoveDirection) => {
-                    const orderedAssets = moveAssetInCollection(assets, asset, direction);
-                    setAssets(orderedAssets);
-                    onChange(getAssetCodes(orderedAssets));
-                  }}
-                  onClick={() => {
-                    setInitialPreviewAssetCode(asset.code);
-                    openPreviewModal();
-                  }}
-                />
-                <AssetTitle>
-                  <Label readOnly={readonly}>{getAssetLabel(asset, context.locale)}</Label>
-                  {!isComplete(asset) && <BaselinePill />}
-                </AssetTitle>
-              </AssetCard>
-            ))}
+            {assets.map((asset: ListAsset) => {
+              const assetLabel = getAssetLabel(asset, context.locale);
+              const isCode = `[${asset.code}]` === assetLabel;
+              return (
+                <AssetCard key={asset.code} data-asset={asset.code}>
+                  <Thumbnail
+                    asset={asset}
+                    context={context}
+                    readonly={readonly}
+                    assetCollection={assets}
+                    onRemove={() => {
+                      const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
+                      setAssets(filteredAssets);
+                      onChange(getAssetCodes(filteredAssets));
+                    }}
+                    onMove={(direction: MoveDirection) => {
+                      const orderedAssets = moveAssetInCollection(assets, asset, direction);
+                      setAssets(orderedAssets);
+                      onChange(getAssetCodes(orderedAssets));
+                    }}
+                    onClick={() => {
+                      setInitialPreviewAssetCode(asset.code);
+                      openPreviewModal();
+                    }}
+                  />
+                  <AssetTitle>
+                    <Label readOnly={readonly} isCode={isCode}>
+                      {assetLabel}
+                    </Label>
+                    {!isComplete(asset) && <BaselinePill />}
+                  </AssetTitle>
+                </AssetCard>
+              );
+            })}
             {isPreviewModalOpen && null !== initialPreviewAssetCode && (
               <AssetPreview
                 productIdentifier={productIdentifier}

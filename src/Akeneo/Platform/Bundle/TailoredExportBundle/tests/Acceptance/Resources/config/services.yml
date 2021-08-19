@@ -1,21 +1,24 @@
 services:
-    akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api:
-            class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabelTranslation
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface:
+            class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels
 
-    akeneo.pim.structure.query.get_category_translations:
-        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryGetCategoryTranslations
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryFindCategoryLabels
 
-    akeneo.pim.structure.query.get_family_translations:
-        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel
 
-    akeneo.pim.structure.query.get_family_variant_translations:
-        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\FamilyVariant\InMemoryGetFamilyVariantTranslations
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\FamilyVariant\InMemoryFindFamilyVariantLabel
 
     Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels
 
-    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api:
-        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations
+    Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels
 
     Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels

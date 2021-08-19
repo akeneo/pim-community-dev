@@ -14,7 +14,14 @@ const getImageDownloadUrl = (router: Router, image: File): string => {
 };
 
 const getMediaPreviewUrl = (router: Router, mediaPreview: MediaPreview): string => {
-  const isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
+  let isUrlEncoded = false;
+  try {
+    isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
+  } catch (error) {
+    if (!(error instanceof URIError)) {
+      throw error;
+    }
+  }
 
   return router.generate('akeneo_asset_manager_image_preview', {
     ...mediaPreview,

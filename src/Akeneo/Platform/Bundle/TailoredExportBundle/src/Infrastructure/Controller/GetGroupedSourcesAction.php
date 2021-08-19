@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\Attribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,24 +140,24 @@ final class GetGroupedSourcesAction
     }
 
     /**
-     * @param FlattenAttribute[] $flattenAttributes
+     * @param Attribute[] $attributes
      */
-    private function formatAttributes(array $flattenAttributes): array
+    private function formatAttributes(array $attributes): array
     {
         $results = [];
-        foreach ($flattenAttributes as $flattenAttribute) {
-            $groupCode = $flattenAttribute->getAttributeGroupCode();
+        foreach ($attributes as $attribute) {
+            $groupCode = $attribute->getAttributeGroupCode();
             if (!array_key_exists($groupCode, $results)) {
                 $results[$groupCode] = [
                     'code' => $groupCode,
-                    'label' => $flattenAttribute->getAttributeGroupLabel(),
+                    'label' => $attribute->getAttributeGroupLabel(),
                     'children' => [],
                 ];
             }
 
             $results[$groupCode]['children'][] = [
-                'code' => $flattenAttribute->getCode(),
-                'label' => $flattenAttribute->getLabel(),
+                'code' => $attribute->getCode(),
+                'label' => $attribute->getLabel(),
                 'type' => 'attribute',
             ];
         }

@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityConfigurator} from './ReferenceEntityConfigurator';
 import {getDefaultReferenceEntitySource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {CodeLabelSelection} from '../common/CodeLabelSelector';
 
 const attribute = {
   code: 'ref_entity',
@@ -17,21 +16,8 @@ const attribute = {
   available_locales: [],
 };
 
-jest.mock('../common/CodeLabelSelector', () => ({
-  ...jest.requireActual('../common/CodeLabelSelector'),
-  CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
+jest.mock('../common/CodeLabelSelector');
+jest.mock('../common/DefaultValue');
 
 test('it displays a reference entity configurator', () => {
   const onSourceChange = jest.fn();
@@ -55,6 +41,35 @@ test('it displays a reference entity configurator', () => {
     selection: {
       type: 'label',
       locale: 'en_US',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <ReferenceEntityConfigurator
+      source={{
+        ...getDefaultReferenceEntitySource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultReferenceEntitySource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: Structuur exporteren
         filters:
           title: Geef uw productselectie op
+      edit:
+        title: Controleer uw machtigingen bij uw PIM-beheerder om te bewerken.
+      launch:
+        title: Controleer uw machtigingen bij uw PIM-beheerder om te exporteren.
   column_list:
     title: Kolommen
     header:
@@ -45,6 +49,10 @@ akeneo.tailored_export:
         title: bron
         text: Weet u zeker dat u deze bron wilt verwijderen?
         button: Deze bron verwijderen
+      invalid_source:
+        attribute: Dit attribuut is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze bron en voeg het opnieuw toe.
+        association_type: Dit associatietype is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze bron en voeg het opnieuw toe.
+        property: Deze eigenschap is ongeldig. Verwijder deze bron en voeg hem opnieuw toe.
       no_source_configuration:
         title: Er zijn geen bewerkingen beschikbaar voor deze bron. De waarde wordt geëxporteerd zoals hij er nu staat.
       deleted_attribute:
@@ -100,11 +108,18 @@ akeneo.tailored_export:
             locale: Als het attribuut dat als label wordt gebruikt een waarde per taal heeft, kunt u een specifieke taal selecteren.
             channel: Als het attribuut dat als label wordt gebruikt een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
       operation:
+        header: Bewerkingen
         replacement:
           title: Waarde vervangen
           placeholder: Geef de vervangende waarde op
           enabled: Vervangende waarde ingeschakeld
           disabled: Vervangende waarde uitgeschakeld
+          yes: Wel vervangende waarde
+          no: Geen vervangende waarde
+        default_value:
+          title: Standaardwaarde gebruiken indien leeg
+          label: Standaardwaarde
+          placeholder: Waarde definiëren
   column:
     delete_message: Weet u zeker dat u deze kolom wilt verwijderen?
   validation:
@@ -117,7 +132,7 @@ akeneo.tailored_export:
         max_length_reached: De kolomnaam is te lang. Hij mag {{ limit }} tekens of minder bevatten.
         should_be_unique: Deze kolomnaam bestaat al, voer een nieuwe naam in.
     sources:
-      max_source_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan uw export.
+      max_source_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan deze kolom.
       association_type_should_exist: Het associatietype {{ association_type_code }} bestaat niet. Maak het aan of kies een andere bron.
     locale:
       should_be_active: De taal {{ locale_code }} is gedeactiveerd. Activeer deze opnieuw of selecteer een andere taal.

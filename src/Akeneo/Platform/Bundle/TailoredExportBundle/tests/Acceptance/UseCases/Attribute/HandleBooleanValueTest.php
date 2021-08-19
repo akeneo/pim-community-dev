@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use PHPUnit\Framework\Assert;
 
 final class HandleBooleanValueTest extends AttributeTestCase
@@ -31,12 +34,13 @@ final class HandleBooleanValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle($mapValuesQuery);
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -44,19 +48,19 @@ final class HandleBooleanValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects true value' => [
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
                 'expected' => [self::TARGET_NAME => '1']
             ],
-            [
+            'it selects false value' => [
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
                 'expected' => [self::TARGET_NAME => '0']
             ],
-            [
+            'it does not apply default value operation when value is not null' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
@@ -65,13 +69,34 @@ final class HandleBooleanValueTest extends AttributeTestCase
                                 'false' => 'non'
                             ]
                         ]
-                    )
+                    ),
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
                 'expected' => [self::TARGET_NAME => 'oui']
             ],
-            [
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    ReplacementOperation::createFromNormalized(
+                        [
+                            'mapping' => [
+                                'true' => 'oui',
+                                'false' => 'non'
+                            ]
+                        ]
+                    ),
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new BooleanSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it applies replacement operation when value is found in the mapping' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
@@ -86,7 +111,7 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'value' => new BooleanValue(false),
                 'expected' => [self::TARGET_NAME => 'non']
             ],
-            [
+            'it does not apply replacement operation when value is not found in the mapping' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
