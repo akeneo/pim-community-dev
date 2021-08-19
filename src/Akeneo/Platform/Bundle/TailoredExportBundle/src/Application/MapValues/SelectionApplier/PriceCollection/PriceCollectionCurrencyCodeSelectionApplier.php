@@ -33,7 +33,7 @@ class PriceCollectionCurrencyCodeSelectionApplier implements SelectionApplierInt
 
         $priceCollection = $value->getPriceCollection();
 
-        $selectedData = array_map(fn (Price $price) => $price->getCurrency(), $priceCollection);
+        $selectedData = array_map(static fn (Price $price) => $price->getCurrency(), $priceCollection);
 
         return implode($selection->getSeparator(), $selectedData);
     }

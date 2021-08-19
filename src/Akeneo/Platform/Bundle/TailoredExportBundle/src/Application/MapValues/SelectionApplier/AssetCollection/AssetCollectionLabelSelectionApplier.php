@@ -46,7 +46,7 @@ class AssetCollectionLabelSelectionApplier implements SelectionApplierInterface
             $selection->getLocale()
         );
 
-        $selectedData = array_map(fn ($assetCode) => $assetTranslations[$assetCode] ??
+        $selectedData = array_map(static fn ($assetCode) => $assetTranslations[$assetCode] ??
             sprintf('[%s]', $assetCode), $assetCodes);
 
         return implode($selection->getSeparator(), $selectedData);
