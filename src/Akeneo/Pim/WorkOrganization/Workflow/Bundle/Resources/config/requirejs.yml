@@ -27,6 +27,17 @@ config:
                     config:
                         route: pimee_workflow_mass_edit_rest_get_filter
                     aclResourceId: pimee_workflow_published_product_index
+        akeneopimworkflow/js/datagrid/cell/proposal-cell:
+            matchers:
+                string: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                stringArray: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffStringArray.tsx'
+                assetCollection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffAssetCollection.tsx'
+                image: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffImage.tsx'
+                file: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffFile.tsx'
+                referenceEntity: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntity.tsx'
+                referenceEntityCollection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntityCollection.tsx'
+                measurement: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffMeasurement.tsx'
+
     paths:
         pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager
         pimee/product-draft-fetcher:             akeneopimworkflow/js/fetcher/product-draft-fetcher

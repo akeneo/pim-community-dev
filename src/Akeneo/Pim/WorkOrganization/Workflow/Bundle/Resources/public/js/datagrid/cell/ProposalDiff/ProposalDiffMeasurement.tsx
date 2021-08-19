@@ -63,4 +63,4 @@ class ProposalDiffMeasurementMatcher {
   }
 }
 
-export {ProposalDiffMeasurementMatcher};
+export const matcher = ProposalDiffMeasurementMatcher;

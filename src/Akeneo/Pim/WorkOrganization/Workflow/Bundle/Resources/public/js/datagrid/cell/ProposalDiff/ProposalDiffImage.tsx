@@ -52,4 +52,4 @@ class ProposalDiffImageMatcher {
   }
 }
 
-export {ProposalDiffImageMatcher};
+export const matcher = ProposalDiffImageMatcher;

@@ -43,4 +43,4 @@ class ProposalDiffFileMatcher {
   }
 }
 
-export {ProposalDiffFileMatcher};
+export const matcher = ProposalDiffFileMatcher;

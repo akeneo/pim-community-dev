@@ -106,4 +106,4 @@ class ProposalDiffAssetCollectionMatcher {
   }
 }
 
-export {ProposalDiffAssetCollectionMatcher};
+export const matcher = ProposalDiffAssetCollectionMatcher;

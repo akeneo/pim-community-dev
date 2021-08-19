@@ -121,4 +121,4 @@ class ProposalDiffStringMatcher {
   }
 }
 
-export {ProposalDiffStringMatcher};
+export const matcher = ProposalDiffStringMatcher;

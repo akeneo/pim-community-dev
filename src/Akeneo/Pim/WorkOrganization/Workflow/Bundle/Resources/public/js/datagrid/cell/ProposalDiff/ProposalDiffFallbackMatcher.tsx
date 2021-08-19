@@ -7,6 +7,7 @@ type ProposalDiffFallbackProps = {
     before: any;
     after: any;
   };
+  className: string;
 };
 
 const ProposalDiffFallback: React.FC<ProposalDiffFallbackProps> = ({accessor, change, ...rest}) => {

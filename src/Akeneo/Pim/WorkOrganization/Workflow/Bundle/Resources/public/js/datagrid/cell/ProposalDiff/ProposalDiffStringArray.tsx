@@ -53,4 +53,4 @@ class ProposalDiffStringArrayMatcher {
   }
 }
 
-export {ProposalDiffStringArrayMatcher};
+export const matcher = ProposalDiffStringArrayMatcher;

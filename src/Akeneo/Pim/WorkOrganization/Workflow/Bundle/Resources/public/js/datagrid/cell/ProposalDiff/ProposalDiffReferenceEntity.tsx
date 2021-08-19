@@ -77,4 +77,4 @@ class ProposalDiffReferenceEntityMatcher {
   }
 }
 
-export {ProposalDiffReferenceEntityMatcher};
+export const matcher = ProposalDiffReferenceEntityMatcher;

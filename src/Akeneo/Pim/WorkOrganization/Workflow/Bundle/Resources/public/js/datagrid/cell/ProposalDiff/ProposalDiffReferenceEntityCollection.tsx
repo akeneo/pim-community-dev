@@ -101,4 +101,4 @@ class ProposalDiffReferenceEntityCollectionMatcher {
   }
 }
 
-export {ProposalDiffReferenceEntityCollectionMatcher};
+export const matcher = ProposalDiffReferenceEntityCollectionMatcher;
