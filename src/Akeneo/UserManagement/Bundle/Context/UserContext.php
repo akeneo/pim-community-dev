@@ -112,7 +112,10 @@ class UserContext
             throw new \LogicException('There are no activated locales');
         }
 
-        if (null !== $this->getCurrentRequest() && $this->getCurrentRequest()->hasSession()) {
+        if (null !== $this->getCurrentRequest()
+            && $this->getCurrentRequest()->hasSession()
+            && $this->getCurrentRequest()->getSession()->isStarted()
+        ) {
             $this->getCurrentRequest()->getSession()->set('dataLocale', $locale->getCode());
             $this->getCurrentRequest()->getSession()->save();
         }
@@ -351,7 +354,7 @@ class UserContext
     protected function getSessionLocale()
     {
         $request = $this->getCurrentRequest();
-        if (null !== $request && $request->hasSession()) {
+        if (null !== $request && $request->hasSession() && $request->getSession()->isStarted()) {
             $localeCode = $request->getSession()->get('dataLocale');
             if (null !== $localeCode) {
                 $locale = $this->localeRepository->findOneByIdentifier($localeCode);
