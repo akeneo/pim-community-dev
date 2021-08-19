@@ -1,12 +1,126 @@
 table_attribute_template:
-    nutrition-en:
-        type:
-            label: Type
+    nutrition-europe:
+        average_nutritional_values:
+            label: Average nutritional values
             options:
-                calories: Calories
+                energy: Energy
                 fat: Fat
-        quantity:
-            label: Quantity
+                saturated_fat: '  saturated fat'
+                carbohydrate: Carbohydrate
+                sugars: Sugars
+                protein: Protein
+                salt: Salt
+        per_100g:
+            label: 'per 100g'
+        per_serving:
+            label: 'per serving (x g)'
+        percent_reference_intake:
+            label: '% of reference intake (per 100g or serving)'
+    nutrition-unitedstates:
+        nutrition_facts:
+            label: Nutrition facts
+            options:
+                total_fat: Total fat (g)
+                saturated_fat: Saturated Fat (g)
+                trans_fat: Trans Fat (g)
+                cholesterol: Cholesterol (g)
+                sodium: Sodium (g)
+                total_carbohydrate: Total Carbohydrate (g)
+                dietary_fiber: Dietary Fiber (g)
+                total_sugars: Total Sugars (g)
+                included_added_sugars: Included Added Sugars (g)
+                protein: Protein (g)
+        amount_per_serving:
+            label: Amount per serving
+        percent_daily_value:
+            label: '% daily value'
+    nutrition-unitedkingdom:
+        nutrition:
+            label: nutrition
+            options:
+                energy: Energy
+                fat: Fat
+                of_which_saturates: '  of which saturates'
+                carbohydrate: Carbohydrate
+                of_which_sugars: '  of which sugars'
+                fibre: Fibre
+                protein: Protein
+                salt: Salt
+        per_100g:
+            label: Per 100g
+        percent_reference_intake:
+            label: '% Reference Intake'
+        your_reference_intake:
+            label: 'your Reference Intake 8400jJ 200kcal'
+    food_composition:
+        composition:
+            label: Composition
+            options:
+                wheat_flour: Wheat flour
+                butter: Butter
+                water: Water
+                sugar: Sugar
+        percent:
+            label: '%'
+        allergen:
+            label: 'Allergen'
+    clothing_composition:
+        composition:
+            label: Composition
+            options:
+                cotton: Cotton
+                polyester: Polyester
+                elastane: Elastane
+        percent:
+            label: '%'
+    dimensions-metric:
+        dimensions:
+            label: Dimensions
+            options:
+                length: Length (cm)
+                width: Width (cm)
+                height: Height (cm)
+                weight: Weight (cm)
+        value:
+            label: Value
+    dimensions-imperial:
+        dimensions:
+            label: Dimensions
+            options:
+                length: Length (inch)
+                width: Width (inch)
+                height: Height (inch)
+                weight: Weight (pounds)
+        value:
+            label: Value
+    packaging-metric:
+        parcel:
+            label: Parcel
+            options:
+                parcel1: Parcel 1
+                parcel2: Parcel 2
+                parcel3: Parcel 3
+                parcel4: Parcel 4
+        width:
+            label: Width (cm)
+        length:
+            label: Length (cm)
+        height:
+            label: Height (cm)
+    packaging-imperial:
+        parcel:
+            label: Parcel
+            options:
+                parcel1: Parcel 1
+                parcel2: Parcel 2
+                parcel3: Parcel 3
+                parcel4: Parcel 4
+        width:
+            label: Width (inch)
+        length:
+            label: Length (inch)
+        height:
+            label: Height (inch)
 
 pim_table_attribute:
     form:
@@ -78,8 +192,17 @@ pim_table_attribute:
         choose_template: Choose your template
         empty_table: Empty table
         nutrition: Nutrition
-        nutrition-en: Nutrition [United Kingdom]
-        nutrition-eu: Nutrition [European Union]
+        nutrition-unitedkingdom: Nutrition (United Kingdom)
+        nutrition-europe: Average nutritional values (Europe)
+        nutrition-unitedstates: Nutrition Facts (United States)
+        food_composition: Food Composition
+        clothing_composition: Clothing Composition
+        dimensions: Dimensions
+        dimensions-metric: Dimensions (Metric system)
+        dimensions-imperial: Dimensions (Imperial system)
+        packaging: Packaging
+        packaging-metric: Packaging Dimensions (Metric system)
+        packaging-imperial: Packaging Dimensions (Imperial system)
     product_edit_form:
         add_rows: Add rows
         search: Search

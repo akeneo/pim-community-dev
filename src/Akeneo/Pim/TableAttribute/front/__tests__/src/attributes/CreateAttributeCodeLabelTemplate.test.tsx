@@ -40,14 +40,14 @@ describe('CreateAttributeCodeLabelTemplate', () => {
       fireEvent.change(screen.getByLabelText('pim_common.label'), {target: {value: 'A new attribute'}});
       fireEvent.focus(screen.getAllByRole('textbox')[2]);
     });
-    expect(await screen.findByText('pim_table_attribute.templates.nutrition-eu')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_table_attribute.templates.nutrition-eu'));
+    expect(await screen.findByText('pim_table_attribute.templates.nutrition-europe')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_table_attribute.templates.nutrition-europe'));
     fireEvent.click(screen.getByText('pim_common.confirm'));
 
     expect(handleStepConfirm).toBeCalledWith({
       code: 'A_new_attribute',
       label: 'A new attribute',
-      template_variation: 'nutrition-eu',
+      template_variation: 'nutrition-europe',
     });
   });
 

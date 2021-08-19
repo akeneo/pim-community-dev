@@ -29,10 +29,11 @@ describe('TranslatedTableConfigurationProvider', () => {
         return Promise.resolve(
           JSON.stringify({
             messages: {
-              'jsmessages:table_attribute_template.nutrition-en.type.label': 'Type',
-              'jsmessages:table_attribute_template.nutrition-en.quantity.label': 'Quantity',
-              'jsmessages:table_attribute_template.nutrition-en.type.options.calories': 'Calories',
-              'jsmessages:table_attribute_template.nutrition-en.type.options.fat': 'Fat',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.nutrition.label': 'Nutrition',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.per_100g.label': 'Per 100g',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.nutrition.options.carbohydrate':
+                'Carbohydrate',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.nutrition.options.fat': 'Fat',
             },
           })
         );
@@ -41,8 +42,8 @@ describe('TranslatedTableConfigurationProvider', () => {
         return Promise.resolve(
           JSON.stringify({
             messages: {
-              'jsmessages:table_attribute_template.nutrition-en.quantity.label': 'Quantité',
-              'jsmessages:table_attribute_template.nutrition-en.type.options.fat': 'Gros',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.per_100g.label': 'Pour 100g',
+              'jsmessages:table_attribute_template.nutrition-unitedkingdom.nutrition.options.fat': 'Gros',
             },
           })
         );
@@ -51,13 +52,16 @@ describe('TranslatedTableConfigurationProvider', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const result = await getTranslatedTableConfigurationFromVariationTemplate('nutrition-en', ['en_US', 'fr_FR']);
+    const result = await getTranslatedTableConfigurationFromVariationTemplate('nutrition-unitedkingdom', [
+      'en_US',
+      'fr_FR',
+    ]);
 
-    expect(result[0].labels).toEqual({en_US: 'Type'});
-    expect(result[1].labels).toEqual({en_US: 'Quantity', fr_FR: 'Quantité'});
-    expect(getOptionLabels(result, 'type', 'calories')).toEqual({en_US: 'Calories'});
-    expect(getOptionLabels(result, 'type', 'fat')).toEqual({en_US: 'Fat', fr_FR: 'Gros'});
-    expect(getOptionLabels(result, 'type', 'cholesterol')).toEqual({});
+    expect(result[0].labels).toEqual({en_US: 'Nutrition'});
+    expect(result[1].labels).toEqual({en_US: 'Per 100g', fr_FR: 'Pour 100g'});
+    expect(getOptionLabels(result, 'nutrition', 'carbohydrate')).toEqual({en_US: 'Carbohydrate'});
+    expect(getOptionLabels(result, 'nutrition', 'fat')).toEqual({en_US: 'Fat', fr_FR: 'Gros'});
+    expect(getOptionLabels(result, 'nutrition', 'protein')).toEqual({});
   });
 
   it('should return nothing if template variation is unknown', async () => {
