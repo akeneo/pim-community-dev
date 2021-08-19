@@ -12,6 +12,8 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Prophecy\Argument;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,12 +38,16 @@ class UserContextSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepo,
         TokenInterface $token,
         UserInterface $user,
-        Request $request
+        Request $request,
+        FirewallMap $firewall
     ) {
         $requestStack->getCurrentRequest()->willReturn($request);
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+
+        $firewallConfig = new FirewallConfig('foo', 'foo', null, true, false);
+        $firewall->getFirewallConfig(Argument::any())->willReturn($firewallConfig);
 
         $this->beConstructedWith(
             $tokenStorage,
@@ -52,7 +58,8 @@ class UserContextSpec extends ObjectBehavior
             $authorizationChecker,
             $categoryAccessRepo,
             'en_US',
-            'defaultTree'
+            'defaultTree',
+            $firewall
         );
     }
 
