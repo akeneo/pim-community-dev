@@ -16,6 +16,7 @@ const CategoriesIndex: FC = () => {
 
   useEffect(() => {
     loadTrees();
+    sessionStorage.removeItem('lastSelectedCategory');
   }, []);
 
   return (

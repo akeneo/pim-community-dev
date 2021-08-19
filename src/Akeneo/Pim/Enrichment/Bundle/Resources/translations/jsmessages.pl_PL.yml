@@ -551,6 +551,9 @@ batch_jobs:
     quick_export.label: Szybki eksport produktu do XLSX
     quick_export_product_model.label: Szybki eksport modelu produktu do XLSX
     perform.label: Szybki eksport produktu do XLSX
+  default_steps:
+    delete_products_and_product_models: Usuń produkty i modele produktów
+    remove_completeness_for_channel_and_locale: Usuń kompletność kanału i ustawień regionalnych
 error:
   removing:
     group: Nie można usunąć grupy

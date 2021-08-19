@@ -491,13 +491,12 @@ config:
     pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
 
     # Navigation
-    jquery.form:                      pimui/lib/jquery-form/jquery.form
-    pim/app:                            pimui/js/pim-app.ts
-    pim/router:                         pimui/js/router
-    pim/route-matcher:                  pimui/js/route-matcher
-    pim/page-title:                     pimui/js/page-title
-    pim/init-translator:                pimui/js/init-translator
-    pim/onboarding:                     pimui/js/onboarding/pim-onboarding.ts
+    jquery.form:         pimui/lib/jquery-form/jquery.form
+    pim/app:             pimui/js/pim-app.ts
+    pim/router:          pimui/js/router
+    pim/route-matcher:   pimui/js/route-matcher
+    pim/page-title:      pimui/js/page-title
+    pim/init-translator: pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
@@ -721,6 +720,7 @@ config:
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
     pim/datagrid/product-gallery-row: pimdatagrid/js/datagrid/ProductGalleryRow.tsx
+    pim/product-edit-form/sub-navigation: pimui/js/product/form/sub-navigation.ts
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
