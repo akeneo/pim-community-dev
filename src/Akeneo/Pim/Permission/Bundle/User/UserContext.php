@@ -19,10 +19,10 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
-use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -61,7 +61,7 @@ class UserContext extends BaseUserContext
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale,
         $treeOptionKey,
-        FirewallMap $firewall
+        FirewallMapInterface $firewall
     ) {
         parent::__construct(
             $tokenStorage,
