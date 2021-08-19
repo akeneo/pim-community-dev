@@ -27,6 +27,7 @@ const AddQualityBadgesOnOptionsList: FC = () => {
           loaded: false,
         };
       });
+
       setBadges(newBadges);
     } else {
       setBadges({});
