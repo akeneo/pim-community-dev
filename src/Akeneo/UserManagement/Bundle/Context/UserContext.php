@@ -8,10 +8,12 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -52,7 +54,7 @@ class UserContext
     /** @var string */
     protected $defaultLocale;
 
-    protected FirewallMap $firewall;
+    protected FirewallMapInterface $firewall;
 
     /**
      * @param TokenStorageInterface       $tokenStorage
@@ -69,7 +71,7 @@ class UserContext
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
         $defaultLocale,
-        FirewallMap $firewall
+        FirewallMapInterface $firewall
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->localeRepository = $localeRepository;
@@ -133,10 +135,16 @@ class UserContext
             return false;
         }
 
-        $firewallConfig = $this->firewall->getFirewallConfig($request);
+        // The method getFirewallConfig is only part of Symfony\Bundle\SecurityBundle\Security\FirewallMap,
+        // not in the FirewallMapInterface.
+        // In EE, we override the "@security.firewall.map" service with another class that is not extending
+        // Symfony\Bundle\SecurityBundle\Security\FirewallMap but still provide getFirewallConfig.
+        if ($this->firewall instanceof FirewallMap || method_exists($this->firewall, 'getFirewallConfig')) {
+            $firewallConfig = $this->firewall->getFirewallConfig($request);
 
-        if ($firewallConfig->isStateless()) {
-            return false;
+            if ($firewallConfig instanceof FirewallConfig && $firewallConfig->isStateless()) {
+                return false;
+            }
         }
 
         return $request->hasSession();
