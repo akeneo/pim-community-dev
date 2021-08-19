@@ -4,7 +4,7 @@ import styled, {css} from 'styled-components';
 import {NumberInput} from '../../NumberInput/NumberInput';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
-import {InputProps} from '../../InputProps';
+import {InputProps} from '../../common/InputProps';
 import {TableInputReadOnlyCell} from '../TableInputReadOnlyCell';
 import {TableInputContext} from '../TableInputContext';
 
