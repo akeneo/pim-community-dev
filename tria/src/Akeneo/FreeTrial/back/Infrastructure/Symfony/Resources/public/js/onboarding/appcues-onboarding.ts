@@ -24,7 +24,15 @@ const AppcuesOnboarding: PimOnboarding = {
       appcues.page();
     });
   },
-  track: () => {},
+  track: (event: string, eventOptions?: object) => {
+    getAppcuesAgent().then(appcues => {
+      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
+        return;
+      }
+
+      appcues.track(event, eventOptions);
+    });
+  },
   loadLaunchpad: (element: string) => {
     getAppcuesAgent().then(appcues => {
       if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
@@ -33,8 +41,7 @@ const AppcuesOnboarding: PimOnboarding = {
 
       appcues.loadLaunchpad(element, {
         position: "left",
-        header: "<h1>Tutorials</h1>",
-        footer: "<p>Your footer here</p>",
+        header: "<p style='font-size: 18px;'>Checklists</p>",
         icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
       });
     });
