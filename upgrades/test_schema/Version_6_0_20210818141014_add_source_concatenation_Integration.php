@@ -27,27 +27,27 @@ final class Version_6_0_20210818141014_add_source_concatenation_Integration exte
         $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
     }
 
-    public function test_it_add_source_in_concat_element_list(): void
+    public function test_it_adds_source_in_concat_element_list(): void
     {
         $this->createTailoredExportWithColumns();
         $this->assertConcatElementListContainUuid([
-            '7ea61c65-ea3b-46a3-8322-1f4fd9c4cd7c' => [],
-            '25107e67-8c36-454e-a425-f419a2f855ae' => [],
-            '283bce60-e958-4c34-8eb1-40858482c8bf' => [],
-            '7af8c16b-4ef6-459d-813f-2b0cba82fc34' => []
+            'sku-column-uuid' => [],
+            'description-column-uuid' => [],
+            'weight-column-uuid' => [],
+            'title-column-uuid' => []
         ]);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $this->assertConcatElementListContainUuid([
-            '7ea61c65-ea3b-46a3-8322-1f4fd9c4cd7c' => ['65df43a4-c768-4fda-9733-f6952285aeed'],
-            '25107e67-8c36-454e-a425-f419a2f855ae' => ['0ce274a1-d028-438a-9ce9-a676bfe41e20'],
-            '283bce60-e958-4c34-8eb1-40858482c8bf' => ['cb4ef2bd-cb03-4976-90f0-37c1cefcf0d5', '7d0b61e5-d4c7-4dae-a532-b96841bc726e'],
-            '7af8c16b-4ef6-459d-813f-2b0cba82fc34' => [
-                '242ed452-d06b-4257-8dee-1e2436c99ba5',
-                '50de19a7-8037-4a63-a6f3-3ecc7091ad2e',
-                'c7a28fa3-0ee3-4ff0-ae9e-f4531c85e364',
-                '64a3db42-6042-496b-b57b-62852b9fdea4'
+            'sku-column-uuid' => ['sku-source-uuid'],
+            'description-column-uuid' => ['description-de_DE-source-uuid'],
+            'weight-column-uuid' => ['weight-value-source-uuid', 'weight-unit-source-uuid'],
+            'title-column-uuid' => [
+                'name-source-uuid',
+                'size-source-uuid',
+                'main_color-source-uuid',
+                'brand-source-uuid'
             ]
         ]);
     }
@@ -92,7 +92,7 @@ final class Version_6_0_20210818141014_add_source_concatenation_Integration exte
 
         $sourceUuidInConcatenation = [];
         foreach ($rawParameters['columns'] as $column) {
-            $sourceUuidInConcatenation[$column['uuid']] = array_map(fn($element) => $element['uuid'], $column['format']['elements']);
+            $sourceUuidInConcatenation[$column['uuid']] = array_column($column['format']['elements'], 'uuid');
         }
 
         $this->assertEquals($expectedUuid, $sourceUuidInConcatenation);
@@ -105,7 +105,7 @@ final class Version_6_0_20210818141014_add_source_concatenation_Integration exte
 
     private function createTailoredExportWithColumns()
     {
-        $this->createTailoredExport('{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[{"uuid":"7ea61c65-ea3b-46a3-8322-1f4fd9c4cd7c","target":"sku","sources":[{"uuid":"65df43a4-c768-4fda-9733-f6952285aeed","code":"sku","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"25107e67-8c36-454e-a425-f419a2f855ae","target":"description","sources":[{"uuid":"0ce274a1-d028-438a-9ce9-a676bfe41e20","code":"description","type":"attribute","locale":"de_DE","channel":"ecommerce","operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"283bce60-e958-4c34-8eb1-40858482c8bf","target":"weight","sources":[{"uuid":"cb4ef2bd-cb03-4976-90f0-37c1cefcf0d5","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"value"}},{"uuid":"7d0b61e5-d4c7-4dae-a532-b96841bc726e","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"unit_code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"7af8c16b-4ef6-459d-813f-2b0cba82fc34","target":"concatenation","sources":[{"uuid":"242ed452-d06b-4257-8dee-1e2436c99ba5","code":"name","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"50de19a7-8037-4a63-a6f3-3ecc7091ad2e","code":"size","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"c7a28fa3-0ee3-4ff0-ae9e-f4531c85e364","code":"main_color","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"64a3db42-6042-496b-b57b-62852b9fdea4","code":"brand","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}}],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}');
+        $this->createTailoredExport('{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[{"uuid":"sku-column-uuid","target":"sku","sources":[{"uuid":"sku-source-uuid","code":"sku","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"description-column-uuid","target":"description","sources":[{"uuid":"description-de_DE-source-uuid","code":"description","type":"attribute","locale":"de_DE","channel":"ecommerce","operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"weight-column-uuid","target":"weight","sources":[{"uuid":"weight-value-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"value"}},{"uuid":"weight-unit-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"unit_code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"title-column-uuid","target":"concatenation","sources":[{"uuid":"name-source-uuid","code":"name","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"size-source-uuid","code":"size","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"main_color-source-uuid","code":"main_color","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"brand-source-uuid","code":"brand","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}}],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}');
     }
 
     private function createTailoredExport(string $rawParameters)

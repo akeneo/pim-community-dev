@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Add current sources to concat element list to tailored export job profile, since the user can add separator between sources
+ * Add existing sources to concat element list in Tailored Export job profiles, as users can now reorder and add text separators between sources.
  */
 final class Version_6_0_20210818141014_add_source_concatenation extends AbstractMigration implements ContainerAwareInterface
 {
@@ -24,7 +24,7 @@ final class Version_6_0_20210818141014_add_source_concatenation extends Abstract
     public function up(Schema $schema) : void
     {
         $tailoredJobInstances = $this->getTailoredJobInstances();
-        $this->skipIf(empty($tailoredJobInstances), 'No tailored job instance to migrate.');
+        $this->skipIf(empty($tailoredJobInstances), 'No Tailored Export job instance to migrate.');
 
         foreach ($tailoredJobInstances as $tailoredJobInstance) {
             $rawParameters = unserialize($tailoredJobInstance['raw_parameters']);
@@ -61,9 +61,9 @@ SQL;
                 continue;
             }
 
-            $migratedRawParameters['columns'][$index]["format"]["space_between"] = true;
+            $migratedRawParameters['columns'][$index]['format']['space_between'] = true;
             $sourceUuids = array_column($column['sources'], 'uuid');
-            $migratedRawParameters['columns'][$index]["format"]['elements'] = array_map(fn($sourceUuid) => [
+            $migratedRawParameters['columns'][$index]['format']['elements'] = array_map(fn($sourceUuid) => [
                 'uuid' => $sourceUuid,
                 'type' => 'source',
                 'value' => $sourceUuid,
