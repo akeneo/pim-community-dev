@@ -2,14 +2,22 @@ import React from 'react';
 import {ProposalChangeAccessor} from '../ProposalChange';
 import {TableRowWithId, TableValueWithId} from "@akeneo-pim-ge/table_attribute/src/product/TableFieldApp";
 import {TableAttribute} from "@akeneo-pim-ge/table_attribute/src/models/Attribute";
-import {TableInput} from "akeneo-design-system";
-import {getLabel} from "@akeneo-pim-community/shared";
+import {Badge, LoaderIcon, TableInput} from "akeneo-design-system";
+import {getLabel, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
 import {ColumnCode, ColumnDefinition} from "@akeneo-pim-ge/table_attribute/src/models/TableConfiguration";
 import {useFetchOptions} from "@akeneo-pim-ge/table_attribute/src/product/useFetchOptions";
 import {diffChars} from "diff";
-const UserContext = require('pim/user-context');
+import styled from "styled-components";
 
 const FetcherRegistry = require('pim/fetcher-registry');
+
+const StretchHeaderCell = styled(TableInput.HeaderCell)`
+  min-width: auto;
+`;
+
+const StretchedBodyCell = styled(TableInput.Cell)`
+  min-width: auto;
+`;
 
 type ProposalDiffTableProps = {
   accessor: ProposalChangeAccessor;
@@ -38,8 +46,10 @@ const displayChange = (before: string, after: string, accessor: 'before' | 'afte
 }
 
 const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
+  const translate = useTranslate();
+  const userContext = useUserContext();
   const valueData = change[accessor] || [];
-  const catalogLocale = UserContext.get('catalogLocale');
+  const catalogLocale = userContext.get('catalogLocale');
   const [attribute, setAttribute] = React.useState<TableAttribute | undefined>();
   const {getOptionLabel} = useFetchOptions(attribute?.table_configuration, change.attributeCode, valueData);
 
@@ -54,7 +64,7 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   }, []);
 
   if (typeof attribute === 'undefined') {
-    return 'loading';
+    return <LoaderIcon/>;
   }
 
   const tableConfiguration = attribute.table_configuration;
@@ -81,21 +91,32 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   const isCellAdded: (optionCode: string, columnCode: ColumnCode) => boolean = (optionCode, columnCode) => {
     const beforeCell = ((change['before'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
     const afterCell = ((change['after'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
-    return ((beforeCell || '') === '') && ((afterCell || '') !== '');
+    return typeof beforeCell === 'undefined' && typeof afterCell !== 'undefined';
   }
 
   const isCellDeleted: (optionCode: string, columnCode: ColumnCode) => boolean = (optionCode, columnCode) => {
     const beforeCell = ((change['before'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
     const afterCell = ((change['after'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
-    return ((beforeCell || '') !== '') && ((afterCell || '') === '');
+    return typeof beforeCell !== 'undefined' && typeof afterCell === 'undefined';
   }
 
-  const displayCell = (optionCode: string, columnCode: ColumnCode, displayChanges: boolean) => {
+  const getCellContent = (optionCode: string, columnCode: ColumnCode, displayChanges: boolean) => {
     let beforeCell = ((change['before'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
     let afterCell = ((change['after'] || []).find(row => row[firstColumnCode] === optionCode) || {} as TableRowWithId)[columnCode];
-    if ((tableConfiguration.find(column => column.code === columnCode) as ColumnDefinition).data_type === 'select') {
+    const dataType = (tableConfiguration.find(column => column.code === columnCode) as ColumnDefinition).data_type;
+    if (dataType === 'select') {
       beforeCell = getOptionLabel(columnCode, beforeCell) || '';
       afterCell = getOptionLabel(columnCode, afterCell) || '';
+    }
+    if (dataType === 'boolean') {
+      const value = accessor === 'before' ? beforeCell : afterCell;
+
+      if (value === true) {
+        return <Badge level="primary">{translate('pim_common.yes')}</Badge>
+      }
+      if (value === false) {
+        return <Badge level="tertiary">{translate('pim_common.no')}</Badge>;
+      }
     }
     if (displayChanges) return displayChange((beforeCell || '') + '', (afterCell || '') + '', accessor);
     return accessor === 'before' ? beforeCell : afterCell;
@@ -105,30 +126,33 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
     <span {...rest}>
       <TableInput>
         <TableInput.Header>
-          <TableInput.HeaderCell>Order TODO</TableInput.HeaderCell>
+          <StretchHeaderCell>{translate('pim_table_attribute.form.product.order')}</StretchHeaderCell>
           {tableConfiguration.map(column => <TableInput.HeaderCell key={column.code}>
             {getLabel(column.labels, catalogLocale, column.code)}
           </TableInput.HeaderCell>)}
         </TableInput.Header>
         <TableInput.Body>
           {valueData.map((row, i) => <TableInput.Row key={i}>
-            <TableInput.Cell
-              inError={accessor === 'before' && hasOrderChanged(row[firstColumnCode] as string)}
-              highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}
-            >
-              {i + 1}
-            </TableInput.Cell>
+            <StretchedBodyCell>
+              <TableInput.CellContent
+                inError={accessor === 'before' && hasOrderChanged(row[firstColumnCode] as string)}
+                highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}
+              >
+                {i + 1}
+              </TableInput.CellContent>
+            </StretchedBodyCell>
             {tableConfiguration.map((column, j) => {
               const isCellRed = accessor === 'before' && (isRowDeleted(row[firstColumnCode] as string) || isCellDeleted(row[firstColumnCode] as string, column.code));
               const isCellGreen = accessor === 'after' && (isRowAdded(row[firstColumnCode] as string) || isCellAdded(row[firstColumnCode] as string, column.code));
 
-              return <TableInput.Cell
-                rowTitle={j === 0}
-                key={column.code}
-                inError={isCellRed}
-                highlighted={isCellGreen}
-              >
-                {displayCell(row[firstColumnCode] as string, column.code, !isCellRed && !isCellGreen)}
+              return <TableInput.Cell key={column.code}>
+                <TableInput.CellContent
+                  rowTitle={j === 0}
+                  inError={isCellRed}
+                  highlighted={isCellGreen}
+                >
+                  {getCellContent(row[firstColumnCode] as string, column.code, !isCellRed && !isCellGreen)}
+                </TableInput.CellContent>
               </TableInput.Cell>
             })}
           </TableInput.Row>)}

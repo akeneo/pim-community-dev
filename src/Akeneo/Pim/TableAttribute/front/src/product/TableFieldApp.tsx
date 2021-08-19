@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Locale, uuid, Search, AkeneoThemedProps, getColor, Checkbox} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
@@ -10,7 +10,12 @@ import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 import {clearCacheSelectOptions} from '../repositories/SelectOption';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
-  ${({isCompareTranslate}) => !isCompareTranslate && 'width: 100%'}
+  ${({isCompareTranslate}) =>
+    !isCompareTranslate &&
+    css`
+      width: 100%;
+      flex-basis: 100% !important;
+    `}
 `;
 
 const FieldInfo = styled.div`
@@ -262,7 +267,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           <TableInputValue
             attribute={attribute}
             valueData={tableValue}
-            tableConfiguration={attribute.table_configuration}
             onChange={handleChange}
             searchText={copyContext ? '' : searchText}
             readOnly={!isEditable}
@@ -289,7 +293,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                   <TableInputValue
                     attribute={attribute}
                     valueData={addUniqueId(copyContext.data || [])}
-                    tableConfiguration={attribute.table_configuration}
                     readOnly={true}
                     isCopying={!!copyContext}
                   />

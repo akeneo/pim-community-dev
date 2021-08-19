@@ -170,6 +170,7 @@ pim_table_attribute:
                 clear_row: Clear this row
                 move_first: Move to first position
                 move_last: Move to last position
+            order: Order
     properties:
         data_type:
             text: Text

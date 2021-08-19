@@ -88,7 +88,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
   const [firstColumn, ...otherColumns] = attribute.table_configuration;
-  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
+  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(
+    attribute.table_configuration,
+    attribute.code,
+    valueData
+  );
 
   React.useEffect(() => {
     setCurrentPage(0);
@@ -252,20 +256,22 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {valueDataPage.map(row => {
             return (
               <TableInput.Row key={row['unique id']} highlighted={isOpenActions(row['unique id'])}>
-                <TableInput.Cell
-                  rowTitle={true}
-                  highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
-                  inError={
-                    isInErrorFromBackend(row['unique id'], firstColumn.code) ||
-                    getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
-                  }>
-                  {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
-                    <FirstCellLoadingPlaceholderContainer>
-                      <div>{translate('pim_common.loading')}</div>
-                    </FirstCellLoadingPlaceholderContainer>
-                  ) : (
-                    getOptionLabel(firstColumn.code, row[firstColumn.code]) || `[${row[firstColumn.code]}]`
-                  )}
+                <TableInput.Cell>
+                  <TableInput.CellContent
+                    rowTitle={true}
+                    highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
+                    inError={
+                      isInErrorFromBackend(row['unique id'], firstColumn.code) ||
+                      getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
+                    }>
+                    {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
+                      <FirstCellLoadingPlaceholderContainer>
+                        <div>{translate('pim_common.loading')}</div>
+                      </FirstCellLoadingPlaceholderContainer>
+                    ) : (
+                      getOptionLabel(firstColumn.code, row[firstColumn.code]) || `[${row[firstColumn.code]}]`
+                    )}
+                  </TableInput.CellContent>
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
@@ -325,35 +331,35 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                   );
                 })}
                 <TableInput.Cell>
-                  {!readOnly &&
-                  <Dropdown>
-                    <IconButton
-                      icon={<MoreVerticalIcon size={16}/>}
-                      title={translate('pim_common.actions')}
-                      onClick={() => openActions(row['unique id'])}
-                      ghost='borderless'
-                      level='tertiary'
-                    />
-                    {isOpenActions(row['unique id']) && (
-                      <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
-                        <Dropdown.ItemCollection>
-                          <Dropdown.Item onClick={() => handleDeleteRow(row['unique id'])}>
-                            {translate('pim_table_attribute.form.product.actions.delete_row')}
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={() => handleClearRow(row['unique id'])}>
-                            {translate('pim_table_attribute.form.product.actions.clear_row')}
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={() => handleMoveFirst(row['unique id'])}>
-                            {translate('pim_table_attribute.form.product.actions.move_first')}
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={() => handleMoveLast(row['unique id'])}>
-                            {translate('pim_table_attribute.form.product.actions.move_last')}
-                          </Dropdown.Item>
-                        </Dropdown.ItemCollection>
-                      </Dropdown.Overlay>
-                    )}
-                  </Dropdown>
-                  }
+                  {!readOnly && (
+                    <Dropdown>
+                      <IconButton
+                        icon={<MoreVerticalIcon size={16} />}
+                        title={translate('pim_common.actions')}
+                        onClick={() => openActions(row['unique id'])}
+                        ghost='borderless'
+                        level='tertiary'
+                      />
+                      {isOpenActions(row['unique id']) && (
+                        <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
+                          <Dropdown.ItemCollection>
+                            <Dropdown.Item onClick={() => handleDeleteRow(row['unique id'])}>
+                              {translate('pim_table_attribute.form.product.actions.delete_row')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleClearRow(row['unique id'])}>
+                              {translate('pim_table_attribute.form.product.actions.clear_row')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleMoveFirst(row['unique id'])}>
+                              {translate('pim_table_attribute.form.product.actions.move_first')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleMoveLast(row['unique id'])}>
+                              {translate('pim_table_attribute.form.product.actions.move_last')}
+                            </Dropdown.Item>
+                          </Dropdown.ItemCollection>
+                        </Dropdown.Overlay>
+                      )}
+                    </Dropdown>
+                  )}
                 </TableInput.Cell>
               </TableInput.Row>
             );

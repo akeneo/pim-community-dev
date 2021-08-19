@@ -41,7 +41,7 @@ class TablePresenter extends AbstractProductValuePresenter
     protected function normalizeData($data)
     {
         if (!$data instanceof Table) {
-            return null;
+            return [];
         }
 
         return $data->normalize();

@@ -12,9 +12,8 @@ describe('TableInputValue', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={jest.fn()}
       />
@@ -36,9 +35,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
@@ -68,9 +66,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={'r'}
         onChange={handleChange}
       />
@@ -86,9 +83,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         onChange={handleChange}
         violatedCells={[
           {
@@ -113,9 +109,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
@@ -132,9 +127,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
@@ -155,9 +149,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
@@ -178,9 +171,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
@@ -201,9 +193,8 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
         valueData={getTableValueWithId()}
-        tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />

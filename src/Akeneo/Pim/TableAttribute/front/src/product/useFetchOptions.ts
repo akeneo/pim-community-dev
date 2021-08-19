@@ -26,28 +26,26 @@ const useFetchOptions: (
   };
 
   React.useEffect(() => {
-    if (!tableConfiguration) {
-      return;
+    if (tableConfiguration) {
+      const firstColumn = tableConfiguration[0];
+      const f = async () => {
+        for await (const column of tableConfiguration.filter(
+          columnDefinition => columnDefinition.data_type === 'select'
+        )) {
+          options[column.code] = (await getSelectOptions(router, attributeCode, column.code)) || [];
+        }
+        setOptions({...options});
+
+        for await (const row of valueData) {
+          selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await innerGetOptionLabel(
+            firstColumn.code,
+            row[firstColumn.code] as string
+          );
+        }
+        setSelectOptionLabels({...selectOptionLabels});
+      };
+      f();
     }
-
-    const firstColumn = tableConfiguration[0];
-    const f = async () => {
-      for await (const column of tableConfiguration.filter(
-        columnDefinition => columnDefinition.data_type === 'select'
-      )) {
-        options[column.code] = (await getSelectOptions(router, attributeCode, column.code)) || [];
-      }
-      setOptions({...options});
-
-      for await (const row of valueData) {
-        selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await innerGetOptionLabel(
-          firstColumn.code,
-          row[firstColumn.code] as string
-        );
-      }
-      setSelectOptionLabels({...selectOptionLabels});
-    };
-    f();
   }, [valueData.length, tableConfiguration]);
 
   const getOptionsFromColumnCode = (columnCode: ColumnCode) => {
