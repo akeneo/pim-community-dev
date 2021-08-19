@@ -22,4 +22,6 @@ interface ClientMigrationInterface
     public function putIndexSetting(string $indexName, array $indexSettings);
     public function switchIndexAlias(string $oldIndexAlias, string $oldIndexName, string $newIndexAlias, string $newIndexName): void;
     public function createIndex(string $indexName, array $body): void;
+
+    public function refreshIndex(string $indexName);
 }

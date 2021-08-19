@@ -127,6 +127,8 @@ final class UpdateIndexMappingWithoutDowntime
             'refresh_interval' => $oldIndexSettings['refresh_interval'] ?? null,
             'number_of_replicas' => $oldIndexSettings['number_of_replicas'] ?? 1,
         ]);
+
+        $this->migrationClient->refreshIndex($indexName);
     }
 
     private function removeOldIndex(string $indexName): void

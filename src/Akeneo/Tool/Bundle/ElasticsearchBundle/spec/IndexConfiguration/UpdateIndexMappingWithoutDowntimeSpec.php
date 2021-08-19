@@ -123,6 +123,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
+        $clientMigration->refreshIndex(self::MIGRATED_INDEX_NAME)->shouldBeCalledOnce();
+
         $clientMigration->switchIndexAlias(
             self::INDEX_ALIAS_TO_MIGRATE,
             self::INDEX_NAME_TO_MIGRATE,
@@ -232,6 +234,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
+        $clientMigration->refreshIndex(self::MIGRATED_INDEX_NAME)->shouldBeCalledOnce();
+
         $clientMigration->switchIndexAlias(
             self::INDEX_ALIAS_TO_MIGRATE,
             self::INDEX_NAME_TO_MIGRATE,
@@ -329,6 +333,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
+        $clientMigration->refreshIndex(self::MIGRATED_INDEX_NAME)->shouldBeCalledOnce();
+
         $clientMigration->switchIndexAlias(
             self::INDEX_ALIAS_TO_MIGRATE,
             self::INDEX_NAME_TO_MIGRATE,
@@ -425,6 +431,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         $clientMigration
             ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
+
+        $clientMigration->refreshIndex(self::MIGRATED_INDEX_NAME)->shouldBeCalledOnce();
 
         $clientMigration->switchIndexAlias(
             self::INDEX_ALIAS_TO_MIGRATE,

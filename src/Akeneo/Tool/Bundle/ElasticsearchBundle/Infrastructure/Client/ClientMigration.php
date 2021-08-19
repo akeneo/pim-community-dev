@@ -76,11 +76,6 @@ final class ClientMigration implements ClientMigrationInterface
         ]));
     }
 
-    private function assertResponseIsAcknowledged(array $response): void
-    {
-        Assert::true($response['acknowledged']);
-    }
-
     public function switchIndexAlias(string $oldIndexAlias, string $oldIndexName, string $newIndexAlias, string $newIndexName): void
     {
         $this->assertResponseIsAcknowledged(
@@ -127,5 +122,17 @@ final class ClientMigration implements ClientMigrationInterface
                 'body' => $body
             ])
         );
+    }
+
+    public function refreshIndex(string $indexName): void
+    {
+        $indicesClient = $this->client->indices();
+
+        $indicesClient->refresh(['index' => $indexName]);
+    }
+
+    private function assertResponseIsAcknowledged(array $response): void
+    {
+        Assert::true($response['acknowledged']);
     }
 }
