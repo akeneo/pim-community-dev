@@ -13,28 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class GetCategoryTreeController extends Controller
+class GetCategoryTreeController extends AbstractController
 {
-    /** @var CategoryRepositoryInterface */
-    private $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
+    private SecurityFacade $securityFacade;
+    private string $template;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
-
-    /** @var string */
-    private $template;
-
-    public function __construct(CategoryRepositoryInterface $categoryRepository, SecurityFacade $securityFacade, string $template)
-    {
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+        SecurityFacade $securityFacade,
+        string $template
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->securityFacade = $securityFacade;
         $this->template = $template;
