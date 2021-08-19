@@ -108,6 +108,7 @@ pim_data_quality_insights_product_criteria_evaluation | BASE TABLE
 pim_data_quality_insights_product_model_criteria_evaluation | BASE TABLE
 pim_data_quality_insights_product_score | BASE TABLE
 pim_datagrid_view | BASE TABLE
+pim_index_migration | BASE TABLE
 pim_notification_notification | BASE TABLE
 pim_notification_user_notification | BASE TABLE
 pim_session | BASE TABLE
