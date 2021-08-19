@@ -12,6 +12,7 @@ import {TableInputBoolean} from './TableInputBoolean/TableInputBoolean';
 import {TableInputSelect} from './TableInputSelect/TableInputSelect';
 import {TableInputContext} from './TableInputContext';
 import {AkeneoThemedProps} from '../../../theme';
+import {TableInputCellContent} from './TableInputCellContent/TableInputCellContent';
 
 const TableInputContainer = styled.div`
   width: 100%;
@@ -100,6 +101,7 @@ TableInput.HeaderCell = TableInputHeaderCell;
 TableInput.Body = TableInputBody;
 TableInput.Row = TableInputRow;
 TableInput.Cell = TableInputCell;
+TableInput.CellContent = TableInputCellContent;
 TableInput.Text = TableInputText;
 TableInput.Number = TableInputNumber;
 TableInput.Boolean = TableInputBoolean;
