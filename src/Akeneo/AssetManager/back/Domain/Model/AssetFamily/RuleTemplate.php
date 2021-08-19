@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Webmozart\Assert\Assert;
 
 /**
@@ -96,6 +97,12 @@ class RuleTemplate
 
         $compiledActions = array_map(fn (Action $action) => $action->compile($propertyAccessibleAsset)->normalize(), $this->actions);
 
+        $compiledConditions = $this->excludeAlreadyLinkedProductsFromSelection(
+            $compiledActions,
+            $propertyAccessibleAsset,
+            $compiledConditions
+        );
+
         return new CompiledRule($compiledConditions, $compiledActions);
     }
 
@@ -119,5 +126,23 @@ class RuleTemplate
     private static function createActions(array $content): array
     {
         return array_map(fn (array $action) => Action::createFromProductLinkRule($action), $content[self::ASSIGN_ASSETS_TO]);
+    }
+
+    private function excludeAlreadyLinkedProductsFromSelection(
+        array $compiledActions,
+        PropertyAccessibleAsset $propertyAccessibleAsset,
+        array $compiledConditions
+    ): array {
+        foreach ($compiledActions as $compiledAction) {
+            $compiledConditions[] = [
+                'field' => $compiledAction['field'],
+                'operator' => Operators::NOT_IN_LIST,
+                'value' => [$propertyAccessibleAsset->code],
+                'channel' => $compiledAction['channel'],
+                'locale' => $compiledAction['locale'],
+            ];
+        }
+
+        return $compiledConditions;
     }
 }
