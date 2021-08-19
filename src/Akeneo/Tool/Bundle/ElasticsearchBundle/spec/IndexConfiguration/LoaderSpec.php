@@ -71,6 +71,7 @@ class LoaderSpec extends ObjectBehavior
             ]
         );
         $indexConfiguration->getAliases()->shouldReturn([]);
+        $indexConfiguration->getHash()->shouldReturn('ba2c495be83ae33df74fe96f9df1cfc305fe983e');
     }
 
     function it_loads_the_configuration_from_multiple_files(ParameterBagInterface $parameterBag)
@@ -163,6 +164,7 @@ class LoaderSpec extends ObjectBehavior
                 ],
             ]
         );
+        $indexConfiguration->getHash()->shouldReturn('774d394edb20f41c507d91792744036301532946');
     }
 
     function it_loads_the_compiled_configuration_from_multiple_files(ParameterBagInterface $parameterBag)
