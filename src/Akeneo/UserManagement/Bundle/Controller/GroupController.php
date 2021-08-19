@@ -9,7 +9,7 @@ use Akeneo\UserManagement\Component\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class GroupController extends Controller
+class GroupController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private RemoverInterface $remover;

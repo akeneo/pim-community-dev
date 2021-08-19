@@ -551,6 +551,9 @@ batch_jobs:
     quick_export.label: Exportación rápida de producto en XSLX
     quick_export_product_model.label: Exportación rápida de modelo de producto en XSLX
     perform.label: Exportación rápida de producto en XSLX
+  default_steps:
+    delete_products_and_product_models: Eliminar productos y modelos de productos
+    remove_completeness_for_channel_and_locale: Eliminar la exhaustividad del canal y la configuración regional
 error:
   removing:
     group: Imposible eliminar grupo
