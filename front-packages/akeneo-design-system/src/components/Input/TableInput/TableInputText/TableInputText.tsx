@@ -6,7 +6,7 @@ import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {TableInputContext} from '../TableInputContext';
 import {TableInputReadOnlyCell} from '../TableInputReadOnlyCell';
 import {Override} from '../../../../shared';
-import {InputProps} from '../../InputProps';
+import {InputProps} from '../../common/InputProps';
 
 const EditableTableInputText = styled(TextInput)<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
   height: 39px;
