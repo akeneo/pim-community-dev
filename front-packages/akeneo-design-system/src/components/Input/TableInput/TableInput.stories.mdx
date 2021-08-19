@@ -24,7 +24,7 @@ Table input allows the user to input content in a table.
       const {getValue, setValue, searchValue, setSearchValue} = useFakeTableInput(6);
       return <TableInput {...args}>
         <TableInput.Header>
-          <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
           <TableInput.HeaderCell>Nutrition Score</TableInput.HeaderCell>
           <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
@@ -32,7 +32,7 @@ Table input allows the user to input content in a table.
         </TableInput.Header>
         <TableInput.Body>
           {['Sugar', 'Salt', 'Pepper', 'Eggs', 'Flour', 'Yeast'].map((row, index) => <TableInput.Row key={row}>
-            <TableInput.Cell rowTitle={true}>{row}</TableInput.Cell>
+            <TableInput.Cell><TableInput.CellContent rowTitle={true}>{row}</TableInput.CellContent></TableInput.Cell>
             <TableInput.Cell>
               <TableInput.Select
                 clearLabel="Remove"
@@ -73,13 +73,13 @@ Table input allows the user to input content in a table.
         <TableInput {...args}>
           <TableInput.Header>
             {[...Array(columnCount).keys()].map((_, i) => {
-              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+              return <TableInput.HeaderCell key={i}>Column label</TableInput.HeaderCell>
             })}
           </TableInput.Header>
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
-                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
                 {[...Array(columnCount - 1).keys()].map((_, i) => {
                   return <TableInput.Cell key={i}><TableInput.Text value={'Value'} onChange={() => {}}/></TableInput.Cell>
                 })}
@@ -98,24 +98,26 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Highlight cells">
     {args => {
-      const linesCount = 5;
+      const linesCount = 6;
       return (
         <TableInput {...args}>
           <TableInput.Header>
-            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Empty cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Boolean cell</TableInput.HeaderCell>
           </TableInput.Header>
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
-                <TableInput.Cell highlighted={r >= 0} rowTitle={true}>Value</TableInput.Cell>
-                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r >= 1}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r >= 2}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Number value={42} highlighted={r >= 3}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r >= 4}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true} highlighted={r === 0}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent highlighted={r === 1}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r === 2}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r === 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} highlighted={r === 4}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r === 5}/></TableInput.Cell>
               </TableInput.Row>
             })}
           </TableInput.Body>
@@ -134,16 +136,16 @@ Table input allows the user to input content in a table.
       return (
         <TableInput {...args} readOnly={true}>
           <TableInput.Header>
-            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Boolean cell</TableInput.HeaderCell>
           </TableInput.Header>
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
-                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
                 <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Cell with a select value having a big text'}/></TableInput.Cell>
                 <TableInput.Cell><TableInput.Text value={'Cell with a text value having a big text'}/></TableInput.Cell>
                 <TableInput.Cell><TableInput.Number value={Math.pow(4212345967, r)}/></TableInput.Cell>
@@ -171,14 +173,14 @@ Table input allows the user to input content in a table.
         }}>
           <TableInput.Header>
             {[...Array(columnCount).keys()].map((_, i) => {
-              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+              return <TableInput.HeaderCell key={i}>Column label</TableInput.HeaderCell>
             })}
           </TableInput.Header>
           <TableInput.Body>
             {orderedRows.map((row,r) => {
               return <TableInput.Row key={r}>
                 {[...Array(columnCount).keys()].map((_, i) => {
-                  return i === 0 ? <TableInput.Cell key={i} rowTitle={true}>Row {row + 1}</TableInput.Cell> :
+                  return i === 0 ? <TableInput.Cell key={i}><TableInput.CellContent rowTitle={true}>Row {row + 1}</TableInput.CellContent></TableInput.Cell> :
                     <TableInput.Cell key={i}>
                       <TableInput.Text value={'A value'}></TableInput.Text>
                     </TableInput.Cell>
@@ -204,13 +206,13 @@ Table input allows the user to input content in a table.
         <TableInput {...args}>
           <TableInput.Header>
             {[...Array(columnCount).keys()].map((_, i) => {
-              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+              return <TableInput.HeaderCell key={i}>Column label</TableInput.HeaderCell>
             })}
           </TableInput.Header>
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r} highlighted={highlighted[r]}>
-                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
                 {[...Array(columnCount - 1).keys()].map((_, i) => {
                   return <TableInput.Cell key={i} onClick={() => {
                     highlighted[r] = !highlighted[r];
@@ -234,24 +236,26 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="With errors">
     {args => {
-      const linesCount = 5;
+      const linesCount = 6;
       return (
         <TableInput {...args}>
           <TableInput.Header>
-            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
-            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Empty cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Boolean cell</TableInput.HeaderCell>
           </TableInput.Header>
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
-                <TableInput.Cell inError={r >= 0} rowTitle={true}>Value</TableInput.Cell>
-                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} inError={r >= 1}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Text value={'Text value'} inError={r >= 2}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Number value={42} inError={r >= 3}/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} inError={r >= 4}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent inError={r == 0} rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent inError={r == 1}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} inError={r == 2}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} inError={r == 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} inError={r == 4}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} inError={r == 5}/></TableInput.Cell>
               </TableInput.Row>
             })}
           </TableInput.Body>

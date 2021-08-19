@@ -36,7 +36,7 @@ test('TableInputCell supports ...rest props', () => {
     <table>
       <tbody>
         <tr>
-          <TableInputCell rowTitle={true} data-testid="my_value" />
+          <TableInputCell data-testid="my_value" />
         </tr>
       </tbody>
     </table>
