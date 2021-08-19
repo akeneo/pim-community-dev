@@ -60,6 +60,8 @@ class UserContextSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier([])->willReturn($mobile);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
+        $session->isStarted()->willReturn(true);
+
         $this->beConstructedWith(
             $tokenStorage,
             $localeRepository,

@@ -40,6 +40,8 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $session->get('_locale')->willReturn('fr_FR');
         $request->setLocale('fr_FR')->shouldBeCalled();
 
+        $session->isStarted()->willReturn(true);
+
         $this->onKernelRequest($event);
     }
 
@@ -54,6 +56,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
+        $session->isStarted()->willReturn(true);
 
         $em->getConnection()->willReturn($connection);
         $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
@@ -76,6 +79,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
+        $session->isStarted()->willReturn(true);
 
         $em->getConnection()->willReturn($connection);
         $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
