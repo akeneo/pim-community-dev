@@ -23,7 +23,7 @@ Feature: Create attribute options
       | red   |
       | blue  |
       | green |
-    When I check the "Sort automatically options by alphabetical order" switch
+    When I switch the "Sort automatically options by alphabetical order" to "yes"
     Then I should see the text "green"
     When I save the attribute
     Then I should see the flash message "Attribute successfully updated"
