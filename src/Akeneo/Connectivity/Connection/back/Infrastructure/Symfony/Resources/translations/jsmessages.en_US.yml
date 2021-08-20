@@ -22,6 +22,7 @@ pim_menu:
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_apps_activate: Apps
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -60,6 +61,10 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
+        apps:
+            activate:
+                flash:
+                    error: Sorry, an error occurred while connecting the App.
     connections: Connections
     secondary_actions:
         title: Other actions
