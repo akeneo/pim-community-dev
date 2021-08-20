@@ -53,14 +53,4 @@ const ProposalDiffMeasurement: React.FC<ProposalDiffMeasurementProps> = ({access
   );
 };
 
-class ProposalDiffMeasurementMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_metric'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffMeasurement;
-  }
-}
-
-export {ProposalDiffMeasurementMatcher};
+export default ProposalDiffMeasurement;

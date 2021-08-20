@@ -96,14 +96,4 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
   );
 };
 
-class ProposalDiffAssetCollectionMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_asset_collection'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffAssetCollection;
-  }
-}
-
-export {ProposalDiffAssetCollectionMatcher};
+export default ProposalDiffAssetCollection;
