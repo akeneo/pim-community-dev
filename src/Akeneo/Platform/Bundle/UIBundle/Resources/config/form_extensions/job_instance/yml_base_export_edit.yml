@@ -130,6 +130,8 @@ extensions:
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
 
+            # TODO: Add duplicate configuration button here
+
     pim-job-instance-yml-base-export-edit-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-job-instance-yml-base-export-edit

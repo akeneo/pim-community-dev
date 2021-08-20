@@ -657,6 +657,24 @@ class JobInstanceController
     }
 
     /**
+     * Create an export profile
+     *
+     * @AclAncestor("pim_importexport_export_profile_create")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function duplicateAction(Request $request) {
+        // Recuperer jobInstance à dupliquer
+        // Create un nouveau avec le type et la factory
+        // mettre à jour le nouveau avec la version normalizée de l'ancien
+        // valider
+        // sauvegarder le nouveau
+
+        return new JsonResponse(['code' => 'my_newJob']);
+    }
+    /**
      * Create a job profile with a given type
      *
      * @param Request $request
@@ -712,4 +730,5 @@ class JobInstanceController
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
     }
+
 }
