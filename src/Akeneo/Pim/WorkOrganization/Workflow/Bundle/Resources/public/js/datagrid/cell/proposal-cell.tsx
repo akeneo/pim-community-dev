@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Proposal} from './Proposal';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {ProposalChangeMatcherConfig} from "./ProposalChange";
+import {ProposalChangeMatcherConfig} from './ProposalChange';
 const StringCell = require('oro/datagrid/string-cell');
 
 class ProposalCell extends StringCell {

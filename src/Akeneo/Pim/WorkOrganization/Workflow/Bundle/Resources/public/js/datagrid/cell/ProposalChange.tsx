@@ -1,6 +1,6 @@
 import React from 'react';
 import {ProposalChangeData} from './Proposal';
-import {ProposalDiffFallbackMatcher} from "./ProposalDiff";
+import {ProposalDiffFallback} from './ProposalDiff';
 
 export type ProposalChangeAccessor = 'before' | 'after';
 
@@ -12,20 +12,18 @@ type ProposalChangeProps = {
   matchers: ProposalChangeMatcherConfig;
 };
 
-export type ProposalChangeMatcherConfig = {[key: string]: {
-  matcher: {
-    supports: (attributeType: string) => boolean;
-    render: () => React.FC<{
+export type ProposalChangeMatcherConfig = {
+  [attributeType: string]: {
+    default: React.FC<{
       accessor: ProposalChangeAccessor;
       change: {before: any; after: any};
       className: string;
-    }>
-  }
-}};
+    }>;
+  };
+};
 
 const ProposalChange: React.FC<ProposalChangeProps> = ({change, accessor, className, matchers, ...rest}) => {
-  const matcher = Object.values(matchers).find(matcher => matcher.matcher.supports(change.attributeType)) || { matcher: ProposalDiffFallbackMatcher };
-  const ProposalDiff = matcher.matcher.render();
+  const ProposalDiff = matchers[change.attributeType]?.default || ProposalDiffFallback;
 
   return <ProposalDiff accessor={accessor} change={change} className={className} {...rest} />;
 };

@@ -33,14 +33,4 @@ const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({accessor, change, ..
   return <span {...rest} />;
 };
 
-class ProposalDiffFileMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_file'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffFile;
-  }
-}
-
-export const matcher = ProposalDiffFileMatcher;
+export default ProposalDiffFile;

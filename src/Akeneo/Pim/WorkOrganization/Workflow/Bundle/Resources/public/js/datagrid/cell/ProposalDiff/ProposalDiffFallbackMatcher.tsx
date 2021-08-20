@@ -14,10 +14,4 @@ const ProposalDiffFallback: React.FC<ProposalDiffFallbackProps> = ({accessor, ch
   return <span {...rest}>{JSON.stringify(change[accessor])}</span>;
 };
 
-class ProposalDiffFallbackMatcher {
-  static render() {
-    return ProposalDiffFallback;
-  }
-}
-
-export {ProposalDiffFallbackMatcher};
+export {ProposalDiffFallback};

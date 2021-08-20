@@ -29,14 +29,23 @@ config:
                     aclResourceId: pimee_workflow_published_product_index
         akeneopimworkflow/js/datagrid/cell/proposal-cell:
             matchers:
-                string: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
-                stringArray: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffStringArray.tsx'
-                assetCollection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffAssetCollection.tsx'
-                image: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffImage.tsx'
-                file: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffFile.tsx'
-                referenceEntity: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntity.tsx'
-                referenceEntityCollection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntityCollection.tsx'
-                measurement: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffMeasurement.tsx'
+                pim_catalog_text: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_identifier: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_textarea: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_simpleselect: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_reference_data_simpleselect: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_date: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_number: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_boolean: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
+                pim_catalog_multiselect: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffStringArray.tsx'
+                pim_reference_data_multiselect: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffStringArray.tsx'
+                pim_catalog_price_collection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffStringArray.tsx'
+                pim_catalog_asset_collection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffAssetCollection.tsx'
+                pim_catalog_image: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffImage.tsx'
+                pim_catalog_file: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffFile.tsx'
+                akeneo_reference_entity: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntity.tsx'
+                akeneo_reference_entity_collection: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntityCollection.tsx'
+                pim_catalog_metric: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffMeasurement.tsx'
 
     paths:
         pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager

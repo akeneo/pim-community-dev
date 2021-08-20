@@ -102,23 +102,4 @@ const ProposalDiffString: React.FC<ProposalDiffStringProps> = ({accessor, change
   );
 };
 
-class ProposalDiffStringMatcher {
-  static supports(attributeType: string) {
-    return [
-      'pim_catalog_text',
-      'pim_catalog_identifier',
-      'pim_catalog_textarea',
-      'pim_catalog_simpleselect',
-      'pim_reference_data_simpleselect',
-      'pim_catalog_date',
-      'pim_catalog_number',
-      'pim_catalog_boolean',
-    ].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffString;
-  }
-}
-
-export const matcher = ProposalDiffStringMatcher;
+export default ProposalDiffString;

@@ -42,14 +42,4 @@ const ProposalDiffImage: React.FC<ProposalDiffImageProps> = ({accessor, change, 
   return <span {...rest} />;
 };
 
-class ProposalDiffImageMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_image'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffImage;
-  }
-}
-
-export const matcher = ProposalDiffImageMatcher;
+export default ProposalDiffImage;

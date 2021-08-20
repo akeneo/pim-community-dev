@@ -91,14 +91,4 @@ const ProposalDiffReferenceEntityCollection: React.FC<ProposalDiffReferenceEntit
   );
 };
 
-class ProposalDiffReferenceEntityCollectionMatcher {
-  static supports(attributeType: string) {
-    return ['akeneo_reference_entity_collection'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffReferenceEntityCollection;
-  }
-}
-
-export const matcher = ProposalDiffReferenceEntityCollectionMatcher;
+export default ProposalDiffReferenceEntityCollection;
