@@ -18,5 +18,5 @@ export const AppAuthorizePage: FC = () => {
         history.push('/connect/marketplace');
     };
 
-    return <Modal closeTitle='Close' onClose={redirectToMarketPlace}/>;
+    return <Modal closeTitle='Close' onClose={redirectToMarketPlace} />;
 };
