@@ -9,6 +9,8 @@ use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +21,16 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 class LocaleSubscriberSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
-    {
-        $this->beConstructedWith($requestStack, $localeAware, $em);
-        $this->beConstructedWith($requestStack, $localeAware, $em);
+    function let(
+        RequestStack $requestStack,
+        LocaleAwareInterface $localeAware,
+        EntityManager $em,
+        FirewallMap $firewall
+    ) {
+        $firewallConfig = new FirewallConfig('foo', 'foo', null, true, false);
+        $firewall->getFirewallConfig(Argument::any())->willReturn($firewallConfig);
+
+        $this->beConstructedWith($requestStack, $localeAware, $em, $firewall);
     }
 
     function it_implements_an_event_listener_interface()
@@ -36,6 +44,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         SessionInterface $session
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn('fr_FR');
         $request->setLocale('fr_FR')->shouldBeCalled();
@@ -52,6 +61,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
@@ -74,6 +84,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
@@ -100,6 +111,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getArgument('current_user')->willReturn($user);
 
         $requestStack->getMasterRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
 
         $user->getUiLocale()->willReturn($locale);
