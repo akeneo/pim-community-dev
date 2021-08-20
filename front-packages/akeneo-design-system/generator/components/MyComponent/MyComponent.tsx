@@ -1,25 +1,29 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {forwardRef, Ref, ReactNode, HTMLAttributes} from 'react';
 import styled from 'styled-components';
+import {Override} from '../../shared';
 
 //TODO be sure to select the appropriate container element here
 const MyComponentContainer = styled.div<{level: string}>``;
 
-type MyComponentProps = {
-  /**
-   * TODO.
-   */
-  level?: 'primary' | 'warning' | 'danger';
+type MyComponentProps = Override<
+  HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * TODO.
+     */
+    level?: 'primary' | 'warning' | 'danger';
 
-  /**
-   * TODO.
-   */
-  children?: ReactNode;
-};
+    /**
+     * TODO.
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * TODO.
  */
-const MyComponent = React.forwardRef<HTMLDivElement, MyComponentProps>(
+const MyComponent = forwardRef<HTMLDivElement, MyComponentProps>(
   ({level = 'primary', children, ...rest}: MyComponentProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <MyComponentContainer level={level} ref={forwardedRef} {...rest}>

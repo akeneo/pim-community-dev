@@ -216,6 +216,8 @@ config:
       controllers:
         pim_settings_index:
           module: pim/controller/settings
+        pim_system_index:
+          module: pim/controller/system-index
         pim_dashboard_index:
           module: pim/controller/dashboard
         pim_enrich_associationtype_edit:
@@ -537,6 +539,7 @@ config:
     pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
     pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
     pim/controller/settings:               pimui/js/controller/settings.tsx
+    pim/controller/system-index:           pimui/js/controller/system-index.tsx
     pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
