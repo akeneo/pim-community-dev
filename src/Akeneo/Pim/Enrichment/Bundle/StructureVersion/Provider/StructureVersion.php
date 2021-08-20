@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Structure version provider
@@ -16,14 +16,9 @@ class StructureVersion implements StructureVersionProviderInterface
 {
     /** @var array */
     protected $resourceNames = [];
+    protected ManagerRegistry $doctrine;
 
-    /** @var RegistryInterface */
-    protected $doctrine;
-
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
