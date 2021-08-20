@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Webmozart\Assert\Assert;
 
 /**
@@ -136,7 +135,7 @@ class RuleTemplate
         foreach ($compiledActions as $compiledAction) {
             $compiledConditions[] = [
                 'field' => $compiledAction['field'],
-                'operator' => Operators::NOT_IN_LIST,
+                'operator' => 'NOT IN',
                 'value' => [$propertyAccessibleAsset->code],
                 'channel' => $compiledAction['channel'],
                 'locale' => $compiledAction['locale'],
