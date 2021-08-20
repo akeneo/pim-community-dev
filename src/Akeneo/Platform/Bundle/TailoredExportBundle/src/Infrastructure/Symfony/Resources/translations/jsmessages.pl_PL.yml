@@ -43,6 +43,7 @@ akeneo.tailored_export:
     sources:
       title: Źródła
       add: Dodaj źródło
+      no_result: Brak wyników.
       locale_specific: Ten atrybut zależy od ustawień regionalnych.
       remove:
         title: źródło
@@ -107,6 +108,7 @@ akeneo.tailored_export:
             locale: Jeśli atrybut używany jako etykieta ma wartość zależną od ustawień regionalnych, możesz wybrać określone ustawienia regionalne.
             channel: Jeśli atrybut używany jako etykieta ma wartość zależną od kanału, możesz wybrać określony kanał.
       operation:
+        header: Operacje
         replacement:
           title: Zastąp wartość
           placeholder: Zdefiniuj wartość zastępczą
@@ -114,6 +116,10 @@ akeneo.tailored_export:
           disabled: Wyłączona wartość zastępcza
           yes: Istnieje wartość zastępcza
           no: Brak wartości zastępczej
+        default_value:
+          title: Użyj wartości domyślnej przy braku zadanej
+          label: Wartość domyślna
+          placeholder: Zdefiniuj wartość
   column:
     delete_message: Czy na pewno chcesz usunąć tę kolumnę?
   validation:
@@ -126,6 +132,7 @@ akeneo.tailored_export:
         max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
         should_be_unique: Nazwa kolumny już istnieje. Wprowadź nową.
     sources:
+      max_source_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł w tej kolumnie.
       association_type_should_exist: Typ powiązania {{ association_type_code }} nie istnieje. Utwórz go lub wybierz inne źródło.
     locale:
       should_be_active: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.
