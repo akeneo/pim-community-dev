@@ -150,6 +150,13 @@ services:
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
+    Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Remover\AssetCollectionAttributeRemover:
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.builder.entity_with_values'
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
     Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
