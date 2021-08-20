@@ -13,19 +13,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Common\Column;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Format\FormatInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 
 class Column
 {
     private string $target;
     private SourceCollection $sourceCollection;
+    private FormatInterface $format;
 
     public function __construct(
         string $target,
-        SourceCollection $sourceCollection
+        SourceCollection $sourceCollection,
+        FormatInterface $format
     ) {
         $this->target = $target;
         $this->sourceCollection = $sourceCollection;
+        $this->format = $format;
     }
 
     public function getTarget(): string
@@ -36,5 +40,10 @@ class Column
     public function getSourceCollection(): SourceCollection
     {
         return $this->sourceCollection;
+    }
+
+    public function getFormat(): FormatInterface
+    {
+        return $this->format;
     }
 }

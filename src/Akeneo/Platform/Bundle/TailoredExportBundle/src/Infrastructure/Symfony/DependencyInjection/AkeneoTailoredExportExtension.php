@@ -27,6 +27,7 @@ class AkeneoTailoredExportExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('controllers.yml');
+        $loader->load('format_appliers.yml');
         $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
         $loader->load('operation_appliers.yml');

@@ -28,6 +28,9 @@ class ColumnCollection implements \IteratorAggregate
         $this->columns = $columns;
     }
 
+    /**
+     * @return Column[] | \Iterator
+     */
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->columns);

@@ -15,6 +15,8 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
@@ -47,18 +49,26 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
     {
         $operationCollection = OperationCollection::create([]);
         $source = new AttributeSource(
+            'a_code-uuid',
             'pim_catalog_file',
             'a_code',
             null,
             null,
             $operationCollection,
-            new FilePathSelection('an_attribute_code')
+            new FilePathSelection('an_attribute_code'),
         );
-        $column = new Column('target1', SourceCollection::create([$source]));
+        $column = new Column(
+            'target1',
+            SourceCollection::create([$source]),
+            new ConcatFormat(ElementCollection::createFromNormalized([
+                [
+                    'type' => 'source',
+                    'value' => 'a_code-uuid',
+                ]
+            ]), false),
+        );
 
-        $columnCollection = ColumnCollection::create(
-            [$column]
-        );
+        $columnCollection = ColumnCollection::create([$column]);
 
         $valueCollection = new ValueCollection();
         $fileValue = new FileValue(
@@ -67,20 +77,20 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
             'a_filekey',
             'an_original_filename',
             null,
-            null
+            null,
         );
         $valueCollection->add(
             $fileValue,
             'a_code',
             null,
-            null
+            null,
         );
 
         $expectedExtractedMedia = [
             new ExtractedMedia(
                 'a_filekey',
                 'catalog',
-                'files/an_id/an_attribute_code/an_original_filename'
+                'files/an_id/an_attribute_code/an_original_filename',
             )
         ];
 
@@ -93,25 +103,33 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
     {
         $operationCollection = OperationCollection::create([]);
         $source = new AttributeSource(
+            'a_code-uuid',
             'pim_catalog_asset_collection',
             'a_code',
             null,
             null,
             $operationCollection,
-            new AssetCollectionCodeSelection('/', 'a_family_code', 'an_attribute_code')
+            new AssetCollectionCodeSelection('/', 'a_family_code', 'an_attribute_code'),
         );
-        $column = new Column('target1', SourceCollection::create([$source]));
+        $column = new Column(
+            'target1',
+            SourceCollection::create([$source]),
+            new ConcatFormat(ElementCollection::createFromNormalized([
+                [
+                    'type' => 'source',
+                    'value' => 'a_code-uuid',
+                ]
+            ]), false),
+        );
 
-        $columnCollection = ColumnCollection::create(
-            [$column]
-        );
+        $columnCollection = ColumnCollection::create([$column]);
 
         $valueCollection = new ValueCollection();
         $assetCollectionValue = new AssetCollectionValue(
             ['asset_code_1', 'asset_code_2', 'asset_code_3'],
             'an_id',
             null,
-            null
+            null,
         );
         $valueCollection->add(
             $assetCollectionValue,

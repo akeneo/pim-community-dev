@@ -27,6 +27,9 @@ class SourceCollection implements \IteratorAggregate
         $this->sources = $sources;
     }
 
+    /**
+     * @return SourceInterface[] | \Iterator
+     */
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->sources);

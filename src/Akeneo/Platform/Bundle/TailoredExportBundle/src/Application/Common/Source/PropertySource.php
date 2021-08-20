@@ -20,18 +20,26 @@ class PropertySource implements SourceInterface
 {
     public const TYPE = 'property';
 
+    private string $uuid;
     private string $name;
     private OperationCollection $operations;
     private SelectionInterface $selection;
 
     public function __construct(
+        string $uuid,
         string $name,
         OperationCollection $operations,
         SelectionInterface $selection
     ) {
+        $this->uuid = $uuid;
         $this->name = $name;
         $this->operations = $operations;
         $this->selection = $selection;
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getName(): string

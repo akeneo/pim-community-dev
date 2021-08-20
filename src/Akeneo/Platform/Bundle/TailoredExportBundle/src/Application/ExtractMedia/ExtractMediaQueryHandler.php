@@ -42,7 +42,6 @@ class ExtractMediaQueryHandler
     {
         $mediaToExports = [];
 
-        /** @var SourceInterface $source */
         foreach ($extractMediaQuery->getColumnCollection()->getAllSources() as $source) {
             $selection = $source->getSelection();
             $value = $extractMediaQuery->getValueCollection()->getFromSource($source);
