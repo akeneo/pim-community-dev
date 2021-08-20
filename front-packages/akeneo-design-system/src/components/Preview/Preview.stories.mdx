@@ -7,7 +7,6 @@ import {Preview} from './Preview.tsx';
   subcomponents={{
     'Preview.Highlight': Preview.Highlight,
   }}
-  argTypes={{}}
   args={{title: 'Preview', children: 'Preview text'}}
 />
 
@@ -15,7 +14,7 @@ import {Preview} from './Preview.tsx';
 
 ## Usage
 
-TODO
+Preview component is used put emphasis on some content.
 
 ## Playground
 
@@ -37,11 +36,9 @@ Preview component exposes a `<Preview.Highlight>` subcomponent which can be used
   <Story name="Highlight">
     {args => {
       return (
-        <>
-          <Preview {...args}>
-            <Preview.Highlight>Name</Preview.Highlight> x <Preview.Highlight>Description</Preview.Highlight>
-          </Preview>
-        </>
+        <Preview {...args}>
+          <Preview.Highlight>Name</Preview.Highlight> x <Preview.Highlight>Description</Preview.Highlight>
+        </Preview>
       );
     }}
   </Story>

@@ -45,7 +45,7 @@ type PreviewProps = Override<
 >;
 
 /**
- * Preview component.
+ * Preview component is used put emphasis on some content.
  */
 const Preview = ({title, children, ...rest}: PreviewProps) => {
   return (
