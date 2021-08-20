@@ -44,6 +44,7 @@ const sources: Source[] = [
 
 const format: Format = {
   type: 'concat',
+  space_between: true,
   elements: [
     {
       type: 'source',
@@ -73,14 +74,27 @@ const format: Format = {
   ],
 };
 
-test('it renders the preview of a column', async () => {
+const getByTextContent = (textMatch: string | RegExp): HTMLElement =>
+  screen.getByText((_content, node) => {
+    const hasText = (node: Element) => node.textContent === textMatch;
+    const nodeHasText = hasText(node as Element);
+    const childrenDontHaveText = Array.from(node?.children || []).every(child => !hasText(child));
+
+    return nodeHasText && childrenDontHaveText;
+  });
+
+test('it renders the preview of a column with space between sources', async () => {
   await renderWithProviders(<ColumnPreview sources={sources} format={format} />);
 
-  expect(screen.getByText('English description')).toBeInTheDocument();
-  expect(screen.getByText('some text')).toBeInTheDocument();
-  expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
-  expect(screen.getByText('another text')).toBeInTheDocument();
-  expect(screen.getByText('Cross sell')).toBeInTheDocument();
+  expect(
+    getByTextContent('English description some text pim_common.parent another text Cross sell')
+  ).toBeInTheDocument();
+});
+
+test('it renders the preview of a column without space between sources', async () => {
+  await renderWithProviders(<ColumnPreview sources={sources} format={{...format, space_between: false}} />);
+
+  expect(getByTextContent('English descriptionsome textpim_common.parentanother textCross sell')).toBeInTheDocument();
 });
 
 test('it throws when the source is not found', async () => {

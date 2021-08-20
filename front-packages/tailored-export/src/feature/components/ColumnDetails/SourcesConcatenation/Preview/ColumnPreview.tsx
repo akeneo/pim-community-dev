@@ -1,38 +1,12 @@
 import React, {Fragment} from 'react';
-import styled from 'styled-components';
+import {Preview} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize} from 'akeneo-design-system';
 import {ConcatElement, Format, Source} from '../../../../models';
-import {
-  AssociationTypeSourceElement,
-  AttributeSourceElement,
-  PropertySourceElement,
-  TextElement,
-} from './PreviewElement';
-
-const PreviewTitle = styled.div`
-  text-transform: uppercase;
-  font-size: ${getFontSize('small')};
-  color: ${getColor('blue', 100)};
-`;
-
-const PreviewList = styled.div`
-  overflow-wrap: break-word;
-`;
-
-const ColumnPreviewContainer = styled.div`
-  padding: 10px;
-  background: ${getColor('blue', 10)};
-  border-radius: 3px;
-  border: 1px solid ${getColor('blue', 40)};
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
+import {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement} from './PreviewElement';
 
 const getPreviewElement = (element: ConcatElement, sources: Source[]) => {
   if ('text' === element.type) {
-    return <TextElement key={element.uuid}>{element.value}</TextElement>;
+    return <Preview.Highlight key={element.uuid}>{element.value}</Preview.Highlight>;
   }
 
   const source = sources.find(({uuid}) => uuid === element.value);
@@ -62,16 +36,13 @@ const ColumnPreview = ({sources, format}: ColumnPreviewProps) => {
   const translate = useTranslate();
 
   return (
-    <ColumnPreviewContainer>
-      <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
-      <PreviewList>
-        {format.elements
-          .map(element => getPreviewElement(element, sources))
-          .map((element, index) =>
-            format.space_between && 0 < index ? <Fragment key={index}> {element}</Fragment> : element
-          )}
-      </PreviewList>
-    </ColumnPreviewContainer>
+    <Preview title={translate('akeneo.tailored_export.column_details.concatenation.preview')}>
+      {format.elements
+        .map(element => getPreviewElement(element, sources))
+        .map((element, index) =>
+          format.space_between && 0 < index ? <Fragment key={index}> {element}</Fragment> : element
+        )}
+    </Preview>
   );
 };
 
