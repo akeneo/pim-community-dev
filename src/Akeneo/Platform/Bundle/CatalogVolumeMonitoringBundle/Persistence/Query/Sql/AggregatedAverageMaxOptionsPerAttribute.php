@@ -8,6 +8,7 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQue
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -44,7 +45,7 @@ SELECT JSON_EXTRACT(volume, '$.value.max') AS max, JSON_EXTRACT(volume, '$.value
 FROM pim_aggregated_volume WHERE volume_name = :volumeName;
 SQL;
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('volumeName', self::VOLUME_NAME, Type::STRING);
+        $stmt->bindValue('volumeName', self::VOLUME_NAME, Types::STRING);
         $stmt->execute();
         $sqlResult = $stmt->fetch();
 
