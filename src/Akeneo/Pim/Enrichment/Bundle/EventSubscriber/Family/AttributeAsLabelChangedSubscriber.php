@@ -3,6 +3,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -19,28 +20,28 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
 
     private FamilyRepositoryInterface $familyRepository;
 
-    /**
-     * @param FamilyRepositoryInterface $familyRepository
-     */
-    public function __construct(FamilyRepositoryInterface $familyRepository)
+    private RunUniqueProcessJob $runUniqueProcessJob;
+
+    public function __construct(FamilyRepositoryInterface $familyRepository, RunUniqueProcessJob $runUniqueProcessJob)
     {
         $this->familyRepository = $familyRepository;
+        $this->runUniqueProcessJob = $runUniqueProcessJob;
     }
 
 
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_SAVE  => 'persistFamilyCodeIfNeeded',
-            StorageEvents::POST_SAVE => 'computeCompletenessOfProductsFamily',
+            StorageEvents::PRE_SAVE  => 'storeFamilyCodeIfNeeded',
+            StorageEvents::POST_SAVE => 'triggerFamilyRelatedProductsReindexationJob',
         ];
     }
 
-    public function persistFamilyCodeIfNeeded(GenericEvent $event)
+    public function storeFamilyCodeIfNeeded(GenericEvent $event)
     {
         $subject = $event->getSubject();
 
-        if (!$subject instanceof FamilyInterface) {
+        if (!$subject instanceof FamilyInterface || is_null($subject->getId())) {
             return;
         }
         /** @var FamilyInterface $savedFamily */
@@ -56,6 +57,11 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
 
         if (!$subject instanceof FamilyInterface) {
             return;
+        }
+        foreach ($this->impactedFamilyCodes as $familyCode) {
+            $this->runUniqueProcessJob->run('reindex_products_after_family_attribute_as_label_changed', function ($arg) use ($familyCode) {
+                return ['family_code' => $familyCode];
+            });
         }
     }
 }

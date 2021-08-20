@@ -32,5 +32,4 @@ SQL;
             [Connection::PARAM_STR_ARRAY]
         )->fetchAll(FetchMode::COLUMN);
     }
-
 }

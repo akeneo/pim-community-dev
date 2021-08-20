@@ -254,5 +254,6 @@ services:
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\AttributeAsLabelChangedSubscriber:
         arguments:
           - '@pim_catalog.repository.family'
+          - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
         tags:
             - { name: kernel.event_subscriber }
