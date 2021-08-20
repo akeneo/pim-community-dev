@@ -48,6 +48,9 @@ Cypress.Commands.add('goToProductsGrid', () => {
   cy.get('.search-zone').find('div[data-type="grouped-variant"]').click()
   cy.get('.search-zone').find('span[data-value="product"]').click()
   cy.wait('@productDatagrid');
+
+  // Wait for change in page title to be sure DOM is ready
+  cy.get('.AknTitleContainer-title div').invoke('text').should('not.contains', "product models");
 });
 
 Cypress.Commands.add('selectFirstProductInDatagrid', () => {
