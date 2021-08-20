@@ -146,6 +146,8 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
+//export {PriceCollectionValue};
+
 const render: (props: InputValueProps, actionType?: string) => JSX.Element = (props, actionType) => {
   return actionType === 'remove' ?
     <RemoveCurrencyFromPriceCollectionValue {...props}/> :

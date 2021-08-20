@@ -1,4 +1,3 @@
-import React from 'react';
 import 'jest-fetch-mock';
 import {
   act,
@@ -8,7 +7,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import {createAttribute, createScope} from '../../../../../factories';
 import {AttributeType} from '../../../../../../../src/models';
-import {PriceCollectionValue} from '../../../../../../../src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
+import render from '../../../../../../../src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
 import {IndexedCurrencies} from '../../../../../../../src/repositories/CurrencyRepository';
 
 const currencies: IndexedCurrencies = {
@@ -39,13 +38,13 @@ describe('PriceCollectionValue', () => {
     });
 
     renderWithProviders(
-      <PriceCollectionValue
-        id={'attribute-value-id'}
-        name={'attribute-value-name'}
-        value={[]}
-        attribute={priceAttribute}
-        onChange={jest.fn()}
-      />,
+      render({
+        id: 'attribute-value-id',
+        name: 'attribute-value-name',
+        value: [],
+        attribute: priceAttribute,
+        onChange: jest.fn()
+      }, 'set'),
       {all: true}
     );
 
@@ -71,14 +70,14 @@ describe('PriceCollectionValue', () => {
     });
 
     renderWithProviders(
-      <PriceCollectionValue
-        id={'attribute-value-id'}
-        name={'attribute-value-name'}
-        value={[]}
-        attribute={priceAttribute}
-        onChange={jest.fn()}
-        scopeCode={'ecommerce'}
-      />,
+      render({
+        id: 'attribute-value-id',
+        name: 'attribute-value-name',
+        value: [],
+        attribute: priceAttribute,
+        onChange: jest.fn(),
+        scopeCode: 'ecommerce',
+      }, 'set'),
       {all: true}
     );
 
@@ -101,13 +100,13 @@ describe('PriceCollectionValue', () => {
 
     const onChange = jest.fn();
     renderWithProviders(
-      <PriceCollectionValue
-        id={'attribute-value-id'}
-        name={'attribute-value-name'}
-        value={[{amount: 69, currency: 'EUR'}]}
-        attribute={priceAttribute}
-        onChange={onChange}
-      />,
+      render({
+        id: 'attribute-value-id',
+        name: 'attribute-value-name',
+        value: [{amount: 69, currency: 'EUR'}],
+        attribute: priceAttribute,
+        onChange: onChange,
+      }, 'set'),
       {all: true}
     );
 
@@ -131,13 +130,13 @@ describe('PriceCollectionValue', () => {
 
     const onChange = jest.fn();
     renderWithProviders(
-      <PriceCollectionValue
-        id={'attribute-value-id'}
-        name={'attribute-value-name'}
-        value={[{amount: 69, currency: 'EUR'}]}
-        attribute={priceAttribute}
-        onChange={onChange}
-      />,
+      render({
+        id: 'attribute-value-id',
+        name: 'attribute-value-name',
+        value: [{amount: 69, currency: 'EUR'}],
+        attribute: priceAttribute,
+        onChange: onChange,
+      }, 'set'),
       {all: true}
     );
 
