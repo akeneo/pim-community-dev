@@ -77,6 +77,6 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
     {
         return array_filter($this->apps, function (array $app) use ($id) {
             return $app['id'] === $id;
-        })[0] ?? [];
+        })[0] ?? null;
     }
 }
