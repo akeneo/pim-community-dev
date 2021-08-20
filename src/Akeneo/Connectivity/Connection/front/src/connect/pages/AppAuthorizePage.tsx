@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import styled from "styled-components";
-import {useLocation} from "react-router-dom";
-import {useTranslate} from "../../shared/translate";
+import styled from 'styled-components';
+import {useLocation} from 'react-router-dom';
+import {useTranslate} from '../../shared/translate';
 
 const FullScreen = styled.div`
     position: fixed;
