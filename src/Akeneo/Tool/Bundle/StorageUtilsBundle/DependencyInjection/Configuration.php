@@ -19,8 +19,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('akeneo_storage_utils');
+        $treeBuilder = new TreeBuilder('akeneo_storage_utils');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
