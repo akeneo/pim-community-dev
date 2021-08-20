@@ -60,37 +60,35 @@ const SearchBar = ({
   }, [debouncedUserSearch]);
 
   return (
-    <div>
-      <Search
-        searchValue={userSearch}
-        onSearchChange={setUserSearch}
-        placeholder={translate('pim_asset_manager.asset.grid.search')}
-        inputRef={inputRef}
-      >
-        <Search.ResultCount>
-          {translate('pim_asset_manager.result_counter', {count: resultCount ?? 0}, resultCount ?? 0)}
-        </Search.ResultCount>
-        <Search.Separator />
-        {onCompletenessChange !== undefined && completenessValue !== undefined && (
-          <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
-        )}
-        <ChannelSwitcher
-          channelCode={context.channel}
-          channels={channels}
-          locale={context.locale}
-          onChannelChange={({code}: Channel) => {
-            onContextChange({...context, channel: code});
-          }}
-        />
-        <LocaleSwitcher
-          localeCode={context.locale}
-          locales={getLocales(channels, context.channel)}
-          onLocaleChange={({code}: Locale) => {
-            onContextChange({...context, locale: code});
-          }}
-        />
-      </Search>
-    </div>
+    <Search
+      searchValue={userSearch}
+      onSearchChange={setUserSearch}
+      placeholder={translate('pim_asset_manager.asset.grid.search')}
+      inputRef={inputRef}
+    >
+      <Search.ResultCount>
+        {translate('pim_asset_manager.result_counter', {count: resultCount ?? 0}, resultCount ?? 0)}
+      </Search.ResultCount>
+      <Search.Separator />
+      {onCompletenessChange !== undefined && completenessValue !== undefined && (
+        <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
+      )}
+      <ChannelSwitcher
+        channelCode={context.channel}
+        channels={channels}
+        locale={context.locale}
+        onChannelChange={({code}: Channel) => {
+          onContextChange({...context, channel: code});
+        }}
+      />
+      <LocaleSwitcher
+        localeCode={context.locale}
+        locales={getLocales(channels, context.channel)}
+        onLocaleChange={({code}: Locale) => {
+          onContextChange({...context, locale: code});
+        }}
+      />
+    </Search>
   );
 };
 
