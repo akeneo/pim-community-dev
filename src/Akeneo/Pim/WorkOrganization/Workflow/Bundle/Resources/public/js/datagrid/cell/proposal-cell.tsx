@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Proposal} from './Proposal';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {ProposalChangeMatcherConfig} from './ProposalChange';
+import {ProposalDiffsConfig} from './ProposalChange';
 const StringCell = require('oro/datagrid/string-cell');
 
 class ProposalCell extends StringCell {
@@ -24,7 +24,7 @@ class ProposalCell extends StringCell {
     const authorCode = this.model.get('author_code');
     const createdAt = this.model.get('createdAt');
     const proposalId = this.model.get('proposal_id');
-    const matchers = __moduleConfig.matchers as ProposalChangeMatcherConfig;
+    const proposalDiffs = __moduleConfig.proposal_diffs as ProposalDiffsConfig;
 
     ReactDOM.render(
       <DependenciesProvider>
@@ -38,7 +38,7 @@ class ProposalCell extends StringCell {
             createdAt={createdAt}
             proposalId={proposalId}
             authorCode={authorCode}
-            matchers={matchers}
+            proposalDiffs={proposalDiffs}
           />
         </ThemeProvider>
       </DependenciesProvider>,

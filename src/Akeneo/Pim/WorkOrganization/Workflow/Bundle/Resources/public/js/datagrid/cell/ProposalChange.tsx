@@ -9,10 +9,10 @@ type ProposalChangeProps = {
   change: ProposalChangeData;
   accessor: ProposalChangeAccessor;
   className: string;
-  matchers: ProposalChangeMatcherConfig;
+  proposalDiffs: ProposalDiffsConfig;
 };
 
-export type ProposalChangeMatcherConfig = {
+export type ProposalDiffsConfig = {
   [attributeType: string]: {
     default: React.FC<{
       accessor: ProposalChangeAccessor;
@@ -22,8 +22,8 @@ export type ProposalChangeMatcherConfig = {
   };
 };
 
-const ProposalChange: React.FC<ProposalChangeProps> = ({change, accessor, className, matchers, ...rest}) => {
-  const ProposalDiff = matchers[change.attributeType]?.default || ProposalDiffFallback;
+const ProposalChange: React.FC<ProposalChangeProps> = ({change, accessor, className, proposalDiffs, ...rest}) => {
+  const ProposalDiff = proposalDiffs[change.attributeType]?.default || ProposalDiffFallback;
 
   return <ProposalDiff accessor={accessor} change={change} className={className} {...rest} />;
 };

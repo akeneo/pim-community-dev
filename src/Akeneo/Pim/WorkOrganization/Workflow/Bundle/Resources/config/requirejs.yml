@@ -28,7 +28,7 @@ config:
                         route: pimee_workflow_mass_edit_rest_get_filter
                     aclResourceId: pimee_workflow_published_product_index
         akeneopimworkflow/js/datagrid/cell/proposal-cell:
-            matchers:
+            proposal_diffs:
                 pim_catalog_text: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
                 pim_catalog_identifier: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
                 pim_catalog_textarea: '@@akeneo-pim-ee/workflow/datagrid/cell/ProposalDiff/ProposalDiffString.tsx'
