@@ -1,0 +1,2 @@
+%:
+	TYPE=tria $(MAKE) -C .. $*
