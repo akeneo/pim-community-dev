@@ -2,6 +2,7 @@ export interface AppcuesAgentInterface {
   identify: (uid: string | number, options?: object) => void;
   page: () => void;
   track: (event: string, eventOptions?: object) => void;
+  loadLaunchpad: (element: string, options: object) => void;
 }
 
 const getAppcuesAgent = async (): Promise<AppcuesAgentInterface | null> => {
