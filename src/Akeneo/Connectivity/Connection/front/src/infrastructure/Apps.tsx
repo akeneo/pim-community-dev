@@ -14,7 +14,7 @@ export const Apps = withDependencies(() => (
                         <AppActivatePage />
                     </Route>
                     <Route path='/connect/apps/authorize'>
-                        <AppAuthorizePage/>
+                        <AppAuthorizePage />
                     </Route>
                 </Switch>
             </Router>

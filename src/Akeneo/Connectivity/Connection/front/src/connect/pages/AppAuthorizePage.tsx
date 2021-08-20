@@ -19,9 +19,5 @@ export const AppAuthorizePage: FC = () => {
     const query = new URLSearchParams(location.search);
     const error = query.get('error');
 
-    return (
-        <FullScreen>
-            {translate(error || '')}
-        </FullScreen>
-    );
+    return <FullScreen>{translate(error || '')}</FullScreen>;
 };
