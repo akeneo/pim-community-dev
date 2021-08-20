@@ -195,6 +195,7 @@ pim_common:
   ok: OK
   open: Apri
   no_result: Nessun risultato trovato
+  no_search_result: Spiacenti, non ci sono risultati per la tua ricerca
   other_actions: Altre azioni
   permissions: Autorizzazioni
   previous: Precedente
@@ -240,6 +241,7 @@ pim_common:
   products: Prodotti
   product_models: Modelli di prodotto
   more: Altro
+  public_view: Visualizzazione pubblica
 error:
   exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
