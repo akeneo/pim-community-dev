@@ -43,4 +43,8 @@ const AssetCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {AssetCollectionValue};
+const render: (props: any) => JSX.Element = (props) => {
+  return <AssetCollectionValue {...props} value={parseAssetCollectionValue(props.value)}/>;
+}
+
+export default render;

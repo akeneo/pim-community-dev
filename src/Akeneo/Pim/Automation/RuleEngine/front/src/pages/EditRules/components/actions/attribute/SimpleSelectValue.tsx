@@ -27,4 +27,8 @@ const SimpleSelectValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {SimpleSelectValue};
+const render: (props: InputValueProps) => JSX.Element = (props) => {
+  return <SimpleSelectValue {...props}/>;
+}
+
+export default render;
