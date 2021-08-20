@@ -5,22 +5,22 @@ table_attribute_template:
             options:
                 energy: Energy
                 fat: Fat
-                saturated_fat: '  saturated fat'
+                saturated_fat: Saturated fat
                 carbohydrate: Carbohydrate
                 sugars: Sugars
                 protein: Protein
                 salt: Salt
         per_100g:
-            label: 'per 100g'
+            label: 'Per 100g'
         per_serving:
-            label: 'per serving (x g)'
-        percent_reference_intake:
+            label: 'Per serving (x g)'
+        percentage_reference_intake:
             label: '% of reference intake (per 100g or serving)'
     nutrition-unitedstates:
         nutrition_facts:
-            label: Nutrition facts
+            label: Nutrition Facts
             options:
-                total_fat: Total fat (g)
+                total_fat: Total Fat (g)
                 saturated_fat: Saturated Fat (g)
                 trans_fat: Trans Fat (g)
                 cholesterol: Cholesterol (g)
@@ -32,26 +32,26 @@ table_attribute_template:
                 protein: Protein (g)
         amount_per_serving:
             label: Amount per serving
-        percent_daily_value:
+        percentage_daily_value:
             label: '% daily value'
     nutrition-unitedkingdom:
         nutrition:
-            label: nutrition
+            label: Nutrition
             options:
                 energy: Energy
                 fat: Fat
-                of_which_saturates: '  of which saturates'
+                of_which_saturates: of which saturates
                 carbohydrate: Carbohydrate
-                of_which_sugars: '  of which sugars'
+                of_which_sugars: of which sugars
                 fibre: Fibre
                 protein: Protein
                 salt: Salt
         per_100g:
             label: Per 100g
-        percent_reference_intake:
+        percentage_reference_intake:
             label: '% Reference Intake'
         your_reference_intake:
-            label: 'your Reference Intake 8400jJ 200kcal'
+            label: 'your Reference Intake 8400kJ 2000kcal'
     food_composition:
         composition:
             label: Composition
@@ -60,10 +60,10 @@ table_attribute_template:
                 butter: Butter
                 water: Water
                 sugar: Sugar
-        percent:
+        percentage:
             label: '%'
         allergen:
-            label: 'Allergen'
+            label: Allergen
     clothing_composition:
         composition:
             label: Composition
@@ -71,7 +71,7 @@ table_attribute_template:
                 cotton: Cotton
                 polyester: Polyester
                 elastane: Elastane
-        percent:
+        percentage:
             label: '%'
     dimensions-metric:
         dimensions:
@@ -80,7 +80,7 @@ table_attribute_template:
                 length: Length (cm)
                 width: Width (cm)
                 height: Height (cm)
-                weight: Weight (cm)
+                weight: Weight (kg)
         value:
             label: Value
     dimensions-imperial:
@@ -195,14 +195,14 @@ pim_table_attribute:
         nutrition-unitedkingdom: Nutrition (United Kingdom)
         nutrition-europe: Average nutritional values (Europe)
         nutrition-unitedstates: Nutrition Facts (United States)
-        food_composition: Food Composition
-        clothing_composition: Clothing Composition
-        dimensions: Dimensions
+        food_composition: Food composition
+        clothing_composition: Clothing composition
+        dimensions: Product dimensions
         dimensions-metric: Dimensions (Metric system)
         dimensions-imperial: Dimensions (Imperial system)
-        packaging: Packaging
-        packaging-metric: Packaging Dimensions (Metric system)
-        packaging-imperial: Packaging Dimensions (Imperial system)
+        packaging: Packaging dimensions
+        packaging-metric: Packaging dimensions (Metric system)
+        packaging-imperial: Packaging dimensions (Imperial system)
     product_edit_form:
         add_rows: Add rows
         search: Search

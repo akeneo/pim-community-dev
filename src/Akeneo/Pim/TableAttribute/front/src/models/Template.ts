@@ -51,7 +51,7 @@ const nutritionTemplateEn: TemplateVariation = {
       },
     },
     {
-      code: 'percent_reference_intake',
+      code: 'percentage_reference_intake',
       data_type: 'number',
       labels: {},
       validations: {
@@ -96,7 +96,6 @@ const nutritionTemplateEurope: TemplateVariation = {
       validations: {
         decimals_allowed: true,
         min: 0,
-        max: 100,
       },
     },
     {
@@ -106,17 +105,15 @@ const nutritionTemplateEurope: TemplateVariation = {
       validations: {
         decimals_allowed: true,
         min: 0,
-        max: 100,
       },
     },
     {
-      code: 'percent_reference_intake',
+      code: 'percentage_reference_intake',
       data_type: 'number',
       labels: {},
       validations: {
         decimals_allowed: true,
         min: 0,
-        max: 100,
       },
     },
   ],
@@ -153,11 +150,12 @@ const nutritionTemplateUnitedStates: TemplateVariation = {
       },
     },
     {
-      code: 'percent_daily_value',
+      code: 'percentage_daily_value',
       data_type: 'number',
       labels: {},
       validations: {
         decimals_allowed: true,
+        min: 0,
       },
     },
   ],
@@ -179,12 +177,13 @@ const foodComposition: TemplateVariation = {
       validations: {},
     },
     {
-      code: 'percent',
+      code: 'percentage',
       data_type: 'number',
       labels: {},
       validations: {
         decimals_allowed: true,
         min: 0,
+        max: 100,
       },
     },
     {
@@ -211,12 +210,13 @@ const clothingComposition: TemplateVariation = {
       validations: {},
     },
     {
-      code: 'percent',
+      code: 'percentage',
       data_type: 'number',
       labels: {},
       validations: {
         decimals_allowed: true,
         min: 0,
+        max: 100,
       },
     },
   ],
