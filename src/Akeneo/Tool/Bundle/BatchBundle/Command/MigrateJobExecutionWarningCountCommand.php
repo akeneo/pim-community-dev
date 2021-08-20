@@ -122,20 +122,20 @@ SQL;
 
     private function updateStepExecutionWarningCount(int $firstId, int $lastId): void
     {
-        $query = <<<SQL
-UPDATE akeneo_batch_step_execution AS step_execution
-LEFT JOIN (
-    SELECT step_execution_id, count(*) AS warnings 
-    FROM akeneo_batch_warning 
-    WHERE step_execution_id BETWEEN :firstId AND :lastId
-    GROUP BY step_execution_id
-) AS warning_aggregate ON warning_aggregate.step_execution_id = step_execution.id
-SET warning_count = COALESCE(warning_aggregate.warnings, 0)
-WHERE step_execution.id BETWEEN :firstId AND :lastId;
+        $countWarningsQuery = <<<SQL
+SELECT step_execution_id, count(*) AS warning_count
+FROM akeneo_batch_warning 
+WHERE step_execution_id BETWEEN :firstId AND :lastId
+GROUP BY step_execution_id;
+SQL;
+        $updateStepExecutionQuery = <<<SQL
+UPDATE akeneo_batch_step_execution 
+SET warning_count = :warningCount
+WHERE id = :id;
 SQL;
 
-        $this->dbConnection->executeQuery(
-            $query,
+        $stmt = $this->dbConnection->executeQuery(
+            $countWarningsQuery,
             [
                 'firstId' => $firstId,
                 'lastId' => $lastId,
@@ -145,5 +145,19 @@ SQL;
                 'lastId' => \PDO::PARAM_INT,
             ]
         );
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $this->dbConnection->executeQuery(
+                $updateStepExecutionQuery,
+                [
+                    'id' => $row['step_execution_id'],
+                    'warningCount' => $row['warning_count']
+                ],
+                [
+                    'id' => \PDO::PARAM_INT,
+                    'warningCount' => \PDO::PARAM_INT,
+                ]
+            );
+        }
     }
 }
