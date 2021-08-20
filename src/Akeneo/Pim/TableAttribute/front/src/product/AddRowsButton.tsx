@@ -51,6 +51,18 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
+  const searchRef = React.createRef<HTMLInputElement>();
+
+  const focus = (ref: React.RefObject<any>) => {
+    ref.current.focus();
+  };
+
+  React.useEffect(() => {
+    if (isOpen) {
+      focus(searchRef);
+    }
+  }, [isOpen]);
+
   React.useEffect(() => {
     if (isOpen && typeof items === 'undefined') {
       getSelectOptions(router, attribute.code, columnCode).then(selectOptions => {
@@ -105,6 +117,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
               </NoEditPermission>
             )}
             <Search
+              inputRef={searchRef}
               onSearchChange={handleSearchValue}
               placeholder={translate('pim_table_attribute.product_edit_form.search')}
               searchValue={searchValue}
