@@ -105,7 +105,7 @@ type SwitcherButtonProps = Override<
 >;
 
 /**
- * TODO.
+ * Switchers are used to switch the filter on the context or the content of a page or a table.
  */
 const SwitcherButton = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
   (
