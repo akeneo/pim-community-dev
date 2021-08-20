@@ -3,27 +3,18 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
-    /** @var AuthenticationUtils */
-    private $authenticationUtils;
-
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
-
-    /** @var string */
-    private $actionRoute;
-
-    /** @var string */
-    private $additionalHiddenFields;
-
-    /** @var LogoutUrlGenerator */
-    private $logoutUrlGenerator;
+    private AuthenticationUtils $authenticationUtils;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private string $actionRoute;
+    private array $additionalHiddenFields;
+    private LogoutUrlGenerator $logoutUrlGenerator;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,

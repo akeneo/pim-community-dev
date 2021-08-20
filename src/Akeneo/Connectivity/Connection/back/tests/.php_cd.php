@@ -198,10 +198,11 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData',
+            'Akeneo\Connectivity\Connection\Infrastructure',
 
             // Dependency on HTTP foundation for Request/Response
             'Symfony\Component\HttpFoundation',
+            'Symfony\Component\HttpKernel\Exception',
             // Dependency on constraint violations to correctly display errors on frontend
             'Symfony\Component\Validator\ConstraintViolationListInterface',
             // ACL dependency
@@ -210,6 +211,8 @@ $rules = [
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             // Dependency to retrieve the current User (and his timezone).
             'Akeneo\UserManagement\Bundle\Context\UserContext',
+            // Feature flag dependency
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             'Psr\Log\LoggerInterface',
         ]

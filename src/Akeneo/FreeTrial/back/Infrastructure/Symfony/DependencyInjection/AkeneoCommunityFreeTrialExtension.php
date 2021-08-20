@@ -15,7 +15,6 @@ final class AkeneoCommunityFreeTrialExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $loader->load('external_javascript_dependencies.yml');
         $loader->load('feature_flags.yml');
     }
 }

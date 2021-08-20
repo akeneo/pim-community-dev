@@ -73,7 +73,7 @@ datagrid:
                     data_name: a.code
                 label:
                     type: search
-                    label: Label
+                    label: label
                     data_name: translation.label
                 type:
                     type:      choice

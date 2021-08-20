@@ -240,7 +240,7 @@ pim_common:
   products: Products
   more: More
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
+  exception: A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:

@@ -551,6 +551,9 @@ batch_jobs:
     quick_export.label: XLSX 产品快速导出
     quick_export_product_model.label: XLSX 产品模型快速导出
     perform.label: XLSX 产品快速导出
+  default_steps:
+    delete_products_and_product_models: 删除产品和产品模型
+    remove_completeness_for_channel_and_locale: 移除渠道和区域的完成度
 error:
   removing:
     group: 无法移除分组

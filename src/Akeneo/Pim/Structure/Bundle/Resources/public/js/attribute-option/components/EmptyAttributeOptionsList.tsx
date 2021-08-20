@@ -17,7 +17,7 @@ const EmptyAttributeOptionsList = ({showNewOptionForm}: EmptyAttributeOptionsLis
       <div
         className="AknAttributeOption-emptyList-addLink"
         onClick={() => showNewOptionForm(true)}
-        role="add-new-attribute-option-button"
+        data-testid="add-new-attribute-option-button"
       >
         {translate('pim_enrich.entity.attribute_option.module.edit.add_option')}
       </div>

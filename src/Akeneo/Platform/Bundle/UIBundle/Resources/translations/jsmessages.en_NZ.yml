@@ -214,7 +214,7 @@ pim_common:
   groups: Groups
   products: Products
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
+  exception: A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
