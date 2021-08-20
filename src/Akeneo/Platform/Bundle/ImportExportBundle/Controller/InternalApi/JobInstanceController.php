@@ -665,14 +665,54 @@ class JobInstanceController
      *
      * @return JsonResponse
      */
-    public function duplicateAction(Request $request) {
-        // Recuperer jobInstance à dupliquer
-        // Create un nouveau avec le type et la factory
-        // mettre à jour le nouveau avec la version normalizée de l'ancien
-        // valider
-        // sauvegarder le nouveau
+    public function duplicateAction(Request $request, $code) {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
 
-        return new JsonResponse(['code' => 'my_newJob']);
+        $jobToDuplicate = $this->getJobInstance($code);
+
+        $duplicatedJobInstance = $this->jobInstanceFactory->createJobInstance($jobToDuplicate->getType());
+        $duplicatedJobInstance->setJobName($jobToDuplicate->getJobName());
+
+        $data = json_decode($request->getContent(), true);
+
+        $normalizedJobToDuplicate = $this->normalizeJobInstance($jobToDuplicate);
+        $normalizedJobToDuplicate['code'] = $data['code'];
+        $normalizedJobToDuplicate['label'] = $data['label'];
+        $this->updater->update($duplicatedJobInstance, $normalizedJobToDuplicate);
+
+        $violations = $this->validator->validate($duplicatedJobInstance);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['jobInstance' => $duplicatedJobInstance]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+//        $normalizeJobInstance = $this->normalizeJobInstance($duplicatedJobInstance);
+//        try {
+//            $this->eventDispatcher->dispatch(
+//                JobInstanceEvents::PRE_SAVE,
+//                new GenericEvent($duplicatedJobInstance, ['data' => $normalizeJobInstance])
+//            );
+//        } catch (JobInstanceCannotBeUpdatedException $e) {
+//            return new JsonResponse(['message' => $e->getMessage()], 400);
+//        }
+
+        $this->saver->save($duplicatedJobInstance);
+
+//        $this->eventDispatcher->dispatch(
+//            JobInstanceEvents::POST_SAVE,
+//            new GenericEvent($duplicatedJobInstance, ['data' => $normalizeJobInstance])
+//        );
+        return new JsonResponse(['code' => $data['code']]);
     }
     /**
      * Create a job profile with a given type
