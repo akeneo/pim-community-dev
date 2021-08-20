@@ -11,7 +11,7 @@ final class Version_6_0_20210819080024_add_warning_count_in_step_execution exten
     {
         $this->addSql(<<<SQL
 ALTER TABLE akeneo_batch_step_execution 
-ADD COLUMN warning_count INT NOT NULL;
+ADD COLUMN warning_count INT NOT NULL DEFAULT 0;
 SQL
         );
     }

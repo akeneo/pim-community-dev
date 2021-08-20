@@ -64,6 +64,8 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
         warningCount:
             type: integer
             column: warning_count
+            options:
+                default: 0
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning
