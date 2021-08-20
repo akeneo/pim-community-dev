@@ -3,3 +3,14 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider
         arguments:
             - '@fos_oauth_server.client_manager.default'
+
+    Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
+        arguments:
+            - '@session'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'

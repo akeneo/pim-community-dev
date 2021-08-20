@@ -1,4 +1,11 @@
 
+# Public Urls
+
+akeneo_connectivity_connection_connect_apps_v1_authorize:
+    path: '/connect/apps/v1/authorize'
+    controller: akeneo_connectivity.connection.public.controller.apps.authorize
+    methods: [ GET ]
+
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
@@ -47,6 +54,9 @@ akeneo_connectivity_connection_connect_marketplace_profile:
 ## Apps
 akeneo_connectivity_connection_connect_apps_activate:
     path: '/connect/apps/activate'
+
+akeneo_connectivity_connection_connect_apps_authorize:
+    path: '/connect/apps/authorize'
 
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
