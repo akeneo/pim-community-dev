@@ -35,6 +35,14 @@ services:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
             - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
 
+    akeneo_referenceentity.infrastructure.elasticsearch.update_index_mapping:
+      class: Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper
+      public: true
+      arguments:
+        - '@akeneo_elasticsearch.client_builder'
+        - '%index_hosts%'
+        - '@akeneo_referenceentity.client.record'
+
     # Normalizers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer

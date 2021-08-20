@@ -104,7 +104,8 @@
         "onboarder-extension": {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-onboarder.git",
-            "branch": "master"
+            "branch": "master",
+            "no-api": true
         },
         "grth": {
             "type": "path",
