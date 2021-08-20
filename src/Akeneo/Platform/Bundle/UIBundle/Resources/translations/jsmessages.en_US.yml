@@ -255,7 +255,7 @@ pim_common:
     public_view: Public view
 
 error:
-    exception: Oh snap! A {{ status_code }} error occurred...
+    exception: A {{ status_code }} error occurred...
     forbidden: Forbidden. You are not allowed to access this page
 
 alert:
