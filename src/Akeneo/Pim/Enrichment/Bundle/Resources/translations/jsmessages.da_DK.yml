@@ -118,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} svar på kommentar'
       delete_confirm: Er du sikker på du vil slette denne kommentar?
       removed_author: Slet bruger
+    asset:
+      title: Aktiver
 pim_enrich.entity.product_model:
   label: produktmodel
   uppercase_label: Produktmodel
@@ -173,6 +175,13 @@ pim_enrich.entity.group:
       button: Opret gruppe
     delete:
       confirm: Er du sikker på du vil slette denne gruppe?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Er du sikker på du vil slette denne rolle?
+  flash:
+    delete:
+      success: Rollen blev slettet
 pim_enrich.entity.category:
   label: kategori
   uppercase_label: Kategori
@@ -304,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Flyt mellem kategorier
       label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
       description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
+      no_update: Vælg venligst en kategori.
     remove_from_category:
       label: Fjern fra kategorier
       label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
@@ -324,6 +334,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Ændre overordnet produkt model på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Ændre overordnet produkt model på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
       description: Det overordnede tilknytning til variantprodukterne eller underproduktmodellerne, der er valgt i nettet, vil blive ændret til den valgte produktmodel.
 pim_datagrid:
+  no_entities: "Ingen {{ entityHint }} fundet"
   mass_action_group:
     bulk_actions:
       label: Massehandlinger
