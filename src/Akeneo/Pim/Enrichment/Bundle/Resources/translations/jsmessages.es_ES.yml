@@ -330,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: Configuración global
 pim_enrich.mass_edit.product:
-  title: Productos de acción masiva
   confirm: "{0}Está a punto de actualizar algunos productos con la siguiente información, por favor confirme.{1}Está a punto de actualizar un producto con la siguiente información, por favor confirme. ]1, Inf[Estás a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirme."
   step:
     select:
       label: Seleccione los productos
     choose:
-      title: Acciones masivas sobre los productos
       label_count: "]0, Inf[Selecciona tu acción"
     configure:
       label: Configuración
@@ -355,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: Los productos seleccionados serán habilitados o inhabilitados.
       field: Para habilitar
     edit_common:
-      label: Editar los valores de atributos
-      label_count: "{0}Editar valores de atributos de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
       no_update: Por favor, seleccione al menos un campo para actualizar
-    add_attribute_value:
-      label: Añadir valores de atributos
-      label_count: "{0}Añadir valores de atributos para algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
-      description: Sólo los atributos de valor múltiple pertenecientes a las familias de los productos serán editados con la siguiente data para la local {{ locale }} y el canal {{ scope }}. Los valores de atributos son mantenidos, lo valores previos no.
     change_family:
       label: Cambiar familia
       label_count: "{0}Cambiar la familia de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar la familia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
@@ -397,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Convertir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a productos simples |{1}Convertir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un producto simple |]1, Inf[Convierte <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos simples"
       description: Se guardarán todos los valores, categorías y asociaciones anteriores.
     associate_to_product_and_product_model:
-      label: Asociar
       label_count: "{0}Asociar algunos <span class=\"AknFullPage-title--highlight\">productos</span> a productos o modelos de productos |{1}Asociar <span class=\"AknFullPage-title--highlight\">1 producto</span> a productos o modelos de producto|]1, Inf[Asociar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos o modelos de productos"
       description: Los productos seleccionados en las cuadrícula serán asociados con los productos seleccionados y modelos del producto para el tipo de asociación escogido
       validate: Por favor agregue una asociación antes de continuar con el siguiente espacio
@@ -489,7 +480,6 @@ pim_datagrid:
       label: Padre
     identifier:
       label: Identificador
-  search: Buscar en {{ label }}
 batch_jobs:
   add_association:
     label: Asociar

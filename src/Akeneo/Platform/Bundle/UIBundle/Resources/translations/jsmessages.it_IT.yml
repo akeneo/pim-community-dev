@@ -243,7 +243,6 @@ pim_common:
   more: Altro
   public_view: Visualizzazione pubblica
 error:
-  exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
@@ -320,6 +319,7 @@ pim_title:
   pim_enrich_mass_edit_action: Modifica di massa
   pim_analytics_system_info_index: Informazioni di sistema
   pim_settings_index: Impostazioni
+  pim_system_index: Sistema
 pim_menu:
   tab:
     activity: Attività
@@ -389,3 +389,6 @@ pim_settings:
     group_types: '{0}Hai 0 tipi di gruppo|{1}Hai 1 tipo di gruppo|]1, Inf[Hai {{ count }} tipi di gruppo'
     groups: '{0}Hai 0 gruppi|{1}Hai 1 gruppo|]1, Inf[Hai {{ count }} gruppi'
     rules: '{0}Hai 0 regole abilitate|{1}Hai 1 regola abilitata|]1, Inf[Hai {{ count }} regole abilitate'
+pim_system:
+  system_navigation: Sistema
+  users_management_navigation: Gestione utenti

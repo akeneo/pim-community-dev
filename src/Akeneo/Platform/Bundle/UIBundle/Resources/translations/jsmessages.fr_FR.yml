@@ -240,7 +240,6 @@ pim_common:
   products: Produits
   more: Plus
 error:
-  exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
@@ -317,6 +316,7 @@ pim_title:
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
   pim_settings_index: Paramètres
+  pim_system_index: Système
 pim_menu:
   tab:
     activity: Activité
@@ -372,3 +372,6 @@ pim_settings:
   settings_menu: Menu des paramètres
   catalog_settings: Paramètres du catalogue
   product_settings: Paramètres produit
+pim_system:
+  system_navigation: Navigation système
+  users_management_navigation: Navigation utilisateurs
