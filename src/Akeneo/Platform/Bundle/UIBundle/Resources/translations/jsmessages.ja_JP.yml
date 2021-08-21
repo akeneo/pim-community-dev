@@ -242,7 +242,6 @@ pim_common:
   product_models: 商品モデル
   more: 詳細
 error:
-  exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
@@ -319,6 +318,7 @@ pim_title:
   pim_enrich_mass_edit_action: 一括編集
   pim_analytics_system_info_index: システム情報
   pim_settings_index: 設定
+  pim_system_index: システム
 pim_menu:
   tab:
     activity: アクティビティ
@@ -388,3 +388,6 @@ pim_settings:
     group_types: '{0}0 個のグループタイプがあります|{1}1 個のグループタイプがあります|]1, Inf[{{ count }} 個のグループタイプがあります'
     groups: '{0}0 個のグループがあります|{1}1 個のグループがあります|]1, Inf[{{ count }} 個のグループがあります'
     rules: '{0}0 項目の有効なルールがあります|{1}1 項目の有効なルールがあります|]1, Inf[{{ count }} 項目の有効なルールがあります'
+pim_system:
+  system_navigation: システムナビゲーション
+  users_management_navigation: ユーザー管理ナビゲーション

@@ -242,7 +242,6 @@ pim_common:
   product_models: Productmodellen
   more: Meer
 error:
-  exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
   forbidden: U heeft geen toegang tot deze pagina
 alert:
   attribute_option:
@@ -319,6 +318,7 @@ pim_title:
   pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
   pim_settings_index: Instellingen
+  pim_system_index: Systeem
 pim_menu:
   tab:
     activity: Activiteit
@@ -388,3 +388,6 @@ pim_settings:
     group_types: '{0}U heeft 0 groepstypes|{1}U heeft 1 groepstype|]1, Inf[U heeft {{ count }} groepstypes'
     groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
     rules: '{0}U heeft 0 ingeschakelde regels|{1}U heeft 1 ingeschakelde regel|]1, Inf[U heeft {{ count }} ingeschakelde regels'
+pim_system:
+  system_navigation: Systeem navigatie
+  users_management_navigation: Gebruikersbeheer navigatie

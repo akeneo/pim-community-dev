@@ -15,7 +15,6 @@ pim_catalog_volume:
     count_products: 产品
     average_max_attributes_per_family: 每个品类的属性
     count_channels: 渠道
-    count_locales: 区域 (已激活)
     count_scopable_attributes: 可确定范围的属性
     count_localizable_and_scopable_attributes: 可本地化和可确定范围的属性
     count_localizable_attributes: 可本地化的属性

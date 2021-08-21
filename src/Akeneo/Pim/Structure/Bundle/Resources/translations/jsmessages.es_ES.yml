@@ -265,7 +265,6 @@ pim_enrich.mass_edit.family:
     select:
       label: Elija las familias
     choose:
-      title: Acción masiva sobre las familias
       label_count: "]0, Inf[Seleccione su acción"
     configure:
       label: Configuración
