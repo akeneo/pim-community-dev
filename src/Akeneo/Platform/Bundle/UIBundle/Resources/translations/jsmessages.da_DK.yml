@@ -349,3 +349,11 @@ pim_notification:
     export: Eksport
     quick_export: Hurtig eksport
     mass_edit: Masse Rediger
+akeneo_communication_channel:
+  link:
+    title: Annonceringer
+  panel:
+    title: Annonceringer
+    list:
+      empty: Der er ingen nyheder i øjeblikket. Hold øje!
+      error: Vi kunne ikke hente nyhederne. Prøv igen senere.
