@@ -39,7 +39,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
 
   return (
     <>
-      <Search searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}>
+      <Search placeholder={translate('pim_common.search')} searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}>
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
         </Search.ResultCount>
