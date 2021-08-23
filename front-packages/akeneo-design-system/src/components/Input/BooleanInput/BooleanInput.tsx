@@ -11,6 +11,7 @@ const BooleanButton = styled.button<
   {
     value?: boolean;
     readOnly: boolean;
+    invalid: boolean;
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
@@ -25,11 +26,7 @@ const BooleanButton = styled.button<
   text-overflow: ellipsis;
   background: ${getColor('white')};
 
-  &:invalid {
-    border: 1px solid ${getColor('red', 100)};
-  }
-
-  ${({readOnly}) => {
+  ${({readOnly, invalid}) => {
     switch (readOnly) {
       case true:
         return css`
@@ -43,7 +40,7 @@ const BooleanButton = styled.button<
         `;
       default:
         return css`
-          border: 1px solid ${getColor('grey', 80)};
+          border: 1px solid ${invalid ? getColor('red', 100) : getColor('grey', 80)};
           cursor: pointer;
 
           &:hover {
@@ -60,12 +57,12 @@ const BooleanButton = styled.button<
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
 
-  ${({value, readOnly}) => {
+  ${({value, readOnly, invalid}) => {
     switch (value) {
       case false:
         return css`
           background: ${getColor('grey', readOnly ? 80 : 100)};
-          border-color: ${getColor('grey', readOnly ? 80 : 100)};
+          border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 80 : 100)};
           color: ${getColor('white')};
 
           &:hover {
@@ -90,12 +87,12 @@ const NoButton = styled(BooleanButton)`
 const YesButton = styled(BooleanButton)`
   border-radius: 0 2px 2px 0;
 
-  ${({value, readOnly}) => {
+  ${({value, readOnly, invalid}) => {
     switch (value) {
       case true:
         return css`
           background: ${getColor('green', readOnly ? 60 : 100)};
-          border-color: ${getColor('green', readOnly ? 60 : 100)};
+          border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 60 : 100)};
           color: ${getColor('white')};
 
           &:hover {
@@ -159,6 +156,7 @@ type BooleanInputProps = Override<
     readOnly: boolean;
     yesLabel: string;
     noLabel: string;
+    invalid?: boolean;
   }
 >;
 
@@ -167,7 +165,7 @@ type BooleanInputProps = Override<
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
-    {value, readOnly, onChange, clearable = false, yesLabel, noLabel, clearLabel, ...rest}: BooleanInputProps,
+    {value, readOnly, onChange, clearable = false, yesLabel, noLabel, clearLabel, invalid, ...rest}: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
@@ -196,6 +194,8 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             handleChange(false);
           }}
           title={noLabel}
+          aria-invalid={invalid}
+          invalid={invalid}
         >
           {noLabel}
         </NoButton>
@@ -209,6 +209,8 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             handleChange(true);
           }}
           title={yesLabel}
+          aria-invalid={invalid}
+          invalid={invalid}
         >
           {yesLabel}
         </YesButton>
