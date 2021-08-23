@@ -10,5 +10,9 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: The code must only contain alphanumeric characters and underscore.
+            - Length:
+                  max: 100
         label:
             - NotBlank: ~
+            - Length:
+                  max: 255

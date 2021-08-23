@@ -64,15 +64,15 @@ const DuplicateJob = ({
       closeModal();
 
       const json = await response.json();
-      notify(NotificationLevel.SUCCESS, translate('pim_importexport.job_profile.edit.duplicate.flash.success'));
+      notify(NotificationLevel.SUCCESS, translate('pim_import_export.entity.job_instance.duplicate.success'));
       router.redirect(router.generate(successRedirectRoute, {code: json.code}));
     } else {
       try {
         const json = await response.json();
-        setValidationErrors(json.normalized_errors);
+        setValidationErrors(json.values);
       } catch (error) {}
 
-      notify(NotificationLevel.ERROR, translate('pim_import_export.entity.job_instance.flash.update.fail'));
+      notify(NotificationLevel.ERROR, translate('pim_import_export.entity.job_instance.duplicate.fail'));
     }
   };
 

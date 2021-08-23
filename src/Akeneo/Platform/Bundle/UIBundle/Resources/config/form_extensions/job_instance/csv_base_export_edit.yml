@@ -170,8 +170,7 @@ extensions:
         aclResourceId: pim_importexport_export_profile_create
         position: 100
         config:
-            labels:
-                subTitle: pim_menu.tab.exports
+            subTitle: pim_menu.tab.exports
             editRoute: pim_importexport_export_profile_edit
 
     pim-job-instance-csv-base-export-edit-save-buttons:

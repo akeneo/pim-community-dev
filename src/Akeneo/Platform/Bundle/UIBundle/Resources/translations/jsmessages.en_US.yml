@@ -425,4 +425,3 @@ pim_system:
     enabled: SSO enabled
     disabled: SSO disabled
     title: SAML-based Single Sign-On
-

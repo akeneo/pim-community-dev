@@ -2,10 +2,8 @@ import {DuplicateJob} from './DuplicateJob';
 
 import BaseForm = require('../../../view/base');
 
-interface Config {
-  labels: {
-    subTitle: string;
-  };
+type Config = {
+  subTitle: string;
   editRoute: string;
 }
 
@@ -22,7 +20,7 @@ class Duplicate extends BaseForm {
       DuplicateJob,
       {
         jobCodeToDuplicate: this.getFormData().code,
-        subTitle: this.config.labels.subTitle,
+        subTitle: this.config.subTitle,
         successRedirectRoute: this.config.editRoute,
       },
       this.el
