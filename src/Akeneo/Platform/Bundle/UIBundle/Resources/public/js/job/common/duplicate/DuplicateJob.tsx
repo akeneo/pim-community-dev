@@ -18,11 +18,7 @@ type DuplicateModalProps = {
   successRedirectRoute: string;
 };
 
-const DuplicateJob = ({
-  subTitle,
-  successRedirectRoute,
-  jobCodeToDuplicate,
-}: DuplicateModalProps) => {
+const DuplicateJob = ({subTitle, successRedirectRoute, jobCodeToDuplicate}: DuplicateModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
   const router = useRouter();
@@ -53,7 +49,7 @@ const DuplicateJob = ({
         },
         body: JSON.stringify({
           code,
-          label
+          label,
         }),
       }
     );
@@ -88,11 +84,7 @@ const DuplicateJob = ({
     <>
       <div onClick={openModal}>{translate('pim_common.duplicate')}</div>
       {isModalOpen && (
-        <Modal
-          closeTitle={translate('pim_common.close')}
-          onClose={onCancel}
-          illustration={<ProductsIllustration />}
-        >
+        <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<ProductsIllustration />}>
           <Modal.SectionTitle color="brand">{translate(subTitle)}</Modal.SectionTitle>
           <Modal.Title>
             {translate('pim_import_export.entity.job_instance.duplicate.title', {job_code: jobCodeToDuplicate})}
@@ -115,14 +107,15 @@ const DuplicateJob = ({
             />
           </Section>
           <Modal.BottomButtons>
-            <Button level="tertiary" onClick={onCancel} >
+            <Button level="tertiary" onClick={onCancel}>
               {translate('pim_common.cancel')}
             </Button>
             <Button level="primary" disabled={!canDuplicate} onClick={onConfirm}>
               {translate('pim_common.save')}
             </Button>
           </Modal.BottomButtons>
-        </Modal>)}
+        </Modal>
+      )}
     </>
   );
 };

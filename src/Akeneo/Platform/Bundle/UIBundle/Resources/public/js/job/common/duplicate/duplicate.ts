@@ -5,7 +5,7 @@ import BaseForm = require('../../../view/base');
 type Config = {
   subTitle: string;
   editRoute: string;
-}
+};
 
 class Duplicate extends BaseForm {
   private readonly config: Config;
@@ -16,7 +16,8 @@ class Duplicate extends BaseForm {
     this.config = options.config;
   }
 
-  public render(): BaseForm {    this.renderReact(
+  public render(): BaseForm {
+    this.renderReact(
       DuplicateJob,
       {
         jobCodeToDuplicate: this.getFormData().code,

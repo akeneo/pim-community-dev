@@ -1,22 +1,18 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {DuplicateJob} from "../../../../../../Resources/public/js/job/common/duplicate/DuplicateJob";
-import userEvent from "@testing-library/user-event";
-import {dependencies} from "../../../../../../Resources/workspaces/legacy-bridge";
+import {DuplicateJob} from '../../../../../../Resources/public/js/job/common/duplicate/DuplicateJob';
+import userEvent from '@testing-library/user-event';
+import {dependencies} from '../../../../../../Resources/workspaces/legacy-bridge';
 
 test('It renders a modal when user duplicate a job', () => {
   renderWithProviders(
-    <DuplicateJob
-      subTitle='Exports'
-      jobCodeToDuplicate='my_job_to_duplicate'
-      successRedirectRoute='url_to_redirect'
-    />
+    <DuplicateJob subTitle="Exports" jobCodeToDuplicate="my_job_to_duplicate" successRedirectRoute="url_to_redirect" />
   );
 
   act(() => {
     userEvent.click(screen.getByText('pim_common.duplicate'));
-  })
+  });
 
   expect(screen.getByText('Exports')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.entity.job_instance.duplicate.title')).toBeInTheDocument();
@@ -34,14 +30,10 @@ test('It duplicates a job', async () => {
       default:
         return {ok: true};
     }
-  })
+  });
 
   renderWithProviders(
-    <DuplicateJob
-      subTitle='Exports'
-      jobCodeToDuplicate='my_job_to_duplicate'
-      successRedirectRoute='url_to_redirect'
-    />
+    <DuplicateJob subTitle="Exports" jobCodeToDuplicate="my_job_to_duplicate" successRedirectRoute="url_to_redirect" />
   );
 
   act(() => {
@@ -50,23 +42,22 @@ test('It duplicates a job', async () => {
 
   userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicated job');
 
-  await act(async() => {
+  await act(async () => {
     userEvent.click(screen.getByText('pim_common.save'));
   });
 
   expect(dependencies.router.redirect).toHaveBeenCalledWith('url_to_redirect');
-  expect(dependencies.notify).toHaveBeenCalledWith('success', 'pim_import_export.entity.job_instance.duplicate.success');
+  expect(dependencies.notify).toHaveBeenCalledWith(
+    'success',
+    'pim_import_export.entity.job_instance.duplicate.success'
+  );
   expect(screen.queryByLabelText('pim_common.label pim_common.required_label')).not.toBeInTheDocument();
   expect(screen.queryByLabelText('pim_common.code pim_common.required_label')).not.toBeInTheDocument();
 });
 
 test('It automatically sanitize job code', async () => {
   renderWithProviders(
-    <DuplicateJob
-      subTitle='Exports'
-      jobCodeToDuplicate='my_job_to_duplicate'
-      successRedirectRoute='url_to_redirect'
-    />
+    <DuplicateJob subTitle="Exports" jobCodeToDuplicate="my_job_to_duplicate" successRedirectRoute="url_to_redirect" />
   );
 
   act(() => {
@@ -86,11 +77,7 @@ test('It automatically sanitize job code', async () => {
 
 test('It clears the code and the label when cancel a duplication', async () => {
   renderWithProviders(
-    <DuplicateJob
-      subTitle='Exports'
-      jobCodeToDuplicate='my_job_to_duplicate'
-      successRedirectRoute='url_to_redirect'
-    />
+    <DuplicateJob subTitle="Exports" jobCodeToDuplicate="my_job_to_duplicate" successRedirectRoute="url_to_redirect" />
   );
 
   act(() => {
@@ -111,8 +98,10 @@ test('It displays validation errors', async () => {
   global.fetch = jest.fn().mockImplementation(async (url: string) => {
     switch (url) {
       case 'pim_enrich_job_instance_rest_duplicate':
-        return {ok: false, json: () => ({
-            "values": [
+        return {
+          ok: false,
+          json: () => ({
+            values: [
               {
                 messageTemplate: 'error.key.label',
                 invalidValue: '',
@@ -127,19 +116,16 @@ test('It displays validation errors', async () => {
                 parameters: {},
                 propertyPath: 'code',
               },
-            ]
-          })};
+            ],
+          }),
+        };
       default:
         return {ok: true};
     }
-  })
+  });
 
   renderWithProviders(
-    <DuplicateJob
-      subTitle='Exports'
-      jobCodeToDuplicate='my_job_to_duplicate'
-      successRedirectRoute='url_to_redirect'
-    />
+    <DuplicateJob subTitle="Exports" jobCodeToDuplicate="my_job_to_duplicate" successRedirectRoute="url_to_redirect" />
   );
 
   act(() => {
@@ -148,7 +134,7 @@ test('It displays validation errors', async () => {
 
   userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicated job');
 
-  await act(async() => {
+  await act(async () => {
     userEvent.click(screen.getByText('pim_common.save'));
   });
 
@@ -157,5 +143,5 @@ test('It displays validation errors', async () => {
   act(() => {
     expect(screen.getByText('error.key.code')).toBeInTheDocument();
     expect(screen.getByText('error.key.label')).toBeInTheDocument();
-  })
+  });
 });

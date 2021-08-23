@@ -260,7 +260,15 @@ extensions:
                 failed: error.removing.job_instance
             redirect: pim_importexport_import_profile_index
 
-    # TODO: Add duplicate configuration button here
+    pim-job-instance-csv-product-import-edit-duplicate:
+        module: pim/job/common/duplicate/duplicate
+        parent: pim-job-instance-csv-product-import-edit-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_importexport_import_profile_create
+        position: 80
+        config:
+            subTitle: pim_menu.tab.imports
+            editRoute: pim_importexport_import_profile_edit
 
     pim-job-instance-csv-product-import-edit-save-buttons:
         module: pim/form/common/save-buttons
