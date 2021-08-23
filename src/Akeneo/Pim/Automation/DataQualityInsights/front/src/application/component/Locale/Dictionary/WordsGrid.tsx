@@ -1,10 +1,11 @@
 import React, {FC, useCallback, useRef, useState} from 'react';
-import {Table, IconButton, CloseIcon, Pagination, Search, useAutoFocus} from 'akeneo-design-system';
+import {Table, IconButton, CloseIcon, Pagination, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Word} from '../../../../domain';
 import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {NoSearchResults} from './NoSearchResults';
 import {NoData} from './NoData';
+import {WordsSearchBar} from './WordsSearchBar';
 import {useDictionaryState} from '../../../../infrastructure';
 
 const WordsGrid: FC = () => {
@@ -49,15 +50,9 @@ const WordsGrid: FC = () => {
         <>
           <WordsSearchBar
             searchValue={searchString}
-            placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
             onSearchChange={onSearch}
-            className={'filter-box'}
-            inputRef={inputRef}
-          >
-            <Search.ResultCount>
-              {translate('pim_common.result_count', {itemsCount: totalWords}, totalWords)}
-            </Search.ResultCount>
-          </WordsSearchBar>
+            resultNumber={totalWords}
+          />
           <Pagination
             followPage={onChangePage}
             currentPage={totalWords > 0 ? currentPage : 0}
@@ -111,10 +106,6 @@ const WordsGrid: FC = () => {
     </>
   );
 };
-
-const WordsSearchBar = styled(Search)`
-  margin: 10px 0 20px;
-`;
 
 const WordLabel = styled.span`
   text-transform: capitalize;

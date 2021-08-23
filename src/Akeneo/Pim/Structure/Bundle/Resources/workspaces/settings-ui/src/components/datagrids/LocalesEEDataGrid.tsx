@@ -38,7 +38,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
   return (
     <>
       <LocalesSearchBar
-        searchValue={searchString === undefined ? '' : searchString}
+        searchValue={searchString}
         placeholder={translate('pim_enrich.entity.locale.grid.filters.search_placeholder')}
         onSearchChange={onSearch}
         inputRef={inputRef}
