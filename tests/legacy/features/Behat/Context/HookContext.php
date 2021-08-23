@@ -43,7 +43,7 @@ class HookContext extends PimContext
      */
     public function launchJobConsumer()
     {
-        $process = new Process(sprintf('exec bin/console %s --env=behat', self::MESSENGER_JOB_COMMAND_NAME));
+        $process = new Process(['exec', 'bin/console', self::MESSENGER_JOB_COMMAND_NAME, '--env=behat']);
         $process->setTimeout(null);
         $process->start(function (string $type, string $data) {
             /** @var LoggerInterface $logger */
