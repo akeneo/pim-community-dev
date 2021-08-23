@@ -11,6 +11,8 @@ class EditRules extends ReactController {
   private isDirty = false;
 
   reactElementToMount(routeParams: RouteParams) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const attributeValueConfig = __moduleConfig.views as AttributeValueConfig;
 
     return (
