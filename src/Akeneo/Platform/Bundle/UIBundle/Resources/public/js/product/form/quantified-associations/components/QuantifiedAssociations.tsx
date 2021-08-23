@@ -157,7 +157,11 @@ const QuantifiedAssociations = ({
         onSearchChange={setSearchValue}
       >
         <Search.ResultCount>
-          {translate('pim_common.result_count', {itemsCount: filteredCollectionWithProducts.length || 0}, filteredCollectionWithProducts.length || 0)}
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredCollectionWithProducts.length || 0},
+            filteredCollectionWithProducts.length || 0
+          )}
         </Search.ResultCount>
       </Search>
       {!isCompact && (

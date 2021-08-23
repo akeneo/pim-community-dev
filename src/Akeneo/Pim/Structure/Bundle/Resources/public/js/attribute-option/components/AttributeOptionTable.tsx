@@ -163,7 +163,11 @@ const AttributeOptionTable = ({
         onSearchChange={onSearch}
       >
         <Search.ResultCount>
-          {translate('pim_common.result_count', {itemsCount: filteredAttributeOptionsCount}, filteredAttributeOptionsCount)}
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredAttributeOptionsCount},
+            filteredAttributeOptionsCount
+          )}
         </Search.ResultCount>
       </Search>
       <div data-testid="attribute-options-list" data-attribute-option-role="list">
