@@ -24,7 +24,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -684,7 +683,7 @@ class JobInstanceController
             $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                 $violation,
                 'internal_api',
-                ['jobInstance' => $duplicatedJobInstance, 'translate' => false]
+                ['jobInstance' => $duplicatedJobInstance, 'translate' => false],
             );
         }
 
@@ -694,14 +693,14 @@ class JobInstanceController
 
         $this->saver->save($duplicatedJobInstance);
 
-        $normalizeJobInstance = $this->normalizeJobInstance($duplicatedJobInstance);
         $this->eventDispatcher->dispatch(
-            new GenericEvent($duplicatedJobInstance, ['data' => $normalizeJobInstance]),
-            JobInstanceEvents::POST_SAVE
+            new GenericEvent($duplicatedJobInstance, ['data' => $this->normalizeJobInstance($jobToDuplicate)]),
+            JobInstanceEvents::POST_SAVE,
         );
 
         return new JsonResponse(['code' => $data['code']]);
     }
+
     /**
      * Create a job profile with a given type
      *
