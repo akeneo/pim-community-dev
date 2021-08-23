@@ -1,8 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {
-  SearchBar,
+  MeasurementIllustration,
+  Link,
+  Button,
+  Information,
+  Breadcrumb,
+  useBooleanState,
+  Search
+} from 'akeneo-design-system';
+import {
   NoDataSection,
   NoDataTitle,
   NoDataText,
@@ -132,12 +139,15 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
-            <SearchBar
+            <Search
               placeholder={translate('measurements.search.placeholder')}
-              count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={setSearchValue}
-            />
+            >
+              <Search.ResultCount>
+                {translate('pim_common.result_count', {itemsCount: filteredMeasurementFamiliesCount}, filteredMeasurementFamiliesCount)}
+              </Search.ResultCount>
+            </Search>
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
                 <MeasurementIllustration />

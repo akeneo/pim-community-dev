@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from '../../../model/measurement-family';
-import {MeasurementIllustration, Table} from 'akeneo-design-system';
+import {MeasurementIllustration, Search, Table} from 'akeneo-design-system';
 import {UnitCode} from '../../../model/unit';
 import {UnitDetails} from './UnitDetails';
 import {UnitRow} from './UnitRow';
 import {
-  SearchBar,
   NoDataSection,
   NoDataTitle,
   ValidationError,
@@ -63,12 +62,15 @@ const UnitTab = ({
     <TabContainer>
       <TabColumns>
         <UnitList>
-          <SearchBar
+          <Search
             placeholder={translate('measurements.search.placeholder')}
-            count={measurementFamily.units.length}
             searchValue={searchValue}
             onSearchChange={setSearchValue}
-          />
+          >
+            <Search.ResultCount>
+              {translate('pim_common.result_count', {itemsCount: measurementFamily.units.length}, measurementFamily.units.length)}
+            </Search.ResultCount>
+          </Search>
           {0 === filteredUnits.length && (
             <NoDataSection>
               <MeasurementIllustration size={256} />

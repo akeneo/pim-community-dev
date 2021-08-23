@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
-import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
+import {Search} from 'akeneo-design-system';
+import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
   useAttributeGroupsIndexState,
@@ -38,11 +39,11 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
 
   return (
     <>
-      <SearchBar
-        count={filteredGroups.length}
-        searchValue={searchString === undefined ? '' : searchString}
-        onSearchChange={onSearch}
-      />
+      <Search searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}>
+        <Search.ResultCount>
+          {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
+        </Search.ResultCount>
+      </Search>
       {searchString !== '' && filteredGroups.length === 0 ? (
         <NoResults
           title={translate('pim_enrich.entity.attribute_group.grid.no_search_result')}

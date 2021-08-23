@@ -1,11 +1,11 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {SearchBar, useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, SectionTitle, Table} from 'akeneo-design-system';
+import {Button, Search, SectionTitle, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
@@ -157,14 +157,15 @@ const AttributeOptionTable = ({
           {translate('pim_enrich.entity.product.module.attribute.add_option')}
         </Button>
       </SectionTitleStyled>
-
-      <SearchBar
+      <Search
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
-        count={filteredAttributeOptionsCount}
         searchValue={searchString}
         onSearchChange={onSearch}
-      />
-
+      >
+        <Search.ResultCount>
+          {translate('pim_common.result_count', {itemsCount: filteredAttributeOptionsCount}, filteredAttributeOptionsCount)}
+        </Search.ResultCount>
+      </Search>
       <div data-testid="attribute-options-list" data-attribute-option-role="list">
         {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
