@@ -52,6 +52,7 @@ services:
             - '@pim_user.repository.role'
             - '@pim_connector.array_converter.flat_to_standard.import.user_role'
             - '@pim_user.normalizer.user_role'
+            - '@serializer'
             - '@pim_user.context.user'
             - '@pim_user.factory.role_with_permissions'
             - '@pim_user.updater.role_with_permissions'

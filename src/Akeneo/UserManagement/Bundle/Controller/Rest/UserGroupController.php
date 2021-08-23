@@ -74,7 +74,6 @@ class UserGroupController
             return new RedirectResponse('/');
         }
 
-
         $userGroup = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 

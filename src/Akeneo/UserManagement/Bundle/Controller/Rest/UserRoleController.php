@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -45,21 +47,24 @@ class UserRoleController
 
     private ArrayConverterInterface $flatToStandardArrayConverter;
 
+    private SerializerInterface $serializer;
+
     public function __construct(
         RoleRepository $roleRepository,
         ArrayConverterInterface $flatToStandardArrayConverter,
         NormalizerInterface $normalizer,
+        SerializerInterface $serializer,
         UserContext $userContext,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         BulkSaverInterface $saver,
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer
-
     ) {
         $this->roleRepository = $roleRepository;
         $this->flatToStandardArrayConverter = $flatToStandardArrayConverter;
         $this->normalizer = $normalizer;
+        $this->serializer = $serializer;
         $this->userContext = $userContext;
         $this->factory = $factory;
         $this->updater = $updater;
@@ -80,9 +85,18 @@ class UserRoleController
         $userRole = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
+        if(!$content) {
+            return new JsonResponse(['message' => 'Invalid json message received'], Response::HTTP_BAD_REQUEST);
+        }
+
         $datas = $this->flatToStandardArrayConverter->convert($content);
 
-        $this->updater->update($userRole, $datas);
+        try {
+            $this->updater->update($userRole, $datas);
+        } catch (UnknownPropertyException $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $violations = $this->validator->validate($userRole);
 
         if ($violations->count() > 0) {
@@ -102,7 +116,7 @@ class UserRoleController
 
         $userRole = $this->roleRepository->findOneByIdentifier($userRole->role()->getRole());
 
-        return new JsonResponse($this->normalizer->normalize($userRole, 'flat'));
+        return new JsonResponse($this->normalizer->normalize($userRole, 'flat'), Response::HTTP_CREATED);
     }
 
     /**
@@ -120,7 +134,7 @@ class UserRoleController
         $queryBuildder = $this->roleRepository->getAllButAnonymousQB();
         $roles = $queryBuildder->getQuery()->execute();
 
-        return new JsonResponse($this->normalizer->normalize(
+        return new JsonResponse($this->serializer->normalize(
             $roles,
             'internal_api',
             $this->userContext->toArray()
