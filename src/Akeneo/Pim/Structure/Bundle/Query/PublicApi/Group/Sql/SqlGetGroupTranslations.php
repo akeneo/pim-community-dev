@@ -43,7 +43,7 @@ SQL;
 
         $groupTranslations = [];
         foreach ($rows as $row) {
-            $groupTranslations[$row['code']] = $row['label'];
+            $groupTranslations[$row['code']] = '' === $row['label'] ? null : $row['label'];
         }
 
         return $groupTranslations;
