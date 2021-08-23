@@ -28,6 +28,7 @@ import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
 import {TablePlaceholder} from '../common/Table';
 import {Direction} from '../../model/direction';
+import {MeasurementFamilySearchBar} from "./MeasurementFamilySearchBar";
 
 const useSorting = (
   defaultColumn: string
@@ -142,16 +143,11 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
-            <Search
-              placeholder={translate('measurements.search.placeholder')}
+            <MeasurementFamilySearchBar
               searchValue={searchValue}
               onSearchChange={setSearchValue}
-              inputRef={inputRef}
-            >
-              <Search.ResultCount>
-                {translate('pim_common.result_count', {itemsCount: filteredMeasurementFamiliesCount}, filteredMeasurementFamiliesCount)}
-              </Search.ResultCount>
-            </Search>
+              resultNumber={filteredMeasurementFamiliesCount}
+            />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
                 <MeasurementIllustration />

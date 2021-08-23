@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import {removeAssociationType} from '@akeneo-pim-community/settings-ui/src/infrastructure/removers/associationTypeRemover';
 import {
   AssociationTypesDataGrid,
+  AssociationTypesSearchBar,
   useAssociationTypes,
   NoAssociationTypes,
   AssociationType,
@@ -21,10 +22,6 @@ import {
 } from '@akeneo-pim-community/settings-ui';
 
 const DatagridState = require('pim/datagrid/state');
-
-const AssociationTypesSearchBar = styled(Search)`
-  margin: 10px 0 20px;
-`;
 
 const CreatePimView = styled(PimView)`
   .AknButton {
@@ -44,9 +41,6 @@ const AssociationTypesIndex = () => {
   const settingsHomeRoute = useRoute('pim_settings_index');
 
   const {associationTypes, search} = useAssociationTypes();
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useAutoFocus(inputRef);
 
   // The current page state is managed by the hook to avoid inconsistency with the total number of association types.
   const currentPage = null === associationTypes ? 0 : associationTypes.currentPage;
@@ -148,15 +142,9 @@ const AssociationTypesIndex = () => {
             <>
               <AssociationTypesSearchBar
                 searchValue={searchString}
-                placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
-                className={'association-type-grid-search'}
-                inputRef={inputRef}
-              >
-                <Search.ResultCount>
-                  {translate('pim_common.result_count', {itemsCount: associationTypes.total}, associationTypes.total)}
-                </Search.ResultCount>
-              </AssociationTypesSearchBar>
+                resultNumber={associationTypes.total}
+              />
               {associationTypes.total > 0 && (
                 <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
               )}
