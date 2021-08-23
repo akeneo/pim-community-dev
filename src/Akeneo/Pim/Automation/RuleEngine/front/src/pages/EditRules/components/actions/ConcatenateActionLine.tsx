@@ -8,8 +8,8 @@ import {
   attributeAcceptsNewLine,
   AttributeCode,
   AttributeType,
-  Locale,
-} from '../../../../models';
+} from '../../../../models/Attribute';
+import {Locale} from '../../../../models/Locale';
 import {
   createAttributeLink,
   fetchAttribute,

@@ -28,4 +28,8 @@ const BooleanValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {BooleanValue};
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <BooleanValue {...props} />;
+};
+
+export default render;

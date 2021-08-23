@@ -23,4 +23,8 @@ const NumberValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {NumberValue};
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <NumberValue {...props} />;
+};
+
+export default render;

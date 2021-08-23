@@ -5,6 +5,19 @@ import '@testing-library/jest-dom/extend-expect';
 import {ThemeProvider} from 'styled-components';
 import {ApplicationDependenciesProvider} from './src/dependenciesTools';
 import {pimTheme} from 'akeneo-design-system';
+import {ConfigContext} from '../front/src/context/ConfigContext';
+import renderText from '../front/src/pages/EditRules/components/actions/attribute/TextValue';
+import renderTextArea from '../front/src/pages/EditRules/components/actions/attribute/TextAreaValue';
+import renderDate from '../front/src/pages/EditRules/components/actions/attribute/DateValue';
+import renderSimpleSelect from '../front/src/pages/EditRules/components/actions/attribute/SimpleSelectValue';
+import renderMultiSelect from '../front/src/pages/EditRules/components/actions/attribute/MultiSelectValue';
+import renderNumber from '../front/src/pages/EditRules/components/actions/attribute/NumberValue';
+import renderBoolean from '../front/src/pages/EditRules/components/actions/attribute/BooleanValue';
+import renderPriceCollection from '../front/src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
+import renderMeasurement from '../front/src/pages/EditRules/components/actions/attribute/MeasurementValue';
+import renderAssetCollection from '../front/src/pages/EditRules/components/actions/attribute/AssetCollectionValue';
+import renderMultiReferenceEntity from '../front/src/pages/EditRules/components/actions/attribute/MultiReferenceEntityValue';
+import renderSimpleReferenceEntity from '../front/src/pages/EditRules/components/actions/attribute/SimpleReferenceEntityValue';
 
 jest.mock('./src/dependenciesTools/provider/dependencies.ts');
 
@@ -57,12 +70,30 @@ export const renderWithProviders = (ui: React.ReactElement, context?: Context, o
     }, [register]);
     return <FormContext {...form}>{children}</FormContext>;
   };
+
+  const attributeValueConfig = {
+    pim_catalog_text: {default: renderText },
+    pim_catalog_textarea: {default: renderTextArea },
+    pim_catalog_date: {default: renderDate },
+    pim_catalog_simpleselect: {default: renderSimpleSelect },
+    pim_catalog_multiselect: {default: renderMultiSelect },
+    pim_catalog_number: {default: renderNumber },
+    pim_catalog_boolean: {default: renderBoolean },
+    pim_catalog_price_collection: {default: renderPriceCollection },
+    pim_catalog_metric: {default: renderMeasurement },
+    pim_catalog_asset_collection: {default: renderAssetCollection },
+    akeneo_reference_entity_collection: {default: renderMultiReferenceEntity },
+    akeneo_reference_entity: {default: renderSimpleReferenceEntity },
+  }
+
   const AllProviders: React.FC = ({children}) => {
     return (
       <LegacyDependencies>
         <AkeneoThemeProvider>
           <ReactHookFormProvider defaultValues={options?.defaultValues} toRegister={options?.toRegister}>
-            {children}
+            <ConfigContext.Provider value={{attributeValueConfig}}>
+              {children}
+            </ConfigContext.Provider>
           </ReactHookFormProvider>
         </AkeneoThemeProvider>
       </LegacyDependencies>

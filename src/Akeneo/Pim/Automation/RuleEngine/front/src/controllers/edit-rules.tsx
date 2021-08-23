@@ -5,17 +5,24 @@ import ReactController, {
 } from '../dependenciesTools/reactController/ReactController';
 import {EditRules as EditRulesPage} from '../pages/EditRules';
 import {dependencies} from '../dependenciesTools/provider/dependencies';
+import {AttributeValueConfig, ConfigContext} from '../context/ConfigContext';
 
 class EditRules extends ReactController {
   private isDirty = false;
 
   reactElementToMount(routeParams: RouteParams) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const attributeValueConfig = __moduleConfig.views as AttributeValueConfig;
+
     return (
       <ApplicationDependenciesProvider>
-        <EditRulesPage
-          ruleDefinitionCode={routeParams.params.code}
-          setIsDirty={this.setIsDirty.bind(this)}
-        />
+        <ConfigContext.Provider value={{attributeValueConfig}}>
+          <EditRulesPage
+            ruleDefinitionCode={routeParams.params.code}
+            setIsDirty={this.setIsDirty.bind(this)}
+          />
+        </ConfigContext.Provider>
       </ApplicationDependenciesProvider>
     );
   }
