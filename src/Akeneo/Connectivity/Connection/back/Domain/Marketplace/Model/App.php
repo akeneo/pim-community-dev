@@ -149,4 +149,19 @@ class App
             'callback_url' => $this->callbackUrl,
         ];
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getActivateUrl(): string
+    {
+        return $this->activateUrl;
+    }
+
+    public function getCallbackUrl(): string
+    {
+        return $this->callbackUrl;
+    }
 }

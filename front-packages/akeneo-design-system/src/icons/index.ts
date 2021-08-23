@@ -113,6 +113,7 @@ export * from './TagIcon';
 export * from './UnpublishIcon';
 export * from './UnviewIcon';
 export * from './UploadIcon';
+export * from './UserIcon';
 export * from './ValueIcon';
 export * from './ViewIcon';
 export * from './WaveIcon';

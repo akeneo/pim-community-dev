@@ -19,8 +19,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_import_export');
+        $treeBuilder = new TreeBuilder('pim_import_export');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

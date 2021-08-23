@@ -265,7 +265,6 @@ pim_enrich.mass_edit.family:
     select:
       label: 패밀리 선택
     choose:
-      title: 패밀리 일괄 작업
       label_count: "]0, Inf[작업 선택"
     configure:
       label: 구성

@@ -14,9 +14,8 @@ class SettingsBuilder
      */
     public static function append(ArrayNodeDefinition $root, $settings)
     {
-        $builder = new TreeBuilder();
-        $node = $builder
-            ->root('settings')
+        $builder = new TreeBuilder('settings');
+        $node = $builder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children();
 

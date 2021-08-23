@@ -253,9 +253,10 @@ pim_common:
     products: Products
     product_models: Product models
     more: More
+    public_view: Public view
 
 error:
-    exception: Oh snap! A {{ status_code }} error occurred...
+    exception: A {{ status_code }} error occurred...
     forbidden: Forbidden. You are not allowed to access this page
 
 alert:
@@ -336,6 +337,7 @@ pim_title:
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
     pim_settings_index:                    Settings
+    pim_system_index:                      System
 
 pim_menu:
     tab:
@@ -410,3 +412,17 @@ pim_settings:
     group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
     groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
     rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+
+pim_system:
+  system_menu: System menu
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On

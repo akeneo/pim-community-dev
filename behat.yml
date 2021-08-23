@@ -27,6 +27,8 @@ contexts: &context
             - 'Context\FeatureContext'
     -   Context\SecurityContext:
             - 'Context\FeatureContext'
+    -   Context\UserContext:
+            - 'Context\FeatureContext'
     -   Pim\Behat\Context\AttributeValidationContext:
             - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
@@ -102,6 +104,8 @@ contexts: &context
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
     -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
+            - 'Context\FeatureContext'
+    -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\AppActivateContext:
             - 'Context\FeatureContext'
     -   Context\ConnectivityContext:
             - '@messenger.transport.business_event'

@@ -15,7 +15,6 @@ pim_catalog_volume:
     count_products: 제품
     average_max_attributes_per_family: 패밀리별 특성
     count_channels: 채널
-    count_locales: 로케일(활성화됨)
     count_scopable_attributes: 확장 가능 특성
     count_localizable_and_scopable_attributes: 지역화 가능 및 확장 가능 특성
     count_localizable_attributes: 지역화 가능 특성

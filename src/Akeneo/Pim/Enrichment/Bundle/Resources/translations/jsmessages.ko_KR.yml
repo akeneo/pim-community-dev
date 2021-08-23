@@ -330,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: 전역 설정
 pim_enrich.mass_edit.product:
-  title: 제품 일괄 작업
   confirm: "{0}다음 정보로 일부 제품을 업데이트하려고 합니다. 확인해주십시오.|{1}다음 정보로 1개 제품을 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 제품을 업데이트하려고 합니다. 확인해주십시오."
   step:
     select:
       label: 제품 선택
     choose:
-      title: 제품 일괄 작업
       label_count: "]0, Inf[작업 선택"
     configure:
       label: 구성
@@ -355,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: 선택한 제품이 활성화 또는 비활성화됩니다.
       field: 활성화하려면
     edit_common:
-      label: 특성 값 편집
-      label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>의 특성 값 편집|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 편집|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 편집"
       description: 선택한 제품의 패밀리에 속하는 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터를 사용하여 편집됩니다.
       no_update: 업데이트할 필드를 하나 이상 선택하십시오.
-    add_attribute_value:
-      label: 특성 값 추가
-      label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>의 특성 값 추가|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 추가|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 추가"
-      description: 제품 패밀리에 속하는 다중 값 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터를 사용하여 편집됩니다. 특성 값이 추가되고, 이전 값은 유지됩니다.
     change_family:
       label: 패밀리 변경
       label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>의 패밀리 변경|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 패밀리 변경|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 패밀리 변경"
@@ -397,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>을 단일 제품으로 변환|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 단일 제품으로 변환|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 단일 제품으로 변환"
       description: 이전의 모든 값, 카테고리, 연결이 저장됩니다.
     associate_to_product_and_product_model:
-      label: 연결
       label_count: "{0}제품 또는 제품 모델에 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 연결|{1}제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 연결|]1, Inf[제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 연결"
       description: 그리드에서 선택된 제품은 선택된 연결 유형의 선택된 제품 및 제품 모델에 연결됩니다.
       validate: 다음 단계로 이동하기 전에 연결을 추가하십시오.
@@ -489,7 +480,6 @@ pim_datagrid:
       label: 상위
     identifier:
       label: 식별자
-  search: '{{ label }}에서 검색'
 batch_jobs:
   add_association:
     label: 연결

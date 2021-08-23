@@ -1,0 +1,45 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Preview} from './Preview.tsx';
+
+<Meta
+  title="Components/Preview"
+  component={Preview}
+  subcomponents={{
+    'Preview.Highlight': Preview.Highlight,
+  }}
+  args={{title: 'Preview', children: 'Preview text'}}
+/>
+
+# Preview
+
+## Usage
+
+Preview component is used put emphasis on some content.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Preview {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With highlighted content
+
+Preview component exposes a `<Preview.Highlight>` subcomponent which can be used to highlight some content.
+
+<Canvas>
+  <Story name="Highlight">
+    {args => {
+      return (
+        <Preview {...args}>
+          <Preview.Highlight>Name</Preview.Highlight> x <Preview.Highlight>Description</Preview.Highlight>
+        </Preview>
+      );
+    }}
+  </Story>
+</Canvas>

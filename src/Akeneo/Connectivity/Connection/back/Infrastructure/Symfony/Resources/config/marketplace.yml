@@ -57,3 +57,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '%akeneo_pim_marketplace_api_pagination_size%'
+
+    akeneo_connectivity.connection.marketplace.get_app_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAppQuery
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'

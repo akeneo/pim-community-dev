@@ -22,6 +22,8 @@ pim_menu:
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_apps_activate: Connect
+    akeneo_connectivity_connection_connect_apps_authorize: Connect
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -60,6 +62,25 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
+        apps:
+            activate:
+                flash:
+                    error: Sorry, an error occurred while connecting the App.
+            authorize:
+                error:
+                    sub_text: Please contact the app developer or Akeneo support
+            constraint:
+                client_id:
+                    not_blank: The client_id is required.
+                    must_be_valid: The client_id does not match any known client.
+                response_type:
+                    not_blank: The response_type is required.
+                    must_be_code: The response_type must be "code".
+                scope:
+                    must_be_valid: The scopes are not valid.
+                redirect_uri:
+                    not_blank: The redirect_uri is required.
+                    must_be_url: The redirect_uri is not a valid url.
     connections: Connections
     secondary_actions:
         title: Other actions

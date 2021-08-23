@@ -1,6 +1,6 @@
 import React from 'react';
-import {MyComponent} from './MyComponent';
 import {render, screen} from '../../storybook/test-util';
+import {MyComponent} from './MyComponent';
 
 test('it renders its children properly', () => {
   render(<MyComponent>MyComponent content</MyComponent>);
