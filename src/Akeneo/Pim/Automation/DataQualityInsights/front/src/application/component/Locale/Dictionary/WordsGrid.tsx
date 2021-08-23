@@ -1,5 +1,5 @@
-import React, {FC, useCallback, useState} from 'react';
-import {Table, IconButton, CloseIcon, Pagination, Search} from 'akeneo-design-system';
+import React, {FC, useCallback, useRef, useState} from 'react';
+import {Table, IconButton, CloseIcon, Pagination, Search, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Word} from '../../../../domain';
 import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
@@ -12,6 +12,9 @@ const WordsGrid: FC = () => {
   const {dictionary, totalWords, itemsPerPage, currentPage, search, deleteWord} = useDictionaryState();
   const [searchString, setSearchString] = useState('');
   const debouncedSearch = useDebounceCallback(search, 300);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
@@ -48,6 +51,8 @@ const WordsGrid: FC = () => {
             searchValue={searchString}
             placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
             onSearchChange={onSearch}
+            className={'filter-box'}
+            inputRef={inputRef}
           >
             <Search.ResultCount>
               {translate('pim_common.result_count', {itemsCount: totalWords}, totalWords)}

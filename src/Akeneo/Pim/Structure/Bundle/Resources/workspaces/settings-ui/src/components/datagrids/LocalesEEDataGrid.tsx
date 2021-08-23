@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {FollowLocaleHandler, Locale, NoResults, useFilteredLocales} from '@akeneo-pim-community/settings-ui';
 import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
-import {Badge, Search, Table, getColor} from 'akeneo-design-system';
+import {Badge, Search, Table, getColor, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useLocaleSelection} from '../../hooks/locales/useLocaleSelection';
 
@@ -20,6 +20,9 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
   const {isItemSelected, onSelectionChange, selectionState, updateTotalLocalesCount} = useLocaleSelection();
 
   const debouncedSearch = useDebounceCallback(search, 300);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     updateTotalLocalesCount(filteredLocales.length);
@@ -38,6 +41,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
         searchValue={searchString === undefined ? '' : searchString}
         placeholder={translate('pim_enrich.entity.locale.grid.filters.search_placeholder')}
         onSearchChange={onSearch}
+        inputRef={inputRef}
       >
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredLocales.length}, filteredLocales.length)}
