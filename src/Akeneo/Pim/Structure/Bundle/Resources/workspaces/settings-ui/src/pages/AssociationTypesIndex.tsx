@@ -147,6 +147,7 @@ const AssociationTypesIndex = () => {
                 searchValue={searchString}
                 placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
+                className={'association-type-grid-search'}
               >
                 <Search.ResultCount>
                   {translate('pim_common.result_count', {itemsCount: associationTypes.total}, associationTypes.total)}
