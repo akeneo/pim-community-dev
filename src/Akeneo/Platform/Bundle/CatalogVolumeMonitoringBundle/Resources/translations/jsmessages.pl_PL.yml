@@ -15,7 +15,6 @@ pim_catalog_volume:
     count_products: Produkty
     average_max_attributes_per_family: Atrybuty na rodzinę
     count_channels: Kanały
-    count_locales: Wersje językowe (aktywne)
     count_scopable_attributes: Atrybuty zmienne
     count_localizable_and_scopable_attributes: Atrybuty zmienne i tłumaczone
     count_localizable_attributes: Atrybuty tłumaczone

@@ -14,9 +14,9 @@ class QueryConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('query');
 
-        $builder->root('query')
+        $builder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('distinct')

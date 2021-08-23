@@ -6,11 +6,13 @@ Feature: Activate an OAuth2 client application in the PIM
 
   Scenario: julia is authorized to activate an App
     Given a "default" catalog configuration
+    And the role "ROLE_CATALOG_MANAGER" has the ACL "Manage Apps"
+    And the user "Julia" has the profile "product_manager"
     And I am logged in as "Julia"
-    And I have the "Manage Apps" ACL
     And I am on the marketplace page
-    When I click on "yell" activate button
-    And I am at the url "https://yell-extension-t2omu7tdaq-uc.a.run.app/?pim_url=..."
+    And I should see "Yell extension" app
+    When I click on "Yell extension" activate button
+    And I am at the url "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate?pim_url=http%3A%2F%2Flocalhost%3A8080"
     And I click on the button "Free trial"
     And I am at the url "https://.../"
     And I see "View and Edit products"

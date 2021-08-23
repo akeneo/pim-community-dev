@@ -69,3 +69,21 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlController
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    akeneo_connectivity.connection.public.controller.apps.authorize:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\AuthorizeAction
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
+            - '@router'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'

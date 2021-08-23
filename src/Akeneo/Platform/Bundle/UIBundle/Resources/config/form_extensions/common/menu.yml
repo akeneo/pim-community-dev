@@ -237,6 +237,8 @@ extensions:
             title: pim_menu.tab.system
             iconModifier: iconSystem
             icon: SystemIcon
+            to: pim_system_index
+            isLandingSectionPage: true
 
     pim-menu-system-column:
         module: pim/menu/column

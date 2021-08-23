@@ -330,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: Paramètres généraux
 pim_enrich.mass_edit.product:
-  title: Action de masse sur les produits
   confirm: "{0}Vous êtes sur le point de mettre à jour certains produits avec les informations suivantes, veuillez confirmer.|{1}Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, veuillez confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les informations suivantes, veuillez confirmer."
   step:
     select:
       label: Choisir des produits
     choose:
-      title: Actions de masse sur les produits
       label_count: "]0, Inf[Sélectionnez votre action"
     configure:
       label: Configurez l'opération à effectuer
@@ -355,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: Les produits sélectionnés vont être activés ou désactivés.
       field: Pour activer
     edit_common:
-      label: Modifier les valeurs d’attributs
-      label_count: "{0}Modifier les valeurs d'attributs de certains <span class=\"AknFullPage-title--highlight\">produits</span>|{1}Modifier les valeurs d'attributs d' <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Modifier les valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
       no_update: Veuillez sélectionner au moins un champ à mettre à jour.
-    add_attribute_value:
-      label: Ajouter des valeurs d’attributs
-      label_count: "{0}Ajouter des valeurs d'attributs pour certains <span class=\"AknFullPage-title--highlight\">produits</span>|{1}Ajouter des valeurs d'attributs pour <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Ajouter des valeurs d'attributs pour <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-      description: Seuls les attributs à valeur multiple appartenant aux famille des produits seront édités avec les données suivantes pour la locale {{ locale }} et le canal {{ scope }}. Les valeurs d'attributes sont ajoutées, les précédentes valeurs sont conservées.
     change_family:
       label: Changer de famille
       label_count: "{0}Modifier la famille de certains <span class=\"AknFullPage-title--highlight\">produits</span>|{1}Modifier la famille d' <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Modifier la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
@@ -397,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Convertissez des <span class=\"AknFullPage-title--highlight\">produits</span> en produits simples |{1}Convertissez <span class=\"AknFullPage-title--highlight\">1 produit</span> en produit simple|]1, Inf[Convertir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> en produits simples"
       description: Toutes les valeurs, catégories et associations initiales seront conservées.
     associate_to_product_and_product_model:
-      label: Associer
       label_count: "{0}Associer certains <span class=\"AknFullPage-title--highlight\">produits</span> à d'autres produits ou modèles de produit|{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à d'autres produits ou modèles de produit|]1, Inf[Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à d'autres produits ou modèles de produit"
       description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
       validate: Veuillez ajouter une association avant de passer à l’étape suivante
@@ -489,7 +480,6 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifiant
-  search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:
     label: Associer
@@ -551,6 +541,8 @@ batch_jobs:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform.label: Export rapide de produits en XLSX
+  default_steps:
+    delete_products_and_product_models: Supprimer les produits et les modèles de produits
 error:
   removing:
     group: Impossible de supprimer le groupe
