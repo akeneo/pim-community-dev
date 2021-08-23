@@ -1949,6 +1949,24 @@ jobs:
                 command: |
                     make delete_environments_hourly
 
+  delete_expired_uptime_check:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Delete expired uptime-check
+                command: |
+                    make delete_expired_uptime_check
+
 workflows:
   pull_request:
       jobs:
@@ -2430,7 +2448,9 @@ workflows:
          - delete_environments_hourly:
                requires:
                    - checkout
-
+         - delete_expired_uptime_check:
+               requires:
+                   - checkout
 
 commands:
   set_gcloud_config_dev:
