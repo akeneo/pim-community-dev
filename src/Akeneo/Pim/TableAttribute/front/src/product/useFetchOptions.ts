@@ -2,13 +2,12 @@ import React from 'react';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {ColumnCode, SelectOption, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {TableRowWithId} from './TableFieldApp';
-import {TableCell} from '../models/TableValue';
+import {TableCell, TableRow} from '../models/TableValue';
 
 const useFetchOptions: (
   tableConfiguration: TableConfiguration | undefined,
   attributeCode: string,
-  valueData: TableRowWithId[]
+  valueData: TableRow[]
 ) => {
   getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined;
   getOptionLabel: (columnCode: ColumnCode, value: TableCell) => string | undefined | null;

@@ -1,14 +1,14 @@
 import React from 'react';
 import {Badge, LoaderIcon, TableInput} from 'akeneo-design-system';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {diffChars} from 'diff';
 import styled from 'styled-components';
-import {ColumnCode, ColumnDefinition} from "../models/TableConfiguration";
-import {TableRowWithId, TableValueWithId} from "../product/TableFieldApp";
-import {useFetchOptions} from "../product/useFetchOptions";
-import {TableAttribute} from "../models/Attribute";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const FetcherRegistry = require('pim/fetcher-registry');
+import {ColumnCode, ColumnDefinition} from '../models/TableConfiguration';
+import {TableRowWithId} from '../product/TableFieldApp';
+import {useFetchOptions} from '../product/useFetchOptions';
+import {TableAttribute} from '../models/Attribute';
+import {fetchAttribute} from '../fetchers/AttributeFetcher';
+import {TableValue} from '../models/TableValue';
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
   min-width: auto;
@@ -22,8 +22,8 @@ type ProposalDiffTableProps = {
   accessor: 'before' | 'after';
   change: {
     attributeCode: string;
-    before: TableValueWithId | null;
-    after: TableValueWithId | null;
+    before: TableValue | null;
+    after: TableValue | null;
   };
 };
 
@@ -47,19 +47,14 @@ const displayChange = (before: string, after: string, accessor: 'before' | 'afte
 const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
+  const router = useRouter();
   const valueData = change[accessor] || [];
   const catalogLocale = userContext.get('catalogLocale');
   const [attribute, setAttribute] = React.useState<TableAttribute | undefined>();
   const {getOptionLabel} = useFetchOptions(attribute?.table_configuration, change.attributeCode, valueData);
 
   React.useEffect(() => {
-    FetcherRegistry.initialize().then(() => {
-      FetcherRegistry.getFetcher('attribute')
-        .fetch(change.attributeCode)
-        .then((attribute: TableAttribute) => {
-          setAttribute(attribute);
-        });
-    });
+    fetchAttribute(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
   }, []);
 
   if (typeof attribute === 'undefined') {
@@ -117,13 +112,20 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
       const value = accessor === 'before' ? beforeCell : afterCell;
 
       if (value === true) {
-        return <Badge level="primary">{translate('pim_common.yes')}</Badge>;
+        return <Badge level='primary'>{translate('pim_common.yes')}</Badge>;
       }
       if (value === false) {
-        return <Badge level="tertiary">{translate('pim_common.no')}</Badge>;
+        return <Badge level='tertiary'>{translate('pim_common.no')}</Badge>;
       }
     }
-    if (displayChanges) return displayChange((beforeCell || '') + '', (afterCell || '') + '', accessor);
+    if (typeof beforeCell === 'number') {
+      beforeCell = beforeCell.toString();
+    }
+    if (typeof afterCell === 'number') {
+      afterCell = afterCell.toString();
+    }
+    if (displayChanges)
+      return displayChange(((beforeCell as string) || '') + '', ((afterCell as string) || '') + '', accessor);
     return accessor === 'before' ? beforeCell : afterCell;
   };
 
@@ -144,8 +146,7 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
               <StretchedBodyCell>
                 <TableInput.CellContent
                   inError={accessor === 'before' && hasOrderChanged(row[firstColumnCode] as string)}
-                  highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}
-                >
+                  highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}>
                   {i + 1}
                 </TableInput.CellContent>
               </StretchedBodyCell>
