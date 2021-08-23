@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
-import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
-import {Table} from 'akeneo-design-system';
+import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
+import {Search, Table} from 'akeneo-design-system';
 import {NoResults} from '../../shared';
 import styled from 'styled-components';
 import {FollowLocaleHandler} from '../../../user-actions';
@@ -13,7 +13,7 @@ type Props = {
   onLocaleCountChange: (newLocaleCount: number) => void;
 };
 
-const LocalesSearchBar = styled(SearchBar)`
+const LocalesSearchBar = styled(Search)`
   margin: 10px 0 20px;
 `;
 
@@ -36,11 +36,14 @@ const LocalesDataGrid: FC<Props> = ({locales, followLocale, onLocaleCountChange}
   return (
     <>
       <LocalesSearchBar
-        count={filteredLocales.length}
         searchValue={searchString === undefined ? '' : searchString}
         placeholder={translate('pim_enrich.entity.locale.grid.filters.search_placeholder')}
         onSearchChange={onSearch}
-      />
+      >
+        <Search.ResultCount>
+          {translate('pim_common.result_count', {itemsCount: filteredLocales.length}, filteredLocales.length)}
+        </Search.ResultCount>
+      </LocalesSearchBar>
       {searchString !== '' && filteredLocales.length === 0 ? (
         <NoResults
           title={translate('pim_datagrid.no_results', {entityHint: 'locale'})}

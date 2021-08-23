@@ -68,7 +68,7 @@ const UnitTab = ({
             onSearchChange={setSearchValue}
           >
             <Search.ResultCount>
-              {translate('pim_common.result_count', {itemsCount: measurementFamily.units.length}, measurementFamily.units.length)}
+              {translate('pim_common.result_count', {itemsCount: filteredUnits.length}, filteredUnits.length)}
             </Search.ResultCount>
           </Search>
           {0 === filteredUnits.length && (

@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Breadcrumb, getFontSize, Pagination} from 'akeneo-design-system';
+import {Breadcrumb, getFontSize, Pagination, Search} from 'akeneo-design-system';
 import {
   PageContent,
   PageHeader,
-  SearchBar,
   useDebounceCallback,
   NotificationLevel,
   useNotify,
@@ -23,7 +22,7 @@ import {
 
 const DatagridState = require('pim/datagrid/state');
 
-const AssociationTypesSearchBar = styled(SearchBar)`
+const AssociationTypesSearchBar = styled(Search)`
   margin: 10px 0 20px;
 `;
 
@@ -145,12 +144,14 @@ const AssociationTypesIndex = () => {
           ) : (
             <>
               <AssociationTypesSearchBar
-                count={associationTypes.total}
                 searchValue={searchString}
                 placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
-                className={'association-type-grid-search'}
-              />
+              >
+                <Search.ResultCount>
+                  {translate('pim_common.result_count', {itemsCount: associationTypes.total}, associationTypes.total)}
+                </Search.ResultCount>
+              </AssociationTypesSearchBar>
               {associationTypes.total > 0 && (
                 <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
               )}
