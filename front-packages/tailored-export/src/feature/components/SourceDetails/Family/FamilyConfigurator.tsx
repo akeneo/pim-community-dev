@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
-import {CodeLabelSelector} from '../common/CodeLabelSelector';
+import {CodeLabelSelector, DefaultValue, Operations} from '../common';
 import {isFamilySource} from './model';
 import {InvalidPropertySourceError} from '../error';
-import {DefaultValue, Operations} from '../common';
 
 const FamilyConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   if (!isFamilySource(source)) {

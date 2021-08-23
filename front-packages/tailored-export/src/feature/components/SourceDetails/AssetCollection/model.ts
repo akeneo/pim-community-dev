@@ -1,8 +1,13 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
-import {CodeLabelCollectionSelection, isCodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {
+  CodeLabelCollectionSelection,
+  getDefaultCodeLabelCollectionSelection,
+  isCodeLabelCollectionSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
 
 type AssetCollectionOperations = {
   default_value?: DefaultValueOperation;
@@ -29,7 +34,7 @@ const getDefaultAssetCollectionSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code', separator: ','},
+  selection: getDefaultCodeLabelCollectionSelection(),
 });
 
 const isAssetCollectionOperations = (operations: Object): operations is AssetCollectionOperations =>

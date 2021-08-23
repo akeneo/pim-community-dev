@@ -15,6 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\SourceElement;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
@@ -43,6 +46,7 @@ abstract class AttributeTestCase extends KernelTestCase
     {
         $sourceCollection = SourceCollection::create([
             new AttributeSource(
+                sprintf('%s-uuid', self::ATTRIBUTE_CODE),
                 'virtual_attribute_type',
                 self::ATTRIBUTE_CODE,
                 null,
@@ -51,8 +55,16 @@ abstract class AttributeTestCase extends KernelTestCase
                 $selection
             )
         ]);
+
         $columnCollection = ColumnCollection::create([
-            new Column(self::TARGET_NAME, $sourceCollection)
+            new Column(
+                self::TARGET_NAME,
+                $sourceCollection,
+                new ConcatFormat(
+                    ElementCollection::create([new SourceElement(sprintf('%s-uuid', self::ATTRIBUTE_CODE))]),
+                    false
+                )
+            )
         ]);
 
         return $columnCollection;

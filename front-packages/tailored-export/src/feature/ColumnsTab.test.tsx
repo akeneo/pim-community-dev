@@ -53,6 +53,7 @@ test('It opens the source panel related to the column selected', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -89,6 +90,7 @@ test('It creates a column when user enter a text in last input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -118,6 +120,7 @@ test('It creates a column when user enter a text in last input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
     {
@@ -127,6 +130,7 @@ test('It creates a column when user enter a text in last input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);
@@ -141,6 +145,7 @@ test('It updates column when user change value input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -171,6 +176,7 @@ test('It updates column when user change value input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);
@@ -185,6 +191,7 @@ test('It deletes column when user click on delete button', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -214,6 +221,7 @@ test('It adds source when user click on add source', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -255,8 +263,15 @@ test('It adds source when user click on add source', async () => {
         },
       ],
       format: {
-        elements: [],
+        elements: [
+          {
+            type: 'source',
+            uuid: expect.any(String),
+            value: expect.any(String),
+          },
+        ],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);

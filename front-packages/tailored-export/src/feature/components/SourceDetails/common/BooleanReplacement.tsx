@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {filterErrors, Section, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Collapse} from 'akeneo-design-system';
+import {Collapse, Pill} from 'akeneo-design-system';
 
 type BooleanReplacementOperation = {
   type: 'replacement';
@@ -26,7 +26,7 @@ const getDefaultBooleanReplacementOperation = (): BooleanReplacementOperation =>
   },
 });
 
-const isDefaultBooleanReplacementOperation = (operation?: BooleanReplacementOperation) =>
+const isDefaultBooleanReplacementOperation = (operation?: BooleanReplacementOperation): boolean =>
   operation?.type === 'replacement' && operation.mapping.true === '1' && operation.mapping.false === '0';
 
 type BooleanReplacementProps = {
@@ -45,14 +45,20 @@ const BooleanReplacement = ({
   onOperationChange,
 }: BooleanReplacementProps) => {
   const translate = useTranslate();
-  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(
-    !isDefaultBooleanReplacementOperation(operation)
-  );
+  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
 
   return (
     <Collapse
       collapseButtonLabel={isReplacementCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.operation.replacement.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.operation.replacement.title')}
+          {0 === validationErrors.length && !isDefaultBooleanReplacementOperation(operation) && (
+            <Pill level="primary" />
+          )}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isReplacementCollapsed}
       onCollapse={toggleReplacementCollapse}
     >

@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelSelector} from '../common/CodeLabelSelector';
+import {CodeLabelSelector, DefaultValue, Operations} from '../common';
 import {isReferenceEntitySource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {DefaultValue, Operations} from '../common';
 
 const ReferenceEntityConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isReferenceEntitySource(source)) {

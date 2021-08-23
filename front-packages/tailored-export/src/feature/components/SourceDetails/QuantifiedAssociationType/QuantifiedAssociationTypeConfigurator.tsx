@@ -4,6 +4,7 @@ import {AssociationTypeConfiguratorProps} from '../../../models';
 import {isQuantifiedAssociationTypeSource} from './model';
 import {QuantifiedAssociationTypeSelector} from './QuantifiedAssociationTypeSelector';
 import {InvalidAssociationTypeSourceError} from '../error';
+import {Operations} from '../common';
 
 const QuantifiedAssociationTypeConfigurator = ({
   source,
@@ -17,11 +18,13 @@ const QuantifiedAssociationTypeConfigurator = ({
   }
 
   return (
-    <QuantifiedAssociationTypeSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <QuantifiedAssociationTypeSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 

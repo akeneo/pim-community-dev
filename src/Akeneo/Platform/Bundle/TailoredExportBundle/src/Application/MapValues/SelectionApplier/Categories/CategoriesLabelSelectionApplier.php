@@ -41,7 +41,7 @@ class CategoriesLabelSelectionApplier implements SelectionApplierInterface
         $categoryCodes = $value->getCategoryCodes();
 
         $categoryTranslations = $this->findCategoryLabels->byCodes($categoryCodes, $selection->getLocale());
-        $selectedData = array_map(fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
+        $selectedData = array_map(static fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
             sprintf('[%s]', $categoryCode), $categoryCodes);
 
         return implode($selection->getSeparator(), $selectedData);

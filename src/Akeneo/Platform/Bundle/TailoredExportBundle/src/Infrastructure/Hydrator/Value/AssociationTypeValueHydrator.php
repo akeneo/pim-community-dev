@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -32,60 +33,59 @@ final class AssociationTypeValueHydrator
 
             return new QuantifiedAssociationsValue(
                 $this->getProductQuantifiedAssociations($normalizedQuantifiedAssociations),
-                $this->getProductModelQuantifiedAssociations($normalizedQuantifiedAssociations)
+                $this->getProductModelQuantifiedAssociations($normalizedQuantifiedAssociations),
             );
         }
 
         return new SimpleAssociationsValue(
             $this->getAssociatedProductIdentifiers($product, $associationTypeCode),
             $this->getAssociatedProductModelCodes($product, $associationTypeCode),
-            $this->getAssociatedGroupCodes($product, $associationTypeCode)
+            $this->getAssociatedGroupCodes($product, $associationTypeCode),
         );
     }
 
     private function getAssociatedProductIdentifiers(ProductInterface $product, string $associationTypeCode): array
     {
-        /* TODO: In another PR: add getAssociatedProductIdentifiers in Product/ProductModel/PublishedProduct to avoid manipulating Doctrine collection here */
-        $associatedProducts = $product->getAssociatedProducts($associationTypeCode);
-        $associatedProductIdentifiers = [];
+        $association = $this->getAssociationForTypeCode($product, $associationTypeCode);
+        $associatedProducts = $association ? $association->getProducts()->toArray() : [];
 
-        if ($associatedProducts) {
-            $associatedProductIdentifiers = $associatedProducts->map(
-                static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
-            )->getValues();
-        }
-
-        return $associatedProductIdentifiers;
+        return array_map(
+            static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier(),
+            $associatedProducts,
+        );
     }
 
     private function getAssociatedProductModelCodes(ProductInterface $product, string $associationTypeCode): array
     {
-        /* TODO: In another PR: add getAssociatedProductModelCodes in Product/ProductModel/PublishedProduct to avoid manipulating Doctrine collection here */
-        $associatedProductModels = $product->getAssociatedProductModels($associationTypeCode);
-        $associatedProductModelCodes = [];
+        $association = $this->getAssociationForTypeCode($product, $associationTypeCode);
+        $associatedProductModels = $association ? $association->getProductModels()->toArray() : [];
 
-        if ($associatedProductModels) {
-            $associatedProductModelCodes = $associatedProductModels->map(
-                static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
-            )->getValues();
-        }
-
-        return $associatedProductModelCodes;
+        return array_map(
+            static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode(),
+            $associatedProductModels,
+        );
     }
 
     private function getAssociatedGroupCodes(ProductInterface $product, string $associationTypeCode): array
     {
-        /* TODO: In another PR: add getAssociatedGroupCodes in Product/ProductModel/PublishedProduct to avoid manipulating Doctrine collection here */
-        $associatedGroups = $product->getAssociatedGroups($associationTypeCode);
-        $associatedGroupCodes = [];
+        $association = $this->getAssociationForTypeCode($product, $associationTypeCode);
+        $associatedGroups = $association ? $association->getGroups()->toArray() : [];
 
-        if ($associatedGroups) {
-            $associatedGroupCodes = $associatedGroups->map(
-                static fn (GroupInterface $associationGroup): string => $associationGroup->getCode()
-            )->getValues();
+        return array_map(
+            static fn (GroupInterface $associationGroup): string => $associationGroup->getCode(),
+            $associatedGroups,
+        );
+    }
+
+    private function getAssociationForTypeCode(ProductInterface $product, string $typeCode): ?AssociationInterface
+    {
+        foreach ($product->getAllAssociations() as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
         }
 
-        return $associatedGroupCodes;
+        return null;
     }
 
     /**
@@ -103,7 +103,7 @@ final class AssociationTypeValueHydrator
         return array_map(
             static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
                 $productQuantifiedAssociation['identifier'],
-                $productQuantifiedAssociation['quantity']
+                $productQuantifiedAssociation['quantity'],
             ),
             $normalizedProductQuantifiedAssociations
         );
@@ -124,7 +124,7 @@ final class AssociationTypeValueHydrator
         return array_map(
             static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
                 $productQuantifiedAssociation['identifier'],
-                $productQuantifiedAssociation['quantity']
+                $productQuantifiedAssociation['quantity'],
             ),
             $normalizedProductModelQuantifiedAssociations
         );

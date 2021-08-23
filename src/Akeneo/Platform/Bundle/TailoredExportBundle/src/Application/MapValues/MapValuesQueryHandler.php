@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\MapValues\FormatApplier\FormatApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier;
 
@@ -21,13 +21,16 @@ class MapValuesQueryHandler
 {
     private OperationApplier $operationApplier;
     private SelectionApplier $selectionApplier;
+    private FormatApplier $formatApplier;
 
     public function __construct(
         OperationApplier $operationApplier,
-        SelectionApplier $selectionApplier
+        SelectionApplier $selectionApplier,
+        FormatApplier $formatApplier
     ) {
         $this->operationApplier = $operationApplier;
         $this->selectionApplier = $selectionApplier;
+        $this->formatApplier = $formatApplier;
     }
 
     public function handle(
@@ -35,21 +38,28 @@ class MapValuesQueryHandler
     ): array {
         $mappedProduct = [];
 
-        /** @var Column $column */
         foreach ($mapValuesQuery->getColumnCollection() as $column) {
             $mappedValues = [];
+
             foreach ($column->getSourceCollection() as $source) {
                 $operations = $source->getOperationCollection();
                 $value = $mapValuesQuery->getValueCollection()->getFromSource($source);
 
-                $transformedValue = $this->operationApplier->applyOperations($operations, $value);
-                $mappedValues[] = $this->selectionApplier->applySelection(
+                $transformedValue = $this->operationApplier->applyOperations(
+                    $operations,
+                    $value
+                );
+
+                $mappedValues[$source->getUuid()] = $this->selectionApplier->applySelection(
                     $source->getSelection(),
                     $transformedValue
                 );
             }
 
-            $mappedProduct[$column->getTarget()] = implode(' ', $mappedValues);
+            $mappedProduct[$column->getTarget()] = $this->formatApplier->applyFormat(
+                $column->getFormat(),
+                $mappedValues
+            );
         }
 
         return $mappedProduct;

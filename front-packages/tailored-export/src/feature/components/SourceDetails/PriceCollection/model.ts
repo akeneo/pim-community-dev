@@ -31,6 +31,11 @@ const isPriceCollectionSelection = (selection: any): selection is PriceCollectio
     ('currency_code' === selection.type || 'amount' === selection.type)) ||
   ('currency_label' === selection.type && 'locale' in selection);
 
+const getDefaultPriceCollectionSelection = (): PriceCollectionSelection => ({type: 'amount', separator: ','});
+
+const isDefaultPriceCollectionSelection = (selection?: PriceCollectionSelection): boolean =>
+  'amount' === selection?.type && ',' === selection?.separator;
+
 type PriceCollectionOperations = {
   default_value?: DefaultValueOperation;
 };
@@ -56,7 +61,7 @@ const getDefaultPriceCollectionSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'amount', separator: ','},
+  selection: getDefaultPriceCollectionSelection(),
 });
 
 const isPriceCollectionOperations = (operations: Object): operations is PriceCollectionOperations =>
@@ -75,6 +80,7 @@ const isPriceCollectionSource = (source: Source): source is PriceCollectionSourc
 export {
   availableSeparators,
   getDefaultPriceCollectionSource,
+  isDefaultPriceCollectionSelection,
   isPriceCollectionSource,
   isPriceCollectionSelection,
   isPriceCollectionSeparator,

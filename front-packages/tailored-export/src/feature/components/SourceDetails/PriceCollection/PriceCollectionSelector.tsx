@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   Section,
   filterErrors,
@@ -7,7 +7,12 @@ import {
   getAllLocalesFromChannels,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {PriceCollectionSelection, availableSeparators, isPriceCollectionSeparator} from './model';
+import {
+  PriceCollectionSelection,
+  availableSeparators,
+  isPriceCollectionSeparator,
+  isDefaultPriceCollectionSelection,
+} from './model';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {useChannels} from '../../../hooks';
 
@@ -18,7 +23,7 @@ type PriceCollectionSelectorProps = {
 };
 
 const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -29,7 +34,13 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultPriceCollectionSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >

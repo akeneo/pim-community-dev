@@ -1,7 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {Source} from '../../../models';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {CodeLabelCollectionSelection, DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 type GroupsOperations = {
   default_value?: DefaultValueOperation;

@@ -90,7 +90,7 @@ const ColumnRow = memo(
 
       return (
         <>
-          <Table.Row key={column.uuid} onClick={handleColumnSelected} isSelected={isSelected} {...rest}>
+          <Table.Row onClick={handleColumnSelected} isSelected={isSelected} {...rest}>
             <TargetCell>
               <Field>
                 <TextInput

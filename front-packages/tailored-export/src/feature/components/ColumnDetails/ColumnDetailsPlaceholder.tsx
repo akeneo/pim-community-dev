@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, RulesIllustration, Link, SectionTitle, Button} from 'akeneo-design-system';
+import {
+  getColor,
+  getFontSize,
+  RulesIllustration,
+  Link,
+  SectionTitle,
+  Button,
+  ArrowDownIcon,
+} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
@@ -41,7 +49,7 @@ const ColumnDetailsPlaceholder = () => {
         <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <Button size="small" ghost={true} level="tertiary" disabled>
-          {translate('akeneo.tailored_export.column_details.sources.add')}
+          {translate('akeneo.tailored_export.column_details.sources.add')} <ArrowDownIcon />
         </Button>
       </SectionTitle>
       <Content>

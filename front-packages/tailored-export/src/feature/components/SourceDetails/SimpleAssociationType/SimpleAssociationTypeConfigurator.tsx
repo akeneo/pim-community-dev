@@ -4,6 +4,7 @@ import {AssociationTypeConfiguratorProps} from '../../../models';
 import {isSimpleAssociationTypeSource} from './model';
 import {SimpleAssociationTypeSelector} from './SimpleAssociationTypeSelector';
 import {InvalidAssociationTypeSourceError} from '../error';
+import {Operations} from '../common';
 
 const SimpleAssociationTypeConfigurator = ({
   source,
@@ -15,11 +16,13 @@ const SimpleAssociationTypeConfigurator = ({
   }
 
   return (
-    <SimpleAssociationTypeSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <SimpleAssociationTypeSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 

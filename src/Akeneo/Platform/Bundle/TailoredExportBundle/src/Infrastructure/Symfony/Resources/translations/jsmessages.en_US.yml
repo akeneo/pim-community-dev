@@ -121,6 +121,12 @@ akeneo.tailored_export:
           title: Use default value when empty
           label: Default value
           placeholder: Define the value
+    concatenation:
+      title: Concatenation
+      preview: Preview
+      space_between: Add space between sources
+      add_text: Add text
+      text_placeholder: Define text
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
@@ -135,6 +141,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to this column.
       association_type_should_exist: The association type {{ association_type_code }} does not exist. Please either create it or choose a different source.
+    concatenation:
+      max_text_count_reached: You have reached the limit of {{ limit }} text elements, you can no longer add text.
     locale:
       should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
       should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.

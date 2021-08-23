@@ -1,7 +1,11 @@
 import {uuid} from 'akeneo-design-system';
 import {Source} from '../../../models';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
-import {CodeLabelSelection} from '../common/CodeLabelSelector';
+import {
+  DefaultValueOperation,
+  isDefaultValueOperation,
+  CodeLabelSelection,
+  getDefaultCodeLabelSelection,
+} from '../common';
 
 type FamilyOperations = {
   default_value?: DefaultValueOperation;
@@ -24,7 +28,7 @@ const getDefaultFamilySource = (): FamilySource => ({
   locale: null,
   channel: null,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultCodeLabelSelection(),
 });
 
 const isFamilyOperations = (operations: Object): operations is FamilyOperations =>
