@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {SearchBar, useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
-import {useAttributeContext} from '../contexts';
-import {useAttributeOptionsListState} from '../hooks';
+import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
@@ -19,6 +18,7 @@ import {
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
+import AttributeOptionQualityBadge from './AttributeOptionQualityBadge';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -40,7 +40,7 @@ const AttributeOptionTable = ({
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
   const attributeContext = useAttributeContext();
-  const {attributeOptions, extraData} = useAttributeOptionsListState();
+  const {attributeOptions} = useContext(AttributeOptionsContext);
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions
@@ -176,7 +176,7 @@ const AttributeOptionTable = ({
                 <Table.HeaderCell>&nbsp;</Table.HeaderCell>
               </Table.Header>
               <Table.Body>
-                {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
+                {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
                   return (
                     <TableRow
                       data-testid="attribute-option-item"
@@ -184,7 +184,7 @@ const AttributeOptionTable = ({
                       isDraggable={isDraggable}
                       isSelected={selectedOptionId === attributeOption.id}
                       onClick={() => onSelectItem(attributeOption.id)}
-                      key={`${attributeOption.code}${index}`}
+                      key={`${attributeContext.attributeId}-${attributeOption.code}`}
                       data-is-selected={selectedOptionId === attributeOption.id}
                     >
                       {!isDraggable && (
@@ -202,7 +202,9 @@ const AttributeOptionTable = ({
                       <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code">
                         {attributeOption.code}
                       </Table.Cell>
-                      <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
+                      <Table.Cell>
+                        <AttributeOptionQualityBadge toImprove={attributeOption.toImprove}/>
+                      </Table.Cell>
                       <TableActionCell>
                         <IconButton
                           icon={<CloseIcon />}

@@ -6,6 +6,7 @@ import {
 } from './AttributeContext';
 
 import {LocalesContext, LocalesContextProvider, useLocalesContext} from './LocalesContext';
+import {AttributeOptionsContextProvider, AttributeOptionsContext} from './AttributeOptionsContextProvider';
 
 export * from './EditingOptionContext';
 
@@ -17,4 +18,6 @@ export {
   LocalesContext,
   LocalesContextProvider,
   useLocalesContext,
+  AttributeOptionsContextProvider,
+  AttributeOptionsContext,
 };
