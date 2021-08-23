@@ -91,7 +91,7 @@ SQL;
             $query,
             ['productIdentifiers' => $productIdentifiers],
             ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
-            )->fetchAll();
+        )->fetchAll();
 
         $results = [];
 

@@ -75,7 +75,8 @@ final class InitializeProductsEvaluationsCommand extends Command
     {
         $io->text('Computing number of products to initialize...');
 
-        $productCount = intval($this->dbConnection->executeQuery(<<<SQL
+        $productCount = intval($this->dbConnection->executeQuery(
+            <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product;
 SQL
         )->fetchColumn());
@@ -116,7 +117,8 @@ SQL;
     {
         $io->text('Computing number of product models to initialize...');
 
-        $productModelCount = intval($this->dbConnection->executeQuery(<<<SQL
+        $productModelCount = intval($this->dbConnection->executeQuery(
+            <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product_model;
 SQL
         )->fetchColumn());

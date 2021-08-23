@@ -161,7 +161,8 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $this->get('akeneo_connectivity.connection.fixtures.structure.family')
             ->create(['code' => 'family', 'attributes' => ['variant_attribute', 'text_attribute', 'another_text_attribute']]);
         $familyVariant = $this->get('akeneo_connectivity.connection.fixtures.structure.family_variant')
-            ->create([
+            ->create(
+                [
                     'code' => 'family_variant',
                     'family' => 'family',
                     'variant_attribute_sets' => [

@@ -32,7 +32,8 @@ class Value implements ArrayConverterInterface
     public function __construct(
         AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
-        ColumnsMerger $columnsMerger)
+        ColumnsMerger $columnsMerger
+    )
     {
         $this->attrFieldExtractor = $attrFieldExtractor;
         $this->converterRegistry = $converterRegistry;
@@ -152,8 +153,12 @@ class Value implements ArrayConverterInterface
             try {
                 return $converter->convert($attributeFieldInfo, $value);
             } catch (\Error $e) {
-                throw new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.",
-                    "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error", [$column], $e);
+                throw new BusinessArrayConversionException(
+                    "Exception while converting column \"{$column}\": bad input format.",
+                    "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error",
+                    [$column],
+                    $e
+                );
             }
         }
 

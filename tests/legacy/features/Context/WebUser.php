@@ -1424,7 +1424,8 @@ class WebUser extends PimContext
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
-        $this->spin(function () use ($attributes) {
+        $this->spin(
+            function () use ($attributes) {
             $expectedAttributes = $this->listToArray($attributes);
             $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
@@ -1437,11 +1438,12 @@ class WebUser extends PimContext
             }
 
             return true;
-        }, sprintf(
-                'Expected to see eligible attributes as label %s, actually saw %s',
-                json_encode($this->listToArray($attributes)),
-                json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
-            )
+        },
+            sprintf(
+            'Expected to see eligible attributes as label %s, actually saw %s',
+            json_encode($this->listToArray($attributes)),
+            json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
+        )
         );
     }
 
@@ -1737,9 +1739,10 @@ class WebUser extends PimContext
         $this->spin(function () use ($buttonLabel) {
             $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
             foreach ($buttons as $button) {
-                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                if ((
+                    strtolower(trim($button->getText())) === $buttonLabel ||
                         $button->getAttribute('title') === $buttonLabel
-                    ) && $button->isVisible()
+                ) && $button->isVisible()
                 ) {
                     $button->click();
 

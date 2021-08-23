@@ -22,8 +22,8 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof OptionValueInterface && (
-                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        );
     }
 
     public function hasCacheableSupportsMethod(): bool

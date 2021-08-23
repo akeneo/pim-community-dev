@@ -31,8 +31,8 @@ class MarkJobExecutionAsFailedWhenInterruptedCommand extends Command
                 'Job instance codes that need to have job executions to be cleaned. For example: "job_1,job_2".'
             )
             ->setDescription(
-            'Mark as failed the job executions that are stuck in status STARTED or STOPPING.'
-        );
+                'Mark as failed the job executions that are stuck in status STARTED or STOPPING.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

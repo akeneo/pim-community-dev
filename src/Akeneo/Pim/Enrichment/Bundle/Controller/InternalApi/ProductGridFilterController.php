@@ -143,8 +143,8 @@ class ProductGridFilterController
         foreach ($systemFilters as $code => $systemFilter) {
             $label = $this->translator->trans($systemFilter['label'], [], null, $locale);
             if (!in_array($code, ['scope', 'locale']) && (
-                    '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
-                )) {
+                '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
+            )) {
                 $formattedSystemFilters[] = [
                     'code' => $code,
                     'labels' => [$locale => $label],

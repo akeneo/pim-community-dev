@@ -36,7 +36,6 @@ final class DispatchProductModelRemovedEventSubscriber implements DispatchBuffer
         int $maxBulkSize,
         LoggerInterface $logger,
         LoggerInterface $loggerBusinessEvent
-
     ) {
         $this->security = $security;
         $this->messageBus = $messageBus;

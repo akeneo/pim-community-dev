@@ -66,12 +66,15 @@ class AssertionContext extends PimContext
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
-        $this->spin(function () use ($expectedTitle) {
+        $this->spin(
+            function () use ($expectedTitle) {
             return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
-        }, sprintf(
+        },
+            sprintf(
             'Incorrect title. Expected "%s", found "%s"',
             $expectedTitle,
-            $this->getCurrentPage()->getHeadTitle())
+            $this->getCurrentPage()->getHeadTitle()
+        )
         );
     }
 
@@ -525,7 +528,8 @@ class AssertionContext extends PimContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $this->spin(function () use ($count) {
+        $this->spin(
+            function () use ($count) {
             $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
             if (!$countContainer) {
@@ -540,9 +544,11 @@ class AssertionContext extends PimContext
             );
 
             return true;
-        }, sprintf(
+        },
+            sprintf(
             'Expecting to see %d new notifications',
-            $count)
+            $count
+        )
         );
     }
 
