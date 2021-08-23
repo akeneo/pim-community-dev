@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c89c5af32484c8799dc3a34c9345a64",
+    "content-hash": "19e43e8b87407b4244dc275f797ecbaa",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -9480,33 +9480,35 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.2.12",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "3c3afcc285c01c486d1c5504e7895026580495c4"
+                "reference": "f04e368e3cb35948550c7e95cc8918cb7e761c0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/3c3afcc285c01c486d1c5504e7895026580495c4",
-                "reference": "3c3afcc285c01c486d1c5504e7895026580495c4",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/f04e368e3cb35948550c7e95cc8918cb7e761c0c",
+                "reference": "f04e368e3cb35948550c7e95cc8918cb7e761c0c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-php80": "^1.16"
             },
             "conflict": {
+                "doctrine/annotations": "<1.12",
                 "phpdocumentor/reflection-docblock": "<3.2.2",
                 "phpdocumentor/type-resolver": "<1.4.0",
                 "symfony/dependency-injection": "<4.4",
                 "symfony/property-access": "<4.4",
-                "symfony/property-info": "<4.4",
+                "symfony/property-info": "<5.3",
                 "symfony/yaml": "<4.4"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.10.4",
+                "doctrine/annotations": "^1.12",
                 "phpdocumentor/reflection-docblock": "^3.2|^4.0|^5.0",
                 "symfony/cache": "^4.4|^5.0",
                 "symfony/config": "^4.4|^5.0",
@@ -9518,9 +9520,10 @@
                 "symfony/http-kernel": "^4.4|^5.0",
                 "symfony/mime": "^4.4|^5.0",
                 "symfony/property-access": "^4.4.9|^5.0.9",
-                "symfony/property-info": "^4.4|^5.0",
+                "symfony/property-info": "^5.3",
                 "symfony/uid": "^5.1",
                 "symfony/validator": "^4.4|^5.0",
+                "symfony/var-dumper": "^4.4|^5.0",
                 "symfony/var-exporter": "^4.4|^5.0",
                 "symfony/yaml": "^4.4|^5.0"
             },
@@ -9559,7 +9562,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.2.12"
+                "source": "https://github.com/symfony/serializer/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -9575,7 +9578,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T13:17:02+00:00"
+            "time": "2021-07-21T13:18:10+00:00"
         },
         {
             "name": "symfony/service-contracts",
