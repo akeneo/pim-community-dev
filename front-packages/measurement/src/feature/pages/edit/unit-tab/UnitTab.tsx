@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from '../../../model/measurement-family';
-import {MeasurementIllustration, Search, Table} from 'akeneo-design-system';
+import {MeasurementIllustration, Search, Table, useAutoFocus} from 'akeneo-design-system';
 import {UnitCode} from '../../../model/unit';
 import {UnitDetails} from './UnitDetails';
 import {UnitRow} from './UnitRow';
@@ -57,6 +57,9 @@ const UnitTab = ({
   const [searchValue, setSearchValue] = useState('');
 
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   return (
     <TabContainer>
@@ -66,6 +69,7 @@ const UnitTab = ({
             placeholder={translate('measurements.search.placeholder')}
             searchValue={searchValue}
             onSearchChange={setSearchValue}
+            inputRef={inputRef}
           >
             <Search.ResultCount>
               {translate('pim_common.result_count', {itemsCount: filteredUnits.length}, filteredUnits.length)}

@@ -1,5 +1,5 @@
-import React, {FC, useEffect, useState} from 'react';
-import {Search} from 'akeneo-design-system';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {Search, useAutoFocus} from 'akeneo-design-system';
 import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
@@ -25,6 +25,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   const {filteredGroups, search} = useFilteredAttributeGroups(groups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const debouncedSearch = useDebounceCallback(search, 300);
 
@@ -39,7 +42,12 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
 
   return (
     <>
-      <Search placeholder={translate('pim_common.search')} searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}>
+      <Search
+        placeholder={translate('pim_common.search')}
+        searchValue={searchString}
+        onSearchChange={onSearch}
+        inputRef={inputRef}
+      >
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
         </Search.ResultCount>

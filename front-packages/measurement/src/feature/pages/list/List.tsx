@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {
   MeasurementIllustration,
@@ -7,7 +7,7 @@ import {
   Information,
   Breadcrumb,
   useBooleanState,
-  Search
+  Search, useAutoFocus
 } from 'akeneo-design-system';
 import {
   NoDataSection,
@@ -58,6 +58,9 @@ const List = () => {
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useBooleanState(false);
   const settingsHref = useRoute('pim_settings_index');
   const featureFlags = useFeatureFlags();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -143,6 +146,7 @@ const List = () => {
               placeholder={translate('measurements.search.placeholder')}
               searchValue={searchValue}
               onSearchChange={setSearchValue}
+              inputRef={inputRef}
             >
               <Search.ResultCount>
                 {translate('pim_common.result_count', {itemsCount: filteredMeasurementFamiliesCount}, filteredMeasurementFamiliesCount)}

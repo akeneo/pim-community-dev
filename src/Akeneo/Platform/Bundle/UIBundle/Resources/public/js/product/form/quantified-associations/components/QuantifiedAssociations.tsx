@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button, Search} from 'akeneo-design-system';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button, Search, useAutoFocus} from 'akeneo-design-system';
 import {
   NoDataSection,
   NoDataTitle,
@@ -95,6 +95,9 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
@@ -155,6 +158,7 @@ const QuantifiedAssociations = ({
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
+        inputRef={inputRef}
       >
         <Search.ResultCount>
           {translate(

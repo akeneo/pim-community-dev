@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Breadcrumb, getFontSize, Pagination, Search} from 'akeneo-design-system';
+import React, {useState, useEffect, useRef} from 'react';
+import {Breadcrumb, getFontSize, Pagination, Search, useAutoFocus} from 'akeneo-design-system';
 import {
   PageContent,
   PageHeader,
@@ -44,6 +44,9 @@ const AssociationTypesIndex = () => {
   const settingsHomeRoute = useRoute('pim_settings_index');
 
   const {associationTypes, search} = useAssociationTypes();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   // The current page state is managed by the hook to avoid inconsistency with the total number of association types.
   const currentPage = null === associationTypes ? 0 : associationTypes.currentPage;
@@ -148,6 +151,7 @@ const AssociationTypesIndex = () => {
                 placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
                 className={'association-type-grid-search'}
+                inputRef={inputRef}
               >
                 <Search.ResultCount>
                   {translate('pim_common.result_count', {itemsCount: associationTypes.total}, associationTypes.total)}
