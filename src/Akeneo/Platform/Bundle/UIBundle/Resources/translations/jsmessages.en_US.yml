@@ -426,12 +426,3 @@ pim_system:
     disabled: SSO disabled
     title: SAML-based Single Sign-On
 
-pim_importexport:
-  job_profile:
-    edit:
-      duplicate:
-        modal:
-          title: Duplicate the job profile
-          subtitle: Job profile
-        flash:
-          success:
