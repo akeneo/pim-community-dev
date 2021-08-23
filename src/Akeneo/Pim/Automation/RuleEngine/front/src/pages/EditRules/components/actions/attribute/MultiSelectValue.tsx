@@ -27,8 +27,8 @@ const MultiSelectValue: React.FC<InputValueProps> = ({
   );
 };
 
-const render: (props: InputValueProps) => JSX.Element = (props) => {
-  return <MultiSelectValue {...props}/>;
-}
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <MultiSelectValue {...props} />;
+};
 
 export default render;

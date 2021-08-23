@@ -5,7 +5,7 @@ import ReactController, {
 } from '../dependenciesTools/reactController/ReactController';
 import {EditRules as EditRulesPage} from '../pages/EditRules';
 import {dependencies} from '../dependenciesTools/provider/dependencies';
-import {AttributeValueConfig, ConfigContext} from "../context/ConfigContext";
+import {AttributeValueConfig, ConfigContext} from '../context/ConfigContext';
 
 class EditRules extends ReactController {
   private isDirty = false;

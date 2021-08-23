@@ -38,13 +38,16 @@ describe('PriceCollectionValue', () => {
     });
 
     renderWithProviders(
-      render({
-        id: 'attribute-value-id',
-        name: 'attribute-value-name',
-        value: [],
-        attribute: priceAttribute,
-        onChange: jest.fn()
-      }, 'set'),
+      render(
+        {
+          id: 'attribute-value-id',
+          name: 'attribute-value-name',
+          value: [],
+          attribute: priceAttribute,
+          onChange: jest.fn(),
+        },
+        'set'
+      ),
       {all: true}
     );
 
@@ -70,14 +73,17 @@ describe('PriceCollectionValue', () => {
     });
 
     renderWithProviders(
-      render({
-        id: 'attribute-value-id',
-        name: 'attribute-value-name',
-        value: [],
-        attribute: priceAttribute,
-        onChange: jest.fn(),
-        scopeCode: 'ecommerce',
-      }, 'set'),
+      render(
+        {
+          id: 'attribute-value-id',
+          name: 'attribute-value-name',
+          value: [],
+          attribute: priceAttribute,
+          onChange: jest.fn(),
+          scopeCode: 'ecommerce',
+        },
+        'set'
+      ),
       {all: true}
     );
 
@@ -100,13 +106,16 @@ describe('PriceCollectionValue', () => {
 
     const onChange = jest.fn();
     renderWithProviders(
-      render({
-        id: 'attribute-value-id',
-        name: 'attribute-value-name',
-        value: [{amount: 69, currency: 'EUR'}],
-        attribute: priceAttribute,
-        onChange: onChange,
-      }, 'set'),
+      render(
+        {
+          id: 'attribute-value-id',
+          name: 'attribute-value-name',
+          value: [{amount: 69, currency: 'EUR'}],
+          attribute: priceAttribute,
+          onChange: onChange,
+        },
+        'set'
+      ),
       {all: true}
     );
 
@@ -130,13 +139,16 @@ describe('PriceCollectionValue', () => {
 
     const onChange = jest.fn();
     renderWithProviders(
-      render({
-        id: 'attribute-value-id',
-        name: 'attribute-value-name',
-        value: [{amount: 69, currency: 'EUR'}],
-        attribute: priceAttribute,
-        onChange: onChange,
-      }, 'set'),
+      render(
+        {
+          id: 'attribute-value-id',
+          name: 'attribute-value-name',
+          value: [{amount: 69, currency: 'EUR'}],
+          attribute: priceAttribute,
+          onChange: onChange,
+        },
+        'set'
+      ),
       {all: true}
     );
 

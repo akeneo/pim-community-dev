@@ -23,8 +23,8 @@ const DateValue: React.FC<InputValueProps> = ({
   );
 };
 
-const render: (props: InputValueProps) => JSX.Element = (props) => {
-  return <DateValue {...props}/>;
-}
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <DateValue {...props} />;
+};
 
 export default render;

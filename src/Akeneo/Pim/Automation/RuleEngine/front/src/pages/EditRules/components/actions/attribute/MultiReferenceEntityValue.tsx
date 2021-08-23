@@ -49,8 +49,13 @@ const MultiReferenceEntityValue: React.FC<InputValueProps> = ({
   );
 };
 
-const render: (props: InputValueProps) => JSX.Element = (props) => {
-  return <MultiReferenceEntityValue {...props} value={parseMultiReferenceEntityValue(props.value)}/>;
-}
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return (
+    <MultiReferenceEntityValue
+      {...props}
+      value={parseMultiReferenceEntityValue(props.value)}
+    />
+  );
+};
 
 export default render;

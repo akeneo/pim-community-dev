@@ -9,15 +9,16 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import {
-  FallbackValue,
-} from './';
+import {FallbackValue} from './';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import {ActionFormContainer} from '../style';
-import {AttributeValueConfig, ConfigContext} from "../../../../../context/ConfigContext";
+import {
+  AttributeValueConfig,
+  ConfigContext,
+} from '../../../../../context/ConfigContext';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -63,7 +64,7 @@ const getValueModule = (
   attribute: Attribute,
   attributeValueConfig: AttributeValueConfig,
   props: InputValueProps,
-  actionType?: string,
+  actionType?: string
 ) => {
   const render = attributeValueConfig[attribute.type]?.default;
   if (render) {
@@ -149,7 +150,7 @@ const AttributeValue: React.FC<Props> = ({
             validation,
             scopeCode,
           },
-          actionType,
+          actionType
         ) ?? (
           <FallbackValue
             id={id}

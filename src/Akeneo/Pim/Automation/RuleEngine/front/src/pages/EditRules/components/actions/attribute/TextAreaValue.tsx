@@ -33,8 +33,8 @@ const TextAreaValue: React.FC<InputValueProps> = ({
   );
 };
 
-const render: (props: InputValueProps) => JSX.Element = (props) => {
-  return <TextAreaValue {...props}/>;
-}
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <TextAreaValue {...props} />;
+};
 
 export default render;
