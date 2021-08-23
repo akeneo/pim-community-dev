@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleSelectValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels;
 use PHPUnit\Framework\Assert;
 
@@ -32,13 +35,13 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadOptions();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -46,24 +49,44 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the code' => [
                 'operations' => [],
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new SimpleSelectValue('cotton'),
                 'expected' => [self::TARGET_NAME => 'cotton']
             ],
-            [
+            'it selects the label' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('cotton'),
                 'expected' => [self::TARGET_NAME => 'Cotton']
             ],
-            [
+            'it fallbacks on the code when label is not found' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('option_without_label'),
                 'expected' => [self::TARGET_NAME => '[option_without_label]']
-            ]
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new SimpleSelectValue('cotton'),
+                'expected' => [self::TARGET_NAME => 'cotton']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
         ];
     }
 

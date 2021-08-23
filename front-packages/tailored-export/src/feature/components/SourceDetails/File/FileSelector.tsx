@@ -1,7 +1,7 @@
-import React from 'react';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
-import {Section, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {FileSelection} from './model';
+import React, {useState} from 'react';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {FileSelection, isDefaultFileSelection} from './model';
 
 type FileSelectorProps = {
   selection: FileSelection;
@@ -11,10 +11,22 @@ type FileSelectorProps = {
 
 const FileSelector = ({selection, validationErrors, onSelectionChange}: FileSelectorProps) => {
   const translate = useTranslate();
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const typeErrors = filterErrors(validationErrors, '[type]');
 
   return (
-    <Section>
+    <Collapse
+      collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultFileSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
+      isOpen={isSelectorCollapsed}
+      onCollapse={toggleSelectorCollapse}
+    >
       <Field label={translate('pim_common.type')}>
         <SelectInput
           clearable={false}
@@ -56,7 +68,7 @@ const FileSelector = ({selection, validationErrors, onSelectionChange}: FileSele
           </Helper>
         ))}
       </Field>
-    </Section>
+    </Collapse>
   );
 };
 

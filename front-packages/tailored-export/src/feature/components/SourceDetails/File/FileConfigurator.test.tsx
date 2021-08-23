@@ -1,13 +1,10 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FileConfigurator} from './FileConfigurator';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
 import {FileSelection, getDefaultFileSource} from './model';
 import {getDefaultTextSource} from '../Text/model';
-import {AssociationType} from '../../../models';
 
 const attribute = {
   code: 'file',
@@ -18,15 +15,6 @@ const attribute = {
   is_locale_specific: false,
   available_locales: [],
 };
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('./FileSelector', () => ({
   FileSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: FileSelection) => void}) => (
@@ -42,10 +30,12 @@ jest.mock('./FileSelector', () => ({
   ),
 }));
 
-test('it displays a file configurator', async () => {
+jest.mock('../common/DefaultValue');
+
+test('it displays a file configurator', () => {
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <FileConfigurator
       source={{
         ...getDefaultFileSource(attribute, null, null),
@@ -68,20 +58,50 @@ test('it displays a file configurator', async () => {
   });
 });
 
-test('it does not render if the source is not valid', async () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+test('it can update default value operation', () => {
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <FileConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
+      source={{
+        ...getDefaultFileSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
       attribute={attribute}
       validationErrors={[]}
       onSourceChange={onSourceChange}
     />
   );
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "file" for file configurator');
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultFileSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it tells when the source data is invalid', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
+
+  expect(() => {
+    renderWithProviders(
+      <FileConfigurator
+        source={getDefaultTextSource(dateAttribute, null, null)}
+        attribute={dateAttribute}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Invalid source data "date_attribute" for file configurator');
+
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

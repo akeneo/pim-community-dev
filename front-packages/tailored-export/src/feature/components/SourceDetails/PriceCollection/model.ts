@@ -1,6 +1,7 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
 
@@ -30,13 +31,22 @@ const isPriceCollectionSelection = (selection: any): selection is PriceCollectio
     ('currency_code' === selection.type || 'amount' === selection.type)) ||
   ('currency_label' === selection.type && 'locale' in selection);
 
+const getDefaultPriceCollectionSelection = (): PriceCollectionSelection => ({type: 'amount', separator: ','});
+
+const isDefaultPriceCollectionSelection = (selection?: PriceCollectionSelection): boolean =>
+  'amount' === selection?.type && ',' === selection?.separator;
+
+type PriceCollectionOperations = {
+  default_value?: DefaultValueOperation;
+};
+
 type PriceCollectionSource = {
   uuid: string;
   code: string;
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: PriceCollectionOperations;
   selection: PriceCollectionSelection;
 };
 
@@ -51,15 +61,26 @@ const getDefaultPriceCollectionSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'amount', separator: ','},
+  selection: getDefaultPriceCollectionSelection(),
 });
 
+const isPriceCollectionOperations = (operations: Object): operations is PriceCollectionOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
 const isPriceCollectionSource = (source: Source): source is PriceCollectionSource =>
-  isPriceCollectionSelection(source.selection);
+  isPriceCollectionSelection(source.selection) && isPriceCollectionOperations(source.operations);
 
 export {
   availableSeparators,
   getDefaultPriceCollectionSource,
+  isDefaultPriceCollectionSelection,
   isPriceCollectionSource,
   isPriceCollectionSelection,
   isPriceCollectionSeparator,

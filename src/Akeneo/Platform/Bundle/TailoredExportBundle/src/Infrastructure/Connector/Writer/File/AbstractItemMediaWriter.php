@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -66,7 +68,7 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * {@inheritdoc}
-     * @param array<array> $items
+     * @param array<ProcessedTailoredExport> $items
      */
     public function write(array $items): void
     {
@@ -74,10 +76,10 @@ abstract class AbstractItemMediaWriter implements
         if (!empty($items) && $this->numberOfWrittenLines === 0) {
             $this->writer = $this->fileWriterFactory->build();
             $this->writer->openToFile($this->openedPath);
-            $this->addHeadersIfNeeded(current($items));
+            $this->addHeadersIfNeeded(current($items)->getItems());
         }
 
-        foreach ($items as $item) {
+        foreach ($items as $processedTailoredExport) {
             if ($this->isMaxLinesPerFileReached()) {
                 $this->writer->close();
                 $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
@@ -85,11 +87,11 @@ abstract class AbstractItemMediaWriter implements
                 $this->writer = $this->fileWriterFactory->build();
                 $this->openedPath = $this->getPath();
                 $this->writer->openToFile($this->openedPath);
-                $this->addHeadersIfNeeded($item);
+                $this->addHeadersIfNeeded($processedTailoredExport->getItems());
             }
 
-
-            $this->writer->addRow($item);
+            $this->writer->addRow($processedTailoredExport->getItems());
+            $this->writeMedia($processedTailoredExport->getExtractedMediaCollection());
             $this->numberOfWrittenLines++;
         }
 
@@ -210,5 +212,28 @@ abstract class AbstractItemMediaWriter implements
         }
 
         return $this->numberOfWrittenLines > 0 && $this->numberOfWrittenLines % $this->getMaxLinesPerFile() === 0;
+    }
+
+    /**
+     * @var ExtractedMedia[] $extractedMediaCollection
+     */
+    private function writeMedia(array $extractedMediaCollection): void
+    {
+        if (empty($extractedMediaCollection)) {
+            return;
+        }
+
+        $parameters = $this->getStepExecution()->getJobParameters();
+        if (!$parameters->has('with_media') || !$parameters->get('with_media')) {
+            return;
+        }
+
+        foreach ($extractedMediaCollection as $mediaToWrite) {
+            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                $mediaToWrite->getKey(),
+                $mediaToWrite->getStorage(),
+                $mediaToWrite->getPath()
+            );
+        }
     }
 }

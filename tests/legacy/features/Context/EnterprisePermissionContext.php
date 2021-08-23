@@ -58,23 +58,22 @@ class EnterprisePermissionContext extends PimContext
                 // shows the list of options
                 $inputField->focus();
 
-                $backdrop = $this->getCurrentPage()->find('css', 'div[data-testId=backdrop]');
+                $backdrop = $this->getCurrentPage()->find('css', 'div[data-testid="backdrop"]');
                 if (!$backdrop) {
                     return false;
                 }
 
+                $overlayRoot = $this->getCurrentPage()->findById('input-overlay-root');
                 foreach ($userGroups as $userGroup) {
-                    $option = $backdrop->getParent()->find('named', ['content', $userGroup]);
+                    $option = $overlayRoot->find('named', ['content', $userGroup]);
                     if (!$option) {
                         return false;
                     }
+
                     $option->click();
                 }
 
-                // Closes the list of options
-                $backdrop->focus(); // Need to focus on the backdrop before closing it
-                $backdrop->getParent()->getParent()->getParent()->click();
-
+                $this->closeBackdrop();
                 return true;
             }, sprintf('Cannot fill the field %s', $field));
         }
@@ -100,5 +99,13 @@ class EnterprisePermissionContext extends PimContext
 
             return true;
         }, sprintf('Cannot remove permission on the field %s', $field));
+    }
+
+    /**
+     * Cannot click on backdrop with behat because when behat click, it click the middle of the element at this position it's the option list
+     */
+    private function closeBackdrop()
+    {
+        $this->getSession()->executeScript("document.querySelector('[data-testid=backdrop]').click()");
     }
 }

@@ -19,10 +19,14 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTyp
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQuery;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -38,14 +42,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        MapValuesQueryHandler $mapValuesQueryHandler,
+        ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
         $this->beConstructedWith(
             $getAttributes,
             $getAssociationTypes,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
-            $productMapper
+            $mapValuesQueryHandler,
+            $extractMediaQueryHandler
         );
         $this->setStepExecution($stepExecution);
 
@@ -59,8 +65,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ColumnCollection $columnCollection,
-        ProductMapper $productMapper
+        MapValuesQueryHandler $mapValuesQueryHandler,
+        ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
         $columns = [
             [
@@ -113,7 +119,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $crossSellAssociation = $this->createAssociationType('X_SELL');
         $valueCollection = new ValueCollection();
         $valueCollection->add(new StringValue('some_data'), 'name', null, null);
-        $mappedProduct = [
+        $mappedProducts = [
             'categories-export' => 'my category',
             'name-export' => 'name value',
         ];
@@ -121,11 +127,17 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $jobParameters->get('columns')->willReturn($columns);
         $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
         $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
-        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
+        $columnCollection = ColumnCollection::create([]);
+        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])
+            ->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
-        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
 
-        $this->process($product)->shouldReturn($mappedProduct);
+        $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection))->willReturn($mappedProducts);
+        $extractMediaQueryHandler->handle(new ExtractMediaQuery($columnCollection, $valueCollection))->willReturn([]);
+
+        $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
+
+        $this->process($product)->shouldBeLike($processedTailoredExport);
     }
 
     private function createAttribute(string $code): Attribute

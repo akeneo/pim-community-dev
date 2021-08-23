@@ -34,6 +34,12 @@ fi
 kubeval="${kubeval} --kubernetes-version ${K8S_MASTER_VERSION} --schema-location file://."
 
 echo "Kubeval for k8s version ${K8S_MASTER_VERSION}"
+yq d -i ${PED_DIR}/terraform/pim/values.yaml 'pim.jobs'
+yq m -i -x ${PED_DIR}/terraform/pim/values.yaml ${PED_DIR}/terraform/pim/values-${TYPE}.yaml
+echo "********************************************"
+echo "*********  File values.yaml used  **********"
+echo "********************************************"
+cat ${PED_DIR}/terraform/pim/values.yaml
 if (($WITH_ONBOARDER == 0)); then
     yq d ${PED_DIR}/config/fake-tf-helm-pim-values.yaml onboarder > ${PED_DIR}/config/fake-tf-helm-pim-values-without-onboarder.yaml
     helm3 template ${PED_DIR}/terraform/pim \

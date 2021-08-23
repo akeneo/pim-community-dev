@@ -6,3 +6,11 @@ suites:
     spec_path: tests/back/Platform
     src_path: src/Akeneo/Platform
     spec_prefix: Specification
+
+  ## Free Trial
+  FreeTrial:
+    namespace: Akeneo\FreeTrial
+    psr4_prefix: Akeneo\FreeTrial
+    spec_path: src/Akeneo/FreeTrial/tests/back/
+    src_path: src/Akeneo/FreeTrial/back
+    spec_prefix: Specification

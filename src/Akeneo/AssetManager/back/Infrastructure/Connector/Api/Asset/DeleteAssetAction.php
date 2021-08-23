@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -36,8 +37,12 @@ class DeleteAssetAction
 
     public function __invoke(string $assetFamilyIdentifier, string $code): Response
     {
-        $assetCode = AssetCode::fromString($code);
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
+        try {
+            $assetCode = AssetCode::fromString($code);
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
 
         $command = new DeleteAssetCommand($assetCode->normalize(), $assetFamilyIdentifier->normalize());
 

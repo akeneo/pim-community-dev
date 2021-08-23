@@ -6,55 +6,52 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Date\DateSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Date\DateSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\FamilyVariant\FamilyVariantCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\FamilyVariant\FamilyVariantLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileKeySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Number\NumberSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectLabelSelection;
 
 class SelectionHydrator
 {
-    public function createPropertySelection(array $selectionConfiguration, string $propertyName)
+    public function createPropertySelection(array $selectionConfiguration, string $propertyName): SelectionInterface
     {
         switch ($propertyName) {
             case 'categories':
@@ -118,18 +115,21 @@ class SelectionHydrator
         return $this->createSimpleAssociationsSelection($selectionConfiguration);
     }
 
-    private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): AssetCollectionSelectionInterface
+    private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case AssetCollectionCodeSelection::TYPE:
                 return new AssetCollectionCodeSelection(
-                    $selectionConfiguration['separator']
+                    $selectionConfiguration['separator'],
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             case AssetCollectionLabelSelection::TYPE:
                 return new AssetCollectionLabelSelection(
                     $selectionConfiguration['separator'],
                     $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name']
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             default:
                 throw new \LogicException(
@@ -138,15 +138,15 @@ class SelectionHydrator
         }
     }
 
-    private function createFileSelection(array $selectionConfiguration, Attribute $attribute): FileSelectionInterface
+    private function createFileSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FilePathSelection::TYPE:
                 return new FilePathSelection($attribute->code());
             case FileKeySelection::TYPE:
-                return new FileKeySelection();
+                return new FileKeySelection($attribute->code());
             case FileNameSelection::TYPE:
-                return new FileNameSelection();
+                return new FileNameSelection($attribute->code());
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
@@ -154,11 +154,11 @@ class SelectionHydrator
         }
     }
 
-    private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case MeasurementValueSelection::TYPE:
-                return new MeasurementValueSelection();
+                return new MeasurementValueSelection($selectionConfiguration['decimal_separator'] ?? '.');
             case MeasurementUnitCodeSelection::TYPE:
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitLabelSelection::TYPE:
@@ -173,7 +173,7 @@ class SelectionHydrator
         }
     }
 
-    private function createMultiselectSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createMultiselectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case MultiSelectCodeSelection::TYPE:
@@ -193,7 +193,7 @@ class SelectionHydrator
         }
     }
 
-    private function createSimpleSelectSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createSimpleSelectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case SimpleSelectCodeSelection::TYPE:
@@ -210,7 +210,7 @@ class SelectionHydrator
         }
     }
 
-    private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case PriceCollectionCurrencyCodeSelection::TYPE:
@@ -226,7 +226,7 @@ class SelectionHydrator
         }
     }
 
-    private function createReferenceEntitySelection(array $selectionConfiguration, Attribute $attribute)
+    private function createReferenceEntitySelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ReferenceEntityCodeSelection::TYPE:
@@ -243,7 +243,7 @@ class SelectionHydrator
         }
     }
 
-    private function createReferenceEntityCollectionSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createReferenceEntityCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ReferenceEntityCollectionCodeSelection::TYPE:
@@ -263,7 +263,7 @@ class SelectionHydrator
         }
     }
 
-    private function createCategoriesSelection(array $selectionConfiguration)
+    private function createCategoriesSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case CategoriesCodeSelection::TYPE:
@@ -282,7 +282,7 @@ class SelectionHydrator
         }
     }
 
-    private function createFamilySelection(array $selectionConfiguration)
+    private function createFamilySelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FamilyCodeSelection::TYPE:
@@ -296,7 +296,7 @@ class SelectionHydrator
         }
     }
 
-    private function createFamilyVariantSelection(array $selectionConfiguration)
+    private function createFamilyVariantSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FamilyVariantCodeSelection::TYPE:
@@ -310,7 +310,7 @@ class SelectionHydrator
         }
     }
 
-    private function createGroupsSelection(array $selectionConfiguration)
+    private function createGroupsSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case GroupsCodeSelection::TYPE:
@@ -329,7 +329,7 @@ class SelectionHydrator
         }
     }
 
-    private function createParentSelection(array $selectionConfiguration)
+    private function createParentSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ParentCodeSelection::TYPE:
@@ -346,7 +346,7 @@ class SelectionHydrator
         }
     }
 
-    private function createSimpleAssociationsSelection(array $selectionConfiguration)
+    private function createSimpleAssociationsSelection(array $selectionConfiguration): SelectionInterface
     {
         $entityType = $selectionConfiguration['entity_type'];
         switch ($selectionConfiguration['type']) {
@@ -373,7 +373,7 @@ class SelectionHydrator
         }
     }
 
-    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): QuantifiedAssociationsSelectionInterface
+    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case QuantifiedAssociationsCodeSelection::TYPE:

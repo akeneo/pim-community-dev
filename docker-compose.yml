@@ -54,7 +54,7 @@ services:
       - 'pim'
 
   selenium:
-    image: 'selenium/standalone-chrome-debug:3'
+    image: 'selenium/standalone-chrome-debug:3.141.59-20210713'
     volumes:
       - './:/srv/pim:ro'
       - '/dev/shm:/dev/shm'

@@ -10,6 +10,8 @@ import {
   removeSource,
   updateSource,
   Source,
+  MAX_SOURCE_COUNT,
+  Format,
 } from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
@@ -20,6 +22,7 @@ import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
+import {SourcesConcatenation} from './SourcesConcatenation/SourcesConcatenation';
 
 const Container = styled.div`
   height: 100%;
@@ -27,12 +30,17 @@ const Container = styled.div`
   width: 400px;
   display: flex;
   flex-direction: column;
-  padding: 0px 4px;
-  display: flex;
-  flex-direction: column;
 `;
 
-const Content = styled.div`
+const ConfiguratorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const SourcesContent = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
 `;
 
@@ -56,14 +64,13 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const handleSourceChange = (updatedSource: Source) => {
     onColumnChange(updateSource(columnConfiguration, updatedSource));
   };
+
   const handleSourceRemove = (currentSource: Source) => {
     onColumnChange(removeSource(columnConfiguration, currentSource));
     switchTo(firstSource);
   };
 
-  useEffect(() => {
-    switchTo(firstSource);
-  }, [switchTo, firstSource]);
+  const handleFormatChange = (format: Format) => onColumnChange({...columnConfiguration, format});
 
   const attributeFetcher = useFetchers().attribute;
   const associationTypeFetcher = useFetchers().associationType;
@@ -71,32 +78,40 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const handleSourceAdd = async (addedSourceCode: string, sourceType: string) => {
     if (sourceType === 'property') {
       const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     } else if (sourceType === 'association_type') {
       const [associationType] = await associationTypeFetcher.fetchByCodes([addedSourceCode]);
       const updatedColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([addedSourceCode]);
       const updatedColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     }
   };
 
   const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
   const validationErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, false);
+  const formatErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][format]`, false);
+
+  useEffect(() => {
+    switchTo(firstSource);
+  }, [switchTo, firstSource]);
 
   return (
     <Container>
-      <SourcesSectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
-        <SectionTitle.Spacer />
-        <AddSourceDropdown onSourceSelected={handleSourceAdd} />
-      </SourcesSectionTitle>
-      <Content>
+      <SourcesContent>
+        <SourcesSectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
+          <SectionTitle.Spacer />
+          <AddSourceDropdown
+            canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
+            onSourceSelected={handleSourceAdd}
+          />
+        </SourcesSectionTitle>
         {columnConfiguration.sources.length !== 0 && (
           <SourceTabBar
             validationErrors={validationErrors}
@@ -110,30 +125,40 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        {'attribute' === currentSource?.type && (
-          <AttributeSourceConfigurator
-            source={currentSource}
-            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
-            onSourceChange={handleSourceChange}
-          />
-        )}
-        {'property' === currentSource?.type && (
-          <PropertySourceConfigurator
-            source={currentSource}
-            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
-            onSourceChange={handleSourceChange}
-          />
-        )}
-        {'association_type' === currentSource?.type && (
-          <AssociationTypeSourceConfigurator
-            source={currentSource}
-            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
-            onSourceChange={handleSourceChange}
-          />
-        )}
+        <ConfiguratorContainer>
+          {'attribute' === currentSource?.type && (
+            <AttributeSourceConfigurator
+              source={currentSource}
+              validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+              onSourceChange={handleSourceChange}
+            />
+          )}
+          {'property' === currentSource?.type && (
+            <PropertySourceConfigurator
+              source={currentSource}
+              validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+              onSourceChange={handleSourceChange}
+            />
+          )}
+          {'association_type' === currentSource?.type && (
+            <AssociationTypeSourceConfigurator
+              source={currentSource}
+              validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+              onSourceChange={handleSourceChange}
+            />
+          )}
+          {0 === columnConfiguration.sources.length && <NoSourcePlaceholder />}
+        </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
-        {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
-      </Content>
+      </SourcesContent>
+      {0 < columnConfiguration.sources.length && (
+        <SourcesConcatenation
+          validationErrors={formatErrors}
+          sources={columnConfiguration.sources}
+          format={columnConfiguration.format}
+          onFormatChange={handleFormatChange}
+        />
+      )}
     </Container>
   );
 };

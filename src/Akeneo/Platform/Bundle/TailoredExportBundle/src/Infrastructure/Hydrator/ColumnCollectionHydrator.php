@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 
 class ColumnCollectionHydrator
 {
     private SelectionHydrator $selectionHydrator;
+    private FormatHydrator $formatHydrator;
 
     public function __construct(
-        SelectionHydrator $selectionHydrator
+        SelectionHydrator $selectionHydrator,
+        FormatHydrator $formatHydrator
     ) {
         $this->selectionHydrator = $selectionHydrator;
+        $this->formatHydrator = $formatHydrator;
     }
 
     public function hydrate(array $columns, array $indexedAttributes, array $indexedAssociationTypes): ColumnCollection
@@ -28,9 +31,14 @@ class ColumnCollectionHydrator
         $columnCollection = array_map(
             fn ($column) => new Column(
                 $column['target'],
-                $this->hydrateSourceCollection($column['sources'], $indexedAttributes, $indexedAssociationTypes)
+                $this->hydrateSourceCollection(
+                    $column['sources'],
+                    $indexedAttributes,
+                    $indexedAssociationTypes,
+                ),
+                $this->formatHydrator->hydrate($column['format']),
             ),
-            $columns
+            $columns,
         );
 
         return ColumnCollection::create($columnCollection);
@@ -54,20 +62,22 @@ class ColumnCollectionHydrator
                 $selection = $this->selectionHydrator->createAttributeSelection($source['selection'], $attribute);
 
                 return new AttributeSource(
+                    $source['uuid'],
                     $attribute->type(),
                     $source['code'],
                     $source['channel'],
                     $source['locale'],
                     $operations,
-                    $selection
+                    $selection,
                 );
             } elseif (PropertySource::TYPE === $source['type']) {
                 $selection = $this->selectionHydrator->createPropertySelection($source['selection'], $source['code']);
 
                 return new PropertySource(
+                    $source['uuid'],
                     $source['code'],
                     $operations,
-                    $selection
+                    $selection,
                 );
             } elseif (AssociationTypeSource::TYPE === $source['type']) {
                 $associationType = $indexedAssociationTypes[$source['code']] ?? null;
@@ -78,10 +88,11 @@ class ColumnCollectionHydrator
                 $selection = $this->selectionHydrator->createAssociationSelection($source['selection'], $associationType);
 
                 return new AssociationTypeSource(
+                    $source['uuid'],
                     $source['code'],
                     $associationType->isQuantified(),
                     $operations,
-                    $selection
+                    $selection,
                 );
             }
 

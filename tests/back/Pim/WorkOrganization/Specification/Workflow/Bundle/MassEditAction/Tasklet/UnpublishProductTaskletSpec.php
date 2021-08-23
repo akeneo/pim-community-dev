@@ -64,12 +64,11 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration(
-        $paginatorFactory,
-        $manager,
-        $cursor,
-        $authorizationChecker,
-        $pqbFactory,
-        $pqb,
+        PublishedProductManager $manager,
+        CursorInterface $cursor,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilder $pqb,
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
@@ -89,15 +88,11 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($filters);
         $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
 
-        $paginator = [
-            [
-                $pubProduct1,
-                $pubProduct2
-            ]
-        ];
-
         $cursor->count()->willReturn(2);
-        $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
+        $cursor->valid()->willReturn(true, true, false);
+        $cursor->current()->willReturn($pubProduct1, $pubProduct2);
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
@@ -113,12 +108,11 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
     }
 
     function it_skips_product_when_user_does_not_have_own_right_on_it(
-        $paginatorFactory,
-        $manager,
-        $cursor,
-        $authorizationChecker,
-        $pqbFactory,
-        $pqb,
+        PublishedProductManager $manager,
+        CursorInterface $cursor,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilder $pqb,
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
@@ -138,15 +132,11 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($filters);
         $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
 
-        $paginator = [
-            [
-                $pubProduct1,
-                $pubProduct2
-            ]
-        ];
-
         $cursor->count()->willReturn(2);
-        $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
+        $cursor->valid()->willReturn(true, true, false);
+        $cursor->current()->willReturn($pubProduct1, $pubProduct2);
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);

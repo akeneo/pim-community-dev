@@ -338,6 +338,49 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
     }
 
+    public function it_does_not_evaluate_text_coming_from_word(
+        MultipleTextsChecker $textChecker,
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        SupportedLocaleValidator $supportedLocaleValidator,
+        FilterProductValuesForSpelling $filterProductValuesForSpelling
+    ) {
+        $productId = new ProductId(1);
+        $criterionEvaluation = new Write\CriterionEvaluation(
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            $productId,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US'],
+        ]));
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
+
+        $text = <<<TEXT
+        <p><!--[if gte mso 9]><xml>\\n <o:OfficeDocumentSettings>\\n  <o:AllowPNG></o:AllowPNG>\\n </o:OfficeDocumentSettings>\\n</xml><![endif]--><!--[if gte mso 9]><xml>\\n <w:WordDocument>\\n  <w:View>Normal</w:View>\\n  <w:Zoom>0</w:Zoom>\\n  <w:TrackMoves></w:TrackMoves>\\n  <w:TrackFormatting></w:TrackFormatting>\\n  <![endif]--><strong>test</strong><strong>
+        TEXT;
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => ['en_US' => $text],
+        ], function ($value) { return $value; });
+
+        $productTextareaValues = new ProductValues($attributeTextarea, $textareaValues);
+
+        $productValues = (new ProductValuesCollection())->add($productTextareaValues);
+
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([$productTextareaValues]);
+
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+
+        $textChecker->check(Argument::cetera(), $localeEn)->shouldNotBeCalled();
+
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable());
+
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
+    }
+
     private function givenALocalizableAttributeOfTypeText(string $code): Attribute
     {
         return new Attribute(new AttributeCode($code), AttributeType::text(), true);

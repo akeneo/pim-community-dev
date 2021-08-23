@@ -5,7 +5,7 @@ import {AkeneoThemedProps, Badge, getColor, getFontSize} from 'akeneo-design-sys
 import {ApproveAllButton, ApproveButton, RejectAllButton, RejectButton, RemoveAllButton} from './proposalActions';
 import {ScopeLabel} from './ScopeLabel';
 import {LocaleLabel} from './LocaleLabel';
-import {ProposalChange} from './ProposalChange';
+import {ProposalChange, ProposalDiffsConfig} from './ProposalChange';
 
 const ProposalContainer = styled.div`
   .proposalActionButton {
@@ -147,6 +147,7 @@ type ProposalProps = {
   authorCode: string;
   createdAt: string;
   proposalId: number;
+  proposalDiffs: ProposalDiffsConfig;
 };
 
 const Proposal: React.FC<ProposalProps> = ({
@@ -158,6 +159,7 @@ const Proposal: React.FC<ProposalProps> = ({
   authorCode,
   createdAt,
   proposalId,
+  proposalDiffs,
 }) => {
   const router = useRouter();
   const translate = useTranslate();
@@ -243,6 +245,7 @@ const Proposal: React.FC<ProposalProps> = ({
                     change={change}
                     accessor="before"
                     className="original-value"
+                    proposalDiffs={proposalDiffs}
                   />
                 </div>
               )}
@@ -254,6 +257,7 @@ const Proposal: React.FC<ProposalProps> = ({
                     change={change}
                     accessor="after"
                     className="new-value"
+                    proposalDiffs={proposalDiffs}
                   />
                 </div>
               )}

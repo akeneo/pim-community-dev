@@ -1,0 +1,15 @@
+services:
+  Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository:
+    class: Akeneo\FreeTrial\Infrastructure\MySql\MySqlInvitedUserRepository
+    arguments:
+      - '@database_connection'
+
+  Akeneo\FreeTrial\Domain\Query\GetInvitedUsersQuery:
+    class: Akeneo\FreeTrial\Infrastructure\MySql\MySqlGetInvitedUsersQuery
+    arguments:
+      - '@database_connection'
+
+  Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery:
+    class: Akeneo\FreeTrial\Infrastructure\MySql\MySqlGetInvitedUserQuery
+    arguments:
+      - '@database_connection'

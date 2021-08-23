@@ -10,6 +10,8 @@ import {
   updateSource,
   removeSource,
   addAssociationTypeSource,
+  filterEmptyOperations,
+  filterColumns,
 } from './ColumnConfiguration';
 import {Source} from './Source';
 import {AssociationType} from './AssociationType';
@@ -124,7 +126,11 @@ const attribute: Attribute = {
 
 test('it creates a column', () => {
   expect(createColumn('Identifier', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df')).toEqual({
-    format: {elements: [], type: 'concat'},
+    format: {
+      elements: [],
+      type: 'concat',
+      space_between: true,
+    },
     sources: [],
     target: 'Identifier',
     uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -160,15 +166,17 @@ test('it updates a column', () => {
   expect(updateColumn([anotherColumn, existingColumn], columnToUpdate)).toEqual([anotherColumn, columnToUpdate]);
 });
 
-test('it add attribute source', () => {
+test('it adds attribute source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
   const newColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
+  const firstSourceUuid = newColumnConfiguration.sources[0].uuid;
+
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
     sources: [
       {
-        uuid: newColumnConfiguration.sources[0].uuid,
+        uuid: firstSourceUuid,
         type: 'attribute',
         code: 'name',
         channel: 'ecommerce',
@@ -181,7 +189,14 @@ test('it add attribute source', () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: firstSourceUuid,
+          value: firstSourceUuid,
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -201,12 +216,14 @@ test('it adds a locale specific attribute source', () => {
   };
 
   const newColumnConfiguration = addAttributeSource(columnConfiguration, localeSpecificAttribute, channels);
+  const firstSourceUuid = newColumnConfiguration.sources[0].uuid;
+
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
     sources: [
       {
-        uuid: newColumnConfiguration.sources[0].uuid,
+        uuid: firstSourceUuid,
         type: 'attribute',
         code: 'name',
         channel: 'ecommerce',
@@ -219,7 +236,14 @@ test('it adds a locale specific attribute source', () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: firstSourceUuid,
+          value: firstSourceUuid,
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -227,12 +251,14 @@ test('it adds a locale specific attribute source', () => {
 test('it adds property source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
   const newColumnConfiguration = addPropertySource(columnConfiguration, 'categories');
+  const firstSourceUuid = newColumnConfiguration.sources[0].uuid;
+
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
     sources: [
       {
-        uuid: newColumnConfiguration.sources[0].uuid,
+        uuid: firstSourceUuid,
         type: 'property',
         code: 'categories',
         channel: null,
@@ -246,7 +272,14 @@ test('it adds property source', () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: firstSourceUuid,
+          value: firstSourceUuid,
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -260,12 +293,13 @@ test('it adds association type source', () => {
   };
 
   const newColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
+  const firstSourceUuid = newColumnConfiguration.sources[0].uuid;
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
     sources: [
       {
-        uuid: newColumnConfiguration.sources[0].uuid,
+        uuid: firstSourceUuid,
         type: 'association_type',
         code: 'UPSELL',
         channel: null,
@@ -280,7 +314,14 @@ test('it adds association type source', () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: firstSourceUuid,
+          value: firstSourceUuid,
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -308,8 +349,9 @@ test('it does nothing when update an nonexistent source', () => {
 test('it updates a source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
   const columnConfigurationWithSource = addAttributeSource(columnConfiguration, attribute, channels);
+  const firstSourceUuid = columnConfigurationWithSource.sources[0].uuid;
   const updatedSource: Source = {
-    uuid: columnConfigurationWithSource.sources[0].uuid,
+    uuid: firstSourceUuid,
     type: 'attribute',
     code: 'name',
     channel: 'mobile',
@@ -327,7 +369,7 @@ test('it updates a source', () => {
     target: 'The first column',
     sources: [
       {
-        uuid: columnConfigurationWithSource.sources[0].uuid,
+        uuid: firstSourceUuid,
         type: 'attribute',
         code: 'name',
         channel: 'mobile',
@@ -340,7 +382,14 @@ test('it updates a source', () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: firstSourceUuid,
+          value: firstSourceUuid,
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -358,6 +407,49 @@ test('it removes a source', () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   });
+});
+
+test('it filters empty operations', () => {
+  const operations = {
+    replacement: {
+      type: 'replacement',
+      mapping: {
+        true: 'vrai',
+        false: 'faux',
+      },
+    },
+    empty: undefined,
+    another: {not: 'empty'},
+  };
+
+  expect(filterEmptyOperations(operations)).toEqual({
+    replacement: {
+      type: 'replacement',
+      mapping: {
+        true: 'vrai',
+        false: 'faux',
+      },
+    },
+    another: {not: 'empty'},
+  });
+});
+
+test('it filters columns based on a search value', () => {
+  const columns = [
+    createColumn('FIRST', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df'),
+    createColumn('first', 'fbf9cff9-e95c-4e7d-983b-2947c7df90de'),
+    createColumn('fir', 'fbf9cff9-e95c-4e7d-983b-2947c7df90dd'),
+  ];
+
+  expect(filterColumns(columns, '')).toHaveLength(3);
+  expect(filterColumns(columns, 'fir')).toHaveLength(3);
+  expect(filterColumns(columns, 'FIR')).toHaveLength(3);
+  expect(filterColumns(columns, 'ir')).toHaveLength(3);
+  expect(filterColumns(columns, 'st')).toHaveLength(2);
+  expect(filterColumns(columns, 'first')).toHaveLength(2);
+  expect(filterColumns(columns, 'FIRST')).toHaveLength(2);
+  expect(filterColumns(columns, 'firsttt')).toHaveLength(0);
 });

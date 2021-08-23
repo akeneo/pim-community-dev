@@ -1,7 +1,17 @@
 import {uuid} from 'akeneo-design-system';
 import {LocaleReference, ChannelReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
-import {CodeLabelSelection, isCodeLabelSelection} from '../common/CodeLabelSelector';
+import {
+  CodeLabelSelection,
+  getDefaultCodeLabelSelection,
+  isCodeLabelSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
+
+type SimpleSelectOperations = {
+  default_value?: DefaultValueOperation;
+};
 
 type SimpleSelectSource = {
   uuid: string;
@@ -9,7 +19,7 @@ type SimpleSelectSource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: SimpleSelectOperations;
   selection: CodeLabelSelection;
 };
 
@@ -24,10 +34,21 @@ const getDefaultSimpleSelectSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultCodeLabelSelection(),
 });
 
-const isSimpleSelectSource = (source: Source): source is SimpleSelectSource => isCodeLabelSelection(source.selection);
+const isSimpleSelectOperations = (operations: Object): operations is SimpleSelectOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
+const isSimpleSelectSource = (source: Source): source is SimpleSelectSource =>
+  isCodeLabelSelection(source.selection) && isSimpleSelectOperations(source.operations);
 
 export {getDefaultSimpleSelectSource, isSimpleSelectSource};
 export type {SimpleSelectSource};

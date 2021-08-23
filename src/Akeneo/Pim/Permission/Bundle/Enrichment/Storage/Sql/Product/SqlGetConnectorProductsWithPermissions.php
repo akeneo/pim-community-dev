@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -22,8 +23,7 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCate
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers;
 
 /**
@@ -31,32 +31,19 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowSt
  */
 class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
 {
-    /** @var GetConnectorProducts */
-    private $getConnectorProducts;
-
-    /** @var GetViewableCategoryCodes */
-    private $getViewableCategoryCodes;
-
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodesForUser;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocaleCodesForUser;
-
-    /** @var FetchUserRightsOnProduct */
-    private $fetchUserRightsOnProduct;
-
-    /** @var FetchUserRightsOnProductModel */
-    private $fetchUserRightsOnProductModel;
-
-    /** @var GetWorkflowStatusFromProductIdentifiers */
-    private $getWorkflowStatusFromProductIdentifiers;
+    private GetConnectorProducts $getConnectorProducts;
+    private GetViewableCategoryCodes $getViewableCategoryCodes;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
+    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
+    private FetchUserRightsOnProduct $fetchUserRightsOnProduct;
+    private FetchUserRightsOnProductModel $fetchUserRightsOnProductModel;
+    private GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers;
 
     public function __construct(
         GetConnectorProducts $getConnectorProducts,
         GetViewableCategoryCodes $getViewableCategoryCodes,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         FetchUserRightsOnProduct $fetchUserRightsOnProduct,
         FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
         GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers
@@ -81,7 +68,11 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $connectorProductList = $this->getConnectorProducts->fromProductQueryBuilder(
-            $pqb, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn
+            $pqb,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
         );
 
         $productsWithoutPermissionApplied = $connectorProductList->connectorProducts();
@@ -112,7 +103,11 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         $viewableProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
 
         $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers(
-            $viewableProductIdentifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn
+            $viewableProductIdentifiers,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
         );
 
         $productsWithPermissionApplied = $this->fromConnectorProductsWithoutPermission($connectorProductList->connectorProducts(), $userId);

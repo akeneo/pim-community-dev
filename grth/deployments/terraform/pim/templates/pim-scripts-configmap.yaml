@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pim-scripts
-data:
-{{ (.Files.Glob "scripts/*").AsConfig | indent 2 }}

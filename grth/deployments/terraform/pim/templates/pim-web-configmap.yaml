@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pim-web-config
-data:
-{{ (tpl (.Files.Glob "pim-web-config/*").AsConfig . ) | indent 2 }}

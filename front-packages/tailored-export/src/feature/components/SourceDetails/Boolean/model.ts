@@ -1,6 +1,17 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute} from '../../../models';
+import {Attribute, Source} from '../../../models';
+import {
+  BooleanReplacementOperation,
+  isBooleanReplacementOperation,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
+
+type BooleanOperations = {
+  replacement?: BooleanReplacementOperation;
+  default_value?: DefaultValueOperation;
+};
 
 type BooleanSource = {
   uuid: string;
@@ -8,7 +19,7 @@ type BooleanSource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: BooleanOperations;
   selection: {type: 'code'};
 };
 
@@ -26,5 +37,25 @@ const getDefaultBooleanSource = (
   selection: {type: 'code'},
 });
 
+const isBooleanOperations = (operations: Object): operations is BooleanOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'replacement':
+        return isBooleanReplacementOperation(operation);
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
+const isBooleanSource = (source: Source): source is BooleanSource =>
+  'object' === typeof source &&
+  null !== source &&
+  'attribute' === source.type &&
+  'type' in source.selection &&
+  'code' === source.selection.type &&
+  isBooleanOperations(source.operations);
+
 export type {BooleanSource};
-export {getDefaultBooleanSource};
+export {getDefaultBooleanSource, isBooleanSource};

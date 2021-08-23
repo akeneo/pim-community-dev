@@ -21,6 +21,7 @@ import CompletenessFilter, {
 } from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {clearImageLoadingQueue} from 'akeneoreferenceentity/tools/image-loader';
 
 const HorizontalScrollContainer = styled.div`
   overflow-x: auto;
@@ -209,6 +210,13 @@ const Table = ({
       horizontalScrollContainer.scrollTop = 0;
     }
   }, [needResize, grid.page, grid.filters]);
+
+  useEffect(() => {
+    // This will clear the image loading queue when leaving the Records table
+    return () => {
+      clearImageLoadingQueue();
+    };
+  }, []);
 
   return (
     <>

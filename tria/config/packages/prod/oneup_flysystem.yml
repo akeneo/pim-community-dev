@@ -4,11 +4,17 @@ oneup_flysystem:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/asset'
         catalog_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/catalog'
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'catalog_storage'
         jobs_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/jobs'
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'jobs_storage'
         archivist_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/archive'
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'archivist'

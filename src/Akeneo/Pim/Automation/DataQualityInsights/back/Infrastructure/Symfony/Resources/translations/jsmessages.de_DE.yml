@@ -40,7 +40,7 @@ akeneo_data_quality_insights:
       aria_label: "Rechtschreibvorschläge für: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}Sie haben <button>1 Attribut</button> zum Arbeiten. ]1, 200[Sie haben <button>{{ count }} Attribute</button> um zu arbeiten. [200, Inf[Sie haben mehr als <button>{{ count }} Attribute</button> um zu arbeiten.'
+      attributes_to_work_on: '{1}Sie haben <button>1 Attribut</button> zum Arbeiten.|]1, 200[Sie haben <button>{{ count }} Attribute</button> um zu arbeiten.|[200, Inf[Sie haben mehr als <button>{{ count }} Attribute</button> um zu arbeiten.'
       list:
         has_image:
           no_data: Ihre Asset-Sammlungen und Bild-Attribute scheinen leer zu sein. Sie sollten Bilder für diesen Schlüsselindikator hochladen, um die Qualität Ihrer Produkte hervorzuheben.

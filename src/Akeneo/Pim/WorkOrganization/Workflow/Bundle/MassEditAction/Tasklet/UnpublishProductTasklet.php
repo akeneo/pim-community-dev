@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,6 +37,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
     protected EntityManagerClearerInterface $cacheClearer;
     private JobRepositoryInterface $jobRepository;
     protected JobStopper $jobStopper;
+    protected int $batchSize;
 
     public function __construct(
         PublishedProductManager $manager,
@@ -45,7 +47,8 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
         ProductQueryBuilderFactoryInterface $publishedPqbFactory,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        int $batchSize = 100
     ) {
         parent::__construct(
             $manager,
@@ -58,6 +61,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
         $this->cacheClearer = $cacheClearer;
         $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -67,10 +71,10 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $cursor = $this->getProductsCursor($jobParameters->get('filters'));
-        $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         $this->stepExecution->setTotalItems($cursor->count());
-        foreach ($paginator as $productsPage) {
+        $productsPages = $this->paginatePublishedProducts($cursor);
+        foreach ($productsPages as $productsPage) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
                 $this->jobStopper->stop($this->stepExecution);
                 break;
@@ -100,6 +104,25 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
 
             $this->cacheClearer->clear();
             $this->jobRepository->updateStepExecution($this->stepExecution);
+        }
+    }
+
+    private function paginatePublishedProducts(CursorInterface $cursor): \Iterator
+    {
+        $nextPublishedProducts = [];
+        $count = 0;
+        foreach ($cursor as $publishedProduct) {
+            $nextPublishedProducts[] = $publishedProduct;
+            $count++;
+            if ($this->batchSize <= $count) {
+                yield $nextPublishedProducts;
+                $nextPublishedProducts = [];
+                $count = 0;
+            }
+        }
+
+        if (!empty($nextPublishedProducts)) {
+            yield $nextPublishedProducts;
         }
     }
 

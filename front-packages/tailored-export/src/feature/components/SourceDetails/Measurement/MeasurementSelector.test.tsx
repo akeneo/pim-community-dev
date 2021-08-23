@@ -1,60 +1,9 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {MeasurementSelector} from './MeasurementSelector';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
-import {AssociationType} from '../../../models';
-
-const attributes = [
-  {
-    code: 'length',
-    type: 'pim_catalog_metric',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {renderWithProviders} from 'feature/tests';
 
 test('it displays a type dropdown when the selection type is unit_code', async () => {
   const onSelectionChange = jest.fn();
@@ -83,12 +32,12 @@ test('it displays a locale dropdown when the selection type is unit_label', asyn
   userEvent.click(
     screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.measurement.unit_locale')
   );
-  userEvent.click(screen.getByText('fr_FR'));
+  userEvent.click(screen.getByText('Français'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'fr_FR'});
 });
 
-test('it can select a unit_label selection type', async () => {
+test('it can select unit_label selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
@@ -101,20 +50,23 @@ test('it can select a unit_label selection type', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'en_US'});
 });
 
-test('it can select a value selection type', async () => {
+test('it can select value selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
     <MeasurementSelector selection={{type: 'unit_code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
+  expect(
+    screen.queryByText('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')
+  ).not.toBeInTheDocument();
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.measurement.value'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'value'});
 });
 
-test('it can select a unit_code selection type', async () => {
+test('it can select unit_code selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
@@ -131,7 +83,20 @@ test('it can select a unit_code selection type', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_code'});
 });
 
-test('it displays validation errors', async () => {
+test('it can change the decimal separator when the selection type is value', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <MeasurementSelector selection={{type: 'value'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.decimal_separator.comma'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'value', decimal_separator: ','});
+});
+
+test('it displays validation errors for label selection', async () => {
   const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
@@ -160,4 +125,35 @@ test('it displays validation errors', async () => {
 
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+});
+
+test('it displays validation errors for value selection', async () => {
+  const onSelectionChange = jest.fn();
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.type',
+      invalidValue: '',
+      message: 'this is a type error',
+      parameters: {},
+      propertyPath: '[type]',
+    },
+    {
+      messageTemplate: 'error.key.decimal_separator',
+      invalidValue: '',
+      message: 'this is a decimal separator error',
+      parameters: {},
+      propertyPath: '[decimal_separator]',
+    },
+  ];
+
+  await renderWithProviders(
+    <MeasurementSelector
+      validationErrors={validationErrors}
+      selection={{type: 'value', decimal_separator: '.'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByText('error.key.decimal_separator')).toBeInTheDocument();
 });

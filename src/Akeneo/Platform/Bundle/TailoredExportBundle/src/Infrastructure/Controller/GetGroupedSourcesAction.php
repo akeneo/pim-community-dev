@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\Attribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,18 +34,18 @@ final class GetGroupedSourcesAction
     private TranslatorInterface $translator;
     private FindSystemSourcesInterface $getSystemSources;
     private FindAssociationTypesInterface $findAssociationTypes;
-    private FindFlattenAttributesInterface $findFlattenAttributes;
+    private FindViewableAttributesInterface $findViewableAttributes;
 
     public function __construct(
         TranslatorInterface $translator,
         FindSystemSourcesInterface $getSystemSources,
         FindAssociationTypesInterface $findAssociationTypes,
-        FindFlattenAttributesInterface $findFlattenAttributes
+        FindViewableAttributesInterface $findViewableAttributes
     ) {
         $this->translator = $translator;
         $this->getSystemSources = $getSystemSources;
         $this->findAssociationTypes = $findAssociationTypes;
-        $this->findFlattenAttributes = $findFlattenAttributes;
+        $this->findViewableAttributes = $findViewableAttributes;
     }
 
     public function __invoke(Request $request): Response
@@ -57,33 +57,39 @@ final class GetGroupedSourcesAction
         $options = $request->get('options', []);
         $search = $request->get('search');
         $limit = $options['limit'] ?? self::LIMIT_DEFAULT;
-        $page = $options['page'];
-        $offset = $page * $limit;
+        $systemOffset = (int) $options['offset']['system'];
+        $associationTypeOffset = (int) $options['offset']['association_type'];
+        $attributeOffset = (int) $options['offset']['attribute'];
 
         $localeCode = $options['locale'] ?? self::DEFAULT_LOCALE;
         $attributeTypes = isset($options['attributeTypes']) ? explode(',', $options['attributeTypes']) : null;
 
-        $paginatedFields = $this->getSystemSources->execute($localeCode, $limit, $offset, $search);
-        $offset -= count($paginatedFields);
+        $paginatedFields = $this->getSystemSources->execute($localeCode, $limit, $systemOffset, $search);
         $limit -= count($paginatedFields);
 
-        $paginatedAssociations = $this->findAssociationTypes->execute($localeCode, $limit, $offset, $search);
-        $offset -= count($paginatedAssociations);
+        $paginatedAssociations = $this->findAssociationTypes->execute($localeCode, $limit, $associationTypeOffset, $search);
         $limit -= count($paginatedAssociations);
 
-        $paginatedAttributes = $this->findFlattenAttributes->execute(
+        $attributesResult = $this->findViewableAttributes->execute(
             $localeCode,
             $limit,
             $attributeTypes,
-            $offset,
+            $attributeOffset,
             $search
         );
 
-        return new JsonResponse(array_merge(
-            $this->formatSystemFields($paginatedFields, $localeCode),
-            $this->formatAssociationFields($paginatedAssociations, $localeCode),
-            $this->formatAttributes($paginatedAttributes)
-        ));
+        return new JsonResponse([
+            'results' => array_merge(
+                $this->formatSystemFields($paginatedFields, $localeCode),
+                $this->formatAssociationFields($paginatedAssociations, $localeCode),
+                $this->formatAttributes($attributesResult->getAttributes())
+            ),
+            'offset' => [
+                'system' => $systemOffset + count($paginatedFields),
+                'association_type' => $associationTypeOffset + count($paginatedAssociations),
+                'attribute' => $attributesResult->getOffset()
+            ]
+        ]);
     }
 
     private function formatSystemFields(array $fields, string $localeCode): array
@@ -134,24 +140,24 @@ final class GetGroupedSourcesAction
     }
 
     /**
-     * @param FlattenAttribute[] $flattenAttributes
+     * @param Attribute[] $attributes
      */
-    private function formatAttributes(array $flattenAttributes): array
+    private function formatAttributes(array $attributes): array
     {
         $results = [];
-        foreach ($flattenAttributes as $flattenAttribute) {
-            $groupCode = $flattenAttribute->getAttributeGroupCode();
+        foreach ($attributes as $attribute) {
+            $groupCode = $attribute->getAttributeGroupCode();
             if (!array_key_exists($groupCode, $results)) {
                 $results[$groupCode] = [
                     'code' => $groupCode,
-                    'label' => $flattenAttribute->getAttributeGroupLabel(),
+                    'label' => $attribute->getAttributeGroupLabel(),
                     'children' => [],
                 ];
             }
 
             $results[$groupCode]['children'][] = [
-                'code' => $flattenAttribute->getCode(),
-                'label' => $flattenAttribute->getLabel(),
+                'code' => $attribute->getCode(),
+                'label' => $attribute->getLabel(),
                 'type' => 'attribute',
             ];
         }

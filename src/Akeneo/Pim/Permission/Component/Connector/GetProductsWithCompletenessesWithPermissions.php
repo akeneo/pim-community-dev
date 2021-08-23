@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Connector;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
@@ -17,12 +17,12 @@ use Webmozart\Assert\Assert;
 class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCompletenessesInterface
 {
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
-    private GetAllViewableLocalesForUser $getAllViewableLocalesForUser;
+    private GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage
     ) {
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;

@@ -16,10 +16,20 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-
 $builder = new RuleBuilder();
 
 $rules = [
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+            'Akeneo\Platform\TailoredExport\Domain',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Application'),
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Domain'),
     $builder->only(
         [
             'Symfony\Component',
@@ -32,23 +42,28 @@ $rules = [
             'Box\Spout\Writer\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
 
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
-            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
-            'Akeneo\Pim\Structure\Component\Query\PublicApi',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
-            'Akeneo\Pim\Permission\Bundle\User\UserContext',
-            'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
+            'Akeneo\Platform\TailoredExport\Application',
+            'Akeneo\Platform\TailoredExport\Domain',
+
+            'Akeneo\AssetManager\Infrastructure\PublicApi',
+            'Akeneo\Channel\Component\Query\PublicApi',
+            'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface'
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
-    )->in('Akeneo\Platform\TailoredExport'),
+    )->in('Akeneo\Platform\TailoredExport\Infrastructure'),
 ];
 
 return new Configuration($rules, $finder);

@@ -47,7 +47,6 @@ class JobProfileVoter extends Voter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
-
         if (!$object instanceof JobInstance) {
             return $result;
         }

@@ -7,6 +7,7 @@ import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
 import {CompletenessBadge} from 'akeneoreferenceentity/application/component/app/completeness';
+import {LazyLoadedImage} from 'akeneoreferenceentity/application/component/app/lazy-loaded-image';
 
 const CheckboxCell = styled.td`
   padding: 0 10px;
@@ -75,10 +76,10 @@ const CommonRow = memo(
           {canSelectRecord && <Checkbox checked={isItemSelected(record.code)} onChange={handleSelect} />}
         </CheckboxCell>
         <td className="AknGrid-bodyCell AknGrid-bodyCell--image">
-          <img
-            className="AknGrid-image AknLoadingPlaceHolder"
-            width="44"
-            height="44"
+          <LazyLoadedImage
+            className="AknGrid-image"
+            width={44}
+            height={44}
             src={getImageShowUrl(denormalizeFile(record.image), 'thumbnail_small')}
           />
         </td>

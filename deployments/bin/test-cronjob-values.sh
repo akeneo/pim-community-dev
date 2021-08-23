@@ -6,6 +6,15 @@ BINDIR=$(dirname $(readlink -f $0))
 docker run -u www-data eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} bin/console list > available_command.txt
 yq read ${BINDIR}/../terraform/pim/values.yaml 'pim.jobs.*.pimCommand' > jobs_used.txt
 
+echo "********************************************"
+echo "*** Available command (bin/console list) ***"
+echo "********************************************"
+cat available_command.txt
+echo "********************************************"
+echo "********  Jobs used in values.yaml  ********"
+echo "********************************************"
+cat jobs_used.txt
+
 while read line; do
 command=$(echo ${line} | cut -f1 -d " ")
 if  grep -q "${command}" available_command.txt ; then

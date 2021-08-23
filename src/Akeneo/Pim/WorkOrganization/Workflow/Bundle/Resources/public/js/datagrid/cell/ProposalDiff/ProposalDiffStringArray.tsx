@@ -41,16 +41,4 @@ const ProposalDiffStringArray: React.FC<ProposalDiffStringArrayProps> = ({access
   return <span {...rest} />;
 };
 
-class ProposalDiffStringArrayMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_multiselect', 'pim_reference_data_multiselect', 'pim_catalog_price_collection'].includes(
-      attributeType
-    );
-  }
-
-  static render() {
-    return ProposalDiffStringArray;
-  }
-}
-
-export {ProposalDiffStringArrayMatcher};
+export default ProposalDiffStringArray;

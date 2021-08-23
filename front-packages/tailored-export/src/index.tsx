@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {useMemo, FC} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -17,44 +17,50 @@ import {Attribute} from './feature/models';
 import {FetcherContext} from './feature/contexts';
 import {AssociationType} from './feature/models/AssociationType';
 
+const cache = {};
+const cachedFetcher = (route: string) => {
+  if (!cache[route]) {
+    cache[route] = baseFetcher(route);
+  }
+
+  return cache[route];
+};
+
 const FetcherProvider: FC = ({children}) => {
   const router = useRouter();
 
-  return (
-    <FetcherContext.Provider
-      value={{
-        attribute: {
-          fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
-            const route = router.generate('pim_enrich_attribute_rest_index', {
-              identifiers: identifiers.join(','),
-            });
+  const fetcherValue = useMemo(
+    () => ({
+      attribute: {
+        fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
+          const route = router.generate('pim_enrich_attribute_rest_index', {
+            identifiers: identifiers.join(','),
+          });
 
-            return baseFetcher(route);
-          },
+          return cachedFetcher(route);
         },
-        channel: {
-          fetchAll: (): Promise<Channel[]> => {
-            const route = router.generate('pim_enrich_channel_rest_index');
+      },
+      channel: {
+        fetchAll: (): Promise<Channel[]> => {
+          const route = router.generate('pim_enrich_channel_rest_index');
 
-            return baseFetcher(route);
-          },
+          return cachedFetcher(route);
         },
-        associationType: {
-          fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
-            const route = router.generate('pim_enrich_associationtype_rest_index', {
-              identifiers: codes.join(','),
-            });
+      },
+      associationType: {
+        fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+          const route = router.generate('pim_enrich_associationtype_rest_index', {
+            identifiers: codes.join(','),
+          });
 
-            return baseFetcher(route).then((associationTypes: AssociationType[]) =>
-              associationTypes.filter(associationType => codes.includes(associationType.code))
-            );
-          },
+          return cachedFetcher(route);
         },
-      }}
-    >
-      {children}
-    </FetcherContext.Provider>
+      },
+    }),
+    [router]
   );
+
+  return <FetcherContext.Provider value={fetcherValue}>{children}</FetcherContext.Provider>;
 };
 
 ReactDOM.render(

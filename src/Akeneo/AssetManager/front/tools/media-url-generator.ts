@@ -13,10 +13,20 @@ const getImageDownloadUrl = (router: Router, image: File): string => {
   return router.generate('pim_enrich_media_download', {filename});
 };
 
-const getMediaPreviewUrl = (router: Router, mediaPreview: MediaPreview): string =>
-  router.generate('akeneo_asset_manager_image_preview', {
+const getMediaPreviewUrl = (router: Router, mediaPreview: MediaPreview): string => {
+  let isUrlEncoded = false;
+  try {
+    isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
+  } catch (error) {
+    if (!(error instanceof URIError)) {
+      throw error;
+    }
+  }
+
+  return router.generate('akeneo_asset_manager_image_preview', {
     ...mediaPreview,
-    data: btoa(encodeURI(mediaPreview.data)),
+    data: btoa(isUrlEncoded ? mediaPreview.data : encodeURI(mediaPreview.data)),
   });
+};
 
 export {canCopyToClipboard, copyToClipboard, getImageDownloadUrl, getMediaPreviewUrl};

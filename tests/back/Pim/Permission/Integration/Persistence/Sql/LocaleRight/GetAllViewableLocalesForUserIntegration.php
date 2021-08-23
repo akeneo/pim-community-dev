@@ -2,7 +2,7 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql\LocaleRight;
 
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser;
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -17,7 +17,7 @@ class GetAllViewableLocalesForUserIntegration extends TestCase
         $query = $this->getQuery();
 
         $userId =  $this->get('database_connection')
-                        ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
         Assert::assertSame(['en_US', 'fr_FR', 'zh_CN'], $query->fetchAll($userId));
     }
@@ -30,7 +30,7 @@ class GetAllViewableLocalesForUserIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getQuery(): GetAllViewableLocalesForUser
+    private function getQuery(): GetAllViewableLocalesForUserInterface
     {
         return $this->get('pimee_security.query.get_all_viewable_locales_for_user');
     }

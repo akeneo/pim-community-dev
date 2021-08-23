@@ -1,11 +1,20 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-const availableSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
+const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
 
-type NumberSeparator = keyof typeof availableSeparators;
+type NumberSeparator = keyof typeof availableDecimalSeparators;
 type NumberSelection = {decimal_separator: NumberSeparator};
+
+const getDefaultNumberSelection = (): NumberSelection => ({decimal_separator: '.'});
+
+const isDefaultNumberSelection = (selection?: NumberSelection): boolean => '.' === selection?.decimal_separator;
+
+type NumberOperations = {
+  default_value?: DefaultValueOperation;
+};
 
 type NumberSource = {
   uuid: string;
@@ -13,7 +22,7 @@ type NumberSource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: NumberOperations;
   selection: NumberSelection;
 };
 
@@ -28,12 +37,31 @@ const getDefaultNumberSource = (
   locale,
   channel,
   operations: {},
-  selection: {decimal_separator: '.'},
+  selection: getDefaultNumberSelection(),
 });
 
+const isNumberOperations = (operations: Object): operations is NumberOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
 const isNumberSelection = (selection: any): selection is NumberSelection => 'decimal_separator' in selection;
-const isNumberSource = (source: Source): source is NumberSource => isNumberSelection(source.selection);
-const isNumberSeparator = (separator: any): separator is NumberSeparator => separator in availableSeparators;
+const isNumberDecimalSeparator = (separator: any): separator is NumberSeparator =>
+  separator in availableDecimalSeparators;
+
+const isNumberSource = (source: Source): source is NumberSource =>
+  isNumberSelection(source.selection) && isNumberOperations(source.operations);
 
 export type {NumberSource, NumberSelection};
-export {getDefaultNumberSource, isNumberSource, isNumberSeparator, availableSeparators};
+export {
+  availableDecimalSeparators,
+  getDefaultNumberSource,
+  isDefaultNumberSelection,
+  isNumberDecimalSeparator,
+  isNumberSource,
+};

@@ -90,7 +90,7 @@ const Wrapper: React.FC = ({children}) => {
 
 test('It fetches channels', async () => {
   const {result, waitForNextUpdate} = renderHook(() => useChannels(), {wrapper: Wrapper});
-  expect(result.current);
+
   await act(async () => {
     await waitForNextUpdate();
   });
@@ -99,7 +99,7 @@ test('It fetches channels', async () => {
   expect(attributes).toEqual(channelResponse);
 });
 
-test('It does not set state when unmounted', async () => {
+test('It does not set state when unmounted', () => {
   const {result, unmount} = renderHook(() => useChannels(), {wrapper: Wrapper});
 
   unmount();

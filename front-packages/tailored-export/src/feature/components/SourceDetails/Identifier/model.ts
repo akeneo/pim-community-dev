@@ -1,5 +1,5 @@
 import {uuid} from 'akeneo-design-system';
-import {Attribute} from '../../../models/Attribute';
+import {Source, Attribute} from '../../../models';
 
 type IdentifierSource = {
   uuid: string;
@@ -21,5 +21,8 @@ const getDefaultIdentifierSource = (attribute: Attribute): IdentifierSource => (
   selection: {type: 'code'},
 });
 
-export {getDefaultIdentifierSource};
+const isIdentifierSource = (source: Source): source is IdentifierSource =>
+  'type' in source.selection && 'code' === source.selection.type;
+
+export {getDefaultIdentifierSource, isIdentifierSource};
 export type {IdentifierSource};

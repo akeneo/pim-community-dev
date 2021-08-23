@@ -58,8 +58,8 @@ const CategorySelector = ({
     return isParentCategoryIsSelected(parentCategory);
   };
 
-  const isCategoryReadOnly = (category: CategoryTreeModel, parentCategory: ParentCategoryTree): boolean => {
-    if (!shouldIncludeSubCategories || selectedCategoryCodes.includes(category.code)) return false;
+  const isCategoryReadOnly = (_category: CategoryTreeModel, parentCategory: ParentCategoryTree): boolean => {
+    if (!shouldIncludeSubCategories) return false;
 
     return isParentCategoryIsSelected(parentCategory);
   };

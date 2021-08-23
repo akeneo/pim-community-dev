@@ -61,6 +61,18 @@
 - PIM-9965: Fix Asset Family attribute saving notification displaying twice
 - PIM-9963: Fix number of lines field missing on XLSX product export job
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
+- PIM-9961: Remove useless "global settings" tab on asset and record XLSX imports (SAAS only)
+- PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
+- PIM-9984: Fix image preview in asset manager in media link attributes
+- PIM-9981: Fix permission to download logs of clean removed attribute values job
+- PIM-9980: Prevent root category selection in Rule Engine set categories action 
+- PIM-9942: Fix message on DQI dashboard in French UI locale
+- PIM-9983: Fix optimization of query to get info about projects
+- PIM-10009: Fix error being printed in the response of partial update of product models API
+- PIM-10020: Fix asset media link preview when the URI contains special characters
+- PIM-10018: Fix asset code case in the product edit form
+- PIM-9989: Fix record code of reference entity field is case-sensitive
+- PIM-10026: Avoid session persistance for API
 
 ## Improvements
 

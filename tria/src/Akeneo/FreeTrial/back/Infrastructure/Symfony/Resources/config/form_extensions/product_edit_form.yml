@@ -1,0 +1,14 @@
+extensions:
+    pim-product-edit-form-start-copy:
+        module: pim/free-trial/product-edit-form/start-copy
+        parent: pim-product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 60
+
+    pim-product-model-edit-form-start-copy:
+        module: pim/free-trial/product-edit-form/start-copy
+        parent: pim-product-model-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_model_edit_attributes
+        position: 60

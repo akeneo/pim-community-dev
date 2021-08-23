@@ -1,82 +1,14 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {AssociationType, Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
-import {FetcherContext, ValidationErrorsContext} from '../../contexts';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {en_US: 'Cross sell'},
-    is_quantified: false,
-  },
-  {
-    code: 'UPSELL',
-    labels: {},
-    is_quantified: false,
-  },
-];
-
-const attributes: Attribute[] = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'br_FR',
-        label: 'Breton',
-        region: 'bzh',
-        language: 'br',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
-
-jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
-  uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
-}));
+import {ColumnConfiguration, Source} from '../../models';
+import {ValidationErrorsContext} from '../../contexts';
+import {renderWithProviders} from 'feature/tests';
 
 jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -126,6 +58,7 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
 test('it renders column details', async () => {
@@ -148,10 +81,11 @@ test('it renders column details', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
-  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />);
 
   expect(screen.getByText(/akeneo.tailored_export.column_details.sources.title/i)).toBeInTheDocument();
 });
@@ -164,10 +98,11 @@ test('it renders placeholder when there is no source selected', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
-  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />);
 
   expect(
     screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)
@@ -182,6 +117,7 @@ test('We can add an attribute source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -205,22 +141,74 @@ test('We can add an attribute source', async () => {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
-        channel: null,
+        channel: 'ecommerce',
         code: 'description',
-        locale: null,
+        locale: 'en_US',
         operations: {},
         selection: {
           type: 'code',
         },
         type: 'attribute',
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
+      space_between: true,
     },
   });
+});
+
+test('We cannot add source when the limit is reached', async () => {
+  const source: Source = {
+    channel: null,
+    code: 'description',
+    locale: null,
+    operations: {},
+    selection: {
+      type: 'code',
+    },
+    type: 'attribute',
+    uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+  };
+
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [source, {...source, uuid: '1'}, {...source, uuid: '2'}, {...source, uuid: '3'}],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+      space_between: true,
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+
+  expect(addSourceButton).toHaveAttribute('disabled');
+  expect(addSourceButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_export.validation.sources.max_source_count_reached'
+  );
+
+  await act(async () => {
+    userEvent.click(addSourceButton);
+  });
+
+  expect(handleColumnsConfigurationChange).not.toHaveBeenCalled();
 });
 
 test('We can add a property source', async () => {
@@ -231,6 +219,7 @@ test('We can add a property source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -263,12 +252,19 @@ test('We can add a property source', async () => {
           separator: ',',
         },
         type: 'property',
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
+      space_between: true,
     },
   });
 });
@@ -281,6 +277,7 @@ test('We can add an association type as source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -304,7 +301,7 @@ test('We can add an association type as source', async () => {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
         type: 'association_type',
         code: 'XSELL',
         channel: null,
@@ -319,7 +316,14 @@ test('We can add an association type as source', async () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -337,13 +341,14 @@ test('We can update a source', async () => {
           type: 'code',
         },
         type: 'attribute',
-        uuid: '266b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     target: 'My column name',
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -381,6 +386,66 @@ test('We can update a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
+    },
+  });
+});
+
+test('We can update the format', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+      space_between: true,
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const spaceBetweenCheckbox = screen.getByLabelText(
+    'akeneo.tailored_export.column_details.concatenation.space_between'
+  );
+  userEvent.click(spaceBetweenCheckbox);
+
+  expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      space_between: false,
+      elements: [],
     },
   });
 });
@@ -405,6 +470,7 @@ test('We can delete a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -424,6 +490,7 @@ test('We can delete a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   });
 });
@@ -448,6 +515,7 @@ test('it renders column details with errors', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -463,7 +531,7 @@ test('it renders column details with errors', async () => {
         },
       ]}
     >
-      <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
+      <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />
     </ValidationErrorsContext.Provider>
   );
 

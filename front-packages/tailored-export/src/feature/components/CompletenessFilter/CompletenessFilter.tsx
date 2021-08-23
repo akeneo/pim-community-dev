@@ -8,9 +8,10 @@ import {
   LocaleCode,
   ValidationError,
   Locale,
+  useTranslate,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
-import {LocalesSelector} from './LocalesSelector';
+import {LocalesSelector} from '../LocalesSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 
@@ -22,7 +23,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type Filter = {
+type CompletenessFilterType = {
   field: 'completeness';
   operator: Operator;
   value: number;
@@ -31,14 +32,16 @@ type Filter = {
     scope: ChannelCode;
   };
 };
+
 type CompletenessFilterProps = {
   availableOperators: Operator[];
-  filter: Filter;
-  onChange: (newFilter: Filter) => void;
+  filter: CompletenessFilterType;
+  onChange: (newFilter: CompletenessFilterType) => void;
   validationErrors: ValidationError[];
 };
 
 const CompletenessFilter = ({availableOperators, filter, onChange, validationErrors}: CompletenessFilterProps) => {
+  const translate = useTranslate();
   const availableChannels = useChannels();
   const availableLocales = getLocalesFromChannel(availableChannels, filter.context?.scope ?? null);
   const formattedValidationErrors = formatParameters(validationErrors);
@@ -91,6 +94,9 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
             locales={availableLocales ?? []}
             onChange={handleLocalesChange}
             validationErrors={localesErrors}
+            label={translate('akeneo.tailored_export.filters.completeness.locales.label')}
+            placeholder={translate('akeneo.tailored_export.filters.completeness.locales.placeholder')}
+            removeLabel={translate('akeneo.tailored_export.filters.completeness.locales.remove')}
           />
         </>
       )}
@@ -99,4 +105,4 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
 };
 
 export {CompletenessFilter};
-export type {Operator};
+export type {Operator, CompletenessFilterType};

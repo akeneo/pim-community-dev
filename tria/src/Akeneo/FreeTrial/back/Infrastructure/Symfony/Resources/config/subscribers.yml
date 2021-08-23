@@ -1,0 +1,13 @@
+services:
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InitFreeTrialDbSchemaSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Subscriber\UserFirstConnectionSubscriber:
+    arguments:
+      - '@Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery'
+      - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
+    tags:
+      - { name: 'kernel.event_subscriber' }

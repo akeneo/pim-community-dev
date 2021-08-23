@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
@@ -44,7 +44,8 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
     {
         $this->context->getValidator()
             ->inContext($this->context)
-            ->validate($selection, [
+            ->validate(
+                $selection,
                 new Collection(
                     [
                         'fields' => [
@@ -75,7 +76,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                         ],
                     ]
                 ),
-            ]);
+            );
 
         if ('label' === $selection['type']) {
             if (in_array($selection['entity_type'], self::ENTITY_TYPES_WITH_CHANNEL)) {

@@ -9,6 +9,7 @@ extensions:
             title: pim_reference_entity.reference_entity.title
             iconModifier: iconReferenceEntity
             to: akeneo_reference_entities_reference_entity_index
+            icon: EntityIcon
 
     pim-reference-entity-index-user-navigation:
         module: pim/menu/user-navigation

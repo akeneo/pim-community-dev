@@ -34,8 +34,8 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_returns_the_first_page_of_available_sources(): void
     {
-        $response = $this->assertCallSuccess(4, 0);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0]);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
 
         $this->assertNotEmpty($sourceGroups);
         $this->assertArrayHasKey('code', $sourceGroups[0]);
@@ -59,8 +59,8 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_returns_system_filters_and_attribute_filters(): void
     {
-        $response = $this->assertCallSuccess(100, 0);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(100, ['attribute' => 0, 'system' => 0, 'association_type' => 0]);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
         $this->assertGreaterThan(1, count($sourceGroups));
 
@@ -80,21 +80,21 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_paginates_the_results(): void
     {
-        $response = $this->assertCallSuccess(4, 1);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 10, 'association_type' => 0]);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
         $this->assertSourceGroupDoNotContainSource('system', 'family', $sourceGroups);
 
-        $response = $this->assertCallSuccess(10, 1000);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(10, ['attribute' => 1000, 'system' => 1000, 'association_type' => 1000]);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertEmpty($sourceGroups);
     }
 
     public function test_it_can_search_by_text(): void
     {
-        $response = $this->assertCallSuccess(6, 0, null, 'am');
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(6, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'am');
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
         $this->assertSourceGroupDoNotContainSource('system', 'categories', $sourceGroups);
@@ -103,16 +103,16 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         $this->assertSourceGroupContainSource('marketing', 'name', $sourceGroups);
         $this->assertSourceGroupContainSource('marketing', 'variation_name', $sourceGroups);
 
-        $response = $this->assertCallSuccess(4, 0, null, 'X_SELL');
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'X_SELL');
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
         $this->assertSourceGroupDoNotContainSource('system', 'categories', $sourceGroups);
         $this->assertSourceGroupContainSource('association_types', 'X_SELL', $sourceGroups);
         $this->assertSourceGroupDoNotContainSource('association_types', 'UPSELL', $sourceGroups);
         $this->assertSourceGroupDoNotContainSource('marketing', 'name', $sourceGroups);
 
-        $response = $this->assertCallSuccess(4, 0, null, 'erp name');
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'erp name');
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
         $this->assertSourceGroupDoNotContainSource('system', 'family', $sourceGroups);
@@ -122,8 +122,8 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_translates_the_labels(): void
     {
-        $response = $this->assertCallSuccess(4, 0);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0]);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
         foreach ($sourceGroups as $group) {
@@ -141,8 +141,8 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_filters_by_attribute_types(): void
     {
-        $response = $this->assertCallSuccess(1000, 0, ['pim_catalog_text']);
-        $sourceGroups = \json_decode($response->getContent(), true);
+        $response = $this->assertCallSuccess(1000, ['attribute' => 0, 'system' => 0, 'association_type' => 0], ['pim_catalog_text']);
+        $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
         foreach ($sourceGroups as $group) {
@@ -158,11 +158,11 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         }
     }
 
-    private function assertCallSuccess(int $limit, int $page, ?array $attributeTypes = null, string $search = null): Response
+    private function assertCallSuccess(int $limit, array $offset, ?array $attributeTypes = null, string $search = null): Response
     {
         $options = [
             'limit' => $limit,
-            'page' => $page,
+            'offset' => $offset,
         ];
 
         if (null !== $attributeTypes) {

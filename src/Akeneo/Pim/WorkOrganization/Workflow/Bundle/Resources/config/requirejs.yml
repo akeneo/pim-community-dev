@@ -27,6 +27,26 @@ config:
                     config:
                         route: pimee_workflow_mass_edit_rest_get_filter
                     aclResourceId: pimee_workflow_published_product_index
+        akeneopimworkflow/js/datagrid/cell/proposal-cell:
+            proposal_diffs:
+                pim_catalog_text: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_identifier: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_textarea: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_simpleselect: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_reference_data_simpleselect: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_date: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_number: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_boolean: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffString'
+                pim_catalog_multiselect: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffStringArray'
+                pim_reference_data_multiselect: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffStringArray'
+                pim_catalog_price_collection: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffStringArray'
+                pim_catalog_asset_collection: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffAssetCollection'
+                pim_catalog_image: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffImage'
+                pim_catalog_file: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffFile'
+                akeneo_reference_entity: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntity'
+                akeneo_reference_entity_collection: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffReferenceEntityCollection'
+                pim_catalog_metric: '@akeneopimworkflow/js/datagrid/cell/ProposalDiff/ProposalDiffMeasurement'
+
     paths:
         pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager
         pimee/product-draft-fetcher:             akeneopimworkflow/js/fetcher/product-draft-fetcher

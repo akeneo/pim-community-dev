@@ -1,0 +1,3 @@
+akeneo_feature_flag:
+  feature_flags:
+    - { feature: 'onboarder_new_menu', service: 'pim.onboarder_new_menu.feature' }

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Merger;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -86,18 +86,13 @@ use Webmozart\Assert\Assert;
  */
 class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
 {
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodes;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocaleCodesForUser;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes;
+    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage
     ) {
         $this->getViewableAttributeCodes = $getViewableAttributeCodes;
@@ -122,7 +117,8 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithValues), EntityWithValuesInterface::class);
         }
 
-        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
+        if (
+            $filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
             null !== $filteredEntityWithValues->getFamilyVariant()
         ) {
             Assert::implementsInterface($fullEntityWithValues, EntityWithFamilyVariantInterface::class);
@@ -146,7 +142,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             // Add not granted original values if they don't exist in the new values
             foreach ($originalValues as $key => $originalValue) {
                 if ((!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
-                    ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes)))
+                        ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes)))
                     && !$newValues->containsKey($key)
                 ) {
                     $newValues->add($originalValue);

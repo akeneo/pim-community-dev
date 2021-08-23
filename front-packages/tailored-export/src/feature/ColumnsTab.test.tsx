@@ -1,40 +1,13 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {screen, fireEvent, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
-import {AssociationType, Attribute, AvailableSourceGroup} from './models';
-import {FetcherContext} from './contexts';
-
-const attributes: Attribute[] = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
-
-jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
-  uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
-}));
+import {renderWithProviders} from './tests';
 
 jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -68,9 +41,10 @@ jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
-test('It open the source panel related to the column selected', async () => {
+test('It opens the source panel related to the column selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -79,6 +53,7 @@ test('It open the source panel related to the column selected', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -87,7 +62,7 @@ test('It open the source panel related to the column selected', async () => {
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
-      onColumnsConfigurationChange={jest.fn}
+      onColumnsConfigurationChange={jest.fn()}
     />
   );
 
@@ -106,7 +81,7 @@ test('It open the source panel related to the column selected', async () => {
   ).toBeInTheDocument();
 });
 
-test('It create a column when user enter a text in last input', async () => {
+test('It creates a column when user enter a text in last input', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -115,6 +90,7 @@ test('It create a column when user enter a text in last input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -129,34 +105,38 @@ test('It create a column when user enter a text in last input', async () => {
     />
   );
 
-  const lastInput = screen.getAllByPlaceholderText(
-    'akeneo.tailored_export.column_list.column_row.target_placeholder'
-  )[1];
-  userEvent.type(lastInput, 't');
+  act(() => {
+    const lastInput = screen.getAllByPlaceholderText(
+      'akeneo.tailored_export.column_list.column_row.target_placeholder'
+    )[1];
+    userEvent.type(lastInput, 't');
+  });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([
     {
-      uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
+      uuid: expect.any(String),
       target: 'my column',
       sources: [],
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
     {
-      uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+      uuid: expect.any(String),
       target: 't',
       sources: [],
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);
 });
 
-test('It update column when user change value input', async () => {
+test('It updates column when user change value input', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -165,6 +145,7 @@ test('It update column when user change value input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -183,8 +164,8 @@ test('It update column when user change value input', async () => {
     'akeneo.tailored_export.column_list.column_row.target_placeholder'
   )[0];
 
-  await act(async () => {
-    await fireEvent.change(firstInput, {target: {value: 'my new column name'}});
+  act(() => {
+    fireEvent.change(firstInput, {target: {value: 'my new column name'}});
   });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([
@@ -195,12 +176,13 @@ test('It update column when user change value input', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);
 });
 
-test('It delete column when user click on delete button', async () => {
+test('It deletes column when user click on delete button', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -209,6 +191,7 @@ test('It delete column when user click on delete button', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -229,7 +212,7 @@ test('It delete column when user click on delete button', async () => {
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([]);
 });
 
-test('It add source when user click on add source', async () => {
+test('It adds source when user click on add source', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -238,6 +221,7 @@ test('It add source when user click on add source', async () => {
       format: {
         elements: [],
         type: 'concat',
+        space_between: true,
       },
     },
   ];
@@ -267,20 +251,27 @@ test('It add source when user click on add source', async () => {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       sources: [
         {
-          channel: null,
+          channel: 'ecommerce',
           code: 'description',
-          locale: null,
+          locale: 'en_US',
           operations: {},
           selection: {
             type: 'code',
           },
           type: 'attribute',
-          uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+          uuid: expect.any(String),
         },
       ],
       format: {
-        elements: [],
+        elements: [
+          {
+            type: 'source',
+            uuid: expect.any(String),
+            value: expect.any(String),
+          },
+        ],
         type: 'concat',
+        space_between: true,
       },
     },
   ]);

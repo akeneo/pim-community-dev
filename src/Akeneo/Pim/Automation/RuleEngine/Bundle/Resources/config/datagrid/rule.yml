@@ -116,7 +116,7 @@ datagrid:
                 label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         mass_actions:
             impacted_product_count:
-                type: ajax
+                type: rules
                 acl_resource: pimee_catalog_rule_rule_impacted_product_count_permissions
                 handler: rule_impacted_product_count
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.impacted_product_count
@@ -140,7 +140,7 @@ datagrid:
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.empty_selection
             delete:
-                type: delete
+                type: rules
                 entity_name: rule
                 acl_resource: pimee_catalog_rule_rule_delete_permissions
                 handler: mass_delete_rule

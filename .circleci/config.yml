@@ -32,6 +32,8 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+orbs:
+  infracost: infracost/infracost@0.8.1
 
 jobs:
   checkout:
@@ -204,7 +206,7 @@ jobs:
                 IMAGE_TAG=${CIRCLE_SHA1}
                 IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-                SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
                 PIM_CONTEXT=deployment
@@ -213,16 +215,16 @@ jobs:
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
+                echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Image tag: ${IMAGE_TAG}"
-                echo "Serenity release name: ${SERENITY_RELEASE_NAME}"
+                echo "Serenity release name: ${RELEASE_NAME}"
           - run:
               name: Build the Serenity Edition prod image
-              command: IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+              command: make php-image-prod
           - run:
               name: Push the Serenity Edition prod image on docker registry
               command: make push-php-image-prod
@@ -233,7 +235,7 @@ jobs:
                 echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> persisted_env_vars
+                echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -251,7 +253,6 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
-    working_directory: ~/project/grth
     steps:
     - attach_workspace:
         at: ~/
@@ -283,9 +284,9 @@ jobs:
           - run:
               name: Get last good CE build revision on master
               command: |
-                docker run --rm -v $PWD/last_good_ce:/app composer composer install
+                docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
                 CE_BRANCH=master
-                CE_COMMIT_HASH=$(docker run --rm -v $PWD/last_good_ce:/app composer php get_last_good_ce_revision.php)
+                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
 
                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
@@ -296,7 +297,7 @@ jobs:
           IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-          GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
+          RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
           PIM_CONTEXT=deployment
@@ -305,7 +306,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
+          echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
@@ -313,18 +314,22 @@ jobs:
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
           echo "Image tag: ${IMAGE_TAG}"
-          echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
+          echo "Growth Release name: ${RELEASE_NAME}"
     - run:
         name: Set the right CE branch
-        command: docker run --rm -v $PWD:/app composer composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs
+        command: |
+              docker run --rm -v ${PWD}:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} -w /srv/pim/${TYPE} composer bash -c 'composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
+    - run:
+        name: Prepare chart values
+        command: make prepare-chart-default-values
     - connector_bigcommerce_checkout_steps:
         is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Growth Edition prod image
-        command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+        command: make php-image-prod
     - run:
         name: Push the Growth Edition prod image on docker registry
-        command: TYPE=${TYPE} make push-php-image-prod
+        command: make push-php-image-prod
     - run:
         name: Prepare the Terraform module with the upgrade script
         command: |
@@ -345,7 +350,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
+          echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -363,7 +368,6 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
-    working_directory: ~/project/tria
     steps:
     - attach_workspace:
         at: ~/
@@ -408,16 +412,16 @@ jobs:
           IMAGE_TAG=$(echo trial-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-          TRIAL_RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
+          RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="pim_trial_instance"
-          PRODUCT_REFERENCE_CODE="trial_${ENV_NAME}"
+          PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
           PIM_CONTEXT=deployment
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> $BASH_ENV
+          echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
@@ -425,13 +429,16 @@ jobs:
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
           echo "Image tag: ${IMAGE_TAG}"
-          echo "Trial Release name: ${TRIAL_RELEASE_NAME}"
+          echo "Trial Release name: ${RELEASE_NAME}"
     - run:
         name: Set the right CE branch
         command: |
-          docker run --rm -v ${PWD}/..:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} composer bash -c 'cd tria && composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
+          docker run --rm -v ${PWD}:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} -w /srv/pim/${TYPE} composer bash -c 'composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
+    - run:
+        name: Prepare chart values
+        command: make prepare-chart-default-values
     - connector_bigcommerce_checkout_steps:
-          is_pull_request: << parameters.is_pull_request >>
+        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Free Trial Edition prod image
         command: make php-image-prod
@@ -449,7 +456,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
+          echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -840,14 +847,13 @@ jobs:
                     mkdir secret
                     echo "{}" > secret/serviceAccount.json
           - run:
-                name: Start containers
+                name: Load php pim image
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
           - run:
                 name: Load make commands
-                command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
+                command: |
+                    cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
                 name: Require onboarder tests dependencies
                 command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
@@ -872,6 +878,11 @@ jobs:
           - run:
                 name: Execute specifications
                 command: PIM_CONTEXT=onboarder make test-spec
+          - run:
+                name: Start containers
+                command: |
+                  APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
+                  docker/wait_docker_up.sh
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
                 command: PIM_CONTEXT=onboarder ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
@@ -906,19 +917,23 @@ jobs:
   test_grth:
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
               at: ~/
           - run:
+              name: Define value for next steps
+              command: |
+                TYPE="grth"
+                echo export TYPE=${TYPE} >> $BASH_ENV
+          - run:
               name: Setup tests results folder and log folder
-              command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+              command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer
           - run:
               name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
               command: sudo chown -R 1000:1000 ~/project ~/.cache/yarn ~/.composer
           - run:
               name: Load php image
-              command: docker load -i ../php-pim-image.tar
+              command: docker load -i php-pim-image.tar
           - run:
               name: Install dependencies
               command: make dependencies
@@ -941,16 +956,15 @@ jobs:
               name: End to End Back
               command: PIM_CONTEXT=test make end-to-end-back
           - store_test_results:
-                path: var/tests
+                path: ${TYPE}/var/tests
           - store_artifacts:
-                path: var/tests
+                path: ${TYPE}/var/tests
           - store_artifacts:
-                path: var/logs
+                path: ${TYPE}/var/logs
 
   test_tria:
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
               at: ~/
@@ -1044,9 +1058,11 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
+                TYPE="srnt"
                 PIM_CONTEXT=deployment
                 K8S_CLUSTER_VERSION=<< parameters.VERSION >>
 
+                echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
 
@@ -1059,10 +1075,13 @@ jobs:
               command: WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
   test_helm_generated_k8s_files_grth:
+      parameters:
+          VERSION:
+              type: string
+              default: ""
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1070,20 +1089,27 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
+                TYPE="grth"
                 PIM_CONTEXT=deployment
+                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
+
+                echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
               name: Test Growth Edition Helm generated yaml files compliance with current kubernetes Version
-              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
-          - run:
-              name: Test Growth Edition Helm generated yaml files compliance with latest kubernetes Version
               command: make test_helm_generated_k8s_files
 
   test_helm_generated_k8s_files_tria:
+      parameters:
+          VERSION:
+              type: string
+              default: ""
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1091,13 +1117,17 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
+                TYPE="tria"
                 PIM_CONTEXT=deployment
+                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
+
+                echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
               name: Test Free Trial Edition Helm generated yaml files compliance with current kubernetes Version
-              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
-          - run:
-              name: Test Free Trial Edition Helm generated yaml files compliance with latest kubernetes Version
               command: make test_helm_generated_k8s_files
 
   test_cronjobs_existence_srnt:
@@ -1120,7 +1150,6 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1136,7 +1165,6 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1186,8 +1214,13 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
+              no_output_timeout: 30m
               command: make delete
               when: always
 
@@ -1195,7 +1228,6 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1228,16 +1260,20 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: always
 
   test_deploy_tria:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1273,6 +1309,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: always
 
   test_deploy_srnt_last_release:
@@ -1342,7 +1379,6 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerCurrent
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1396,7 +1432,7 @@ jobs:
           - persist_to_workspace:
               root: ~/
               paths:
-                - project/grth/persisted_env_vars
+                - project/persisted_env_vars
           - run:
               name: Remove env on kubernetes
               command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
@@ -1425,7 +1461,7 @@ jobs:
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
                 name: Jenkins Upgrade
-                command: make upgrade-instance
+                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
               name: Production tests on upgraded env
               command: make test-prod
@@ -1438,16 +1474,15 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: make uncommit-instance
-              when: always
+#          - run:
+#              name: Remove upgraded env
+#              command: make uncommit-instance
+#              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerJenkinsCloudDeployer
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1467,7 +1502,7 @@ jobs:
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
                 name: Jenkins Upgrade
-                command: make upgrade-instance
+                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
                 name: Production tests on upgraded env
                 command: make test-prod
@@ -1549,6 +1584,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
 
@@ -1568,19 +1604,18 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                SERENITY_RELEASE_NAME=v$(docker run --rm eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} grep -o "const VERSION = '.*';$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
-                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/terraform/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/terraform/
           - run:
               name: PIM_CONTEXT=deployment make release
-              command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
+              command: |
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   release_grth:
       environment:
           <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1594,24 +1629,23 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$GROWTH_RELEASE_NAME
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/terraform/deployments/terraform
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
                   docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
 
   release_tria:
       environment:
           <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1620,12 +1654,12 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${TRIAL_RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${TRIAL_RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${RELEASE_NAME}/
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
-                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${TRIAL_RELEASE_NAME} PIM_CONTEXT=deployment make release
+                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   ##################
   # Deploy         #
@@ -1671,7 +1705,7 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                 name: Jenkins Upgrade
-                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
             - run:
                 name: Communicate
                 command: |
@@ -1719,7 +1753,7 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                   name: Jenkins Upgrade
-                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
             - run:
                 name: Communicate
                 command: |
@@ -1766,7 +1800,7 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
 
   deploy_pr_srnt_environment:
       environment:
@@ -1811,13 +1845,13 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
   deploy_pr_grth_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/grth
       steps:
           - attach_workspace:
               at: ~/
@@ -1857,13 +1891,13 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
 
   deploy_pr_tria_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      working_directory: ~/project/tria
       steps:
           - attach_workspace:
               at: ~/
@@ -1903,25 +1937,8 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: make delete
+              no_output_timeout: 30m
               when: on_fail
-          - run:
-              name: Persist env vars for next jobs
-              command: |
-                echo export TYPE=${TYPE} > persisted_env_vars
-                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
-                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
-                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> persisted_env_vars
-                echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
-                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
-                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project/tria/persisted_env_vars
 
   ##################
   # Cleanup        #
@@ -1942,28 +1959,27 @@ jobs:
                     echo export PIM_CONTEXT=deployment >> $BASH_ENV
           - run:
                 name: Delete environments
+                no_output_timeout: 30m
                 command: |
                     make delete_environments_hourly
-          - run:
-                name: Delete tria environments
-                command: |
-                    cd tria && make delete_environments_hourly
 
-  remove_pr_tria:
-    environment:
-        <<: *envVarsDeployDev
-    <<: *dockerCloudDeployerNext
-    working_directory: ~/project/tria
-    steps:
-        - attach_workspace:
-              at: ~/
-        - set_gcloud_config_dev
-        - restore_persisted_env_vars
-        - run:
-              name: Delete environments
-              command: |
-                  make create-ci-release-files
-                  make delete
+  delete_expired_uptime_check:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Delete expired uptime-check
+                command: |
+                    make delete_expired_uptime_check
 
 workflows:
   pull_request:
@@ -1990,6 +2006,15 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
+          - infracost/infracost:
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/
+                path: ~/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_srnt
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
@@ -2026,6 +2051,15 @@ workflows:
                 type: approval
                 requires:
                     - test_cronjobs_existence_grth
+          - infracost/infracost:
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/grth
+                path: ~/grth/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_grth
           - deploy_pr_grth_environment:
                 requires:
                     - deploy_pr_grth_environment?
@@ -2049,13 +2083,6 @@ workflows:
           - deploy_pr_tria_environment:
                 requires:
                     - deploy_pr_tria_environment?
-          - remove_pr_tria?:
-                type: approval
-                requires:
-                    - deploy_pr_tria_environment
-          - remove_pr_tria:
-                requires:
-                    - remove_pr_tria?
           - build_srnt_dev:
                 requires:
                     - checkout
@@ -2435,7 +2462,9 @@ workflows:
          - delete_environments_hourly:
                requires:
                    - checkout
-
+         - delete_expired_uptime_check:
+               requires:
+                   - checkout
 
 commands:
   set_gcloud_config_dev:

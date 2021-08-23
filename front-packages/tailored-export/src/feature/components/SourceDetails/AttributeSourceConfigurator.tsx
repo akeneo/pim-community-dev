@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Helper} from 'akeneo-design-system';
 import {
   filterErrors,
+  getErrorsForPath,
   ChannelCode,
   LocaleCode,
   ValidationError,
@@ -11,10 +12,9 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
-import {AttributeConfiguratorProps} from '../../models';
+import {AttributeConfiguratorProps, Source} from '../../models';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {LocaleDropdown} from '../LocaleDropdown';
-import {Source} from '../../models/Source';
 import {MeasurementConfigurator} from './Measurement/MeasurementConfigurator';
 import {TextConfigurator} from './Text/TextConfigurator';
 import {ReferenceEntityCollectionConfigurator} from './ReferenceEntityCollection/ReferenceEntityCollectionConfigurator';
@@ -28,16 +28,16 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
+import {ErrorBoundary, DeletedAttributeSourcePlaceholder} from './error';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px 0;
-  flex: 1;
 `;
 
-const configurators = {
+const configurators: {[attributeType: string]: FunctionComponent<AttributeConfiguratorProps>} = {
   pim_catalog_text: TextConfigurator,
   pim_catalog_textarea: TextConfigurator,
   pim_catalog_metric: MeasurementConfigurator,
@@ -53,10 +53,6 @@ const configurators = {
   pim_catalog_multiselect: MultiSelectConfigurator,
   akeneo_reference_entity: ReferenceEntityConfigurator,
   pim_catalog_asset_collection: AssetCollectionConfigurator,
-} as const;
-
-const getConfigurator = (attributeType: string): FunctionComponent<AttributeConfiguratorProps> | null => {
-  return configurators[attributeType] ?? null;
 };
 
 type AttributeSourceConfiguratorProps = {
@@ -70,16 +66,31 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   const channels = useChannels();
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
+  const attributeErrors = getErrorsForPath(validationErrors, '');
   const locales = getLocalesFromChannel(channels, source.channel);
-  const attribute = useAttribute(source.code);
+  const [isFetching, attribute] = useAttribute(source.code);
 
-  if (null === attribute) return null;
+  // TODO: add skeleton
+  if (isFetching) return null;
+
+  if (null === attribute) {
+    return (
+      <>
+        {attributeErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+        <DeletedAttributeSourcePlaceholder />
+      </>
+    );
+  }
 
   const localeSpecificFilteredLocales = attribute.is_locale_specific
     ? locales.filter(({code}) => attribute.available_locales.includes(code))
     : locales;
 
-  const Configurator = getConfigurator(attribute.type);
+  const Configurator = configurators[attribute.type] ?? null;
 
   if (null === Configurator) {
     console.error(`No configurator found for "${attribute.type}" attribute type`);
@@ -88,31 +99,40 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   }
 
   return (
-    <Container>
-      {null !== source.channel && (
-        <ChannelDropdown
-          value={source.channel}
-          channels={channels}
-          validationErrors={channelErrors}
-          onChange={(channelCode: ChannelCode) => {
-            const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
-            onSourceChange({...source, locale: localeCode, channel: channelCode});
-          }}
-        />
-      )}
-      {null !== source.locale && (
-        <LocaleDropdown
-          value={source.locale}
-          validationErrors={localeErrors}
-          locales={localeSpecificFilteredLocales}
-          onChange={(localeCode: LocaleCode) => {
-            onSourceChange({...source, locale: localeCode});
-          }}
-        >
-          {attribute.is_locale_specific && (
-            <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
+    <ErrorBoundary>
+      {attributeErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+      {(null !== source.channel || null !== source.locale) && (
+        <Container>
+          {null !== source.channel && (
+            <ChannelDropdown
+              value={source.channel}
+              channels={channels}
+              validationErrors={channelErrors}
+              onChange={(channelCode: ChannelCode) => {
+                const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
+                onSourceChange({...source, locale: localeCode, channel: channelCode});
+              }}
+            />
           )}
-        </LocaleDropdown>
+          {null !== source.locale && (
+            <LocaleDropdown
+              value={source.locale}
+              validationErrors={localeErrors}
+              locales={localeSpecificFilteredLocales}
+              onChange={(localeCode: LocaleCode) => {
+                onSourceChange({...source, locale: localeCode});
+              }}
+            >
+              {attribute.is_locale_specific && (
+                <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific')}</Helper>
+              )}
+            </LocaleDropdown>
+          )}
+        </Container>
       )}
       <Configurator
         source={source}
@@ -120,7 +140,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
         validationErrors={validationErrors}
         onSourceChange={onSourceChange}
       />
-    </Container>
+    </ErrorBoundary>
   );
 };
 

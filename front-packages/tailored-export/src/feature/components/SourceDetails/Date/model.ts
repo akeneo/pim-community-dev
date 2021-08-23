@@ -1,6 +1,7 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 const availableDateFormats = [
   'yyyy-mm-dd',
@@ -21,6 +22,10 @@ const availableDateFormats = [
   'dd.m.yy',
 ];
 
+type DateOperations = {
+  default_value?: DefaultValueOperation;
+};
+
 type DateFormat = typeof availableDateFormats[number];
 
 type DateSelection = {
@@ -33,13 +38,17 @@ const isDateFormat = (dateFormat: unknown): dateFormat is DateFormat =>
 const isDateSelection = (selection: any): selection is DateSelection =>
   'object' === typeof selection && null !== selection && 'format' in selection && isDateFormat(selection.format);
 
+const getDefaultDateSelection = (): DateSelection => ({format: availableDateFormats[0]});
+
+const isDefaultDateSelection = (selection?: DateSelection): boolean => selection?.format === availableDateFormats[0];
+
 type DateSource = {
   uuid: string;
   code: string;
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: DateOperations;
   selection: DateSelection;
 };
 
@@ -54,10 +63,21 @@ const getDefaultDateSource = (
   locale,
   channel,
   operations: {},
-  selection: {format: availableDateFormats[0]},
+  selection: getDefaultDateSelection(),
 });
 
-const isDateSource = (source: Source): source is DateSource => isDateSelection(source.selection);
+const isDateOperations = (operations: Object): operations is DateOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
 
-export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats};
+const isDateSource = (source: Source): source is DateSource =>
+  isDateSelection(source.selection) && isDateOperations(source.operations);
+
+export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats, isDefaultDateSelection};
 export type {DateSelection, DateSource};

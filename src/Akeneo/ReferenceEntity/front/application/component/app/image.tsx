@@ -4,7 +4,7 @@ import {DeleteIcon, DownloadIcon, ImportIllustration, pimTheme, Key} from 'akene
 import FileModel from 'akeneoreferenceentity/domain/model/file';
 import {getImageShowUrl, getImageDownloadUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import imageUploader from 'akeneoreferenceentity/infrastructure/uploader/image';
-import loadImage from 'akeneoreferenceentity/tools/image-loader';
+import {loadImage} from 'akeneoreferenceentity/tools/image-loader';
 import __ from 'akeneoreferenceentity/tools/translator';
 
 const Messenger = require('oro/messenger');

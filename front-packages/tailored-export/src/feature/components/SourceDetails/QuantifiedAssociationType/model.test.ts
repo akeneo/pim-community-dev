@@ -8,10 +8,6 @@ import {
 import {AssociationType} from '../../../models';
 import {getDefaultEnabledSource} from '../Enabled/model';
 
-jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
-  uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
-}));
-
 const associationType: AssociationType = {
   code: 'PACK',
   labels: {},
@@ -20,7 +16,7 @@ const associationType: AssociationType = {
 
 test('it can get the default quantified association source', () => {
   expect(getDefaultQuantifiedAssociationTypeSource(associationType)).toEqual({
-    uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+    uuid: expect.any(String),
     type: 'association_type',
     code: 'PACK',
     locale: null,

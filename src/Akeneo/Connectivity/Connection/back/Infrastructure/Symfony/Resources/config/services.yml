@@ -7,3 +7,11 @@ services:
             - '@akeneo_connectivity.connection.webhook.community_cache_clearer'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+
+    akeneo_enterprise_connectivity.connection.marketplace.web_marketplace_aliases:
+        class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
+        decorates: akeneo_connectivity.connection.marketplace.web_marketplace_aliases
+        decoration_inner_name: akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner'
+            - '@pim_catalog.version_provider'

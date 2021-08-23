@@ -1,49 +1,8 @@
 import React from 'react';
-import {screen, act, fireEvent} from '@testing-library/react';
-import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
+import {screen, fireEvent} from '@testing-library/react';
 import {SourceTabBar} from './SourceTabBar';
-import {AssociationType, Attribute, Source} from '../../models';
-import {FetcherContext} from '../../contexts';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {en_US: 'Cross sell'},
-    is_quantified: false,
-  },
-  {
-    code: 'UPSELL',
-    labels: {},
-    is_quantified: false,
-  },
-];
-
-const attributes: Attribute[] = [
-  {
-    type: 'pim_catalog_text',
-    code: 'name',
-    labels: {fr_FR: 'French name', en_US: 'English name'},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-  {
-    type: 'pim_catalog_textarea',
-    code: 'description',
-    labels: {fr_FR: 'French description', en_US: 'English description'},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
-};
+import {Source} from '../../models';
+import {renderWithProviders} from 'feature/tests';
 
 test('it renders the source tab bar', async () => {
   const handleTabChange = jest.fn();
@@ -110,18 +69,14 @@ test('it renders the source tab bar', async () => {
     },
   ];
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <SourceTabBar
-          validationErrors={[]}
-          sources={sources}
-          currentTab="cffd560e-1e40-4c55-a415-89c7958b270d"
-          onTabChange={handleTabChange}
-        />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <SourceTabBar
+      validationErrors={[]}
+      sources={sources}
+      currentTab="cffd560e-1e40-4c55-a415-89c7958b270d"
+      onTabChange={handleTabChange}
+    />
+  );
 
   expect(screen.getByText(/English description/i)).toBeInTheDocument();
   expect(screen.getByText(/English name/i)).toBeInTheDocument();

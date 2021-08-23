@@ -7,7 +7,7 @@ describe('edit product sanity check', () => {
       .clear()
       .type('updated value');
     cy.saveProduct();
-    cy.reload();
+    cy.reloadProduct();
     cy.findFirstTextField().should('have.value', 'updated value');
   });
 });

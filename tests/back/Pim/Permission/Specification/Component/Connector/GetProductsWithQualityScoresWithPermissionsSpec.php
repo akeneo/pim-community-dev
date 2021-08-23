@@ -2,15 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Connector;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -18,7 +17,7 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
 {
     function let(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user
@@ -32,7 +31,7 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
 
     function it_applies_permissions_on_product_quality_scores(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser
     ) {
         $getAllViewableLocalesForUser->fetchAll(1)->willReturn(['fr_FR']);
 
@@ -49,9 +48,8 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
 
     function it_applies_permissions_on_a_list_of_product_quality_scores(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser
-    )
-    {
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser
+    ) {
         $getAllViewableLocalesForUser->fetchAll(1)->willReturn(['fr_FR']);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt1', null);
@@ -74,7 +72,7 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
 
     public function it_applies_permissions_on_quality_scores_of_a_normalized_product(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser
     ) {
         $normalizedProduct = [
             'enabled'    => true,

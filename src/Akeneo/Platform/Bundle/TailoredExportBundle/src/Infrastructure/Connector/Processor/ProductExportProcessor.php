@@ -16,10 +16,13 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQuery;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -32,7 +35,8 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private GetAssociationTypesInterface $getAssociationTypes;
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
-    private ProductMapper $productMapper;
+    private MapValuesQueryHandler $mapValuesQueryHandler;
+    private ExtractMediaQueryHandler $extractMediaQueryHandler;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
@@ -41,13 +45,15 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        MapValuesQueryHandler $mapValuesQueryHandler,
+        ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
         $this->getAttributes = $getAttributes;
         $this->getAssociationTypes = $getAssociationTypes;
         $this->valueCollectionHydrator = $valueCollectionHydrator;
         $this->columnCollectionHydrator = $columnCollectionHydrator;
-        $this->productMapper = $productMapper;
+        $this->mapValuesQueryHandler = $mapValuesQueryHandler;
+        $this->extractMediaQueryHandler = $extractMediaQueryHandler;
     }
 
     /**
@@ -67,7 +73,13 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $columnCollection = $this->getColumnCollection($columns);
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        return $this->productMapper->map($columnCollection, $valueCollection);
+        $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
+        $mappedProducts = $this->mapValuesQueryHandler->handle($mapValuesQuery);
+
+        $extractMediaQuery = new ExtractMediaQuery($columnCollection, $valueCollection);
+        $filesToExport = $this->extractMediaQueryHandler->handle($extractMediaQuery);
+
+        return new ProcessedTailoredExport($mappedProducts, $filesToExport);
     }
 
     /**

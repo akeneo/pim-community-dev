@@ -1,76 +1,9 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {QuantifiedAssociationTypeSelector} from './QuantifiedAssociationTypeSelector';
-import {AssociationType, Attribute} from '../../../models';
-import {FetcherContext} from '../../../contexts';
-
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-  {
-    code: 'print',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {renderWithProviders} from 'feature/tests';
 
 test('it displays a type dropdown, entity type dropdown and a separator dropdown when the selection type is code', async () => {
   const onSelectionChange = jest.fn();
@@ -142,7 +75,7 @@ test('it displays a locale and channel dropdown when the selection type is label
   expect(screen.getByText('pim_common.channel')).toBeInTheDocument();
 
   userEvent.click(screen.getByLabelText('pim_common.locale'));
-  userEvent.click(screen.getByText('fr_FR'));
+  userEvent.click(screen.getByText('Français'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({
     type: 'label',

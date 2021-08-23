@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook;
@@ -6,7 +7,7 @@ namespace spec\AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\Cache\LRUCachedGetViewableAttributeCodesForUser;
 use Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use PhpSpec\ObjectBehavior;
 
 class CacheClearerSpec extends ObjectBehavior

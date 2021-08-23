@@ -29,6 +29,15 @@ variable "product_reference_type" {
   type = string
 }
 
+variable "types" {
+  type    = map
+  default = {
+    "serenity_instance" = "srnt"
+    "growth_edition_instance" = "grth"
+    "pim_trial_instance" = "tria"
+    }
+}
+
 variable "monitoring_authentication_token" {
   type = string
 }

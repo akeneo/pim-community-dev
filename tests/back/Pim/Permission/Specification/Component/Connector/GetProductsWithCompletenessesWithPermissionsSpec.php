@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Permission\Component\Connector;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -11,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Permission\Component\Connector\GetProductsWithCompletenessesWithPermissions;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,7 +21,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 {
     public function let(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage
     ): void {
         $this->beConstructedWith(
@@ -39,7 +39,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 
     public function it_applies_permission_when_adding_completenesses_to_a_connector_product(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token
     ): void {
@@ -74,7 +74,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 
     public function it_returns_product_even_if_there_is_no_permission_to_apply(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token
     ): void {
@@ -97,7 +97,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 
     public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token
     ): void {
@@ -131,7 +131,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 
     public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list_and_without_locale_filter(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token
     ): void {
@@ -165,7 +165,7 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
 
     public function it_applies_permission_when_adding_completenesses_to_a_connector_product_list_but_no_locale_viewable(
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token
     ): void {

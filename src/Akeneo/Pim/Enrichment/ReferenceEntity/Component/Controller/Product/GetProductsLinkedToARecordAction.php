@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -32,18 +33,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GetProductsLinkedToARecordAction
 {
     private const MAX_RESULTS = 20;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
-
-    /** @var FetchProductAndProductModelRows */
-    private $fetchProductAndProductModelRows;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var LinkedProductsNormalizer */
-    private $linkedProductNormalizer;
+    private ProductQueryBuilderFactoryInterface $pqbFactory;
+    private FetchProductAndProductModelRows $fetchProductAndProductModelRows;
+    private ValidatorInterface $validator;
+    private LinkedProductsNormalizer $linkedProductNormalizer;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -62,7 +55,12 @@ class GetProductsLinkedToARecordAction
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
 
-        $rows = $this->findProductAndProductModelsIdentifiers($recordCode, $attributeCode, $localeCode, $channelCode);
+        try {
+            $rows = $this->findProductAndProductModelsIdentifiers($recordCode, $attributeCode, $localeCode, $channelCode);
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
         $normalizedProducts = $this->linkedProductNormalizer->normalize($rows, $channelCode, $localeCode);
 
         return new JsonResponse(['items' => $normalizedProducts, 'total_count' => $rows->totalCount()]);

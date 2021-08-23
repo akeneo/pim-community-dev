@@ -7,6 +7,8 @@ namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Psr\Container\ContainerInterface;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
@@ -43,7 +45,18 @@ class FirewallMap implements FirewallMapInterface
         return [$context->getListeners(), $context->getExceptionListener(), $context->getLogoutListener()];
     }
 
-    private function getFirewallContext(Request $request)
+    public function getFirewallConfig(Request $request): ?FirewallConfig
+    {
+        $context = $this->getFirewallContext($request);
+
+        if (null === $context) {
+            return null;
+        }
+
+        return $context->getConfig();
+    }
+
+    private function getFirewallContext(Request $request): ?FirewallContext
     {
         if ($request->attributes->has('_firewall_context')) {
             $storedContextId = $request->attributes->get('_firewall_context');

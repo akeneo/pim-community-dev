@@ -117,3 +117,4 @@ remove_non_existing_product_values;All;IT support,Manager
 change_parent_product;All;
 asset_manager_compute_transformations;All
 convert_to_simple_products;All
+clean_removed_attribute_job;All

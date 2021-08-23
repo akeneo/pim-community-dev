@@ -1,5 +1,5 @@
-import React from 'react';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -23,6 +23,12 @@ type CodeLabelSelection =
 const isCodeLabelSelection = (selection: any): selection is CodeLabelSelection =>
   'type' in selection && (selection.type === 'code' || (selection.type === 'label' && 'locale' in selection));
 
+const getDefaultCodeLabelSelection = (): CodeLabelSelection => ({
+  type: 'code',
+});
+
+const isDefaultCodeLabelSelection = (selection?: CodeLabelSelection): boolean => 'code' === selection?.type;
+
 type CodeLabelSelectorProps = {
   selection: CodeLabelSelection;
   validationErrors: ValidationError[];
@@ -30,6 +36,7 @@ type CodeLabelSelectorProps = {
 };
 
 const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: CodeLabelSelectorProps) => {
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -37,49 +44,59 @@ const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: Cod
   const typeErrors = filterErrors(validationErrors, '[type]');
 
   return (
-    <Section>
-      <Field label={translate('pim_common.type')}>
-        <SelectInput
-          clearable={false}
-          invalid={0 < typeErrors.length}
-          emptyResultLabel={translate('pim_common.no_result')}
-          openLabel={translate('pim_common.open')}
-          value={selection.type}
-          onChange={type => {
-            if ('label' === type) {
-              onSelectionChange({type, locale: locales[0].code});
-            } else if ('code' === type) {
-              onSelectionChange({type});
-            }
-          }}
-        >
-          <SelectInput.Option title={translate('pim_common.label')} value="label">
-            {translate('pim_common.label')}
-          </SelectInput.Option>
-          <SelectInput.Option title={translate('pim_common.code')} value="code">
-            {translate('pim_common.code')}
-          </SelectInput.Option>
-        </SelectInput>
-        <Helper inline={true} level="info">
-          {translate('akeneo.tailored_export.column_details.sources.selection.code_label.information')}
-        </Helper>
-        {typeErrors.map((error, index) => (
-          <Helper key={index} inline={true} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </Field>
-      {'label' === selection.type && (
-        <LocaleDropdown
-          value={selection.locale}
-          validationErrors={localeErrors}
-          locales={locales}
-          onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
-        />
-      )}
-    </Section>
+    <Collapse
+      collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultCodeLabelSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
+      isOpen={isSelectorCollapsed}
+      onCollapse={toggleSelectorCollapse}
+    >
+      <Section>
+        <Field label={translate('pim_common.type')}>
+          <SelectInput
+            clearable={false}
+            invalid={0 < typeErrors.length}
+            emptyResultLabel={translate('pim_common.no_result')}
+            openLabel={translate('pim_common.open')}
+            value={selection.type}
+            onChange={type => {
+              if ('label' === type) {
+                onSelectionChange({type, locale: locales[0].code});
+              } else if ('code' === type) {
+                onSelectionChange({type});
+              }
+            }}
+          >
+            <SelectInput.Option title={translate('pim_common.label')} value="label">
+              {translate('pim_common.label')}
+            </SelectInput.Option>
+            <SelectInput.Option title={translate('pim_common.code')} value="code">
+              {translate('pim_common.code')}
+            </SelectInput.Option>
+          </SelectInput>
+          {typeErrors.map((error, index) => (
+            <Helper key={index} inline={true} level="error">
+              {translate(error.messageTemplate, error.parameters)}
+            </Helper>
+          ))}
+        </Field>
+        {'label' === selection.type && (
+          <LocaleDropdown
+            value={selection.locale}
+            validationErrors={localeErrors}
+            locales={locales}
+            onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+          />
+        )}
+      </Section>
+    </Collapse>
   );
 };
 
-export {CodeLabelSelector, isCodeLabelSelection};
+export {CodeLabelSelector, getDefaultCodeLabelSelection, isCodeLabelSelection};
 export type {CodeLabelSelection};

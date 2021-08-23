@@ -24,6 +24,7 @@ const LocaleDropdown = ({locale, locales, ...rest}: LocaleDropdownProps) => {
       value={currentLocale.code}
       clearable={false}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+      openLabel={translate('pim_common.open')}
       {...rest}
     >
       {locales.map(localeItem => (

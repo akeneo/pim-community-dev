@@ -1,7 +1,17 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
-import {CodeLabelSelection, isCodeLabelSelection} from '../common/CodeLabelSelector';
+import {
+  CodeLabelSelection,
+  getDefaultCodeLabelSelection,
+  isCodeLabelSelection,
+  DefaultValueOperation,
+  isDefaultValueOperation,
+} from '../common';
+
+type ReferenceEntityOperations = {
+  default_value?: DefaultValueOperation;
+};
 
 type ReferenceEntitySource = {
   uuid: string;
@@ -9,7 +19,7 @@ type ReferenceEntitySource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: ReferenceEntityOperations;
   selection: CodeLabelSelection;
 };
 
@@ -24,11 +34,21 @@ const getDefaultReferenceEntitySource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code'},
+  selection: getDefaultCodeLabelSelection(),
 });
 
+const isReferenceEntityOperations = (operations: Object): operations is ReferenceEntityOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
 const isReferenceEntitySource = (source: Source): source is ReferenceEntitySource =>
-  isCodeLabelSelection(source.selection);
+  isCodeLabelSelection(source.selection) && isReferenceEntityOperations(source.operations);
 
 export {isReferenceEntitySource, getDefaultReferenceEntitySource};
 export type {ReferenceEntitySource};

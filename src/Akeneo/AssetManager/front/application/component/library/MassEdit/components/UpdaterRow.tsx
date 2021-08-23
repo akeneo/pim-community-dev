@@ -118,6 +118,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
                 onChange={handleActionChange}
                 clearable={false}
                 emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+                openLabel={translate('pim_common.open')}
               >
                 <SelectInput.Option value="replace">
                   {translate('pim_asset_manager.asset.mass_edit.action.replace')}
