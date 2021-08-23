@@ -133,8 +133,9 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
             $this->permissions
             ] = unserialize($serialized);
     }
-public function getOrder(): int
-{
-    // TODO: Implement getOrder() method.
-}
+
+    public function getOrder(): int
+    {
+        return 0;
+    }
 }
