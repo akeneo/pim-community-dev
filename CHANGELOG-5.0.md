@@ -12,6 +12,7 @@
 
 ## Bug fixes
 
+- PIM-10025: [Backport] PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
 - PIM-9943: Fix product-grid quality score filter all
 
