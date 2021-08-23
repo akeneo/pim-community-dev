@@ -1204,11 +1204,11 @@ jobs:
               root: ~/
               paths:
                 - upgrades.tfplan.json
-#          - run:
-#              name: Remove env on kubernetes
-#              no_output_timeout: 30m
-#              command: make delete
-#              when: always
+          - run:
+              name: Remove env on kubernetes
+              no_output_timeout: 30m
+              command: make delete
+              when: always
 
   test_deploy_grth:
       environment:
