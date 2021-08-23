@@ -1,14 +1,13 @@
 import React from 'react';
-import {ProposalChangeAccessor} from '../ProposalChange';
-import {TableRowWithId, TableValueWithId} from '@akeneo-pim-ge/table_attribute/src/product/TableFieldApp';
-import {TableAttribute} from '@akeneo-pim-ge/table_attribute/src/models/Attribute';
 import {Badge, LoaderIcon, TableInput} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ColumnCode, ColumnDefinition} from '@akeneo-pim-ge/table_attribute/src/models/TableConfiguration';
-import {useFetchOptions} from '@akeneo-pim-ge/table_attribute/src/product/useFetchOptions';
 import {diffChars} from 'diff';
 import styled from 'styled-components';
-
+import {ColumnCode, ColumnDefinition} from "../models/TableConfiguration";
+import {TableRowWithId, TableValueWithId} from "../product/TableFieldApp";
+import {useFetchOptions} from "../product/useFetchOptions";
+import {TableAttribute} from "../models/Attribute";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const FetcherRegistry = require('pim/fetcher-registry');
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
@@ -20,7 +19,7 @@ const StretchedBodyCell = styled(TableInput.Cell)`
 `;
 
 type ProposalDiffTableProps = {
-  accessor: ProposalChangeAccessor;
+  accessor: 'before' | 'after';
   change: {
     attributeCode: string;
     before: TableValueWithId | null;
@@ -176,14 +175,4 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   );
 };
 
-class ProposalDiffTableMatcher {
-  static supports(attributeType: string) {
-    return ['pim_catalog_table'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffTable;
-  }
-}
-
-export {ProposalDiffTableMatcher};
+export default ProposalDiffTable;

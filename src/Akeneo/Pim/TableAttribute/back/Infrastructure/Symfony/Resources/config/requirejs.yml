@@ -12,3 +12,7 @@ config:
                 pim_catalog_table:
                     - '@akeneopimtableattribute/attribute/SelectTemplate.tsx'
                     - '@akeneopimtableattribute/attribute/CreateAttributeCodeLabelTemplate.tsx'
+
+        akeneopimworkflow/js/datagrid/cell/proposal-cell:
+            proposal_diffs:
+                pim_catalog_table: '@akeneopimtableattribute/proposals/ProposalDiffTable.tsx'

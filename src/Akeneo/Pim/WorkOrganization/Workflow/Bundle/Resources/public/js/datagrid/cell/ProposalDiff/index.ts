@@ -8,4 +8,3 @@ export * from './ProposalDiffReferenceEntity';
 export * from './ProposalDiffReferenceEntityCollection';
 export * from './ProposalDiffString';
 export * from './ProposalDiffStringArray';
-export * from './ProposalDiffTable';
