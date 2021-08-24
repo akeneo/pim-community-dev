@@ -27,7 +27,7 @@ const AttributeEditFormApp: FC<AttributeEditFormAppProps> = ({attribute, renderi
             <SpellcheckLabelsList />
           </TabContent>
           <TabContent tabId={ATTRIBUTE_EDIT_FORM_OPTIONS_TAB} {...tabState}>
-            <AddQualityBadgesOnOptionsList />
+            {/*<AddQualityBadgesOnOptionsList />*/}
             <RefreshEvaluationWhenAttributeOptionsChanged />
             <SpellcheckOptionsList />
           </TabContent>
