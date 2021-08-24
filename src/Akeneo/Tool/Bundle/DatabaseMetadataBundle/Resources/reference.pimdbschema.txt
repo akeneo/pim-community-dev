@@ -384,6 +384,7 @@ oro_access_group | name | NO | varchar(255) | UNI
 oro_access_role | id | NO | smallint | PRI
 oro_access_role | role | NO | varchar(255) | UNI
 oro_access_role | label | NO | varchar(255) |
+oro_access_role | type | YES | varchar(30) |
 oro_config | id | NO | int | PRI
 oro_config | entity | YES | varchar(255) | MUL
 oro_config | record_id | YES | int |
