@@ -7,8 +7,8 @@ import {ColumnCode, ColumnDefinition} from '../models/TableConfiguration';
 import {TableRowWithId} from '../product/TableFieldApp';
 import {useFetchOptions} from '../product/useFetchOptions';
 import {TableAttribute} from '../models/Attribute';
-import {fetchAttribute} from '../fetchers/AttributeFetcher';
 import {TableValue} from '../models/TableValue';
+import {getAttribute} from '../repositories/Attribute';
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
   min-width: auto;
@@ -54,7 +54,7 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   const {getOptionLabel} = useFetchOptions(attribute?.table_configuration, change.attributeCode, valueData);
 
   React.useEffect(() => {
-    fetchAttribute(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
+    getAttribute(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
   }, []);
 
   if (typeof attribute === 'undefined') {

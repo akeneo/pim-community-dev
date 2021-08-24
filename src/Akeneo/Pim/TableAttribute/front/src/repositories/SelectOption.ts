@@ -2,6 +2,7 @@ import {Router} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption} from '../models/TableConfiguration';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 
+const selectOptionsCalls: {[key: string]: Promise<SelectOption[] | undefined>} = {};
 const selectOptionsCache: {[key: string]: SelectOption[] | null} = {};
 
 const clearCacheSelectOptions: () => void = () => {
@@ -17,7 +18,10 @@ const getSelectOptions = async (
 ): Promise<SelectOption[] | null> => {
   const key = `${attributeCode}-${columnCode}`;
   if (!(key in selectOptionsCache)) {
-    selectOptionsCache[key] = (await fetchSelectOptions(router, attributeCode, columnCode)) ?? null;
+    if (!(key in selectOptionsCalls)) {
+      selectOptionsCalls[key] = fetchSelectOptions(router, attributeCode, columnCode);
+    }
+    selectOptionsCache[key] = (await selectOptionsCalls[key]) ?? null;
   }
   return selectOptionsCache[key];
 };
