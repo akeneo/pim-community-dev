@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {RefObject} from 'react';
 import styled from 'styled-components';
 import {Button, Checkbox, getColor, Helper, SectionTitle, uuid} from 'akeneo-design-system';
 import {filterErrors, getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
@@ -27,20 +27,30 @@ type SourcesConcatenationProps = {
   validationErrors: ValidationError[];
   sources: Source[];
   format: Format;
+  scrollRef?: RefObject<HTMLDivElement>;
   onFormatChange: (format: Format) => void;
 };
 
-const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange}: SourcesConcatenationProps) => {
+const SourcesConcatenation = ({
+  validationErrors,
+  sources,
+  format,
+  scrollRef,
+  onFormatChange,
+}: SourcesConcatenationProps) => {
   const translate = useTranslate();
   const globalValidationErrors = getErrorsForPath(validationErrors, '[elements]');
 
   const handleSpacesBetweenChange = (spaceBetween: boolean) => onFormatChange({...format, space_between: spaceBetween});
 
-  const handleAddText = () =>
+  const handleAddText = () => {
     onFormatChange({
       ...format,
       elements: [...format.elements, {uuid: uuid(), type: 'text', value: ''}],
     });
+
+    window.setTimeout(() => scrollRef?.current?.scrollTo({top: scrollRef?.current?.scrollHeight}), 0);
+  };
 
   const handleConcatElementChange = (updatedConcatElement: ConcatElement) => {
     const updatedElements = format.elements.map(element =>
