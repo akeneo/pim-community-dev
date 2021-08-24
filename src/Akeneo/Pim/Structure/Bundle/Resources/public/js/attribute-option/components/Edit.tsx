@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOption, Locale} from '../model';
@@ -19,10 +19,9 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     setUpdatedOption(option);
   }, [option]);
 
-  const onUpdateOptionLabel = (event: ChangeEvent<HTMLInputElement>, localeCode: string) => {
-    event.persist();
+  const onUpdateOptionLabel = (newLabel: string, localeCode: string) => {
     let updatedOption: AttributeOption = {...option};
-    updatedOption.optionValues[localeCode].value = event.target.value;
+    updatedOption.optionValues[localeCode].value = newLabel;
     setUpdatedOption(updatedOption);
   };
 

@@ -1985,6 +1985,14 @@ class WebUser extends PimContext
     }
 
     /**
+     * @When /^I switch the "([^"]*)" to "(yes|no)"$/
+     */
+    public function iSwitchTheBooleanInputToValue($locator, $value)
+    {
+        $this->getCurrentPage()->switchBooleanToValue($locator, $value);
+    }
+
+    /**
      * @param string $status
      *
      * @When /^I (en|dis)able the inclusion of sub-categories$/
