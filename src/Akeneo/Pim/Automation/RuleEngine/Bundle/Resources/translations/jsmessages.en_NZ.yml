@@ -47,6 +47,8 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Rules
+    creation:
+      english_flag: Label for English
 pim_enrich:
   entity:
     rule:
