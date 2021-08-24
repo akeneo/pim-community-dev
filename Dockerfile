@@ -75,19 +75,6 @@ COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
 
 #
-# Temporary stage to compile grpc and protobuf extension
-#
-
-FROM base as compile-extensions
-
-RUN apt-get update && \
-    apt-get --yes install build-essential make autoconf zlib1g-dev php7.4-dev php-pear && \
-    pecl install grpc-1.38.0 protobuf-3.17.3 && \
-    strip --strip-debug /usr/lib/php/*/grpc.so && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-#
 # Image used for development
 #
 FROM base AS dev
