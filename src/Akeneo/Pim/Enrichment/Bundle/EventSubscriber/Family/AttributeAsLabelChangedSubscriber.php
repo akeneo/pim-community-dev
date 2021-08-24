@@ -64,7 +64,7 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
             $attributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
 
             if ($attributeCodeAsLabel) {
-                $body = [
+                $this->esClient->updateByQuery([
                     'script' => [
                         'inline' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
                         'params' => ['attributeAsLabel' => sprintf('%s-text', $attributeCodeAsLabel)],
@@ -72,9 +72,7 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
                     'query' => [
                         'term' => ['family.code' => $familyCode]
                     ]
-                ];
-
-                $this->esClient->updateByQuery($body);
+                ]);
             }
         }
     }
