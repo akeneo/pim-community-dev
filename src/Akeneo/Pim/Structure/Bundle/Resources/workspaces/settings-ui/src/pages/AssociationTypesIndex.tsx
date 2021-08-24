@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Breadcrumb, getFontSize, Pagination, Search, useAutoFocus} from 'akeneo-design-system';
+import React, {useState, useEffect} from 'react';
+import {Breadcrumb, getFontSize, Pagination} from 'akeneo-design-system';
 import {
   PageContent,
   PageHeader,

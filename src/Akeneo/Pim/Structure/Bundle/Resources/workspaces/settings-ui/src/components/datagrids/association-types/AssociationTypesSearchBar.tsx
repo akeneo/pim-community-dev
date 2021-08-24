@@ -1,6 +1,6 @@
-import React, {useRef} from "react";
-import styled from "styled-components";
-import {Search, useAutoFocus} from "akeneo-design-system";
+import React, {useRef} from 'react';
+import styled from 'styled-components';
+import {Search, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const AssociationTypesSearchBarContainer = styled(Search)`
@@ -8,9 +8,9 @@ const AssociationTypesSearchBarContainer = styled(Search)`
 `;
 
 type AssociationTypesSearchBarProps = {
-  searchValue: string,
-  onSearchChange: (searchValue: string) => void,
-  resultNumber: number
+  searchValue: string;
+  onSearchChange: (searchValue: string) => void;
+  resultNumber: number;
 };
 
 const AssociationTypesSearchBar = ({searchValue, onSearchChange, resultNumber}: AssociationTypesSearchBarProps) => {
@@ -31,7 +31,7 @@ const AssociationTypesSearchBar = ({searchValue, onSearchChange, resultNumber}: 
         {translate('pim_common.result_count', {itemsCount: resultNumber}, resultNumber)}
       </Search.ResultCount>
     </AssociationTypesSearchBarContainer>
-  )
-}
+  );
+};
 
 export {AssociationTypesSearchBar};

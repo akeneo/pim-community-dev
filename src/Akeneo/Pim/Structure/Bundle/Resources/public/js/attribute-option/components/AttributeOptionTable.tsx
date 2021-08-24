@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {AttributeOptionsContext, useAttributeContext} from '../contexts';
@@ -161,6 +161,7 @@ const AttributeOptionTable = ({
         </Button>
       </SectionTitleStyled>
       <Search
+        title={translate('pim_common.search')}
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
         searchValue={searchString}
         onSearchChange={onSearch}
