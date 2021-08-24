@@ -38,10 +38,6 @@ final class InitializeJobs
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_prepare_evaluations')) {
             $this->createJobInstance('data_quality_insights_prepare_evaluations');
         }
-
-        if ($this->isJobInstanceAlreadyCreated('reindex_products_after_family_attribute_as_label_changed')) {
-            $this->createJobInstance('reindex_products_after_family_attribute_as_label_changed');
-        }
     }
 
     private function createJobInstance(string $jobName): void

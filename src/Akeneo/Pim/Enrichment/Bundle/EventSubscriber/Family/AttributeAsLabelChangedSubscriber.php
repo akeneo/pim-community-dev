@@ -3,9 +3,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\FindAttributeCodeAsLabelForFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -18,22 +19,21 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
 {
     private array $impactedFamilyCodes = [];
 
-    private FamilyRepositoryInterface $familyRepository;
+    private FindAttributeCodeAsLabelForFamilyInterface $attributeCodeAsLabelForFamily;
 
-    private RunUniqueProcessJob $runUniqueProcessJob;
+    private Client $esClient;
 
-    public function __construct(FamilyRepositoryInterface $familyRepository, RunUniqueProcessJob $runUniqueProcessJob)
+    public function __construct(FindAttributeCodeAsLabelForFamilyInterface $attributeCodeAsLabelForFamily, Client $esClient)
     {
-        $this->familyRepository = $familyRepository;
-        $this->runUniqueProcessJob = $runUniqueProcessJob;
+        $this->attributeCodeAsLabelForFamily = $attributeCodeAsLabelForFamily;
+        $this->esClient = $esClient;
     }
-
 
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_SAVE  => 'storeFamilyCodeIfNeeded',
-            StorageEvents::POST_SAVE => 'triggerFamilyRelatedProductsReindexationJob',
+            StorageEvents::PRE_SAVE => 'storeFamilyCodeIfNeeded',
+            StorageEvents::POST_SAVE => 'triggerFamilyRelatedProductsReindexation',
         ];
     }
 
@@ -44,24 +44,38 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
         if (!$subject instanceof FamilyInterface || is_null($subject->getId())) {
             return;
         }
-        /** @var FamilyInterface $savedFamily */
-        $savedFamily = $this->familyRepository->find($subject->getId());
-        if ($subject->getAttributeAsLabel() === $savedFamily->getAttributeAsLabel()) {
-            $impactedFamilyCodes[] = $savedFamily->getCode();
+
+        $oldAttributeCodeAsLabel = $this->attributeCodeAsLabelForFamily->execute($subject->getId());
+        $newAttributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
+        if ($newAttributeCodeAsLabel !== $oldAttributeCodeAsLabel) {
+            $this->impactedFamilyCodes[] = $subject->getCode();
         }
     }
 
-    public function triggerFamilyRelatedProductsReindexationJob(GenericEvent $event)
+    public function triggerFamilyRelatedProductsReindexation(GenericEvent $event)
     {
         $subject = $event->getSubject();
 
         if (!$subject instanceof FamilyInterface) {
             return;
         }
+
         foreach ($this->impactedFamilyCodes as $familyCode) {
-            $this->runUniqueProcessJob->run('reindex_products_after_family_attribute_as_label_changed', function ($arg) use ($familyCode) {
-                return ['family_code' => $familyCode];
-            });
+            $attributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
+
+            if ($attributeCodeAsLabel) {
+                $body = [
+                    'script' => [
+                        'inline' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
+                        'params' => ['attributeAsLabel' => sprintf('%s-text', $attributeCodeAsLabel)],
+                    ],
+                    'query' => [
+                        'term' => ['family.code' => $familyCode]
+                    ]
+                ];
+
+                $this->esClient->updateByQuery($body);
+            }
         }
     }
 }

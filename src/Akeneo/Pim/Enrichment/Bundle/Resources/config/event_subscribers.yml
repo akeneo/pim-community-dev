@@ -253,7 +253,7 @@ services:
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\AttributeAsLabelChangedSubscriber:
         arguments:
-          - '@pim_catalog.repository.family'
-          - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+          - '@pim_catalog.doctrine.query.find_attribute_code_as_label_for_family'
+          - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
