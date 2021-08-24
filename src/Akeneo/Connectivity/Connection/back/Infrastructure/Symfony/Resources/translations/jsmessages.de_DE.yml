@@ -17,7 +17,6 @@ pim_menu:
     data_flows: Datenfluss
     connect_connection_settings: Verbindungseinstellungen
     marketplace: Marktplatz
-    new_label: NEU
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marktplatz
   akeneo_connectivity_connection_settings_index: Verbindungseinstellungen
@@ -30,13 +29,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Event-Abonnement
   akeneo_connectivity_connection_webhook_regenerate_secret: Event-Abonnement
   akeneo_connectivity_connection_webhook_event_logs: Ereignis-Logs
-  akeneo_connectivity_connection_redirect_audit: Verbindungs-Dashboard
   akeneo_connectivity_connection_settings_redirect: Verbindungen
 akeneo_connectivity.connection:
   connect:
-    redirect.link: Um dorthin zu gelangen, hier klicken
-    dashboard_redirect.title: Finde dein Verbindungs-Dashboard im Verbindungsmenü
-    settings_redirect.title: Finde deine Verbindungs-Informationen im Verbindungsmenü
     marketplace:
       title: Möchtest du deinen PIM mit einer anderen Anwendung verbinden? 🤟
       sub_title: Überprüfen Sie unseren Marktplatz, um zu sehen, welche Anwendung mit Akeneo PIM verbunden werden kann.
@@ -231,6 +226,7 @@ akeneo_connectivity.connection:
       required: Dieses Feld ist erforderlich.
       not_found: Sie versuchen eine Verbindung zu aktualisieren, die nicht existiert.
       limit_reached: Sie haben das Limit der aktiven Event-Abonnements erreicht.
+      not_allowed_url: Diese URL ist nicht erlaubt.
     flash:
       success: Ereignisabonnement erfolgreich aktualisiert.
       error: Leider ist ein Fehler beim Bearbeiten des Ereignis-Abonnements aufgetreten.

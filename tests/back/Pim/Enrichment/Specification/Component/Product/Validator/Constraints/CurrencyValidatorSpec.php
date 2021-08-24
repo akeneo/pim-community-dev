@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
@@ -36,14 +37,20 @@ class CurrencyValidatorSpec extends ObjectBehavior
         $context,
         Currency $constraint,
         ProductPriceInterface $price,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violation,
+        PriceCollectionValueInterface $priceCollectionValue
     ) {
+
+        $priceCollectionValue->getAttributeCode()->willReturn('attribute_code');
+        $context->getObject()->willReturn($priceCollectionValue);
+
         $price->getCurrency()->willReturn('CHF');
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-        $context->buildViolation(Argument::any())
+        $context->buildViolation(Argument::type('string'), Argument::type('array'))
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('currency')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Currency::CURRENCY)->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($price, $constraint)->shouldReturn(null);

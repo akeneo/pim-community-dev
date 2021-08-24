@@ -65,6 +65,7 @@ class FileGuesser implements ConstraintGuesserInterface
         }
 
         if ($options) {
+            $options['attributeCode'] = $attribute->getCode();
             $constraints[] = new File($options);
         }
 

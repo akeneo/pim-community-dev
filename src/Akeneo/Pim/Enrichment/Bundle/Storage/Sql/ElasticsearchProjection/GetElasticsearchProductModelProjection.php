@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,23 +22,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetElasticsearchProductModelProjection implements GetElasticsearchProductModelProjectionInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var ReadValueCollectionFactory */
-    private $readValueCollectionFactory;
-
-    /** @var NormalizerInterface */
-    private $valueCollectionNormalizer;
-
+    private Connection $connection;
+    private ReadValueCollectionFactory $readValueCollectionFactory;
+    private NormalizerInterface $valueCollectionNormalizer;
     /** @var GetAdditionalPropertiesForProductModelProjectionInterface[] */
-    private $additionalDataProviders = [];
+    private iterable $additionalDataProviders;
 
     public function __construct(
         Connection $connection,
         ReadValueCollectionFactory $readValueCollectionFactory,
         NormalizerInterface $valueCollectionNormalizer,
-        iterable $additionalDataProviders
+        iterable $additionalDataProviders = []
     ) {
         $this->connection = $connection;
         $this->readValueCollectionFactory = $readValueCollectionFactory;
@@ -45,31 +40,39 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         $this->additionalDataProviders = $additionalDataProviders;
     }
 
-    public function fromProductModelCodes(array $productModelCodes): array
+    public function fromProductModelCodes(array $productModelCodes): iterable
     {
         $valuesAndProperties = $this->getValuesAndPropertiesFromProductModelCodes($productModelCodes);
         $completeFilters = $this->getCompleteFilterFromProductModelCodes($productModelCodes);
         $attributes = $this->getAttributesFromProductModelCodes($productModelCodes);
 
-        $productModelProjections = [];
+        $rowCodes = \array_map(
+            static fn (array $row): string => (string) $row['code'],
+            $valuesAndProperties
+        );
 
-        $rowCodes = array_map(function (array $row) {
-            return $row['code'];
-        }, $valuesAndProperties);
-
-        $diffCodes = array_diff($productModelCodes, $rowCodes);
-        if (count($diffCodes) > 0) {
+        $diffCodes = \array_diff($productModelCodes, $rowCodes);
+        if (\count($diffCodes) > 0) {
             throw new ObjectNotFoundException(
-                sprintf('Product model codes "%s" were not found.', implode(',', $diffCodes))
+                \sprintf('Product model codes "%s" were not found.', \implode(',', $diffCodes))
+            );
+        }
+
+        $additionalDataPerProductModel = [];
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $additionalDataPerProductModel = \array_merge(
+                $additionalDataPerProductModel,
+                $additionalDataProvider->fromProductModelCodes($productModelCodes)
             );
         }
 
         foreach ($productModelCodes as $productModelCode) {
-            $productModelProjections[$productModelCode] = new ElasticsearchProductModelProjection(
+            $productModelProjection = new ElasticsearchProductModelProjection(
                 $valuesAndProperties[$productModelCode]['id'],
                 $valuesAndProperties[$productModelCode]['code'],
                 $valuesAndProperties[$productModelCode]['created'],
                 $valuesAndProperties[$productModelCode]['updated'],
+                $valuesAndProperties[$productModelCode]['entity_updated'],
                 $valuesAndProperties[$productModelCode]['family_code'],
                 $valuesAndProperties[$productModelCode]['family_labels'],
                 $valuesAndProperties[$productModelCode]['family_variant_code'],
@@ -84,16 +87,9 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $attributes[$productModelCode]['ancestor_attribute_codes'],
                 $attributes[$productModelCode]['attributes_for_this_level']
             );
-        }
 
-        foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalDataPerProductModel = $additionalDataProvider->fromProductModelCodes($productModelCodes);
-            foreach ($additionalDataPerProductModel as $productModelCode => $additionalData) {
-                $productModelProjections[$productModelCode] = $productModelProjections[$productModelCode]->addAdditionalData($additionalData);
-            }
+            yield $productModelCode => $productModelProjection->addAdditionalData($additionalDataPerProductModel[$productModelCode] ?? []);
         }
-
-        return $productModelProjections;
     }
 
     private function getValuesAndPropertiesFromProductModelCodes(array $productModelCodes): array
@@ -107,6 +103,7 @@ WITH
             product_model.created,
             root_product_model.code AS parent_code,
             GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
+            product_model.updated as entity_updated,
             JSON_MERGE_PATCH(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,
             family_variant.code AS family_variant_code,
@@ -178,18 +175,16 @@ SQL;
 
         $platform = $this->connection->getDatabasePlatform();
         $results = [];
+        $dateTimeImmutableType = Type::getType(Types::DATETIME_IMMUTABLE);
         foreach ($rows as $row) {
             $values = $row['raw_values'];
 
             $results[$row['code']] = [
                 'id' => (int) $row['id'],
                 'code' => $row['code'],
-                'created' => \DateTimeImmutable::createFromMutable(
-                    Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform)
-                ),
-                'updated' => \DateTimeImmutable::createFromMutable(
-                    Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform)
-                ),
+                'created' => $dateTimeImmutableType->convertToPhpValue($row['created'], $platform),
+                'updated' => $dateTimeImmutableType->convertToPhpValue($row['updated'], $platform),
+                'entity_updated' => $dateTimeImmutableType->convertToPhpValue($row['entity_updated'], $platform),
                 'family_code' => $row['family_code'],
                 'family_labels' => json_decode($row['family_labels'], true),
                 'family_variant_code' => $row['family_variant_code'],

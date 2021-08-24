@@ -32,6 +32,10 @@ javascript-extensions:
 front-packages:
 	$(YARN_RUN) packages:build
 
+.PHONY: dsm
+dsm:
+	$(YARN_RUN) dsm:build
+
 .PHONY: assets
 assets:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
@@ -93,6 +97,14 @@ check-requirements:
 .PHONY: database
 database:
 	$(PHP_RUN) bin/console pim:installer:db ${O}
+
+.PHONY: start-job-worker
+start-job-worker:
+	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job ${O}
+
+.PHONY: stop-workers
+stop-workers:
+	$(PHP_RUN) bin/console messenger:stop-workers
 
 ##
 ## PIM install

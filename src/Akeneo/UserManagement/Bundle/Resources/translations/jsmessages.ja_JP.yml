@@ -27,6 +27,20 @@ pim_enrich:
       module:
         delete:
           confirm: このユーザーを削除してもよろしいですか?
+pim_user.profile:
+  caption: まず、最も関連性のあるコンテンツであなたの作業をお手伝いするために、あなたの主な目標を教えてください。
+  why_is_it_needed: なぜこの情報が必要ですか？
+  save_button: 保存してマーケットプレイスにアクセス
+  selector:
+    placeholder: オプションを選択
+    not_found: 結果はありません
+  product_manager: 商品カタログを管理します。
+  redactor: 商品データを充実化します。
+  pim_integrator: Akeneo PIM を社内の IT エコシステムに統合します。
+  pim_administrator: Akeneo PIM を管理します。
+  asset_manager: PIM でアセットを管理します。
+  translator: 商品、アセット、参照エンティティデータを翻訳します。
+  third_party_developer: Akeneo PIM と連携したソリューションを開発します。
 pim_user_management:
   entity:
     user:
@@ -42,6 +56,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} ユーザー |]1, Inf [{{ count }} ユーザー"
       properties:
         username: ユーザー名
+        profile: 主な目標は何ですか？
         name_prefix: 敬称
         first_name: 名
         middle_name: ミドルネーム
@@ -98,3 +113,13 @@ pim_user_management:
       module:
         create:
           button: グループを作成
+  form:
+    error:
+      required: このフィールドは必須です。
+      should_not_contain_space: ユーザー名にスペース文字を使用できません。
+      too_short_value: "値が短すぎます。{{ count }} 以上の文字数で設定してください。"
+    duplication:
+      title: '"{{ username }}" ユーザーを複製'
+      notification:
+        success: ユーザーは正常に複製されました
+        failure: ユーザーの複製に失敗しました

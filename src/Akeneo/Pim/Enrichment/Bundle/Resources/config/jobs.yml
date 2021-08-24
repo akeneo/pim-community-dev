@@ -12,6 +12,11 @@ parameters:
     pim_catalog.compute_family_variant_structure_changes.tasklet_name: 'compute_family_variant_structure_changes'
     pim_catalog.compute_family_variant_structure_changes.connector_name: 'compute_family_variant_structure_changes'
 
+    pim_catalog.remove_completeness_for_channel_and_locale.job_type: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.job_name: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.tasklet_name: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.connector_name: 'remove completeness for channel and locale'
+
     pim_catalog.job.remove_non_existing_product_values.job_type: 'remove_non_existing_product_values'
     pim_catalog.job.remove_non_existing_product_values.job_name: 'remove_non_existing_product_values'
     pim_catalog.job.remove_non_existing_product_values.connector_name: 'remove_non_existing_product_values'
@@ -116,6 +121,45 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.tasklet.compute_family_variant_structure_changes'
         public: false
+
+    Akeneo\Pim\Enrichment\Component\Product\Job\RemoveCompletenessForChannelAndLocaleTasklet:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_notification.notifier'
+            - '@pim_notification.factory.notification'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '@pim_catalog.saver.product'
+            - '%pim_job_product_batch_size%'
+        public: false
+
+    pim_catalog.step.remove_completeness_for_channel_and_locale:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.remove_completeness_for_channel_and_locale.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Job\RemoveCompletenessForChannelAndLocaleTasklet'
+        public: false
+
+    pim_catalog.job.remove_completeness_for_channel_and_locale:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.remove_completeness_for_channel_and_locale.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.remove_completeness_for_channel_and_locale'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.remove_completeness_for_channel_and_locale.connector_name%'
+                type: '%pim_catalog.remove_completeness_for_channel_and_locale.job_type%'
+            -
+                name: akeneo_batch.job.not_visible
 
     pim_catalog.job.compute_family_variant_structure_changes:
         class: '%pim_connector.job.simple_job.class%'

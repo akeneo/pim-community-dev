@@ -2,6 +2,7 @@ imports:
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/file_storage.yml }
+    - { resource: ../../../tests/back/Acceptance/Resources/config/pim/messenger.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }

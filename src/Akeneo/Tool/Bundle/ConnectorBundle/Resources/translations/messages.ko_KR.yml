@@ -1,7 +1,7 @@
 pim_connector:
   steps:
     file_reader:
-      invalid_item_columns_count: '%totalColumnsCount%개 열이 필요하지만, 실제로는 %itemColumnsCount%개가 %filePath%:%lineno%에 있습니다'
+      invalid_item_columns_count: '%totalColumnsCount%개 열이 필요하지만, 실제로는 %itemColumnsCount%개가 %filePath%:%lineno%에 있습니다.'
 job_execution.summary:
   read: 읽음
   write: 작성함

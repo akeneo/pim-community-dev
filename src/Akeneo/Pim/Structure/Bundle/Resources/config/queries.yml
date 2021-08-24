@@ -72,6 +72,21 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.find_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlFindAssociationTypes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.find_flatten_attributes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlFindFlattenAttributes
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.get_channel_translations:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\Sql\SqlGetChannelTranslations
         arguments:
@@ -126,3 +141,7 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
         arguments:
             - '@database_connection'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser'
+

@@ -63,8 +63,9 @@ class UniqueProductEntityValidator extends ConstraintValidator
         }
 
         if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
-            $this->context->buildViolation($constraint->message)
+            $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
                 ->atPath('identifier')
+                ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
                 ->addViolation();
 
             return;
@@ -82,8 +83,9 @@ class UniqueProductEntityValidator extends ConstraintValidator
          * product identifier during the creation
          */
         if ($entity->getId() !== $entityInDatabase->getId()) {
-            $this->context->buildViolation($constraint->message)
+            $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
                 ->atPath('identifier')
+                ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
                 ->addViolation();
         }
     }

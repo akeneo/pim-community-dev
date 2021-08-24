@@ -43,9 +43,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $this->removeOption('brand', 'akeneo');
         $this->assertNotNull($this->getDataValueForProduct('1111111184', 'brand'));
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -57,9 +55,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $this->assertNotNull($this->getDataValueForProductModel('brogueshoe', 'collection'));
 
         $this->removeOption('collection', 'summer_2016');
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -118,6 +114,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
             'akeneo_integration_tests.launcher.job_execution_observer'
         );
         $this->jobExecutionObserver->purge(static::JOB_NAME);
+        $this->jobLauncher->flushJobQueue();
     }
 
     /**

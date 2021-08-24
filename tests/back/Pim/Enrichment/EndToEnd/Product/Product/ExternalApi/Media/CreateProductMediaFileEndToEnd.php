@@ -94,7 +94,7 @@ class CreateProductMediaFileEndToEnd extends ApiTestCase
     "errors": [
         {
             "property": "values",
-            "message": "The file extension is not allowed (allowed extensions: jpg, gif, png).",
+            "message": "The txt file extension is not allowed for the an_image attribute. Allowed extensions are jpg, gif, png.",
             "attribute": "an_image",
             "locale": null,
             "scope": null

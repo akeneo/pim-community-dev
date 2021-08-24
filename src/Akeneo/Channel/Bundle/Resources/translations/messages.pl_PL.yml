@@ -7,3 +7,4 @@ pim_enrich:
     flash:
       delete:
         error: Nie można usunąć kanału "%channelCode%", ponieważ Twój PIM musi zawierać co najmniej jeden kanał.
+        linked_to_export_profile: Nie można usunąć kanału powiązanego z profilem eksportu.

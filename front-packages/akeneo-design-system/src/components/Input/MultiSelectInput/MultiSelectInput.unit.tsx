@@ -11,6 +11,7 @@ test('it renders its children properly', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
@@ -45,6 +46,7 @@ test('it handles search', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
@@ -83,6 +85,7 @@ test('it handles empty cases', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
@@ -106,6 +109,28 @@ test('it handles empty cases', () => {
   expect(onChange).not.toHaveBeenCalled();
 });
 
+test('it handles codes that do not have a label', () => {
+  const onChange = jest.fn();
+  render(
+    <MultiSelectInput
+      value={['fr_FR', 'unknown']}
+      onChange={onChange}
+      placeholder="Placeholder"
+      removeLabel="Remove"
+      openLabel="Open"
+      emptyResultLabel="Empty result"
+    >
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+    </MultiSelectInput>
+  );
+
+  const codeWithOption = screen.queryByText('French');
+  expect(codeWithOption).toBeInTheDocument();
+
+  const codeWithoutOption = screen.queryByText('unknown');
+  expect(codeWithoutOption).toBeInTheDocument();
+});
+
 test('it handles removing a Chip', () => {
   const onChange = jest.fn();
   render(
@@ -114,6 +139,7 @@ test('it handles removing a Chip', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
@@ -173,8 +199,8 @@ test('it closes the overlay when hitting Escape', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
-      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -199,8 +225,8 @@ test('it can remove a chip using Backspace', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
-      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -223,8 +249,8 @@ test('it does not remove the chip when the search value is not empty', () => {
       onChange={onChange}
       placeholder="Placeholder"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
-      openLabel="open"
     >
       <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
       <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
@@ -247,6 +273,7 @@ test('MultiSelectInput supports ...rest props', () => {
       value={[]}
       data-testid="my_value"
       removeLabel="Remove"
+      openLabel="Open"
       emptyResultLabel="Empty result"
       onChange={onChange}
     />
@@ -259,7 +286,13 @@ test('MultiSelectInput does not support duplicated options', () => {
   expect(() => {
     const onChange = jest.fn();
     render(
-      <MultiSelectInput value={['en_US']} onChange={onChange} removeLabel="Remove" emptyResultLabel="Empty result">
+      <MultiSelectInput
+        value={['en_US']}
+        onChange={onChange}
+        removeLabel="Remove"
+        openLabel="Open"
+        emptyResultLabel="Empty result"
+      >
         <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
         <MultiSelectInput.Option value="en_US">French</MultiSelectInput.Option>
       </MultiSelectInput>
@@ -273,7 +306,13 @@ test('It throws when passing non string children', () => {
   expect(() => {
     const onChange = jest.fn();
     render(
-      <MultiSelectInput value={['en_US']} onChange={onChange} removeLabel="Remove" emptyResultLabel="Empty result">
+      <MultiSelectInput
+        value={['en_US']}
+        onChange={onChange}
+        removeLabel="Remove"
+        openLabel="Open"
+        emptyResultLabel="Empty result"
+      >
         <MultiSelectInput.Option value="en_US">
           {/* @ts-expect-error only accepts string */}
           <span />

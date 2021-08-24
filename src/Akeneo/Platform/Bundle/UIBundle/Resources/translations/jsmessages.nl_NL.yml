@@ -193,6 +193,9 @@ pim_common:
   not_available: Niet beschikbaar
   now: Nu
   ok: OK
+  open: Openen
+  no_result: Geen resultaten gevonden
+  no_search_result: Uw zoekopdracht heeft helaas geen resultaten opgeleverd.
   other_actions: Andere acties
   permissions: Machtigingen
   previous: Vorige
@@ -229,9 +232,16 @@ pim_common:
   read_more: Lees meer
   channel: Kanaal
   locale: Locale
+  categories: Categorieën
+  family_variant: Familievariatie
+  enabled: Ingeschakeld
+  family: Familie
+  parent: Bovenliggende
   groups: Groepen
+  products: Producten
+  product_models: Productmodellen
+  more: Meer
 error:
-  exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
   forbidden: U heeft geen toegang tot deze pagina
 alert:
   attribute_option:
@@ -278,8 +288,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Catalogus volume monitoring
   pim_enrich_categorytree_index: Categorie boomstructuren
   pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
-  pim_enrich_categorytree_edit: Categorie boom {{ category.label }} | Bewerken
+  pim_enrich_categorytree_edit: Categorie {{ category.label }} | Bewerken
   pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_tree: Categorie boom {{ category.label }} | Bewerken
   pim_enrich_attribute_index: Attributen
   pim_enrich_attribute_create: Attributen | Aanmaken
   pim_enrich_attribute_edit: Attribuut {{ attribute.label }} | Bewerken
@@ -307,6 +318,7 @@ pim_title:
   pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
   pim_settings_index: Instellingen
+  pim_system_index: Systeem
 pim_menu:
   tab:
     activity: Activiteit
@@ -322,6 +334,7 @@ pim_menu:
     attribute_group: Attribuutgroepen
     channel: Kanalen
     currency: Valuta
+    dashboard: Activiteitendashboard
     family: Families
     group: Groepen
     group_type: Groepstypen
@@ -343,6 +356,8 @@ pim_menu:
     system: Systeem navigatie
     user: Gebruikersbeheer navigatie
     settings:
+      product: Productinstellingen
+      catalog: Catalogusinstellingen
       collapsed_label: Instellingen navigatie
     product: Product navigatie
     product_infos: Product informatie
@@ -355,3 +370,24 @@ pim_notification:
     export: Exporteer
     quick_export: Snelle export
     mass_edit: Massa bewerken
+pim_settings:
+  settings_menu: Menu Instellingen
+  catalog_settings: Catalogusinstellingen
+  product_settings: Productinstellingen
+  count:
+    category_trees: '{0}U heeft 0 bomen |{1}U heeft 1 boom |]1, Inf[U heeft {{ count }} bomen '
+    categories: '{0}en 0 categorieën|{1}en 1 categorie|]1, Inf[en {{ count }} categorieën'
+    channels: '{0}U heeft 0 kanalen |{1}U heeft 1 kanaal |]1, Inf[U heeft {{ count }} kanalen'
+    locales: '{0}U heeft 0 ingeschakelde talen|{1}U heeft 1 ingeschakelde taal|]1, Inf[U heeft {{ count }} ingeschakelde talen'
+    currencies: '{0}U heeft 0 ingeschakelde valuta|{1}U heeft 1 ingeschakelde valuta|]1, Inf[U heeft {{ count }} ingeschakelde valuta'
+    attribute_groups: '{0}U heeft 0 attribuutgroepen|{1}U heeft 1 attribuutgroep|]1, Inf[U heeft {{ count }} attribuutgroepen'
+    attributes: '{0}U heeft 0 attributen|{1}U heeft 1 attribuut|]1, Inf[U heeft {{ count }} attributen'
+    families: '{0}U heeft 0 families |{1}U heeft 1 familie|]1, Inf[U heeft {{ count }} families'
+    measurements: '{0}U heeft 0 meetwaarden|{1}U heeft 1 meetwaarde|]1, Inf[U heeft {{ count }} meetwaarden'
+    association_types: '{0}U heeft 0 associatietypes|{1}U heeft 1 associatietype|]1, Inf[U heeft {{ count }} associatietypes'
+    group_types: '{0}U heeft 0 groepstypes|{1}U heeft 1 groepstype|]1, Inf[U heeft {{ count }} groepstypes'
+    groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
+    rules: '{0}U heeft 0 ingeschakelde regels|{1}U heeft 1 ingeschakelde regel|]1, Inf[U heeft {{ count }} ingeschakelde regels'
+pim_system:
+  system_navigation: Systeem navigatie
+  users_management_navigation: Gebruikersbeheer navigatie

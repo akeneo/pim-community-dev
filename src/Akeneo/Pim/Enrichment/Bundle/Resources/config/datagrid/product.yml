@@ -42,10 +42,10 @@ datagrid:
                 label:         Complete
                 frontend_type: completeness
             created:
-                label:         Created At
+                label:         Created
                 type:          field
             updated:
-                label:         Updated At
+                label:         Updated
                 type:          field
             complete_variant_products:
                 label:         Variant products

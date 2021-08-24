@@ -37,9 +37,12 @@ class NotEmptyFamilyValidator extends ConstraintValidator
         }
 
         if (null === $product->getFamily()) {
-            $this->context->buildViolation(NotEmptyFamily::MESSAGE, [
+            $this->context->buildViolation($constraint->message, [
                    '%sku%' => $product->getIdentifier()
-                ])->atPath($constraint->propertyPath)->addViolation();
+                ])
+                ->atPath($constraint->propertyPath)
+                ->setCode(NotEmptyFamily::NOT_EMPTY_FAMILY)
+                ->addViolation();
         }
     }
 }

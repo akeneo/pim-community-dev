@@ -38,15 +38,34 @@ test('Table.Body supports ...rest props', () => {
 });
 
 test('it only supports table rows', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+  render(
+    <Table isDragAndDroppable={true} onReorder={jest.fn}>
+      {/* @ts-expect-error only accepts TableRow */}
+      <Table.Body>A bad value</Table.Body>
+    </Table>
+  );
 
-  expect(() => {
-    render(
-      <Table isDragAndDroppable={true} onReorder={jest.fn}>
-        <Table.Body>A bad value</Table.Body>
-      </Table>
-    );
-  }).toThrowError('Children of Table.Body should be a valid react element');
+  expect(screen.queryByText('A bad value')).not.toBeInTheDocument();
+});
 
-  mockConsole.mockRestore();
+test('it does not throw when using conditional row', () => {
+  const displayRow = false;
+
+  render(
+    <Table isDragAndDroppable={true} onReorder={jest.fn}>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>First row</Table.Cell>
+        </Table.Row>
+        {displayRow && (
+          <Table.Row>
+            <Table.Cell>Second row</Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+
+  expect(screen.getByText('First row')).toBeInTheDocument();
+  expect(screen.queryByText('Second row')).not.toBeInTheDocument();
 });

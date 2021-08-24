@@ -42,7 +42,8 @@ pim_user:
       inactive: 無効
     fields_errors:
       new_password:
-        minimum_length: パスワードは2文字以上必要です
+        minimum_length: パスワードは 8 文字以上である必要があります
+        maximum_length: パスワードは 4096 文字未満である必要があります
       new_password_repeat:
         not_match: パスワードが一致しません
       current_password:

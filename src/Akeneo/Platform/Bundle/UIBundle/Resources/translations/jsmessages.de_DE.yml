@@ -237,9 +237,9 @@ pim_common:
   family: Produktfamilie
   parent: Eltern
   groups: Gruppen
+  products: Produkte
   more: Mehr
 error:
-  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
@@ -286,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
-  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }} | Bearbeiten
+  pim_enrich_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_tree: Kategoriebaum {{ category.label }} | Bearbeiten
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
   pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Bearbeiten
@@ -315,6 +316,7 @@ pim_title:
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
   pim_settings_index: Einstellungen
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Übersicht
@@ -370,16 +372,6 @@ pim_settings:
   settings_menu: Konfigurationsmenü
   catalog_settings: Katalogeinstellungen
   product_settings: Artikel Einstellungen
-  count:
-    categories: Du hast {{ countTrees }} Bäume und {{ countCategories }} Kategorien
-    channels: Du hast {{ count }} Kanäle
-    locales: Sie haben {{ count }} Gebietsschemata aktiviert
-    currencies: Sie haben {{ count }} Währungen aktiviert
-    attribute_groups: Sie haben {{ count }} Attributgruppen
-    attributes: Sie haben {{ count }} Attribute
-    families: Du hast {{ count }} Familien
-    measurements: Sie haben {{ count }} Messungen
-    association_types: Sie haben {{ count }} Verbindungstypen
-    group_types: Sie haben {{ count }} Gruppentypen
-    groups: Du hast {{ count }} Gruppen
-    rules: Du hast {{ count }} aktivierte Regeln
+pim_system:
+  system_navigation: Navigation System
+  users_management_navigation: Navigation Benutzerverwaltung

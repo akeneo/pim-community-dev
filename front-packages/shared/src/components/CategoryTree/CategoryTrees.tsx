@@ -1,5 +1,5 @@
 import React from 'react';
-import {CategoryTree, CategoryTreeModel} from './CategoryTree';
+import {CategoryTree, CategoryTreeModel, ParentCategoryTree} from './CategoryTree';
 import {BooleanInput} from 'akeneo-design-system/lib/components/Input/BooleanInput/BooleanInput';
 import {Tree, getColor} from 'akeneo-design-system';
 import {useTranslate} from '../../hooks';
@@ -124,7 +124,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     />
   );
 
-  const isCategorySelected: (category: CategoryValue) => boolean = category => {
+  const isCategorySelected: (category: CategoryValue, _: ParentCategoryTree) => boolean = category => {
     return category.id === selectedTreeId;
   };
 

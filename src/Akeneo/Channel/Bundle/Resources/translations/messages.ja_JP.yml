@@ -7,3 +7,4 @@ pim_enrich:
     flash:
       delete:
         error: PIMには1件以上チャンネルを含む必要があるため、チャンネル「%channelCode%」を削除できません。
+        linked_to_export_profile: エクスポートプロファイルにリンクされたチャンネルを削除することはできません。

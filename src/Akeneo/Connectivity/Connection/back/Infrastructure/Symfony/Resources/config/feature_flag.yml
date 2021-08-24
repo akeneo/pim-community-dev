@@ -1,0 +1,6 @@
+services:
+    akeneo_connectivity.connection.marketplace_activate.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_MARKETPLACE_ACTIVATE_ENABLED)%'
+        public: true

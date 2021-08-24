@@ -1,5 +1,53 @@
 # 5.0.x
 
+# 5.0.43 (2021-07-26)
+
+# 5.0.42 (2021-07-20)
+
+# 5.0.41 (2021-07-19)
+
+# 5.0.40 (2021-07-09)
+
+## Bug fixes
+
+- PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9943: Fix product-grid quality score filter all
+
+# 5.0.39 (2021-07-06)
+
+## Bug fixes
+
+- PIM-9951: Fix wrong locale used by spellcheck when comparing product attributes
+
+# 5.0.38 (2021-07-02)
+
+## Bug fixes
+
+- PIM-9944: Fix attribute group grid search
+
+# 5.0.37 (2021-07-01)
+
+# 5.0.36 (2021-06-25)
+
+## Bug fixes
+
+- PIM-9931: [Backport] PIM-9678: The time counter is still running despite the job failed
+- PIM-9935: [Backport] PIM-9890: Creating Channels with numeric code breaks the PIM
+
+# 5.0.35 (2021-06-22)
+
+## Bug fixes
+
+- PIM-9921: Add a translation for the title of category creation form
+
+# 5.0.34 (2021-06-22)
+
+- PIM-9916: Fix value updating for text, simple select and date attribute used as product export filter not saved
+
+# 5.0.33 (2021-06-18)
+
+# 5.0.32 (2021-06-16)
+
 # 5.0.31 (2021-06-10)
 
 ## Bug fixes

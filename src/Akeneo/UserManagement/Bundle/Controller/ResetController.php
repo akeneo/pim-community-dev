@@ -8,13 +8,13 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Swift_Mailer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ResetController extends Controller
+class ResetController extends AbstractController
 {
     const SESSION_EMAIL = 'pim_user_reset_email';
 

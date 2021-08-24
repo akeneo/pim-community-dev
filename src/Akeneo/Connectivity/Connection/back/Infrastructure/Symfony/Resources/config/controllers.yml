@@ -45,9 +45,45 @@ services:
             - '@akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
             - '@oro_security.security_facade'
 
-    akeneo_connectivity.connection.internal_api.controller.marketplace_url:
+    akeneo_connectivity.connection.internal_api.controller.marketplace.get_web_marketplace_url:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\MarketplaceUrlController
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetWebMarketplaceUrl
         arguments:
             - '@akeneo_connectivity.connection.marketplace.url_generator'
             - '@pim_user.context.user'
+
+    akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_extensions:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllExtensions
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
+            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
+            - '@pim_user.context.user'
+            - '@logger'
+
+    akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_apps:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllApps
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
+            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
+            - '@pim_user.context.user'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlController
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    akeneo_connectivity.connection.public.controller.apps.authorize:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\AuthorizeAction
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
+            - '@router'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'

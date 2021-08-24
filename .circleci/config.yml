@@ -36,7 +36,12 @@ jobs:
       - run:
           name: Require proper dev CE branch
           command: |
-            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
@@ -52,6 +57,10 @@ jobs:
       image: ubuntu-2004:202101-01
     steps:
       - checkout
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - persist_to_workspace:
           root: ~/
           paths:
@@ -62,9 +71,9 @@ jobs:
         is_ee_built:
             type: boolean
             default: true
-        path_to_front_packages:
+        path_to_dsm:
             type: string
-            default: front-packages
+            default: front-packages/akeneo-design-system
     machine:
       image: ubuntu-2004:202101-01
     steps:
@@ -118,6 +127,28 @@ jobs:
       - run:
           name: Build css
           command: make css
+      - run:
+          name: Create hash for front packages
+          command: |
+            find << parameters.path_to_dsm >>  -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 << parameters.path_to_dsm >>
+      - run:
+          name: Build DSM
+          command: ls << parameters.path_to_dsm >>/lib 1> /dev/null 2>&1 || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - << parameters.path_to_dsm >>/lib
       - run:
           name: Build front-packages
           command: make front-packages
@@ -228,13 +259,41 @@ jobs:
           command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
           name: Launch Cypress
-          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=15000 CYPRESS_responseTimeout=50000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
           path: cypress/videos
+
+  marketplace_activate_e2e:
+    machine:
+      image: ubuntu-2004:202101-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=behat make database
+      - run:
+          name: End to end Behat tests
+          command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
+      - store_test_results:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/behat
       - store_artifacts:
           path: var/logs
+      - store_artifacts:
+          path: var/tests/screenshots
 
   test_back_behat_legacy:
     machine:
@@ -545,21 +604,28 @@ jobs:
                 at: ~/
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                command: |
+                  mkdir -p ~/.cache/yarn ~/.composer
+                  sudo chown -R 1000:1000 ../project
+                  sudo chown -R 1000:1000 ~/.composer
+                  sudo chown -R 1000:1000 ~/.cache/yarn
           - run:
                 name: Create an empty service account
                 command: |
                     mkdir secret
                     echo "{}" > secret/serviceAccount.json
           - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
+                name: Load php pim image
+                command: docker load -i php-pim-image.tar
           - run:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
+          - run:
+                name: Require onboarder tests dependencies
+                command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
+          - run:
+                name: Composer update for tests dependencies
+                command: docker-compose run -u www-data --rm php php -d memory_limit=4G /usr/local/bin/composer update --no-interaction
           - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
@@ -576,6 +642,11 @@ jobs:
           - run:
                 name: PHP coupling detector
                 command: PIM_CONTEXT=onboarder make test-coupling-detector
+          - run:
+                name: Start containers
+                command: |
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
           - run:
                 name: Execute specifications
                 command: PIM_CONTEXT=onboarder make test-spec
@@ -644,7 +715,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
-                path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+                path_to_dsm: vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
                 requires:
                     - checkout_ee
           - build_prod:
@@ -721,6 +792,14 @@ workflows:
                 name: cypress_sanity_checks_ce
                 requires:
                   - build_dev_ce
+          - marketplace_activate_e2e?:
+                type: approval
+                requires:
+                  - build_dev_ce
+          - marketplace_activate_e2e:
+                name: marketplace_activate_e2e_ce
+                requires:
+                  - marketplace_activate_e2e?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
@@ -750,6 +829,7 @@ workflows:
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
+                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:
@@ -839,3 +919,13 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  install_yq:
+    description: "Install yq"
+    steps:
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            sudo chmod +x /usr/local/bin/yq

@@ -1,5 +1,14 @@
 import {createContext} from 'react';
-import {Notify, Router, Security, Translate, UserContext, ViewBuilder, Mediator} from './DependenciesProvider.type';
+import {
+  Notify,
+  Router,
+  Security,
+  Translate,
+  UserContext,
+  ViewBuilder,
+  Mediator,
+  FeatureFlags
+} from './DependenciesProvider.type';
 
 type DependenciesContextProps = {
   notify?: Notify;
@@ -9,6 +18,7 @@ type DependenciesContextProps = {
   user?: UserContext;
   viewBuilder?: ViewBuilder;
   mediator?: Mediator;
+  featureFlags?: FeatureFlags;
 };
 
 const DependenciesContext = createContext<DependenciesContextProps>({});

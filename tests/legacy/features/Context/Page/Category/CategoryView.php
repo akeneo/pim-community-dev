@@ -4,6 +4,7 @@ namespace Context\Page\Category;
 
 use Context\Page\Base\Form;
 use Pim\Behat\Decorator\Tree\JsTreeDecorator;
+use Pim\Behat\Decorator\Tree\TreeDecorator;
 
 /**
  * Abstract page view for categories
@@ -26,13 +27,13 @@ abstract class CategoryView extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Category tree'    => [
-                    'css'        => '#tree',
+                'Category tree' => [
+                    'css' => 'ul[role=tree]',
                     'decorators' => [
-                        JsTreeDecorator::class
+                        TreeDecorator::class
                     ]
                 ],
-                'Tree select'      => ['css' => '#tree_select'],
+                'Tree select' => ['css' => '#tree_select'],
                 'Right click menu' => ['css' => '#vakata-contextmenu'],
             ]
         );
@@ -53,9 +54,9 @@ abstract class CategoryView extends Form
     /**
      * @param string $action
      *
+     * @return CategoryView
      * @throws \InvalidArgumentException
      *
-     * @return CategoryView
      */
     public function rightClickAction($action)
     {

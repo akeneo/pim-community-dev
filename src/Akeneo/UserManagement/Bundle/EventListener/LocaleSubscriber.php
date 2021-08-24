@@ -4,6 +4,8 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 
@@ -26,12 +29,18 @@ class LocaleSubscriber implements EventSubscriberInterface
     protected RequestStack $requestStack;
     protected LocaleAwareInterface $localeAware;
     protected EntityManager $em;
+    protected FirewallMapInterface $firewall;
 
-    public function __construct(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        LocaleAwareInterface $localeAware,
+        EntityManager $em,
+        FirewallMapInterface $firewall
+    ) {
         $this->requestStack = $requestStack;
         $this->localeAware = $localeAware;
         $this->em = $em;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -88,8 +97,25 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
+        return $this->hasActiveSession($request) && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
+    }
+
+    private function hasActiveSession(Request $request): bool
+    {
+        // The method getFirewallConfig is only part of Symfony\Bundle\SecurityBundle\Security\FirewallMap,
+        // not in the FirewallMapInterface.
+        // In EE, we override the "@security.firewall.map" service with another class that is not extending
+        // Symfony\Bundle\SecurityBundle\Security\FirewallMap but still provide getFirewallConfig.
+        if ($this->firewall instanceof FirewallMap || method_exists($this->firewall, 'getFirewallConfig')) {
+            $firewallConfig = $this->firewall->getFirewallConfig($request);
+
+            if ($firewallConfig instanceof FirewallConfig && $firewallConfig->isStateless()) {
+                return false;
+            }
+        }
+
+        return $request->hasSession();
     }
 
     /**

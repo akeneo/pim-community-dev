@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Channel, Category, CategoryTree, CategoryTreeModel, CategoryValue} from '@akeneo-pim-community/shared';
+import {
+  Channel,
+  Category,
+  CategoryTree,
+  CategoryTreeModel,
+  CategoryValue,
+  ParentCategoryTree,
+} from '@akeneo-pim-community/shared';
 import styled, {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Tree} from 'akeneo-design-system/lib';
@@ -30,7 +37,7 @@ const CategorySelectorWithAllProducts: React.FC<CategorySelectorWithAllProductsP
 }) => {
   const [categoryCodes, setCategoryCodes] = React.useState<string[]>(initialCategoryCodes);
 
-  const isCategorySelected: (category: CategoryValue) => boolean = category => {
+  const isCategorySelected: (category: CategoryValue, _: ParentCategoryTree) => boolean = category => {
     return categoryCodes.includes(category.code);
   };
 

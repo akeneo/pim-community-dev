@@ -32,6 +32,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,74 +55,30 @@ use Webmozart\Assert\Assert;
  */
 class ProductModelController
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbSearchAfterFactory;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var PaginatorInterface */
-    protected $offsetPaginator;
-
-    /** @var PaginatorInterface */
-    protected $searchAfterPaginator;
-
-    /** @var PrimaryKeyEncrypter */
-    protected $primaryKeyEncrypter;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var UrlGeneratorInterface */
-    protected $router;
-
-    /** @var ValidatorInterface */
-    protected $productModelValidator;
-
-    /** @var AttributeFilterInterface */
-    protected $productModelAttributeFilter;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productModelRepository;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var ListProductModelsQueryValidator */
-    private $listProductModelsQueryValidator;
-
-    /** @var ListProductModelsQueryHandler */
-    private $listProductModelsQueryHandler;
-
-    /** @var ConnectorProductModelNormalizer */
-    private $connectorProductModelNormalizer;
-
-    /** @var GetConnectorProductModels */
-    private $getConnectorProductModels;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var ApiAggregatorForProductModelPostSaveEventSubscriber */
-    private $apiAggregatorForProductModelPostSave;
-
-    /** @var WarmupQueryCache */
-    private $warmupQueryCache;
+    protected ProductQueryBuilderFactoryInterface $pqbFactory;
+    protected ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory;
+    protected NormalizerInterface $normalizer;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
+    protected PaginatorInterface $offsetPaginator;
+    protected PaginatorInterface $searchAfterPaginator;
+    protected PrimaryKeyEncrypter $primaryKeyEncrypter;
+    protected array $apiConfiguration;
+    protected ObjectUpdaterInterface $updater;
+    protected SimpleFactoryInterface $factory;
+    protected SaverInterface $saver;
+    protected UrlGeneratorInterface $router;
+    protected ValidatorInterface $productModelValidator;
+    protected AttributeFilterInterface $productModelAttributeFilter;
+    protected IdentifiableObjectRepositoryInterface $productModelRepository;
+    protected StreamResourceResponse $partialUpdateStreamResource;
+    private ListProductModelsQueryValidator $listProductModelsQueryValidator;
+    private ListProductModelsQueryHandler $listProductModelsQueryHandler;
+    private ConnectorProductModelNormalizer $connectorProductModelNormalizer;
+    private GetConnectorProductModels $getConnectorProductModels;
+    private TokenStorageInterface $tokenStorage;
+    private ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave;
+    private WarmupQueryCache $warmupQueryCache;
+    private LoggerInterface $logger;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -146,6 +103,7 @@ class ProductModelController
         TokenStorageInterface $tokenStorage,
         ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         WarmupQueryCache $warmupQueryCache,
+        LoggerInterface $logger,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -170,6 +128,7 @@ class ProductModelController
         $this->tokenStorage = $tokenStorage;
         $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
+        $this->logger = $logger;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -322,7 +281,13 @@ class ProductModelController
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductModelPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            try {
+                $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->warning('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
             $this->apiAggregatorForProductModelPostSave->deactivate();
         });
 

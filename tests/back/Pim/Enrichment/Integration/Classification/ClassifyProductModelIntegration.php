@@ -142,10 +142,7 @@ class ClassifyProductModelIntegration extends TestCase
         $this->get('pim_catalog.validator.product')->validate($variantProduct);
         $this->get('pim_catalog.saver.product')->save($variantProduct);
 
-        $launcher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        while ($launcher->hasJobInQueue()) {
-            $launcher->launchConsumerOnce();
-        }
+        $this->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
 
     /**

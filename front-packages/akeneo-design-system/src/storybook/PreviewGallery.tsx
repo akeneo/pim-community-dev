@@ -75,6 +75,17 @@ const Section = styled.div`
   flex-direction: column;
 `;
 
+const SpaceBetweenContainer = styled.div<{direction: string}>`
+  display: flex;
+  flex-direction: ${({direction}) => direction};
+  justify-content: space-between;
+  align-items: center;
+`;
+
+SpaceBetweenContainer.defaultProps = {
+  direction: 'row',
+};
+
 const MessageBarContainer = styled.div`
   padding: 5px;
   width: 600px;
@@ -197,6 +208,7 @@ export {
   PreviewGrid,
   Scrollable,
   Section,
+  SpaceBetweenContainer,
   SpaceContainer,
   StoryStyle,
   Subtitle,

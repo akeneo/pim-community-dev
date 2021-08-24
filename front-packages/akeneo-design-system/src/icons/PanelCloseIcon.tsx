@@ -5,7 +5,7 @@ const PanelCloseIcon = ({title, size = 24, color = 'currentColor', ...props}: Ic
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
-      d="M7 17.749V21H2V3h5v3.375M22 12H6h16zm-11 5l-5.5-5L11 7h0"
+      d="M14,21 L5,12 L14,3 M19,21 L10,12 L19,3"
       stroke={color}
       fill="none"
       fillRule="evenodd"

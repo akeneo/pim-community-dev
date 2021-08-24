@@ -3,10 +3,10 @@
 namespace Pim\Behat\Context\Domain\Collect;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 

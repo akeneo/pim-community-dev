@@ -10,16 +10,14 @@ use DateInterval;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class JobExecutionManagerSpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, Connection $connection)
+    function let(Connection $connection)
     {
-        $entityManager->getConnection()->willReturn($connection);
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($connection);
     }
 
     function it_does_not_modify_status_when_a_job_execution_has_not_been_launched(
@@ -119,7 +117,7 @@ class JobExecutionManagerSpec extends ObjectBehavior
     }
 
     function it_gets_exit_status(
-        $connection,
+        Connection $connection,
         JobExecutionMessage $jobExecutionMessage,
         Statement $stmt
     ) {
@@ -135,16 +133,11 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $this->getExitStatus($jobExecutionMessage)->shouldBeLike(new ExitStatus('COMPLETED'));
     }
 
-    function it_marks_as_failed(
-        $connection,
-        JobExecutionMessage $jobExecutionMessage,
-        Statement $stmt
-    ) {
+    function it_marks_as_failed(Connection $connection, Statement $stmt)
+    {
         $connection
             ->prepare(Argument::type('string'))
             ->willReturn($stmt);
-
-        $jobExecutionMessage->getJobExecutionId()->willReturn(1);
 
         $stmt->bindValue('id', 1)->shouldBeCalled();
         $stmt->bindValue('status', BatchStatus::FAILED)->shouldBeCalled();
@@ -152,11 +145,11 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Type::DATETIME)->shouldBeCalled();
         $stmt->execute()->shouldBeCalled();
 
-        $this->markAsFailed($jobExecutionMessage);
+        $this->markAsFailed(1);
     }
 
     function it_updates_healthcheck(
-        $connection,
+        Connection $connection,
         JobExecutionMessage $jobExecutionMessage,
         Statement $stmt
     ) {

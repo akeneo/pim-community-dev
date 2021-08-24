@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -46,9 +47,12 @@ class WebhookEventBuilder
         $context = $this->resolveOptions($context);
         $eventDataBuilder = $this->getEventDataBuilder($pimEventBulk);
 
+        /** @var UserInterface $user */
+        $user = $context['user'];
+
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-            $context['user']
+            new Context($user->getUsername(), $user->getId())
         );
 
         return $this->buildWebhookEvents(

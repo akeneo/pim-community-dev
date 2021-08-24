@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -166,6 +167,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
+        } catch (AccessDeniedException $exception) {
+            $this->objectDetacher->detach($productModel);
+            $this->skipItemWithMessage($standardProductModel, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validator->validate($productModel);

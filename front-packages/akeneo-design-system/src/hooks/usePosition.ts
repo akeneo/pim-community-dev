@@ -22,7 +22,7 @@ const useVerticalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Verti
 
       setVerticalPosition(elementIsOverlappingBottom ? (elementIsOverlappingTop ? 'down' : 'up') : 'down');
     }
-  }, [forcedPosition]);
+  }, [forcedPosition, ref.current]);
 
   return verticalPosition;
 };
@@ -42,7 +42,7 @@ const useHorizontalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Hor
 
       setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
     }
-  }, [forcedPosition]);
+  }, [forcedPosition, ref.current]);
 
   return horizontalPosition;
 };

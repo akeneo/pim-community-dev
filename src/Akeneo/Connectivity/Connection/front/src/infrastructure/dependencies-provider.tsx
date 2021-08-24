@@ -7,6 +7,7 @@ import {TranslateContext, TranslateInterface} from '../shared/translate';
 import {UserContext, UserInterface} from '../shared/user';
 import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
+import {FeatureFlagsContext, FeatureFlags} from '../shared/feature-flags';
 
 interface Props {
     router: RouterInterface;
@@ -15,6 +16,7 @@ interface Props {
     notify: NotifyInterface;
     user: UserInterface;
     security: SecurityInterface;
+    featureFlags: FeatureFlags;
 }
 
 const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Props>) => (
@@ -27,7 +29,11 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
                     }}
                 >
                     <UserContext.Provider value={dependencies.user}>
-                        <SecurityContext.Provider value={dependencies.security}>{children}</SecurityContext.Provider>
+                        <SecurityContext.Provider value={dependencies.security}>
+                            <FeatureFlagsContext.Provider value={dependencies.featureFlags}>
+                                {children}
+                            </FeatureFlagsContext.Provider>
+                        </SecurityContext.Provider>
                     </UserContext.Provider>
                 </LegacyContext.Provider>
             </NotifyContext.Provider>

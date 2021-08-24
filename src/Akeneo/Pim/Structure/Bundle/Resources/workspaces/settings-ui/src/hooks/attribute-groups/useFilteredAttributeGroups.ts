@@ -14,7 +14,9 @@ const useFilteredAttributeGroups = (groups: AttributeGroup[]) => {
     (searchValue: string) => {
       setFilteredGroups(
         Object.values(groups).filter((group: AttributeGroup) =>
-          group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase().trim())
+          (group.labels[userContext.get('catalogLocale')] ?? group.code)
+            .toLowerCase()
+            .includes(searchValue.toLowerCase().trim())
         )
       );
     },

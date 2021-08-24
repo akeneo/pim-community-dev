@@ -10,6 +10,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -103,6 +104,7 @@ class FixturesLoader implements FixturesLoaderInterface
     private $transport;
 
     private EventDispatcherInterface $eventDispatcher;
+    private JobLauncher $jobLauncher;
 
     public function __construct(
         KernelInterface $kernel,
@@ -121,6 +123,7 @@ class FixturesLoader implements FixturesLoaderInterface
         MeasurementInstaller $measurementInstaller,
         TransportInterface $transport,
         EventDispatcherInterface $eventDispatcher,
+        JobLauncher $jobLauncher,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -156,6 +159,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->measurementInstaller = $measurementInstaller;
         $this->transport = $transport;
         $this->eventDispatcher = $eventDispatcher;
+        $this->jobLauncher = $jobLauncher;
     }
 
     public function __destruct()
@@ -187,6 +191,7 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
         $this->clearAclCache();
+        $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
 

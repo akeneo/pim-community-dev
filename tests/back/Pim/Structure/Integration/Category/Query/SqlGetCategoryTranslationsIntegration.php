@@ -51,9 +51,9 @@ final class SqlGetCategoryTranslationsIntegration extends TestCase
         return $this->get('akeneo.pim.structure.query.get_category_translations');
     }
 
-    private function givenCategories(array $families): void
+    private function givenCategories(array $categories): void
     {
-        $families = array_map(function (array $categoryData) {
+        $categories = array_map(function (array $categoryData) {
             $category = $this->get('pim_catalog.factory.category')->create();
             $this->get('pim_catalog.updater.category')->update($category, $categoryData);
             $constraintViolations = $this->get('validator')->validate($category);
@@ -61,8 +61,8 @@ final class SqlGetCategoryTranslationsIntegration extends TestCase
             Assert::count($constraintViolations, 0);
 
             return $category;
-        }, $families);
+        }, $categories);
 
-        $this->get('pim_catalog.saver.category')->saveAll($families);
+        $this->get('pim_catalog.saver.category')->saveAll($categories);
     }
 }

@@ -20,11 +20,8 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsReceiver implements ReceiverInterface
 {
-    /** @var SerializerInterface */
-    private $serializer;
-
-    /** @var Subscription */
-    private $subscription;
+    private SerializerInterface $serializer;
+    private Subscription $subscription;
 
     public function __construct(Subscription $subscription, SerializerInterface $serializer)
     {

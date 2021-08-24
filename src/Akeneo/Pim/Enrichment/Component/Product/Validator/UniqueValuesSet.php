@@ -42,7 +42,7 @@ class UniqueValuesSet
     public function addValue(ValueInterface $value, EntityWithValuesInterface $entity): bool
     {
         $identifier = $this->getEntityId($entity);
-        $data = $value->__toString();
+        $data = strtolower($value->__toString());
         $attributeCode = $value->getAttributeCode();
 
         if (isset($this->uniqueValues[$attributeCode][$data])) {

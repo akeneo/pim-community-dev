@@ -21,6 +21,11 @@ Second: 秒
 Millisecond: 毫秒
 Microsecond: 微秒
 "Time Zone": "时区"
+duration:
+  days: "{0}0 天|{1}1 天|]1, Inf[{{ count }} 天"
+  hours: "{0}0 小时|{1}1 小时|]1, Inf[{{ count }} 小时"
+  minutes: "{0}0 分钟|{1}1 分钟|]1, Inf[{{ count }} 分钟"
+  seconds: "{0}0 秒|{1}1 秒|]1, Inf[{{ count }} 秒"
 #PIM messages
 Localized value: 本地化的值
 Columns: 列
@@ -165,6 +170,7 @@ pim_common:
   created: 已创建
   delete: 删除
   done: 已完成
+  duplicate: 复制
   edit: 编辑
   entity_updated: 有未保存的更改。
   export: 导出
@@ -179,6 +185,7 @@ pim_common:
   less_than: 小于
   loading: 加载...
   media_upload: 拖放即可上传或点击这里
+  more_actions: 更多操作
   more_than: 多于
   next: 下一步
   "no": "否　"
@@ -186,6 +193,9 @@ pim_common:
   not_available: N/A
   now: 现在
   ok: 确定
+  open: 打开
+  no_result: 未找到结果
+  no_search_result: 抱歉，找不到与搜索相符的结果。
   other_actions: 其他操作
   permissions: 权限
   previous: 上一步
@@ -220,8 +230,18 @@ pim_common:
     STARTS WITH: 开始于
     ENDS WITH: 结束于
   read_more: 阅读更多
+  channel: 渠道
+  locale: 区域
+  categories: 类别
+  family_variant: 品类变型
+  enabled: 已启用
+  family: 品类
+  parent: 父级
+  groups: 分组
+  products: 产品
+  product_models: 产品模型
+  more: 更多
 error:
-  exception: 哎呀 ！发生错误 {{ status_code }} ...
   forbidden: 您无权访问此页面
 alert:
   attribute_option:
@@ -268,8 +288,9 @@ pim_title:
   pim_enrich_catalog_volume_index: 目录量监测
   pim_enrich_categorytree_index: 类别树
   pim_enrich_categorytree_create: 类别树|创建
-  pim_enrich_categorytree_edit: 类别树 {{ category.label }} | 编辑
+  pim_enrich_categorytree_edit: 类别 {{ category.label }} | 编辑
   pim_enrich_categorytree_create_tree: 类别树|创建
+  pim_enrich_categorytree_tree: 类别树 {{ category.label }} | 编辑
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性|创建
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} | 编辑
@@ -296,6 +317,8 @@ pim_title:
   pim_enrich_job_tracker_show: 进程跟踪器 |显示作业
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
+  pim_settings_index: 设置 
+  pim_system_index: 系统
 pim_menu:
   tab:
     activity: 活动
@@ -311,7 +334,7 @@ pim_menu:
     attribute_group: 属性组
     channel: 渠道
     currency: 货币
-    dashboard: 主界面
+    dashboard: 活动仪表板
     family: 品类
     group: 分组
     group_type: 分组类型
@@ -332,7 +355,10 @@ pim_menu:
     activity: 活动导航
     system: 系统导航
     user: 用户管理导航
-    settings: 设置导航
+    settings:
+      product: 产品设置
+      catalog: 目录设置 
+      collapsed_label: 设置导航
     product: 产品导航
     product_infos: 产品信息
   user:
@@ -344,3 +370,24 @@ pim_notification:
     export: 导出
     quick_export: 快速导出
     mass_edit: 批量编辑
+pim_settings:
+  settings_menu: 设置菜单
+  catalog_settings: 目录设置 
+  product_settings: 产品设置
+  count:
+    category_trees: '{0}您有 0 个树 |{1}您有 1 个树 |]1，Inf[您有 {{ count }} 个树'
+    categories: '{0}和 0 个类别 |{1}和 1 个类别 |]1, Inf[和 {{ count }} 个类别'
+    channels: '{0}您有 0 个渠道|{1}您有 1 个渠道|]1，Inf[您有 {{ count }} 渠道]'
+    locales: '{0}您有 0 个已启用区域|{1}您有 1 个已启用区域|]1，Inf[您有 {{ count }} 个已启用区域'
+    currencies: '{0}您有 0 个已启用货币|{1}您有 1 个已启用货币|]1, Inf[您有 {{ count }} 个已启用货币'
+    attribute_groups: '{0}您有 0 个属性组 |{1}您有 1 个属性组 |]1，Inf[您有 {{ count }} 个属性组'
+    attributes: '{0}您有 0 个属性|{1}您有 1 个属性|]1，Inf[您有 {{ count }} 个属性'
+    families: '{0}您有 0 个品类|{1}您有 1 个品类|]1，Inf[您有 {{ count }} 个品类'
+    measurements: '{0}您有 0 个测量|{1}您有 1 个测量|]1, Inf[您有 {{ count }} 个测量'
+    association_types: '{0}您有 0 个关联类型 |{1}您有 1 个关联类型 |]1, Inf[您有 {{ count }} 个关联类型'
+    group_types: '{0}您有 0 个分组类型 |{1}您有 1 个分组类型 |]1，Inf[您有 {{ count }} 个分组类型'
+    groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
+    rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
+pim_system:
+  system_navigation: 系统导航
+  users_management_navigation: 用户管理导航

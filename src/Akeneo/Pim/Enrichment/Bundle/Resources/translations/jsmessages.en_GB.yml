@@ -61,7 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Author
-      logged_at: Logged at
+      logged_at: Date/Time
       from: From
       modified: Modified
       old_value: Old value
@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Quantities
       search:
         placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
       no_data: There are no associated products
       remove: Remove association
       edit: Edit product
@@ -209,6 +208,45 @@ pim_enrich.entity.category:
   label: category
   uppercase_label: Category
   plural_label: Categories
+  page_title:
+    index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"
+  content:
+    empty_tree_list:
+      title: You don’t have any tree
+      hint: Create your first one.
+    tree_list:
+      columns:
+        label: Tree label
+        number_of_categories: Number of categories
+        count_categories: ']-Inf, 1]{{ count }} category|]1, Inf[{{ count }} categories'
+    tree:
+      not_found: Category tree not found
+    edit:
+      not_found: Category not found
+      default_tree_label: Tree
+      success: Category successfully updated
+      fail: Category tree not found
+  new_category: New category
+  new_category_tree: New category tree
+  category_created: The category "{{ code }}" was successfully created
+  category_creation_error: The category "{{ code }}" was successfully created
+  category_tree_creation:
+    success: The tree "{{ code }}" was successfully created
+    error: The tree "{{ code }}" could not be created
+  category_tree_deletion:
+    success: The tree "{{ tree }}" was successfully deleted
+    error: The tree "{{ tree }}" could not be deleted
+    confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
+    products_limit_exceeded:
+      title: This tree cannot be deleted
+      message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
+  category_deletion:
+    success: The category "{{ name }}" was successfully deleted
+    error: The category "{{ name }}" could not be deleted
+    confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+    products_limit_exceeded:
+      title: This category cannot be deleted
+      message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.
 pim_enrich.export.product:
   data:
     title: Filter the products
@@ -292,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  title: Products bulk action
   confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
     choose:
-      title: Products bulk actions
       label_count: "]0, Inf[Select your action"
     configure:
       label: Configure
@@ -317,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      label: Edit attributes values
-      label_count: "{0}Edit attributes values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
-    add_attribute_value:
-      label: Add attributes values
-      label_count: "{0}Add attributes values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
       label_count: "{0}Change the family of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
@@ -359,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Convert some <span class=\"AknFullPage-title--highlight\">products</span> to simple products|{1}Convert <span class=\"AknFullPage-title--highlight\">1 product</span> to a simple product|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to simple products"
       description: All of the former values, categories and associations will be saved.
     associate_to_product_and_product_model:
-      label: Associate
       label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
@@ -451,7 +480,6 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifier
-  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Associate
@@ -513,6 +541,8 @@ batch_jobs:
     quick_export.label: XLSX product quick export
     quick_export_product_model.label: XLSX product model quick export
     perform.label: XLSX product quick export
+  default_steps:
+    delete_products_and_product_models: Delete products and product models
 error:
   removing:
     group: Impossible to remove group

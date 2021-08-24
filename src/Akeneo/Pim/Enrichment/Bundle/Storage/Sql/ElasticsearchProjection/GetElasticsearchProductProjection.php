@@ -22,17 +22,11 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 {
     private const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
-    /** @var Connection */
-    private $connection;
-
-    /** @var NormalizerInterface */
-    private $valuesNormalizer;
-
-    /** @var ReadValueCollectionFactory */
-    private $readValueCollectionFactory;
-
+    private Connection $connection;
+    private NormalizerInterface $valuesNormalizer;
+    private ReadValueCollectionFactory $readValueCollectionFactory;
     /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
-    private $additionalDataProviders = [];
+    private iterable $additionalDataProviders;
 
     public function __construct(
         Connection $connection,
@@ -46,7 +40,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $this->additionalDataProviders = $additionalDataProviders;
     }
 
-    public function fromProductIdentifiers(array $productIdentifiers): array
+    public function fromProductIdentifiers(array $productIdentifiers): iterable
     {
         if (empty($productIdentifiers)) {
             return [];
@@ -56,21 +50,25 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
 
-        $rowIdentifiers = array_map(function (array $row) {
-            return $row['identifier'];
-        }, $rows);
-
-        $diffIdentifiers = array_diff($productIdentifiers, $rowIdentifiers);
-        if (count($diffIdentifiers) > 0) {
-            throw new ObjectNotFoundException(sprintf('Product identifiers "%s" were not found.', implode(',', $diffIdentifiers)));
+        $rowIdentifiers = \array_map(
+            static fn (array $row): string => (string) $row['identifier'],
+            $rows
+        );
+        $diffIdentifiers = \array_diff($productIdentifiers, $rowIdentifiers);
+        if (\count($diffIdentifiers) > 0) {
+            throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
         }
 
         $platform = $this->connection->getDatabasePlatform();
-
         $rows = $this->createValueCollectionInBatchFromRows($rows);
 
-        $results = [];
+        $additionalData = [];
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $additionalData = \array_merge($additionalData, $additionalDataProvider->fromProductIdentifiers($productIdentifiers));
+        }
+
         foreach ($rows as $row) {
+            $productIdentifier = (string) $row['identifier'];
             $rawValues = $row['raw_values'];
 
             $productLabels = [];
@@ -80,11 +78,12 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
             $values = $this->valuesNormalizer->normalize($row['values'], self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
-            $results[$row['identifier']] = new ElasticsearchProductProjection(
+            $projection = new ElasticsearchProductProjection(
                 $row['id'],
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
+                Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['entity_updated_date'], $platform),
                 (bool) $row['is_enabled'],
                 $row['family_code'],
                 \json_decode($row['family_labels'], true),
@@ -101,16 +100,9 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $row['attribute_codes_of_ancestor'],
                 $row['attribute_codes_for_this_level']
             );
-        }
 
-        foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalDataPerProduct = $additionalDataProvider->fromProductIdentifiers($productIdentifiers);
-            foreach ($additionalDataPerProduct as $productIdentifier => $additionalData) {
-                $results[$productIdentifier] = $results[$productIdentifier]->addAdditionalData($additionalData);
-            }
+            yield $productIdentifier => $projection->addAdditionalData($additionalData[$productIdentifier] ?? []);
         }
-
-        return $results;
     }
 
     private function fetchRows(array $productIdentifiers): array
@@ -132,6 +124,7 @@ WITH
             JSON_ARRAY(sub_product_model.code, root_product_model.code) AS ancestor_codes,
             product.created AS created_date,
             GREATEST(product.updated, COALESCE(sub_product_model.updated, 0), COALESCE(root_product_model.updated, 0)) AS updated_date,
+            product.updated AS entity_updated_date,
             JSON_KEYS(product.raw_values) AS attribute_codes_in_product_raw_values,
             JSON_MERGE_PATCH(
                 product.raw_values,
@@ -261,6 +254,7 @@ WITH
         product.ancestor_codes,
         product.created_date,
         product.updated_date,
+        product.entity_updated_date,
         product.attribute_codes_in_product_raw_values,
         product.raw_values,
         product.attribute_as_label_code,

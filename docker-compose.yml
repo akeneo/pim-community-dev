@@ -50,7 +50,7 @@ services:
       - 'pim'
 
   selenium:
-    image: 'selenium/standalone-chrome-debug:3'
+    image: 'selenium/standalone-chrome-debug:3.141.59-20210713'
     volumes:
       - './:/srv/pim:ro'
       - '/dev/shm:/dev/shm'
@@ -119,7 +119,7 @@ services:
       - 'pim'
 
   pubsub-emulator:
-    image: 'google/cloud-sdk:312.0.0'
+    image: 'google/cloud-sdk:331.0.0'
     command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
     networks:
       - 'pim'

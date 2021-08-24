@@ -15,7 +15,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueProductEntity extends Constraint
 {
-    public $message = 'The same identifier is already set on another product';
+    const UNIQUE_PRODUCT_ENTITY = 'f69dca22-17a2-458a-958c-2e9f98f85c00';
+
+    public $message = 'The %identifier% identifier is already used for another product.';
 
     /**
      * {@inheritdoc}

@@ -9,9 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 
@@ -50,8 +50,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_builds_a_bulk_event_of_product_removed_event(): void
     {
-        $user = new User();
-        $user->setId(10);
+        $context = new Context('ecommerce_0000', 10);
 
         $blueJeanEvent = new ProductModelRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'code' => 'blue_jean',
@@ -67,7 +66,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $expectedCollection->setEventData($blueJeanEvent, ['resource' => ['code' => 'blue_jean']]);
         $expectedCollection->setEventData($redJeanEvent, ['resource' => ['code' => 'red_jean']]);
 
-        $collection = $this->build($bulkEvent, $user)->getWrappedObject();
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }

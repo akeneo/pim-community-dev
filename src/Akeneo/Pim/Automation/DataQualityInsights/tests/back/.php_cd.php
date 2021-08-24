@@ -61,7 +61,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
@@ -157,6 +156,7 @@ $rules = [
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+            'Akeneo\Channel\Component\Query\PublicApi',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

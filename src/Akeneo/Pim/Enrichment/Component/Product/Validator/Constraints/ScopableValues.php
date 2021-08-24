@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class ScopableValues extends Constraint
 {
-    public $unknownScopeMessage = 'Attribute "%attribute_code%" expects an existing scope, "%channel%" given.';
+    const SCOPABLE_VALUES = '76b68325-0571-4de6-8094-f07d0a652bfa';
+
+    public $unknownScopeMessage = 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM';
 
     /**
      * {@inheritdoc}

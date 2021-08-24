@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -27,31 +27,25 @@ final class RunUniqueProcessJob
     /** Time for which a job execution is considered as outdated. */
     private const OUTDATED_JOB_EXECUTION_TIME = '-3 HOUR';
 
-    /** @var EntityManager */
-    private $entityManager;
-
-    /** @var JobExecutionManager */
-    private $executionManager;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $projectDir;
+    private EntityManager $entityManager;
+    private JobExecutionManager $executionManager;
+    private JobRepositoryInterface $jobRepository;
+    private JobExecutionMessageFactory $jobExecutionMessageFactory;
+    private LoggerInterface $logger;
+    private string $projectDir;
 
     public function __construct(
         EntityManager $entityManager,
         JobExecutionManager $executionManager,
         JobRepositoryInterface $jobRepository,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         LoggerInterface $logger,
         string $projectDir
     ) {
         $this->entityManager = $entityManager;
         $this->executionManager = $executionManager;
         $this->jobRepository = $jobRepository;
+        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->logger = $logger;
         $this->projectDir = $projectDir;
     }
@@ -63,7 +57,11 @@ final class RunUniqueProcessJob
         $this->ensureNoOtherJobExecutionIsRunning($jobInstance);
 
         $jobExecution = $this->createJobExecution($jobInstance, $buildJobParameters);
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), []);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
+            $jobInstance,
+            $jobExecution->getId(),
+            []
+        );
         $this->logger->info('Job execution "{job_id}" is starting', ['message' => 'job_execution_started', 'job_id' => $jobExecution->getId()]);
 
         try {
@@ -87,7 +85,7 @@ final class RunUniqueProcessJob
             // update status if the job execution failed due to an uncaught error as a fatal error
             $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
             if ($exitStatus->isRunning()) {
-                $this->executionManager->markAsFailed($jobExecutionMessage);
+                $this->executionManager->markAsFailed($jobExecutionMessage->getJobExecutionId());
             }
         }
 
@@ -139,8 +137,7 @@ final class RunUniqueProcessJob
         // In case of an old job execution that has not been marked as failed.
         if ($jobExecutionRunning->getUpdatedTime() < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)) {
             $this->logger->info('Job execution "{job_id}" is outdated: let\'s mark it has failed.', ['message' => 'job_execution_outdated', 'job_id' => $jobExecutionRunning->getId()]);
-            $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage(intval($jobExecutionRunning->getId()), []);
-            $this->executionManager->markAsFailed($jobExecutionMessage);
+            $this->executionManager->markAsFailed($jobExecutionRunning->getId());
         }
 
         throw new AnotherJobStillRunningException();

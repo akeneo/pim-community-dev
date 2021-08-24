@@ -23,18 +23,18 @@ Background:
     Then no error is raised
 
   @acceptance-back
-  Scenario: Providing a non erxistent locale should raise an error
+  Scenario: Providing a non existent locale should raise an error
     When a product is created with values:
       | attribute | data       | locale  |
       | name      | My product | non_EXI |
-    Then the error 'Attribute "name" expects an existing and activated locale, "non_EXI" given.' is raised
+    Then the error 'The name attribute requires a valid locale. The non_EXI locale does not exist.' is raised
 
   @acceptance-back
   Scenario: Providing an inactive locale should raise an error
     When a product is created with values:
       | attribute | data       | locale |
       | name      | My product | es_ES  |
-    Then the error 'Attribute "name" expects an existing and activated locale, "es_ES" given.' is raised
+    Then the error 'The name attribute requires a valid locale. The es_ES locale does not exist.' is raised
 
   @acceptance-back
   Scenario: Providing a locale bound to the channel should not raise an error
@@ -48,7 +48,7 @@ Background:
     When a product is created with values:
       | attribute   | data       | scope     | locale  |
       | description | My product | ecommerce | fr_FR   |
-    Then the error 'Attribute "description" expects a valid locale, "fr_FR" is not bound to channel "ecommerce".' is raised
+    Then the error 'The description attribute requires a valid locale. The fr_FR locale is not bound to the ecommerce channel.' is raised
 
   @acceptance-back
   Scenario: Providing a locale part of a locale specific attribute's available locales should not raise an error
@@ -62,4 +62,4 @@ Background:
     When a product is created with values:
       | attribute | data | locale |
       | gdpr      | test | en_US  |
-    Then the error '"en_US" is not part of the available locales for the locale specific attribute "gdpr".' is raised
+    Then the error 'The en_US locale is not available on the gdpr attribute.' is raised

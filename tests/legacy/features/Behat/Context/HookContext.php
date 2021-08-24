@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
@@ -10,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -20,27 +19,23 @@ use WebDriver\Exception\UnexpectedAlertOpen;
  */
 class HookContext extends PimContext
 {
-    /** @var string[] */
-    protected static $errorMessages = [];
+    private const MESSENGER_JOB_COMMAND = 'messenger:consume';
+    private const MESSENGER_JOB_RECEIVERS = ['ui_job', 'import_export_job', 'data_maintenance_job'];
 
-    /** @var int */
-    protected $windowWidth;
-
-    /** @var int */
-    protected $windowHeight;
-
-    /** @var Process */
-    protected $jobConsumerProcess;
+    protected static array $errorMessages = [];
+    protected int $windowWidth;
+    protected int $windowHeight;
+    protected ?Process $jobConsumerProcess;
 
     /**
      * @param string $mainContextClass
-     * @param int $windowWidth
-     * @param int $windowHeight
+     * @param int    $windowWidth
+     * @param int    $windowHeight
      */
     public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
     {
         parent::__construct($mainContextClass);
-        $this->windowWidth  = $windowWidth;
+        $this->windowWidth = $windowWidth;
         $this->windowHeight = $windowHeight;
     }
 
@@ -49,9 +44,27 @@ class HookContext extends PimContext
      */
     public function launchJobConsumer()
     {
-        $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));
+        $process = new Process(
+            array_merge(
+                [
+                    "bin/console",
+                    "--env=behat",
+                    "--quiet",
+                    self::MESSENGER_JOB_COMMAND,
+                ],
+                self::MESSENGER_JOB_RECEIVERS,
+            )
+        );
         $process->setTimeout(null);
-        $process->start();
+        $process->start(function (string $type, string $data) {
+            /** @var LoggerInterface $logger */
+            $logger = $this->getService('logger');
+            if ($type === Process::ERR) {
+                $logger->error($data);
+            } else {
+                $logger->info($data);
+            }
+        });
 
         $this->jobConsumerProcess = $process;
     }
@@ -89,10 +102,10 @@ class HookContext extends PimContext
             if ($driver instanceof Selenium2Driver) {
                 $dir = !empty($_ENV['BEHAT_SCREENSHOT_PATH'] ?? '') ? $_ENV['BEHAT_SCREENSHOT_PATH'] : '/tmp/behat/screenshots';
 
-                $lineNum  = $event->getStep()->getLine();
+                $lineNum = $event->getStep()->getLine();
                 $filename = strstr($event->getFeature()->getFile(), 'features/');
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
-                $path     = sprintf('%s/%s', $dir, $filename);
+                $path = sprintf('%s/%s', $dir, $filename);
 
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());

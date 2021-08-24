@@ -15,16 +15,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
@@ -84,8 +81,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
         GetConnectorProductModels $getConnectorProductModelsQuery
     ): void {
-        $user = new User();
-        $user->setId(10);
+        $context = new Context('ecommerce_0000', 10);
 
         $jeanEvent = new ProductModelCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'code' => 'jean',
@@ -133,7 +129,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ],
         ]);
 
-        $collection = $this->build($bulkEvent, $user)->getWrappedObject();
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }
@@ -141,8 +137,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
         GetConnectorProductModels $getConnectorProductModelsQuery
     ): void {
-        $user = new User();
-        $user->setId(10);
+        $context = new Context('ecommerce_0000', 10);
 
         $productList = new ConnectorProductModelList(1, [$this->buildConnectorProductModel(1, 'jean')]);
 
@@ -174,7 +169,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         ]);
         $expectedCollection->setEventDataError($shoesEvent, new ProductModelNotFoundException('shoes'));
 
-        $collection = $this->build($bulkEvent, $user)->getWrappedObject();
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }

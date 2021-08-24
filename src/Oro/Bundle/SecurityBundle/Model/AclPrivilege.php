@@ -26,6 +26,8 @@ class AclPrivilege
      */
     private $permissions;
 
+    private int $order = 0;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -141,5 +143,17 @@ class AclPrivilege
     public function getPermissionCount()
     {
         return $this->permissions->count();
+    }
+
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
+    public function setOrder(int $order): self
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }

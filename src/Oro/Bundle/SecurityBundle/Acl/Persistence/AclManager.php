@@ -4,12 +4,14 @@ namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Event\EventDispatcherAware;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
@@ -57,6 +59,8 @@ class AclManager extends AbstractAclManager
      */
     protected $privilegeRepositoryClass;
 
+    private ?EventDispatcherInterface $eventDispatcher;
+
     /**
      * This array contains all requested ACLs and flags indicate which changes are queued
      * key = a string unique for each OID
@@ -80,7 +84,8 @@ class AclManager extends AbstractAclManager
         AclExtensionSelector $extensionSelector,
         MutableAclProvider $aclProvider = null,
         AceManipulationHelper $aceProvider = null,
-        $privilegeRepositoryClass = null
+        $privilegeRepositoryClass = null,
+        EventDispatcherInterface $eventDispatcher = null
     ) {
         $this->objectIdentityFactory = $objectIdentityFactory;
         $this->extensionSelector = $extensionSelector;
@@ -91,6 +96,7 @@ class AclManager extends AbstractAclManager
         $this->privilegeRepositoryClass = $privilegeRepositoryClass !== null
             ? $privilegeRepositoryClass
             : AclPrivilegeRepository::class;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -161,7 +167,12 @@ class AclManager extends AbstractAclManager
      */
     public function getPrivilegeRepository()
     {
-        return new $this->privilegeRepositoryClass($this);
+        $repository = new $this->privilegeRepositoryClass($this);
+        if ($repository instanceof EventDispatcherAware && null !== $this->eventDispatcher) {
+            $repository->setEventDispatcher($this->eventDispatcher);
+        }
+
+        return $repository;
     }
 
     /**

@@ -38,6 +38,19 @@ test('it renders its children properly', () => {
   expect(handleClick).toBeCalled();
 });
 
+test('it does not throw when using conditional Tabs', () => {
+  const displayTab = false;
+
+  render(
+    <TabBar moreButtonTitle="More">
+      <TabBar.Tab isActive={false}>First tab</TabBar.Tab>
+      {displayTab && <TabBar.Tab isActive={false}>Permission tab</TabBar.Tab>}
+    </TabBar>
+  );
+
+  expect(screen.queryByText('Permission tab')).not.toBeInTheDocument();
+});
+
 test('it throws when using invalid children', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 

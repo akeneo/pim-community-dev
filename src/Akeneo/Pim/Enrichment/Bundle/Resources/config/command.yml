@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - '%pim_job_product_batch_size%'
             - '@event_dispatcher'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
@@ -42,20 +42,5 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-        tags:
-            - { name: console.command }
-
-    Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand:
-        arguments:
-            - '@pim_connector.doctrine.cache_clearer'
-            - '@pim_notification.notifier'
-            - '@pim_notification.factory.notification'
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.saver.locale'
-            - '%kernel.root_dir%'
-            - '%kernel.environment%'
-            - '%pim_job_product_batch_size%'
         tags:
             - { name: console.command }

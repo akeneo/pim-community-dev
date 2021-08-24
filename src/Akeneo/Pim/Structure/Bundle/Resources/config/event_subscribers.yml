@@ -69,6 +69,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributeOptionPostSaveEventSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.check_attribute_on_deletion_subscriber:
         class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeOnDeletionSubscriber'
         arguments:

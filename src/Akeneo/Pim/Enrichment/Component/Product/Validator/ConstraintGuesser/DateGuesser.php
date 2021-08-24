@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Date guesser
@@ -29,6 +29,6 @@ class DateGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return [new Date()];
+        return [new Date(['attributeCode' => $attribute->getCode()])];
     }
 }

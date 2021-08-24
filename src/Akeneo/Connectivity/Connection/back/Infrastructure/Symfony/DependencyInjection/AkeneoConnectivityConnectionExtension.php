@@ -17,11 +17,15 @@ class AkeneoConnectivityConnectionExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $container->setParameter('connectivity.marketplace_fixtures_directory', __DIR__ . '/../Resources/fixtures/');
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('apps.yml');
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
         $loader->load('event_normalizers.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
         $loader->load('marketplace.yml');

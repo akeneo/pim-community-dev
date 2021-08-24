@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\DateGuesser;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -37,11 +38,13 @@ class DateGuesserSpec extends ObjectBehavior
 
     function it_guesses_date(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willreturn('a_code');
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $firstConstraint = $constraints[0];
-        $firstConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Date');
+        $firstConstraint->shouldBeAnInstanceOf(Date::class);
+        $firstConstraint->attributeCode->shouldbe('a_code');
     }
 }

@@ -24,4 +24,4 @@ Feature: Validate scopable values of a product
     When a product is created with values:
       | attribute   | data    | scope   |
       | description | my desc | unknown |
-    Then the error 'Attribute "description" expects an existing scope, "unknown" given.' is raised
+    Then the error 'The description attribute requires a value per channel. The unknown channel (scope) must exist in your PIM' is raised

@@ -26,7 +26,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $violations = $this->validateProduct($product2);
 
         $this->assertCount(1, $violations);
-        $this->assertSame($violations->get(0)->getMessage(), 'The same identifier is already set on another product');
+        $this->assertSame($violations->get(0)->getMessage(), 'The just_an_empty_product identifier is already used for another product.');
         $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
     }
 

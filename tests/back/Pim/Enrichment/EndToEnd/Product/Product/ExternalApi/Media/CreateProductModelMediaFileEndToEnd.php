@@ -310,7 +310,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given.",
+            "message": "The a_localizable_scopable_image attribute requires a value per channel. The Oumuamua channel (scope) must exist in your PIM",
             "attribute": "a_localizable_scopable_image",
             "locale": "en_US",
             "scope": "Oumuamua"
@@ -348,7 +348,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given.",
+            "message": "The a_localizable_scopable_image attribute requires a valid locale. The Esperanto locale does not exist.",
             "attribute": "a_localizable_scopable_image",
             "locale": "Esperanto",
             "scope": "tablet"
@@ -447,8 +447,9 @@ JSON;
                     'a_yes_no',
                     'an_image',
                     'a_localizable_scopable_image'
+                ]
             ]
-        ]);
+        );
         $this->assertCount(0, $this->get('validator')->validate($familyA));
         $this->get('pim_catalog.saver.family')->save($familyA);
 

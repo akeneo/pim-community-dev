@@ -4,6 +4,7 @@ const viewBuilder = require('pim/form-builder');
 const messenger = require('oro/messenger');
 const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 export const dependencies = {
   router,
@@ -14,4 +15,5 @@ export const dependencies = {
   security: {
     isGranted: securityContext.isGranted.bind(securityContext),
   },
+  featureFlags,
 };

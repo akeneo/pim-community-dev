@@ -1,0 +1,2 @@
+services:
+  Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer: ~

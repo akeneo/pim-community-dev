@@ -81,7 +81,9 @@ test('It does not update results if the shouldFetch param is set to false', asyn
 test('It goes back to first page when dependencies change', async () => {
   const {result, rerender} = renderHook(
     ({searchValue}) => usePaginatedResults<string>(fetcher, [searchValue]),
-    {initialProps: {searchValue: ''}}
+    {
+      initialProps: {searchValue: ''},
+    }
   );
 
   await act(async () => {

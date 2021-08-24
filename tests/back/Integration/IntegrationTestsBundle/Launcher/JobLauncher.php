@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Doctrine\Common\Persistence\ObjectManager;
+use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Doctrine\DBAL\Driver\Connection;
+use Google\Cloud\PubSub\Message;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -29,24 +30,30 @@ use Webmozart\Assert\Assert;
  */
 class JobLauncher
 {
+    private const MESSENGER_COMMAND_NAME = 'messenger:consume';
+    private const MESSENGER_RECEIVERS = ['data_maintenance_job', 'import_export_job', 'ui_job'];
+
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
     const IMPORT_DIRECTORY = 'pim-integration-tests-import';
 
-    /** @var KernelInterface */
-    private $kernel;
+    private KernelInterface $kernel;
+    private Connection $dbConnection;
+    /** @var PubSubQueueStatus[] */
+    private iterable $pubSubQueueStatuses;
+    private LoggerInterface $logger;
 
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var JobExecutionMessageRepository */
-    private $jobExecutionMessageRepository;
-
-    public function __construct(KernelInterface $kernel, Connection $dbConnection, JobExecutionMessageRepository $jobExecutionMessageRepository)
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        Connection $dbConnection,
+        iterable $pubSubQueueStatuses,
+        LoggerInterface $logger
+    ) {
+        Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
-        $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
+        $this->pubSubQueueStatuses = $pubSubQueueStatuses;
+        $this->logger = $logger;
     }
 
     /**
@@ -282,24 +289,38 @@ class JobLauncher
 
     /**
      * Indicates whether the queue has a job still not consumed in the queue.
-     *
-     * @return bool
      */
     public function hasJobInQueue(): bool
     {
-        $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
+        /** @var PubSubQueueStatus $pubSubStatus */
+        foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
+            if ($pubSubStatus->hasMessageInQueue()) {
+                return true;
+            }
+        }
 
-        return null !== $jobExecutionMessage;
+        return false;
+    }
+
+    /**
+     * Returns all the messages in the queues
+     *
+     * @return Message[]
+     */
+    public function getMessagesInQueues(): array
+    {
+        return array_merge(...array_map(
+            fn (PubSubQueueStatus $pubSubQueueStatus): array => $pubSubQueueStatus->getMessagesInQueue(),
+            is_array($this->pubSubQueueStatuses)
+                ? $this->pubSubQueueStatuses
+                : iterator_to_array($this->pubSubQueueStatuses)
+        ));
     }
 
     /**
      * Launch the daemon command to consume and launch one job execution.
-     *
-     * @param array $options
-     *
-     * @return BufferedOutput
      */
-    public function launchConsumerOnce(array $options = []): BufferedOutput
+    public function launchConsumerOnce(array $options = []): OutputInterface
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -307,8 +328,9 @@ class JobLauncher
         $arrayInput = array_merge(
             $options,
             [
-                'command'  => JobQueueConsumerCommand::COMMAND_NAME,
-                '--run-once' => true,
+                'command'  => static::MESSENGER_COMMAND_NAME,
+                'receivers' => static::MESSENGER_RECEIVERS,
+                '--limit' => 1,
             ]
         );
 
@@ -319,25 +341,43 @@ class JobLauncher
         return $output;
     }
 
+    public function launchConsumerUntilQueueIsEmpty(array $options = [], int $limit = 50): int
+    {
+        $numberOfJobs = 0;
+        while ($this->hasJobInQueue()) {
+            $this->launchConsumerOnce($options);
+            $numberOfJobs++;
+            Assert::notSame($numberOfJobs, $limit, sprintf('Error: the test reaches the limit number of jobs (%d).', $limit));
+        }
+
+        return $numberOfJobs;
+    }
+
     /**
      * Launch the daemon command to consume and launch one job execution, in a detached process in background.
      * It uses exec to not wrap the process in a subshell, in order to get the correct pid.
      *
      * @see https://github.com/symfony/symfony/issues/5759
-     *
-     * @return Process
      */
-    public function launchConsumerOnceInBackground(): Process
+    public function launchConsumerOnceInBackground(int $timeLimitInSeconds = null): Process
     {
         $command = sprintf(
-            'exec %s/console %s --env=%s --run-once',
-            sprintf('%s/../bin', $this->kernel->getRootDir()),
-            JobQueueConsumerCommand::COMMAND_NAME,
-            $this->kernel->getEnvironment()
+            'exec %s/console %s %s --env=%s --limit=1 --verbose %s',
+            sprintf('%s/../bin', $this->kernel->getContainer()->getParameter('kernel.root_dir')),
+            static::MESSENGER_COMMAND_NAME,
+            implode(' ', static::MESSENGER_RECEIVERS),
+            $this->kernel->getEnvironment(),
+            $timeLimitInSeconds === null ? '' : sprintf('--time-limit=%d', $timeLimitInSeconds)
         );
 
         $process = new Process($command);
-        $process->start();
+        $process->start(function (string $type, string $data) {
+            if ($type === Process::ERR) {
+                $this->logger->error($data);
+            } else {
+                $this->logger->info($data);
+            }
+        });
 
         return $process;
     }
@@ -421,5 +461,27 @@ class JobLauncher
         $config['is_user_authenticated'] = true;
 
         self::launchSubProcessImport($jobCode, $content, $username, $fixturePaths, $config);
+    }
+
+    public function flushJobQueue(): void
+    {
+        foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
+            $subscription = $pubSubStatus->getSubscription();
+            try {
+                $subscription->reload();
+            } catch (\Exception $e) {
+            }
+            if (!$subscription->exists()) {
+                continue;
+            }
+
+            do {
+                $messages = $subscription->pull(['maxMessages' => 10, 'returnImmediately' => true]);
+                $count = count($messages);
+                if ($count > 0) {
+                    $subscription->acknowledgeBatch($messages);
+                }
+            } while (0 < $count);
+        }
     }
 }

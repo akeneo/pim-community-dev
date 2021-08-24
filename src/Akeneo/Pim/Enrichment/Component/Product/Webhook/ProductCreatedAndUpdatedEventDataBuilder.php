@@ -8,14 +8,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -50,9 +48,12 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         return true;
     }
 
-    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
-        $products = $this->getConnectorProducts($this->getProductIdentifiers($bulkEvent->getEvents()), $user->getId());
+        $products = $this->getConnectorProducts(
+            $this->getProductIdentifiers($bulkEvent->getEvents()),
+            $context->getUserId()
+        );
 
         $collection = new EventDataCollection();
 

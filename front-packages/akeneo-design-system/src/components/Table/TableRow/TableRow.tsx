@@ -1,4 +1,13 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, useEffect} from 'react';
+import React, {
+  ReactNode,
+  Ref,
+  SyntheticEvent,
+  HTMLAttributes,
+  forwardRef,
+  useContext,
+  useEffect,
+  useCallback,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -64,16 +73,19 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const HandleContainer = styled.div`
+const HandleCell = styled(TableCell)`
   cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 20px;
+
+  > div {
+    justify-content: center;
+  }
 
   :active {
     cursor: grabbing;
   }
 `;
+
 type TableRowProps = Override<
   HTMLAttributes<HTMLTableRowElement>,
   {
@@ -105,13 +117,27 @@ type TableRowProps = Override<
     /**
      * @private
      */
+    onDragStart?: (rowIndex: number) => void;
+
+    /**
+     * @private
+     */
     draggedElementIndex?: number | null;
   }
 >;
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
-    {rowIndex = 0, draggedElementIndex = null, isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps,
+    {
+      rowIndex = 0,
+      draggedElementIndex = null,
+      isSelected,
+      onSelectToggle,
+      onClick,
+      onDragStart,
+      children,
+      ...rest
+    }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
@@ -134,6 +160,8 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       }
     }, [draggedElementIndex]);
 
+    const internalOnDragStart = useCallback(() => onDragStart?.(rowIndex), [rowIndex, onDragStart]);
+
     return (
       <RowContainer
         ref={forwardedRef}
@@ -145,6 +173,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         data-draggable-index={rowIndex}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
+        onDragStart={internalOnDragStart}
         {...rest}
       >
         {isSelectable && (
@@ -162,11 +191,9 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           </CheckboxContainer>
         )}
         {isDragAndDroppable && (
-          <TableCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
-            <HandleContainer>
-              <RowIcon size={16} />
-            </HandleContainer>
-          </TableCell>
+          <HandleCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
+            <RowIcon size={16} />
+          </HandleCell>
         )}
         {children}
       </RowContainer>

@@ -10,6 +10,7 @@ import {useConnections} from '../hooks/api/use-connections';
 import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const Dashboard = memo(() => {
     const {connections} = useConnections();
@@ -29,6 +30,8 @@ export const Dashboard = memo(() => {
 
     const dashboardHref = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
 
+    const featureFlags = useFeatureFlags();
+
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step href={dashboardHref}>
@@ -47,18 +50,22 @@ export const Dashboard = memo(() => {
             </PageHeader>
 
             <PageContent>
-                <Helper>
-                    <HelperTitle>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.title' />
-                    </HelperTitle>
-                    <p>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
-                    </p>
-                    <HelperLink href='https://help.akeneo.com/pim/articles/connection-dashboard.html' target='_blank'>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
-                    </HelperLink>
-                </Helper>
-
+                {!featureFlags.isEnabled('free_trial') && (
+                    <Helper>
+                        <HelperTitle>
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.title' />
+                        </HelperTitle>
+                        <p>
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
+                        </p>
+                        <HelperLink
+                            href='https://help.akeneo.com/pim/articles/connection-dashboard.html'
+                            target='_blank'
+                        >
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
+                        </HelperLink>
+                    </Helper>
+                )}
                 <DashboardContent />
             </PageContent>
         </>

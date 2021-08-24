@@ -1,0 +1,98 @@
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { SubNavigationPanel } from './SubNavigationPanel.tsx';
+import { SpaceContainer } from '../../../storybook/PreviewGallery';
+import { useBooleanState } from '../../../hooks';
+import { MoreVerticalIcon } from "../../../icons";
+import { Dropdown } from "../../Dropdown/Dropdown";
+import { Link } from "../../Link/Link";
+
+<Meta
+  title="Components/Navigation/SubNavigationPanel"
+  subcomponents={{
+    SubNavigationPanel: SubNavigationPanel,
+    'SubNavigationPanel.Collapsed': SubNavigationPanel.Collapsed,
+  }}
+  args={{ children: 'Some content', isOpen: true, closeTitle: 'Close', openTitle: 'Open' }}
+/>
+
+# SubNavigationPanel
+
+## Usage
+
+SubNavigationPanel is used to display a collapsable panel on the left side of the screen.
+
+This panel can contain navigation links or other type of content.
+
+### Interaction
+
+The panel is open by default and can be collapsed with the dedicated button.
+When the panel is collapsed the content is hidden.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Panel is collapsed
+
+<Canvas>
+  <Story name="Collapsed">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={false} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+## Panel with collapsed and expanded content
+
+<Canvas>
+  <Story name="CollapsedExpandedContent">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      const [isDropdownOpen, openDropDown, closeDropDown] = useBooleanState(false);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close}>
+            <SubNavigationPanel.Collapsed>
+              <Dropdown>
+                <MoreVerticalIcon title="Collapsed Content" onClick={openDropDown} />
+                {isDropdownOpen && (
+                  <Dropdown.Overlay onClose={closeDropDown}>
+                    <Dropdown.ItemCollection>
+                      <Dropdown.Item>Collapsed Content</Dropdown.Item>
+                    </Dropdown.ItemCollection>
+                  </Dropdown.Overlay>
+                )}
+              </Dropdown>
+            </SubNavigationPanel.Collapsed>
+            <Link>Expanded Content</Link>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

@@ -88,9 +88,8 @@ const getDefaultProductGridColumns = () => {
     productGridColumns = storedProductGridColumns.split(',');
   } else {
     //If the user has never been to the product grid since its last login
-    productGridColumns = 'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success'.split(
-      ','
-    );
+    productGridColumns =
+      'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success'.split(',');
   }
 
   return productGridColumns;

@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {Children, cloneElement, isValidElement, ReactNode, useRef} from 'react';
 import styled from 'styled-components';
 import {Overlay} from './Overlay/Overlay';
 import {Item} from './Item/Item';
@@ -35,7 +35,20 @@ type DropdownProps = {
  * The dropdown shows a list of options that can be used to select, filter or sort content.
  */
 const Dropdown = ({children, ...rest}: DropdownProps) => {
-  return <DropdownContainer {...rest}>{children}</DropdownContainer>;
+  const ref = useRef<HTMLDivElement>(null);
+  const decoratedChildren = Children.map(children, child => {
+    if (!isValidElement(child) || child.type !== Overlay) return child;
+
+    return cloneElement(child, {
+      parentRef: ref,
+    });
+  });
+
+  return (
+    <DropdownContainer ref={ref} {...rest}>
+      {decoratedChildren}
+    </DropdownContainer>
+  );
 };
 
 Overlay.displayName = 'Dropdown.Overlay';

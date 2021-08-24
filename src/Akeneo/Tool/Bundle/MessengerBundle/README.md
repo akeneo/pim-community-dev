@@ -82,6 +82,16 @@ From the Symfony Messenger point of view, these are three independent queues. Bu
   Default to `false`, but can be enabled to make the transport create the topic and subscription for you.
   This is useful when using the in-memory [Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator) (enabled when the environment variable `PUBSUB_EMULATOR_HOST` is defined).
 
+  **Important**: do not activate the auto setup in production. Otherwise the PIM will try to setup the transport
+  (meaning check the existence of the table for doctrine, the existence of topics/subscriptions for Google PubSub, and so on)
+  that will lead to degraded performance. Plus be aware for Google PubSub the checks perform some administrator operations
+  which are limited by quotas (c.f. https://cloud.google.com/pubsub/quotas).
+
+- `subscription_filter: ?string`
+
+  Default to `null`, it allows to filter messages. See https://cloud.google.com/pubsub/docs/filtering for the syntax.  
+  Be careful with this feature, currently the filter cannot be updated. It is defined only at the subscription creation.  
+
 ## Purge command for the Doctrine transport table
 
 Define a command to purge the Doctrine transport database table of outdated messages.

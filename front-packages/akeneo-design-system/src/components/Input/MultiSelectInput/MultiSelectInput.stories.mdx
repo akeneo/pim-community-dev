@@ -68,7 +68,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState([]);
       return (
         <>
-          <MultiSelectInput readOnly={true} value={[]} placeholder="Placeholder" emptyResultLabel="Not matches found">
+          <MultiSelectInput readOnly={true} value={['en_US']} placeholder="Placeholder" emptyResultLabel="Not matches found">
             <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>

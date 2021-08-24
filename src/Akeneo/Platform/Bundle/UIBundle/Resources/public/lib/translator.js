@@ -11,7 +11,6 @@ var Translator = (function () {
 
   /**
    * replace placeholders in given message.
-   * **WARNING:** used placeholders are removed.
    *
    * @param {String} message      The translated message.
    * @param {Object} placeholders The placeholders to replace.
@@ -28,7 +27,6 @@ var Translator = (function () {
 
       if (_r.test(message)) {
         message = message.replace(_r, placeholders[_i]);
-        delete placeholders[_i];
       }
     }
 

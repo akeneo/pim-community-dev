@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: Désolé il n'y a pas de famille de mesure !
       link: Cliquez ici pour en ajouter une
-    no_result:
-      title: Désolé, il n'y a pas de résultat pour votre recherche.
     standard_unit: Unité standard
     standard_unit_is_not_editable_after_creation: Cette unité standard est définie une fois pour toutes. Elle sera utilisée pour convertir les autres unités.
     add_new_measurement_family: Ajouter une nouvelle famille de mesure

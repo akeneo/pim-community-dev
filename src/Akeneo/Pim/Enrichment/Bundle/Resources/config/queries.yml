@@ -1,4 +1,17 @@
 services:
+    akeneo.enrichment.public_api.find_category_trees:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlFindCategoryTrees
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+
+    akeneo.enrichment.public_api.get_category_children_codes_per_tree:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree
+        arguments:
+            - '@database_connection'
+            - '@pim_enrich.filter.category_code'
+
     pim_catalog.doctrine.query.find_variant_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'
         arguments:
@@ -388,3 +401,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelIdentifiersWithRemovedAttribute
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren:
+        arguments:
+            - '@database_connection'

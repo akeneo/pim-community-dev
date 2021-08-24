@@ -27,6 +27,20 @@ pim_enrich:
       module:
         delete:
           confirm: Czy na pewno chcesz usunąć tego użytkownika?
+pim_user.profile:
+  caption: Najpierw powiedz nam, jaka jest Twoja główna misja, abyśmy pomogli Ci w najistotniejszych kwestiach.
+  why_is_it_needed: Dlaczego potrzebujemy tych informacji?
+  save_button: Zapisz i uzyskaj dostęp do rynku
+  selector:
+    placeholder: Wybierz opcję
+    not_found: Brak wyników
+  product_manager: Zarządzam katalogami produktów.
+  redactor: Wzbogacam dane produktów.
+  pim_integrator: Integruję Akeneo PIM z naszym ekosystemem IT.
+  pim_administrator: Administruję Akeneo PIM.
+  asset_manager: Zarządzam zasobami w PIM.
+  translator: Tłumaczę dane produktów, zasobów i/lub obiektów referencyjnych.
+  third_party_developer: Opracowuję rozwiązania związane z Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -42,6 +56,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} użytkownik|]1, Inf [{{ count }} użytkowników"
       properties:
         username: Nazwa użytkownika
+        profile: Jaka jest Twoja główna misja?
         name_prefix: Przyimek
         first_name: Imię
         middle_name: Drugie imię
@@ -98,3 +113,13 @@ pim_user_management:
       module:
         create:
           button: Utwórz grupę
+  form:
+    error:
+      required: To pole jest wymagane.
+      should_not_contain_space: Nazwa użytkownika nie powinna zawierać spacji.
+      too_short_value: "Ta wartość jest za krótka. Powinna mieć co najmniej następującą liczbę znaków: {{ count }}."
+    duplication:
+      title: 'Powiel użytkownika "{{ username }}"'
+      notification:
+        success: Powielono użytkownika
+        failure: Błąd podczas powielania użytkownika

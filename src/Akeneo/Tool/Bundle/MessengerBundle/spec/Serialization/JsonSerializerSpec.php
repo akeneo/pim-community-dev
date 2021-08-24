@@ -62,9 +62,7 @@ class JsonSerializerSpec extends ObjectBehavior
         $this->encode($envelope)
             ->shouldReturn([
                 'body' => '{"some_property":"Some value!"}',
-                'headers' => [
-                    'class' => \stdClass::class
-                ]
+                'headers' => ['class' => \stdClass::class],
             ]);
     }
 }

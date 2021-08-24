@@ -237,9 +237,9 @@ pim_common:
   family: Famille
   parent: Parent
   groups: Groupes
+  products: Produits
   more: Plus
 error:
-  exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
@@ -286,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Créer
-  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
+  pim_enrich_categorytree_edit: Catégorie {{ category.label }} | Édition
   pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_categorytree_tree: Arbre de catégories {{ category.label }} | Édition
   pim_enrich_attribute_index: Attributs
   pim_enrich_attribute_create: Attributs | Créer
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition
@@ -315,6 +316,7 @@ pim_title:
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
   pim_settings_index: Paramètres
+  pim_system_index: Système
 pim_menu:
   tab:
     activity: Activité
@@ -370,16 +372,6 @@ pim_settings:
   settings_menu: Menu des paramètres
   catalog_settings: Paramètres du catalogue
   product_settings: Paramètres produit
-  count:
-    categories: Vous avez {{ countTrees }} arbres et {{ countCategories }} catégories
-    channels: Vous avez {{ count }} canaux
-    locales: Vous avez {{ count }} locales activées
-    currencies: Vous avez {{ count }} devises activées
-    attribute_groups: Vous avez {{ count }} groupes d'attributs
-    attributes: Vous avez {{ count }} attributs
-    families: Vous avez {{ count }} familles
-    measurements: Vous avez {{ count }} mesures
-    association_types: Vous avez {{ count }} types d'association
-    group_types: Vous avez {{ count }} types de groupe
-    groups: Vous avez {{ count }} groupes
-    rules: Vous avez {{ count }} règles activées
+pim_system:
+  system_navigation: Navigation système
+  users_management_navigation: Navigation utilisateurs

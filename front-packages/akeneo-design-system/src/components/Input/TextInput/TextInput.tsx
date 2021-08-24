@@ -1,6 +1,6 @@
 import React, {ChangeEvent, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {InputProps} from '../InputProps';
+import {InputProps} from '../common/InputProps';
 import {LockIcon} from '../../../icons';
 import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';

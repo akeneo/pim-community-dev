@@ -2,3 +2,11 @@ akeneo_connectivity_connection_manage_settings:
     type: action
     label: akeneo_connectivity.connection.acl.manage_settings
     group_name: oro_config_system
+    order: -20
+
+akeneo_connectivity_connection_manage_apps:
+    type: action
+    label: akeneo_connectivity.connection.acl.manage_apps
+    group_name: oro_config_system
+    enabled_at_creation: false
+    order: -10

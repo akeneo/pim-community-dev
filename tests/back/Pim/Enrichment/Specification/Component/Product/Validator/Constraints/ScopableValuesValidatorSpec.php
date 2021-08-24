@@ -76,6 +76,7 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
             '%channel%' => 'unknown'
         ])->willReturn($violationBuilder);
         $violationBuilder->atPath('[description-unknown-<all_locales>]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(Argument::type('string'))->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($collection, $constraint);

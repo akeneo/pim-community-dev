@@ -134,8 +134,14 @@ final class FillMissingProductValues implements FillMissingValuesInterface
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
-                    foreach ($channel->getLocales() as $locale) {
-                        $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = $nullValue;
+                    if ($attribute->isLocaleSpecific()) {
+                        foreach ($attribute->getAvailableLocales() as $locale) {
+                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = $nullValue;
+                        }
+                    } else {
+                        foreach ($channel->getLocales() as $locale) {
+                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = $nullValue;
+                        }
                     }
                 }
             }

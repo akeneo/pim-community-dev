@@ -42,5 +42,9 @@ type Mediator = {
   off(event: string, callback: () => void): void;
 };
 
+type FeatureFlags = {
+  isEnabled(feature: string): boolean;
+}
+
 export {NotificationLevel};
-export type {Notify, RouteParams, Router, Security, Translate, UserContext, View, ViewBuilder, Mediator};
+export type {Notify, RouteParams, Router, Security, Translate, UserContext, View, ViewBuilder, Mediator, FeatureFlags};

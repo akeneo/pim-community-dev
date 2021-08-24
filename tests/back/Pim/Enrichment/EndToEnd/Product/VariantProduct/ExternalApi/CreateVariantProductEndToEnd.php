@@ -259,7 +259,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "product_variant_creation_family" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the product_variant_creation_family identifier is a variant product.',
                 ],
             ],
         ];
@@ -1092,7 +1092,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The same identifier is already set on another product',
+                    'message'  => 'The apollon_option_b_true identifier is already used for another product.',
                 ],
             ],
         ];

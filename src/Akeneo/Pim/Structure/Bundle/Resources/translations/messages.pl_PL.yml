@@ -30,8 +30,9 @@ pim_enrich:
     association_type:
       property:
         is_two_way: Powiązanie dwukierunkowe
+        is_quantified: Powiązanie z ilością
 pim_enrich_attribute_form:
-  code: Pod Produktu
+  code: Kod
   type: Typ atrybutu
   reference_data_name: Nazwa danych referencyjnych
   scopable: Wartość dla kanału

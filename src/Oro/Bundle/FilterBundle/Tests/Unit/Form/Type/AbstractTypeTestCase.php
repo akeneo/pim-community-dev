@@ -51,7 +51,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         if ($this->defaultLocale) {

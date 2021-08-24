@@ -42,7 +42,7 @@ export type DeleteAssociationTypeRequest = {
 const AssociationTypesIndex = () => {
   const translate = useTranslate();
   const notify = useNotify();
-  const settingsHomeRoute = useRoute('pim_enrich_attribute_index');
+  const settingsHomeRoute = useRoute('pim_settings_index');
 
   const {associationTypes, search} = useAssociationTypes();
 

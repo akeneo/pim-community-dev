@@ -406,6 +406,12 @@ class RootEndpointIntegration extends ApiTestCase
       "methods": [
         "PATCH"
       ]
+    },
+    "pim_analytics_external_api_system_info_get": {
+      "methods": [
+        "GET"
+      ],
+      "route": "/api/rest/v1/system-information"
     }
   }
 }

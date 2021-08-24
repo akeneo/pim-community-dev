@@ -147,6 +147,7 @@ pim_import_export:
       file_path: Bestandspad
   widget:
     last_operations:
+      empty: Er is op dit moment geen bewerking om weer te geven.
       date: Datum
       profile_name: Profielnaam
       details: Details

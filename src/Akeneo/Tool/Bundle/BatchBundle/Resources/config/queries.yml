@@ -1,0 +1,5 @@
+services:
+    akeneo_batch.query.get_job_instance_code:
+        class: Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlGetJobInstanceCode
+        arguments:
+            - '@database_connection'

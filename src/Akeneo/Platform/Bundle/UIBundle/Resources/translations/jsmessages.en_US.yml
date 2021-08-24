@@ -206,6 +206,7 @@ pim_common:
     ok: OK
     open: Open
     no_result: No result found
+    no_search_result: Sorry, there is no result for your search.
     other_actions: Other actions
     permissions: Permissions
     previous: Previous
@@ -248,10 +249,13 @@ pim_common:
     family: Family
     parent: Parent
     groups: Groups
+    products: Products
+    product_models: Product models
     more: More
+    public_view: Public view
 
 error:
-    exception: Oh snap! A {{ status_code }} error occurred...
+    exception: A {{ status_code }} error occurred...
     forbidden: Forbidden. You are not allowed to access this page
 
 alert:
@@ -302,8 +306,9 @@ pim_title:
     pim_enrich_catalog_volume_index:       Catalog volume monitoring
     pim_enrich_categorytree_index:         Category trees
     pim_enrich_categorytree_create:        Category trees | Create
-    pim_enrich_categorytree_edit:          Category tree {{ category.label }} | Edit
+    pim_enrich_categorytree_edit:          Category {{ category.label }} | Edit
     pim_enrich_categorytree_create_tree:   Category trees | Create
+    pim_enrich_categorytree_tree:          Category tree {{ category.label }} | Edit
     pim_enrich_attribute_index:            Attributes
     pim_enrich_attribute_create:           Attributes | Create
     pim_enrich_attribute_edit:             Attribute {{ attribute.label }} | Edit
@@ -331,6 +336,7 @@ pim_title:
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
     pim_settings_index:                    Settings
+    pim_system_index:                      System
 
 pim_menu:
     tab:
@@ -392,15 +398,30 @@ pim_settings:
   catalog_settings: Catalog settings
   product_settings: Product settings
   count:
-    categories: You have {{ countTrees }} trees and {{ countCategories }} categories
-    channels: You have {{ count }} channels
-    locales: You have {{ count }} enabled locales
-    currencies: You have {{ count }} enabled currencies
-    attribute_groups: You have {{ count }} attribute groups
-    attributes: You have {{ count }} attributes
-    families: You have {{ count }} families
-    measurements: You have {{ count }} measurements
-    association_types: You have {{ count }} association types
-    group_types: You have {{ count }} group types
-    groups: You have {{ count }} groups
-    rules: You have {{ count }} enabled rules
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+
+pim_system:
+  system_menu: System menu
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On

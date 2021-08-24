@@ -152,7 +152,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see the text "The same identifier is already set on another product: SKU-001"
+    And I should see the text "The SKU-001 identifier is already used for another product.: SKU-001"
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 

@@ -75,6 +75,7 @@ pim_common:
   unit: Unit
   yes: "Yes"
   no: "No"
+  association_types: Association types
 pim_enrich:
   #ACLs
   acl:
@@ -448,13 +449,13 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Scope
+      label: Channel
     completeness:
       label: Complete
     created:
-      label: Created At
+      label: Created
     updated:
-      label: Updated At
+      label: Updated
     label_or_identifier:
       label: Label or identifier
     parent:

@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: 执行详细信息
+      refreshing: 刷新执行详细信息
       refreshBtn.title: 刷新
       button:
         show_profile.title: 显示配置文件
@@ -99,6 +100,9 @@ pim_import_export:
           with_header:
             title: 包含标题
             help: 是否打印列名称
+          with_media:
+            title: 导出媒体
+            help: 是否导出媒体
           lines_per_file:
             title: 每个文件的行数
             help: 定义每个文件的行数限制
@@ -126,14 +130,24 @@ pim_import_export:
           real_time_versioning:
             title: 实时历史记录更新
             help: 自动更新产品的历史记录，可将其关闭以提高性能
+          convert_variant_to_simple:
+            title: 将变型产品转换为简单产品
+            help: 当"父级"列为空时，尝试将变型产品转换为简单产品。如果设置为“否”，将忽略空的“父级”列
           family_variant_column:
             title: 品类变型列
           with_label:
             title: 有标签
+            help: 定义导出文件是否将值显示为标签而非代码
+          header_with_label:
+            title: 带标签的标题
+            help: 定义导出文件是否将标题显示为标签而非代码
+          file_locale:
+            title: 文件区域
+            help: 定义标签显示的区域
       file_path: 文件路径
   widget:
     last_operations:
-      empty: 未找到操作
+      empty: 现在没有要显示的运算。
       date: 日期
       profile_name: 配置文件名称
       details: 详细信息
@@ -148,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: 计算品类变型结构变化
         compute_completeness_of_products_family: 计算产品品类的完成度
         mass_delete: 批量删除产品
+        clean_removed_attribute_job: 清理已删除的属性值
       header.view_all: 查看全部
   batch_status:
     1: 已完成
@@ -167,6 +182,12 @@ pim_import_export:
     FAILED: 失败
     ABANDONED: 已放弃
     UNKNOWN: 未知
+  tracking:
+    completed: "花费的时间：{{ duration }}"
+    in_progress: "估计剩余时间：{{ duration }}"
+    not_started: "等待"
+    untrackable: 不可跟踪步骤
+    estimating: "正在估算剩余时间..."
 confirmation:
   remove:
     import_profile: 确定要删除此导入配置文件吗？

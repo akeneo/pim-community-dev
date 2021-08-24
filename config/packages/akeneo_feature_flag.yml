@@ -3,3 +3,4 @@ akeneo_feature_flag:
         - { feature: 'quantified_associations', service: 'pim_structure.feature.quantified_association' }
         - { feature: 'data_quality_insights', service: 'akeneo.pim.automation.data_quality_insights.feature' }
         - { feature: 'free_trial', service: 'akeneo.free_trial.feature' }
+        - { feature: 'marketplace_activate', service: 'akeneo_connectivity.connection.marketplace_activate.feature' }

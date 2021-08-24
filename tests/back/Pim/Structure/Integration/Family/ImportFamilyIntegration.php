@@ -14,7 +14,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Box\Spout\Writer\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

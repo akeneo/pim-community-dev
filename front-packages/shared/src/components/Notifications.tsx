@@ -22,9 +22,10 @@ type NotificationsProps = {
 
 const Notifications = ({notifications, onNotificationClosed}: NotificationsProps) => {
   const translate = useTranslate();
-  const handleClose = useCallback((identifier: string) => () => onNotificationClosed(identifier), [
-    onNotificationClosed,
-  ]);
+  const handleClose = useCallback(
+    (identifier: string) => () => onNotificationClosed(identifier),
+    [onNotificationClosed]
+  );
 
   return (
     <Container>

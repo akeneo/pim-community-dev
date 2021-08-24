@@ -27,6 +27,9 @@ pim_import_export:
       error: Eksport <strong>%label%</strong> nie powiódł się
       warning: Eksport <strong>%label%</strong> zakończony z ostrzeżeniami
       success: Eksport <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_conversion_error: Wyjątek podczas konwersji kolumny "{0}" na docelowy typ atrybutu produktu PIM (sprawdź format komórki Excela)
+        xlsx_cell_date_to_text_conversion_error: Komórki {0} o formacie daty nie można skonwertować na atrybut typu tekstowego
     import:
       error: Import <strong>%label%</strong> nie powiódł się
       warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami

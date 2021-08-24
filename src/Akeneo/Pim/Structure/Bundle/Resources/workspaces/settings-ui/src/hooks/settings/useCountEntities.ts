@@ -18,4 +18,4 @@ const useCountEntities = (): CountEntities => {
   return countEntities;
 };
 
-export {useCountEntities};
+export {useCountEntities, CountEntities};

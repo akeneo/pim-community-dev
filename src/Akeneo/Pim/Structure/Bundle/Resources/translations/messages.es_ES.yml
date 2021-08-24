@@ -29,6 +29,7 @@ pim_enrich:
   entity:
     association_type:
       property:
+        is_two_way: Asociación de 2 vías
         is_quantified: Asociación con cantidad
 pim_enrich_attribute_form:
   code: Código

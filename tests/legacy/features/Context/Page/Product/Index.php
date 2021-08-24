@@ -103,16 +103,16 @@ class Index extends Grid
      */
     public function selectTree($category)
     {
-        if (!$this->find('css', '#tree [role="listbox"]')) {
+        if (!$this->find('css', '#dropdown-root [role="listbox"]')) {
             $button = $this->getElement('Tree select');
             $button->click();
             $this->spin(function () {
-                return $this->find('css', '#tree [role="listbox"]');
+                return $this->find('css', '[role="listbox"]');
             }, 'Can not open Tree Selector');
         }
 
         $matchingCategoryTree = null;
-        foreach ($this->findAll('css', '#tree [role="option"]') as $options) {
+        foreach ($this->findAll('css', '#dropdown-root [role="option"]') as $options) {
             if (str_starts_with($options->getText(), $category)) {
                 $matchingCategoryTree = $options;
             }

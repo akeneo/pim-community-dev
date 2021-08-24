@@ -29,11 +29,15 @@ const CatalogContextListener: FunctionComponent<CatalogContextListenerProps> = (
 
   useEffect(() => {
     const handleCatalogLocaleChanged = (event: CustomEvent<LocaleEvent>) => {
-      dispatchAction(changeCatalogContextLocale(event.detail.locale));
+      if ('base_product' === event.detail.context) {
+        dispatchAction(changeCatalogContextLocale(event.detail.locale));
+      }
     };
 
     const handleCatalogChannelChanged = (event: CustomEvent<ChannelEvent>) => {
-      dispatchAction(changeCatalogContextChannel(event.detail.channel));
+      if ('base_product' === event.detail.context) {
+        dispatchAction(changeCatalogContextChannel(event.detail.channel));
+      }
     };
 
     window.addEventListener(CATALOG_CONTEXT_LOCALE_CHANGED, handleCatalogLocaleChanged as EventListener);

@@ -16,6 +16,7 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
             'code',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-24 15:55:50', new \DateTimeZone('UTC')),
             'family_code',
             ['family_label_1', 'family_label_2'],
             'family_variant_code',
@@ -53,6 +54,7 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
             'identifier' => 'code',
             'created' => (new \DateTime('2019-04-23 15:55:50', new \DateTimeZone('UTC')))->format('c'),
             'updated' => (new \DateTime('2019-04-25 15:55:50', new \DateTimeZone('UTC')))->format('c'),
+            'entity_updated' => (new \DateTime('2019-04-24 15:55:50', new \DateTimeZone('UTC')))->format('c'),
             'family' => [
                 'code' => 'family_code',
                 'labels' => ['family_label_1', 'family_label_2'],
@@ -94,6 +96,7 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
                 'identifier' => 'code',
                 'created' => (new \DateTime('2019-04-23 15:55:50', new \DateTimeZone('UTC')))->format('c'),
                 'updated' => (new \DateTime('2019-04-25 15:55:50', new \DateTimeZone('UTC')))->format('c'),
+                'entity_updated' => (new \DateTime('2019-04-24 15:55:50', new \DateTimeZone('UTC')))->format('c'),
                 'family' => [
                     'code' => 'family_code',
                     'labels' => ['family_label_1', 'family_label_2'],

@@ -1,7 +1,9 @@
-
 # master
 
 ## Bug fixes
+
+- PIM-10005: New Product API Web Permission migration didn't work properly
+- PIM-9946: Throw warning when product import contains two products with same identifiers
 - PIM-9885: Associating a product to itself with a 2-way association returns an error 500
 - PIM-9890: Creating Channels with numeric code breaks the PIM
 - PIM-9748: Upgrade JQuery for security reasons
@@ -36,7 +38,7 @@
 - PIM-9730: Fix category tree initialization in the PEF when switching tabs
 - PIM-9679: Clean existing text attribute values removing linebreaks
 - PIM-9758: Fix bad replacement for line breaks introduced in PIM-9658
-- PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
+- PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste
 - PIM-9759: Fix step name translation for product models csv import
 - PIM-9740: Prevent to delete a channel used in a product export job
 - PIM-9764: Fix DSM Card component to handle links properly
@@ -79,6 +81,21 @@
 - PIM-9863: Remove temporisation and add unit tests for product model reindexation.
 - PIM-9891: Fix missing sanity checks when computing enrichment status
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
+- PIM-9925: Fix roles that couldn't contain dashes in their codes
+- PIM-9933: Fix delete category menu that stays displayed on screen
+- PIM-9949: Fix category edit page to use catalog locale
+- PIM-9950: Fix import product model fail instead of warning vs permission
+- PIM-9948: Fix performance issue on product model import
+- PIM-9966: Fix Settings page crashing when coming from the PEF
+- PIM-9973: Fix Asset attribute media type dropdown being hidden
+- PIM-9986: Fix error message returned by the backend not displayed when an error occured while deleting a category
+- PIM-9942: Fix message on DQI dashboard in French UI locale
+- PIM-9947: Display validation errors message in the UI when `compute_family_variant_structure_changes` job fails
+- PIM-9987: Fix product grid count not accurate after specific SKU selection
+- PIM-10009: Fix error being printed in the response of partial update of product models API
+- PIM-10003: Fix translation in setting page are not plurializable
+- PIM-9989: Fix record code of reference entity field is case-sensitive
+- PIM-10026: Avoid session persistance for API
 
 ## New features
 
@@ -87,10 +104,24 @@
 
 ## Improvements
 
+- PIM-9716: Autoselect last element of pasted list in choice filter
+- PIM-9985: Improve channels sentence display in the settings menu
+
 # Technical Improvements
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
 - PIM-9697: Exported files streamer
+- PIM-9719: Add the real "updated" values in ES for product and product models
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consumption is removed and replaced by:
+
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
+
+- PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled
+- PIM-9877: Optimize DQI dashboard data consolidation
 
 ## Classes
 
@@ -107,10 +138,11 @@
 - Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\MetricFilter` to remove `Symfony\Component\Translation\TranslatorInterface $translator`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer` to add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 - Change constructor of `Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber` to:
-    - remove `Symfony\Component\Translation\TranslatorInterface $translator`
-    - add  `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
+  - remove `Symfony\Component\Translation\TranslatorInterface $translator`
+  - add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 
 ### CLI commands
 
-### Services
+- PIM-9738: Remove command pim:catalog:remove-completeness-for-channel-and-locale
 
+### Services

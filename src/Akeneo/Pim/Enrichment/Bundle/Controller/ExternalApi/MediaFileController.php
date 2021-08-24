@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -22,6 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -97,6 +99,8 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
+    protected EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
         NormalizerInterface $normalizer,
@@ -115,6 +119,7 @@ class MediaFileController
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ObjectUpdaterInterface $productModelUpdater,
         SaverInterface $productModelSaver,
+        EventDispatcherInterface $eventDispatcher,
         array $apiConfiguration
     ) {
         $this->mediaRepository = $mediaRepository;
@@ -135,6 +140,7 @@ class MediaFileController
         $this->productModelRepository = $productModelRepository;
         $this->productModelUpdater = $productModelUpdater;
         $this->productModelSaver = $productModelSaver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -313,6 +319,7 @@ class MediaFileController
         }
 
         $fileInfo = $this->storeFile($request->files);
+
         $this->linkFileToProduct($fileInfo, $product, $productInfos);
 
         $response = new Response(null, Response::HTTP_CREATED);
@@ -355,14 +362,13 @@ class MediaFileController
             $this->productUpdater->update($product, $productValues);
         } catch (PropertyException $e) {
             $this->remover->remove($fileInfo);
-
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
         $violations = $this->validator->validate($product);
         if ($violations->count() > 0) {
             $this->remover->remove($fileInfo);
-
+            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
             throw new ViolationHttpException($violations);
         }
 

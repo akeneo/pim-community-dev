@@ -58,9 +58,7 @@ class GetLastOperationsIntegration extends TestCase
             ]
         );
         $this->get('pim_catalog.saver.family')->save($family);
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->jobLauncher->launchExport('csv_product_export', 'julia');
         $this->jobLauncher->launchExport('csv_product_export', 'admin');
@@ -129,6 +127,7 @@ class GetLastOperationsIntegration extends TestCase
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobLauncher->flushJobQueue();
     }
 
     /**

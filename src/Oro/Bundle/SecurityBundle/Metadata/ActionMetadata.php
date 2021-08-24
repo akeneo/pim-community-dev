@@ -28,6 +28,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
      */
     protected $isEnabledAtCreation;
 
+    protected int $order = 0;
+
     /**
      * Gets an action name
      *
@@ -63,12 +65,18 @@ class ActionMetadata implements AclClassInfo, \Serializable
         return $this->isEnabledAtCreation;
     }
 
-    public function __construct($name = '', $group = '', $label = '', bool $isEnabledAtCreation = true)
+    public function __construct($name = '', $group = '', $label = '', bool $isEnabledAtCreation = true, int $order = 0)
     {
         $this->name = $name;
         $this->group = $group;
         $this->label = $label;
         $this->isEnabledAtCreation = $isEnabledAtCreation;
+        $this->order = $order;
+    }
+
+    public function getOrder(): int
+    {
+        return $this->order;
     }
 
     /**
@@ -82,6 +90,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
                 $this->group,
                 $this->label,
                 $this->isEnabledAtCreation,
+                $this->order,
             ]
         );
     }
@@ -95,7 +104,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
             $this->name,
             $this->group,
             $this->label,
-            $this->isEnabledAtCreation
+            $this->isEnabledAtCreation,
+            $this->order,
             ) = unserialize($serialized);
     }
 }

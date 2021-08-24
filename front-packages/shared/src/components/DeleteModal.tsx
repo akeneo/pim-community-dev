@@ -5,12 +5,22 @@ import {useTranslate} from '../hooks';
 type DeleteModalProps = {
   title: string;
   children: ReactNode;
+  confirmButtonLabel?: string;
+  cancelButtonLabel?: string;
   canConfirmDelete?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const DeleteModal = ({children, title, canConfirmDelete = true, onConfirm, onCancel}: DeleteModalProps) => {
+const DeleteModal = ({
+  children,
+  title,
+  confirmButtonLabel,
+  cancelButtonLabel,
+  canConfirmDelete = true,
+  onConfirm,
+  onCancel,
+}: DeleteModalProps) => {
   const translate = useTranslate();
   const cancelRef = useRef(null);
   useAutoFocus(cancelRef);
@@ -22,10 +32,10 @@ const DeleteModal = ({children, title, canConfirmDelete = true, onConfirm, onCan
       {children}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel} ref={cancelRef}>
-          {translate('pim_common.cancel')}
+          {cancelButtonLabel ?? translate('pim_common.cancel')}
         </Button>
         <Button level="danger" disabled={!canConfirmDelete} onClick={onConfirm}>
-          {translate('pim_common.delete')}
+          {confirmButtonLabel ?? translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>
     </Modal>

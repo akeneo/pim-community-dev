@@ -378,9 +378,8 @@ define([
      * @returns {{hint, subHint: *, imageClass: string}}
      */
     getDefaultNoDataOptions() {
-      const entityHint = (this.entityHint
-        ? this.entityHint.replace(/_/, ' ')
-        : __('pim_datagrid.entity_hint')
+      const entityHint = (
+        this.entityHint ? this.entityHint.replace(/_/, ' ') : __('pim_datagrid.entity_hint')
       ).toLowerCase();
       let key = _.isEmpty(this.collection.state.filters) ? 'pim_datagrid.no_entities' : 'pim_datagrid.no_results';
 

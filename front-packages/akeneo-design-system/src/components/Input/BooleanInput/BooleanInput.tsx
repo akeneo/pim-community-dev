@@ -2,7 +2,7 @@ import React, {Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
-import {InputProps} from '../InputProps';
+import {InputProps} from '../common/InputProps';
 import {Override} from '../../../shared';
 
 const BooleanInputContainer = styled.div``;

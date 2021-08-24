@@ -3,7 +3,6 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -53,9 +52,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -106,9 +103,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -189,9 +184,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -258,9 +251,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -321,9 +312,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('pim_catalog.saver.family_variant')->saveAll([$familyVariant]);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
@@ -344,6 +333,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->purgeJobExecutions('compute_family_variant_structure_changes');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobLauncher->flushJobQueue();
         $this->jobExecutionObserver = $this->get(
             'akeneo_integration_tests.launcher.job_execution_observer'
         );

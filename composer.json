@@ -141,6 +141,7 @@
         "behat/mink-browserkit-driver": "1.3.3",
         "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "^1.3.1",
+        "instaclick/php-webdriver": "1.4.7",
         "behat/symfony2-extension": "2.1.5",
         "phpspec/phpspec": "~7.0.0",
         "phpspec/prophecy": "~1.12.1",
@@ -154,7 +155,9 @@
         "phpstan/phpstan-symfony": "^0.12.6",
         "league/flysystem-aws-s3-v3": "^1.0",
         "mcustiel/phiremock": "2.1.1",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7"
+        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "friends-of-phpspec/phpspec-code-coverage": "^6.0",
+        "dvdoug/behat-code-coverage": "^5.2"
     },
     "conflict": {
         "symfony/symfony": "*"

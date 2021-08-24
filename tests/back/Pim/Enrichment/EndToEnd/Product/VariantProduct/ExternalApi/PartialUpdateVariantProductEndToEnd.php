@@ -345,7 +345,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "apollon_optionb_false" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the apollon_optionb_false identifier is a variant product.',
                 ],
             ],
         ];
@@ -386,7 +386,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "apollon_optionb_false" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the apollon_optionb_false identifier is a variant product.',
                 ],
             ],
         ];

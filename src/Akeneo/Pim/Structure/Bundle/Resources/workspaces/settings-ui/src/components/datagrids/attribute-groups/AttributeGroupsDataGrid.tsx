@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {
   useAttributeGroupPermissions,
@@ -14,9 +14,10 @@ const FeatureFlags = require('pim/feature-flags');
 
 type Props = {
   groups: AttributeGroup[];
+  onGroupCountChange: (newGroupCount: number) => void;
 };
 
-const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
+const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsIndexState();
   const {sortGranted, editGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
@@ -30,6 +31,10 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
     setSearchString(searchValue);
     debouncedSearch(searchValue);
   };
+
+  useEffect(() => {
+    onGroupCountChange(filteredGroups.length);
+  }, [filteredGroups.length]);
 
   return (
     <>

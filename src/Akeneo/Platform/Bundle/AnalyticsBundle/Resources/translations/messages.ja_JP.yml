@@ -51,6 +51,16 @@ pim_analytics:
     server_version: サーバーバージョン
     php_extensions: PHP拡張
     email_domains: 紐づけられたメールアドレスのドメイン
+    api_connection: API 接続
+    nb_media_files_in_products: 商品のメディアファイルの数
+    nb_media_images_in_products: 商品のメディア画像の数
+    is_demo_catalog: デモカタログをインストール済み
+    data_source.tracked: 追跡されている API 接続元の数
+    data_source.untracked: 追跡されていない API 接続元の数
+    data_destination.tracked: 追跡されている API 接続元の数
+    data_destination.untracked: 追跡されていない API 接続先の数
+    other.tracked: 追跡されている API のその他の接続の数
+    other.untracked: 追跡されていない API のその他の接続の数
   acl:
     system_info:
       index: システム情報

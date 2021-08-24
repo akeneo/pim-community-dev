@@ -324,21 +324,25 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     {
         $actual = $this->getProductModelProjectionArray($code);
 
-        Assert::assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['created']);
-        Assert::assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['updated']);
+        $dateRegExp = '/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/';
+        Assert::assertMatchesRegularExpression($dateRegExp, $actual['created']);
+        Assert::assertMatchesRegularExpression($dateRegExp, $actual['updated']);
+        Assert::assertMatchesRegularExpression($dateRegExp, $actual['entity_updated']);
         unset($actual['created']);
         unset($actual['updated']);
+        unset($actual['entity_updated']);
 
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }
 
     private function getProductModelProjectionArray($code): array
     {
-        $productModelProjection = $this
-            ->getGetElasticsearchProductModelProjection()
-            ->fromProductModelCodes([$code])[$code];
+        $productModelProjections = $this->getGetElasticsearchProductModelProjection()->fromProductModelCodes([$code]);
+        if (!\is_array($productModelProjections)) {
+            $productModelProjections = \iterator_to_array($productModelProjections);
+        }
 
-        return $productModelProjection->toArray();
+        return $productModelProjections[$code]->toArray();
     }
 
     private function getGetElasticsearchProductModelProjection(): GetElasticsearchProductModelProjectionInterface

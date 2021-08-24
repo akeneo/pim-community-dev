@@ -26,6 +26,11 @@ pim_enrich:
         second: 操作を選択
         third: 構成
         fourth: 確認
+  entity:
+    association_type:
+      property:
+        is_two_way: 双方向の関連付け
+        is_quantified: 数量との関連付け
 pim_enrich_attribute_form:
   code: コード
   type: 属性タイプ

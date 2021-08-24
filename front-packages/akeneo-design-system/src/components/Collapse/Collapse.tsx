@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
 import {CheckPartialIcon, PlusIcon} from '../../icons';
-import {useIsMounted} from '../../hooks';
 
 const ANIMATION_DURATION = 100;
 
@@ -17,10 +16,14 @@ const CollapseContainer = styled.div`
   }
 `;
 
-const Content = styled.div<{$height: number; overflow: string}>`
+const Content = styled.div<{$height: number; overflow: string; shouldAnimate: boolean}>`
   max-height: ${({$height}) => $height}px;
   overflow: ${({overflow}) => overflow};
-  transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
+  ${({shouldAnimate}) =>
+    shouldAnimate &&
+    `
+    transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
+  `}
   padding-bottom: ${({$height}) => (0 === $height ? 0 : 10)}px;
 `;
 
@@ -28,6 +31,7 @@ const LabelContainer = styled.div`
   height: 44px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Label = styled.div`
@@ -76,38 +80,45 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const [contentHeight, setContentHeight] = useState<number>(0);
-    const [overflow, setOverflow] = useState<string>(isOpen ? 'inherit' : 'hidden');
+    const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
-    const isMounted = useIsMounted();
 
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      if (contentRef.current) {
-        if (isOpen) {
-          setContentHeight(contentRef.current.scrollHeight);
-          setTimeout(() => isMounted() && setOverflow('inherit'), ANIMATION_DURATION);
-        } else {
-          setContentHeight(0);
-          setOverflow('hidden');
-        }
-      }
-    }, [isOpen, children]);
+      setContentHeight(contentHeight => {
+        const scrollHeight = contentRef.current?.scrollHeight ?? 0;
+
+        return 0 === scrollHeight ? contentHeight : scrollHeight;
+      });
+
+      const shouldAnimateTimeoutId = window.setTimeout(() => {
+        setShouldAnimate(true);
+      }, ANIMATION_DURATION);
+
+      return () => {
+        window.clearTimeout(shouldAnimateTimeoutId);
+      };
+    }, [children]);
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
-        <LabelContainer>
+        <LabelContainer onClick={handleCollapse}>
           <Label>{label}</Label>
           <IconButton
             size="small"
             level="tertiary"
             ghost="borderless"
-            onClick={handleCollapse}
             title={collapseButtonLabel}
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
         </LabelContainer>
-        <Content ref={contentRef} overflow={overflow} $height={contentHeight}>
+        <Content
+          ref={contentRef}
+          overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+          $height={isOpen ? contentHeight : 0}
+          shouldAnimate={shouldAnimate}
+        >
           {children}
         </Content>
       </CollapseContainer>

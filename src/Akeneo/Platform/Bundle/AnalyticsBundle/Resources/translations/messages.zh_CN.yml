@@ -52,6 +52,15 @@ pim_analytics:
     php_extensions: PHP 扩展
     email_domains: 关联的电子邮件域
     api_connection: API 连接
+    nb_media_files_in_products: 产品中媒体文件的数量
+    nb_media_images_in_products: 产品中媒体图像的数量
+    is_demo_catalog: 已安装演示目录
+    data_source.tracked: 已跟踪的 API 源连接的数量
+    data_source.untracked: 已取消跟踪的 API 源连接的数量
+    data_destination.tracked: 已跟踪的 API 目的地连接的数量
+    data_destination.untracked: 已取消跟踪的 API 目的地连接的数量
+    other.tracked: 已跟踪的 API 其他连接的数量
+    other.untracked: 已取消跟踪的 API 其他连接的数量
   acl:
     system_info:
       index: 系统信息

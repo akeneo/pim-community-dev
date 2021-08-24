@@ -10,6 +10,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Doctrine\DBAL\Driver\Connection;
+use Google\Cloud\PubSub\Message;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -17,8 +18,7 @@ class PublishToJobQueueIntegration extends TestCase
 {
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
 
     /**
      * {@inheritdoc}
@@ -54,12 +54,13 @@ class PublishToJobQueueIntegration extends TestCase
         $this->assertNull($jobExecution['user']);
 
         $jobExecutionMessage = $this->getJobExecutionMessage();
+        self::assertNotNull($jobExecutionMessage);
+        $jobExecutionMessage = \json_decode($jobExecutionMessage->data(), true);
 
-        $this->assertNotNull($jobExecutionMessage['job_execution_id']);
-        $this->assertJsonStringEqualsJsonString('{"env": "test"}', $jobExecutionMessage['options']);
-        $this->assertNotNull($jobExecutionMessage['create_time']);
-        $this->assertNull($jobExecutionMessage['updated_time']);
-        $this->assertNull($jobExecutionMessage['consumer']);
+        self::assertNotNull($jobExecutionMessage['job_execution_id']);
+        self::assertSame(['env' => 'test'], $jobExecutionMessage['options']);
+        self::assertNotNull($jobExecutionMessage['created_time']);
+        self::assertNull($jobExecutionMessage['updated_time']);
 
         $this->jobLauncher->launchConsumerOnce();
 
@@ -82,8 +83,7 @@ class PublishToJobQueueIntegration extends TestCase
 
         $this->assertEquals('mary', $jobExecution['user']);
         $jobExecutionMessage = $this->getJobExecutionMessage();
-
-        $this->assertNotNull($jobExecutionMessage['id']);
+        self::assertNotNull($jobExecutionMessage);
     }
 
     public function testPushJobExecutionWithConfigOverridden()
@@ -121,9 +121,11 @@ class PublishToJobQueueIntegration extends TestCase
         );
 
         $jobExecutionMessage = $this->getJobExecutionMessage();
+        self::assertNotNull($jobExecutionMessage);
+        $jobExecutionMessage = \json_decode($jobExecutionMessage->data(), true);
 
-        $this->assertJsonStringEqualsJsonString(
-            '{"env": "test", "no-log": true}',
+        self::assertSame(
+            ['env' => 'test', 'no-log' => true],
             $jobExecutionMessage['options']
         );
     }
@@ -141,9 +143,11 @@ class PublishToJobQueueIntegration extends TestCase
         );
 
         $jobExecutionMessage = $this->getJobExecutionMessage();
+        self::assertNotNull($jobExecutionMessage);
+        $jobExecutionMessage = \json_decode($jobExecutionMessage->data(), true);
 
-        $this->assertJsonStringEqualsJsonString(
-            '{"env": "test", "email": "ziggy@akeneo.com"}',
+        self::assertSame(
+            ['env' => 'test', 'email' => 'ziggy@akeneo.com'],
             $jobExecutionMessage['options']
         );
     }
@@ -205,12 +209,12 @@ class PublishToJobQueueIntegration extends TestCase
         return $this->get('doctrine.orm.entity_manager')->getConnection();
     }
 
-    protected function getJobExecutionMessage(): array
+    protected function getJobExecutionMessage(): ?Message
     {
-        $connection = $this->getConnection();
-        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution_queue');
-        $stmt->execute();
-
-        return $stmt->fetch();
+        return array_merge(
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.ui_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.import_export_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job')->getMessagesInQueue(),
+        )[0] ?? null;
     }
 }

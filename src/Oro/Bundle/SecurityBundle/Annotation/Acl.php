@@ -41,6 +41,8 @@ class Acl implements \Serializable
     /** @var bool */
     private $isEnabledAtCreation = true;
 
+    private int $order = 0;
+
     /**
      * Constructor
      *
@@ -70,6 +72,7 @@ class Acl implements \Serializable
         $this->group = isset($data['group_name']) ? $data['group_name'] : '';
         $this->label = isset($data['label']) ? $data['label'] : '';
         $this->isEnabledAtCreation = $data['enabled_at_creation'] ?? true;
+        $this->order = $data['order'] ?? 0;
     }
 
     /**
@@ -147,6 +150,11 @@ class Acl implements \Serializable
         return $this->isEnabledAtCreation;
     }
 
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -159,7 +167,8 @@ class Acl implements \Serializable
                 $this->class,
                 $this->permission,
                 $this->group,
-                $this->label
+                $this->label,
+                $this->order,
             ]
         );
     }
@@ -175,7 +184,8 @@ class Acl implements \Serializable
             $this->class,
             $this->permission,
             $this->group,
-            $this->label
+            $this->label,
+            $this->order,
             ) = unserialize($serialized);
     }
 }

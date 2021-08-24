@@ -172,7 +172,7 @@ const QuantifiedAssociations = ({
             {translate(
               '' === searchValue
                 ? 'pim_enrich.entity.product.module.associations.no_data'
-                : 'pim_enrich.entity.product.module.associations.no_result'
+                : 'pim_common.no_search_result'
             )}
           </NoDataTitle>
         </NoDataSection>

@@ -16,7 +16,7 @@ Feature: Datagrid views
   Scenario: Successfully display the default view
     Given I am on the products grid
     Then I should see the text "Default view"
-    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Variant products, Quality score
+    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created, Updated, Variant products, Quality score
 
   Scenario: Successfully apply a view
     Given I am on the products grid

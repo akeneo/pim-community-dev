@@ -61,7 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Autor
-      logged_at: Aufgezeichnet am
+      logged_at: Datum/Zeit
       from: Von
       modified: Bearbeitet
       old_value: Alter Wert
@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Quantität
       search:
         placeholder: In Label oder Bezeichner suchen
-      no_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       edit: Produkt bearbeiten
@@ -209,6 +208,45 @@ pim_enrich.entity.category:
   label: Kategorie
   uppercase_label: Kategorie
   plural_label: Kategorien
+  page_title:
+    index: "]-Inf, 1]{{ count }} Baum|]1, Inf[{{ count }} Bäume"
+  content:
+    empty_tree_list:
+      title: Du hast keinen Baum
+      hint: Erstelle deinen ersten.
+    tree_list:
+      columns:
+        label: Baumbezeichnung
+        number_of_categories: Anzahl der Kategorien
+        count_categories: ']-Inf, 1]{{ count }} Kategorie|]1, Inf[{{ count }} Kategorien'
+    tree:
+      not_found: Kategoriebaum nicht gefunden
+    edit:
+      not_found: Kategorie nicht gefunden
+      default_tree_label: Baum
+      success: Kategorie erfolgreich aktualisiert
+      fail: Die Kategorie konnte nicht aktualisiert werden
+  new_category: Neue Kategorie
+  new_category_tree: Neuer Kategoriebaum
+  category_created: Die Kategorie "{{ code }}" wurde erfolgreich erstellt
+  category_creation_error: Die Kategorie "{{ code }}" konnte nicht erstellt werden
+  category_tree_creation:
+    success: Der Baum "{{ code }}" wurde erfolgreich erstellt
+    error: Der Baum "{{ code }}" konnte nicht erstellt werden
+  category_tree_deletion:
+    success: Der Baum "{{ tree }}" wurde erfolgreich gelöscht
+    error: Der Baum "{{ tree }}" konnte nicht gelöscht werden
+    confirmation: Sind Sie sicher, dass Sie den {{ name }} Baum löschen möchten? Alle Kategorien in diesem Baum werden gelöscht und die Produkte werden aus all diesen Kategorien entfernt.
+    products_limit_exceeded:
+      title: Dieser Baum kann nicht gelöscht werden
+      message: Der Baum "{{ tree }}" enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.
+  category_deletion:
+    success: Die Kategorie "{{ name }}" wurde erfolgreich gelöscht
+    error: Die Kategorie "{{ name }}" konnte nicht gelöscht werden
+    confirmation: Sind Sie sicher, dass Sie die Kategorie {{ name }} löschen möchten? Produkte in dieser Kategorie werden nicht gelöscht.
+    products_limit_exceeded:
+      title: Diese Kategorie kann nicht gelöscht werden
+      message: Die "{{ name }}" Kategorie enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.
 pim_enrich.export.product:
   data:
     title: Produkte filtern
@@ -292,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
-  title: Massenbearbeitung Produkte
   confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen. ]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
   step:
     select:
       label: Produkte auswählen
     choose:
-      title: Massenbearbeitung Produkte
       label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren
@@ -317,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       field: Aktivieren
     edit_common:
-      label: Attributwerte bearbeiten
-      label_count: "{0}Bearbeiten von Attributwerten einiger <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1 bearbeiten Inf [Attributwerte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten bearbeiten</span>"
       description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
       no_update: Bitte wählen Sie mindestens ein Feld aus, das Sie aktualisieren möchten
-    add_attribute_value:
-      label: Attributwerte hinzufügen
-      label_count: "{0}Fügt Attributwerte für einige <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1 hinzu Inf [Attributwerte für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte hinzufügen</span>"
-      description: Nur die Mehrfachauswahl-Attribute, die zu den Produktfamilien des Produkts gehören, werden mit den folgenden Daten des {{ locale }} Gebietsschemas und dem {{ scope }} Ausgabekanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte bleiben erhalten.
     change_family:
       label: Familie wechseln
       label_count: "{0}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Ändern der Produktfamilie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
@@ -359,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Konvertieren <span class=\"AknFullPage-title--highlight\">Produkte</span> in einfache Produkte|{1}Konvertieren Sie <span class=\"AknFullPage-title--highlight\">1 Produkt</span> in ein einfaches Produkt|]1, Inf[Konvertieren <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> in einfache Produkte"
       description: Alle früheren Werte, Kategorien und Verbindungen werden gespeichert.
     associate_to_product_and_product_model:
-      label: Verbinden
       label_count: "{0}verknüpfen <span class=\"AknFullPage-title--highlight\">Produkte</span> mit Produkten oder Produktmodellen|{1} <span class=\"AknFullPage-title--highlight\">1 Produkt</span> mit Produkten oder Produktmodellen verknüpfen|]1, Inf[Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> mit Produkten oder Produktmodellen"
       description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
       validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
@@ -451,7 +480,6 @@ pim_datagrid:
       label: Eltern
     identifier:
       label: Kennung
-  search: Suche in {{ label }}
 batch_jobs:
   add_association:
     label: Verbinden
@@ -513,6 +541,8 @@ batch_jobs:
     quick_export.label: XLSX Produkt-Schnellexport
     quick_export_product_model.label: XSLX Produktmodell-Schnellexport
     perform.label: XLSX Produkt-Schnellexport
+  default_steps:
+    delete_products_and_product_models: Produkte und Produktmodelle löschen
 error:
   removing:
     group: Gruppe kann nicht entfernt werden

@@ -18,10 +18,12 @@ pim_menu:
         data_flows: Data flows
         connect_connection_settings: Connection settings
         marketplace: Marketplace
-        new_label: NEW
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
+    akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_apps_activate: Connect
+    akeneo_connectivity_connection_connect_apps_authorize: Connect
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -32,19 +34,53 @@ pim_title:
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
-    akeneo_connectivity_connection_redirect_audit: Connection dashboard
     akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
     connect:
-        redirect.link: To go there, click here
-        dashboard_redirect.title: Find your Connection dashboard in the Connect menu
-        settings_redirect.title: Find your connection information in the Connect menu
-
         marketplace:
             title: Want to connect your PIM with another application? 🤟
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
             link: Access the marketplace
+            helper:
+                title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
+                title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
+                description: This is just an overview. For more details, take a look at our web marketplace.
+                link: Go to web marketplace
+            card:
+                developed_by: Developed by
+                read_more: read more
+                more_info: More info
+                connect: Connect
+            extensions:
+                title: Connectors
+                total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+                empty: No connectors compatible with your version
+            apps:
+                title: Apps
+                total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
+                empty: No apps compatible with your version
+            unreachable: We can't reach the marketplace, please come back later.
+            scroll_to_top: Scroll to the top
+        apps:
+            activate:
+                flash:
+                    error: Sorry, an error occurred while connecting the App.
+            authorize:
+                error:
+                    sub_text: Please contact the app developer or Akeneo support
+            constraint:
+                client_id:
+                    not_blank: The client_id is required.
+                    must_be_valid: The client_id does not match any known client.
+                response_type:
+                    not_blank: The response_type is required.
+                    must_be_code: The response_type must be "code".
+                scope:
+                    must_be_valid: The scopes are not valid.
+                redirect_uri:
+                    not_blank: The redirect_uri is required.
+                    must_be_url: The redirect_uri is not a valid url.
     connections: Connections
     secondary_actions:
         title: Other actions

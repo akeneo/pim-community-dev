@@ -31,7 +31,7 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->shouldHaveType(GpsReceiver::class);
     }
 
-    public function it_gets_messages($subscription, $serializer): void
+    public function it_gets_messages(Subscription $subscription, SerializerInterface $serializer): void
     {
         $gpsMessage = new Message(
             [
@@ -54,6 +54,8 @@ class GpsReceiverSpec extends ObjectBehavior
         ])
             ->willReturn($envelope);
 
+        $subscription->acknowledge($gpsMessage)->shouldNotBeCalled();
+
         $this->get()
             ->shouldBeLike([
                 $envelope
@@ -62,7 +64,7 @@ class GpsReceiverSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_ackownledges_a_message($subscription): void
+    public function it_acknowledges_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(
             [
@@ -78,7 +80,7 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->ack($envelope);
     }
 
-    public function it_rejects_a_message($subscription): void
+    public function it_rejects_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(
             [
@@ -94,8 +96,9 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->reject($envelope);
     }
 
-    public function it_throws_a_transport_exception_if_an_error_is_raised_while_fetching_a_message($subscription): void
-    {
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_fetching_a_message(
+        Subscription $subscription
+    ): void {
         $subscription->pull([
             'maxMessages' => 1,
             'returnImmediately' => true,
@@ -107,7 +110,7 @@ class GpsReceiverSpec extends ObjectBehavior
     }
 
     public function it_throws_a_transport_exception_if_an_error_is_raised_while_acknowledging_a_message(
-        $subscription
+        Subscription $subscription
     ): void {
         $gpsMessage = new Message(
             [
@@ -124,8 +127,9 @@ class GpsReceiverSpec extends ObjectBehavior
             ->during('ack', [$envelope]);
     }
 
-    public function it_throws_a_transport_exception_if_an_error_is_raised_while_rejecting_a_message($subscription): void
-    {
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_rejecting_a_message(
+        Subscription $subscription
+    ): void {
         $gpsMessage = new Message(
             [
                 'data' => 'My message!',

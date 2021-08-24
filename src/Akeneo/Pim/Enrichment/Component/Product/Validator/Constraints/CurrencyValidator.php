@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -46,8 +47,16 @@ class CurrencyValidator extends ConstraintValidator
 
         if ($object instanceof ProductPriceInterface) {
             if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
-                $this->context->buildViolation($constraint->unitMessage)
+                $attributeCode = $this->context->getObject() instanceof AbstractValue ?
+                    $this->context->getObject()->getAttributeCode()
+                    : '';
+
+                $this->context->buildViolation($constraint->message, [
+                    '%attribute_code%' => $attributeCode,
+                    '%currency_code%' => $object->getCurrency(),
+                ])
                     ->atPath('currency')
+                    ->setCode(Currency::CURRENCY)
                     ->addViolation();
             }
         }

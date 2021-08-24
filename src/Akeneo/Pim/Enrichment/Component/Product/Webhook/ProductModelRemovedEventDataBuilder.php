@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -31,7 +31,7 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
         return true;
     }
 
-    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
         $collection = new EventDataCollection();
 
