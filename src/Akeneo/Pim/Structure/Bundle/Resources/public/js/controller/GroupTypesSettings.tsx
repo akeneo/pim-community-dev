@@ -15,7 +15,7 @@ class GroupTypesSettings extends ReactController {
 
     renderRoute() {
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-settings'});
-        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-association-type'});
+        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-group-type'});
         return super.renderRoute();
     }
 }
