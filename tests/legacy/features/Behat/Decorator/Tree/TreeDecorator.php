@@ -15,22 +15,22 @@ class TreeDecorator extends ElementDecorator
     {
         return $this->spin(
             function () use ($nodeName) {
-            $trees = $this->findAll('css', 'li[role=treeitem]');
-            foreach ($trees as $tree) {
-                if (strpos($tree->getText(), $nodeName) === 0) {
-                    return $this->decorate($tree, [TreeDecorator::class]);
+                $trees = $this->findAll('css', 'li[role=treeitem]');
+                foreach ($trees as $tree) {
+                    if (strpos($tree->getText(), $nodeName) === 0) {
+                        return $this->decorate($tree, [TreeDecorator::class]);
+                    }
                 }
-            }
 
-            return false;
-        },
+                return false;
+            },
             sprintf(
-            'Node "%s" not found, found %s',
-            $nodeName,
-            join(', ', array_map(function ($tree) {
+                'Node "%s" not found, found %s',
+                $nodeName,
+                join(', ', array_map(function ($tree) {
                     return sprintf('"%s"', $tree->getText());
                 }, $this->findAll('css', 'li[role=treeitem]')))
-        )
+            )
         );
     }
 

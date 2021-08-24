@@ -33,8 +33,7 @@ class Value implements ArrayConverterInterface
         AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
         ColumnsMerger $columnsMerger
-    )
-    {
+    ) {
         $this->attrFieldExtractor = $attrFieldExtractor;
         $this->converterRegistry = $converterRegistry;
         $this->columnsMerger = $columnsMerger;

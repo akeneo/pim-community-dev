@@ -1426,24 +1426,24 @@ class WebUser extends PimContext
     {
         $this->spin(
             function () use ($attributes) {
-            $expectedAttributes = $this->listToArray($attributes);
-            $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+                $expectedAttributes = $this->listToArray($attributes);
+                $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
-            if (count($expectedAttributes) !== $actual = count($options)) {
-                return false;
-            }
+                if (count($expectedAttributes) !== $actual = count($options)) {
+                    return false;
+                }
 
-            if ($expectedAttributes !== $options) {
-                return false;
-            }
+                if ($expectedAttributes !== $options) {
+                    return false;
+                }
 
-            return true;
-        },
+                return true;
+            },
             sprintf(
-            'Expected to see eligible attributes as label %s, actually saw %s',
-            json_encode($this->listToArray($attributes)),
-            json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
-        )
+                'Expected to see eligible attributes as label %s, actually saw %s',
+                json_encode($this->listToArray($attributes)),
+                json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
+            )
         );
     }
 

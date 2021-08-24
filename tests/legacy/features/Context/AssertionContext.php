@@ -68,13 +68,13 @@ class AssertionContext extends PimContext
     {
         $this->spin(
             function () use ($expectedTitle) {
-            return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
-        },
+                return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
+            },
             sprintf(
-            'Incorrect title. Expected "%s", found "%s"',
-            $expectedTitle,
-            $this->getCurrentPage()->getHeadTitle()
-        )
+                'Incorrect title. Expected "%s", found "%s"',
+                $expectedTitle,
+                $this->getCurrentPage()->getHeadTitle()
+            )
         );
     }
 
@@ -530,25 +530,25 @@ class AssertionContext extends PimContext
     {
         $this->spin(
             function () use ($count) {
-            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
+                $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
-            if (!$countContainer) {
-                return false;
-            }
-            $actualCount = (int) $countContainer->getText();
+                if (!$countContainer) {
+                    return false;
+                }
+                $actualCount = (int) $countContainer->getText();
 
-            Assert::assertEquals(
-                $actualCount,
-                $count,
-                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
-            );
+                Assert::assertEquals(
+                    $actualCount,
+                    $count,
+                    sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+                );
 
-            return true;
-        },
+                return true;
+            },
             sprintf(
-            'Expecting to see %d new notifications',
-            $count
-        )
+                'Expecting to see %d new notifications',
+                $count
+            )
         );
     }
 
