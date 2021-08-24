@@ -34,11 +34,6 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/jobs.yml';
     }
 
-    private function getMediaFilesFixturesDirectoryPath(): string
-    {
-        return $this->getFixturesPath() . '/media_files';
-    }
-
     private function getMediaFilesFixturesPath(): string
     {
         return $this->getFixturesPath() . '/media_files.json';
@@ -54,14 +49,14 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/product_models.json';
     }
 
-    private function getProductsAssociationsFixturesPath(): string
+    private function getProductAssociationsFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/products_associations.json';
+        return $this->getFixturesPath() . '/product_associations.json';
     }
 
-    private function getProductModelsAssociationsFixturesPath(): string
+    private function getProductModelAssociationsFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/product_models_associations.json';
+        return $this->getFixturesPath() . '/product_model_associations.json';
     }
 
     private function getViewsFixturesPath(): string

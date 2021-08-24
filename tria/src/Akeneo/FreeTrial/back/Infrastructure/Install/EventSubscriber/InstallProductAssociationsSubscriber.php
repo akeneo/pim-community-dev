@@ -60,7 +60,7 @@ final class InstallProductAssociationsSubscriber implements EventSubscriberInter
             return;
         }
 
-        $file = fopen($this->getProductsAssociationsFixturesPath(), 'r');
+        $file = fopen($this->getProductAssociationsFixturesPath(), 'r');
 
         while ($line = fgets($file)) {
             $productData = json_decode($line, true);

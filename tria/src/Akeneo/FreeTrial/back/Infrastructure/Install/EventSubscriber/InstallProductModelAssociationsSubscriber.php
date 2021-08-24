@@ -61,7 +61,7 @@ final class InstallProductModelAssociationsSubscriber implements EventSubscriber
             return;
         }
 
-        $file = fopen($this->getProductModelsAssociationsFixturesPath(), 'r');
+        $file = fopen($this->getProductModelAssociationsFixturesPath(), 'r');
 
         while ($line = fgets($file)) {
             $productModelData = json_decode($line, true);

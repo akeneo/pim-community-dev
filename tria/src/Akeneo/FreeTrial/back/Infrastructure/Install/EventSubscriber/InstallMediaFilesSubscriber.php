@@ -27,15 +27,10 @@ final class InstallMediaFilesSubscriber implements EventSubscriberInterface
 {
     use InstallCatalogTrait;
 
-    private MountManager $fileSystemManager;
-
     private SaverInterface $saver;
 
-    public function __construct(
-        MountManager $mountManager,
-        SaverInterface $saver
-    ) {
-        $this->fileSystemManager = $mountManager;
+    public function __construct(SaverInterface $saver)
+    {
         $this->saver = $saver;
     }
 
@@ -52,25 +47,11 @@ final class InstallMediaFilesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $filesystem = $this->fileSystemManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
         $mediaFiles = fopen($this->getMediaFilesFixturesPath(), 'r');
 
         while ($mediaFileData = fgets($mediaFiles)) {
             $mediaFileData = json_decode($mediaFileData, true);
             $mediaFile = $this->buildMediaFileFromData($mediaFileData);
-
-            $fileResource = fopen($this->getMediaFilesFixturesDirectoryPath() . '/' . $mediaFile->getKey(), 'r');
-            if (false === $fileResource) {
-                throw new \Exception('Failed to open media-file ' . $mediaFile->getKey());
-            }
-
-            $options['ContentType'] = $mediaFile->getMimeType();
-            $options['metadata']['contentType'] = $mediaFile->getMimeType();
-
-            $isFileWritten = $filesystem->writeStream($mediaFile->getKey(), $fileResource, $options);
-            if (!$isFileWritten) {
-                throw new \Exception('Failed to write media-file ' . $mediaFile->getKey());
-            }
 
             $this->saver->save($mediaFile);
         }
@@ -85,7 +66,7 @@ final class InstallMediaFilesSubscriber implements EventSubscriberInterface
             ->setMimeType($mediaFileData['mime_type'])
             ->setSize($mediaFileData['size'])
             ->setExtension($mediaFileData['extension'])
-            ->setHash(sha1_file($this->getMediaFilesFixturesDirectoryPath() . '/' . $mediaFile->getKey()))
+            ->setHash($mediaFileData['hash'])
             ->setStorage(FileStorage::CATALOG_STORAGE_ALIAS)
         ;
         return $mediaFile;

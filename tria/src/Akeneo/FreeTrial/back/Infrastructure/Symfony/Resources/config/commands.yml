@@ -3,6 +3,12 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\FreeTrial\Infrastructure\Install\Command\ExtractCatalogProductsCommand:
+    Akeneo\FreeTrial\Infrastructure\Install\Command\ExtractCatalogCommand:
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Command\DownloadMediaFilesCommand:
+        arguments:
+            - '@oneup_flysystem.mount_manager'
         tags:
             - { name: 'console.command' }
