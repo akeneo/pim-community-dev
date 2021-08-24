@@ -1,6 +1,5 @@
 import {uuid} from 'akeneo-design-system';
-import {Source} from '../../../models';
-import {Attribute} from '../../../models/Attribute';
+import {Source, Attribute} from '../../../models';
 
 type IdentifierSource = {
   uuid: string;

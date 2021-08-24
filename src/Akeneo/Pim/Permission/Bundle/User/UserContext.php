@@ -22,6 +22,7 @@ use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -59,7 +60,8 @@ class UserContext extends BaseUserContext
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale,
-        $treeOptionKey
+        $treeOptionKey,
+        FirewallMapInterface $firewall
     ) {
         parent::__construct(
             $tokenStorage,
@@ -67,7 +69,8 @@ class UserContext extends BaseUserContext
             $channelRepository,
             $categoryRepository,
             $requestStack,
-            $defaultLocale
+            $defaultLocale,
+            $firewall
         );
 
         $this->authorizationChecker = $authorizationChecker;

@@ -6,5 +6,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common;
 
 interface MediaPathGeneratorInterface
 {
-    public function generate(string $identifier, string $attributeCode, ?string $scope, ?string $locale): string;
+    public function generate(
+        string $identifier,
+        string $attributeCode,
+        ?string $scope,
+        ?string $locale
+    ): string;
 }

@@ -1,0 +1,2 @@
+%:
+	TYPE=grth $(MAKE) -C .. $*

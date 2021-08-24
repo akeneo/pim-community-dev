@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
-import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
+import {CodeLabelCollectionSelector, Operations} from '../common';
 import {isCategoriesSource} from './model';
 import {InvalidPropertySourceError} from '../error';
 
@@ -11,11 +11,13 @@ const CategoriesConfigurator = ({source, validationErrors, onSourceChange}: Prop
   }
 
   return (
-    <CodeLabelCollectionSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <CodeLabelCollectionSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 

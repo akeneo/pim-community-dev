@@ -75,6 +75,7 @@
     "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system"
   ]
 }

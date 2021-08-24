@@ -18,6 +18,7 @@ services:
         arguments:
             - '@Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier'
             - '@Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier'
+            - '@Akeneo\Platform\TailoredExport\Application\MapValues\FormatApplier\FormatApplier'
 
     Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler:
         arguments:

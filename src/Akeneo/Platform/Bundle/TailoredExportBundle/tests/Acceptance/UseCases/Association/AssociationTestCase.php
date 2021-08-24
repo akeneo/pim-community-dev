@@ -15,6 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\SourceElement;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
@@ -44,16 +47,28 @@ abstract class AssociationTestCase extends KernelTestCase
         array $operations,
         SelectionInterface $selection
     ): ColumnCollection {
-        return ColumnCollection::create([
-            new Column(self::TARGET_NAME, SourceCollection::create([
-                new AssociationTypeSource(
-                    static::ASSOCIATION_TYPE_CODE,
-                    $isQuantified,
-                    OperationCollection::create($operations),
-                    $selection
-                )
-            ]))
+        $sourceCollection = SourceCollection::create([
+            new AssociationTypeSource(
+                sprintf('%s-uuid', self::ASSOCIATION_TYPE_CODE),
+                static::ASSOCIATION_TYPE_CODE,
+                $isQuantified,
+                OperationCollection::create($operations),
+                $selection
+            )
         ]);
+
+        $columnCollection = ColumnCollection::create([
+            new Column(
+                self::TARGET_NAME,
+                $sourceCollection,
+                new ConcatFormat(
+                    ElementCollection::create([new SourceElement(sprintf('%s-uuid', self::ASSOCIATION_TYPE_CODE))]),
+                    false
+                )
+            )
+        ]);
+
+        return $columnCollection;
     }
 
     protected function createSingleValueValueCollection(SourceValueInterface $value): ValueCollection

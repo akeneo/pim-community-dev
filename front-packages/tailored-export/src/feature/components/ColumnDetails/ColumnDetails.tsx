@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
@@ -11,6 +11,7 @@ import {
   updateSource,
   Source,
   MAX_SOURCE_COUNT,
+  Format,
 } from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
@@ -21,13 +22,12 @@ import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
+import {SourcesConcatenation} from './SourcesConcatenation/SourcesConcatenation';
 
 const Container = styled.div`
   height: 100%;
   overflow-y: auto;
   width: 400px;
-  display: flex;
-  flex-direction: column;
   display: flex;
   flex-direction: column;
 `;
@@ -38,7 +38,7 @@ const ConfiguratorContainer = styled.div`
   flex: 1;
 `;
 
-const Content = styled.div`
+const SourcesContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -54,6 +54,7 @@ type ColumnDetailsProps = {
 };
 
 const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const translate = useTranslate();
   const channels = useChannels();
   const firstSource = columnConfiguration.sources[0]?.uuid ?? null;
@@ -69,6 +70,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
     onColumnChange(removeSource(columnConfiguration, currentSource));
     switchTo(firstSource);
   };
+
+  const handleFormatChange = (format: Format) => onColumnChange({...columnConfiguration, format});
 
   const attributeFetcher = useFetchers().attribute;
   const associationTypeFetcher = useFetchers().associationType;
@@ -93,22 +96,23 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
 
   const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
   const validationErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, false);
+  const formatErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][format]`, false);
 
   useEffect(() => {
     switchTo(firstSource);
   }, [switchTo, firstSource]);
 
   return (
-    <Container>
-      <SourcesSectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
-        <SectionTitle.Spacer />
-        <AddSourceDropdown
-          canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
-          onSourceSelected={handleSourceAdd}
-        />
-      </SourcesSectionTitle>
-      <Content>
+    <Container ref={scrollRef}>
+      <SourcesContent>
+        <SourcesSectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
+          <SectionTitle.Spacer />
+          <AddSourceDropdown
+            canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
+            onSourceSelected={handleSourceAdd}
+          />
+        </SourcesSectionTitle>
         {columnConfiguration.sources.length !== 0 && (
           <SourceTabBar
             validationErrors={validationErrors}
@@ -144,10 +148,19 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
               onSourceChange={handleSourceChange}
             />
           )}
-          {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
+          {0 === columnConfiguration.sources.length && <NoSourcePlaceholder />}
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
-      </Content>
+      </SourcesContent>
+      {0 < columnConfiguration.sources.length && (
+        <SourcesConcatenation
+          validationErrors={formatErrors}
+          sources={columnConfiguration.sources}
+          format={columnConfiguration.format}
+          onFormatChange={handleFormatChange}
+          scrollRef={scrollRef}
+        />
+      )}
     </Container>
   );
 };

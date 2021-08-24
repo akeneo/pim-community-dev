@@ -81,6 +81,7 @@ test('it renders column details', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -97,6 +98,7 @@ test('it renders placeholder when there is no source selected', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -115,6 +117,7 @@ test('We can add an attribute source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -150,8 +153,15 @@ test('We can add an attribute source', async () => {
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
+      space_between: true,
     },
   });
 });
@@ -176,6 +186,7 @@ test('We cannot add source when the limit is reached', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -208,6 +219,7 @@ test('We can add a property source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -244,8 +256,15 @@ test('We can add a property source', async () => {
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
+      space_between: true,
     },
   });
 });
@@ -258,6 +277,7 @@ test('We can add an association type as source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -296,7 +316,14 @@ test('We can add an association type as source', async () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
+      space_between: true,
     },
   });
 });
@@ -321,6 +348,7 @@ test('We can update a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -358,6 +386,66 @@ test('We can update a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
+    },
+  });
+});
+
+test('We can update the format', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+      space_between: true,
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const spaceBetweenCheckbox = screen.getByLabelText(
+    'akeneo.tailored_export.column_details.concatenation.space_between'
+  );
+  userEvent.click(spaceBetweenCheckbox);
+
+  expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      space_between: false,
+      elements: [],
     },
   });
 });
@@ -382,6 +470,7 @@ test('We can delete a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 
@@ -401,6 +490,7 @@ test('We can delete a source', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   });
 });
@@ -425,6 +515,7 @@ test('it renders column details with errors', async () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 

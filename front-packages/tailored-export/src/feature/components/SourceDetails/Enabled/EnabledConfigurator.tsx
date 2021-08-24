@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
-import {BooleanReplacement} from '../common/BooleanReplacement';
+import {BooleanReplacement, Operations} from '../common';
 import {PropertyConfiguratorProps} from '../../../models';
 import {isEnabledSource} from './model';
 import {InvalidPropertySourceError} from '../error';
-import {Operations} from '../common';
 
 const EnabledConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();

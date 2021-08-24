@@ -67,14 +67,4 @@ const ProposalDiffReferenceEntity: React.FC<ProposalDiffReferenceEntityProps> = 
   );
 };
 
-class ProposalDiffReferenceEntityMatcher {
-  static supports(attributeType: string) {
-    return ['akeneo_reference_entity'].includes(attributeType);
-  }
-
-  static render() {
-    return ProposalDiffReferenceEntity;
-  }
-}
-
-export {ProposalDiffReferenceEntityMatcher};
+export default ProposalDiffReferenceEntity;

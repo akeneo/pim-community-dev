@@ -29,7 +29,7 @@ class BooleanReplacementOperationApplier implements OperationApplierInterface
             !$operation instanceof ReplacementOperation
             || !$value instanceof BooleanValue
         ) {
-            throw new \LogicException('Cannot apply Boolean replacement operation');
+            throw new \InvalidArgumentException('Cannot apply Boolean replacement operation');
         }
 
         $data = $value->getData() ? 'true' : 'false';

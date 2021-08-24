@@ -41,6 +41,15 @@ const isQuantifiedAssociationTypeSelection = (selection: any): selection is Quan
   'entity_type' in selection &&
   isEntityType(selection.entity_type);
 
+const getDefaultQuantifiedAssociationTypeSelection = (): QuantifiedAssociationTypeSelection => ({
+  type: 'code',
+  separator: ',',
+  entity_type: 'products',
+});
+
+const isDefaultQuantifiedAssociationTypeSelection = (selection?: QuantifiedAssociationTypeSelection): boolean =>
+  'code' === selection?.type && ',' === selection?.separator && 'products' === selection?.entity_type;
+
 type QuantifiedAssociationTypeSource = {
   uuid: string;
   code: string;
@@ -60,7 +69,7 @@ const getDefaultQuantifiedAssociationTypeSource = (
   locale: null,
   channel: null,
   operations: {},
-  selection: {type: 'code', separator: ',', entity_type: 'products'},
+  selection: getDefaultQuantifiedAssociationTypeSelection(),
 });
 
 const isQuantifiedAssociationTypeSource = (source: Source): source is QuantifiedAssociationTypeSource =>
@@ -70,6 +79,7 @@ export type {QuantifiedAssociationTypeSource, QuantifiedAssociationTypeSelection
 export {
   availableSeparators,
   getDefaultQuantifiedAssociationTypeSource,
+  isDefaultQuantifiedAssociationTypeSelection,
   isQuantifiedAssociationTypeSource,
   isCollectionSeparator,
   isEntityType,

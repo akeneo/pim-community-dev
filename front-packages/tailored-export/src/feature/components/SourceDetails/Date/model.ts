@@ -38,6 +38,10 @@ const isDateFormat = (dateFormat: unknown): dateFormat is DateFormat =>
 const isDateSelection = (selection: any): selection is DateSelection =>
   'object' === typeof selection && null !== selection && 'format' in selection && isDateFormat(selection.format);
 
+const getDefaultDateSelection = (): DateSelection => ({format: availableDateFormats[0]});
+
+const isDefaultDateSelection = (selection?: DateSelection): boolean => selection?.format === availableDateFormats[0];
+
 type DateSource = {
   uuid: string;
   code: string;
@@ -59,7 +63,7 @@ const getDefaultDateSource = (
   locale,
   channel,
   operations: {},
-  selection: {format: availableDateFormats[0]},
+  selection: getDefaultDateSelection(),
 });
 
 const isDateOperations = (operations: Object): operations is DateOperations =>
@@ -75,5 +79,5 @@ const isDateOperations = (operations: Object): operations is DateOperations =>
 const isDateSource = (source: Source): source is DateSource =>
   isDateSelection(source.selection) && isDateOperations(source.operations);
 
-export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats};
+export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats, isDefaultDateSelection};
 export type {DateSelection, DateSource};

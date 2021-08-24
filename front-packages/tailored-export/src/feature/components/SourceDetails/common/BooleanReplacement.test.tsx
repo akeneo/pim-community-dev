@@ -27,7 +27,6 @@ test('it can replace a boolean value', () => {
 });
 
 test('it displays validation errors', () => {
-  const onOperationChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.true',
@@ -50,12 +49,13 @@ test('it displays validation errors', () => {
       trueLabel="yes"
       falseLabel="no"
       validationErrors={validationErrors}
-      onOperationChange={onOperationChange}
+      onOperationChange={jest.fn()}
     />
   );
 
   expect(screen.getByText('error.key.true')).toBeInTheDocument();
   expect(screen.getByText('error.key.false')).toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });
 
 test('it can tell if something is a valid boolean replacement operation', () => {

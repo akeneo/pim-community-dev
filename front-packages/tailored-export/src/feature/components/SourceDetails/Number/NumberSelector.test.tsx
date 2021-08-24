@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {NumberSelector} from './NumberSelector';
 
-test('it displays a separator dropdown', () => {
+test('it displays a decimal separator dropdown', () => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
@@ -16,7 +16,7 @@ test('it displays a separator dropdown', () => {
   ).toBeInTheDocument();
 });
 
-test('it can change the separator type', () => {
+test('it can change the decimal separator type', () => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
@@ -33,9 +33,9 @@ test('it displays validation errors', () => {
   const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
-      messageTemplate: 'error.key.separator',
+      messageTemplate: 'error.key.decimal_separator',
       invalidValue: '',
-      message: 'this is a separator error',
+      message: 'this is a decimal separator error',
       parameters: {},
       propertyPath: '[decimal_separator]',
     },
@@ -49,5 +49,5 @@ test('it displays validation errors', () => {
     />
   );
 
-  expect(screen.getByText('error.key.separator')).toBeInTheDocument();
+  expect(screen.getByText('error.key.decimal_separator')).toBeInTheDocument();
 });

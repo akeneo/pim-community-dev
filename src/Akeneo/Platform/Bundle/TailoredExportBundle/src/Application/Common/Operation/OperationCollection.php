@@ -27,6 +27,9 @@ class OperationCollection implements \IteratorAggregate
         $this->operations = $operations;
     }
 
+    /**
+     * @return OperationInterface[] | \Iterator
+     */
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->operations);

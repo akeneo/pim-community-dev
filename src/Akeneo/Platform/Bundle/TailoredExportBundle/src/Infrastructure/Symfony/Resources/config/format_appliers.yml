@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\TailoredExport\Application\MapValues\FormatApplier\FormatApplier:
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Application\MapValues\FormatApplier\ConcatFormatApplier'
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\FormatApplier\ConcatFormatApplier:

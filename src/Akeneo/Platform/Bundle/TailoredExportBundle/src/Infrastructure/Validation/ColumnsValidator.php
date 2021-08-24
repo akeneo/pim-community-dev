@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Format\Format;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -36,10 +38,9 @@ class ColumnsValidator extends ConstraintValidator
             return;
         }
 
-
         $validator = $this->context->getValidator();
         $violations = $validator->validate($columns, [
-            new Type(['type' => 'array']),
+            new Type('array'),
             new Count([
                 'max' => self::MAX_COLUMN_COUNT,
                 'maxMessage' => 'akeneo.tailored_export.validation.columns.max_column_count_reached'
@@ -77,16 +78,11 @@ class ColumnsValidator extends ConstraintValidator
 
     private function validateColumn(ValidatorInterface $validator, $column): void
     {
-        $violations = $validator->validate($column, [new Collection([
+        $violations = $validator->validate($column, new Collection([
             'fields' => [
-                'uuid' => [
-                    new NotBlank(),
-                    new Uuid()
-                ],
+                'uuid' => [new Uuid(), new NotBlank()],
                 'target' => [
-                    new Type([
-                        'type' => 'string',
-                    ]),
+                    new Type('string'),
                     new NotBlank(['message' => Columns::TARGET_SHOULD_NOT_BE_BLANK]),
                     new Length([
                         'max' => self::TARGET_MAX_LENGTH,
@@ -94,45 +90,18 @@ class ColumnsValidator extends ConstraintValidator
                     ])
                 ],
                 'sources' => new Sources(),
-                'format' => new Collection([
-                    'type' => new Choice([
-                        'choices' => ['concat'],
-                    ]),
-                    'elements' => [
-                        new Type([
-                            'type' => 'array',
-                        ]),
-                        new All([
-                            'constraints' => [
-                                new Collection([
-                                    'fields' => [
-                                        'type' => [
-                                            new Type(['type' => 'string'])
-                                        ],
-                                        'value' => [
-                                            new Type([
-                                                'type' => 'string',
-                                            ]),
-                                        ],
-                                    ],
-                                ]),
-                            ],
-                        ]),
-                    ]
-                ])
+                'format' => new Format(),
             ],
-        ])]);
+        ]));
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
-            }
+        foreach ($violations as $violation) {
+            $this->context->buildViolation(
+                $violation->getMessage(),
+                $violation->getParameters()
+            )
+                ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
+                ->setInvalidValue($violation->getInvalidValue())
+                ->addViolation();
         }
     }
 }

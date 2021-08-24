@@ -12,10 +12,9 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
-import {AttributeConfiguratorProps} from '../../models';
+import {AttributeConfiguratorProps, Source} from '../../models';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {LocaleDropdown} from '../LocaleDropdown';
-import {Source} from '../../models/Source';
 import {MeasurementConfigurator} from './Measurement/MeasurementConfigurator';
 import {TextConfigurator} from './Text/TextConfigurator';
 import {ReferenceEntityCollectionConfigurator} from './ReferenceEntityCollection/ReferenceEntityCollectionConfigurator';
@@ -36,7 +35,6 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px 0;
-  flex: 1;
 `;
 
 const configurators: {[attributeType: string]: FunctionComponent<AttributeConfiguratorProps>} = {
@@ -107,39 +105,41 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-      <Container>
-        {null !== source.channel && (
-          <ChannelDropdown
-            value={source.channel}
-            channels={channels}
-            validationErrors={channelErrors}
-            onChange={(channelCode: ChannelCode) => {
-              const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
-              onSourceChange({...source, locale: localeCode, channel: channelCode});
-            }}
-          />
-        )}
-        {null !== source.locale && (
-          <LocaleDropdown
-            value={source.locale}
-            validationErrors={localeErrors}
-            locales={localeSpecificFilteredLocales}
-            onChange={(localeCode: LocaleCode) => {
-              onSourceChange({...source, locale: localeCode});
-            }}
-          >
-            {attribute.is_locale_specific && (
-              <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific')}</Helper>
-            )}
-          </LocaleDropdown>
-        )}
-        <Configurator
-          source={source}
-          attribute={attribute}
-          validationErrors={validationErrors}
-          onSourceChange={onSourceChange}
-        />
-      </Container>
+      {(null !== source.channel || null !== source.locale) && (
+        <Container>
+          {null !== source.channel && (
+            <ChannelDropdown
+              value={source.channel}
+              channels={channels}
+              validationErrors={channelErrors}
+              onChange={(channelCode: ChannelCode) => {
+                const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
+                onSourceChange({...source, locale: localeCode, channel: channelCode});
+              }}
+            />
+          )}
+          {null !== source.locale && (
+            <LocaleDropdown
+              value={source.locale}
+              validationErrors={localeErrors}
+              locales={localeSpecificFilteredLocales}
+              onChange={(localeCode: LocaleCode) => {
+                onSourceChange({...source, locale: localeCode});
+              }}
+            >
+              {attribute.is_locale_specific && (
+                <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific')}</Helper>
+              )}
+            </LocaleDropdown>
+          )}
+        </Container>
+      )}
+      <Configurator
+        source={source}
+        attribute={attribute}
+        validationErrors={validationErrors}
+        onSourceChange={onSourceChange}
+      />
     </ErrorBoundary>
   );
 };

@@ -24,7 +24,6 @@ test('it can set a default value', () => {
 });
 
 test('it displays validation errors', () => {
-  const onOperationChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.value',
@@ -35,9 +34,10 @@ test('it displays validation errors', () => {
     },
   ];
 
-  renderWithProviders(<DefaultValue validationErrors={validationErrors} onOperationChange={onOperationChange} />);
+  renderWithProviders(<DefaultValue validationErrors={validationErrors} onOperationChange={jest.fn()} />);
 
   expect(screen.getByText('error.key.value')).toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });
 
 test('it can tell if something is a valid default value operation', () => {

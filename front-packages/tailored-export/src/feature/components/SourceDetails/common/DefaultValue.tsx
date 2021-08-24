@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {filterErrors, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Collapse} from 'akeneo-design-system';
+import {Collapse, Pill} from 'akeneo-design-system';
 
 type DefaultValueOperation = {
   type: 'default_value';
@@ -30,14 +30,18 @@ const DefaultValue = ({
   onOperationChange,
 }: DefaultValueProps) => {
   const translate = useTranslate();
-  const [isDefaultValueCollapsed, toggleDefaultValueCollapse] = useState<boolean>(
-    !isDefaultDefaultValueOperation(operation)
-  );
+  const [isDefaultValueCollapsed, toggleDefaultValueCollapse] = useState<boolean>(false);
 
   return (
     <Collapse
       collapseButtonLabel={isDefaultValueCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.operation.default_value.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.operation.default_value.title')}
+          {0 === validationErrors.length && !isDefaultDefaultValueOperation(operation) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isDefaultValueCollapsed}
       onCollapse={toggleDefaultValueCollapse}
     >
