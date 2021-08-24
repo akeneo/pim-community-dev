@@ -134,6 +134,7 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Doctrine\Inflector',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',

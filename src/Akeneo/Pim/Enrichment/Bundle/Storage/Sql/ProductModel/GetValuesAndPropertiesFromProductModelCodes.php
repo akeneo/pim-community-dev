@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * SQL Query to get the properties and the values from a set of product model codes:
@@ -65,14 +66,14 @@ SQL;
         $results = [];
         foreach ($rows as $row) {
             $results[$row['code']] = [
-                'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
-                'code' => Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform),
-                'family' => Type::getType(Type::STRING)->convertToPHPValue($row['family'], $platform),
-                'family_variant' => Type::getType(Type::STRING)->convertToPHPValue($row['family_variant'], $platform),
-                'parent' => Type::getType(Type::STRING)->convertToPHPValue($row['parent'], $platform),
+                'id' => Type::getType(Types::INTEGER)->convertToPHPValue($row['id'], $platform),
+                'code' => Type::getType(Types::STRING)->convertToPHPValue($row['code'], $platform),
+                'family' => Type::getType(Types::STRING)->convertToPHPValue($row['family'], $platform),
+                'family_variant' => Type::getType(Types::STRING)->convertToPHPValue($row['family_variant'], $platform),
+                'parent' => Type::getType(Types::STRING)->convertToPHPValue($row['parent'], $platform),
                 'raw_values' => json_decode($row['raw_values'], true),
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
             ];
         }
 

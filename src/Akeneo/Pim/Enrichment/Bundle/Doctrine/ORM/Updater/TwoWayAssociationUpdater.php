@@ -9,16 +9,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 {
-    /** @var ManagerRegistry */
-    private $registry;
-
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
+    private ManagerRegistry $registry;
+    private MissingAssociationAdder $missingAssociationAdder;
 
     public function __construct(
         ManagerRegistry $registry,
@@ -101,7 +97,6 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             );
         }
 
-        /** @var ObjectManager $em */
         $em = $this->registry->getManager();
         $em->persist($associatedEntity);
     }

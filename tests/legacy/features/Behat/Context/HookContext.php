@@ -9,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -246,7 +246,7 @@ class HookContext extends PimContext
     }
 
     /**
-     * @return RegistryInterface
+     * @return ManagerRegistry
      */
     private function getDoctrine()
     {
