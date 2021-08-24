@@ -8,5 +8,9 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageReporters: ['text-summary', 'html'],
-  coverageDirectory: 'coverage'
+  coverageDirectory: 'coverage',
+  coveragePathIgnorePatterns: [
+    'tests',
+    'src/microfrontend',
+  ],
 };
