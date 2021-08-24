@@ -61,12 +61,15 @@ class StepExecutionSpec extends ObjectBehavior
 
     function it_adds_warning(InvalidItemInterface $invalidItem)
     {
+        $this->getWarningCount()->shouldBe(0);
+
         $this->addWarning(
             'my reason',
             [],
             $invalidItem
         );
         $this->getWarnings()->shouldHaveCount(1);
+        $this->getWarningCount()->shouldBe(1);
     }
 
     function it_increments_summary_info()
