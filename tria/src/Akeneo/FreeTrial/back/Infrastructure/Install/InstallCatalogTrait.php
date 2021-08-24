@@ -68,4 +68,54 @@ trait InstallCatalogTrait
     {
         return $this->getFixturesPath() . '/categories_codes.csv';
     }
+
+    private function getCategoriesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/categories.json';
+    }
+
+    private function getAttributesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/attributes.json';
+    }
+
+    private function getAttributeGroupsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/attribute_groups.json';
+    }
+
+    private function getAttributeOptionsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/attribute_options.json';
+    }
+
+    private function getAssociationTypesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/association_types.json';
+    }
+
+    private function getChannelsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/channels.json';
+    }
+
+    private function getLocalesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/locales.json';
+    }
+
+    private function getCurrenciesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/currencies.json';
+    }
+
+    private function getFamiliesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/families.json';
+    }
+
+    private function getFamilyVariantsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/family_variants.json';
+    }
 }

@@ -15,6 +15,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Command;
 
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractMediaFiles;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractProducts;
+use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractStructure;
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
@@ -57,6 +58,9 @@ final class ExtractCatalogCommand extends Command
 
         $extractProducts = new ExtractProducts($apiClient, $io);
         $extractProducts();
+
+        $extractStructure = new ExtractStructure($apiClient, $io);
+        $extractStructure();
 
         $io->success('Catalog extracted!');
 
