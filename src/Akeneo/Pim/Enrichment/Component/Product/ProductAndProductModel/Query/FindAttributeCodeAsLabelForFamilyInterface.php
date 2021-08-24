@@ -12,5 +12,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query;
  */
 interface FindAttributeCodeAsLabelForFamilyInterface
 {
-    public function execute(int $id): string;
+    public function execute(string $code): string;
 }

@@ -24,14 +24,14 @@ class FindAttributeCodeAsLabelForFamily implements FindAttributeCodeAsLabelForFa
         $this->connection = $connection;
     }
 
-    public function execute(int $id): string
+    public function execute(string $code): string
     {
         $sql = <<<SQL
         SELECT a.code
         FROM pim_catalog_family f
           INNER JOIN pim_catalog_attribute a ON f.label_attribute_id = a.id
-        WHERE (f.id = :id)
+        WHERE (f.code = :code)
 SQL;
-        return $this->connection->executeQuery($sql, ['id' => $id])->fetch(\PDO::FETCH_COLUMN);
+        return $this->connection->executeQuery($sql, ['code' => $code])->fetch(\PDO::FETCH_COLUMN);
     }
 }
