@@ -7,7 +7,7 @@ namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
