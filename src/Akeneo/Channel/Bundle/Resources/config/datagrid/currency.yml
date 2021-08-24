@@ -10,7 +10,7 @@ datagrid:
             code:
                 label: Code
                 type: twig
-                template: '@@PimDataGrid/Property/currency_label.html.twig'
+                template: '@PimDataGrid/Property/currency_label.html.twig'
                 frontend_type: html
             activated:
                 label: Enabled
