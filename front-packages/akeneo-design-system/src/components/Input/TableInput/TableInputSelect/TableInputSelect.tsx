@@ -87,6 +87,17 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
+  const searchRef = React.createRef<HTMLInputElement>();
+
+  const focus = (ref: React.RefObject<any>) => {
+    ref.current.focus();
+  };
+
+  React.useEffect(() => {
+    if (isOpen) {
+      focus(searchRef);
+    }
+  }, [isOpen]);
 
   React.useEffect(() => {
     close();
@@ -132,6 +143,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">
           <Dropdown.Header>
             <Search
+              inputRef={searchRef}
               onSearchChange={handleSearchChange}
               placeholder={searchPlaceholder}
               searchValue={searchValue}
