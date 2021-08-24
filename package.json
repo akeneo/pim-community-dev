@@ -115,8 +115,9 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:front-packages/shared",
     "@akeneo-pim-community/measurement": "link:front-packages/measurement",
+    "@akeneo-pim-community/shared": "link:front-packages/shared",
+    "@reduxjs/toolkit": "^1.6.1",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",

@@ -23,6 +23,7 @@ import EventLogDatetime from './EventLogDatetime';
 import {EventLogListFilters} from './EventLogListFilters';
 import {NoEventLogs} from './NoEventLogs';
 import {NoEventLogsWithThoseFilters} from './NoEventLogsWithThoseFilters';
+import {connect} from 'react-redux';
 
 const loadingBreath = keyframes`
     0%{background-position:0% 50%}
@@ -74,7 +75,7 @@ const saveFiltersIntoTheSession = (filters: EventSubscriptionLogFilters) => {
     sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(filters));
 };
 
-export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => {
+const EventLogListComponent: FC<{connectionCode: string}> = ({connectionCode}) => {
     const translate = useTranslate();
     const scrollContainer = useRef(null);
 
@@ -162,3 +163,12 @@ export const EventLogList: FC<{connectionCode: string}> = ({connectionCode}) => 
         </>
     );
 };
+
+const mapState = (state: any) => ({
+    todos: {}
+});
+const actionCreators = (dispatch: any) => ({});
+
+const EventLogList = connect(mapState, actionCreators)(EventLogListComponent);
+
+export {EventLogList};

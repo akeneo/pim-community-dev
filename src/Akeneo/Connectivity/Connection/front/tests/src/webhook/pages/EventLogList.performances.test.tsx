@@ -12,6 +12,8 @@ import {perf} from 'react-performance-testing';
 import {EventSubscriptionLogLevel} from '@src/webhook/model/EventSubscriptionLogLevel';
 import * as util from 'util';
 import {fireEvent} from '@testing-library/dom';
+import store from '@src/webhook/store';
+import {Provider} from 'react-redux';
 
 describe('testing events logs page performances', () => {
     const history = createMemoryHistory({
@@ -97,9 +99,11 @@ describe('testing events logs page performances', () => {
             return (
                 <ThemeProvider theme={theme}>
                     <UserProvider>
-                        <Router history={history}>
-                            <Index/>
-                        </Router>
+                        <Provider store={store}>
+                            <Router history={history}>
+                                <Index/>
+                            </Router>
+                        </Provider>
                     </UserProvider>
                 </ThemeProvider>
             );

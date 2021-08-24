@@ -10,10 +10,21 @@ import {useFetchConnection} from '../hooks/api/use-fetch-connection';
 import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {DownloadLogsButton} from '../components/DownloadLogsButton';
 import {useRouter} from '../../shared/router/use-router';
+import {connect} from 'react-redux';
+import {connectionState} from '../reducer';
+import {Connection} from '../../model/connection';
 
-export const EventLogs: FC = () => {
+const mapState = (state: connectionState) => ({
+    connection: state.connection
+});
+const actionCreators = (dispatch: any) => ({});
+type Props = {
+    connection: Connection|null,
+};
+
+export const EventLogs: FC = connect(mapState, actionCreators)(({connection}: Props) => {
     const {connectionCode} = useParams<{connectionCode: string}>();
-    const {connection} = useFetchConnection(connectionCode);
+    //const {connection} = useFetchConnection(connectionCode);
     const {eventSubscription, fetchEventSubscription} = useFetchEventSubscription(connectionCode);
 
     useEffect(() => {
@@ -53,7 +64,7 @@ export const EventLogs: FC = () => {
             </PageContent>
         </>
     );
-};
+});
 
 const EventLogsBreadcrumb: FC = () => {
     const history = useHistory();
