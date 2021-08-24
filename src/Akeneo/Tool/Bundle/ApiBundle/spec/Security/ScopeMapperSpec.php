@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\ApiBundle\Security;
 
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper;
+use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopeToAclMapperSpec extends ObjectBehavior
+class ScopeMapperSpec extends ObjectBehavior
 {
     function it_is_instantiable()
     {
-        $this->shouldHaveType(ScopeToAclMapper::class);
+        $this->shouldHaveType(ScopeMapper::class);
     }
 
     public function it_returns_the_list_of_all_available_scopes()

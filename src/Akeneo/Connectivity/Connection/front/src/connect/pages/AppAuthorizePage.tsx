@@ -1,22 +1,17 @@
 import React, {FC} from 'react';
 import {useLocation} from 'react-router-dom';
-import {Modal} from 'akeneo-design-system';
-import {useHistory} from 'react-router';
 import {AuthorizeClientError} from '../components/AuthorizeClientError';
+import {AppWizard} from '../components/AppWizard/AppWizard';
 
 export const AppAuthorizePage: FC = () => {
     const location = useLocation();
-    const history = useHistory();
     const query = new URLSearchParams(location.search);
     const error = query.get('error');
+    const clientId = query.get('client_id');
 
     if (null !== error) {
         return <AuthorizeClientError error={error} />;
     }
 
-    const redirectToMarketPlace = () => {
-        history.push('/connect/marketplace');
-    };
-
-    return <Modal closeTitle='Close' onClose={redirectToMarketPlace}/>;
+    return <AppWizard clientId={clientId}/>;
 };

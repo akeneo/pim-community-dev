@@ -63,12 +63,34 @@ akeneo_connectivity.connection:
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
         apps:
+            title: Connect
+            action:
+                confirm: Confirm
+                cancel: Cancel
             activate:
                 flash:
                     error: Sorry, an error occurred while connecting the App.
             authorize:
+                title: 'App {{ app_name }} needs to'
+                no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
+                no_scope: No specific authorizations have been requested.
+                helper: To know more about about app authorization, check out our Help Center for more information.
                 error:
                     sub_text: Please contact the app developer or Akeneo support
+                scope:
+                    read_catalog_structure: View attributes, attribute groups, families and family variants
+                    write_catalog_structure: View and edit attributes, attribute groups, families and family variants
+                    read_attribute_options: View attribute options
+                    write_attribute_options: View and edit attribute options and categories
+                    read_categories: View categories
+                    write_categories: View and edit and categories
+                    read_channel_settings: View channels, locales and currencies
+                    write_channel_settings: View and edit channels, locales and currencies
+                    read_association_types: View association types
+                    write_association_types: View and edit association types
+                    read_products: View products and product models
+                    write_products: View and edit products and product models
+                    delete_products: Delete products and product models
             constraint:
                 client_id:
                     not_blank: The client_id is required.

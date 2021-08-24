@@ -14,4 +14,5 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 interface AppAuthorizationSessionInterface
 {
     public function initialize(AppAuthorization $authorization): void;
+    public function getAppAuthorization(string $clientId): ?AppAuthorization;
 }

@@ -87,3 +87,11 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetWizardDataAction
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@akeneo_connectivity.connection.service.apps.scope_to_view_message_mapper'

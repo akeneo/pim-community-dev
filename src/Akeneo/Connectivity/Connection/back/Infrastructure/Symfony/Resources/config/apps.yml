@@ -14,3 +14,8 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+
+    akeneo_connectivity.connection.service.apps.scope_to_view_message_mapper:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Mapper\ScopeToViewMessageMapper
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper'

@@ -8,7 +8,7 @@ namespace Akeneo\Tool\Bundle\ApiBundle\Security;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ScopeToAclMapper
+final class ScopeMapper
 {
     private const SCOPE_READ_CATALOG_STRUCTURE = 'read_catalog_structure';
     private const SCOPE_WRITE_CATALOG_STRUCTURE = 'write_catalog_structure';
