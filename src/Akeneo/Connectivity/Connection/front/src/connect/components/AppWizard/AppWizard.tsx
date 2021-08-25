@@ -55,7 +55,7 @@ export const AppWizard:  FC<Props> = ({clientId}) => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
-    const redirectToMarketPlace = () => {
+    const redirectToMarketplace = () => {
         history.push('/connect/marketplace');
     };
 
@@ -64,7 +64,7 @@ export const AppWizard:  FC<Props> = ({clientId}) => {
     }
 
     return (
-        <Modal onClose={redirectToMarketPlace} closeTitle={translate('akeneo_connectivity.connection.connect.apps.action.cancel')}>
+        <Modal onClose={redirectToMarketplace} closeTitle={translate('akeneo_connectivity.connection.connect.apps.action.cancel')}>
             <Content>
                 <LogoContainer>
                     <Logo src={wizardData.appLogo} alt={wizardData.appName}/>
@@ -73,7 +73,7 @@ export const AppWizard:  FC<Props> = ({clientId}) => {
                     <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
                     <ScopeList appName={wizardData.appName} scopeMessages={wizardData.scopeMessages}/>
                     <Actions>
-                        <ActionButton level={'tertiary'}>
+                        <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
                             {translate('akeneo_connectivity.connection.connect.apps.action.cancel')}
                         </ActionButton>
                         <ActionButton>

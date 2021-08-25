@@ -85,7 +85,8 @@ akeneo_connectivity.connection:
                     read_categories: View categories
                     write_categories: View and edit and categories
                     read_channel_settings: View channels, locales and currencies
-                    write_channel_settings: View and edit channels, locales and currencies
+                    write_channel_settings: View and edit channels
+                    locales_currencies: View locales and currencies
                     read_association_types: View association types
                     write_association_types: View and edit association types
                     read_products: View products and product models

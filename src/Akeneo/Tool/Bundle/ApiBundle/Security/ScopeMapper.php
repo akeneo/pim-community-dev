@@ -106,4 +106,87 @@ final class ScopeMapper
 
         return self::SCOPE_ACL_MAP[$scopeName];
     }
+
+    public function getMessages(string $scopes): array
+    {
+        $scopeList = empty($scopes) ? [] : explode(' ', $scopes);
+
+        $scopeList = $this->filterScopeOverlap($scopeList);
+
+        $messages = [];
+
+        foreach ($scopeList as $scope) {
+            $messages[] = [
+                'message' => "akeneo_connectivity.connection.connect.apps.authorize.scope.$scope",
+                'icon' => $this->getIcon($scope),
+            ];
+
+            if ($scope === self::SCOPE_WRITE_CHANNEL_SETTINGS) {
+                $messages[] = [
+                    'message' => "akeneo_connectivity.connection.connect.apps.authorize.scope.locales_currencies",
+                    'icon' => $this->getIcon('locales_currencies'),
+                ];
+            }
+        }
+
+        return $messages;
+    }
+
+    private function getIcon(string $scope): string
+    {
+        switch ($scope) {
+            case self::SCOPE_READ_CATALOG_STRUCTURE:
+            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
+                return 'catalog_structure';
+            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
+            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
+                return 'attribute_options';
+            case self::SCOPE_READ_CATEGORIES:
+            case self::SCOPE_WRITE_CATEGORIES:
+                return 'category';
+            case self::SCOPE_READ_CHANNEL_SETTINGS:
+            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
+                return 'channel';
+            case 'locales_currencies':
+                return 'locale';
+            case self::SCOPE_READ_ASSOCIATION_TYPES:
+            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
+                return 'association_types';
+            case self::SCOPE_READ_PRODUCTS:
+            case self::SCOPE_WRITE_PRODUCTS:
+            case self::SCOPE_DELETE_PRODUCTS:
+                return 'product';
+            default:
+                return 'unknown';
+        }
+    }
+
+    /**
+     * @param array<string> $scopeList
+     * @return array<string>
+     */
+    private function filterScopeOverlap(array $scopeList): array
+    {
+        return array_filter($scopeList, function ($scope) use ($scopeList) {
+            switch ($scope) {
+                case self::SCOPE_READ_CATALOG_STRUCTURE:
+                    return !in_array(self::SCOPE_WRITE_CATALOG_STRUCTURE, $scopeList);
+                case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
+                    return !in_array(self::SCOPE_WRITE_ATTRIBUTE_OPTIONS, $scopeList);
+                case self::SCOPE_READ_CATEGORIES:
+                    return !in_array(self::SCOPE_WRITE_CATEGORIES, $scopeList);
+                case self::SCOPE_READ_CHANNEL_SETTINGS:
+                    return !in_array(self::SCOPE_WRITE_CHANNEL_SETTINGS, $scopeList);
+                case self::SCOPE_READ_ASSOCIATION_TYPES:
+                    return !in_array(self::SCOPE_WRITE_ASSOCIATION_TYPES, $scopeList);
+                case self::SCOPE_READ_PRODUCTS:
+                    return !in_array(self::SCOPE_WRITE_PRODUCTS, $scopeList)
+                        || !in_array(self::SCOPE_WRITE_PRODUCTS, $scopeList);
+                case self::SCOPE_WRITE_PRODUCTS:
+                    return !in_array(self::SCOPE_DELETE_PRODUCTS, $scopeList);
+                default:
+                    return true;
+            }
+        });
+    }
 }

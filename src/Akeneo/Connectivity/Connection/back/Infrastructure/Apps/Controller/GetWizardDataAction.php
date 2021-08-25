@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Mapper\ScopeToViewMessageMapper;
+use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,16 +21,16 @@ class GetWizardDataAction
 {
     private GetAppQueryInterface $getAppQuery;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ScopeToViewMessageMapper $scopeToViewMessageMapper;
+    private ScopeMapper $scopeMapper;
 
     public function __construct(
         GetAppQueryInterface $getAppQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        ScopeToViewMessageMapper $scopeToViewMessageMapper
+        ScopeMapper $scopeMapper
     ) {
         $this->getAppQuery = $getAppQuery;
         $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->scopeToViewMessageMapper = $scopeToViewMessageMapper;
+        $this->scopeMapper = $scopeMapper;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -50,7 +50,8 @@ class GetWizardDataAction
         }
 
         $normalizedApp = $app->normalize();
-        $scopeMessages = $this->scopeToViewMessageMapper->getMessages($appAuthorization->scope);
+//        $scopeMessages = $this->scopeMapper->getMessages($appAuthorization->scope);
+        $scopeMessages = $this->scopeMapper->getMessages(implode(' ', $this->scopeMapper->getAllScopes()));
 
         return new JsonResponse([
             'appName' => $normalizedApp['name'],

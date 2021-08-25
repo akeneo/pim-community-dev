@@ -10,7 +10,8 @@ import {
     AssociateIcon,
     ShopIcon,
     CategoryIcon,
-    ComponentIcon
+    LocaleIcon,
+    GroupsIcon
 } from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ScopeMessage} from '../../hooks/use-fetch-app-wizard-data';
@@ -48,10 +49,11 @@ const ScopeItem = styled.li`
 `;
 
 const iconsMap: { [key: string]: React.ReactNode }  = {
-    'catalog_structure': ComponentIcon,
-    'attribute': AddAttributeIcon,
+    'catalog_structure': GroupsIcon,
+    'attribute_options': AddAttributeIcon,
     'category': CategoryIcon,
     'channel': ShopIcon,
+    'locale': LocaleIcon,
     'association_types': AssociateIcon,
     'product': ProductIcon,
 };

@@ -94,4 +94,4 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@akeneo_connectivity.connection.service.apps.scope_to_view_message_mapper'
+            - '@pim_api.security.scope_mapper'
