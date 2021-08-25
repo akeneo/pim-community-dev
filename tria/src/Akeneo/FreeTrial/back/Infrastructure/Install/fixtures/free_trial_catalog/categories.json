@@ -1,0 +1,153 @@
+{"code":"master","parent":null,"labels":{"en_US":"Master catalog (external)"}}
+{"code":"0001","parent":"master","labels":{"en_US":"FASHION"}}
+{"code":"0001_1","parent":"0001","labels":{"en_US":"Top"}}
+{"code":"0001_2","parent":"0001","labels":{"en_US":"Dresses"}}
+{"code":"0001_3","parent":"0001","labels":{"en_US":"Denim"}}
+{"code":"0001_4","parent":"0001","labels":{"en_US":"Knitwear"}}
+{"code":"0001_5","parent":"0001","labels":{"en_US":"Trousers"}}
+{"code":"0001_6","parent":"0001","labels":{"en_US":"Skirts"}}
+{"code":"0001_7","parent":"0001","labels":{"en_US":"Jackets"}}
+{"code":"0001_8","parent":"0001","labels":{"en_US":"Coats"}}
+{"code":"0001_9","parent":"0001","labels":{"en_US":"Beachwear"}}
+{"code":"0001_10","parent":"0001","labels":{"en_US":"Leaisurewear"}}
+{"code":"0001_11","parent":"0001","labels":{"en_US":"Jumpsuits"}}
+{"code":"0001_12","parent":"0001","labels":{"en_US":"Accessories"}}
+{"code":"0001_13","parent":"0001","labels":{"en_US":"Bags","es_ES":"Pantal\u00f3n","zh_CN":"\u5305"}}
+{"code":"0001_13_1","parent":"0001_13","labels":{"en_US":"Totes","es_ES":"Totes","zh_CN":null}}
+{"code":"0001_13_2","parent":"0001_13","labels":{"en_US":"Crossbody Bags","es_ES":"Cruzados","zh_CN":null}}
+{"code":"0001_13_3","parent":"0001_13","labels":{"en_US":"Trending Bags","es_ES":"De moda","zh_CN":null}}
+{"code":"0001_13_4","parent":"0001_13","labels":{"en_US":"Shoulder Bags","es_ES":"Al hombro","zh_CN":null}}
+{"code":"0001_14","parent":"0001","labels":{"en_US":"Shoes","es_ES":"Zapatos","zh_CN":"\u978b"}}
+{"code":"0001_14_1","parent":"0001_14","labels":{"en_US":"High Heels","es_ES":"Tacones de aguja","zh_CN":"\u9ad8\u8ddf\u978b"}}
+{"code":"0002","parent":"master","labels":{"en_US":"FOOD"}}
+{"code":"0002_1","parent":"0002","labels":{"en_US":"Drinks & Snacks","es_ES":"Bebidas y snacks","zh_CN":"\u996e\u6599\u548c\u5c0f\u5403"}}
+{"code":"0002_1_1","parent":"0002_1","labels":{"en_US":"Health Drinks","es_ES":"Bebidas saludables","zh_CN":"\u5065\u5eb7\u996e\u54c1"}}
+{"code":"0002_1_2","parent":"0002_1","labels":{"en_US":"Fruit Juices","es_ES":"Jugos de fruta","zh_CN":"\u6c34\u679c\u6c41"}}
+{"code":"0002_2","parent":"0002","labels":{"en_US":"Salty Grocery","es_ES":"Comestibles salados","zh_CN":"\u54b8\u6742\u8d27"}}
+{"code":"0002_2_1","parent":"0002_2","labels":{"en_US":"Pizza & Pasta","es_ES":"Pizza y pasta","zh_CN":"\u6bd4\u8428\u548c\u610f\u5927\u5229\u9762"}}
+{"code":"0002_2_2","parent":"0002_2","labels":{"en_US":"Rice, semolina & bulgur","es_ES":"Arroz, s\u00e9mola y bulgur","zh_CN":"\u5927\u7c73\u3001\u7c97\u9762\u7c89\u548c\u5c0f\u9ea6"}}
+{"code":"0003","parent":"master","labels":{"en_US":"ELECTRONICS"}}
+{"code":"0003_tv_home_theater","parent":"0003","labels":{"en_US":"TV & Home Theater"}}
+{"code":"0003_tv_home_theater_tvs","parent":"0003_tv_home_theater","labels":{"en_US":"TVs"}}
+{"code":"cables_and_accessories","parent":"0003_tv_home_theater","labels":{"en_US":"Cables and Accessories","es_ES":null,"zh_CN":null}}
+{"code":"0003_audio_video","parent":"0003","labels":{"en_US":"Audio and Video","es_ES":null,"zh_CN":null}}
+{"code":"0003_audio_video_cameras_camcorders","parent":"0003_audio_video","labels":{"en_US":"Cameras and Camcorders","es_ES":null,"zh_CN":null}}
+{"code":"0003_audio_video_speakers","parent":"0003_audio_video","labels":{"en_US":"Speakers","es_ES":null,"zh_CN":null}}
+{"code":"0003_audio_video_mp3_players","parent":"0003_audio_video","labels":{"en_US":"MP3 Players","es_ES":null,"zh_CN":null}}
+{"code":"0003_computers_accessories","parent":"0003","labels":{"en_US":"Computers and Accessories","es_ES":null,"zh_CN":null}}
+{"code":"printers_ink_and_toners","parent":"0003_computers_accessories","labels":{"en_US":"Printers, Ink & Toner","es_ES":null,"zh_CN":null}}
+{"code":"printers","parent":"printers_ink_and_toners","labels":{"en_US":"Printers","es_ES":null,"zh_CN":null}}
+{"code":"0003_computers_accessories_monitors","parent":"0003_computers_accessories","labels":{"en_US":"Monitors","es_ES":null,"zh_CN":null}}
+{"code":"0003_computers_accessories_scanners","parent":"0003_computers_accessories","labels":{"en_US":"Scanners","es_ES":null,"zh_CN":null}}
+{"code":"0003_computers_accessories_webcams","parent":"0003_computers_accessories","labels":{"en_US":"Webcams","es_ES":null,"zh_CN":null}}
+{"code":"0004","parent":"master","labels":{"en_US":"DIY\/HOME REPAIR TOOLS"}}
+{"code":"PowerToolsandAccessories","parent":"0004","labels":{"en_US":"Power Tools and Accessories","es_ES":"Herramientas el\u00e9ctricas y accesorios","zh_CN":"\u7535\u52a8\u5de5\u5177\u548c\u914d\u4ef6"}}
+{"code":"powertoolkits","parent":"PowerToolsandAccessories","labels":{"en_US":"Power Tool Kits","es_ES":null,"zh_CN":null}}
+{"code":"Drills","parent":"PowerToolsandAccessories","labels":{"en_US":"Drills","es_ES":"Taladros","zh_CN":"\u6f14\u4e60"}}
+{"code":"Saws","parent":"PowerToolsandAccessories","labels":{"en_US":"Saws","es_ES":null,"zh_CN":null}}
+{"code":"PowerToolAccessories","parent":"PowerToolsandAccessories","labels":{"en_US":"Accessories","es_ES":"Accesorios","zh_CN":"\u8f85\u6599"}}
+{"code":"0005","parent":"master","labels":{"en_US":"APPLIANCES","es_ES":"ACCESORIOS","zh_CN":"\u5bb6\u7535"}}
+{"code":"0005_1","parent":"0005","labels":{"en_US":"Major Appliances","es_ES":"Grandes aparatos","zh_CN":"\u5927\u578b\u5bb6\u7535"}}
+{"code":"0005_1_1","parent":"0005_1","labels":{"en_US":"Refrigerator","es_ES":"Refrigerador","zh_CN":"\u51b0\u7bb1"}}
+{"code":"0005_1_2","parent":"0005_1","labels":{"en_US":"Cookers","es_ES":"Cocinas","zh_CN":"\u708a\u5177"}}
+{"code":"0005_1_3","parent":"0005_1","labels":{"en_US":"Wine coolers","es_ES":"Enfriadores de vino","zh_CN":"\u9152\u67dc"}}
+{"code":"0005_1_4","parent":"0005_1","labels":{"en_US":"Dishwashers","es_ES":"Lavaplatos","zh_CN":"\u6d17\u7897\u673a"}}
+{"code":"0005_2","parent":"0005","labels":{"en_US":"Small Appliances","es_ES":"Peque\u00f1os accesorios","zh_CN":"\u5c0f\u5bb6\u7535"}}
+{"code":"0005_2_1","parent":"0005_2","labels":{"en_US":"Kettles","es_ES":"Hervidores","zh_CN":"\u6c34\u58f6"}}
+{"code":"0005_2_2","parent":"0005_2","labels":{"en_US":"Toasters","es_ES":"Tostadoras","zh_CN":"\u70e4\u9762\u5305\u673a"}}
+{"code":"0005_2_3","parent":"0005_2","labels":{"en_US":"Blenders","es_ES":"Batidoras","zh_CN":"\u6405\u62cc\u673a"}}
+{"code":"0005_2_4","parent":"0005_2","labels":{"en_US":"Electric juicers","es_ES":"Exprimidores el\u00e9ctricos","zh_CN":"\u7535\u52a8\u69a8\u6c41\u673a"}}
+{"code":"0005_mkt_1","parent":"0005","labels":{"en_US":"Breakfast","es_ES":"Desayuno","zh_CN":"\u65e9\u9910"}}
+{"code":"0005_mkt_2","parent":"0005","labels":{"en_US":"Food preparation","es_ES":"Preparaci\u00f3n de comida","zh_CN":"\u51c6\u5907\u98df\u6750"}}
+{"code":"0006","parent":"master","labels":{"en_US":"FURNITURE"}}
+{"code":"0006_1","parent":"0006","labels":{"en_US":"Sofas","es_ES":"Sof\u00e1","zh_CN":"\u6c99\u53d1"}}
+{"code":"0006_1_1","parent":"0006_1","labels":{"en_US":"Small & 2 Seater Sofas","es_ES":"Sof\u00e1s peque\u00f1os & de 2 plazas","zh_CN":"\u5c0f\u578b\u548c 2 \u5ea7\u6c99\u53d1"}}
+{"code":"0006_1_2","parent":"0006_1","labels":{"en_US":"3 Seater Sofas","es_ES":"Sof\u00e1s peque\u00f1os & de 3 plazas","zh_CN":"\u5c0f\u578b\u548c 3 \u5ea7\u6c99\u53d1"}}
+{"code":"0006_1_3","parent":"0006_1","labels":{"en_US":"4 Seater Sofas","es_ES":"Sof\u00e1s peque\u00f1os & de 3 plazas","zh_CN":"\u5c0f\u578b\u548c 3 \u5ea7\u6c99\u53d1"}}
+{"code":"0006_1_4","parent":"0006_1","labels":{"en_US":"Armchair","es_ES":"Sill\u00f3n","zh_CN":"\u6276\u624b\u6905"}}
+{"code":"0006_2","parent":"0006","labels":{"en_US":"Chairs","es_ES":"Silla","zh_CN":"\u6905\u5b50"}}
+{"code":"0006_2_1","parent":"0006_2","labels":{"en_US":"Accent Chairs","es_ES":"Sillas decorativas","zh_CN":null}}
+{"code":"0006_2_2","parent":"0006_2","labels":{"en_US":"Armchairs","es_ES":"Sillones","zh_CN":null}}
+{"code":"0006_2_3","parent":"0006_2","labels":{"en_US":"Beanbags & Pouffes","es_ES":"Pufs","zh_CN":"\u8c46\u888b\u548c\u84b2\u56e2"}}
+{"code":"0006_2_4","parent":"0006_2","labels":{"en_US":"Dining chairs","es_ES":"Sillas de comedor","zh_CN":"\u9910\u6905"}}
+{"code":"0006_3","parent":"0006","labels":{"en_US":"Tables","es_ES":"Mesas","zh_CN":"\u684c\u5b50"}}
+{"code":"0006_3_1","parent":"0006_3","labels":{"en_US":"Dining Tables","es_ES":"Mesas de comedor","zh_CN":"\u9910\u684c"}}
+{"code":"0006_3_2","parent":"0006_3","labels":{"en_US":"Console Tables","es_ES":"Mesas Consola","zh_CN":"\u63a7\u5236\u53f0\u8868"}}
+{"code":"0006_3_3","parent":"0006_3","labels":{"en_US":"Desks","es_ES":"Escritorios","zh_CN":"\u4e66\u684c"}}
+{"code":"tables_table_coffee","parent":"0006_3","labels":{"en_US":"Coffee Table","es_ES":"Masa de Centro","zh_CN":"\u5496\u5561\u684c"}}
+{"code":"0006_4","parent":"0006","labels":{"en_US":"Beds","es_ES":"Camas","zh_CN":"\u5e8a"}}
+{"code":"0006_5","parent":"0006","labels":{"en_US":"Lightning","es_ES":"Rel\u00e1mpago","zh_CN":"\u95ea\u7535"}}
+{"code":"0006_6","parent":"0006","labels":{"en_US":"Garden","es_ES":"Jard\u00edn","zh_CN":"\u82b1\u56ed"}}
+{"code":"8993","parent":"0006","labels":{"en_US":"Storage","es_ES":"Almacenamiento","zh_CN":"\u8caf\u5b58"}}
+{"code":"45875","parent":"8993","labels":{"en_US":"Media Units","es_ES":null,"zh_CN":null}}
+{"code":"0007","parent":"master","labels":{"en_US":"AUTOMOTIVE PARTS","es_ES":"PIEZAS DE AUTOM\u00d3VILES","zh_CN":"\u6c7d\u8eca\u96f6\u4ef6"}}
+{"code":"0007_tires","parent":"0007","labels":{"en_US":"Tyres","es_ES":"Neum\u00e1ticos","zh_CN":"\u8f6e\u80ce"}}
+{"code":"0007_1_1","parent":"0007_tires","labels":{"en_US":"Summer Tyres","es_ES":"Neum\u00e1ticos de verano","zh_CN":"\u590f\u5b63\u8f6e\u80ce"}}
+{"code":"0007_1_2","parent":"0007_tires","labels":{"en_US":"Winter Tyres","es_ES":"Neum\u00e1ticas de invierno","zh_CN":"\u51ac\u5b63\u8f6e\u80ce"}}
+{"code":"0007_1_3","parent":"0007_tires","labels":{"en_US":"All seasons tyres","es_ES":"Neum\u00e1ticos para todas las estaciones","zh_CN":"\u56db\u5b63\u8f6e\u80ce"}}
+{"code":"0007_1_4","parent":"0007_tires","labels":{"en_US":"4x4 tyres","es_ES":"Neum\u00e1ticos 4x4","zh_CN":"4x4 \u8f6e\u80ce"}}
+{"code":"0007_batteries","parent":"0007","labels":{"en_US":"Batteries","es_ES":"Pilas","zh_CN":"\u7535\u6c60"}}
+{"code":"0007_2_1","parent":"0007_batteries","labels":{"en_US":"Leisure batteries","es_ES":"Bater\u00edas de ocio","zh_CN":"\u4f11\u95f2\u7535\u6c60"}}
+{"code":"0007_2_2","parent":"0007_batteries","labels":{"en_US":"Van batteries","es_ES":"Bater\u00edas de furgoneta","zh_CN":"\u53a2\u5f0f\u8d27\u8f66\u7535\u6c60"}}
+{"code":"0007_bulbs","parent":"0007","labels":{"en_US":"Bulbs","es_ES":"Bulbos","zh_CN":"\u706f\u6ce1"}}
+{"code":"0007_brakes","parent":"0007","labels":{"en_US":"Brakes","es_ES":"Frenos","zh_CN":"\u5239\u8f66"}}
+{"code":"0007_suspension","parent":"0007","labels":{"en_US":"Suspension and Shock Absorbers","es_ES":"Suspensi\u00f3n y amortiguadores","zh_CN":"\u60ac\u67b6\u548c\u51cf\u9707\u5668"}}
+{"code":"0007_air","parent":"0007","labels":{"en_US":"Air Conditioning","es_ES":"Aire acondicionado","zh_CN":"\u7a7a\u8c03"}}
+{"code":"0008","parent":"master","labels":{"en_US":"PHARMA","es_ES":"Farma","zh_CN":"\u5236\u836f"}}
+{"code":"008_1","parent":"0008","labels":{"en_US":"Pain Management","es_ES":"El manejo del dolor","zh_CN":"\u75bc\u75db\u7ba1\u7406"}}
+{"code":"008_1_1","parent":"008_1","labels":{"en_US":"Headaches & Migraines","es_ES":"Dolores de cabeza y migra\u00f1as","zh_CN":"\u5934\u75db\u548c\u504f\u5934\u75db"}}
+{"code":"008_1_2","parent":"008_1","labels":{"en_US":"Period Pain","es_ES":"Dolor menstrual","zh_CN":"\u7ecf\u75db"}}
+{"code":"008_1_3","parent":"008_1","labels":{"en_US":"Muscle & Joint Pain","es_ES":"Dolor muscular y articular","zh_CN":"\u808c\u8089\u548c\u5173\u8282\u75bc\u75db"}}
+{"code":"008_1_4","parent":"008_1","labels":{"en_US":"Skin care \/ Infections","es_ES":"Cuidado de la piel \/ Infecciones","zh_CN":"\u76ae\u80a4\u62a4\u7406\/\u611f\u67d3"}}
+{"code":"008_2","parent":"0008","labels":{"en_US":"Vitamins & Supplements","es_ES":"Vitaminas y suplementos","zh_CN":"\u7ef4\u751f\u7d20\u548c\u8865\u5145\u5242"}}
+{"code":"008_2_1","parent":"008_2","labels":{"en_US":"Women's Vitamins","es_ES":"Vitaminas para mujeres","zh_CN":"\u5973\u6027\u7ef4\u751f\u7d20"}}
+{"code":"008_2_1_A","parent":"008_2_1","labels":{"en_US":"Hair, Skin & Nails","es_ES":"Pelo piel u\u00f1as","zh_CN":"\u5934\u53d1\u3001\u76ae\u80a4\u548c\u6307\u7532"}}
+{"code":"008_2_1_B","parent":"008_2_1","labels":{"en_US":"Pregnancy & Conception","es_ES":"Embarazo y concepci\u00f3n","zh_CN":"\u6000\u5b55\u548c\u53d7\u5b55"}}
+{"code":"008_2_2","parent":"008_2","labels":{"en_US":"Children's Vitamins","es_ES":"Vitaminas para ni\u00f1os","zh_CN":"\u513f\u7ae5\u7ef4\u751f\u7d20"}}
+{"code":"008_2_3","parent":"008_2","labels":{"en_US":"Men's Vitamins","es_ES":"Vitaminas para hombres","zh_CN":"\u7537\u58eb\u7ef4\u751f\u7d20"}}
+{"code":"008_3","parent":"0008","labels":{"en_US":"Sleep","es_ES":"Dormir","zh_CN":"\u7761\u89c9"}}
+{"code":"008_3_1","parent":"008_3","labels":{"en_US":"Snoring","es_ES":"Ronquidos","zh_CN":"\u6253\u9f3e"}}
+{"code":"008_3_2","parent":"008_3","labels":{"en_US":"Sleep disturbance","es_ES":"Alteraci\u00f3n del sue\u00f1o","zh_CN":"\u7761\u7720\u969c\u788d"}}
+{"code":"008_4","parent":"0008","labels":{"en_US":"Stress & Anxiety","es_ES":"Estr\u00e9s y ansiedad","zh_CN":"\u538b\u529b\u548c\u7126\u8651"}}
+{"code":"0009","parent":"master","labels":{"en_US":"COSMETICS"}}
+{"code":"0009_1","parent":"0009","labels":{"en_US":"Make-up","es_ES":"Maquillaje","zh_CN":"\u5316\u5986\u54c1"}}
+{"code":"0009_1_1","parent":"0009_1","labels":{"en_US":"Lips","es_ES":"Labios","zh_CN":"\u5634\u5507"}}
+{"code":"0009_1_2","parent":"0009_1","labels":{"en_US":"Eyes","es_ES":"Ojos","zh_CN":"\u773c\u775b"}}
+{"code":"0009_1_3","parent":"0009_1","labels":{"en_US":"Nails","es_ES":"Clavos","zh_CN":"\u9489\u5b50"}}
+{"code":"0009_2","parent":"0009","labels":{"en_US":"Skincare","es_ES":"Protecci\u00f3n de la piel","zh_CN":"\u76ae\u80a4\u62a4\u7406"}}
+{"code":"0009_2_1","parent":"0009_2","labels":{"en_US":"UV Protection","es_ES":"Protecci\u00f3n UV","zh_CN":"\u7d2b\u5916\u7ebf\u9632\u62a4"}}
+{"code":"0009_2_2","parent":"0009_2","labels":{"en_US":"Cleansers","es_ES":"Limpiadores","zh_CN":"\u6e05\u6d01\u5242"}}
+{"code":"0009_3","parent":"0009","labels":{"en_US":"Baby hygiene","es_ES":"higiene del bebe","zh_CN":"\u5a74\u513f\u536b\u751f"}}
+{"code":"0009_3_1","parent":"0009_3","labels":{"en_US":"Shampoo","es_ES":"Champ\u00fas","zh_CN":"\u5c1a\u666e"}}
+{"code":"0009_3_2","parent":"0009_3","labels":{"en_US":"Soaps and Gels","es_ES":"Jabones y Geles","zh_CN":"\u80a5\u7682\u548c\u51dd\u80f6"}}
+{"code":"0009_3_3","parent":"0009_3","labels":{"en_US":"Moisturizers","es_ES":"Hidratantes","zh_CN":"\u4fdd\u6e7f\u5242"}}
+{"code":"0009_3_4","parent":"0009_3","labels":{"en_US":"Cleansing lotion","es_ES":"Loci\u00f3n limpiadora","zh_CN":"\u6d01\u9762\u4e73"}}
+{"code":"0009_4","parent":"0009","labels":{"en_US":"Body","es_ES":"Cuerpo","zh_CN":"\u8eab\u4f53"}}
+{"code":"erp","parent":null,"labels":{"en_US":"ERP (internal)"}}
+{"code":"erp_power_drills","parent":"erp","labels":{"en_US":"Power Drills"}}
+{"code":"erp_power_tool_batteries","parent":"erp","labels":{"en_US":"Power Tool Batteries"}}
+{"code":"erp_power_tool_chargers","parent":"erp","labels":{"en_US":"Power Tool Chargers"}}
+{"code":"erp_tool_cases","parent":"erp","labels":{"en_US":"Tool Cases"}}
+{"code":"erp_drill_bits","parent":"erp","labels":{"en_US":"Drill Bits"}}
+{"code":"erp_power_tool_kits","parent":"erp","labels":{"en_US":"Power Tool Kits"}}
+{"code":"erp_clothing","parent":"erp","labels":{"en_US":"Clothing"}}
+{"code":"erp_bags","parent":"erp","labels":{"en_US":"Bags"}}
+{"code":"erp_furniture","parent":"erp","labels":{"en_US":"Furniture"}}
+{"code":"erp_food","parent":"erp","labels":{"en_US":"Food"}}
+{"code":"erp_led_tvs","parent":"erp","labels":{"en_US":"LED TVs"}}
+{"code":"erp_avcables","parent":"erp","labels":{"en_US":"A\/V Cables & Connectors"}}
+{"code":"erp_cosmetics","parent":"erp","labels":{"en_US":"Cosmetics"}}
+{"code":"erp_make_up","parent":"erp","labels":{"en_US":"Make-up"}}
+{"code":"erp_pharma","parent":"erp","labels":{"en_US":"Pharmacy"}}
+{"code":"erp_all_in_one_printers","parent":"erp","labels":{"en_US":"All-in-One Printers"}}
+{"code":"erp_appliances","parent":"erp","labels":{"en_US":"Appliances"}}
+{"code":"erp_webcams","parent":"erp","labels":{"en_US":"Webcams"}}
+{"code":"erp_camcorders","parent":"erp","labels":{"en_US":"Camcorders"}}
+{"code":"erp_mp3_players","parent":"erp","labels":{"en_US":"MP3 players"}}
+{"code":"erp_laser_led_printers","parent":"erp","labels":{"en_US":"Laser and LED printers"}}
+{"code":"erp_pc_monitors","parent":"erp","labels":{"en_US":"PC Monitors"}}
+{"code":"erp_scanners","parent":"erp","labels":{"en_US":"Scanners"}}
+{"code":"erp_loudspeakers","parent":"erp","labels":{"en_US":"Loudspeakers"}}
+{"code":"erp_multifunctionals","parent":"erp","labels":{"en_US":"Multifunctional Printers"}}
+{"code":"erp_digital_cameras","parent":"erp","labels":{"en_US":"Digital cameras"}}
+{"code":"erp_tires","parent":"erp","labels":{"en_US":"Tires","es_ES":null,"zh_CN":null}}

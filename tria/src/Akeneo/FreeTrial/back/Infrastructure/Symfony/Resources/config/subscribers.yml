@@ -64,3 +64,12 @@ services:
       - '@logger'
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallCategoriesSubscriber:
+    arguments:
+      - '@pim_catalog.factory.category'
+      - '@pim_catalog.updater.category'
+      - '@validator'
+      - '@pim_catalog.saver.category'
+    tags:
+      - { name: 'kernel.event_subscriber' }
