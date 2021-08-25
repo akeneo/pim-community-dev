@@ -1,0 +1,3 @@
+{"code":"ecommerce","currencies":["USD","EUR"],"locales":["en_US","es_ES","zh_CN"],"category_tree":"master","conversion_units":[],"labels":{"en_US":"eCommerce","zh_CN":"\u7535\u5b50\u5546\u52a1","es_ES":"eCommerce"}}
+{"code":"marketplaces","currencies":["USD","EUR"],"locales":["en_US","es_ES","zh_CN"],"category_tree":"master","conversion_units":[],"labels":{"en_US":"Marketplaces","es_ES":"Marketplaces","zh_CN":"\u5e02\u573a"}}
+{"code":"pos","currencies":["USD","EUR"],"locales":["en_US","es_ES","zh_CN"],"category_tree":"erp","conversion_units":[],"labels":{"en_US":"Point of Sale","zh_CN":"\u9500\u552e\u70b9","es_ES":"Puntos de venta"}}

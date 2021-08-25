@@ -164,7 +164,11 @@ final class ExtractStructure
 
         $count = $this->extractEntities(
             $this->apiClient->getLocaleApi()->all(),
-            $this->getLocalesFixturesPath()
+            $this->getLocalesFixturesPath(),
+            function (array $locale) {
+                unset($locale['enabled']);
+                return $locale;
+            }
         );
 
         $this->io->text(sprintf('%d locales extracted', $count));
