@@ -19,6 +19,7 @@ import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
 import AttributeOptionQualityBadge from './AttributeOptionQualityBadge';
+import {AttributeOptionRow} from "./AttributeOptionRow";
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -53,11 +54,11 @@ const AttributeOptionTable = ({
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
   const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
 
-  const onSelectItem = (optionId: number) => {
+  const onSelectItem = useCallback((optionId: number) => {
     setShowNewOptionPlaceholder(false);
     selectAttributeOption(optionId);
     showNewOptionForm(false);
-  };
+  }, [selectAttributeOption, showNewOptionForm]);
 
   const displayNewOptionPlaceholder = () => {
     setShowNewOptionPlaceholder(true);
@@ -135,6 +136,8 @@ const AttributeOptionTable = ({
     setSearchValue('');
   }, [sortedAttributeOptions]);
 
+  const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
+
   return (
     <div className="AknSubsection AknAttributeOption-list">
       <SectionTitleStyled>
@@ -167,9 +170,8 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
+            <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
               <Table.Header sticky={44}>
-                {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
                 <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
                 <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
                 <Table.HeaderCell>&nbsp;</Table.HeaderCell>
@@ -178,48 +180,13 @@ const AttributeOptionTable = ({
               <Table.Body>
                 {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
                   return (
-                    <TableRow
-                      data-testid="attribute-option-item"
-                      data-attribute-option-role="item"
-                      isDraggable={isDraggable}
+                    <AttributeOptionRow
+                      attributeOption={attributeOption}
+                      onSelectItem={onSelectItem}
                       isSelected={selectedOptionId === attributeOption.id}
-                      onClick={() => onSelectItem(attributeOption.id)}
+                      onDelete={setAttributeOptionToDelete}
                       key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                      data-is-selected={selectedOptionId === attributeOption.id}
-                    >
-                      {!isDraggable && (
-                        <TableCellNoDraggable>
-                          <HandleContainer>
-                            <RowIcon size={16} />
-                          </HandleContainer>
-                        </TableCellNoDraggable>
-                      )}
-                      <TableCellLabel data-testid="attribute-option-item-label" rowTitle={true}>
-                        {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
-                          ? attributeOption.optionValues[locale].value
-                          : `[${attributeOption.code}]`}
-                      </TableCellLabel>
-                      <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code">
-                        {attributeOption.code}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <AttributeOptionQualityBadge toImprove={attributeOption.toImprove}/>
-                      </Table.Cell>
-                      <TableActionCell>
-                        <IconButton
-                          icon={<CloseIcon />}
-                          onClick={(event: any) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            setAttributeOptionToDelete(attributeOption);
-                          }}
-                          title={translate('pim_common.delete')}
-                          ghost="borderless"
-                          level="tertiary"
-                          data-testid="attribute-option-delete-button"
-                        />
-                      </TableActionCell>
-                    </TableRow>
+                    />
                   );
                 })}
 
@@ -254,30 +221,6 @@ const SpacedTable = styled(Table)`
   th {
     padding-top: 15px;
   }
-`;
-
-const TableCellLabel = styled(Table.Cell)`
-  width: 35%;
-`;
-
-const TableCellNoDraggable = styled(Table.Cell)`
-  width: 40px;
-`;
-
-const HandleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TableRow = styled(Table.Row)<{isDraggable: boolean} & AkeneoThemedProps>`
-  td:first-child {
-    color: ${({isDraggable}) => (isDraggable ? getColor('grey', 100) : getColor('grey', 40))};
-  }
-`;
-
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
 `;
 
 export default AttributeOptionTable;
