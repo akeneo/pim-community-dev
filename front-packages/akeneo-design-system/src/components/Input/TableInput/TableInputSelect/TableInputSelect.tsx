@@ -89,8 +89,8 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   const [isOpen, open, close] = useBooleanState(false);
   const searchRef = React.createRef<HTMLInputElement>();
 
-  const focus = (ref: React.RefObject<any>) => {
-    ref.current.focus();
+  const focus = (ref: React.RefObject<HTMLInputElement>) => {
+    ref.current?.focus();
   };
 
   React.useEffect(() => {
