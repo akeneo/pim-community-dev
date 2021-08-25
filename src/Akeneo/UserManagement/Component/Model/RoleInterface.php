@@ -43,4 +43,8 @@ interface RoleInterface
      * @param string|null $label New label
      */
     public function setLabel(?string $label): void;
+
+    public function getType(): ?string;
+
+    public function setType(?string $type): void;
 }

@@ -14,3 +14,10 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper'
+            - '@pim_user.factory.role'
+            - '@pim_user.saver.role_with_permissions'
+        public: true
