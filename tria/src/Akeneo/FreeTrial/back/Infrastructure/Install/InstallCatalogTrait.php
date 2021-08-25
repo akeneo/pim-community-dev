@@ -89,7 +89,7 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/attribute_options.json';
     }
 
-    private function getAssociationTypesFixturesPath(): string
+    private function getAssociationTypeFixturesPath(): string
     {
         return $this->getFixturesPath() . '/association_types.json';
     }

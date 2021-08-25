@@ -44,6 +44,11 @@ services:
         arguments:
             - 'getFamilyVariantFixturesPath'
 
+    akeneo.free_trial.reader.association_type:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAssociationTypeFixturesPath'
+
     akeneo.free_trial.reader.product:
         class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
         arguments:

@@ -46,6 +46,17 @@ services:
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'locale' }
 
+    akeneo.free_trial.installer.association_type:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.association_type'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+            - '@pim_catalog.saver.association_type'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'association_type' }
+
     akeneo.free_trial.installer.attribute:
         class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
         arguments:

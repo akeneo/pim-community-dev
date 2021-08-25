@@ -114,11 +114,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract association types');
 
-        file_put_contents($this->getAssociationTypesFixturesPath(), '');
+        file_put_contents($this->getAssociationTypeFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getAssociationTypeApi()->all(),
-            $this->getAssociationTypesFixturesPath()
+            $this->getAssociationTypeFixturesPath()
         );
 
         $this->io->text(sprintf('%d association types extracted', $count));

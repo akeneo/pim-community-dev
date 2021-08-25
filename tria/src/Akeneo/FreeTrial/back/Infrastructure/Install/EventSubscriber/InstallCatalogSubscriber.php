@@ -84,6 +84,9 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
             case 'fixtures_locale_csv':
                 $this->installFixture('locale');
                 break;
+            case 'fixtures_association_type_csv':
+                $this->installFixture('association_type');
+                break;
             case 'fixtures_attribute_csv':
                 $this->installFixture('attribute');
                 break;
