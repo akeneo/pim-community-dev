@@ -135,13 +135,7 @@ class ReferenceEntityFilter extends AbstractAttributeFilter implements Attribute
                         $attributePath => $values,
                     ],
                 ];
-                $filterClause = [
-                    'exists' => [
-                        'field' => $attributePath,
-                    ],
-                ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             default:
