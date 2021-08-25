@@ -203,14 +203,14 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const isEditable = editMode === 'edit';
 
   const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) => (
-    <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
-      {(locale || scope) && (
+    (locale || scope) && (
+      <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
         <span className='field-context'>
           {scope && <span className='field-scope'>{context.scopeLabel}&nbsp;</span>}
           {locale && <Locale code={locale} />}
         </span>
-      )}
-    </LocaleScopeInfo>
+      </LocaleScopeInfo>
+    )
   );
 
   if (!copyContext && elements['comparison']) {
