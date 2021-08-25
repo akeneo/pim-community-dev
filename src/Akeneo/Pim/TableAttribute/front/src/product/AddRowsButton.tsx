@@ -53,8 +53,8 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
 
   const searchRef = React.createRef<HTMLInputElement>();
 
-  const focus = (ref: React.RefObject<any>) => {
-    ref.current.focus();
+  const focus = (ref: React.RefObject<HTMLInputElement>) => {
+    ref.current?.focus();
   };
 
   React.useEffect(() => {
