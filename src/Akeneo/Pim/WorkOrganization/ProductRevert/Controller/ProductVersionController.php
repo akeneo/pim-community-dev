@@ -90,12 +90,7 @@ class ProductVersionController
     /**
      * Find an entity or throw a 404
      *
-     * @param string $className Example: 'PimCatalogBundle:Category'
-     * @param int    $id        The id of the entity
-     *
      * @throws NotFoundHttpException
-     *
-     * @return Version
      */
     protected function findOr404(string $className, int $id): Version
     {

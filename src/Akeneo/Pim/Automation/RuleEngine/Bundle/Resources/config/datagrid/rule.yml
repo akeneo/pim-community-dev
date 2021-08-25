@@ -26,14 +26,14 @@ datagrid:
             impactedSubjectCount:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
                 type: twig
-                template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
+                template: '@AkeneoPimRuleEngine/Rule/_impacted_product_count.html.twig'
                 frontend_type: html
             status:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.status
                 data_name: enabled
                 type: twig
                 frontend_type: html
-                template: AkeneoPimRuleEngineBundle:Rule:_enabled.html.twig
+                template: '@AkeneoPimRuleEngine/Rule/_enabled.html.twig'
         properties:
             id: ~
             enabled: ~

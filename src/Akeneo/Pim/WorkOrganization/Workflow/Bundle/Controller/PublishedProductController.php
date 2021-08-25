@@ -104,7 +104,7 @@ class PublishedProductController
     public function viewAction($id): Response
     {
         return (new Response())->setContent($this->templating->render(
-            'AkeneoPimWorkflowBundle:PublishedProduct:view.html.twig',
+            '@AkeneoPimWorkflow/PublishedProduct/view.html.twig',
             ['productId' => $id]
         ));
     }
