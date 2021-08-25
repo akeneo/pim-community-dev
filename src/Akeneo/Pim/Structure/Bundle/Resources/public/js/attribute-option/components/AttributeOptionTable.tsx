@@ -19,7 +19,7 @@ import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
 import AttributeOptionQualityBadge from './AttributeOptionQualityBadge';
-import {AttributeOptionRow} from "./AttributeOptionRow";
+import {AttributeOptionRow} from './AttributeOptionRow';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -54,11 +54,14 @@ const AttributeOptionTable = ({
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
   const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
 
-  const onSelectItem = useCallback((optionId: number) => {
-    setShowNewOptionPlaceholder(false);
-    selectAttributeOption(optionId);
-    showNewOptionForm(false);
-  }, [selectAttributeOption, showNewOptionForm]);
+  const onSelectItem = useCallback(
+    (optionId: number) => {
+      setShowNewOptionPlaceholder(false);
+      selectAttributeOption(optionId);
+      showNewOptionForm(false);
+    },
+    [selectAttributeOption, showNewOptionForm]
+  );
 
   const displayNewOptionPlaceholder = () => {
     setShowNewOptionPlaceholder(true);
@@ -74,15 +77,18 @@ const AttributeOptionTable = ({
     }
   };
 
-  const reorderAttributeOptions = (newIndices: number[]) => {
-    setSortedAttributeOptions((rows: AttributeOption[]): AttributeOption[] => {
-      const newSortedAttributeOptions = newIndices.map(index => rows[index]).filter(index => index !== undefined);
+  const reorderAttributeOptions = useCallback(
+    (newIndices: number[]) => {
+      setSortedAttributeOptions((rows: AttributeOption[]): AttributeOption[] => {
+        const newSortedAttributeOptions = newIndices.map(index => rows[index]).filter(index => index !== undefined);
 
-      manuallySortAttributeOptions(newSortedAttributeOptions);
+        manuallySortAttributeOptions(newSortedAttributeOptions);
 
-      return newSortedAttributeOptions;
-    });
-  };
+        return newSortedAttributeOptions;
+      });
+    },
+    [manuallySortAttributeOptions]
+  );
 
   const filterOnLabelOrCode = useCallback(
     (searchString: string) => {

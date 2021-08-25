@@ -14,7 +14,7 @@ const AttributeOptions = () => {
     createAttributeOption,
     deleteAttributeOption,
     reorderAttributeOptions,
-    isSaving
+    isSaving,
   } = useContext(AttributeOptionsContext);
   const [selectedOption, setSelectedOption] = useState<AttributeOption | null>(null);
   const [showNewOptionForm, setShowNewOptionForm] = useState<boolean>(false);
@@ -93,9 +93,12 @@ const AttributeOptions = () => {
     }
   };
 
-  const manuallySortAttributeOptions = async (sortedAttributeOptions: AttributeOption[]) => {
-    await reorderAttributeOptions(sortedAttributeOptions);
-  };
+  const manuallySortAttributeOptions = useCallback(
+    async (sortedAttributeOptions: AttributeOption[]) => {
+      await reorderAttributeOptions(sortedAttributeOptions);
+    },
+    [reorderAttributeOptions]
+  );
 
   return (
     <div className="AknAttributeOption">
