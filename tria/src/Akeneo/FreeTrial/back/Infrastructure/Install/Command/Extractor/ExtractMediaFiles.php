@@ -38,7 +38,7 @@ final class ExtractMediaFiles
         $mediaFilesApi = $this->apiClient->getProductMediaFileApi();
         $this->io->progressStart($mediaFilesApi->listPerPage(1, true)->getCount());
 
-        file_put_contents($this->getMediaFilesFixturesPath(), '');
+        file_put_contents($this->getMediaFileFixturesPath(), '');
 
         foreach ($mediaFilesApi->all() as $mediaFile) {
             unset($mediaFile['_links']);
@@ -46,7 +46,7 @@ final class ExtractMediaFiles
             $mediaFileContent = $mediaFilesApi->download($mediaFile['code'])->getBody();
             $mediaFile['hash'] = sha1(strval($mediaFileContent));
 
-            file_put_contents($this->getMediaFilesFixturesPath(), json_encode($mediaFile) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getMediaFileFixturesPath(), json_encode($mediaFile) . PHP_EOL, FILE_APPEND);
             $this->io->progressAdvance(1);
         }
 

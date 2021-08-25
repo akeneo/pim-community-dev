@@ -58,7 +58,7 @@ final class ExtractProducts
 
             $this->extractProductModelAssociations($productModel);
             $productModel = $this->cleanProductData($productModel);
-            file_put_contents($this->getProductModelsFixturesPath(), json_encode($productModel) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getProductModelFixturesPath(), json_encode($productModel) . PHP_EOL, FILE_APPEND);
         }
 
         $this->io->text(sprintf('%d product models extracted', count($productModels)));
@@ -74,7 +74,7 @@ final class ExtractProducts
         foreach ($productApi->all() as $product) {
             $this->extractProductAssociations($product);
             $product = $this->cleanProductData($product);
-            file_put_contents($this->getProductsFixturesPath(), json_encode($product) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getProductFixturesPath(), json_encode($product) . PHP_EOL, FILE_APPEND);
             $productsCount++;
         }
 
@@ -92,7 +92,7 @@ final class ExtractProducts
             'associations' => $product['associations'],
         ];
 
-        file_put_contents($this->getProductAssociationsFixturesPath(), json_encode($productAssociationsData) . PHP_EOL, FILE_APPEND);
+        file_put_contents($this->getProductAssociationFixturesPath(), json_encode($productAssociationsData) . PHP_EOL, FILE_APPEND);
     }
 
     private function extractProductModelAssociations($productModel): void
@@ -106,7 +106,7 @@ final class ExtractProducts
             'associations' => $productModel['associations'],
         ];
 
-        file_put_contents($this->getProductModelAssociationsFixturesPath(), json_encode($productModelAssociationsData) . PHP_EOL, FILE_APPEND);
+        file_put_contents($this->getProductModelAssociationFixturesPath(), json_encode($productModelAssociationsData) . PHP_EOL, FILE_APPEND);
     }
 
     private function hasAssociation(array $associations): bool
@@ -155,9 +155,9 @@ final class ExtractProducts
 
     private function clearExtractionFiles(): void
     {
-        file_put_contents($this->getProductsFixturesPath(), '');
-        file_put_contents($this->getProductAssociationsFixturesPath(), '');
-        file_put_contents($this->getProductModelsFixturesPath(), '');
-        file_put_contents($this->getProductModelAssociationsFixturesPath(), '');
+        file_put_contents($this->getProductFixturesPath(), '');
+        file_put_contents($this->getProductAssociationFixturesPath(), '');
+        file_put_contents($this->getProductModelFixturesPath(), '');
+        file_put_contents($this->getProductModelAssociationFixturesPath(), '');
     }
 }
