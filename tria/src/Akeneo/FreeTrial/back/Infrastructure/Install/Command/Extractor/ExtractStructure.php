@@ -66,21 +66,21 @@ final class ExtractStructure
         $countAttributes = 0;
         $countAttributeOptions = 0;
 
-        file_put_contents($this->getAttributesFixturesPath(), '');
-        file_put_contents($this->getAttributeOptionsFixturesPath(), '');
+        file_put_contents($this->getAttributeFixturesPath(), '');
+        file_put_contents($this->getAttributeOptionFixturesPath(), '');
 
         $this->io->progressStart($attributeApi->listPerPage(1, true)->getCount());
 
         foreach ($attributeApi->all() as $attribute) {
             unset($attribute['_links']);
             unset($attribute['group_labels']);
-            file_put_contents($this->getAttributesFixturesPath(), json_encode($attribute) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getAttributeFixturesPath(), json_encode($attribute) . PHP_EOL, FILE_APPEND);
             $countAttributes++;
 
             if (in_array($attribute['type'], ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
                 $countAttributeOptions += $this->extractEntities(
                     $this->apiClient->getAttributeOptionApi()->all($attribute['code']),
-                    $this->getAttributeOptionsFixturesPath()
+                    $this->getAttributeOptionFixturesPath()
                 );
             }
 
@@ -96,11 +96,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract attribute groups');
 
-        file_put_contents($this->getAttributeGroupsFixturesPath(), '');
+        file_put_contents($this->getAttributeGroupFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getAttributeGroupApi()->all(),
-            $this->getAttributeGroupsFixturesPath(),
+            $this->getAttributeGroupFixturesPath(),
             function (array $attributeGroup) {
                 unset($attributeGroup['attributes']);
                 return $attributeGroup;
@@ -128,11 +128,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract categories');
 
-        file_put_contents($this->getCategoriesFixturesPath(), '');
+        file_put_contents($this->getCategoryFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getCategoryApi()->all(),
-            $this->getCategoriesFixturesPath(),
+            $this->getCategoryFixturesPath(),
             function (array $category) {
                 unset($category['updated']);
                 return $category;
@@ -146,11 +146,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract channels');
 
-        file_put_contents($this->getChannelsFixturesPath(), '');
+        file_put_contents($this->getChannelFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getChannelApi()->all(),
-            $this->getChannelsFixturesPath()
+            $this->getChannelFixturesPath()
         );
 
         $this->io->text(sprintf('%d channels extracted', $count));
@@ -160,11 +160,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract locales');
 
-        file_put_contents($this->getLocalesFixturesPath(), '');
+        file_put_contents($this->getLocaleFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getLocaleApi()->all(),
-            $this->getLocalesFixturesPath(),
+            $this->getLocaleFixturesPath(),
             function (array $locale) {
                 unset($locale['enabled']);
                 return $locale;
@@ -178,11 +178,11 @@ final class ExtractStructure
     {
         $this->io->section('Extract currencies');
 
-        file_put_contents($this->getCurrenciesFixturesPath(), '');
+        file_put_contents($this->getCurrencyFixturesPath(), '');
 
         $count = $this->extractEntities(
             $this->apiClient->getCurrencyApi()->all(),
-            $this->getCurrenciesFixturesPath()
+            $this->getCurrencyFixturesPath()
         );
 
         $this->io->text(sprintf('%d currencies extracted', $count));
@@ -196,20 +196,17 @@ final class ExtractStructure
         $countFamilies = 0;
         $countFamilyVariants = 0;
 
-        file_put_contents($this->getFamiliesFixturesPath(), '');
-        file_put_contents($this->getFamilyVariantsFixturesPath(), '');
+        file_put_contents($this->getFamilyFixturesPath(), '');
+        file_put_contents($this->getFamilyVariantFixturesPath(), '');
 
         $this->io->progressStart($familyApi->listPerPage(1, true)->getCount());
 
         foreach ($familyApi->all() as $family) {
             unset($family['_links']);
-            file_put_contents($this->getFamiliesFixturesPath(), json_encode($family) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getFamilyFixturesPath(), json_encode($family) . PHP_EOL, FILE_APPEND);
             $countFamilies++;
 
-            $countFamilyVariants += $this->extractEntities(
-                $this->apiClient->getFamilyVariantApi()->all($family['code']),
-                $this->getFamilyVariantsFixturesPath()
-            );
+            $countFamilyVariants += $this->extractFamilyVariants($family['code']);
 
             $this->io->progressAdvance(1);
         }
@@ -217,5 +214,20 @@ final class ExtractStructure
         $this->io->progressFinish();
 
         $this->io->text(sprintf('%d families and %d family variants extracted', $countFamilies, $countFamilyVariants));
+    }
+
+    private function extractFamilyVariants(string $family): int
+    {
+        $count = 0;
+        $familyVariants = $this->apiClient->getFamilyVariantApi()->all($family);
+
+        foreach ($familyVariants as $familyVariant) {
+            unset($familyVariant['_links']);
+            $familyVariant['family'] = $family;
+            file_put_contents($this->getFamilyVariantFixturesPath(), json_encode($familyVariant) . PHP_EOL, FILE_APPEND);
+            $count++;
+        }
+
+        return $count;
     }
 }

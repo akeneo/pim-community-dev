@@ -79,6 +79,27 @@ services:
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'attribute_option' }
 
+    akeneo.free_trial.installer.family:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+            - '@pim_catalog.saver.family'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'family' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\FamilyVariantInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@validator'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'family_variant' }
+
     Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductInstaller:
         arguments:
             - '@akeneo.free_trial.reader.product'

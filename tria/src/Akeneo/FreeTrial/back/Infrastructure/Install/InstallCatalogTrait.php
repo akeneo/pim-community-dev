@@ -114,7 +114,7 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/families.json';
     }
 
-    private function getFamilyVariantsFixturesPath(): string
+    private function getFamilyVariantFixturesPath(): string
     {
         return $this->getFixturesPath() . '/family_variants.json';
     }

@@ -34,6 +34,16 @@ services:
         arguments:
             - 'getAttributeOptionFixturesPath'
 
+    akeneo.free_trial.reader.family:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getFamilyFixturesPath'
+
+    akeneo.free_trial.reader.family_variant:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getFamilyVariantFixturesPath'
+
     akeneo.free_trial.reader.product:
         class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
         arguments:

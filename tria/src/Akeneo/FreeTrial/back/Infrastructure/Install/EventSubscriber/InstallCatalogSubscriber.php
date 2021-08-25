@@ -93,6 +93,12 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
             case 'fixtures_attribute_options_csv':
                 $this->installFixture('attribute_option');
                 break;
+            case 'fixtures_family_csv':
+                $this->installFixture('family');
+                break;
+            case 'fixtures_family_variant_csv':
+                $this->installFixture('family_variant');
+                break;
             case 'fixtures_product_csv':
                 $this->installFixture('product_association');
                 break;
@@ -101,7 +107,6 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
                 break;
         }
     }
-
 
     private function installFixture(string $fixtureName): void
     {
