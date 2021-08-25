@@ -144,13 +144,13 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         forwardedRef.current.stepUp(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step, readOnly, value]);
+    }, [forwardedRef, step, readOnly, value, onChange]);
     const handleDecrement = useCallback(() => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.stepDown(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step, readOnly, value]);
+    }, [forwardedRef, step, readOnly, value, onChange]);
 
     return (
       <NumberInputContainer>
