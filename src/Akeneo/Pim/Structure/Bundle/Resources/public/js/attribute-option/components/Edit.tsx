@@ -32,7 +32,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
 
   return (
     <EditingOptionContextProvider option={option}>
-      <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
+      <form className="AknSubsection AknAttributeOption-edit" onSubmit={onSubmit}>
         <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
           <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
         </div>

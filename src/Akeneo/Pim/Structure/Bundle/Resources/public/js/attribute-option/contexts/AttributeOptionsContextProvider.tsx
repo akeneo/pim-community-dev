@@ -1,6 +1,8 @@
 import React, {createContext, FC, useCallback, useEffect, useState} from 'react';
 import {AttributeOption, SpellcheckEvaluation} from '../model';
 import {
+  ATTRIBUTE_OPTIONS_LIST_LOADED,
+  AttributeOptionsListStateEvent,
   useCreateAttributeOption,
   useDeleteAttributeOption,
   useManualSortAttributeOptions,
@@ -32,6 +34,17 @@ type Props = {
   attributeOptionsQualityFetcher?: undefined | (() => Promise<SpellcheckEvaluation>),
 };
 
+const mergeAttributeOptionsEvaluation = (attributeOptions: AttributeOption[], evaluation: SpellcheckEvaluation) => {
+  Object.entries(evaluation.options).forEach(([optionCode, optionEvaluation]) => {
+    const optionIndex = attributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === optionCode);
+    const attributeOptionToUpdate: AttributeOption = attributeOptions[optionIndex];
+    attributeOptionToUpdate.toImprove = optionEvaluation.toImprove > 0;
+    attributeOptions[optionIndex] = attributeOptionToUpdate;
+  });
+
+  return attributeOptions;
+};
+
 const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQualityFetcher}) => {
   const attribute = useAttributeContext();
   const [attributeOptions, setAttributeOptions] = useState<AttributeOption[] | null>(null);
@@ -42,39 +55,21 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const route = useRoute('pim_enrich_attributeoption_index', {attributeId: attribute.attributeId.toString()});
 
-  useEffect(() => {
-    (async () => {
-      if (attributeOptions === null) {
-        let attributeOptions = await baseFetcher(route);
-
-        if (attributeOptionsQualityFetcher) {
-          const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
-
-          Object.entries(attributeOptionsEvaluation.options).forEach(([optionCode, optionEvaluation]) => {
-            const optionIndex = attributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === optionCode);
-            const attributeOptionToUpdate: AttributeOption = attributeOptions[optionIndex];
-            attributeOptionToUpdate.toImprove = optionEvaluation.toImprove > 0;
-            attributeOptions[optionIndex] = attributeOptionToUpdate;
-          });
-        }
-
-        setAttributeOptions(attributeOptions);
-      }
-    })();
-  }, []);
-
   const saveAttributeOption = useCallback(async(updatedAttributeOption: AttributeOption) => {
     if (!attributeOptions) {
       return;
     }
     setIsSaving(true);
     await attributeOptionSaver(updatedAttributeOption);
-    const index = attributeOptions.findIndex(
-      (attributeOption: AttributeOption) => attributeOption.id === updatedAttributeOption.id
-    );
 
-    let newAttributeOptions = [...attributeOptions];
-    newAttributeOptions[index] = updatedAttributeOption;
+    let newAttributeOptions = attributeOptions.map((attributeOption: any) => {
+      return attributeOption.id === updatedAttributeOption.id ? updatedAttributeOption : attributeOption
+    });
+    if (attributeOptionsQualityFetcher) {
+      const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+      newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
+    }
+
     setAttributeOptions(newAttributeOptions);
     setIsSaving(false);
   }, [attributeOptions, attributeOptionSaver]);
@@ -112,6 +107,34 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
     await attributeOptionManualSort(sortedAttributeOptions);
     setIsSaving(false);
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (attributeOptions === null) {
+        let attributeOptions = await baseFetcher(route);
+
+        if (attributeOptionsQualityFetcher) {
+          const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+          attributeOptions = mergeAttributeOptionsEvaluation(attributeOptions, attributeOptionsEvaluation);
+        }
+        setAttributeOptions(attributeOptions);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (attributeOptions === null) {
+      return;
+    }
+
+    window.dispatchEvent(
+      new CustomEvent<AttributeOptionsListStateEvent>(ATTRIBUTE_OPTIONS_LIST_LOADED, {
+        detail: {
+          attributeOptions,
+        },
+      })
+    );
+  }, [attributeOptions]);
 
   return <AttributeOptionsContext.Provider value={{attributeOptions, saveAttributeOption, createAttributeOption, deleteAttributeOption, reorderAttributeOptions, isSaving}}>
     {children}

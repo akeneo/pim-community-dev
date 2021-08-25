@@ -168,6 +168,7 @@ const AttributeOptionTable = ({
 
             <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
               <Table.Header sticky={44}>
+                {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
                 <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
                 <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
                 <Table.HeaderCell>&nbsp;</Table.HeaderCell>
