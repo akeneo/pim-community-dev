@@ -179,6 +179,7 @@ $rules = [
         'Symfony\Component',
         'Webmozart\Assert',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Akeneo\Tool',
 
         // Required to add quality scores into external API normalized products.

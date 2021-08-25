@@ -17,6 +17,7 @@ $rules = [
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
         'Webmozart\Assert\Assert',

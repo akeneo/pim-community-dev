@@ -80,6 +80,7 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Gedmo\Sluggable\Util\Urlizer', // used to format the project identifier
 
         // TIP-966: TWA should not be linked to Locale

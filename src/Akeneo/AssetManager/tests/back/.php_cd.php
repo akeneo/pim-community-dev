@@ -18,6 +18,7 @@ $rules = [
         'Akeneo\AssetManager\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
         'Symfony\Component\Validator',
