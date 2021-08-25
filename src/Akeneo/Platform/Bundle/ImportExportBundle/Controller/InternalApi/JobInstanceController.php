@@ -24,7 +24,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +33,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -654,6 +654,51 @@ class JobInstanceController
     public function createExportAction(Request $request)
     {
         return $this->createAction($request, 'export');
+    }
+
+    public function duplicateAction(Request $request, $code): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $jobToDuplicate = $this->getJobInstance($code);
+        if (!$this->securityFacade->isGranted(sprintf('pim_importexport_%s_profile_create', $jobToDuplicate->getType()))) {
+            throw new AccessDeniedException();
+        }
+
+        $duplicatedJobInstance = $this->jobInstanceFactory->createJobInstance($jobToDuplicate->getType());
+        $duplicatedJobInstance->setJobName($jobToDuplicate->getJobName());
+
+        $data = json_decode($request->getContent(), true);
+
+        $normalizedJobToDuplicate = $this->normalizeJobInstance($jobToDuplicate);
+        $normalizedJobToDuplicate['code'] = $data['code'] ?? '';
+        $normalizedJobToDuplicate['label'] = $data['label'] ?? '';
+        $this->updater->update($duplicatedJobInstance, $normalizedJobToDuplicate);
+
+        $violations = $this->validator->validate($duplicatedJobInstance);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['jobInstance' => $duplicatedJobInstance, 'translate' => false],
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($duplicatedJobInstance);
+
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($duplicatedJobInstance, ['data' => $this->normalizeJobInstance($jobToDuplicate)]),
+            JobInstanceEvents::POST_SAVE,
+        );
+
+        return new JsonResponse(['code' => $data['code']]);
     }
 
     /**
