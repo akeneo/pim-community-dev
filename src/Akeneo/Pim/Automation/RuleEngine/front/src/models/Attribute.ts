@@ -3,7 +3,7 @@ import {LocaleCode} from './Locale';
 type AttributeId = number;
 type AttributeCode = string;
 
-export const enum AttributeType {
+export enum AttributeType {
   BOOLEAN = 'pim_catalog_boolean',
   DATE = 'pim_catalog_date',
   FILE = 'pim_catalog_file',

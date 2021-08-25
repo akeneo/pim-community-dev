@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -10,7 +10,7 @@ import {
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {ChannelDropdown} from '../../ChannelDropdown';
-import {ParentSelection} from './model';
+import {isDefaultParentSelection, ParentSelection} from './model';
 
 type ParentSelectorProps = {
   selection: ParentSelection;
@@ -19,7 +19,7 @@ type ParentSelectorProps = {
 };
 
 const ParentSelector = ({selection, validationErrors, onSelectionChange}: ParentSelectorProps) => {
-  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -30,7 +30,13 @@ const ParentSelector = ({selection, validationErrors, onSelectionChange}: Parent
   return (
     <Collapse
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      label={
+        <>
+          {translate('akeneo.tailored_export.column_details.sources.selection.title')}
+          {0 === validationErrors.length && !isDefaultParentSelection(selection) && <Pill level="primary" />}
+          {0 < validationErrors.length && <Pill level="danger" />}
+        </>
+      }
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >

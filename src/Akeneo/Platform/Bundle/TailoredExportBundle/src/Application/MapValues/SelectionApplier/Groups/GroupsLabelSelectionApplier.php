@@ -41,7 +41,7 @@ class GroupsLabelSelectionApplier implements SelectionApplierInterface
         $groupCodes = $value->getGroupCodes();
         $groupTranslations = $this->findGroupLabels->byCodes($groupCodes, $selection->getLocale());
 
-        $selectedData = array_map(fn ($groupCode) => $groupTranslations[$groupCode] ??
+        $selectedData = array_map(static fn ($groupCode) => $groupTranslations[$groupCode] ??
             sprintf('[%s]', $groupCode), $groupCodes);
 
         return implode($selection->getSeparator(), $selectedData);

@@ -1,8 +1,12 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
-import {CodeLabelCollectionSelection, isCodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {
+  DefaultValueOperation,
+  isDefaultValueOperation,
+  CodeLabelCollectionSelection,
+  isCodeLabelCollectionSelection,
+} from '../common';
 
 type MultiSelectOperations = {
   default_value?: DefaultValueOperation;

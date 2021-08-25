@@ -33,7 +33,7 @@ class PriceCollectionAmountSelectionApplier implements SelectionApplierInterface
 
         $priceCollection = $value->getPriceCollection();
 
-        $selectedData = array_map(fn (Price $price) => $price->getAmount(), $priceCollection);
+        $selectedData = array_map(static fn (Price $price) => $price->getAmount(), $priceCollection);
 
         return implode($selection->getSeparator(), $selectedData);
     }

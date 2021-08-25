@@ -29,7 +29,7 @@ class DefaultValueOperationApplier implements OperationApplierInterface
             !$operation instanceof DefaultValueOperation
             || !$value instanceof NullValue
         ) {
-            throw new \LogicException('Cannot apply Default value operation');
+            throw new \InvalidArgumentException('Cannot apply Default value operation');
         }
 
         return new StringValue($operation->getDefaultValue());

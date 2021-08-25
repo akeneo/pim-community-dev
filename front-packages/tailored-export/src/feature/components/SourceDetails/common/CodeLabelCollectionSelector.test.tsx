@@ -100,7 +100,6 @@ test('it can select a collection separator', async () => {
 });
 
 test('it displays validation errors', async () => {
-  const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.separator',
@@ -129,11 +128,12 @@ test('it displays validation errors', async () => {
     <CodeLabelCollectionSelector
       validationErrors={validationErrors}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
-      onSelectionChange={onSelectionChange}
+      onSelectionChange={jest.fn()}
     />
   );
 
   expect(screen.getByText('error.key.separator')).toBeInTheDocument();
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });

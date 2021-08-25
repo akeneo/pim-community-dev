@@ -21,6 +21,8 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 
 class MeasurementValueSelectionApplier implements SelectionApplierInterface
 {
+    private const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
@@ -30,7 +32,7 @@ class MeasurementValueSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement value selection on this entity');
         }
 
-        return $value->getValue();
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

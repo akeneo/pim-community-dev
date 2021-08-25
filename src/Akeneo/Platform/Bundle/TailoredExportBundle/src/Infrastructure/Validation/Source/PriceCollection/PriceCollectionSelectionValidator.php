@@ -49,7 +49,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                             ],
                         ]
                     ),
-                    'locale' => new Optional([new Type(['type' => 'string'])]),
+                    'locale' => new Optional([new Type('string')]),
                     'separator' => new Choice(
                         [
                             'choices' => $this->availableCollectionSeparator,

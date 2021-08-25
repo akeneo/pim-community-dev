@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: Esporta struttura
         filters:
           title: Definisci la tua selezione prodotto
+      edit:
+        title: Per modificare, verifica i tuoi permessi con l'amministratore PIM
+      launch:
+        title: Per esportare, verifica i tuoi permessi con l'amministratore PIM
   column_list:
     title: Colonne
     header:
@@ -39,11 +43,16 @@ akeneo.tailored_export:
     sources:
       title: Origini
       add: Aggiungi origine
+      no_result: Spiacenti, non ci sono risultati.
       locale_specific: Questo attributo è specifico per impostazioni locali.
       remove:
         title: origine
         text: Sei sicuro di voler rimuovere questa origine?
         button: Rimuovi questa origine
+      invalid_source:
+        attribute: Questo attributo è stato eliminato e ricreato con un altro tipo; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
+        association_type: Questo tipo di associazione è stato eliminato e ricreato con un altro tipo; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
+        property: Questa proprietà non è valida; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
       no_source_configuration:
         title: Non sono presenti operazioni disponibili per questa origine. Il suo valore verrà esportato così com'è.
       deleted_attribute:
@@ -99,11 +108,18 @@ akeneo.tailored_export:
             locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
             channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
       operation:
+        header: Operazioni
         replacement:
           title: Sostituisci valore
           placeholder: Definisci il valore di sostituzione
           enabled: Valore di sostituzione abilitato
           disabled: Valore di sostituzione disabilitato
+          yes: Testo alternativo per il valore "Sì"
+          no: Testo alternativo per il valore "No"
+        default_value:
+          title: Se vuoto, utilizza il valore predefinito
+          label: Valore predefinito
+          placeholder: Definisci il valore
   column:
     delete_message: Sei sicuro di voler rimuovere questa colonna?
   validation:
@@ -116,6 +132,7 @@ akeneo.tailored_export:
         max_length_reached: Nome della colonna troppo lungo. Deve contenere {{ limit }} caratteri o meno.
         should_be_unique: Questo nome di colonna esiste già, inseriscine uno nuovo.
     sources:
+      max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini a questa colonna.
       association_type_should_exist: Il tipo di associazione {{ association_type_code }} non esiste. Crealo o scegli un'altra origine.
     locale:
       should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.

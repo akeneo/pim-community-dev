@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
+import {CodeLabelCollectionSelector, DefaultValue, Operations} from '../common';
 import {isReferenceEntityCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {DefaultValue, Operations} from '../common';
 
 const ReferenceEntityCollectionConfigurator = ({
   source,

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
+  ArrowDownIcon,
   Button,
   Dropdown,
   getColor,
@@ -61,7 +62,7 @@ const AddSourceDropdown = ({canAddSource, onSourceSelected}: AddSourceDropdownPr
         disabled={!canAddSource}
         onClick={open}
       >
-        {translate('akeneo.tailored_export.column_details.sources.add')}
+        {translate('akeneo.tailored_export.column_details.sources.add')} <ArrowDownIcon />
       </Button>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={handleClose}>

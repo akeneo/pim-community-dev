@@ -29,7 +29,7 @@ class EnabledReplacementOperationApplier implements OperationApplierInterface
             !$operation instanceof ReplacementOperation
             || !$value instanceof EnabledValue
         ) {
-            throw new \LogicException('Cannot apply Enabled replacement operation');
+            throw new \InvalidArgumentException('Cannot apply Enabled replacement operation');
         }
 
         $data = $value->isEnabled() ? 'true' : 'false';

@@ -3,6 +3,10 @@ import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-communi
 import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
+const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
+
+type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
+
 type MeasurementSelection =
   | {
       type: 'unit_code';
@@ -13,13 +17,25 @@ type MeasurementSelection =
     }
   | {
       type: 'value';
+      decimal_separator?: MeasurementDecimalSeparator;
     };
 
-const isMeasurementSelection = (selection: any): selection is MeasurementSelection =>
-  'type' in selection &&
-  ('unit_code' === selection.type ||
+const isMeasurementDecimalSeparator = (separator?: string): separator is MeasurementDecimalSeparator =>
+  undefined === separator || separator in availableDecimalSeparators;
+
+const isMeasurementSelection = (selection: any): selection is MeasurementSelection => {
+  if (!('type' in selection)) return false;
+
+  return (
+    'unit_code' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
-    'value' === selection.type);
+    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator))
+  );
+};
+
+const getDefaultMeasurementSelection = (): MeasurementSelection => ({type: 'unit_code'});
+
+const isDefaultMeasurementSelection = (selection?: MeasurementSelection): boolean => 'unit_code' === selection?.type;
 
 type MeasurementOperations = {
   default_value?: DefaultValueOperation;
@@ -46,7 +62,7 @@ const getDefaultMeasurementSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'unit_code'},
+  selection: getDefaultMeasurementSelection(),
 });
 
 const isMeasurementOperations = (operations: Object): operations is MeasurementOperations =>
@@ -63,4 +79,11 @@ const isMeasurementSource = (source: Source): source is MeasurementSource =>
   isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
 export type {MeasurementSelection, MeasurementSource};
-export {isMeasurementSelection, getDefaultMeasurementSource, isMeasurementSource};
+export {
+  availableDecimalSeparators,
+  getDefaultMeasurementSource,
+  isDefaultMeasurementSelection,
+  isMeasurementDecimalSeparator,
+  isMeasurementSelection,
+  isMeasurementSource,
+};

@@ -108,7 +108,7 @@ services:
             - '@akeneo_integration_tests.event_dispatcher.inner'
 
     akeneo_integration_tests.helper.authenticator:
-        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
         arguments:
             - '@pim_user.repository.user'
             - '@pim_user.factory.user'
@@ -119,6 +119,6 @@ services:
             - '@session'
 
     akeneo_integration_tests.helper.web_client:
-        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper'
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
         arguments:
             - '@router'

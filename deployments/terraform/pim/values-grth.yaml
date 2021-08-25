@@ -59,3 +59,7 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
       schedule: "*/15 * * * *"
+    migrate-job-execution-warning-count:
+      enabled: true
+      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
+      schedule: "*/30 * * * *"

@@ -73,6 +73,7 @@
 - PIM-10018: Fix asset code case in the product edit form
 - PIM-9989: Fix record code of reference entity field is case-sensitive
 - PIM-10021: Product link rule too long to be completed
+- PIM-10026: Avoid session persistance for API
 
 ## Improvements
 

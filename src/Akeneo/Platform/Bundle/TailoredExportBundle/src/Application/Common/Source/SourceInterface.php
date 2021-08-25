@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 
 interface SourceInterface
 {
+    public function getUuid(): string;
     public function getOperationCollection(): OperationCollection;
-
     public function getSelection(): SelectionInterface;
 }

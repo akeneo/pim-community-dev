@@ -15,6 +15,7 @@ import {Label} from '../../../../../components/Labels';
 import {CurrencyCode} from '../../../../../models/Currency';
 import {InputNumberWithHelper} from '../../../../../components/Inputs/InputNumberWithHelper';
 import {getScopeByCode} from '../../../../../repositories/ScopeRepository';
+import {RemoveCurrencyFromPriceCollectionValue} from './RemoveCurrencyFromPriceCollectionValue';
 
 type PriceCollectionData = {amount: number; currency: CurrencyCode}[];
 
@@ -145,4 +146,20 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {PriceCollectionValue, parsePriceCollectionValue};
+//export {PriceCollectionValue};
+
+const render: (props: InputValueProps, actionType?: string) => JSX.Element = (
+  props,
+  actionType
+) => {
+  return actionType === 'remove' ? (
+    <RemoveCurrencyFromPriceCollectionValue {...props} />
+  ) : (
+    <PriceCollectionValue
+      {...props}
+      value={parsePriceCollectionValue(props.value)}
+    />
+  );
+};
+
+export default render;

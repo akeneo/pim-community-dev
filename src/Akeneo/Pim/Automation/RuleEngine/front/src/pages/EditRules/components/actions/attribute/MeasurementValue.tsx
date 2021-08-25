@@ -6,6 +6,7 @@ import {getAttributeLabel} from '../../../../../models';
 import {
   isMeasurementAmountFilled,
   isMeasurementUnitFilled,
+  parseMeasurementValue,
 } from '../../../../../models/Measurement';
 
 const isMeasurementValueFilled = (value: any) => {
@@ -31,4 +32,12 @@ const MeasurementValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {MeasurementValue, isMeasurementValueFilled};
+export {isMeasurementValueFilled};
+
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return (
+    <MeasurementValue {...props} value={parseMeasurementValue(props.value)} />
+  );
+};
+
+export default render;

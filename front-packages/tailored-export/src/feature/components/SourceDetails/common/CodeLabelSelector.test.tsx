@@ -68,7 +68,6 @@ test('it can select a code selection type', async () => {
 });
 
 test('it displays validation errors', async () => {
-  const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.locale',
@@ -90,10 +89,11 @@ test('it displays validation errors', async () => {
     <CodeLabelSelector
       validationErrors={validationErrors}
       selection={{type: 'label', locale: 'en_US'}}
-      onSelectionChange={onSelectionChange}
+      onSelectionChange={jest.fn()}
     />
   );
 
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });

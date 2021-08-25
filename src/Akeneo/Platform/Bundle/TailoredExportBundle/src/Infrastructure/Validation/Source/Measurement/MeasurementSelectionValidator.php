@@ -27,6 +27,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MeasurementSelectionValidator extends ConstraintValidator
 {
+    /** @var string[] */
+    private array $availableDecimalSeparator;
+
+    public function __construct(array $availableDecimalSeparator)
+    {
+        $this->availableDecimalSeparator = $availableDecimalSeparator;
+    }
+
     public function validate($selection, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
@@ -42,7 +50,12 @@ class MeasurementSelectionValidator extends ConstraintValidator
                             ],
                         ]
                     ),
-                    'locale' => new Optional([new Type(['type' => 'string'])]),
+                    'locale' => new Optional([new Type('string')]),
+                    'decimal_separator' => new Optional(new Choice(
+                        [
+                            'choices' => $this->availableDecimalSeparator,
+                        ]
+                    )),
                 ],
             ]
         ));

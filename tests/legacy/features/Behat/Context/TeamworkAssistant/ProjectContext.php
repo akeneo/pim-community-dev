@@ -131,20 +131,22 @@ class ProjectContext extends PimContext
     /**
      * Launch the project calculation job for the given project
      *
-     * @param string $projectCode
-     *
      * @throws \Exception
      */
-    private function generateProject($projectCode)
+    private function generateProject(string $projectCode)
     {
         $pathFinder = new PhpExecutableFinder();
 
         $process = new Process(
-            sprintf(
-                '%s bin/console akeneo:batch:job project_calculation --env=behat -c {\"project_code\":\"%s\"}',
+            [
                 $pathFinder->find(),
-                $projectCode
-            )
+                'bin/console',
+                'akeneo:batch:job',
+                'project_calculation',
+                '--env=behat',
+                '-c',
+                sprintf('{"project_code":"%s"}', $projectCode),
+            ]
         );
 
         $process->mustRun();

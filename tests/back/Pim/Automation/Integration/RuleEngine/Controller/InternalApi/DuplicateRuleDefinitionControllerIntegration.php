@@ -7,7 +7,7 @@ namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleDefinitionHandler;
 use Akeneo\Test\Integration\Configuration;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
