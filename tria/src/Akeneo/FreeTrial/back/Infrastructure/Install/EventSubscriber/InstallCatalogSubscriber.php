@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+
+use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
+use Akeneo\FreeTrial\Infrastructure\Install\Installer\FixtureInstallerRegistry;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+final class InstallCatalogSubscriber implements EventSubscriberInterface
+{
+    use InstallCatalogTrait;
+
+    private FixtureInstallerRegistry $installerRegistry;
+
+    public function __construct(FixtureInstallerRegistry $installerRegistry)
+    {
+        $this->installerRegistry = $installerRegistry;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            InstallerEvents::PRE_LOAD_FIXTURES => 'onPreLoadFixtures',
+            InstallerEvents::PRE_LOAD_FIXTURE => 'onPreLoadFixture',
+            InstallerEvents::POST_LOAD_FIXTURE => 'onPostLoadFixture',
+        ];
+    }
+
+    public function onPreLoadFixtures(InstallerEvent $installerEvent): void
+    {
+        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
+            return;
+        }
+
+        $this->installFixture('measurement');
+        $this->installFixture('media_file');
+    }
+
+    public function onPreLoadFixture(InstallerEvent $installerEvent): void
+    {
+        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
+            return;
+        }
+
+        switch ($installerEvent->getSubject()) {
+            case 'fixtures_product_csv':
+                $this->installFixture('product');
+                break;
+            case 'fixtures_product_model_csv':
+                $this->installFixture('product_model');
+                break;
+        }
+    }
+
+    public function onPostLoadFixture(InstallerEvent $installerEvent): void
+    {
+        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
+            return;
+        }
+
+        switch ($installerEvent->getSubject()) {
+            case 'fixtures_category_csv':
+                $this->installFixture('category');
+                break;
+            case 'fixtures_channel_csv':
+                $this->installFixture('channel');
+                break;
+            case 'fixtures_currency_csv':
+                $this->installFixture('currency');
+                break;
+            case 'fixtures_locale_csv':
+                $this->installFixture('locale');
+                break;
+            case 'fixtures_product_csv':
+                $this->installFixture('product_association');
+                break;
+            case 'fixtures_product_model_csv':
+                $this->installFixture('product_model_association');
+                break;
+        }
+    }
+
+
+    private function installFixture(string $fixtureName): void
+    {
+        $installer = $this->installerRegistry->getInstaller($fixtureName);
+        $installer->install();
+    }
+}

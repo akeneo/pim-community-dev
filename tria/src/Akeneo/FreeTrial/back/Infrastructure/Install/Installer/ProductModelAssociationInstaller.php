@@ -11,20 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
+use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallProductModelAssociationsSubscriber implements EventSubscriberInterface
+final class ProductModelAssociationInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
+    private FixtureReader $fixtureReader;
 
     private IdentifiableObjectRepositoryInterface $productModelRepository;
 
@@ -33,38 +30,20 @@ final class InstallProductModelAssociationsSubscriber implements EventSubscriber
     private SaverInterface $saver;
 
     public function __construct(
+        FixtureReader $fixtureReader,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver
-    )
-    {
+    ) {
+        $this->fixtureReader = $fixtureReader;
         $this->productModelRepository = $productModelRepository;
         $this->updater = $updater;
         $this->saver = $saver;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::POST_LOAD_FIXTURE => 'installProductModelAssociations',
-        ];
-    }
-
-    public function installProductModelAssociations(InstallerEvent $installerEvent): void
-    {
-        // Install after products in case of association with a product.
-        if ('fixtures_product_csv' !== $installerEvent->getSubject()) {
-            return;
-        }
-
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
-        $file = fopen($this->getProductModelAssociationsFixturesPath(), 'r');
-
-        while ($line = fgets($file)) {
-            $productModelData = json_decode($line, true);
+        foreach ($this->fixtureReader->read() as $productModelData) {
             $productModel = $this->productModelRepository->findOneByIdentifier($productModelData['code']);
 
             if (!$productModel instanceof ProductModelInterface) {

@@ -12,52 +12,6 @@ services:
     tags:
       - { name: 'kernel.event_subscriber' }
 
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallMeasurementsSubscriber:
-    arguments:
-      - '@database_connection'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductsSubscriber:
-    arguments:
-      - '@pim_catalog.builder.product'
-      - '@pim_catalog.updater.product'
-      - '@pim_catalog.saver.product'
-      - '@pim_catalog.validator.product'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductAssociationsSubscriber:
-    arguments:
-      - '@pim_catalog.repository.product'
-      - '@pim_catalog.updater.product'
-      - '@pim_catalog.saver.product'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductModelsSubscriber:
-    arguments:
-      - '@pim_catalog.factory.product_model'
-      - '@pim_api.updater.product_model'
-      - '@pim_catalog.saver.product_model'
-      - '@pim_catalog.validator.product_model'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductModelAssociationsSubscriber:
-    arguments:
-      - '@pim_catalog.repository.product_model'
-      - '@pim_catalog.updater.product_model'
-      - '@pim_catalog.saver.product_model'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallMediaFilesSubscriber:
-    arguments:
-      - '@akeneo_file_storage.saver.file'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
   Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallViewsSubscriber:
     arguments:
       - '@database_connection'
@@ -65,38 +19,8 @@ services:
     tags:
       - { name: 'kernel.event_subscriber' }
 
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallCategoriesSubscriber:
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallCatalogSubscriber:
     arguments:
-      - '@pim_catalog.factory.category'
-      - '@pim_catalog.updater.category'
-      - '@validator'
-      - '@pim_catalog.saver.category'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallChannelsSubscriber:
-    arguments:
-      - '@pim_catalog.updater.channel'
-      - '@pim_catalog.saver.channel'
-      - '@pim_catalog.factory.channel'
-      - '@validator'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallLocalesSubscriber:
-    arguments:
-      - '@pim_catalog.updater.locale'
-      - '@pim_catalog.saver.locale'
-      - '@pim_catalog.factory.locale'
-      - '@validator'
-    tags:
-      - { name: 'kernel.event_subscriber' }
-
-  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallCurrenciesSubscriber:
-    arguments:
-      - '@pim_catalog.updater.currency'
-      - '@pim_catalog.saver.currency'
-      - '@pim_catalog.factory.currency'
-      - '@validator'
+      - '@akeneo.free_trial.installer_registry'
     tags:
       - { name: 'kernel.event_subscriber' }

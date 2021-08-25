@@ -11,18 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallMeasurementsSubscriber implements EventSubscriberInterface
+final class MeasurementInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
-
     private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
@@ -30,19 +24,8 @@ final class InstallMeasurementsSubscriber implements EventSubscriberInterface
         $this->dbConnection = $dbConnection;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::PRE_LOAD_FIXTURES => 'installMeasurements',
-        ];
-    }
-
-    public function installMeasurements(InstallerEvent $installerEvent): void
-    {
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
         $query = <<<SQL
 INSERT IGNORE INTO akeneo_measurement (code, labels, standard_unit, units)
 VALUES (

@@ -11,20 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
+use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallProductAssociationsSubscriber implements EventSubscriberInterface
+final class ProductAssociationInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
+    private FixtureReader $fixtureReader;
 
     private IdentifiableObjectRepositoryInterface $productRepository;
 
@@ -33,37 +30,20 @@ final class InstallProductAssociationsSubscriber implements EventSubscriberInter
     private SaverInterface $saver;
 
     public function __construct(
+        FixtureReader $fixtureReader,
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver
-    )
-    {
+    ) {
+        $this->fixtureReader = $fixtureReader;
         $this->productRepository = $productRepository;
         $this->updater = $updater;
         $this->saver = $saver;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::POST_LOAD_FIXTURE => 'installProductAssociations',
-        ];
-    }
-
-    public function installProductAssociations(InstallerEvent $installerEvent): void
-    {
-        if ('fixtures_product_csv' !== $installerEvent->getSubject()) {
-            return;
-        }
-
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
-        $file = fopen($this->getProductAssociationsFixturesPath(), 'r');
-
-        while ($line = fgets($file)) {
-            $productData = json_decode($line, true);
+        foreach ($this->fixtureReader->read() as $productData) {
             $product = $this->productRepository->findOneByIdentifier($productData['identifier']);
 
             if (!$product instanceof ProductInterface) {

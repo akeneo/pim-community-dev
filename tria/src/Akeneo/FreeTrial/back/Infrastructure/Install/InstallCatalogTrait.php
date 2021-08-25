@@ -34,27 +34,27 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/jobs.yml';
     }
 
-    private function getMediaFilesFixturesPath(): string
+    private function getMediaFileFixturesPath(): string
     {
         return $this->getFixturesPath() . '/media_files.json';
     }
 
-    private function getProductsFixturesPath(): string
+    private function getProductFixturesPath(): string
     {
         return $this->getFixturesPath() . '/products.json';
     }
 
-    private function getProductModelsFixturesPath(): string
+    private function getProductModelFixturesPath(): string
     {
         return $this->getFixturesPath() . '/product_models.json';
     }
 
-    private function getProductAssociationsFixturesPath(): string
+    private function getProductAssociationFixturesPath(): string
     {
         return $this->getFixturesPath() . '/product_associations.json';
     }
 
-    private function getProductModelAssociationsFixturesPath(): string
+    private function getProductModelAssociationFixturesPath(): string
     {
         return $this->getFixturesPath() . '/product_model_associations.json';
     }
@@ -69,7 +69,7 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/categories_codes.csv';
     }
 
-    private function getCategoriesFixturesPath(): string
+    private function getCategoryFixturesPath(): string
     {
         return $this->getFixturesPath() . '/categories.json';
     }
@@ -94,17 +94,17 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/association_types.json';
     }
 
-    private function getChannelsFixturesPath(): string
+    private function getChannelFixturesPath(): string
     {
         return $this->getFixturesPath() . '/channels.json';
     }
 
-    private function getLocalesFixturesPath(): string
+    private function getLocaleFixturesPath(): string
     {
         return $this->getFixturesPath() . '/locales.json';
     }
 
-    private function getCurrenciesFixturesPath(): string
+    private function getCurrencyFixturesPath(): string
     {
         return $this->getFixturesPath() . '/currencies.json';
     }

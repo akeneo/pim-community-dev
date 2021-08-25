@@ -11,48 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
+use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\MountManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallMediaFilesSubscriber implements EventSubscriberInterface
+final class MediaFileInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
+    private FixtureReader $fixtureReader;
 
     private SaverInterface $saver;
 
-    public function __construct(SaverInterface $saver)
+    public function __construct(FixtureReader $fixtureReader, SaverInterface $saver)
     {
+        $this->fixtureReader = $fixtureReader;
         $this->saver = $saver;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::PRE_LOAD_FIXTURES => 'installMediaFiles',
-        ];
-    }
-
-    public function installMediaFiles(InstallerEvent $installerEvent): void
-    {
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
-        $mediaFiles = fopen($this->getMediaFilesFixturesPath(), 'r');
-
-        while ($mediaFileData = fgets($mediaFiles)) {
-            $mediaFileData = json_decode($mediaFileData, true);
+        foreach ($this->fixtureReader->read() as $mediaFileData) {
             $mediaFile = $this->buildMediaFileFromData($mediaFileData);
-
             $this->saver->save($mediaFile);
         }
     }

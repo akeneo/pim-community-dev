@@ -11,21 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
+use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class InstallProductsSubscriber implements EventSubscriberInterface
+final class ProductInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
-
     private ProductBuilderInterface $productBuilder;
 
     private ObjectUpdaterInterface $updater;
@@ -34,40 +29,25 @@ final class InstallProductsSubscriber implements EventSubscriberInterface
 
     private ValidatorInterface $productValidator;
 
+    private FixtureReader $fixturesReader;
+
     public function __construct(
+        FixtureReader $fixturesReader,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         ValidatorInterface $productValidator
-    )
-    {
+    ) {
         $this->productBuilder = $productBuilder;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->productValidator = $productValidator;
+        $this->fixturesReader = $fixturesReader;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::PRE_LOAD_FIXTURE => 'installProducts',
-        ];
-    }
-
-    public function installProducts(InstallerEvent $installerEvent): void
-    {
-        if ('fixtures_product_csv' !== $installerEvent->getSubject()) {
-            return;
-        }
-
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
-        $file = fopen($this->getProductsFixturesPath(), 'r');
-
-        while ($line = fgets($file)) {
-            $productData = json_decode($line, true);
+        foreach ($this->fixturesReader->read() as $productData) {
             $productData['values']['sku'] = [[
                 'locale' => null,
                 'scope' => null,
@@ -84,7 +64,11 @@ final class InstallProductsSubscriber implements EventSubscriberInterface
 
         $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
-            throw new \Exception(sprintf('validation failed on product "%s"', $productData['identifier']));
+            throw new \Exception(sprintf(
+                'validation failed on product "%s" with message: "%s"',
+                $productData['identifier'],
+                iterator_to_array($violations)[0]->getMessage()
+            ));
         }
 
         $this->saver->save($product);

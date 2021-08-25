@@ -11,21 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
-use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class InstallProductModelsSubscriber implements EventSubscriberInterface
+final class ProductModelInstaller implements FixtureInstaller
 {
-    use InstallCatalogTrait;
-
     private SimpleFactoryInterface $factory;
 
     private ObjectUpdaterInterface $updater;
@@ -34,7 +29,10 @@ final class InstallProductModelsSubscriber implements EventSubscriberInterface
 
     private ValidatorInterface $validator;
 
+    private FixtureReader $fixtureReader;
+
     public function __construct(
+        FixtureReader $fixtureReader,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
@@ -44,31 +42,12 @@ final class InstallProductModelsSubscriber implements EventSubscriberInterface
         $this->updater = $updater;
         $this->saver = $saver;
         $this->validator = $validator;
+        $this->fixtureReader = $fixtureReader;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            InstallerEvents::PRE_LOAD_FIXTURE => 'installProductModels',
-        ];
-    }
-
-    public function installProductModels(InstallerEvent $installerEvent): void
-    {
-        if ('fixtures_product_model_csv' !== $installerEvent->getSubject()) {
-            return;
-        }
-
-        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
-            return;
-        }
-
-        $file = fopen($this->getProductModelsFixturesPath(), 'r');
-
-        while ($line = fgets($file)) {
-            $productModelData = json_decode($line, true);
-            $this->addProductModel($productModelData);
-        }
+        // TODO: Implement install() method.
     }
 
     private function addProductModel(array $productModelData): void
