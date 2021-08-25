@@ -30,8 +30,6 @@ extensions:
         module: pim/common/breadcrumbs
         parent: pim-export-profile-index
         targetZone: breadcrumbs
-        config:
-            tab: pim-menu-exports
 
     pim-export-profile-index-filters-list:
         module: oro/datafilter/filters-list

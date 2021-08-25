@@ -27,11 +27,9 @@ extensions:
             title: pim_import_export.entity.import_profile.page_title.index
 
     pim-import-profile-index-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-import-profile-index
         targetZone: breadcrumbs
-        config:
-            tab: pim-menu-imports
 
     pim-import-profile-index-filters-list:
         module: oro/datafilter/filters-list
