@@ -14,7 +14,7 @@ services:
     Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer:
         decorates: fos_rest.serializer.flatten_exception_normalizer
         arguments:
-            - '@.inner'
+            - '@Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer.inner'
         calls:
             - [ 'setNormalizer', [ '@pim_external_api_exception_serializer' ] ]
         tags:
