@@ -5,20 +5,10 @@ import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {
-  AkeneoThemedProps,
-  Button,
-  CloseIcon,
-  getColor,
-  IconButton,
-  RowIcon,
-  SectionTitle,
-  Table,
-} from 'akeneo-design-system';
+import {Button, SectionTitle, Table,} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
-import AttributeOptionQualityBadge from './AttributeOptionQualityBadge';
 import {AttributeOptionRow} from './AttributeOptionRow';
 
 interface ListProps {
@@ -187,6 +177,7 @@ const AttributeOptionTable = ({
                 {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
                   return (
                     <AttributeOptionRow
+                      isDraggable={isDraggable}
                       attributeOption={attributeOption}
                       onSelectItem={onSelectItem}
                       isSelected={selectedOptionId === attributeOption.id}
