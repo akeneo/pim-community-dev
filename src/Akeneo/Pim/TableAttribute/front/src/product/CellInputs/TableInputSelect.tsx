@@ -44,6 +44,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
+  const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
@@ -83,6 +84,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
     .slice(0, numberOfDisplayedItems);
 
   const handleRedirect = () => {
+    setCloseTick(!closeTick);
     router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
   };
 
@@ -107,6 +109,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
       inError={inError || notFoundOption}
+      closeTick={closeTick}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (
