@@ -52,7 +52,7 @@ class GetLastOperations implements GetLastOperationsInterface
                 'instance.type',
                 'instance.label',
                 'execution.status',
-                'COUNT(warning.id) as warningCount',
+                'SUM(step.warning_count) as warningCount',
             ])
             ->from('akeneo_batch_job_execution', 'execution')
             ->innerJoin(
@@ -66,12 +66,6 @@ class GetLastOperations implements GetLastOperationsInterface
                 'akeneo_batch_step_execution',
                 'step',
                 $qb->expr()->eq('step.job_execution_id', 'execution.id')
-            )
-            ->leftJoin(
-                'step',
-                'akeneo_batch_warning',
-                'warning',
-                $qb->expr()->eq('warning.step_execution_id', 'step.id')
             )
             ->groupBy('execution.id')
             ->orderBy('execution.start_time', 'DESC')

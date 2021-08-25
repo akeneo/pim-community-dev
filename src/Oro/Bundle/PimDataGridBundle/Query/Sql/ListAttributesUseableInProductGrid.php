@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableInProductGrid as ListAttributesUseableInProductGridQuery;
 
 /**
@@ -53,8 +53,8 @@ LIMIT $limit OFFSET $offset
 SQL;
 
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('locale', $locale, Type::STRING);
-        $stmt->bindValue('search', "%$searchOnLabel%", Type::STRING);
+        $stmt->bindValue('locale', $locale, Types::STRING);
+        $stmt->bindValue('search', "%$searchOnLabel%", Types::STRING);
 
         $stmt->execute();
         $attributes = $stmt->fetchAll(\PDO::FETCH_ASSOC);

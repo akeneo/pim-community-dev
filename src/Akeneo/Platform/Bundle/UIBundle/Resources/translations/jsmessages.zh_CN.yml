@@ -242,7 +242,6 @@ pim_common:
   product_models: 产品模型
   more: 更多
 error:
-  exception: 哎呀 ！发生错误 {{ status_code }} ...
   forbidden: 您无权访问此页面
 alert:
   attribute_option:
@@ -319,6 +318,7 @@ pim_title:
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
   pim_settings_index: 设置 
+  pim_system_index: 系统
 pim_menu:
   tab:
     activity: 活动
@@ -388,3 +388,6 @@ pim_settings:
     group_types: '{0}您有 0 个分组类型 |{1}您有 1 个分组类型 |]1，Inf[您有 {{ count }} 个分组类型'
     groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
     rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
+pim_system:
+  system_navigation: 系统导航
+  users_management_navigation: 用户管理导航

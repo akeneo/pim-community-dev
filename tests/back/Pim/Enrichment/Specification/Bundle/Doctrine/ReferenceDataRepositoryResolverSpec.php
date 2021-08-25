@@ -8,11 +8,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
 {
-    function let(ConfigurationRegistryInterface $configurationRegistry, RegistryInterface $doctrine)
+    function let(ConfigurationRegistryInterface $configurationRegistry, ManagerRegistry $doctrine)
     {
         $this->beConstructedWith($configurationRegistry, $doctrine);
     }

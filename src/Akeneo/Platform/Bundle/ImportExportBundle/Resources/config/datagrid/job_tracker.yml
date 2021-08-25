@@ -36,7 +36,7 @@ datagrid:
                 label:         Warnings
                 type:          twig
                 data_name:     warningCount
-                template:      PimImportExportBundle:Property:warning.html.twig
+                template:      '@PimImportExport/Property/warning.html.twig'
                 frontend_type: html
             actions:
                 label: ~

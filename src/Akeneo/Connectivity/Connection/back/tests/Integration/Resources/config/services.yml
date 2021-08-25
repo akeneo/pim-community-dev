@@ -5,3 +5,5 @@ services:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeDnsLookup
     akeneo_connectivity.connection.marketplace.web_marketplace_api:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi
+    akeneo_connectivity.connection.marketplace_activate.feature:
+        class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag

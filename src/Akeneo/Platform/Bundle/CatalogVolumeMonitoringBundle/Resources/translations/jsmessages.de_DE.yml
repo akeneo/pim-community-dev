@@ -15,7 +15,6 @@ pim_catalog_volume:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie
     count_channels: Ausgabekanäle
-    count_locales: Ländereinstellungen (aktiviert)
     count_scopable_attributes: Scopable Attribute
     count_localizable_and_scopable_attributes: Lokalisierbar und scopable Attribute
     count_localizable_attributes: Lokalisierbare Attribute

@@ -94,6 +94,8 @@
 - PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-10009: Fix error being printed in the response of partial update of product models API
 - PIM-10003: Fix translation in setting page are not plurializable
+- PIM-9989: Fix record code of reference entity field is case-sensitive
+- PIM-10026: Avoid session persistance for API
 
 ## New features
 
@@ -120,6 +122,7 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 
 - PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled
 - PIM-9877: Optimize DQI dashboard data consolidation
+- PIM-10004: Optimize counting job execution warnings
 
 ## Classes
 

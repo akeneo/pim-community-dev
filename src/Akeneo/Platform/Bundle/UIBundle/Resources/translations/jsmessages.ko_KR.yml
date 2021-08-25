@@ -242,7 +242,6 @@ pim_common:
   product_models: 제품 모델
   more: 더보기 
 error:
-  exception: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
 alert:
   attribute_option:
@@ -319,6 +318,7 @@ pim_title:
   pim_enrich_mass_edit_action: 대량 편집
   pim_analytics_system_info_index: 시스템 정보
   pim_settings_index: 설정
+  pim_system_index: 시스템
 pim_menu:
   tab:
     activity: 활동
@@ -388,3 +388,6 @@ pim_settings:
     group_types: '{0}0개의 그룹 유형이 있습니다|{1}1개의 그룹 유형이 있습니다|]1, Inf[{{ count }}개의 그룹 유형이 있습니다'
     groups: '{0}0개의 그룹이 있습니다|{1}1개의 그룹이 있습니다|]1, Inf[{{ count }}개의 그룹이 있습니다'
     rules: '{0}0개의 규칙이 활성화되어 있습니다|{1}1개의 규칙이 활성화되어 있습니다|]1, Inf[{{ count }}개의 규칙이 활성화되어 있습니다'
+pim_system:
+  system_navigation: 시스템 탐색
+  users_management_navigation: 사용자 관리 탐색
