@@ -734,9 +734,6 @@
     "symfony/options-resolver": {
         "version": "v4.3.4"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.6"
-    },
     "symfony/polyfill-apcu": {
         "version": "v1.4.0"
     },
