@@ -19,6 +19,21 @@ services:
         arguments:
             - 'getLocaleFixturesPath'
 
+    akeneo.free_trial.reader.attribute:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeFixturesPath'
+
+    akeneo.free_trial.reader.attribute_group:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeGroupFixturesPath'
+
+    akeneo.free_trial.reader.attribute_option:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeOptionFixturesPath'
+
     akeneo.free_trial.reader.product:
         class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
         arguments:

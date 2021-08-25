@@ -74,17 +74,17 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/categories.json';
     }
 
-    private function getAttributesFixturesPath(): string
+    private function getAttributeFixturesPath(): string
     {
         return $this->getFixturesPath() . '/attributes.json';
     }
 
-    private function getAttributeGroupsFixturesPath(): string
+    private function getAttributeGroupFixturesPath(): string
     {
         return $this->getFixturesPath() . '/attribute_groups.json';
     }
 
-    private function getAttributeOptionsFixturesPath(): string
+    private function getAttributeOptionFixturesPath(): string
     {
         return $this->getFixturesPath() . '/attribute_options.json';
     }
@@ -109,7 +109,7 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/currencies.json';
     }
 
-    private function getFamiliesFixturesPath(): string
+    private function getFamilyFixturesPath(): string
     {
         return $this->getFixturesPath() . '/families.json';
     }

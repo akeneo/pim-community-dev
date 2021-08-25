@@ -46,6 +46,39 @@ services:
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'locale' }
 
+    akeneo.free_trial.installer.attribute:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute' }
+
+    akeneo.free_trial.installer.attribute_group:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute_group'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute_group' }
+
+    akeneo.free_trial.installer.attribute_option:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_option'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute_option' }
+
     Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductInstaller:
         arguments:
             - '@akeneo.free_trial.reader.product'
