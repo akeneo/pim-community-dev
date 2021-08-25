@@ -1,0 +1,83 @@
+import React, {memo, useCallback} from 'react';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributeOption} from '../model';
+import {AkeneoThemedProps, CloseIcon, getColor, IconButton, RowIcon, Table,} from 'akeneo-design-system';
+import styled from 'styled-components';
+import AttributeOptionQualityBadge from './AttributeOptionQualityBadge';
+
+type Props = {
+  attributeOption: AttributeOption,
+  onSelectItem: (optionId: number) => void,
+  isSelected: boolean,
+  onDelete: (attributeOption: AttributeOption) => void;
+}
+
+const AttributeOptionRow = memo(({attributeOption, onSelectItem, isSelected, onDelete, ...rest}: Props) => {
+  const locale = useUserContext().get('catalogLocale');
+  const translate = useTranslate();
+
+  const handleDelete = useCallback(() => {
+    onDelete(attributeOption);
+  }, [onDelete, attributeOption]);
+
+  const handleSelectRow = useCallback(() => onSelectItem(attributeOption.id), [onSelectItem, attributeOption]);
+
+  return (
+    <Table.Row
+      data-testid="attribute-option-item"
+      data-attribute-option-role="item"
+      isSelected={isSelected}
+      onClick={handleSelectRow}
+      data-is-selected={isSelected}
+      {...rest}
+    >
+      <TableCellLabel data-testid="attribute-option-item-label" rowTitle={true}>
+        {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
+          ? attributeOption.optionValues[locale].value
+          : `[${attributeOption.code}]`}
+      </TableCellLabel>
+      <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code" >
+        {attributeOption.code}
+      </Table.Cell>
+      <Table.Cell>
+        <AttributeOptionQualityBadge toImprove={attributeOption.toImprove}/>
+      </Table.Cell>
+      <TableActionCell>
+        <IconButton
+          icon={<CloseIcon />}
+          onClick={handleDelete}
+          title={translate('pim_common.delete')}
+          ghost="borderless"
+          level="tertiary"
+          data-testid="attribute-option-delete-button"
+        />
+      </TableActionCell>
+    </Table.Row>
+  )
+});
+
+const TableCellLabel = styled(Table.Cell)`
+  width: 35%;
+`;
+
+const TableCellNoDraggable = styled(Table.Cell)`
+  width: 40px;
+`;
+
+const HandleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// const TableRow = styled(Table.Row)<{isDraggable: boolean} & AkeneoThemedProps>`
+//   td:first-child {
+//     color: ${({isDraggable}) => (isDraggable ? getColor('grey', 100) : getColor('grey', 40))};
+//   }
+// `;
+
+const TableActionCell = styled(Table.ActionCell)`
+  width: 50px;
+`;
+
+export {AttributeOptionRow};
