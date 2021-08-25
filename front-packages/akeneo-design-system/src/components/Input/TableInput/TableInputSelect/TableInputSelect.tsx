@@ -69,6 +69,7 @@ type TableInputSelectProps = {
   searchPlaceholder: string;
   searchTitle: string;
   inError?: boolean;
+  closeTick?: boolean;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -84,6 +85,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   onNextPage,
   children,
   inError,
+  closeTick = false,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -98,6 +100,10 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       focus(searchRef);
     }
   }, [isOpen]);
+
+  React.useEffect(() => {
+    isOpen ? close() : open();
+  }, [closeTick]);
 
   React.useEffect(() => {
     close();
