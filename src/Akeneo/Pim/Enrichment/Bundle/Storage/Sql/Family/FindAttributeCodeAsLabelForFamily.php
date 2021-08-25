@@ -16,15 +16,14 @@ use Doctrine\DBAL\Connection;
  */
 class FindAttributeCodeAsLabelForFamily implements FindAttributeCodeAsLabelForFamilyInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-    public function execute(string $code): string
+    public function execute(string $code): ?string
     {
         $sql = <<<SQL
         SELECT a.code
@@ -32,6 +31,12 @@ class FindAttributeCodeAsLabelForFamily implements FindAttributeCodeAsLabelForFa
           INNER JOIN pim_catalog_attribute a ON f.label_attribute_id = a.id
         WHERE (f.code = :code)
 SQL;
-        return $this->connection->executeQuery($sql, ['code' => $code])->fetch(\PDO::FETCH_COLUMN);
+        $result = $this->connection->executeQuery($sql, ['code' => $code])->fetch(\PDO::FETCH_COLUMN);
+
+        if (!is_string($result)) {
+            return null;
+        }
+
+        return $result;
     }
 }

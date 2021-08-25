@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
+class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterface
 {
     private array $impactedFamilyCodes = [];
 
@@ -45,7 +45,7 @@ class AttributeAsLabelChangedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $oldAttributeCodeAsLabel = $this->attributeCodeAsLabelForFamily->execute($subject->getId());
+        $oldAttributeCodeAsLabel = $this->attributeCodeAsLabelForFamily->execute($subject->getCode());
         $newAttributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
         if ($newAttributeCodeAsLabel !== $oldAttributeCodeAsLabel) {
             $this->impactedFamilyCodes[] = $subject->getCode();
