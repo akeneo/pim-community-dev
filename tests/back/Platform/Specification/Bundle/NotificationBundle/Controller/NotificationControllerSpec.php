@@ -44,7 +44,7 @@ class NotificationControllerSpec extends ObjectBehavior
         $context->getUserTimezone()->willReturn('Europe/Paris');
 
         $templating->render(
-            'PimNotificationBundle:Notification:list.json.twig',
+            '@PimNotification/Notification/list.json.twig',
             [
                 'userNotifications' => [$userNotification],
                 'userTimezone' => 'Europe/Paris',
