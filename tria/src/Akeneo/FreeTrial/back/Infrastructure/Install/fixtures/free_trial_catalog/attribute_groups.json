@@ -1,0 +1,18 @@
+{"code":"certifications","sort_order":11,"labels":{"en_US":"Certifications Team","es_ES":"Equipo de certificaciones","zh_CN":"\u8ba4\u8bc1\u56e2\u961f"}}
+{"code":"colorsize","sort_order":16,"labels":{"en_US":"Color and Size (view only)","es_ES":"Color y tama\u00f1o (solo vista)","zh_CN":"\u989c\u8272\u548c\u5c3a\u5bf8\uff08\u4ec5\u67e5\u770b\uff09"}}
+{"code":"compatibility","sort_order":9,"labels":{"en_US":"Compatibility specifications \/ Product team","zh_CN":"\u517c\u5bb9\u6027\u89c4\u683c\/\u4ea7\u54c1\u56e2\u961f","es_ES":"Especificaciones de compatibilidad \/ Equipo de producto"}}
+{"code":"connectivity","sort_order":8,"labels":{"en_US":"Connectivity specifications \/ Product Team","es_ES":"Especificaci\u00f3n de conectividad \/ Product Team","zh_CN":"\u8fde\u63a5\u89c4\u683c\/\u4ea7\u54c1\u56e2\u961f"}}
+{"code":"contentcopy","sort_order":2,"labels":{"en_US":"Content \/ Copy Team","zh_CN":"\u5185\u5bb9\/\u590d\u5236 \u56e2\u961f","es_ES":"Contenido \/ Copia Equipo"}}
+{"code":"display","sort_order":7,"labels":{"en_US":"Display specifications \/ Product Team","zh_CN":"\u663e\u793a\u89c4\u683c \/ \u4ea7\u54c1\u56e2\u961f","es_ES":"Especificaci\u00f3n de pantalla \/ Equipo de producto"}}
+{"code":"documentation","sort_order":5,"labels":{"en_US":"Documentation Team","zh_CN":"\u6587\u6863\u56e2\u961f","es_ES":"Equipo de documentaci\u00f3n"}}
+{"code":"erp","sort_order":1,"labels":{"en_US":"ERP (view only)","es_ES":"ERP (s\u00f3lo vista)","zh_CN":"ERP (\u53ea\u8bfb\uff09"}}
+{"code":"marketplace","sort_order":14,"labels":{"en_US":"Marketplace Team","zh_CN":"\u5e02\u573a\u56e2\u961f","es_ES":"Marketplace Team"}}
+{"code":"other","sort_order":0,"labels":{"en_US":"Other"}}
+{"code":"power","sort_order":10,"labels":{"en_US":"Power specifications \/ Product Team","zh_CN":"\u7535\u6e90\u89c4\u683c\/\u4ea7\u54c1\u56e2\u961f","es_ES":"Especificaciones de energ\u00eda \/ Equipo de producto"}}
+{"code":"regulatory","sort_order":12,"labels":{"en_US":"Regulatory Team","es_ES":"Equipo regulador ","zh_CN":"\u8c03\u8282\u5668"}}
+{"code":"seo","sort_order":4,"labels":{"en_US":"SEO \/ E-commerce Team","es_ES":"SEO \/ E-commerce Team","zh_CN":"SEO\/\u7535\u5b50\u5546\u52a1\u56e2\u961f"}}
+{"code":"specifications","sort_order":6,"labels":{"en_US":"Specifications \/ Product Team","zh_CN":"\u89c4\u683c\/\u4ea7\u54c1\u56e2\u961f","es_ES":"Especificaciones \/ Equipo de producto"}}
+{"code":"studio","sort_order":3,"labels":{"en_US":"Studio Team","es_ES":"Studio Equipo","zh_CN":"\u5de5\u4f5c\u5ba4 \u56e2\u961f"}}
+{"code":"supermarket_retailer","sort_order":13,"labels":{"en_US":"Supermarket \/ Retailers Team","es_ES":"Supermercado \/ Minoristas Team","zh_CN":"\u8d85\u5e02\/\u96f6\u552e\u5546"}}
+{"code":"tire_ratings","sort_order":17,"labels":{"en_US":"Tire Ratings \/ Product Team"}}
+{"code":"weight_dimensions","sort_order":15,"labels":{"en_US":"Weight & Dimensions (View only)","zh_CN":"\u91cd\u91cf\u548c\u5c3a\u5bf8\uff08\u4ec5\u67e5\u770b\uff09","es_ES":"Peso y dimensiones (solo vista)"}}
