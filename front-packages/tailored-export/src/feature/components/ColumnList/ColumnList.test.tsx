@@ -6,6 +6,8 @@ import {ValidationErrorsContext} from '../../contexts';
 import {ColumnConfiguration, ColumnsState} from '../../models/ColumnConfiguration';
 import {renderWithProviders} from 'feature/tests';
 
+jest.useFakeTimers();
+
 test('it renders a placeholder when no column is selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
