@@ -16,7 +16,7 @@ final class ScopeMapper
     private const SCOPE_WRITE_ATTRIBUTE_OPTIONS = 'write_attribute_options';
     private const SCOPE_READ_CATEGORIES = 'read_categories';
     private const SCOPE_WRITE_CATEGORIES = 'write_categories';
-    private const SCOPE_READ_CHANNEL_LOCALIZATION = 'read_channel_localization'; // secret scope, automatically added
+    private const SCOPE_READ_CHANNEL_LOCALIZATION = 'read_channel_localization';
     private const SCOPE_READ_CHANNEL_SETTINGS = 'read_channel_settings';
     private const SCOPE_WRITE_CHANNEL_SETTINGS = 'write_channel_settings';
     private const SCOPE_READ_ASSOCIATION_TYPES = 'read_association_types';
@@ -104,21 +104,6 @@ final class ScopeMapper
     ];
 
     /**
-     * Related scopes that are automatically added.
-     * This is useful when a specific scope was requested, and you want to automtically add another one,
-     * for functional reasons.
-     * eg: it does not make sense to ask "read_channel_settings" without "read_channel_localization"
-     */
-    private const SCOPE_COMPLICITY = [
-        self::SCOPE_READ_CHANNEL_SETTINGS => [
-            self::SCOPE_READ_CHANNEL_LOCALIZATION,
-        ],
-        self::SCOPE_WRITE_CHANNEL_SETTINGS => [
-            self::SCOPE_READ_CHANNEL_LOCALIZATION,
-        ],
-    ];
-
-    /**
      * @return string[]
      */
     public function getAllScopes(): array
@@ -168,7 +153,6 @@ final class ScopeMapper
     public function formalizeScopes(array $scopes): array
     {
         $scopes = $this->filterInheritedScopes($scopes);
-        $scopes = $this->addScopesComplicity($scopes);
         \sort($scopes);
 
         return \array_values(\array_unique($scopes));
@@ -189,26 +173,6 @@ final class ScopeMapper
         }
 
         return \array_filter($scopes, fn($scope) => !in_array($scope, $inheritedScopes));
-    }
-
-    /**
-     * @return string[]
-     */
-    private function addScopesComplicity(array $scopes): array
-    {
-        $relatedScopes = [];
-
-        foreach ($scopes as $scope) {
-            if (!isset(self::SCOPE_COMPLICITY[$scope])) {
-                continue;
-            }
-
-            foreach(self::SCOPE_COMPLICITY[$scope] as $relatedScope) {
-                $relatedScopes[] = $relatedScope;
-            }
-        }
-
-        return \array_merge($scopes, $relatedScopes);
     }
 
     public function getMessages(string $scopes): array

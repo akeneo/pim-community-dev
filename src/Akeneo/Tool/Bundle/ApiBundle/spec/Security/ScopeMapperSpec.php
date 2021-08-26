@@ -178,24 +178,4 @@ class ScopeMapperSpec extends ObjectBehavior
             'delete_products',
         ]);
     }
-
-    public function it_automatically_add_read_channel_localization_when_read_channel_settings_is_present()
-    {
-        $this->formalizeScopes([
-            'read_channel_settings',
-        ])->shouldReturn([
-            'read_channel_localization',
-            'read_channel_settings',
-        ]);
-    }
-
-    public function it_automatically_add_read_channel_localization_when_write_channel_settings_is_present()
-    {
-        $this->formalizeScopes([
-            'write_channel_settings',
-        ])->shouldReturn([
-            'read_channel_localization',
-            'write_channel_settings',
-        ]);
-    }
 }
