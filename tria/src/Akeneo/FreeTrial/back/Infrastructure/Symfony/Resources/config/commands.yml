@@ -4,11 +4,11 @@ services:
             - { name: 'console.command' }
 
     Akeneo\FreeTrial\Infrastructure\Install\Command\ExtractCatalogCommand:
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\FreeTrial\Infrastructure\Install\Command\DownloadMediaFilesCommand:
         arguments:
-            - '@oneup_flysystem.mount_manager'
+            - '%env(FT_CATALOG_API_BASE_URI)%'
+            - '%env(FT_CATALOG_API_CLIENT_ID)%'
+            - '%env(FT_CATALOG_API_SECRET)%'
+            - '%env(FT_CATALOG_API_USERNAME)%'
+            - '%env(FT_CATALOG_API_PASSWORD)%'
         tags:
             - { name: 'console.command' }

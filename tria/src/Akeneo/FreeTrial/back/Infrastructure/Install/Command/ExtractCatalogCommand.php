@@ -20,7 +20,6 @@ use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -33,23 +32,42 @@ final class ExtractCatalogCommand extends Command
     private array $downloadedMediaFiles = [];
     private array $productModelsAttributes = [];
 
+    private string $apiBaseUrl;
+    private string $apiClientId;
+    private string $apiSecret;
+    private string $apiUsername;
+    private string $apiPassword;
+
+    public function __construct(
+        string $apiBaseUrl,
+        string $apiClientId,
+        string $apiSecret,
+        string $apiUsername,
+        string $apiPassword
+    ) {
+        parent::__construct();
+
+        $this->apiBaseUrl = $apiBaseUrl;
+        $this->apiClientId = $apiClientId;
+        $this->apiSecret = $apiSecret;
+        $this->apiUsername = $apiUsername;
+        $this->apiPassword = $apiPassword;
+    }
+
     protected function configure()
     {
         $this
             ->setName('akeneo:free-trial:extract-catalog')
             ->setDescription('Extract catalog data from an external PIM to build the Free-Trial catalog.')
-            ->addArgument('api-url', InputArgument::REQUIRED, 'API URL')
-            ->addArgument('api-client-id', InputArgument::REQUIRED, 'API client id')
-            ->addArgument('api-secret', InputArgument::REQUIRED, 'API secret')
-            ->addArgument('api-username', InputArgument::REQUIRED, 'API username')
-            ->addArgument('api-password', InputArgument::REQUIRED, 'API password')
             ->setHidden(true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->ensureAuthenticationParametersAreDefined();
+
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Extract catalog data from %s', $input->getArgument('api-url')));
+        $io->title(sprintf('Extract catalog data from %s', $this->apiBaseUrl));
 
         $apiClient = $this->buildApiClient($input);
 
@@ -69,13 +87,32 @@ final class ExtractCatalogCommand extends Command
 
     private function buildApiClient(InputInterface $input): AkeneoPimClientInterface
     {
-        $clientBuilder = new AkeneoPimClientBuilder($input->getArgument('api-url'));
+        $clientBuilder = new AkeneoPimClientBuilder($this->apiBaseUrl);
 
         return $clientBuilder->buildAuthenticatedByPassword(
-            $input->getArgument('api-client-id'),
-            $input->getArgument('api-secret'),
-            $input->getArgument('api-username'),
-            $input->getArgument('api-password')
+            $this->apiClientId,
+            $this->apiSecret,
+            $this->apiUsername,
+            $this->apiPassword
         );
+    }
+
+    private function ensureAuthenticationParametersAreDefined(): void
+    {
+        if ('' === $this->apiBaseUrl) {
+            throw new \Exception('The API base URI is not defined (env var FT_CATALOG_API_BASE_URI');
+        }
+        if ('' === $this->apiClientId) {
+            throw new \Exception('The API client id is not defined (env var FT_CATALOG_API_CLIENT_ID');
+        }
+        if ('' === $this->apiSecret) {
+            throw new \Exception('The API secret is not defined (env var FT_CATALOG_API_SECRET');
+        }
+        if ('' === $this->apiUsername) {
+            throw new \Exception('The API username is not defined (env var FT_CATALOG_API_USERNAME');
+        }
+        if ('' === $this->apiPassword) {
+            throw new \Exception('The API password is not defined (env var FT_CATALOG_API_PASSWORD');
+        }
     }
 }
