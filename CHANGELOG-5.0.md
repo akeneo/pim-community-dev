@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.45 (2021-08-26)
+
 ## Bug fixes
 
 - PIM-10011: Fix the categoryId update when changin view
