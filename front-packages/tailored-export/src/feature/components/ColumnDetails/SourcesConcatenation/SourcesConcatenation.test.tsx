@@ -135,12 +135,22 @@ test('it can reorder concat elements with drag and drop', async () => {
     <SourcesConcatenation validationErrors={[]} sources={sources} format={format} onFormatChange={onFormatChange} />
   );
 
+  let dataTransferred = '';
+  const dataTransfer = {
+    getData: (_format: string) => {
+      return dataTransferred;
+    },
+    setData: (_format: string, data: string) => {
+      dataTransferred = data;
+    },
+  };
+
   fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
-  fireEvent.dragStart(screen.getAllByRole('row')[1]);
-  fireEvent.dragEnter(screen.getAllByRole('row')[2]);
-  fireEvent.dragLeave(screen.getAllByRole('row')[2]);
-  fireEvent.drop(screen.getAllByRole('row')[2]);
-  fireEvent.dragEnd(screen.getAllByRole('row')[1]);
+  fireEvent.dragStart(screen.getAllByRole('row')[1], {dataTransfer});
+  fireEvent.dragEnter(screen.getAllByRole('row')[2], {dataTransfer});
+  fireEvent.dragLeave(screen.getAllByRole('row')[2], {dataTransfer});
+  fireEvent.drop(screen.getAllByRole('row')[2], {dataTransfer});
+  fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
 
   expect(onFormatChange).toHaveBeenCalledWith({
     ...format,

@@ -111,6 +111,7 @@ pim_datagrid_view | BASE TABLE
 pim_index_migration | BASE TABLE
 pim_notification_notification | BASE TABLE
 pim_notification_user_notification | BASE TABLE
+pim_one_time_task | BASE TABLE
 pim_session | BASE TABLE
 pim_user_default_datagrid_view | BASE TABLE
 pim_versioning_version | BASE TABLE
@@ -252,6 +253,7 @@ akeneo_batch_step_execution | failure_exceptions | YES | longtext |
 akeneo_batch_step_execution | errors | NO | longtext |
 akeneo_batch_step_execution | summary | NO | longtext |
 akeneo_batch_step_execution | tracking_data | YES | json |
+akeneo_batch_step_execution | warning_count | NO | int |
 akeneo_batch_warning | id | NO | int | PRI
 akeneo_batch_warning | step_execution_id | YES | int | MUL
 akeneo_batch_warning | reason | YES | longtext |
@@ -384,6 +386,7 @@ oro_access_group | name | NO | varchar(255) | UNI
 oro_access_role | id | NO | smallint | PRI
 oro_access_role | role | NO | varchar(255) | UNI
 oro_access_role | label | NO | varchar(255) |
+oro_access_role | type | YES | varchar(30) |
 oro_config | id | NO | int | PRI
 oro_config | entity | YES | varchar(255) | MUL
 oro_config | record_id | YES | int |
@@ -705,6 +708,11 @@ pim_notification_user_notification | id | NO | int | PRI
 pim_notification_user_notification | notification | YES | int | MUL
 pim_notification_user_notification | user | YES | int | MUL
 pim_notification_user_notification | viewed | NO | tinyint(1) |
+pim_one_time_task | code | NO | varchar(100) | PRI
+pim_one_time_task | status | NO | varchar(100) |
+pim_one_time_task | start_time | YES | datetime |
+pim_one_time_task | end_time | YES | datetime |
+pim_one_time_task | values | NO | json |
 pim_session | sess_id | NO | varbinary(128) | PRI
 pim_session | sess_data | NO | blob |
 pim_session | sess_time | NO | int unsigned |

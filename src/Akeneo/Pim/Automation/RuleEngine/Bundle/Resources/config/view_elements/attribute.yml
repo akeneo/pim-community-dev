@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.view_element.attribute.tab.rule.template: 'AkeneoPimRuleEngineBundle:Attribute:Tab/rule.html.twig'
+    pimee_catalog_rule.view_element.attribute.tab.rule.template: '@@AkeneoPimRuleEngine/Attribute/Tab/rule.html.twig'
 
 services:
     pimee_catalog_rule.view_element.attribute.tab.rule:

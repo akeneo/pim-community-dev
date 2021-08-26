@@ -91,7 +91,7 @@ class LocaleController
         );
 
         return new Response(
-            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', [
+            $this->templating->render('@AkeneoPimPermission/Locale/edit.html.twig', [
                 'form' => $form->createView(),
                 'dictionaryEnabled' => $dictionaryEnabled,
             ])

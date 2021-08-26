@@ -15,7 +15,7 @@ namespace Akeneo\ReferenceEntity\Domain\Event;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

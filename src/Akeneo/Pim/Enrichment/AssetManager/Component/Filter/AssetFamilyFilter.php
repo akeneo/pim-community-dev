@@ -135,13 +135,7 @@ class AssetFamilyFilter extends AbstractAttributeFilter implements AttributeFilt
                         $attributePath => $values,
                     ],
                 ];
-                $filterClause = [
-                    'exists' => [
-                        'field' => $attributePath,
-                    ],
-                ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             default:

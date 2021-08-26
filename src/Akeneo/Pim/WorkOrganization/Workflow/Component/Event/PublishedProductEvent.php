@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Published product event

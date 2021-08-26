@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Control
 
 use Akeneo\Platform\TailoredExport\Test\Integration\ControllerIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 

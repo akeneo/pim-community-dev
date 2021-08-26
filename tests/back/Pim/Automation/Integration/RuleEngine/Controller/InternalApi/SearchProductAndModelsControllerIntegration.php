@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\InternalApi;
+namespace AkeneoEnterpriseTest\Pim\Automation\Integration\RuleEngine\Controller\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;

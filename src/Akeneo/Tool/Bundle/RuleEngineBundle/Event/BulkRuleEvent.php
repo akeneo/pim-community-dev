@@ -12,7 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Event;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event with many concerned rules

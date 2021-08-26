@@ -15,8 +15,8 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
