@@ -2,8 +2,9 @@ import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 
 export interface ScopeMessage {
-    message: string,
-    icon: string
+    icon: string,
+    type: string,
+    entities: string,
 }
 
 export interface AppWizardData {

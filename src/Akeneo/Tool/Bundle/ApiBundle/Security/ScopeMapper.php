@@ -110,21 +110,27 @@ final class ScopeMapper
     public function getMessages(string $scopes): array
     {
         $scopeList = empty($scopes) ? [] : explode(' ', $scopes);
-
         $scopeList = $this->filterScopeOverlap($scopeList);
 
         $messages = [];
 
         foreach ($scopeList as $scope) {
-            $messages[] = [
-                'message' => "akeneo_connectivity.connection.connect.apps.authorize.scope.$scope",
-                'icon' => $this->getIcon($scope),
-            ];
-
             if ($scope === self::SCOPE_WRITE_CHANNEL_SETTINGS) {
                 $messages[] = [
-                    'message' => "akeneo_connectivity.connection.connect.apps.authorize.scope.locales_currencies",
-                    'icon' => $this->getIcon('locales_currencies'),
+                    'icon' => 'channels',
+                    'type' => 'edit',
+                    'entities' => 'channels',
+                ];
+                $messages[] = [
+                    'icon' => 'locales_currencies',
+                    'type' => 'view',
+                    'entities' => 'locales_currencies',
+                ];
+            } else {
+                $messages[] = [
+                    'icon' => $this->getIcon($scope),
+                    'type' => $this->getType($scope),
+                    'entities' => $this->getEntities($scope),
                 ];
             }
         }
@@ -143,19 +149,68 @@ final class ScopeMapper
                 return 'attribute_options';
             case self::SCOPE_READ_CATEGORIES:
             case self::SCOPE_WRITE_CATEGORIES:
-                return 'category';
+                return 'categories';
             case self::SCOPE_READ_CHANNEL_SETTINGS:
             case self::SCOPE_WRITE_CHANNEL_SETTINGS:
-                return 'channel';
-            case 'locales_currencies':
-                return 'locale';
+                return 'channels';
             case self::SCOPE_READ_ASSOCIATION_TYPES:
             case self::SCOPE_WRITE_ASSOCIATION_TYPES:
                 return 'association_types';
             case self::SCOPE_READ_PRODUCTS:
             case self::SCOPE_WRITE_PRODUCTS:
             case self::SCOPE_DELETE_PRODUCTS:
-                return 'product';
+                return 'products';
+            default:
+                return 'unknown';
+        }
+    }
+
+    private function getType(string $scope): string
+    {
+        switch ($scope) {
+            case self::SCOPE_READ_CATALOG_STRUCTURE:
+            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
+            case self::SCOPE_READ_CATEGORIES:
+            case self::SCOPE_READ_CHANNEL_SETTINGS:
+            case self::SCOPE_READ_ASSOCIATION_TYPES:
+            case self::SCOPE_READ_PRODUCTS:
+                return 'view';
+            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
+            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
+            case self::SCOPE_WRITE_CATEGORIES:
+            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
+            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
+            case self::SCOPE_WRITE_PRODUCTS:
+                return 'edit';
+            case self::SCOPE_DELETE_PRODUCTS:
+                return 'delete';
+            default:
+                return 'unknown';
+        }
+    }
+
+    private function getEntities(string $scope): string
+    {
+        switch ($scope) {
+            case self::SCOPE_READ_CATALOG_STRUCTURE:
+            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
+                return 'catalog_structure';
+            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
+            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
+                return 'attribute_options';
+            case self::SCOPE_READ_CATEGORIES:
+            case self::SCOPE_WRITE_CATEGORIES:
+                return 'categories';
+            case self::SCOPE_READ_CHANNEL_SETTINGS:
+            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
+                return 'channel_settings';
+            case self::SCOPE_READ_ASSOCIATION_TYPES:
+            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
+                return 'association_types';
+            case self::SCOPE_READ_PRODUCTS:
+            case self::SCOPE_WRITE_PRODUCTS:
+            case self::SCOPE_DELETE_PRODUCTS:
+                return 'products';
             default:
                 return 'unknown';
         }

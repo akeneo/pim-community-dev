@@ -24,7 +24,7 @@ const AppTitle = styled.h2`
     margin: 0;
 `;
 
-const Helper = styled.p`
+const Helper = styled.div`
     color: ${getColor('grey', 120)};
     font-size: ${getFontSize('default')};
     font-weight: normal;
@@ -51,11 +51,11 @@ const ScopeItem = styled.li`
 const iconsMap: { [key: string]: React.ReactNode }  = {
     'catalog_structure': GroupsIcon,
     'attribute_options': AddAttributeIcon,
-    'category': CategoryIcon,
-    'channel': ShopIcon,
-    'locale': LocaleIcon,
+    'categories': CategoryIcon,
+    'channels': ShopIcon,
+    'locales_currencies': LocaleIcon,
     'association_types': AssociateIcon,
-    'product': ProductIcon,
+    'products': ProductIcon,
 };
 
 interface Props {
@@ -67,13 +67,22 @@ export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
     const translate = useTranslate();
 
     let scopeList = scopeMessages.map((scopeMessage, key) => {
-        const message = translate(scopeMessage.message);
+        const entities = translate(
+            `akeneo_connectivity.connection.connect.apps.authorize.scope.entities.${scopeMessage.entities}`
+        );
         const Icon = iconsMap[scopeMessage.icon];
 
         return (
             <ScopeItem key={key}>
-                <Icon  title={message} size={24}/>
-                {message}
+                <Icon  title={entities} size={24}/>
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: translate(
+                            `akeneo_connectivity.connection.connect.apps.authorize.scope.type.${scopeMessage.type}`,
+                            {entities: `<span class='AknConnectivityConnection-helper--highlight'>${entities}</span>`}
+                        ),
+                    }}
+                />
             </ScopeItem>
         );
     });
@@ -96,8 +105,10 @@ export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
         <>
             <AppTitle>{title}</AppTitle>
             <Helper>
-                {translate('akeneo_connectivity.connection.connect.apps.authorize.helper')}
-                <Link href={'https://help.akeneo.com/'} >.</Link>
+                <p>{translate('akeneo_connectivity.connection.connect.apps.authorize.helper')}</p>
+                <Link href={'https://help.akeneo.com/'} >
+                    {translate('akeneo_connectivity.connection.connect.apps.authorize.helper_link')}
+                </Link>
             </Helper>
             <ul>{scopeList}</ul>
         </>
