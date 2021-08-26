@@ -17,7 +17,6 @@ final class AppAuthorization
 
     private function __construct()
     {
-
     }
 
     public static function createFromRequest(
@@ -35,6 +34,14 @@ final class AppAuthorization
         return $self;
     }
 
+    /**
+     * @param array{
+     *     client_id: string,
+     *     scope: string,
+     *     redirect_uri: string,
+     *     state: string|null,
+     * } $normalized
+     */
     public static function createFromNormalized(array $normalized): self
     {
         $self = new self();
@@ -46,6 +53,14 @@ final class AppAuthorization
         return $self;
     }
 
+    /**
+     * @return array{
+     *     client_id: string,
+     *     scope: string,
+     *     redirect_uri: string,
+     *     state: string|null,
+     * }
+     */
     public function normalize(): array
     {
         return [

@@ -330,13 +330,11 @@ pim_enrich.export.product:
   global_settings:
     title: 全局设置
 pim_enrich.mass_edit.product:
-  title: 产品批量操作
   confirm: "{0}您即将更新一些产品的以下信息，请确认。{1}您即将更新一件产品的以下信息，请确认。|]1, Inf[您即将更新 {{ itemsCount }} 件产品的以下信息，请确认。"
   step:
     select:
       label: 选择产品
     choose:
-      title: 产品批量操作
       label_count: "]0, Inf[选择操作"
     configure:
       label: 配置
@@ -355,14 +353,8 @@ pim_enrich.mass_edit.product:
       description: 将启用或禁用选定的产品。
       field: 要启用
     edit_common:
-      label: 编辑属性值
-      label_count: "{0}编辑一些<span class=\"AknFullPage-title--highlight\">产品</span>的属性值|{1}编辑<span class=\"AknFullPage-title--highlight\"> 1 件产品</span>的属性值|]1, Inf[编辑 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品的属性值</span>"
       description: 只有属于所选产品品类的属性将被编辑，其中包含 {{ locale }} 区域和 {{ scope }} 渠道的以下数据。
       no_update: 请选择至少一个要更新的字段。
-    add_attribute_value:
-      label: 添加属性值
-      label_count: "{0}为一些<span class=\"AknFullPage-title--highlight\">产品</span>添加属性值|{1}为 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加属性|]1, Inf[为 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加属性值"
-      description: 只有属于产品品类的多值属性将被编辑，编辑内容包含以下 {{ locale }} 区域和 {{ scope }} 渠道数据。 已添加属性值，之前的值被保留。
     change_family:
       label: 更改品类
       label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的品类|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的品类|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的品类"
@@ -397,7 +389,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>转换为简单产品|{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>转换为简单产品|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>转换为简单产品"
       description: 所有之前的值、类别和关联将被保存。
     associate_to_product_and_product_model:
-      label: 关联
       label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>关联到产品或产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品关联到产品或产品模型</span>|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>关联到产品或产品模型。"
       description: 在网格中选择的产品将关联到所选关联类型下的产品和产品模型
       validate: 请先添加关联，再前往下一步
@@ -489,7 +480,6 @@ pim_datagrid:
       label: 父级
     identifier:
       label: 标识符
-  search: 在 {{ label }} 上搜索
 batch_jobs:
   add_association:
     label: 关联
@@ -551,6 +541,9 @@ batch_jobs:
     quick_export.label: XLSX 产品快速导出
     quick_export_product_model.label: XLSX 产品模型快速导出
     perform.label: XLSX 产品快速导出
+  default_steps:
+    delete_products_and_product_models: 删除产品和产品模型
+    remove_completeness_for_channel_and_locale: 移除渠道和区域的完成度
 error:
   removing:
     group: 无法移除分组

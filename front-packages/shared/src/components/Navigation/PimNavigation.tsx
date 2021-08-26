@@ -26,7 +26,9 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   const translate = useTranslate();
   const router = useRouter();
 
-  const handleFollowEntry = (entry: NavigationEntry) => {
+  const handleFollowEntry = (event: any, entry: NavigationEntry) => {
+    event.stopPropagation();
+    event.preventDefault();
     router.redirect(router.generate(entry.route));
   };
 
@@ -80,7 +82,8 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               active={entry.code === activeEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
-              onClick={() => handleFollowEntry(entry)}
+              onClick={(event) => handleFollowEntry(event, entry)}
+              href={`#${router.generate(entry.route)}`}
               role="menuitem"
               data-testid="pim-main-menu-item"
               className={entry.code === activeEntryCode ? 'active' : undefined}

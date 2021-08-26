@@ -23,7 +23,9 @@ type Move = {
 const useCategoryTreeNode = (id: number) => {
   const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
   const [move, setMove] = useState<Move | null>(null);
-  const [isOpen, open, close] = useBooleanState(false);
+  const node = useMemo(() => findOneByIdentifier(nodes, id), [id, nodes]);
+  const children = useMemo(() => (!node ? [] : findByIdentifiers(nodes, node.childrenIds)), [node, nodes]);
+  const [isOpen, open, close] = useBooleanState(children.length > 0);
 
   const url = useRoute('pim_enrich_categorytree_children', {
     _format: 'json',
@@ -36,9 +38,6 @@ const useCategoryTreeNode = (id: number) => {
   });
 
   const [childrenData, loadChildren, loadChildrenStatus] = useFetch<BackendCategoryTree>(url);
-
-  const node = useMemo(() => findOneByIdentifier(nodes, id), [id, nodes]);
-  const children = useMemo(() => (!node ? [] : findByIdentifiers(nodes, node.childrenIds)), [node, nodes]);
 
   const getCategoryPosition = (treeNode: TreeNode<CategoryTreeModel>): number => {
     if (!treeNode.parentId) {

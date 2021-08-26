@@ -7,7 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\Datasource;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

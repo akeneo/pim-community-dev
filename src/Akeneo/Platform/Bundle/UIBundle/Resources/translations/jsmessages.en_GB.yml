@@ -240,7 +240,6 @@ pim_common:
   products: Products
   more: More
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
@@ -317,6 +316,7 @@ pim_title:
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
   pim_settings_index: Settings
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Activity
@@ -372,3 +372,6 @@ pim_settings:
   settings_menu: Settings menu
   catalog_settings: Catalog settings
   product_settings: Product settings
+pim_system:
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation

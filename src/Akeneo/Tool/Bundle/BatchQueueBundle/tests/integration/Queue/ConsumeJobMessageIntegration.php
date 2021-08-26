@@ -103,7 +103,7 @@ class ConsumeJobMessageIntegration extends TestCase
         }
         sleep(2);
 
-        $killJobExecution = new Process(sprintf('kill -9 %s', $jobExecutionProcessPid));
+        $killJobExecution = new Process(['kill', '-9', $jobExecutionProcessPid]);
         $killJobExecution->run();
 
         // wait healtch check date expiration
@@ -170,7 +170,7 @@ class ConsumeJobMessageIntegration extends TestCase
     {
         $count = 0;
         do {
-            $pgrep = new Process(sprintf('pgrep -P %d', $processPid));
+            $pgrep = new Process(['pgrep', '-P', $processPid]);
             $pgrep->run();
             $output = trim($pgrep->getOutput());
             if ('' !== $output) {

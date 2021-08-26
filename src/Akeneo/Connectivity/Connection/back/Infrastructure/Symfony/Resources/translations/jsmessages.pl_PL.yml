@@ -38,15 +38,23 @@ akeneo_connectivity.connection:
       sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
       link: Dostęp do rynku
       helper:
+        title: '{0} Brak aplikacji lub wtyczek kompatybilnych z twoją wersją PIM.|{1} Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}|[2,Inf] Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
+        title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
+        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
         link: Przejdź do rynku internetowego
       card:
         developed_by: 'Opracowane przez:'
         read_more: czytaj więcej
         more_info: Więcej informacji
+        connect: Połącz
       extensions:
         title: Wtyczki
         total: '{0} Brak wtyczek|{1} Liczba wtyczek: 1|[2,Inf] Liczba wtyczek: {{ total }} '
         empty: Brak wtyczek kompatybilnych z twoją wersją
+      apps:
+        title: Aplikacje
+        total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
+        empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
   connections: Połączenia

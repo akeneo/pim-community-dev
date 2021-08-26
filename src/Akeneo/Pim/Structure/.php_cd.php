@@ -57,6 +57,7 @@ $rules = [
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 
