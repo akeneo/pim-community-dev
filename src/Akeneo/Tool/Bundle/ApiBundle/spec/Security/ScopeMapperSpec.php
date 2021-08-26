@@ -27,6 +27,7 @@ class ScopeMapperSpec extends ObjectBehavior
             'write_attribute_options',
             'read_categories',
             'write_categories',
+            'read_channel_localization',
             'read_channel_settings',
             'write_channel_settings',
             'read_association_types',
@@ -45,8 +46,8 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_read_catalog_structure()
     {
         $this->getAcls('read_catalog_structure')->shouldReturn([
-            'pim_api_attribute_list',
             'pim_api_attribute_group_list',
+            'pim_api_attribute_list',
             'pim_api_family_list',
             'pim_api_family_variant_list',
         ]);
@@ -55,14 +56,14 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_write_catalog_structure()
     {
         $this->getAcls('write_catalog_structure')->shouldReturn([
-            'pim_api_attribute_list',
             'pim_api_attribute_edit',
-            'pim_api_attribute_group_list',
             'pim_api_attribute_group_edit',
-            'pim_api_family_list',
+            'pim_api_attribute_group_list',
+            'pim_api_attribute_list',
             'pim_api_family_edit',
-            'pim_api_family_variant_list',
+            'pim_api_family_list',
             'pim_api_family_variant_edit',
+            'pim_api_family_variant_list',
         ]);
     }
 
@@ -76,8 +77,8 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_write_attribute_options()
     {
         $this->getAcls('write_attribute_options')->shouldReturn([
-            'pim_api_attribute_option_list',
             'pim_api_attribute_option_edit',
+            'pim_api_attribute_option_list',
         ]);
     }
 
@@ -91,8 +92,16 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_write_categories()
     {
         $this->getAcls('write_categories')->shouldReturn([
-            'pim_api_category_list',
             'pim_api_category_edit',
+            'pim_api_category_list',
+        ]);
+    }
+
+    public function it_returns_the_acls_for_the_scope_read_channel_localization()
+    {
+        $this->getAcls('read_channel_localization')->shouldReturn([
+            'pim_api_currency_list',
+            'pim_api_locale_list',
         ]);
     }
 
@@ -100,18 +109,14 @@ class ScopeMapperSpec extends ObjectBehavior
     {
         $this->getAcls('read_channel_settings')->shouldReturn([
             'pim_api_channel_list',
-            'pim_api_locale_list',
-            'pim_api_currency_list',
         ]);
     }
 
     public function it_returns_the_acls_for_the_scope_write_channel_settings()
     {
         $this->getAcls('write_channel_settings')->shouldReturn([
-            'pim_api_channel_list',
             'pim_api_channel_edit',
-            'pim_api_locale_list',
-            'pim_api_currency_list',
+            'pim_api_channel_list',
         ]);
     }
 
@@ -125,16 +130,16 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_write_association_types()
     {
         $this->getAcls('write_association_types')->shouldReturn([
-            'pim_api_association_type_list',
             'pim_api_association_type_edit',
+            'pim_api_association_type_list',
         ]);
     }
 
     public function it_returns_the_acls_for_the_scope_write_products()
     {
         $this->getAcls('write_products')->shouldReturn([
-            'pim_api_product_list',
             'pim_api_product_edit',
+            'pim_api_product_list',
         ]);
     }
 
@@ -148,9 +153,49 @@ class ScopeMapperSpec extends ObjectBehavior
     public function it_returns_the_acls_for_the_scope_delete_products()
     {
         $this->getAcls('delete_products')->shouldReturn([
-            'pim_api_product_list',
             'pim_api_product_edit',
+            'pim_api_product_list',
             'pim_api_product_remove',
+        ]);
+    }
+
+    public function it_filter_scopes_by_removing_scopes_inherited_from_the_hierarchy()
+    {
+        $this->formalizeScopes([
+            'read_products',
+            'write_products',
+        ])->shouldReturn([
+            'write_products',
+        ]);
+    }
+
+    public function it_filter_scopes_by_recursiverly_removing_scopes_inherited_from_the_hierarchy()
+    {
+        $this->formalizeScopes([
+            'read_products',
+            'delete_products',
+        ])->shouldReturn([
+            'delete_products',
+        ]);
+    }
+
+    public function it_automatically_add_read_channel_localization_when_read_channel_settings_is_present()
+    {
+        $this->formalizeScopes([
+            'read_channel_settings',
+        ])->shouldReturn([
+            'read_channel_localization',
+            'read_channel_settings',
+        ]);
+    }
+
+    public function it_automatically_add_read_channel_localization_when_write_channel_settings_is_present()
+    {
+        $this->formalizeScopes([
+            'write_channel_settings',
+        ])->shouldReturn([
+            'read_channel_localization',
+            'write_channel_settings',
         ]);
     }
 }
