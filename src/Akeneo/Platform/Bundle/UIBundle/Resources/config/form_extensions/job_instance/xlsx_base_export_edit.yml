@@ -21,6 +21,8 @@ extensions:
         module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-xlsx-base-export-edit
         targetZone: breadcrumbs
+        config:
+            isEdit: true
 
     pim-job-instance-xlsx-base-export-edit-cache-invalidator:
         module: pim/cache-invalidator
