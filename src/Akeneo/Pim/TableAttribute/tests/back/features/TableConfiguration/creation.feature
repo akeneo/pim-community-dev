@@ -114,7 +114,7 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with a min or max validation greater than 100
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": 200 }}'
-    Then There is a violation with message: The Max_length value should be less than or equal to 100 (current value: 200)
+    Then There is a violation with message: Please define a maximum number of characters lower than or equal to 100
 
   Scenario: Cannot create a table configuration if options is not an array
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": "test"}'

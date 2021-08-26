@@ -64,7 +64,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                   message: The required value is a positive integer
                               - LessThanOrEqual:
                                   value: 100
-                                  message: 'The Max_length value should be less than or equal to {{ compared_value }} (current value: {{ value }})'
+                                  message: Please define a maximum number of characters lower than or equal to {{ compared_value }}.
                             min:
                               - Type:
                                   type: numeric

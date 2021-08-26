@@ -189,6 +189,7 @@ pim_table_attribute:
         min: Minimum value
         max: Maximum value
         decimals_allowed: Decimals values allowed
+        max_length_range: Please define a maximum number of characters lower than or equal to {{ maximum }}
     templates:
         choose_template: Choose your template
         empty_table: Empty table
