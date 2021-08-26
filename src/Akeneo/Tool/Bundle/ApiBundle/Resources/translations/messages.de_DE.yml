@@ -23,6 +23,10 @@ pim_api:
       edit: Erstellen und Aktualisieren von Kanälen
       list: Ausgabekanäle auflisten
     locale.list: Gebietsschemata auflisten
+    product:
+      edit: Produkte erstellen und aktualisieren
+      list: Produkte auflisten
+      remove: Produkte löschen
     currency.list: Währungen auflisten
     association_type:
       edit: Erstellen und Aktualisieren von Verbindungstypen
@@ -37,6 +41,7 @@ pim_api:
     family_variant: Varianten der Produktfamilien
     channel: Ausgabekanäle
     locale: Gebietsschemata
+    product: Produkte
     currency: Währungen
     association_type: Verbindungstypen
 pim_user:

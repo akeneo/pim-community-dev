@@ -9,18 +9,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterface
 {
     private ManagerRegistry $registry;
-
     private ProductIndexerInterface $productIndexer;
-
     private ProductModelIndexerInterface $productModelIndexer;
-
     private array $productIdentifiersToIndex = [];
     private array $productModelCodesToIndex = [];
 

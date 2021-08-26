@@ -28,6 +28,7 @@ $rules = [
         'Symfony\Component',
         'Symfony\Contracts',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',

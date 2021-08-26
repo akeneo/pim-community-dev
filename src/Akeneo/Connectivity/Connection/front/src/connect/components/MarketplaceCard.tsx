@@ -26,12 +26,17 @@ const CardContainer = styled.div`
 `;
 
 const Logo = styled.img`
-    display: inline-block;
+    margin: auto;
+    max-height: 98px;
+    max-width: 98px;
+`;
+
+const LogoContainer = styled.div`
     width: 100px;
-    height: auto;
-    max-height: 100px;
-    border: 1px ${getColor('grey', 40)} solid;
+    height: 100px;
     grid-area: logo;
+    border: 1px ${getColor('grey', 40)} solid;
+    display: flex;
 `;
 
 const TextInformation = styled.div`
@@ -139,7 +144,9 @@ const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
 
     return (
         <CardContainer>
-            <Logo src={item.logo} alt={item.name} />
+            <LogoContainer>
+                <Logo src={item.logo} alt={item.name} />
+            </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
                 <Author>

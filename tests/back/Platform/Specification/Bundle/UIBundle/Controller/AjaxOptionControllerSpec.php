@@ -9,13 +9,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class AjaxOptionControllerSpec extends ObjectBehavior
 {
-    function let(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
+    function let(ManagerRegistry $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($doctrine, $registry);
     }

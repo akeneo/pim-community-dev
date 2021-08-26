@@ -2,7 +2,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
-    form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
+    form_theme: ['@PimUI/Form/pim-fields.html.twig']
     globals:
         ws:
             port:        '%websocket_port%'
