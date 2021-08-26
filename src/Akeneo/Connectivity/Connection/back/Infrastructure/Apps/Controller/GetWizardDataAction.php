@@ -49,15 +49,13 @@ class GetWizardDataAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        $normalizedApp = $app->normalize();
 //        $scopeMessages = $this->scopeMapper->getMessages($appAuthorization->scope);
         $scopeMessages = $this->scopeMapper->getMessages(implode(' ', $this->scopeMapper->getAllScopes()));
 
         return new JsonResponse([
-            'appName' => $normalizedApp['name'],
-            'appLogo' => $normalizedApp['logo'],
+            'appName' => $app->getName(),
+            'appLogo' => $app->getLogo(),
             'scopeMessages' => $scopeMessages,
         ]);
-
     }
 }
