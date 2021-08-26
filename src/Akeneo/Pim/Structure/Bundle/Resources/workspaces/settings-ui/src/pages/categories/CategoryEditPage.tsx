@@ -6,12 +6,12 @@ import {
   Dropdown,
   IconButton,
   MoreIcon,
+  Placeholder,
   TabBar,
   useBooleanState,
   useTabBar,
 } from 'akeneo-design-system';
 import {
-  BreadcrumbStepSkeleton,
   FullScreenError,
   getLabel,
   PageContent,
@@ -128,8 +128,10 @@ const CategoryEditPage: FC = () => {
             <Breadcrumb.Step onClick={followCategoriesIndex}>
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
-            <Breadcrumb.Step onClick={followCategoryTree}>{treeLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
-            <Breadcrumb.Step>{categoryLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
+            <Breadcrumb.Step onClick={followCategoryTree}>
+              {treeLabel || <Placeholder as="span">{categoryId}</Placeholder>}
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>{categoryLabel || <Placeholder as="span">{categoryId}</Placeholder>}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
@@ -183,7 +185,7 @@ const CategoryEditPage: FC = () => {
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
-        <PageHeader.Title>{categoryLabel}</PageHeader.Title>
+        <PageHeader.Title>{categoryLabel ?? categoryId}</PageHeader.Title>
         <PageHeader.State>{thereAreUnsavedChanges && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
       <PageContent>
