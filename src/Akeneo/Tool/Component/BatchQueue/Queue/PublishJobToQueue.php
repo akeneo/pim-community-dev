@@ -155,9 +155,8 @@ class PublishJobToQueue
         $rawParameters = $jobInstance->getRawParameters();
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
-        return $jobParameters;
+        return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
     private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
@@ -194,9 +193,9 @@ class PublishJobToQueue
         return $errorsStr;
     }
 
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution): void
+    private function dispatchJobExecutionEvent(string $eventName, JobExecution $jobExecution): void
     {
         $event = new JobExecutionEvent($jobExecution);
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 }

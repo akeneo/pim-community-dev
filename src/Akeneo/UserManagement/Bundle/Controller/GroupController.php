@@ -128,6 +128,6 @@ class GroupController extends AbstractController
      */
     private function dispatchGroupEvent($event, Group $group = null)
     {
-        $this->eventDispatcher->dispatch($event, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(new GenericEvent($group), $event);
     }
 }
