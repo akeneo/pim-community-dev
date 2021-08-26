@@ -168,14 +168,4 @@ class ScopeMapperSpec extends ObjectBehavior
             'write_products',
         ]);
     }
-
-    public function it_filter_scopes_by_recursiverly_removing_scopes_inherited_from_the_hierarchy()
-    {
-        $this->formalizeScopes([
-            'read_products',
-            'delete_products',
-        ])->shouldReturn([
-            'delete_products',
-        ]);
-    }
 }
