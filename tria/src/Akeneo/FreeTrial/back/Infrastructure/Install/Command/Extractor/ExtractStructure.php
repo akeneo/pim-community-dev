@@ -41,6 +41,7 @@ final class ExtractStructure
         $this->extractLocales();
         $this->extractCurrencies();
         $this->extractFamilies();
+        $this->extractMeasurementFamilies();
     }
 
     private function extractEntities(\Iterator $entities, string $targetFilePath, ?callable $cleanData = null): int
@@ -229,5 +230,20 @@ final class ExtractStructure
         }
 
         return $count;
+    }
+
+    private function extractMeasurementFamilies(): void
+    {
+        $this->io->section('Extract measurement families');
+
+        file_put_contents($this->getMeasurementFamilyFixturesPath(), '');
+
+        $count = 0;
+        foreach ($this->apiClient->getMeasurementFamilyApi()->all() as $measurement) {
+            file_put_contents($this->getMeasurementFamilyFixturesPath(), json_encode($measurement) . PHP_EOL, FILE_APPEND);
+            $count++;
+        }
+
+        $this->io->text(sprintf('%d measurements extracted', $count));
     }
 }

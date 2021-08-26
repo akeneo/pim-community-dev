@@ -45,7 +45,7 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->installFixture('measurement');
+        $this->installFixture('measurement_family');
         $this->installFixture('media_file');
     }
 

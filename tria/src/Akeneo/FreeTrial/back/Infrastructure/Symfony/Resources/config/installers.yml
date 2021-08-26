@@ -157,8 +157,12 @@ services:
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'media_file' }
 
-    Akeneo\FreeTrial\Infrastructure\Install\Installer\MeasurementInstaller:
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\MeasurementFamilyInstaller:
         arguments:
-            - '@database_connection'
+            - '@akeneo.free_trial.reader.measurement_family'
+            - '@validator'
+            - '@akeneo_measure.application.save_measurement_family_handler'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+            - '@akeneo_measure.persistence.measurement_family_repository'
         tags:
-            - { name: 'free_trial.fixture_installer', alias: 'measurement' }
+            - { name: 'free_trial.fixture_installer', alias: 'measurement_family' }
