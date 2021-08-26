@@ -74,6 +74,7 @@
 - PIM-9989: Fix record code of reference entity field is case-sensitive
 - PIM-10021: Product link rule too long to be completed
 - PIM-10026: Avoid session persistance for API
+- PIM-10028: Fix the ETA time displayed when executing a rule with several actions
 
 ## Improvements
 

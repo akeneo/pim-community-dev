@@ -130,7 +130,6 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
             Argument::type(DataInvalidItem::class)
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems()->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $rule = (new RuleDefinition())->setCode('my_rule');
