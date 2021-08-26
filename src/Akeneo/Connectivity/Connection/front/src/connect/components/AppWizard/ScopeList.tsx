@@ -70,7 +70,7 @@ export const ScopeList: FC<Props> = ({appName, scopeMessages}) => {
         const entities = translate(
             `akeneo_connectivity.connection.connect.apps.authorize.scope.entities.${scopeMessage.entities}`
         );
-        const Icon = iconsMap[scopeMessage.icon];
+        const Icon = iconsMap[scopeMessage.icon] ?? CheckRoundIcon;
 
         return (
             <ScopeItem key={key}>
