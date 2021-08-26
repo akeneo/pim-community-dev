@@ -1,6 +1,6 @@
-import React, {useRef} from "react";
-import styled from "styled-components";
-import {Search, useAutoFocus} from "akeneo-design-system";
+import React, {useRef} from 'react';
+import styled from 'styled-components';
+import {Search, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const WordsSearchBarContainer = styled(Search)`
@@ -8,9 +8,9 @@ const WordsSearchBarContainer = styled(Search)`
 `;
 
 type WordsSearchBarProps = {
-  searchValue: string,
-  onSearchChange: (searchValue: string) => void,
-  resultNumber: number
+  searchValue: string;
+  onSearchChange: (searchValue: string) => void;
+  resultNumber: number;
 };
 
 const WordsSearchBar = ({searchValue, onSearchChange, resultNumber}: WordsSearchBarProps) => {
@@ -31,7 +31,7 @@ const WordsSearchBar = ({searchValue, onSearchChange, resultNumber}: WordsSearch
         {translate('pim_common.result_count', {itemsCount: resultNumber}, resultNumber)}
       </Search.ResultCount>
     </WordsSearchBarContainer>
-  )
-}
+  );
+};
 
 export {WordsSearchBar};

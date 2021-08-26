@@ -285,7 +285,12 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
           )}
         </InputContainer>
       </Form>
-      <Search placeholder={translate('pim_common.search')} searchValue={searchValue} onSearchChange={setSearchValue}>
+      <Search
+        title={translate('pim_common.search')}
+        placeholder={translate('pim_common.search')}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+      >
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredRecipients.length}, filteredRecipients.length)}
         </Search.ResultCount>

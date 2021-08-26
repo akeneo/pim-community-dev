@@ -48,11 +48,7 @@ const WordsGrid: FC = () => {
     <>
       {totalWords > 0 || searchString !== '' ? (
         <>
-          <WordsSearchBar
-            searchValue={searchString}
-            onSearchChange={onSearch}
-            resultNumber={totalWords}
-          />
+          <WordsSearchBar searchValue={searchString} onSearchChange={onSearch} resultNumber={totalWords} />
           <Pagination
             followPage={onChangePage}
             currentPage={totalWords > 0 ? currentPage : 0}
