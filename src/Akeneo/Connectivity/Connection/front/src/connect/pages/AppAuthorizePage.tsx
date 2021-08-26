@@ -13,5 +13,5 @@ export const AppAuthorizePage: FC = () => {
         return <AuthorizeClientError error={error} />;
     }
 
-    return <AppWizard clientId={clientId}/>;
+    return <AppWizard clientId={clientId} />;
 };

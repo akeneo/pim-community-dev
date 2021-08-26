@@ -9,7 +9,7 @@ import {ScopeList} from './ScopeList';
 const Content = styled.div`
     display: grid;
     grid-template-columns: 260px 593px;
-    grid-template-areas: "LOGO INFO";
+    grid-template-areas: 'LOGO INFO';
 `;
 const LogoContainer = styled.div`
     grid-area: LOGO;
@@ -42,13 +42,13 @@ const ActionButton = styled(Button)`
 `;
 
 interface Props {
-    clientId: string
+    clientId: string;
 }
 
-export const AppWizard:  FC<Props> = ({clientId}) => {
+export const AppWizard: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
-    const [wizardData, setWizardData] = useState<AppWizardData|null>(null);
+    const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
 
     useEffect(() => {
@@ -64,14 +64,17 @@ export const AppWizard:  FC<Props> = ({clientId}) => {
     }
 
     return (
-        <Modal onClose={redirectToMarketplace} closeTitle={translate('akeneo_connectivity.connection.connect.apps.action.cancel')}>
+        <Modal
+            onClose={redirectToMarketplace}
+            closeTitle={translate('akeneo_connectivity.connection.connect.apps.action.cancel')}
+        >
             <Content>
                 <LogoContainer>
-                    <Logo src={wizardData.appLogo} alt={wizardData.appName}/>
+                    <Logo src={wizardData.appLogo} alt={wizardData.appName} />
                 </LogoContainer>
                 <InfoContainer>
                     <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
-                    <ScopeList appName={wizardData.appName} scopeMessages={wizardData.scopeMessages}/>
+                    <ScopeList appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                     <Actions>
                         <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
                             {translate('akeneo_connectivity.connection.connect.apps.action.cancel')}

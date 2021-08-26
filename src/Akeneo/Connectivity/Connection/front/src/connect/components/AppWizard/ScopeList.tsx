@@ -11,7 +11,7 @@ import {
     ShopIcon,
     CategoryIcon,
     LocaleIcon,
-    GroupsIcon
+    GroupsIcon,
 } from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ScopeMessage} from '../../hooks/use-fetch-app-wizard-data';
@@ -30,7 +30,7 @@ const Helper = styled.div`
     font-weight: normal;
     line-height: 18px;
     margin: 10px 0 19px 0;
-    width: 280px
+    width: 280px;
 `;
 
 const ScopeItem = styled.li`
@@ -48,22 +48,22 @@ const ScopeItem = styled.li`
     }
 `;
 
-const iconsMap: { [key: string]: React.ElementType }  = {
-    'catalog_structure': GroupsIcon,
-    'attribute_options': AddAttributeIcon,
-    'categories': CategoryIcon,
-    'channel_settings': ShopIcon,
-    'channel_localization': LocaleIcon,
-    'association_types': AssociateIcon,
-    'products': ProductIcon,
+const iconsMap: {[key: string]: React.ElementType} = {
+    catalog_structure: GroupsIcon,
+    attribute_options: AddAttributeIcon,
+    categories: CategoryIcon,
+    channel_settings: ShopIcon,
+    channel_localization: LocaleIcon,
+    association_types: AssociateIcon,
+    products: ProductIcon,
 };
 
 interface Props {
-    appName: string,
-    scopeMessages: ScopeMessage[]
+    appName: string;
+    scopeMessages: ScopeMessage[];
 }
 
-export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
+export const ScopeList: FC<Props> = ({appName, scopeMessages}) => {
     const translate = useTranslate();
 
     let scopeList = scopeMessages.map((scopeMessage, key) => {
@@ -74,7 +74,7 @@ export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
 
         return (
             <ScopeItem key={key}>
-                <Icon  title={entities} size={24}/>
+                <Icon title={entities} size={24} />
                 <div
                     dangerouslySetInnerHTML={{
                         __html: translate(
@@ -87,17 +87,18 @@ export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
         );
     });
 
-    const title = scopeList.length === 0
-        ? translate('akeneo_connectivity.connection.connect.apps.authorize.no_scope_title', {app_name: appName})
-        : translate('akeneo_connectivity.connection.connect.apps.authorize.title', {app_name: appName});
+    const title =
+        scopeList.length === 0
+            ? translate('akeneo_connectivity.connection.connect.apps.authorize.no_scope_title', {app_name: appName})
+            : translate('akeneo_connectivity.connection.connect.apps.authorize.title', {app_name: appName});
 
     if (scopeList.length === 0) {
         const message = translate('akeneo_connectivity.connection.connect.apps.authorize.no_scope');
         scopeList = [
-            (<ScopeItem key='0'>
-                <CheckRoundIcon size={24} title={message}/>
+            <ScopeItem key='0'>
+                <CheckRoundIcon size={24} title={message} />
                 {message}
-            </ScopeItem>)
+            </ScopeItem>,
         ];
     }
 
@@ -106,7 +107,7 @@ export const ScopeList:  FC<Props> = ({appName, scopeMessages}) => {
             <AppTitle>{title}</AppTitle>
             <Helper>
                 <p>{translate('akeneo_connectivity.connection.connect.apps.authorize.helper')}</p>
-                <Link href={'https://help.akeneo.com/'} >
+                <Link href={'https://help.akeneo.com/'}>
                     {translate('akeneo_connectivity.connection.connect.apps.authorize.helper_link')}
                 </Link>
             </Helper>

@@ -2,15 +2,15 @@ import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 
 export interface ScopeMessage {
-    icon: string,
-    type: string,
-    entities: string,
+    icon: string;
+    type: string;
+    entities: string;
 }
 
 export interface AppWizardData {
-    appName: string,
-    appLogo: string,
-    scopeMessages:  ScopeMessage[]
+    appName: string;
+    appLogo: string;
+    scopeMessages: ScopeMessage[];
 }
 
 export const useFetchAppWizardData = (clientId: string) => {
