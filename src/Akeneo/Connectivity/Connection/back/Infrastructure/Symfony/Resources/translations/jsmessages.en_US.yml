@@ -87,9 +87,8 @@ akeneo_connectivity.connection:
                         catalog_structure: attributes, attribute groups, families and family variants
                         attribute_options: attribute options
                         categories: categories
-                        channels: channels
-                        locales_currencies: locales and currencies
-                        channel_settings: channels, locales and currencies
+                        channel_localization: locales and currencies
+                        channel_settings: channels
                         association_types: association types
                         products: products and product models
             constraint:

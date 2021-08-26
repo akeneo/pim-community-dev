@@ -52,8 +52,8 @@ const iconsMap: { [key: string]: React.ElementType }  = {
     'catalog_structure': GroupsIcon,
     'attribute_options': AddAttributeIcon,
     'categories': CategoryIcon,
-    'channels': ShopIcon,
-    'locales_currencies': LocaleIcon,
+    'channel_settings': ShopIcon,
+    'channel_localization': LocaleIcon,
     'association_types': AssociateIcon,
     'products': ProductIcon,
 };

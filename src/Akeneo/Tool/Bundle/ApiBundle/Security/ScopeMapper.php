@@ -25,6 +25,18 @@ final class ScopeMapper
     private const SCOPE_WRITE_PRODUCTS = 'write_products';
     private const SCOPE_DELETE_PRODUCTS = 'delete_products';
 
+    private const ENTITY_CATALOG_STRUCTURE = 'catalog_structure';
+    private const ENTITY_ATTRIBUTE_OPTIONS = 'attribute_options';
+    private const ENTITY_CATEGORIES = 'categories';
+    private const ENTITY_CHANNEL_SETTINGS = 'channel_settings';
+    private const ENTITY_CHANNEL_LOCALIZATION = 'channel_localization';
+    private const ENTITY_ASSOCIATION_TYPES = 'association_types';
+    private const ENTITY_PRODUCTS = 'products';
+
+    private const TYPE_VIEW = 'view';
+    private const TYPE_EDIT = 'edit';
+    private const TYPE_DELETE = 'delete';
+
     private const SCOPE_ACL_MAP = [
         self::SCOPE_READ_CATALOG_STRUCTURE => [
             'pim_api_attribute_list',
@@ -103,6 +115,57 @@ final class ScopeMapper
         ],
     ];
 
+    private const SCOPE_ENTITY_MAP = [
+        self::SCOPE_READ_CATALOG_STRUCTURE => self::ENTITY_CATALOG_STRUCTURE,
+        self::SCOPE_WRITE_CATALOG_STRUCTURE => self::ENTITY_CATALOG_STRUCTURE,
+        self::SCOPE_READ_ATTRIBUTE_OPTIONS => self::ENTITY_ATTRIBUTE_OPTIONS,
+        self::SCOPE_WRITE_ATTRIBUTE_OPTIONS => self::ENTITY_ATTRIBUTE_OPTIONS,
+        self::SCOPE_READ_CATEGORIES => self::ENTITY_CATEGORIES,
+        self::SCOPE_WRITE_CATEGORIES => self::ENTITY_CATEGORIES,
+        self::SCOPE_READ_CHANNEL_LOCALIZATION => self::ENTITY_CHANNEL_LOCALIZATION,
+        self::SCOPE_READ_CHANNEL_SETTINGS => self::ENTITY_CHANNEL_SETTINGS,
+        self::SCOPE_WRITE_CHANNEL_SETTINGS => self::ENTITY_CHANNEL_SETTINGS,
+        self::SCOPE_READ_ASSOCIATION_TYPES => self::ENTITY_ASSOCIATION_TYPES,
+        self::SCOPE_WRITE_ASSOCIATION_TYPES => self::ENTITY_ASSOCIATION_TYPES,
+        self::SCOPE_READ_PRODUCTS => self::ENTITY_PRODUCTS,
+        self::SCOPE_WRITE_PRODUCTS => self::ENTITY_PRODUCTS,
+        self::SCOPE_DELETE_PRODUCTS => self::ENTITY_PRODUCTS,
+    ];
+
+    private const SCOPE_TYPE_MAP = [
+        self::SCOPE_READ_CATALOG_STRUCTURE => self::TYPE_VIEW,
+        self::SCOPE_WRITE_CATALOG_STRUCTURE => self::TYPE_EDIT,
+        self::SCOPE_READ_ATTRIBUTE_OPTIONS => self::TYPE_VIEW,
+        self::SCOPE_WRITE_ATTRIBUTE_OPTIONS => self::TYPE_EDIT,
+        self::SCOPE_READ_CATEGORIES => self::TYPE_VIEW,
+        self::SCOPE_WRITE_CATEGORIES => self::TYPE_EDIT,
+        self::SCOPE_READ_CHANNEL_LOCALIZATION => self::TYPE_VIEW,
+        self::SCOPE_READ_CHANNEL_SETTINGS => self::TYPE_VIEW,
+        self::SCOPE_WRITE_CHANNEL_SETTINGS => self::TYPE_EDIT,
+        self::SCOPE_READ_ASSOCIATION_TYPES => self::TYPE_VIEW,
+        self::SCOPE_WRITE_ASSOCIATION_TYPES => self::TYPE_EDIT,
+        self::SCOPE_READ_PRODUCTS => self::TYPE_VIEW,
+        self::SCOPE_WRITE_PRODUCTS => self::TYPE_EDIT,
+        self::SCOPE_DELETE_PRODUCTS => self::TYPE_DELETE,
+    ];
+
+    private const SCOPE_ICON_MAP = [
+        self::SCOPE_READ_CATALOG_STRUCTURE => self::ENTITY_CATALOG_STRUCTURE,
+        self::SCOPE_WRITE_CATALOG_STRUCTURE => self::ENTITY_CATALOG_STRUCTURE,
+        self::SCOPE_READ_ATTRIBUTE_OPTIONS => self::ENTITY_ATTRIBUTE_OPTIONS,
+        self::SCOPE_WRITE_ATTRIBUTE_OPTIONS => self::ENTITY_ATTRIBUTE_OPTIONS,
+        self::SCOPE_READ_CATEGORIES => self::ENTITY_CATEGORIES,
+        self::SCOPE_WRITE_CATEGORIES => self::ENTITY_CATEGORIES,
+        self::SCOPE_READ_CHANNEL_LOCALIZATION => self::ENTITY_CHANNEL_LOCALIZATION,
+        self::SCOPE_READ_CHANNEL_SETTINGS => self::ENTITY_CHANNEL_SETTINGS,
+        self::SCOPE_WRITE_CHANNEL_SETTINGS => self::ENTITY_CHANNEL_SETTINGS,
+        self::SCOPE_READ_ASSOCIATION_TYPES => self::ENTITY_ASSOCIATION_TYPES,
+        self::SCOPE_WRITE_ASSOCIATION_TYPES => self::ENTITY_ASSOCIATION_TYPES,
+        self::SCOPE_READ_PRODUCTS => self::ENTITY_PRODUCTS,
+        self::SCOPE_WRITE_PRODUCTS => self::ENTITY_PRODUCTS,
+        self::SCOPE_DELETE_PRODUCTS => self::ENTITY_PRODUCTS,
+    ];
+
     /**
      * @return string[]
      */
@@ -178,138 +241,45 @@ final class ScopeMapper
     public function getMessages(string $scopes): array
     {
         $scopeList = empty($scopes) ? [] : explode(' ', $scopes);
-        $scopeList = $this->filterScopeOverlap($scopeList);
+        $scopeList = $this->formalizeScopes($scopeList);
 
         $messages = [];
 
         foreach ($scopeList as $scope) {
-            if ($scope === self::SCOPE_WRITE_CHANNEL_SETTINGS) {
-                $messages[] = [
-                    'icon' => 'channels',
-                    'type' => 'edit',
-                    'entities' => 'channels',
-                ];
-                $messages[] = [
-                    'icon' => 'locales_currencies',
-                    'type' => 'view',
-                    'entities' => 'locales_currencies',
-                ];
-            } else {
-                $messages[] = [
-                    'icon' => $this->getIcon($scope),
-                    'type' => $this->getType($scope),
-                    'entities' => $this->getEntities($scope),
-                ];
-            }
+            $messages[] = [
+                'icon' => $this->getIcon($scope),
+                'type' => $this->getType($scope),
+                'entities' => $this->getEntities($scope),
+            ];
         }
 
         return $messages;
     }
 
-    private function getIcon(string $scope): string
+    private function getIcon(string $scopeName): string
     {
-        switch ($scope) {
-            case self::SCOPE_READ_CATALOG_STRUCTURE:
-            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
-                return 'catalog_structure';
-            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
-            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
-                return 'attribute_options';
-            case self::SCOPE_READ_CATEGORIES:
-            case self::SCOPE_WRITE_CATEGORIES:
-                return 'categories';
-            case self::SCOPE_READ_CHANNEL_SETTINGS:
-            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
-                return 'channels';
-            case self::SCOPE_READ_ASSOCIATION_TYPES:
-            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
-                return 'association_types';
-            case self::SCOPE_READ_PRODUCTS:
-            case self::SCOPE_WRITE_PRODUCTS:
-            case self::SCOPE_DELETE_PRODUCTS:
-                return 'products';
-            default:
-                return 'unknown';
+        if (!isset(self::SCOPE_ICON_MAP[$scopeName])) {
+            throw new \LogicException(sprintf('Unknown scope "%s"', $scopeName));
         }
+
+        return self::SCOPE_ICON_MAP[$scopeName];
     }
 
-    private function getType(string $scope): string
+    private function getType(string $scopeName): string
     {
-        switch ($scope) {
-            case self::SCOPE_READ_CATALOG_STRUCTURE:
-            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
-            case self::SCOPE_READ_CATEGORIES:
-            case self::SCOPE_READ_CHANNEL_SETTINGS:
-            case self::SCOPE_READ_ASSOCIATION_TYPES:
-            case self::SCOPE_READ_PRODUCTS:
-                return 'view';
-            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
-            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
-            case self::SCOPE_WRITE_CATEGORIES:
-            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
-            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
-            case self::SCOPE_WRITE_PRODUCTS:
-                return 'edit';
-            case self::SCOPE_DELETE_PRODUCTS:
-                return 'delete';
-            default:
-                return 'unknown';
+        if (!isset(self::SCOPE_TYPE_MAP[$scopeName])) {
+            throw new \LogicException(sprintf('Unknown scope "%s"', $scopeName));
         }
+
+        return self::SCOPE_TYPE_MAP[$scopeName];
     }
 
-    private function getEntities(string $scope): string
+    private function getEntities(string $scopeName): string
     {
-        switch ($scope) {
-            case self::SCOPE_READ_CATALOG_STRUCTURE:
-            case self::SCOPE_WRITE_CATALOG_STRUCTURE:
-                return 'catalog_structure';
-            case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
-            case self::SCOPE_WRITE_ATTRIBUTE_OPTIONS:
-                return 'attribute_options';
-            case self::SCOPE_READ_CATEGORIES:
-            case self::SCOPE_WRITE_CATEGORIES:
-                return 'categories';
-            case self::SCOPE_READ_CHANNEL_SETTINGS:
-            case self::SCOPE_WRITE_CHANNEL_SETTINGS:
-                return 'channel_settings';
-            case self::SCOPE_READ_ASSOCIATION_TYPES:
-            case self::SCOPE_WRITE_ASSOCIATION_TYPES:
-                return 'association_types';
-            case self::SCOPE_READ_PRODUCTS:
-            case self::SCOPE_WRITE_PRODUCTS:
-            case self::SCOPE_DELETE_PRODUCTS:
-                return 'products';
-            default:
-                return 'unknown';
+        if (!isset(self::SCOPE_ENTITY_MAP[$scopeName])) {
+            throw new \LogicException(sprintf('Unknown scope "%s"', $scopeName));
         }
-    }
 
-    /**
-     * @param array<string> $scopeList
-     * @return array<string>
-     */
-    private function filterScopeOverlap(array $scopeList): array
-    {
-        return array_filter($scopeList, function ($scope) use ($scopeList) {
-            switch ($scope) {
-                case self::SCOPE_READ_CATALOG_STRUCTURE:
-                    return !in_array(self::SCOPE_WRITE_CATALOG_STRUCTURE, $scopeList);
-                case self::SCOPE_READ_ATTRIBUTE_OPTIONS:
-                    return !in_array(self::SCOPE_WRITE_ATTRIBUTE_OPTIONS, $scopeList);
-                case self::SCOPE_READ_CATEGORIES:
-                    return !in_array(self::SCOPE_WRITE_CATEGORIES, $scopeList);
-                case self::SCOPE_READ_CHANNEL_SETTINGS:
-                    return !in_array(self::SCOPE_WRITE_CHANNEL_SETTINGS, $scopeList);
-                case self::SCOPE_READ_ASSOCIATION_TYPES:
-                    return !in_array(self::SCOPE_WRITE_ASSOCIATION_TYPES, $scopeList);
-                case self::SCOPE_READ_PRODUCTS:
-                    return !in_array(self::SCOPE_WRITE_PRODUCTS, $scopeList)
-                        || !in_array(self::SCOPE_WRITE_PRODUCTS, $scopeList);
-                case self::SCOPE_WRITE_PRODUCTS:
-                    return !in_array(self::SCOPE_DELETE_PRODUCTS, $scopeList);
-                default:
-                    return true;
-            }
-        });
+        return self::SCOPE_ENTITY_MAP[$scopeName];
     }
 }

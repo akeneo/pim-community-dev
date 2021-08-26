@@ -168,4 +168,45 @@ class ScopeMapperSpec extends ObjectBehavior
             'write_products',
         ]);
     }
+
+    public function it_returns_an_empty_message_list_on_empty_scope_string()
+    {
+        $this->getMessages('')->shouldReturn([]);
+    }
+
+    public function it_throws_an_exception_on_unknown_scope()
+    {
+        $this->shouldThrow(\LogicException::class)->during('getMessages', ['unknown_scope']);
+    }
+
+    public function it_returns_a_message_list_on_complete_scope_list()
+    {
+        $scopes = implode(' ', [
+            'read_catalog_structure',
+            'write_catalog_structure',
+            'read_attribute_options',
+            'write_attribute_options',
+            'read_categories',
+            'write_categories',
+            'read_channel_localization',
+            'read_channel_settings',
+            'write_channel_settings',
+            'read_association_types',
+            'write_association_types',
+            'read_products',
+            'write_products',
+            'delete_products',
+        ]);
+
+        $this->getMessages($scopes)
+            ->shouldReturn([
+                ['icon' => 'products', 'type' => 'delete', 'entities' => 'products'],
+                ['icon' => 'channel_localization', 'type' => 'view', 'entities' => 'channel_localization'],
+                ['icon' => 'association_types', 'type' => 'edit', 'entities' => 'association_types'],
+                ['icon' => 'attribute_options', 'type' => 'edit', 'entities' => 'attribute_options'],
+                ['icon' => 'catalog_structure', 'type' => 'edit', 'entities' => 'catalog_structure'],
+                ['icon' => 'categories', 'type' => 'edit', 'entities' => 'categories'],
+                ['icon' => 'channel_settings', 'type' => 'edit', 'entities' => 'channel_settings'],
+        ]);
+    }
 }
