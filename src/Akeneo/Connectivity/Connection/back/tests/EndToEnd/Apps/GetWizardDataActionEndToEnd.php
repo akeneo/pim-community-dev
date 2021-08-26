@@ -51,11 +51,6 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'scopeMessages' => [
                 [
-                    'icon' => 'catalog_structure',
-                    'type' => 'edit',
-                    'entities' => 'catalog_structure',
-                ],
-                [
                     'icon' => 'products',
                     'type' => 'delete',
                     'entities' => 'products',
@@ -64,6 +59,11 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'icon' => 'association_types',
                     'type' => 'view',
                     'entities' => 'association_types',
+                ],
+                [
+                    'icon' => 'catalog_structure',
+                    'type' => 'edit',
+                    'entities' => 'catalog_structure',
                 ],
             ],
         ], json_decode($response->getContent(), true));
