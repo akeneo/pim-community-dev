@@ -10,7 +10,9 @@ export const AppAuthorizePage: FC = () => {
     const clientId = query.get('client_id');
 
     if (null === clientId) {
-        return <AuthorizeClientError error={'akeneo_connectivity.connection.connect.apps.authorize.error.no_client_id'} />;
+        return (
+            <AuthorizeClientError error={'akeneo_connectivity.connection.connect.apps.authorize.error.no_client_id'} />
+        );
     }
 
     if (null !== error) {
