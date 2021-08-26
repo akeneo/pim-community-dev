@@ -173,6 +173,7 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 

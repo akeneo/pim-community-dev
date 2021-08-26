@@ -6,7 +6,7 @@ namespace Akeneo\AssetManager\Domain\Event;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

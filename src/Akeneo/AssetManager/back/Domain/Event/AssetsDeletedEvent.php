@@ -6,7 +6,7 @@ namespace Akeneo\AssetManager\Domain\Event;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Webmozart\Assert\Assert;
 
 /**
