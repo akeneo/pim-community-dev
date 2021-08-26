@@ -121,7 +121,7 @@ test('it renders table with drag and drop', () => {
     },
     setData: (_format: string, data: string) => {
       dataTransferred = data;
-    }
+    },
   };
 
   fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
