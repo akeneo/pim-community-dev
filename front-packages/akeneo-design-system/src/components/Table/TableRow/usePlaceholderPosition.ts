@@ -10,10 +10,13 @@ const usePlaceholderPosition = (rowIndex: number) => {
     setOveringCount(0);
   }, [rowIndex]);
 
-  const dragEnter = useCallback((draggedElementIndex: number) => {
-    setOveringCount(count => count + 1);
-    setPlaceholderPosition(draggedElementIndex >= rowIndex ? 'top' : 'bottom');
-  }, [rowIndex]);
+  const dragEnter = useCallback(
+    (draggedElementIndex: number) => {
+      setOveringCount(count => count + 1);
+      setPlaceholderPosition(draggedElementIndex >= rowIndex ? 'top' : 'bottom');
+    },
+    [rowIndex]
+  );
 
   const dragLeave = useCallback(() => {
     setOveringCount(count => count - 1);

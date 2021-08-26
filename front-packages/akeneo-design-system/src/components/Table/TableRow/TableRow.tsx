@@ -1,12 +1,4 @@
-import React, {
-  ReactNode,
-  Ref,
-  SyntheticEvent,
-  HTMLAttributes,
-  forwardRef,
-  useContext,
-  DragEvent,
-} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -153,12 +145,12 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
 
     const handleDragEnter = (event: DragEvent<HTMLTableRowElement>) => {
       placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
-    }
+    };
 
     const handleDragStart = (event: DragEvent<HTMLTableRowElement>) => {
-      event.dataTransfer.setData('text', rowIndex.toString())
+      event.dataTransfer.setData('text', rowIndex.toString());
       onDragStart?.(rowIndex);
-    }
+    };
 
     return (
       <RowContainer
