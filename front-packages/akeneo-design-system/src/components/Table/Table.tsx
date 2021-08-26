@@ -18,24 +18,24 @@ type TableProps = Override<
   React.HTMLAttributes<HTMLTableElement>,
   {
     /**
-     * Define if rows can be selected
+     * Define if rows can be selected.
      */
     isSelectable?: boolean;
 
     /**
-     * Define if the checkbox should be always displayed or displayed on hover
-     * This props should be true when one element is checked
+     * Define if the checkbox should be always displayed or displayed on hover.
+     * This props should be true when one element is checked.
      */
     displayCheckbox?: boolean;
 
     /**
-     * The content of the table
+     * The content of the table.
      */
     children?: ReactNode;
   } & (
     | {
         /**
-         * Define if rows can be ordered by drag and drop
+         * Define if rows can be reordered with drag and drop.
          */
         isDragAndDroppable?: false;
 
@@ -43,12 +43,12 @@ type TableProps = Override<
       }
     | {
         /**
-         * Define if rows can be ordered
+         * Define if rows can be reordered with drag and drop.
          */
-        isDragAndDroppable: true;
+        isDragAndDroppable: boolean;
 
         /**
-         * Called when an element got drag and drop on the table
+         * Called when an element has been dragged and dropped on the table.
          */
         onReorder: (updatedIndices: number[]) => void;
       }
