@@ -3,12 +3,13 @@ import {act, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {IdentifiableFlashMessage, Notifications} from "./Notifications";
 import {renderWithProviders} from "../tests";
+import {NotificationLevel} from "../DependenciesProvider.type";
 
 jest.useFakeTimers();
 
 const notifications: IdentifiableFlashMessage[] = [
-  {identifier: 'message1',  title: 'Title 1', level: "info", children: "Content 1"},
-  {identifier: 'message2',  title: 'Title 2', level: "info", children: "Content 2"},
+  {identifier: 'message1',  title: 'Title 1', level: NotificationLevel.INFO, children: "Content 1"},
+  {identifier: 'message2',  title: 'Title 2', level: NotificationLevel.ERROR, children: "Content 2"},
 ];
 
 test('it renders its children properly', () => {

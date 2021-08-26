@@ -1,7 +1,7 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../tests';
-import {NoDataSection, NoDataText, NoDataTitle} from "../../lib";
+import {NoDataSection, NoDataText, NoDataTitle} from "./NoData";
 
 test('it renders its children properly', () => {
   renderWithProviders(
