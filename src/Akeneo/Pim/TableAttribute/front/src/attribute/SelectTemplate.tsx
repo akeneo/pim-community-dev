@@ -39,6 +39,7 @@ const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm
         {translate('pim_enrich.entity.attribute.module.create.button')}
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_table_attribute.templates.choose_template')}</Modal.Title>
+      {translate('pim_table_attribute.templates.choose_template_subtitle')}
       <ModalContent>
         <Tiles size='big'>
           {TEMPLATES.map(template => {

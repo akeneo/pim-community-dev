@@ -192,6 +192,7 @@ pim_table_attribute:
         max_length_range: Please define a maximum number of characters lower than or equal to {{ maximum }}
     templates:
         choose_template: Choose your template
+        choose_template_subtitle: These templates are only examples, not regulatory. You can edit them before saving your attribute structure.
         empty_table: Empty table
         nutrition: Nutrition
         nutrition-unitedkingdom: Nutrition (United Kingdom)
