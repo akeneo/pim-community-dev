@@ -202,7 +202,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const isCompareTranslate = typeof elements['comparison'] !== 'undefined';
   const isEditable = editMode === 'edit';
 
-  const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) => (
+  const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) =>
     (locale || scope) && (
       <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
         <span className='field-context'>
@@ -210,8 +210,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           {locale && <Locale code={locale} />}
         </span>
       </LocaleScopeInfo>
-    )
-  );
+    );
 
   if (!copyContext && elements['comparison']) {
     renderElements('comparison');
@@ -259,7 +258,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               className='AknIconButton AknIconButton--small icon-remove remove-attribute'
               data-attribute={attribute.code}
               data-toggle='tooltip'
-              title={'pim_enrich.entity.product.module.attribute.remove_optional'}
+              title={translate('pim_enrich.entity.product.module.attribute.remove_optional')}
             />
           )}
         </TableFieldHeader>

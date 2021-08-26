@@ -6,7 +6,7 @@ import {
   ColumnValidation,
   SelectColumnDefinition,
   SelectOption,
-  TextColumnValidation
+  TextColumnValidation,
 } from '../models/TableConfiguration';
 import styled from 'styled-components';
 import {ColumnDefinitionWithId} from './TableStructureApp';
@@ -66,10 +66,10 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     'undefined' !== typeof selectedColumn.validations.max &&
     selectedColumn.validations.min > selectedColumn.validations.max;
 
-  const isMaxLengthInvalid = typeof (selectedColumn.validations as TextColumnValidation).max_length !== 'undefined' && (
-    ((selectedColumn.validations as TextColumnValidation).max_length as number) < 1 ||
-    ((selectedColumn.validations as TextColumnValidation).max_length as number) > 100
-  );
+  const isMaxLengthInvalid =
+    typeof (selectedColumn.validations as TextColumnValidation).max_length !== 'undefined' &&
+    (((selectedColumn.validations as TextColumnValidation).max_length as number) < 1 ||
+      ((selectedColumn.validations as TextColumnValidation).max_length as number) > 100);
 
   const validations = (
     <>
@@ -83,11 +83,11 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             max={100}
             step={1}
           />
-          {isMaxLengthInvalid &&
-          <Helper level="error">
-            {translate('pim_table_attribute.validations.max_length_range', { maximum: 100 })}
-          </Helper>
-          }
+          {isMaxLengthInvalid && (
+            <Helper level='error'>
+              {translate('pim_table_attribute.validations.max_length_range', {maximum: 100})}
+            </Helper>
+          )}
         </Field>
       )}
       {selectedColumn.data_type === 'number' && (

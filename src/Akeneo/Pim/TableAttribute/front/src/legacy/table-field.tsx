@@ -40,7 +40,7 @@ class TableField extends (Field as {new (config: any): any}) {
   private selected: boolean;
 
   constructor(config: any) {
-    super(config);
+    super({...config, className: 'AknComparableFields AknComparableFields--maxLength field-container'});
 
     this.violations = [];
     this.copyContext = undefined;

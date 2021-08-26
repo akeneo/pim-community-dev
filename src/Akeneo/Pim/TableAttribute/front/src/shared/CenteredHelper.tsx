@@ -8,11 +8,11 @@ const CenteredHelperContainer = styled.div`
     display: block;
     margin: auto;
   }
+  padding: 0 20px;
 `;
 
 const CenteredHelperModalContainer = styled.div`
   max-width: 258px;
-  padding: 0 20px;
 `;
 
 const CenteredHelperTitle = styled.div`
