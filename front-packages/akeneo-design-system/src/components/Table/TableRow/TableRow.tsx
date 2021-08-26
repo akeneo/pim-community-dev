@@ -5,8 +5,7 @@ import React, {
   HTMLAttributes,
   forwardRef,
   useContext,
-  useEffect,
-  useCallback,
+  DragEvent,
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
@@ -15,7 +14,6 @@ import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
 import {RowIcon} from '../../../icons';
-import {useBooleanState} from '../../../hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
 const RowContainer = styled.tr<
@@ -122,7 +120,7 @@ type TableRowProps = Override<
     /**
      * @private
      */
-    draggedElementIndex?: number | null;
+    onDragEnd?: () => void;
   }
 >;
 
@@ -130,18 +128,18 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     {
       rowIndex = 0,
-      draggedElementIndex = null,
       isSelected,
       onSelectToggle,
       onClick,
+      draggable,
       onDragStart,
+      onDragEnd,
       children,
       ...rest
     }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElementIndex);
+    const [placeholderPosition, placeholderDragEnter, placeholderDragLeave] = usePlaceholderPosition(rowIndex);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
@@ -153,14 +151,14 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       onSelectToggle?.(!isSelected);
     };
 
-    useEffect(() => {
-      if (null === draggedElementIndex) {
-        drop();
-        dragEnd();
-      }
-    }, [draggedElementIndex]);
+    const handleDragEnter = (event: DragEvent<HTMLTableRowElement>) => {
+      placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
+    }
 
-    const internalOnDragStart = useCallback(() => onDragStart?.(rowIndex), [rowIndex, onDragStart]);
+    const handleDragStart = (event: DragEvent<HTMLTableRowElement>) => {
+      event.dataTransfer.setData('text', rowIndex.toString())
+      onDragStart?.(rowIndex);
+    }
 
     return (
       <RowContainer
@@ -169,11 +167,12 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isSelected={!!isSelected}
         onClick={onClick}
         placeholderPosition={placeholderPosition}
-        draggable={isDragAndDroppable && isDragged}
+        draggable={isDragAndDroppable && draggable}
         data-draggable-index={rowIndex}
-        onDragEnter={dragEnter}
-        onDragLeave={dragLeave}
-        onDragStart={internalOnDragStart}
+        onDragEnter={handleDragEnter}
+        onDragLeave={placeholderDragLeave}
+        onDragStart={handleDragStart}
+        onDragEnd={onDragEnd}
         {...rest}
       >
         {isSelectable && (
@@ -191,7 +190,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           </CheckboxContainer>
         )}
         {isDragAndDroppable && (
-          <HandleCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
+          <HandleCell onMouseDown={() => onDragStart?.(rowIndex)} onMouseUp={onDragEnd} data-testid="dragAndDrop">
             <RowIcon size={16} />
           </HandleCell>
         )}
