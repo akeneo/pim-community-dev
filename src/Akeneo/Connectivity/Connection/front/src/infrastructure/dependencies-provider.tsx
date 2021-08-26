@@ -42,7 +42,7 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
 );
 
 export const withDependencies = (Component: ElementType) => {
-    return ({dependencies, ...props}: {dependencies: Props}) => (
+    return ({dependencies, ...props}: {dependencies: Props} & any) => (
         <DependenciesProvider {...dependencies}>
             <Component {...props} />
         </DependenciesProvider>

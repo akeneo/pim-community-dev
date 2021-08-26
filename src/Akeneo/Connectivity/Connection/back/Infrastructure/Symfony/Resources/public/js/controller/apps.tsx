@@ -1,4 +1,4 @@
-import {Apps} from '@akeneo-pim-community/connectivity-connection';
+import {Apps, AppsRoutes} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
 import ReactController from '../react/react-controller';
@@ -7,7 +7,7 @@ const mediator = require('oro/mediator');
 
 class AppsController extends ReactController {
   reactElementToMount() {
-    return <Apps dependencies={dependencies} />;
+    return <Apps dependencies={dependencies} routes={AppsRoutes} />;
   }
 
   routeGuardToUnmount() {
