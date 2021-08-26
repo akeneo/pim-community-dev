@@ -13,6 +13,7 @@ import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import PermissionFormRegistry, {PermissionFormProvider} from 'akeneopimpermission/registry/permission-form-registry';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -26,6 +27,8 @@ export const MarketplacePage: FC = () => {
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
+
+    PermissionFormRegistry.all().then((providers: PermissionFormProvider[]) => console.log(providers));
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');

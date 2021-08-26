@@ -1,4 +1,4 @@
-import {Marketplace} from '@akeneo-pim-community/connectivity-connection';
+import {Marketplace, MarketplaceRoutes} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
 import ReactController from '../react/react-controller';
@@ -7,7 +7,7 @@ const mediator = require('oro/mediator');
 
 class MarketplaceController extends ReactController {
   reactElementToMount() {
-    return <Marketplace dependencies={dependencies} />;
+    return <Marketplace dependencies={dependencies} routes={MarketplaceRoutes} />;
   }
 
   routeGuardToUnmount() {
