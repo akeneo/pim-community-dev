@@ -235,7 +235,7 @@ final class ScopeMapper
             }
         }
 
-        return \array_filter($scopes, fn($scope) => !in_array($scope, $inheritedScopes));
+        return \array_filter($scopes, fn ($scope) => !in_array($scope, $inheritedScopes));
     }
 
     /**
