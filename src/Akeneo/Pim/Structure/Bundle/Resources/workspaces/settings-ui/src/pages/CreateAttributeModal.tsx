@@ -1,7 +1,7 @@
 import React, {FunctionComponentElement} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useAttributeCodeInput} from '../hooks/attributes/useAttributeCodeInput';
-import {AttributesIllustration, Button, Field, Locale, Modal, TextInput} from 'akeneo-design-system';
+import {AttributesIllustration, Button, Field, Locale, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const FieldSet = styled.div`
@@ -41,12 +41,16 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
     generatedFromLabel: label,
   });
 
+  const labelRef: React.RefObject<HTMLInputElement> = React.createRef();
+
   const handleConfirm = () => {
     const extraFieldsData = extraFields.reduce((old, extraField: CreateAttributeModalExtraField) => {
       return {...old, ...extraField.data};
     }, {} as {[key: string]: any});
     onStepConfirm({code, label, ...extraFieldsData});
   };
+
+  useAutoFocus(labelRef);
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
@@ -57,6 +61,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
       <FieldSet>
         <Field label={translate('pim_common.label')} locale={<Locale code={userContext.get('catalogLocale')} />}>
           <TextInput
+            ref={labelRef}
             value={label}
             onChange={setLabel}
             maxLength={100}
