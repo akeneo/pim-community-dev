@@ -48,7 +48,7 @@ const ScopeItem = styled.li`
     }
 `;
 
-const iconsMap: { [key: string]: React.ReactNode }  = {
+const iconsMap: { [key: string]: React.ElementType }  = {
     'catalog_structure': GroupsIcon,
     'attribute_options': AddAttributeIcon,
     'categories': CategoryIcon,
