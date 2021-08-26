@@ -99,7 +99,6 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             new DataInvalidItem($event->getSubject())
         );
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
-        $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

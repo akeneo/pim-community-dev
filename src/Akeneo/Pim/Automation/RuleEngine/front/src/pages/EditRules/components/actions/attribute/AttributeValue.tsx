@@ -1,39 +1,24 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   Attribute,
   AttributeType,
   getAttributeLabel,
-  ScopeCode,
-} from '../../../../../models';
+} from '../../../../../models/Attribute';
+import {ScopeCode} from '../../../../../models/Scope';
 import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import {
-  AssetCollectionValue,
-  BooleanValue,
-  DateValue,
-  FallbackValue,
-  MeasurementValue,
-  MultiReferenceEntityValue,
-  MultiSelectValue,
-  NumberValue,
-  parseAssetCollectionValue,
-  parseMultiReferenceEntityValue,
-  parsePriceCollectionValue,
-  PriceCollectionValue,
-  SimpleReferenceEntityValue,
-  SimpleSelectValue,
-  TextAreaValue,
-  TextValue,
-} from './';
+import {FallbackValue} from './';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import {ActionFormContainer} from '../style';
-import {parseMeasurementValue} from '../../../../../models/Measurement';
-import {RemoveCurrencyFromPriceCollectionValue} from './RemoveCurrencyFromPriceCollectionValue';
+import {
+  AttributeValueConfig,
+  ConfigContext,
+} from '../../../../../context/ConfigContext';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -77,59 +62,16 @@ type InputValueProps = {
 
 const getValueModule = (
   attribute: Attribute,
+  attributeValueConfig: AttributeValueConfig,
   props: InputValueProps,
   actionType?: string
 ) => {
-  switch (attribute.type) {
-    case AttributeType.TEXT:
-      return <TextValue {...props} />;
-    case AttributeType.TEXTAREA:
-      return <TextAreaValue {...props} />;
-    case AttributeType.DATE:
-      return <DateValue {...props} />;
-    case AttributeType.OPTION_SIMPLE_SELECT:
-      return <SimpleSelectValue {...props} key={attribute.code} />;
-    case AttributeType.OPTION_MULTI_SELECT:
-      return <MultiSelectValue {...props} key={attribute.code} />;
-    case AttributeType.NUMBER:
-      return <NumberValue {...props} />;
-    case AttributeType.BOOLEAN:
-      return <BooleanValue {...props} value={!!props.value} />;
-    case AttributeType.PRICE_COLLECTION:
-      return actionType === 'remove' ? (
-        <RemoveCurrencyFromPriceCollectionValue {...props} />
-      ) : (
-        <PriceCollectionValue
-          {...props}
-          value={parsePriceCollectionValue(props.value)}
-        />
-      );
-    case AttributeType.METRIC:
-      return (
-        <MeasurementValue
-          {...props}
-          value={parseMeasurementValue(props.value)}
-        />
-      );
-    case AttributeType.ASSET_COLLECTION:
-      return (
-        <AssetCollectionValue
-          {...props}
-          value={parseAssetCollectionValue(props.value)}
-        />
-      );
-    case AttributeType.REFERENCE_ENTITY_COLLECTION:
-      return (
-        <MultiReferenceEntityValue
-          {...props}
-          value={parseMultiReferenceEntityValue(props.value)}
-        />
-      );
-    case AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT:
-      return <SimpleReferenceEntityValue {...props} />;
-    default:
-      return null;
+  const render = attributeValueConfig[attribute.type]?.default;
+  if (render) {
+    return render(props, actionType);
   }
+
+  return null;
 };
 
 type Props = {
@@ -162,6 +104,7 @@ const AttributeValue: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
+  const {attributeValueConfig} = useContext(ConfigContext);
 
   const getAttributeLabelIfNotNull = (
     attribute: Attribute | null | undefined
@@ -194,6 +137,7 @@ const AttributeValue: React.FC<Props> = ({
       return (
         getValueModule(
           attribute,
+          attributeValueConfig,
           {
             id,
             attribute,

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
@@ -54,6 +54,7 @@ type ColumnDetailsProps = {
 };
 
 const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const translate = useTranslate();
   const channels = useChannels();
   const firstSource = columnConfiguration.sources[0]?.uuid ?? null;
@@ -102,7 +103,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   }, [switchTo, firstSource]);
 
   return (
-    <Container>
+    <Container ref={scrollRef}>
       <SourcesContent>
         <SourcesSectionTitle sticky={0}>
           <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
@@ -157,6 +158,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
           sources={columnConfiguration.sources}
           format={columnConfiguration.format}
           onFormatChange={handleFormatChange}
+          scrollRef={scrollRef}
         />
       )}
     </Container>

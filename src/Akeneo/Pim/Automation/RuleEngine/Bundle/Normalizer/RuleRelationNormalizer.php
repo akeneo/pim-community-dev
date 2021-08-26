@@ -13,7 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -28,12 +28,8 @@ class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMe
     /** @var array */
     protected $supportedFormats = ['internal_api'];
 
-    /** @var ManagerRegistry */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
-    /**
-     * @param ManagerRegistry $doctrine
-     */
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;

@@ -18,7 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductModelPropos
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductProposals as CountProductProposalsQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;

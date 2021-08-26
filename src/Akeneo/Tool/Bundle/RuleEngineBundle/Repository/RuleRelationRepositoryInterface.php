@@ -11,7 +11,7 @@
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Rule repository interface

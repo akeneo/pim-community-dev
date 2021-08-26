@@ -36,11 +36,8 @@ class SqlFindAssetCodesByAssetFamily implements FindAssetCodesByAssetFamilyInter
             ['assetFamilyIdentifier' => (string) $assetFamilyIdentifier]
         );
 
-        $platform = $this->connection->getDatabasePlatform();
-        while (false !== $code = $statement->fetchColumn()) {
-            $stringCode = Type::getType(Types::STRING)->convertToPHPValue($code, $platform);
-
-            yield AssetCode::fromString($stringCode);
+        while (($res = $statement->fetch(\PDO::FETCH_COLUMN, \PDO::ATTR_CURSOR)) !== false) {
+            yield AssetCode::fromString($res);
         }
     }
 }

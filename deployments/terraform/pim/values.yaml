@@ -243,6 +243,10 @@ pim:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
       schedule: "*/30 * * * *"
+    migrate-job-execution-warning-count:
+      enabled: true
+      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
+      schedule: "*/30 * * * *"
 
 # Onboarder
 onboarder:
