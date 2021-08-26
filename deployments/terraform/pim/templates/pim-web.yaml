@@ -46,7 +46,7 @@ spec:
                   release: "{{ .Release.Name }}"
                   component: pim-web
       initContainers:
-        - name: init-httpd
+        - name: init-fpm
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ["bash", "/scripts-dir/copy-web-entrypoint-files-to-httpd-mouting-point.sh"]
@@ -71,7 +71,7 @@ spec:
             - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
-            - { name: CONTAINER_NAME, value: init-httpd }
+            - { name: CONTAINER_NAME, value: init-fpm }
       containers:
         - name: fpm
           image: {{ template "pim.imageNameAndTag" . }}
