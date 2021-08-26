@@ -136,7 +136,7 @@ const ColumnList = ({
       ))}
       {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
       {shouldDisplayTable && (
-        <Table isDragAndDroppable={true} onReorder={onColumnReorder}>
+        <Table isDragAndDroppable={'' === searchValue} onReorder={onColumnReorder}>
           <Table.Header sticky={88}>
             <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
             <SourceDataHeaderCell>
