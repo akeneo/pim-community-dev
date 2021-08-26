@@ -1,8 +1,8 @@
-import {JobBreadcrumb} from './JobBreadcrumb';
+import {JobBreadcrumb, JobBreadcrumbProps} from './JobBreadcrumb';
 import BaseForm = require('../../../view/base');
 
 type Config = {
-  isEdit: boolean;
+  isEdit?: boolean;
 };
 
 class Breadcrumb extends BaseForm {
@@ -15,12 +15,15 @@ class Breadcrumb extends BaseForm {
   }
 
   public render(): BaseForm {
-    this.renderReact(
+    const {code, label, type} = this.getFormData();
+
+    this.renderReact<JobBreadcrumbProps>(
       JobBreadcrumb,
       {
-        isEdit: this.config.isEdit,
-        jobLabel: this.getFormData().label,
-        jobType: this.getFormData().type
+        isEdit: this.config.isEdit ?? false,
+        jobLabel: label,
+        jobType: type,
+        jobCode: code,
       },
       this.el
     );
