@@ -166,33 +166,35 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
-              <Table.Header sticky={44}>
-                {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
-                <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-                <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
-                <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-                <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-              </Table.Header>
-              <Table.Body>
-                {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
-                  return (
-                    <AttributeOptionRow
-                      isDraggable={isDraggable}
-                      attributeOption={attributeOption}
-                      onSelectItem={onSelectItem}
-                      isSelected={selectedOptionId === attributeOption.id}
-                      onDelete={setAttributeOptionToDelete}
-                      key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                    />
-                  );
-                })}
+            <TableContainer>
+              <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
+                <Table.Header sticky={0}>
+                  {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
+                  <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                  <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
+                  <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+                  <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+                </Table.Header>
+                <Table.Body>
+                  {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
+                    return (
+                      <AttributeOptionRow
+                        isDraggable={isDraggable}
+                        attributeOption={attributeOption}
+                        onSelectItem={onSelectItem}
+                        isSelected={selectedOptionId === attributeOption.id}
+                        onDelete={setAttributeOptionToDelete}
+                        key={`${attributeContext.attributeId}-${attributeOption.code}`}
+                      />
+                    );
+                  })}
 
-                {showNewOptionPlaceholder && (
-                  <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
-                )}
-              </Table.Body>
-            </SpacedTable>
+                  {showNewOptionPlaceholder && (
+                    <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
+                  )}
+                </Table.Body>
+              </SpacedTable>
+            </TableContainer>
 
             {attributeOptionToDelete && (
               <DeleteConfirmationModal
@@ -219,6 +221,11 @@ const SpacedTable = styled(Table)`
   th {
     padding-top: 15px;
   }
+`;
+
+const TableContainer = styled.div`
+  height: calc(100vh - 394px);
+  overflow-y: auto;
 `;
 
 export default AttributeOptionTable;
