@@ -238,9 +238,11 @@ final class ScopeMapper
         return \array_filter($scopes, fn($scope) => !in_array($scope, $inheritedScopes));
     }
 
-    public function getMessages(string $scopes): array
+    /**
+     * @param string[] $scopeList
+     */
+    public function getMessages(array $scopeList): array
     {
-        $scopeList = empty($scopes) ? [] : explode(' ', $scopes);
         $scopeList = $this->formalizeScopes($scopeList);
 
         $messages = [];
