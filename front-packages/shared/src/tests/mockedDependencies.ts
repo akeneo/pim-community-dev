@@ -39,6 +39,9 @@ const mockedDependencies = {
     on: (event: string, _callback: () => void) => event,
     off: (event: string, _callback: () => void) => event,
   },
+  featureFlags: {
+    isEnabled: (_feature: string) => true,
+  },
 };
 
 export {mockedDependencies};
