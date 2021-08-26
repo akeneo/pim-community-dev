@@ -2,7 +2,6 @@ parameters:
     pim_api.security.voter.action_acl.class: Akeneo\Tool\Bundle\ApiBundle\Security\ActionAclVoter
     pim_api.security.access_denied_handler.class: Akeneo\Tool\Bundle\ApiBundle\Security\AccessDeniedHandler
     pim_api.security.primary_key_encrypter.class: Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter
-    pim_api.security.scope_mapper.class: Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper
     fos_oauth_server.server.class: Akeneo\Tool\Bundle\ApiBundle\Security\OAuth2
 
 services:
@@ -25,7 +24,7 @@ services:
             - '%env(APP_SECRET)%'
 
     pim_api.security.scope_mapper:
-        class: '%pim_api.security.scope_mapper.class%'
+        class: Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper
 
     fos_oauth_server.server:
         class: '%fos_oauth_server.server.class%'
