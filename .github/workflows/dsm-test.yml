@@ -134,7 +134,7 @@ jobs:
           assignees: ${{ github.actor }}
 
       - name: Comment current PR to notify that new visual snapshots are available
-        uses: thollander/actions-comment-pull-request@master
+        uses: thollander/actions-comment-pull-request@main
         if: failure() && steps.visual_test_execution.outputs.status != 'success' && steps.build_storybook.outputs.status == 'success'
         with:
           message: |
