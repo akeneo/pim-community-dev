@@ -270,10 +270,12 @@ class ProductController
         try {
             $this->updateProduct($product, $data);
         } catch (TwoWayAssociationWithTheSameProductException $e) {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'message' => $e->getMessage(),
                 'global' => true],
-                Response::HTTP_UNPROCESSABLE_ENTITY);
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
 
         $violations = $this->validator->validate($product);

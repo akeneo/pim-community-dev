@@ -13,6 +13,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
@@ -143,9 +144,9 @@ SQL;
         string $normalizedUnits
     ): MeasurementFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $code = Type::getType(Type::STRING)->convertToPhpValue($code, $platform);
+        $code = Type::getType(Types::STRING)->convertToPhpValue($code, $platform);
         $labels = json_decode($normalizedLabels, true);
-        $standardUnit = Type::getType(Type::STRING)->convertToPhpValue($standardUnit, $platform);
+        $standardUnit = Type::getType(Types::STRING)->convertToPhpValue($standardUnit, $platform);
         //TODO check Type:JSON
         $units = array_map(function (array $normalizedUnit) {
             return $this->hydrateUnit(
@@ -168,14 +169,14 @@ SQL;
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
-        $code = Type::getType(Type::STRING)->convertToPhpValue($code, $platform);
+        $code = Type::getType(Types::STRING)->convertToPhpValue($code, $platform);
         $operations = array_map(function (array $operation) use ($platform) {
-            $operator = Type::getType(Type::STRING)->convertToPhpValue($operation['operator'], $platform);
-            $value = Type::getType(Type::STRING)->convertToPhpValue($operation['value'], $platform);
+            $operator = Type::getType(Types::STRING)->convertToPhpValue($operation['operator'], $platform);
+            $value = Type::getType(Types::STRING)->convertToPhpValue($operation['value'], $platform);
 
             return Operation::create($operator, $value);
         }, $convertFromStandard);
-        $symbol = Type::getType(Type::STRING)->convertToPhpValue($symbol, $platform);
+        $symbol = Type::getType(Types::STRING)->convertToPhpValue($symbol, $platform);
 
         return Unit::create(
             UnitCode::fromString($code),

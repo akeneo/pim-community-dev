@@ -1,9 +1,0 @@
-oro_system_configuration:
-    tree:
-        # SYSTEM CONFIGURATION TREE IS NOT DEFINED
-        # PROCESSING THIS FILE SHOULD TRIGGER ERROR
-        some_not_usefull_tree:
-            some_not_usefull_group:
-                children:
-                    some_not_usefull_group2:
-                        children:

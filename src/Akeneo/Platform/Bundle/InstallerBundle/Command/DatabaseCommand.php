@@ -7,7 +7,6 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -265,6 +264,19 @@ class DatabaseCommand extends Command
                 KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;";
         $this->connection->exec($messengerTableSql);
+
+        $output->writeln('<info>Create one time task table</info>');
+        $oneTimeTaskTableSql = <<<SQL
+CREATE TABLE IF NOT EXISTS pim_one_time_task (
+    `code` VARCHAR(100) PRIMARY KEY,
+    `status` VARCHAR(100) NOT NULL,
+    `start_time` DATETIME,
+    `end_time` DATETIME,
+    `values` JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+SQL;
+
+        $this->connection->exec($oneTimeTaskTableSql);
     }
 
     /**

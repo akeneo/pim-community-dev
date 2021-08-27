@@ -17,3 +17,9 @@ Akeneo\UserManagement\Component\Model\Role:
         label:
             type: string
             lenght: 30
+        type:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                default: null

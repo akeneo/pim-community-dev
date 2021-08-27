@@ -54,7 +54,7 @@
         "ext-openssl": "*",
         "ass/xmlsecurity": "1.1.1",
         "box/spout": "2.7.3",
-        "doctrine/annotations": "1.8.0",
+        "doctrine/annotations": "1.13.2",
         "doctrine/cache": "1.9.1",
         "doctrine/collections": "1.6.4",
         "doctrine/common": "2.13.3",
@@ -130,7 +130,7 @@
         "maennchen/zipstream-php": "^2.1"
     },
     "require-dev": {
-        "akeneo/php-coupling-detector": "0.3.*",
+        "akeneo/php-coupling-detector": "^0.7.0",
         "symfony/debug-bundle": "4.4.18",
         "symfony/web-profiler-bundle": "4.4.18",
         "symfony/web-server-bundle": "4.4.18",
@@ -157,7 +157,8 @@
         "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0",
-        "dvdoug/behat-code-coverage": "^5.2"
+        "dvdoug/behat-code-coverage": "^5.2",
+        "friendsofphp/php-cs-fixer": "^3.0"
     },
     "conflict": {
         "symfony/symfony": "*"

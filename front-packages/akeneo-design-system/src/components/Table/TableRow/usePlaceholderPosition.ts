@@ -1,27 +1,28 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 type PlaceholderPosition = 'top' | 'bottom' | 'none';
 
-const usePlaceholderPosition = (rowIndex: number, draggedElement: number | null) => {
-  const [overingCount, setOveringCount] = useState(0);
+const usePlaceholderPosition = (rowIndex: number) => {
+  const [overingCount, setOveringCount] = useState<number>(0);
   const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
 
-  const dragEnter = useCallback(() => {
-    if (null === draggedElement) return;
-    setOveringCount(count => count + 1);
-    setPlaceholderPosition(draggedElement >= rowIndex ? 'top' : 'bottom');
-  }, [draggedElement, rowIndex]);
+  useEffect(() => {
+    setOveringCount(0);
+  }, [rowIndex]);
+
+  const dragEnter = useCallback(
+    (draggedElementIndex: number) => {
+      setOveringCount(count => count + 1);
+      setPlaceholderPosition(draggedElementIndex >= rowIndex ? 'top' : 'bottom');
+    },
+    [rowIndex]
+  );
 
   const dragLeave = useCallback(() => {
-    if (null === draggedElement) return;
     setOveringCount(count => count - 1);
-  }, [draggedElement]);
-
-  const dragEnd = useCallback(() => {
-    setOveringCount(0);
   }, []);
 
-  return [overingCount === 0 ? 'none' : placeholderPosition, dragEnter, dragLeave, dragEnd] as const;
+  return [overingCount === 0 ? 'none' : placeholderPosition, dragEnter, dragLeave] as const;
 };
 
 export {usePlaceholderPosition};
