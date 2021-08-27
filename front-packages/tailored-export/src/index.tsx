@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {
-  baseFetcher,
   Channel,
   MicroFrontendDependenciesProvider,
   Routes,
@@ -16,6 +15,12 @@ import {FakePIM} from './FakePIM';
 import {Attribute} from './feature/models';
 import {FetcherContext} from './feature/contexts';
 import {AssociationType} from './feature/models/AssociationType';
+
+const baseFetcher = async (route: string) => {
+  const response = await fetch(route);
+
+  return await response.json();
+};
 
 const cache = {};
 const cachedFetcher = (route: string) => {
