@@ -21,6 +21,7 @@ const subNavigationEntries: SubNavigationEntry[] = [
     sectionCode: 'section2',
     title: 'Sub entry 3',
     route: 'subentry3_route',
+    disabled: true
   },
 ];
 
@@ -55,6 +56,7 @@ const aMainNavigation = (): NavigationEntry[] => {
           sections: sections,
         }
       ],
+      align: 'bottom',
       isLandingSectionPage: false,
     },
     {

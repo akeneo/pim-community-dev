@@ -6,5 +6,5 @@
     "module": "commonjs",
     "noEmit": false,
   },
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "**/__mocks__/*"]
 }
