@@ -43,7 +43,7 @@ class QualitySummaryHeader extends BaseView {
           </div>
         </div>
       `);
-    });
+    }).then(() => window.dispatchEvent(new CustomEvent('quality_summary_header_updated')));
 
     return this;
   }
