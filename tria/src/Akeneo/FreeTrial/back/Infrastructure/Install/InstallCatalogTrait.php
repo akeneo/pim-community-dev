@@ -26,7 +26,7 @@ trait InstallCatalogTrait
 
     private function getFixturesPath(): string
     {
-        return __DIR__ . '/fixtures/free_trial_catalog';
+        return __DIR__ . '/../Symfony/Resources/fixtures/free_trial_catalog';
     }
 
     private function getJobsFixturesPath(): string
