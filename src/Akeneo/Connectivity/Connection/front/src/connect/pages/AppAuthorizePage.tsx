@@ -16,8 +16,8 @@ export const AppAuthorizePage: FC = () => {
     }
 
     if (null === clientId) {
-       history.push('/connect/marketplace');
-       return null;
+        history.push('/connect/marketplace');
+        return null;
     }
 
     return <AppWizard clientId={clientId} />;

@@ -26,7 +26,7 @@ test('The wizard renders without error', async () => {
         ...fetchAppWizardDataResponses,
     });
 
-    renderWithProviders(<AppWizard clientId="8d8a7dc1-0827-4cc9-9ae5-577c6419230b"/>);
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitForElement(() => screen.getByAltText('MyApp'));
     expect(screen.getByAltText('MyApp')).toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
@@ -47,7 +47,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         ...fetchAppWizardDataResponses,
     });
 
-    renderWithProviders(<AppWizard clientId="8d8a7dc1-0827-4cc9-9ae5-577c6419230b"/>);
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitForElement(() => screen.getByAltText('MyApp'));
 
     act(() => {

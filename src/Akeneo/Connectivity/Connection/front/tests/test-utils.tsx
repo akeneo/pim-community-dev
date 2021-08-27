@@ -12,7 +12,7 @@ export const historyMock = {
     history: createMemoryHistory(),
     reset: () => {
         historyMock.history = createMemoryHistory();
-    }
+    },
 };
 
 const UserProvider: FC = ({children}) => {
@@ -31,9 +31,7 @@ const DefaultProviders: FC = ({children}) => {
     return (
         <ThemeProvider theme={theme}>
             <UserProvider>
-                <Router history={historyMock.history}>
-                    {children}
-                </Router>
+                <Router history={historyMock.history}>{children}</Router>
             </UserProvider>
         </ThemeProvider>
     );
