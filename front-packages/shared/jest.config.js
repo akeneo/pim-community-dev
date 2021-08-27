@@ -12,6 +12,15 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'tests',
     'src/microfrontend',
-    'src/components/PimView.tsx'
+    'src/components/PimView.tsx',
+    'index.ts',
+    'src/components/CategoryTree'
   ],
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+  },
 };
