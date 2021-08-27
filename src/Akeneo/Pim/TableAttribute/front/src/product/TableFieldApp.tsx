@@ -8,6 +8,7 @@ import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/share
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 import {clearCacheSelectOptions} from '../repositories/SelectOption';
+import {ProductFieldElement, useRenderElements} from './useRenderElements';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -60,7 +61,7 @@ const CopyCheckbox = styled(Checkbox)`
 
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
-  elements: {[position: string]: {[elementKey: string]: any}};
+  elements: {[position: string]: {[elementKey: string]: ProductFieldElement}};
   violations?: Violations[];
   copyContext?: CopyContext;
   onCopyCheckboxChange: any;
@@ -141,24 +142,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     clearCacheSelectOptions();
   }, []);
 
-  const renderElements: (position: string) => React.ReactNode = position => {
-    return (
-      <>
-        {Object.keys(elements[position] || []).map(elementKey => {
-          const element = elements[position][elementKey];
-          if (typeof element.render === 'function') {
-            return (
-              <span key={elementKey} dangerouslySetInnerHTML={{__html: element.render().el.innerHTML as string}} />
-            );
-          } else if (typeof element === 'string') {
-            return <span key={elementKey} dangerouslySetInnerHTML={{__html: element}} />;
-          } else {
-            return <span key={elementKey} dangerouslySetInnerHTML={{__html: element[0].outerHTML as string}} />;
-          }
-        })}
-      </>
-    );
-  };
+  const renderElements = useRenderElements(attribute.code, elements);
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);

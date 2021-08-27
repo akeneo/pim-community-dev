@@ -65,11 +65,16 @@ describe('TableFieldApp', () => {
   it('should render elements', async () => {
     const handleChange = jest.fn();
 
+    const html = document.createElement('div');
+    html.innerHTML = 'This rule can be updated by <span>2 rules</span>';
+    const backbone = document.createElement('div');
+    backbone.innerHTML = 'Completeness';
+
     const elementAsString = '<div>Element as String</div>';
-    const elementAsHtml = [{outerHTML: '<div>Guidelines</div>'}];
+    const elementAsHtml = [html];
     const elementAsBackbone = {
       render: () => {
-        return {el: {innerHTML: '<div>Completeness</div>'}};
+        return {el: backbone};
       },
     };
 
@@ -79,17 +84,20 @@ describe('TableFieldApp', () => {
         onChange={handleChange}
         elements={{
           badge: {completeness: elementAsString},
-          footer: {guidelines: elementAsHtml},
-          label: {fromSmart: elementAsBackbone},
+          label: {guidelines: elementAsBackbone},
+          footer: {from_smart: elementAsHtml},
         }}
         onCopyCheckboxChange={jest.fn()}
       />
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
-    expect(screen.getByText('Guidelines')).toBeInTheDocument();
     expect(screen.getByText('Completeness')).toBeInTheDocument();
     expect(screen.getByText('Element as String')).toBeInTheDocument();
+
+    expect(screen.getByText(/This rule can be updated by/)).toBeInTheDocument();
+    expect(screen.getByText('2 rules')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('2 rules'));
   });
 
   it('should add and remove a row', async () => {
@@ -123,7 +131,8 @@ describe('TableFieldApp', () => {
   });
 
   it('should call comparison render without rendering anything', () => {
-    const elementAsHtml = [{outerHTML: '<div></div>'}];
+    const element = document.createElement('div');
+    const elementAsHtml = [element];
 
     const {container} = renderWithProviders(
       <TableFieldApp
