@@ -6,7 +6,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PublishedProductEventSpec extends ObjectBehavior
 {

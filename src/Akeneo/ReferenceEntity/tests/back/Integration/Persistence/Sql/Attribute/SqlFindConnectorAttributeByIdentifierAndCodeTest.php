@@ -107,17 +107,17 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
         $this->attributeRepository->create($imageAttribute);
 
         return new ConnectorAttribute(
-                $imageAttribute->getCode(),
-                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
-                AttributeIsRequired::fromBoolean(true),
-                [
+            $imageAttribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            'image',
+            AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
                     'max_file_size' => '10',
                     'allowed_extensions' => ['jpg']
                 ]
-            );
+        );
     }
 
     private function createReferenceEntity(string $rawIdentifier): ReferenceEntity

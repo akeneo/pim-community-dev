@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Project create event.

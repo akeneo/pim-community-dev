@@ -41,7 +41,9 @@ class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
         $locale = $selection->getLocale();
 
         $attributeOptionTranslations = $this->getAttributeOptionLabels->byAttributeCodeAndOptionCodes(
-            $attributeCode, $optionsCodes, $locale
+            $attributeCode,
+            $optionsCodes,
+            $locale
         );
 
         $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations) {

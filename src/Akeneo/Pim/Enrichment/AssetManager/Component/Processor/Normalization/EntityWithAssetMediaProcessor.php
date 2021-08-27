@@ -138,7 +138,8 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
                     if ($this->assetValueSatisfiesLocaleAndScopeFilters(
                         $assetMainMediaValue,
                         $scopeCodesFilter,
-                        $localeCodesFilter)
+                        $localeCodesFilter
+                    )
                     ) {
                         $filteredMainMedia[] = $assetMainMediaValue;
                     }

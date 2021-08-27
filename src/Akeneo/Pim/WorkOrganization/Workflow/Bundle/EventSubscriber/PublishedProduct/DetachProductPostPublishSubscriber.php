@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedP
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

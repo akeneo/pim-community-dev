@@ -147,7 +147,13 @@ final class EditAssetFamilyContext implements Context
         $updates = $updateTable->getRowsHash();
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
         $command = new EditAssetFamilyCommand(
-            $identifier, json_decode($updates['labels'], true), null, $attributeAsMainMedia, [], [], null
+            $identifier,
+            json_decode($updates['labels'], true),
+            null,
+            $attributeAsMainMedia,
+            [],
+            [],
+            null
         );
         ($this->editAssetFamilyHandler)($command);
     }
@@ -166,7 +172,8 @@ final class EditAssetFamilyContext implements Context
         );
 
         if (array_key_exists('attribute_as_label', $expectedInformation)) {
-            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+            $expectedAttributeIdentifier = sprintf(
+                '%s_%s_%s',
                 $expectedInformation['attribute_as_label'],
                 $actualAssetFamily->getIdentifier(),
                 md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_label']))
@@ -180,7 +187,8 @@ final class EditAssetFamilyContext implements Context
         }
 
         if (array_key_exists('attribute_as_main_media', $expectedInformation)) {
-            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+            $expectedAttributeIdentifier = sprintf(
+                '%s_%s_%s',
                 $expectedInformation['attribute_as_main_media'],
                 $actualAssetFamily->getIdentifier(),
                 md5(sprintf('%s_%s', $actualAssetFamily->getIdentifier(), $expectedInformation['attribute_as_main_media']))
@@ -292,7 +300,13 @@ final class EditAssetFamilyContext implements Context
         $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily($identifier);
 
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            $identifier, [$localCode => $label], null, $attributeAsMainMedia, [], [], null
+            $identifier,
+            [$localCode => $label],
+            null,
+            $attributeAsMainMedia,
+            [],
+            [],
+            null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }
@@ -421,7 +435,13 @@ final class EditAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            self::ASSET_FAMILY_IDENTIFIER, [], null, null, $invalidProductLinkRules, [], null
+            self::ASSET_FAMILY_IDENTIFIER,
+            [],
+            null,
+            null,
+            $invalidProductLinkRules,
+            [],
+            null
         );
         $this->editAssetFamily($editAssetFamilyCommand);
     }

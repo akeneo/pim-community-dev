@@ -124,29 +124,28 @@ class GetConnectorRecordsAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $records = ($this->searchConnectorRecord)($recordQuery);
+        $result = ($this->searchConnectorRecord)($recordQuery);
         $records = array_map(function (ConnectorRecord $record) {
             return $record->normalize();
-        }, $records);
+        }, $result->records());
 
         $records = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $records);
-        $paginatedRecords = $this->paginateRecords($records, $request, $referenceEntityIdentifier);
+        $paginatedRecords = $this->paginateRecords($records, $request, $referenceEntityIdentifier, $result->lastSortValue());
 
         return new JsonResponse($paginatedRecords);
     }
 
-    private function paginateRecords(array $records, Request $request, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function paginateRecords(array $records, Request $request, ReferenceEntityIdentifier $referenceEntityIdentifier, ?string $lastSortValue): array
     {
         $lastRecord = end($records);
         reset($records);
-        $lastRecordCode = $lastRecord['code'] ?? null;
 
         $paginationParameters = [
             'list_route_name'     => 'akeneo_reference_entities_records_rest_connector_get',
             'item_route_name'     => 'akeneo_reference_entities_record_rest_connector_get',
             'search_after'        => [
                 'self' => $request->get('search_after', null),
-                'next' => $lastRecordCode
+                'next' => $lastSortValue,
             ],
             'limit'               => $this->limit->intValue(),
             'item_identifier_key' => 'code',

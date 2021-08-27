@@ -89,7 +89,8 @@ class EditRecordCommandFactory
     {
         if (!array_key_exists($attributeCode, $existingAttributes)) {
             throw new \InvalidArgumentException(sprintf(
-                'Attribute "%s" does not exist for this reference entity', $attributeCode
+                'Attribute "%s" does not exist for this reference entity',
+                $attributeCode
             ));
         }
     }

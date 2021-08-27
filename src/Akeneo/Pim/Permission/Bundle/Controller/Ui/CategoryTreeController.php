@@ -134,14 +134,15 @@ class CategoryTreeController extends BaseCategoryTreeController
         }
 
         return $this->render(
-            'AkeneoPimEnrichmentBundle:CategoryTree:listTree.json.twig',
+            '@AkeneoPimEnrichment/CategoryTree/listTree.json.twig',
             [
             'trees'          => $grantedTrees,
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
             'related_entity' => $this->rawConfiguration['related_entity'],
-        ]);
+        ]
+        );
     }
 
     /**
@@ -261,9 +262,9 @@ class CategoryTreeController extends BaseCategoryTreeController
         $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
-            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children.json.twig';
+            $view = '@AkeneoPimEnrichment/CategoryTree/children.json.twig';
         } else {
-            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children-tree.json.twig';
+            $view = '@AkeneoPimEnrichment/CategoryTree/children-tree.json.twig';
         }
 
         $withItemsCount = (bool) $request->get('with_items_count', false);

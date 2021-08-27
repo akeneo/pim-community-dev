@@ -38,11 +38,14 @@ class CodeValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($code, [
+        $violations = $validator->validate(
+            $code,
+            [
                 new NotBlank(),
                 new Type(['type' => 'string']),
                 new Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
-                new Regex([
+                new Regex(
+                    [
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => Code::MESSAGE_WRONG_PATTERN,
                     ]

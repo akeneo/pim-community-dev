@@ -54,7 +54,8 @@ class ItemCategoryAccessQuery
         $itemTableName = $itemMetadata->getTableName();
         $relation = key($categoryAssoc['relationToSourceKeyColumns']);
 
-        $sql = sprintf('
+        $sql = sprintf(
+            '
             SELECT category_item.%s AS id
             FROM %s category_item
             INNER JOIN pimee_security_product_category_access category_access ON category_access.category_id = category_item.category_id 

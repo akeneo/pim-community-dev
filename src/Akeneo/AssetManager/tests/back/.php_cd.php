@@ -12,15 +12,18 @@ $rules = [
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
         'Symfony\Component\EventDispatcher\Event',
+        'Symfony\Contracts',
         'Traversable'
     ])->in('Akeneo\AssetManager\Domain'),
     $builder->only([
         'Akeneo\AssetManager\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
         'Symfony\Component\Validator',
+        'Symfony\Contracts',
         'Webmozart\Assert\Assert',
 
         //TODO: use a proper image storer interface for EditAssetFamilyHandler

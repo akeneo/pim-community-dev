@@ -14,7 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\ProductRevert\Controller;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationsException;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,17 +30,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductVersionController
 {
-    /** @var ProductReverter */
-    protected $reverter;
-
-    /** @var string */
-    protected $versionClass;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
+    protected ProductReverter $reverter;
+    protected string $versionClass;
+    protected ManagerRegistry $doctrine;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         ManagerRegistry $doctrine,
@@ -90,12 +83,7 @@ class ProductVersionController
     /**
      * Find an entity or throw a 404
      *
-     * @param string $className Example: 'PimCatalogBundle:Category'
-     * @param int    $id        The id of the entity
-     *
      * @throws NotFoundHttpException
-     *
-     * @return Version
      */
     protected function findOr404(string $className, int $id): Version
     {

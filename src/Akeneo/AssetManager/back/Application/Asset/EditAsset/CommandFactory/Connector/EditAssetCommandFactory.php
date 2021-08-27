@@ -83,7 +83,8 @@ class EditAssetCommandFactory
     {
         if (!array_key_exists($attributeCode, $existingAttributes)) {
             throw new \InvalidArgumentException(sprintf(
-                'Attribute "%s" does not exist for this asset family', $attributeCode
+                'Attribute "%s" does not exist for this asset family',
+                $attributeCode
             ));
         }
     }

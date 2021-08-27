@@ -171,7 +171,9 @@ $rules = [
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 

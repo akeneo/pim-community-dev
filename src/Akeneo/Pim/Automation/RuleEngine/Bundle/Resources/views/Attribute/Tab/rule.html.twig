@@ -1,4 +1,4 @@
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+{% import '@PimDataGrid/macros.html.twig' as dataGrid %}
 
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     {{ dataGrid.renderStatefulGrid('rule-grid', { resourceName: "Pim\\Bundle\\CatalogBundle\\Entity\\Attribute", resourceId: form.vars.value.id }) }}

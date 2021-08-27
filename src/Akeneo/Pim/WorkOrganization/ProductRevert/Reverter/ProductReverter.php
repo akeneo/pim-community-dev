@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -29,28 +29,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductReverter
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    protected ManagerRegistry $registry;
+    protected ObjectUpdaterInterface $productUpdater;
+    protected SaverInterface $productSaver;
+    protected ValidatorInterface $validator;
+    protected ArrayConverterInterface $converter;
 
-    /** @var  ObjectUpdaterInterface*/
-    protected $productUpdater;
-
-    /** @var SaverInterface */
-    protected $productSaver;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ArrayConverterInterface */
-    protected $converter;
-
-    /**
-     * @param ManagerRegistry         $registry
-     * @param ObjectUpdaterInterface  $productUpdater
-     * @param SaverInterface          $productSaver
-     * @param ValidatorInterface      $validator
-     * @param ArrayConverterInterface $converter
-     */
     public function __construct(
         ManagerRegistry $registry,
         ObjectUpdaterInterface $productUpdater,

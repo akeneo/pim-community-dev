@@ -38,12 +38,15 @@ class CodeValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($code, [
+        $violations = $validator->validate(
+            $code,
+            [
                 new NotBlank(),
                 new NotNull(),
                 new Type(['type' => 'string']),
                 new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Regex([
+                new Regex(
+                    [
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => 'pim_asset_manager.asset.validation.code.pattern',
                     ]
