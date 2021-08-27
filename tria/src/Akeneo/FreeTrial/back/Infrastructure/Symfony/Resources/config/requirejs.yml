@@ -7,6 +7,7 @@ config:
           feature: free_trial
   paths:
     pim/app: akeneofreetrial/js/pim-app.ts
+    pim/analytics: akeneofreetrial/js/pim-analytics.ts
     pim/controller/invite-user:  akeneofreetrial/js/invite-user/controller.tsx
     pim/free-trial/user-edit-form/readonly-tab-content:  akeneofreetrial/js/invite-user/user-profile-readonly-tab-content.ts
     pim/menu/user-navigation: akeneofreetrial/js/menu/user-navigation.ts
