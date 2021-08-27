@@ -15,6 +15,8 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor;
 
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\MediaFileApiInterface;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 
 final class ExtractMediaFiles
@@ -25,10 +27,13 @@ final class ExtractMediaFiles
 
     private StyleInterface $io;
 
-    public function __construct(AkeneoPimClientInterface $apiClient, StyleInterface $io)
+    private FilesystemInterface $filesystem;
+
+    public function __construct(FilesystemInterface $filesystem, AkeneoPimClientInterface $apiClient, StyleInterface $io)
     {
         $this->apiClient = $apiClient;
         $this->io = $io;
+        $this->filesystem = $filesystem;
     }
 
     public function __invoke(): void
@@ -43,13 +48,33 @@ final class ExtractMediaFiles
         foreach ($mediaFilesApi->all() as $mediaFile) {
             unset($mediaFile['_links']);
 
-            $mediaFileContent = $mediaFilesApi->download($mediaFile['code'])->getBody();
-            $mediaFile['hash'] = sha1(strval($mediaFileContent));
+            if ($this->filesystem->has($mediaFile['code'])) {
+                $mediaFileContent = $this->filesystem->read($mediaFile['code']);
+            } else {
+                $mediaFileContent = $this->downloadMediaFile($mediaFile, $mediaFilesApi);
+            }
+
+            $mediaFile['hash'] = sha1($mediaFileContent);
 
             file_put_contents($this->getMediaFileFixturesPath(), json_encode($mediaFile) . PHP_EOL, FILE_APPEND);
             $this->io->progressAdvance(1);
         }
 
         $this->io->progressFinish();
+    }
+
+    private function downloadMediaFile(array $mediaFileData, MediaFileApiInterface $mediaFileApi): string
+    {
+        $mediaFileContent = $mediaFileApi->download($mediaFileData['code'])->getBody();
+
+        $options['ContentType'] = $mediaFileData['mime_type'];
+        $options['metadata']['contentType'] = $mediaFileData['mime_type'];
+
+        $isFileWritten = $this->filesystem->put($mediaFileData['code'], $mediaFileContent, $options);
+        if (!$isFileWritten) {
+            throw new \Exception('Failed to write media-file ' . $mediaFileData['code']);
+        }
+
+        return strval($mediaFileContent);
     }
 }

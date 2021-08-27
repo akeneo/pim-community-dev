@@ -19,6 +19,9 @@ use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractStructure;
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\MountManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,6 +30,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class ExtractCatalogCommand extends Command
 {
     use InstallCatalogTrait;
+
+    private FilesystemInterface $catalogFileSystem;
 
     private array $mediaFileAttributes = [];
     private array $downloadedMediaFiles = [];
@@ -39,6 +44,7 @@ final class ExtractCatalogCommand extends Command
     private string $apiPassword;
 
     public function __construct(
+        MountManager $fileSystemManager,
         string $apiBaseUrl,
         string $apiClientId,
         string $apiSecret,
@@ -47,6 +53,7 @@ final class ExtractCatalogCommand extends Command
     ) {
         parent::__construct();
 
+        $this->catalogFileSystem = $fileSystemManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
         $this->apiBaseUrl = $apiBaseUrl;
         $this->apiClientId = $apiClientId;
         $this->apiSecret = $apiSecret;
@@ -71,7 +78,7 @@ final class ExtractCatalogCommand extends Command
 
         $apiClient = $this->buildApiClient($input);
 
-        $extractMediaFiles = new ExtractMediaFiles($apiClient, $io);
+        $extractMediaFiles = new ExtractMediaFiles($this->catalogFileSystem, $apiClient, $io);
         $extractMediaFiles();
 
         $extractProducts = new ExtractProducts($apiClient, $io);
