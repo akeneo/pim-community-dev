@@ -497,6 +497,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'identifiers' => ['brand_bangolufsen', 'brand_kartell'],
             'matches_count' => 3
         ], $matchingIdentifiers->normalize());
+        self::assertSame('kartell', $matchingIdentifiers->lastSortValue);
     }
 
     /**
