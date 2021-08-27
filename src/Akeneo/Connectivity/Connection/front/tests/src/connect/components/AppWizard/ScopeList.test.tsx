@@ -1,18 +1,16 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen, waitForElement} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import {mockFetchResponses, MockFetchResponses, renderWithProviders, historyMock} from '../../../../test-utils';
+import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ScopeList} from '@src/connect/components/AppWizard/ScopeList';
-import userEvent from '@testing-library/user-event';
-import {ScopeMessage} from '@src/connect/hooks/use-fetch-app-wizard-data';
 
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
 });
 
-test('The scope list renders with scopes', async () => {
+test('The scope list renders with scopes', () => {
     const scopes = [
         {
             icon: 'products',
@@ -34,7 +32,7 @@ test('The scope list renders with scopes', async () => {
     ).toBeInTheDocument();
 });
 
-test('The scope list still renders with unknown scopes', async () => {
+test('The scope list still renders with unknown scopes', () => {
     const scopes = [
         {
             icon: 'foo',
@@ -50,10 +48,8 @@ test('The scope list still renders with unknown scopes', async () => {
     ).toBeInTheDocument();
 });
 
-test('The scope list renders without scopes', async () => {
-    const scopes: ScopeMessage[] = [];
-
-    renderWithProviders(<ScopeList appName='MyApp' scopeMessages={scopes} />);
+test('The scope list renders without scopes', () => {
+    renderWithProviders(<ScopeList appName='MyApp' scopeMessages={[]} />);
 
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.apps.authorize.no_scope_title', {exact: false})
