@@ -99,6 +99,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const [isDeleteOptionModalOpen, openDeleteOptionModal, closeDeleteOptionModal] = useBooleanState();
   const [indexToRemove, setIndexToRemove] = React.useState<number | undefined>();
   const [scrollToBottom, doScrollToBottom, doNotScrollToBottom] = useBooleanState(false);
+  const [initialNumberOptions, setInitialNumberOptions] = React.useState<number>(0);
 
   const lastCodeInputRef = React.useRef<HTMLInputElement>();
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
@@ -126,17 +127,18 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
         }, {} as {[optionId: string]: boolean})
       );
     };
-
     if (typeof columnDefinition.options === 'undefined') {
       fetchSelectOptions(router, attribute.code, columnDefinition.code).then(fetchOptions => {
         if (typeof fetchOptions === 'undefined') {
           initializeOptions([]);
         } else {
           initializeOptions(fetchOptions);
+          setInitialNumberOptions(fetchOptions?.length - 1);
         }
       });
     } else {
       initializeOptions(columnDefinition.options);
+      setInitialNumberOptions(columnDefinition.options?.length - 1);
     }
   }, []);
 
@@ -417,15 +419,18 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           </Modal.TopRightButtons>
         </OptionsTwoColumnsLayout>
       </Modal>
-      {isDeleteOptionModalOpen && typeof indexToRemove !== 'undefined' && options && (
-        <DeleteOptionModal
-          close={closeDeleteOptionModal}
-          onDelete={handleDelete}
-          optionCode={options[indexToRemove]?.code ?? ''}
-          isFirstColumn={indexToRemove === 0}
-          attributeLabel={getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}
-        />
-      )}
+      {isDeleteOptionModalOpen &&
+        typeof indexToRemove !== 'undefined' &&
+        options &&
+        indexToRemove <= initialNumberOptions && (
+          <DeleteOptionModal
+            close={closeDeleteOptionModal}
+            onDelete={handleDelete}
+            optionCode={options[indexToRemove]?.code ?? ''}
+            isFirstColumn={indexToRemove === 0}
+            attributeLabel={getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}
+          />
+        )}
     </>
   );
 };
