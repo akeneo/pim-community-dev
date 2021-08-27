@@ -115,7 +115,7 @@ class VersionManager
     {
         $createdVersions = [];
 
-        $event = $this->eventDispatcher->dispatch(BuildVersionEvents::PRE_BUILD, new BuildVersionEvent());
+        $event = $this->eventDispatcher->dispatch(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD);
         if (null !== $event && null !== $event->getUsername()) {
             $this->username = $event->getUsername();
         }

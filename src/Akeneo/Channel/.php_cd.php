@@ -26,6 +26,7 @@ $rules = [
     ])->in('Akeneo\Channel\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Akeneo\Tool\Component',

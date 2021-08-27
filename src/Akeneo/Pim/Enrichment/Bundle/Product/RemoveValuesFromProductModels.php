@@ -67,18 +67,18 @@ SQL,
 
         foreach ($productModels as $productModel) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
                 new GenericEvent($productModel, [
                     'unitary' => false,
-                ])
+                ]),
+                StorageEvents::POST_SAVE
             );
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE_ALL,
             new GenericEvent($productModels, [
                 'unitary' => false,
-            ])
+            ]),
+            StorageEvents::POST_SAVE_ALL
         );
     }
 }

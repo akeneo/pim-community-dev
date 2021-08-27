@@ -631,7 +631,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                     && null !== $filterBox
                     && null !== $manageFilters
                 ;
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
         $this->spin(
             function () {
@@ -696,7 +698,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $loadingWrapper = $this->getDatagrid()->getElement('Grid container')->find('css', '.loading-mask');
 
                 return (null === $loadingWrapper || !$loadingWrapper->isVisible());
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
 
         return true;
@@ -1281,9 +1285,10 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldSeeTheDisplayInTheDatagrid($typeLabel)
     {
         return $this->spin(function () use ($typeLabel) {
-            return $this->getCurrentPage()->find('css',
-                 sprintf('.AknGrid--%s', strtolower($typeLabel))
-             );
+            return $this->getCurrentPage()->find(
+                'css',
+                sprintf('.AknGrid--%s', strtolower($typeLabel))
+            );
         }, sprintf('Display type %s is not shown in the datagrid', $typeLabel));
     }
 

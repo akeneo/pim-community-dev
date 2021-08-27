@@ -144,7 +144,8 @@ SQL;
         );
     }
 
-    private function fetchIdMapping(array $allQuantifiedAssociationsWithProductModelIds
+    private function fetchIdMapping(
+        array $allQuantifiedAssociationsWithProductModelIds
     ): IdMapping {
         $productModelIds = [];
         foreach ($allQuantifiedAssociationsWithProductModelIds as $quantifiedAssociationWithId) {
