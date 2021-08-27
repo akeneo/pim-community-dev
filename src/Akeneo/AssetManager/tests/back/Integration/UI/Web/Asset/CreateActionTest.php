@@ -307,14 +307,27 @@ class CreateActionTest extends ControllerIntegrationTestCase
             'values'                     => [],
         ];
         $method = 'POST';
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $urlParameters, $method, $headers,
-            $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ASSET_ROUTE, $urlParameters, $method, $headers,
-            $content);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            $urlParameters,
+            $method,
+            $headers,
+            $content
+        );
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ASSET_ROUTE,
+            $urlParameters,
+            $method,
+            $headers,
+            $content
+        );
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":{}},"message":"An asset already exists with code \u0022starck\u0022","propertyPath":"code","invalidValue":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}}}]');
+            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":{}},"message":"An asset already exists with code \u0022starck\u0022","propertyPath":"code","invalidValue":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}}}]'
+        );
     }
 
     /** @test */
@@ -461,7 +474,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('title'),
             AssetFamilyIdentifier::fromString('country'),
-            );
+        );
         $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
         $value = $asset->findValue($valueKey);
         Assert::assertInstanceOf(Value::class, $value);
@@ -470,7 +483,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
             AttributeCode::fromString('length'),
             AssetFamilyIdentifier::fromString('country'),
-            );
+        );
         $valueKey = ValueKey::create($attribute->getIdentifier(), ChannelReference::noReference(), LocaleReference::noReference());
         $value = $asset->findValue($valueKey);
         Assert::assertInstanceOf(Value::class, $value);
@@ -683,7 +696,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 sprintf(
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"message":"This value is too long. It should have 255 characters or less.","propertyPath":"code","invalidValue":"%s"}]',
-                    $longIdentifier, $longIdentifier
+                    $longIdentifier,
+                    $longIdentifier
                 ),
             ],
         ];

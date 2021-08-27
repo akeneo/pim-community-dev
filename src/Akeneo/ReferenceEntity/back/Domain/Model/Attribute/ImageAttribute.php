@@ -43,8 +43,16 @@ class ImageAttribute extends AbstractAttribute
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions
     ) {
-        parent::__construct($identifier, $referenceEntityIdentifier, $code, $labelCollection, $order, $isRequired,
-            $valuePerChannel, $valuePerLocale);
+        parent::__construct(
+            $identifier,
+            $referenceEntityIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
 
         $this->maxFileSize = $maxFileSize;
         $this->allowedExtensions = $extensions;

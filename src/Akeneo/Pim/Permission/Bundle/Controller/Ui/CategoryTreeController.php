@@ -141,7 +141,8 @@ class CategoryTreeController extends BaseCategoryTreeController
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
             'related_entity' => $this->rawConfiguration['related_entity'],
-        ]);
+        ]
+        );
     }
 
     /**

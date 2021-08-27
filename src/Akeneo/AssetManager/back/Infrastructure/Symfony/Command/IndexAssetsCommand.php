@@ -164,8 +164,10 @@ class IndexAssetsCommand extends Command
                 $existingAssetFamilyCodes[] = AssetFamilyIdentifier::fromString($assetFamilyCode);
             } else {
                 $output->writeln(
-                    sprintf('<info>Skip "%s", this asset family does not exist.</info>',
-                        AssetFamilyIdentifier::fromString($assetFamilyCode))
+                    sprintf(
+                        '<info>Skip "%s", this asset family does not exist.</info>',
+                        AssetFamilyIdentifier::fromString($assetFamilyCode)
+                    )
                 );
             }
         }

@@ -44,7 +44,8 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditOptionCollectionValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditOptionCollectionValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditOptionCollectionValueCommand::class,
                     get_class($command)
                 )
             );
@@ -71,7 +72,8 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
     private function validType(EditOptionCollectionValueCommand $command): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->optionCodes, new Constraints\All([
+        $violations = $validator->validate($command->optionCodes, new Constraints\All(
+            [
                 'constraints' => [
                     new Constraints\Type('string'),
                 ],

@@ -40,7 +40,8 @@ class GetAssetInformationQuery implements GetAssetInformationQueryInterface
             throw new \LogicException(
                 sprintf(
                     'There was no information to fetch for asset family "%s" and asset code "%s"',
-                    $assetFamilyIdentifier, $assetCode
+                    $assetFamilyIdentifier,
+                    $assetCode
                 )
             );
         }

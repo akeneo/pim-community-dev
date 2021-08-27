@@ -117,7 +117,8 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
         $existentIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
         $this->assetFamilyRepository->create(AssetFamily::create($existentIdentifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));
 
-        Assert::assertTrue($this->assetFamilyRepository->hasAssetFamily(
+        Assert::assertTrue(
+            $this->assetFamilyRepository->hasAssetFamily(
                 AssetFamilyIdentifier::fromString('asset_family_identifier')
             )
         );

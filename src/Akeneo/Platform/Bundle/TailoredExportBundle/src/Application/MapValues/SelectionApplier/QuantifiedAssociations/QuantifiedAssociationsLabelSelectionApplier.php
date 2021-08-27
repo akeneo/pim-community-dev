@@ -72,7 +72,7 @@ class QuantifiedAssociationsLabelSelectionApplier implements SelectionApplierInt
                 $associatedEntityCodes,
                 $selection->getChannel(),
                 $selection->getLocale(),
-             );
+            );
         }
 
         throw new \InvalidArgumentException('Entity type is not supported in this selection');

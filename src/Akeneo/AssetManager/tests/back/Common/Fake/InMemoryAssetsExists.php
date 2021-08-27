@@ -39,8 +39,10 @@ class InMemoryAssetsExists
         foreach ($codes as $code) {
             $hasAsset = true;
             try {
-                $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier,
-                    AssetCode::fromString($code));
+                $this->assetRepository->getByAssetFamilyAndCode(
+                    $assetFamilyIdentifier,
+                    AssetCode::fromString($code)
+                );
             } catch (AssetNotFoundException $exception) {
                 $hasAsset = false;
             }

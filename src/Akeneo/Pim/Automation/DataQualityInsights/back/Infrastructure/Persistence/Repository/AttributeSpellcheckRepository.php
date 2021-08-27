@@ -37,7 +37,8 @@ VALUES (:attributeCode, :evaluatedAt, :toImprove, :result)
 ON DUPLICATE KEY UPDATE evaluated_at = :evaluatedAt, to_improve = :toImprove, result = :result;
 SQL;
 
-        $this->dbConnection->executeQuery($query,
+        $this->dbConnection->executeQuery(
+            $query,
             [
                 'attributeCode' => $attributeSpellcheck->getAttributeCode(),
                 'evaluatedAt' => $attributeSpellcheck->getEvaluatedAt()->format(Clock::TIME_FORMAT),

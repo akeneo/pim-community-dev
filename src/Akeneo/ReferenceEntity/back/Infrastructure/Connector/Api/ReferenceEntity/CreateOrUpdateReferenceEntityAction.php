@@ -179,7 +179,8 @@ class CreateOrUpdateReferenceEntityAction
 
         if (null === $imageData) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The image "%s" was not found', $imageFileKey
+                'The image "%s" was not found',
+                $imageFileKey
             ));
         }
 

@@ -82,7 +82,8 @@ SET attribute_type='pim_catalog_asset_collection', properties=:properties
 WHERE attribute_type='pim_assets_collection'
 SQL;
 
-        $this->connection->executeQuery($sql,
+        $this->connection->executeQuery(
+            $sql,
             ['properties' => serialize(['reference_data_name' => $this->assetFamilyCode])],
             ['properties' => \PDO::PARAM_STR]
         );
@@ -98,7 +99,8 @@ FROM pim_catalog_attribute
 WHERE (attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection')
 AND code IN (:attributeCodes)
 SQL;
-        $statement = $this->connection->executeQuery($sqlCount,
+        $statement = $this->connection->executeQuery(
+            $sqlCount,
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         );
@@ -111,7 +113,8 @@ WHERE (attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_ass
 AND code IN (:attributeCodes)
 SQL;
 
-        $this->connection->executeUpdate($sql,
+        $this->connection->executeUpdate(
+            $sql,
             [
                 'attributeCodes' => $attributeCodes,
                 'properties' => serialize(['reference_data_name' => $this->assetFamilyCode])

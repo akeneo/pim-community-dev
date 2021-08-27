@@ -49,7 +49,8 @@ final class ProductSource
         Assert::nullOrStringNotEmpty($this->format);
         Assert::nullOrStringNotEmpty($this->currency);
 
-        return array_filter([
+        return array_filter(
+            [
             'field' => $this->field,
             'scope' => $this->scope,
             'locale' => $this->locale,
@@ -58,8 +59,9 @@ final class ProductSource
             'format' => $this->format,
             'currency' => $this->currency,
         ],
-        function ($value): bool {
-            return null !== $value;
-        });
+            function ($value): bool {
+                return null !== $value;
+            }
+        );
     }
 }
