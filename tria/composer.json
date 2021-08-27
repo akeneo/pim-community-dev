@@ -46,7 +46,10 @@
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "superbalist/flysystem-google-storage": "7.2.2",
-        "grpc/grpc": "1.30.0"
+        "grpc/grpc": "1.30.0",
+        "akeneo/api-php-client": "^6.0",
+        "php-http/guzzle6-adapter": "^2.0",
+        "http-interop/http-factory-guzzle": "^1.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
@@ -75,10 +78,7 @@
         "phpstan/phpstan-symfony": "^0.12.6",
         "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
-        "jfcherng/php-diff": "^6.10",
-        "akeneo/api-php-client": "^6.0",
-        "php-http/guzzle6-adapter": "^2.0",
-        "http-interop/http-factory-guzzle": "^1.0"
+        "jfcherng/php-diff": "^6.10"
     },
     "repositories": {
         "grth": {

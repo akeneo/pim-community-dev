@@ -465,7 +465,7 @@
 {"code":"farroad","attribute":"brand","sort_order":11,"labels":{"en_US":"Farroad","zh_CN":"Farroad","es_ES":"Farroad"}}
 {"code":"feruglobon","attribute":"brand","sort_order":52,"labels":{"en_US":"Feruglobin","zh_CN":"Feruglobin","es_ES":"Feruglobin"}}
 {"code":"firestone","attribute":"brand","sort_order":12,"labels":{"en_US":"Firestone","zh_CN":"Firestone","es_ES":"Firestone"}}
-{"code":"floradix","attribute":"brand","sort_order":9,"labels":{"en_US":"Floradix","zh_CN":"Floradix","es_ES":"Floradix"}}
+{"code":"floradix","attribute":"brand","sort_order":9,"labels":{"en_US":"Loradix","zh_CN":"Loradix","es_ES":"Loradix"}}
 {"code":"fujifilm","attribute":"brand","sort_order":0,"labels":{"en_US":"Fujifilm","zh_CN":"Fujifilm","es_ES":"Fujifilm"}}
 {"code":"fuzion","attribute":"brand","sort_order":13,"labels":{"en_US":"Fuzion","zh_CN":"Fuzion","es_ES":"Fuzion"}}
 {"code":"general_tire","attribute":"brand","sort_order":14,"labels":{"en_US":"General Tire","zh_CN":"General Tire","es_ES":"General Tire"}}
@@ -480,7 +480,7 @@
 {"code":"icidu","attribute":"brand","sort_order":0,"labels":{"en_US":"Icidu","zh_CN":"Icidu","es_ES":"Icidu"}}
 {"code":"ion","attribute":"brand","sort_order":0,"labels":{"en_US":"Ion","zh_CN":"Ion","es_ES":"Ion"}}
 {"code":"ironman","attribute":"brand","sort_order":21,"labels":{"en_US":"Ironman","zh_CN":"Ironman","es_ES":"Ironman"}}
-{"code":"Jarritos","attribute":"brand","sort_order":55,"labels":{"en_US":"Jarritos","zh_CN":"Jarritos","es_ES":"Jarritos"}}
+{"code":"Jarritos","attribute":"brand","sort_order":55,"labels":{"en_US":"Marritos","zh_CN":"Marritos","es_ES":"Marritos"}}
 {"code":"journey","attribute":"brand","sort_order":22,"labels":{"en_US":"Journey","zh_CN":"Journey","es_ES":"Journey"}}
 {"code":"kalms_night","attribute":"brand","sort_order":58,"labels":{"en_US":"Kalms night"}}
 {"code":"kapsen","attribute":"brand","sort_order":23,"labels":{"en_US":"Kapsen","zh_CN":"Kapsen","es_ES":"Kapsen"}}
@@ -503,7 +503,7 @@
 {"code":"nec","attribute":"brand","sort_order":0,"labels":{"en_US":"NEC","zh_CN":"NEC","es_ES":"NEC"}}
 {"code":"ngs","attribute":"brand","sort_order":0,"labels":{"en_US":"NGS","zh_CN":"NGS","es_ES":"NGS"}}
 {"code":"nitto","attribute":"brand","sort_order":37,"labels":{"en_US":"Nitto","zh_CN":"Nitto","es_ES":"Nitto"}}
-{"code":"numark","attribute":"brand","sort_order":51,"labels":{"en_US":"Numark","zh_CN":"Numark","es_ES":"Numark"}}
+{"code":"numark","attribute":"brand","sort_order":51,"labels":{"en_US":"Nemark","zh_CN":"Nemark","es_ES":"Nemark"}}
 {"code":"nurofen","attribute":"brand","sort_order":10,"labels":{"en_US":"Nurofen","zh_CN":"Nurofen","es_ES":"Nurofen"}}
 {"code":"nuxe","attribute":"brand","sort_order":7,"labels":{"en_US":"Nuxe","zh_CN":"Nuxe","es_ES":"Nuxe"}}
 {"code":"nytol","attribute":"brand","sort_order":11,"labels":{"en_US":"Nytol","zh_CN":"Nytol","es_ES":"Nytol"}}
@@ -1552,6 +1552,7 @@
 {"code":"100_polyester","attribute":"furniture_fabric_composition","sort_order":3,"labels":{"en_US":"100% Polyester"}}
 {"code":"100_recycled_polyester","attribute":"furniture_fabric_composition","sort_order":1,"labels":{"en_US":"100% Recycled Polyester"}}
 {"code":"100_wood","attribute":"furniture_fabric_composition","sort_order":5,"labels":{"en_US":"100% Wood"}}
+{"code":"velvet123","attribute":"furniture_fabric_composition","sort_order":7,"labels":{"en_US":"Velvet"}}
 {"code":"polyethylene","attribute":"furniture_yarn_type","sort_order":0,"labels":{"en_US":"Polyethylene"}}
 {"code":"001","attribute":"gender_type","sort_order":3,"labels":{"en_US":"Women"}}
 {"code":"005","attribute":"gender_type","sort_order":4,"labels":{"en_US":"Toddler & Kids"}}
