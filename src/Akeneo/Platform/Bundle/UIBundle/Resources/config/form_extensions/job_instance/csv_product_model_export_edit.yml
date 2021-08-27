@@ -18,11 +18,11 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-job-instance-csv-product-model-export-edit-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-csv-product-model-export-edit
         targetZone: breadcrumbs
         config:
-            tab: pim-menu-exports
+            isEdit: true
 
     pim-job-instance-csv-product-model-export-edit-cache-invalidator:
         module: pim/cache-invalidator

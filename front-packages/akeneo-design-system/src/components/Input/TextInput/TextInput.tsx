@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Ref, useCallback, useRef} from 'react';
+import React, {ChangeEvent, forwardRef, InputHTMLAttributes, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {InputProps} from '../common/InputProps';
 import {LockIcon} from '../../../icons';
@@ -26,7 +26,8 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   padding: 0 15px;
   outline-style: none;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
-  &:focus {
+
+  &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
 
@@ -51,7 +52,7 @@ const CharacterLeftLabel = styled.div`
 `;
 
 type TextInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string>>,
+  Override<InputHTMLAttributes<HTMLInputElement>, InputProps<string>>,
   (
     | {
         readOnly: true;
@@ -91,7 +92,7 @@ type TextInputProps = Override<
 /**
  * The TextInput component allows the user to enter content and data when the expected input is a single line of text.
  */
-const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
     {invalid, onChange, readOnly, characterLeftLabel, onSubmit, ...rest}: TextInputProps,
     forwardedRef: Ref<HTMLInputElement>
