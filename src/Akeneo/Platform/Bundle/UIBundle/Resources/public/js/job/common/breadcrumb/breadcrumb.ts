@@ -1,5 +1,6 @@
 import {JobBreadcrumb, JobBreadcrumbProps} from './JobBreadcrumb';
 import BaseForm = require('../../../view/base');
+const mediator = require('oro/mediator');
 
 type Config = {
   isEdit?: boolean;
@@ -12,6 +13,15 @@ class Breadcrumb extends BaseForm {
     super({...options});
 
     this.config = options.config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public configure() {
+    mediator.trigger('pim_menu:highlight:tab', {extension: `pim-menu-${this.getFormData().type}s`});
+
+    return BaseForm.prototype.configure.apply(this, arguments);
   }
 
   public render(): BaseForm {
