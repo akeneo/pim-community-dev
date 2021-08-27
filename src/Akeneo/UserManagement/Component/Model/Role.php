@@ -12,6 +12,7 @@ class Role implements RoleInterface
     protected ?int $id = null;
     protected ?string $role = null;
     protected ?string $label = null;
+    protected ?string $type = null;
 
     public function __construct(?string $role = null)
     {
@@ -56,6 +57,16 @@ class Role implements RoleInterface
     public function setLabel(?string $label): void
     {
         $this->label = $label;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
     }
 
     /**

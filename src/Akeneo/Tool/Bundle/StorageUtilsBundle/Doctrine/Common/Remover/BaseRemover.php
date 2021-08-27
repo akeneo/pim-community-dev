@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -84,7 +84,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         foreach ($objects as $object) {
             $this->validateObject($object);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $object->getId(), $options));
+            $this->eventDispatcher->dispatch(new RemoveEvent($object, $object->getId(), $options), StorageEvents::PRE_REMOVE);
         }
 
         $removedObjects = [];

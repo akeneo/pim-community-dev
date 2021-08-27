@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOStatement;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -46,7 +46,7 @@ SQL;
         return $this->connection->executeQuery(
             $query,
             ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
-            ['create_time' => Type::DATETIME]
+            ['create_time' => Types::DATETIME_MUTABLE]
         );
     }
 

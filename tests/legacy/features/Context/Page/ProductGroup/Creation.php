@@ -27,12 +27,12 @@ class Creation extends Form
     {
         return $this->spin(function () use ($text) {
             return $this->find(
-             'css',
-             sprintf(
-                 '.validation-errors .error-message:contains("%s")',
-                 $text
-             )
-         );
+                'css',
+                sprintf(
+                    '.validation-errors .error-message:contains("%s")',
+                    $text
+                )
+            );
         }, sprintf('Cannot find error message "%s" in validation tooltip', $text));
     }
 }

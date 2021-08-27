@@ -81,7 +81,6 @@ class DeleteMeasurementFamilyEndToEnd extends WebTestCase
     {
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
-
             LabelCollection::fromArray(['en_US' => 'Custom measurement 1', 'fr_FR' => 'Mesure personalisée 1']),
             UnitCode::fromString('CUSTOM_UNIT_1_1'),
             [

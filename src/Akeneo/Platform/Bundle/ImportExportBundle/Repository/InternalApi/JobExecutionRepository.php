@@ -42,11 +42,10 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
             ->addSelect('j.code AS jobCode')
             ->addSelect('j.label AS jobLabel')
             ->addSelect('j.jobName as jobName')
-            ->addSelect('COUNT(w.id) as warningCount');
+            ->addSelect('SUM(s.warningCount) as warningCount');
 
         $qb->innerJoin('e.jobInstance', 'j');
         $qb->leftJoin('e.stepExecutions', 's');
-        $qb->leftJoin('s.warnings', 'w');
         $qb->andWhere('j.type = :jobType');
 
         $qb->groupBy('e.id');

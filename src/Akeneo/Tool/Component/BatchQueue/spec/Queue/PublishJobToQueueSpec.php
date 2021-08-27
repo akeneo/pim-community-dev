@@ -102,7 +102,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
         $jobExecutionQueue->publish($jobExecutionMessage)->shouldBeCalled();
-        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldBeCalled();
 
         $this->publish('job-code', []);
     }

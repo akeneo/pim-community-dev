@@ -71,7 +71,7 @@ class JobExecutionController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(new GenericEvent($jobExecution), JobExecutionEvents::PRE_DOWNLOAD_LOG);
 
         $logFileContent = $this->logFileSystem->read(new LogKey($jobExecution));
 
@@ -102,7 +102,7 @@ class JobExecutionController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(new GenericEvent($jobExecution), JobExecutionEvents::PRE_DOWNLOAD_FILES);
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 

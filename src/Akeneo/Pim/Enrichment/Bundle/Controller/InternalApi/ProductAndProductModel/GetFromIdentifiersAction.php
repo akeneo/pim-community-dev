@@ -72,7 +72,8 @@ class GetFromIdentifiersAction
         $normalizedProducts = $this->linkedProductsNormalizer->normalize($productRows, $channelCode, $localeCode);
         $normalizedProductModels = $this->linkedProductsNormalizer->normalize($productModelRows, $channelCode, $localeCode);
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'items' => array_merge($normalizedProducts, $normalizedProductModels),
             'total_count' => $productRows->totalCount() + $productModelRows->totalCount()]
         );

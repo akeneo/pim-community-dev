@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * SQL Query to get the properties and the values from a set of product identifiers:
@@ -68,13 +69,13 @@ SQL;
             sort($groupCodes);
 
             $results[$row['identifier']] = [
-                'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
-                'identifier' => Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform),
-                'is_enabled' => Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
-                'product_model_code' => Type::getType(Type::STRING)->convertToPHPValue($row['product_model_code'], $platform),
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
-                'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
+                'id' => Type::getType(Types::INTEGER)->convertToPHPValue($row['id'], $platform),
+                'identifier' => Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform),
+                'is_enabled' => Type::getType(Types::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
+                'product_model_code' => Type::getType(Types::STRING)->convertToPHPValue($row['product_model_code'], $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
+                'family_code' => Type::getType(Types::STRING)->convertToPHPValue($row['family_code'], $platform),
                 'group_codes' => $groupCodes,
                 'raw_values' => json_decode($row['raw_values'], true)
             ];
