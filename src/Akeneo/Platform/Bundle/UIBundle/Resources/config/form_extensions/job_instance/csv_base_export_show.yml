@@ -18,11 +18,9 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-job-instance-csv-base-export-show-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-csv-base-export-show
         targetZone: breadcrumbs
-        config:
-            tab: pim-menu-exports
 
     pim-job-instance-csv-base-export-show-launch:
         module: pim/job/common/edit/launch

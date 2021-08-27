@@ -773,6 +773,8 @@ config:
     pim/job/common/edit/meta:                                    pimui/js/job/common/edit/meta
     pim/job/export/edit/delete:                                  pimui/js/job/export/edit/delete
     pim/job/import/edit/delete:                                  pimui/js/job/import/edit/delete
+    pim/job/common/duplicate/duplicate:                          pimui/js/job/common/duplicate/duplicate
+    pim/job/common/breadcrumb/breadcrumb:                        pimui/js/job/common/breadcrumb/breadcrumb
     pim/job/common/edit/validation:                              pimui/js/job/common/edit/validation
     pim/job/common/edit/launch:                                  pimui/js/job/common/edit/launch
     pim/job/common/edit/upload:                                  pimui/js/job/common/edit/upload

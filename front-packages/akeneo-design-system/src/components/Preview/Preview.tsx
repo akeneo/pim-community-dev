@@ -21,6 +21,7 @@ const PreviewTitle = styled.div`
 
 const PreviewList = styled.div`
   overflow-wrap: break-word;
+  white-space: break-spaces;
   color: ${getColor('grey', 140)};
 `;
 
@@ -45,7 +46,7 @@ type PreviewProps = Override<
 >;
 
 /**
- * Preview component is used put emphasis on some content.
+ * Preview component is used to put emphasis on some content.
  */
 const Preview = ({title, children, ...rest}: PreviewProps) => {
   return (

@@ -5,3 +5,4 @@ export * from './hooks';
 export * from './microfrontend';
 export * from './models';
 export * from './tests';
+export * from './tools';

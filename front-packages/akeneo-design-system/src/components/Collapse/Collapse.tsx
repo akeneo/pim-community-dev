@@ -16,9 +16,9 @@ const CollapseContainer = styled.div`
   }
 `;
 
-const Content = styled.div<{$height: number; overflow: string; shouldAnimate: boolean}>`
+const Content = styled.div<{$height: number; $overflow: string; shouldAnimate: boolean}>`
   max-height: ${({$height}) => $height}px;
-  overflow: ${({overflow}) => overflow};
+  overflow: ${({$overflow}) => $overflow};
   ${({shouldAnimate}) =>
     shouldAnimate &&
     `
@@ -115,7 +115,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
         </LabelContainer>
         <Content
           ref={contentRef}
-          overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+          $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
           $height={isOpen ? contentHeight : 0}
           shouldAnimate={shouldAnimate}
         >

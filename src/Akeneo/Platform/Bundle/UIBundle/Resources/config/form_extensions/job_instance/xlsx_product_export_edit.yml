@@ -18,11 +18,11 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-job-instance-xlsx-product-export-edit-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-xlsx-product-export-edit
         targetZone: breadcrumbs
         config:
-            tab: pim-menu-exports
+            isEdit: true
 
     pim-job-instance-xlsx-product-export-edit-cache-invalidator:
         module: pim/cache-invalidator
@@ -233,6 +233,16 @@ extensions:
                 success: pim_import_export.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
+
+    pim-job-instance-xlsx-product-export-edit-duplicate:
+        module: pim/job/common/duplicate/duplicate
+        parent: pim-job-instance-xlsx-product-export-edit-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_importexport_export_profile_create
+        position: 80
+        config:
+            subTitle: pim_menu.tab.exports
+            editRoute: pim_importexport_export_profile_edit
 
     pim-job-instance-xlsx-product-export-edit-save-buttons:
         module: pim/form/common/save-buttons
