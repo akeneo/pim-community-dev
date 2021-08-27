@@ -22,6 +22,7 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'oro/mediator',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -33,7 +34,8 @@ define([
   DatagridState,
   FetcherRegistry,
   FormBuilder,
-  mediator
+  mediator,
+  analytics,
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -468,6 +470,10 @@ define([
       this.trigger('grid:view-selector:view-selected', view);
       mediator.trigger('grid:view:selected', view);
       FetcherRegistry.getFetcher('locale').clear();
+
+      analytics.track('product-grid:view:selected', {
+        name: view.label ?? view.text,
+      });
       this.reloadPage();
     },
 
