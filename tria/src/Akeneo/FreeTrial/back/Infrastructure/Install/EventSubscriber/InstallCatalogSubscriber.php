@@ -57,6 +57,7 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
         }
 
         $this->installFixture('connection');
+        $this->installFixture('view');
     }
 
     public function onPreLoadFixture(InstallerEvent $installerEvent): void
