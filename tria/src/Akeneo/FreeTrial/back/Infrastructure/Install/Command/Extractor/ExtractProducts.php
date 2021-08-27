@@ -127,6 +127,7 @@ final class ExtractProducts
         unset($product['updated']);
         unset($product['associations']);
         unset($product['quantified_associations']);
+        unset($product['groups']);
 
         foreach ($product['values'] as $attribute => $values) {
             // Remove values of attributes that belong to the parent.
