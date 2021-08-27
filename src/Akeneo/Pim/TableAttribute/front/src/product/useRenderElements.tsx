@@ -20,22 +20,33 @@ const useRenderElements = (
   const isHTML = (element: ProductFieldElement) => typeof element === 'string';
   const Router = useRouter();
 
+  /**
+   * The Component rendering this element contains links done with jQuery. In React, we can't get recover them.
+   * To avoid rewriting all the Field component, we added this method.
+   * Instead of rendering the element in the same way than the other, we add logic in it.
+   * The rendered component with links looks like "This attribute can be updated by <span>2 rules</span>".
+   * We re-add manually the link to the span element.
+   *
+   * @see src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/product/form/attributes/smart-attribute.js
+   */
   const renderRulesElement = (elementKey: string, element: jQueryFieldElement) => {
     const innerHTML = element[0].innerHTML;
 
     const matches = /^(?<left>.*)<span>(?<link>.*)<\/span>(?<right>.*)$/im.exec(innerHTML);
     return matches && matches.groups ? (
-      <span key={elementKey} className='from-smart'>
-        {matches.groups.left}
-        <span
-          onClick={() => {
-            sessionStorage.setItem('current_form_tab', 'pim-attribute-edit-form-rules-tab');
-            const route = Router.generate('pim_enrich_attribute_edit', {code: attributeCode});
-            Router.redirect(route);
-          }}>
-          {matches.groups.link}
-        </span>
-        {matches.groups.right}
+      <span key={elementKey}>
+        <div className='from-smart'>
+          {matches.groups.left}
+          <span
+            onClick={() => {
+              sessionStorage.setItem('current_form_tab', 'pim-attribute-edit-form-rules-tab');
+              const route = Router.generate('pim_enrich_attribute_edit', {code: attributeCode});
+              Router.redirect(route);
+            }}>
+            {matches.groups.link}
+          </span>
+          {matches.groups.right}
+        </div>
       </span>
     ) : null;
   };
