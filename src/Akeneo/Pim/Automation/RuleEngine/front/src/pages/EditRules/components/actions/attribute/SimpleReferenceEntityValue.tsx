@@ -42,4 +42,8 @@ const SimpleReferenceEntityValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {SimpleReferenceEntityValue};
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <SimpleReferenceEntityValue {...props} />;
+};
+
+export default render;

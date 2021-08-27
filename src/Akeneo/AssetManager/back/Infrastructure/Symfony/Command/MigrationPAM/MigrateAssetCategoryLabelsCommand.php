@@ -134,7 +134,8 @@ class MigrateAssetCategoryLabelsCommand extends Command
 
         $io->writeln(sprintf('Update the options of the field "%s" of the family "%s"...', $categoriesAttributeCode, $familyCode));
         $editAttributeCommand = new EditAttributeCommand(
-            (string) $attribute->getIdentifier(), [
+            (string) $attribute->getIdentifier(),
+            [
                 new EditOptionsCommand($categoriesAttributeCode, $options)
             ]
         );

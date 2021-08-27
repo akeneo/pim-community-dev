@@ -30,11 +30,14 @@ class AttributeOptionCodeValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($code, [
+        $violations = $validator->validate(
+            $code,
+            [
                 new NotBlank(['message' => AttributeOptionCode::CODE_SHOULD_NOT_BE_BLANK]),
                 new Type(['type' => 'string']),
                 new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Regex([
+                new Regex(
+                    [
                         'pattern' => OptionCode::REGULAR_EXPRESSION,
                         'message' => AttributeOptionCode::MESSAGE_WRONG_PATTERN,
                     ]

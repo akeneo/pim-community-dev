@@ -25,8 +25,8 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -172,7 +172,8 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     {
         $fullProductModel = $this->getFullProductModel($filteredProductModel);
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $productModelDraft = $this->draftBuilder->build($fullProductModel,
+        $productModelDraft = $this->draftBuilder->build(
+            $fullProductModel,
             $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())
         );
 

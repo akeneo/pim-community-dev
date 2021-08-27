@@ -14,8 +14,8 @@ namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
@@ -37,15 +37,6 @@ class ContextConfigurator extends BaseContextConfigurator
     /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @param ObjectRepository               $productRepository
-     * @param RequestParameters              $requestParams
-     * @param UserContext                    $userContext
-     * @param ObjectManager                  $objectManager
-     * @param GroupRepositoryInterface       $productGroupRepository
-     * @param RequestStack                   $requestStack
-     * @param AttributeGroupAccessRepository $accessRepository
-     */
     public function __construct(
         ObjectRepository $productRepository,
         RequestParameters $requestParams,

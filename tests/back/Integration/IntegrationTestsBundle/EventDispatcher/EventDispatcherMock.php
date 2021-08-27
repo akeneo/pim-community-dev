@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher;
 
 use PHPUnit\Framework\Assert;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

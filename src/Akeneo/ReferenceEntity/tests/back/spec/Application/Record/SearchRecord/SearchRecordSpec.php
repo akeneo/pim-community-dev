@@ -49,7 +49,7 @@ class SearchRecordSpec extends ObjectBehavior
             null,
             []
         );
-        $identifiersResult = new IdentifiersForQueryResult(['stark', 'dyson'], 2);
+        $identifiersResult = new IdentifiersForQueryResult(['stark', 'dyson'], 2, null);
         $findIdentifiersForQuery->find($recordQuery)->willReturn($identifiersResult);
         $findRecordItemsForIdentifiersAndQuery->find(['stark', 'dyson'], $recordQuery)
             ->willReturn([$stark, $dyson]);

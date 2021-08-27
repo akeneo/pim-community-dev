@@ -23,4 +23,8 @@ const TextValue: React.FC<InputValueProps> = ({
   );
 };
 
-export {TextValue};
+const render: (props: InputValueProps) => JSX.Element = props => {
+  return <TextValue {...props} />;
+};
+
+export default render;

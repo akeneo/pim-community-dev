@@ -13,8 +13,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,14 +27,9 @@ class CleanCategoryAccessesCommand extends Command
 {
     protected static $defaultName = 'pimee:installer:clean-category-accesses';
 
-    /** @var CategoryAccessRepository */
-    private $accessRepository;
-
-    /** @var GroupRepositoryInterface */
-    private $groupRepository;
-
-    /** @var ObjectManager */
-    private $objectManager;
+    private CategoryAccessRepository $accessRepository;
+    private GroupRepositoryInterface $groupRepository;
+    private ObjectManager $objectManager;
 
     public function __construct(
         CategoryAccessRepository $accessRepository,

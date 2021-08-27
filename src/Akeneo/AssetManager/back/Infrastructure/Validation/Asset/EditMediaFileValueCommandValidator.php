@@ -59,7 +59,8 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditMediaFileValueCommand && !$command instanceof EditMediaFileTargetValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be one of these classes "%s", "%s" given', implode(', ', [
+                    'Expected argument to be one of these classes "%s", "%s" given',
+                    implode(', ', [
                         EditMediaFileValueCommand::class,
                         EditMediaFileTargetValueCommand::class
                     ]),
@@ -87,7 +88,8 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         if (!$command->attribute instanceof MediaFileAttribute) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected command attribute to be of class "%s", "%s" given', MediaFileAttribute::class,
+                    'Expected command attribute to be of class "%s", "%s" given',
+                    MediaFileAttribute::class,
                     get_class($command)
                 )
             );
@@ -145,8 +147,10 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
                             $this->context
                                 ->buildViolation(EditMediaFileValueCommandConstraint::FILE_EXTENSION_NOT_ALLOWED_MESSAGE)
                                 ->setParameter('%file_extension%', '.' . $extension)
-                                ->setParameter('%allowed_file_extensions%',
-                                    implode(',', $attribute->getAllowedExtensions()->normalize()))
+                                ->setParameter(
+                                    '%allowed_file_extensions%',
+                                    implode(',', $attribute->getAllowedExtensions()->normalize())
+                                )
                                 ->atPath((string) $attribute->getCode())
                                 ->addViolation();
                         }

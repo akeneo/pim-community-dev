@@ -12,9 +12,9 @@ import {Controller, useFormContext} from 'react-hook-form';
 import {
   Attribute,
   AttributeCode,
-  Locale,
   AttributeType,
-} from '../../../../models';
+} from '../../../../models/Attribute';
+import {Locale} from '../../../../models/Locale';
 import {
   createAttributeLink,
   fetchAttribute,

@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Format;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
@@ -38,20 +37,14 @@ class FormatValidator extends ConstraintValidator
                     'choices' => ['concat'],
                 ]),
                 'space_between' => new Optional(new Type('bool')),
-                'elements' => [
-                    new Type('array'),
-                    new Count([
-                        'max' => self::MAX_TEXT_COUNT,
-                        'maxMessage' => Format::MAX_TEXT_COUNT_REACHED,
-                    ]),
-                ]
+                'elements' => new Type('array'),
             ]));
 
         if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
-        foreach ($format['elements'] ?? [] as $element) {
+        foreach ($format['elements'] as $element) {
             $this->context->getValidator()
                 ->inContext($this->context)
                 ->atPath(sprintf('[elements][%s]', $element['uuid']))
@@ -68,6 +61,15 @@ class FormatValidator extends ConstraintValidator
                         ])
                     ],
                 ]));
+        }
+
+        $textElements = array_filter($format['elements'], static fn (array $element) => 'text' === $element['type']);
+
+        if (self::MAX_TEXT_COUNT < count($textElements)) {
+            $this->context->buildViolation(Format::MAX_TEXT_COUNT_REACHED)
+                ->atPath('[elements]')
+                ->setParameter('{{ limit }}', (string) self::MAX_TEXT_COUNT)
+                ->addViolation();
         }
     }
 }

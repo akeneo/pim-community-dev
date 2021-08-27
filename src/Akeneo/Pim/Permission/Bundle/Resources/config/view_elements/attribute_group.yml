@@ -1,5 +1,5 @@
 parameters:
-    pimee_enrich.view_element.tab.attributegroup_permission.template: 'AkeneoPimPermissionBundle:AttributeGroup:Tab/permission.html.twig'
+    pimee_enrich.view_element.tab.attributegroup_permission.template: '@@AkeneoPimPermission/AttributeGroup/Tab/permission.html.twig'
 
 services:
     pimee_enrich.view_element.tab.attributegroup_permission:

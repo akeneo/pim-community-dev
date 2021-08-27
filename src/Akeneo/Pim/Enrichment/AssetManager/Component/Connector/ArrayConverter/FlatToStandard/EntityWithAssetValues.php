@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionTy
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

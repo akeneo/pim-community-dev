@@ -83,12 +83,14 @@ SQL;
 
         $this->connection->exec($sql);
 
-        $this->connection->executeQuery(<<<SQL
+        $this->connection->executeQuery(
+            <<<SQL
             DROP TABLE IF EXISTS pimee_sso_log
 SQL
         );
 
-        $this->connection->executeQuery(<<<SQL
+        $this->connection->executeQuery(
+            <<<SQL
             CREATE TABLE pimee_sso_log (
               time DATETIME,
               channel VARCHAR(255),

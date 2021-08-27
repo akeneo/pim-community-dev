@@ -36,7 +36,7 @@ final class UnknownUserExceptionListener
         }
 
         $response = new Response(
-            $this->templating->render('AkeneoAuthenticationBundle::error.html.twig')
+            $this->templating->render('@AkeneoAuthentication/error.html.twig')
         );
         $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
 

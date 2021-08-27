@@ -56,7 +56,8 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditStoredFileValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditStoredFileValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditStoredFileValueCommand::class,
                     get_class($command)
                 )
             );
@@ -81,7 +82,8 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
         if (!$command->attribute instanceof ImageAttribute) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected command attribute to be of class "%s", "%s" given', ImageAttribute::class,
+                    'Expected command attribute to be of class "%s", "%s" given',
+                    ImageAttribute::class,
                     get_class($command)
                 )
             );
@@ -139,8 +141,10 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
                             $this->context
                                 ->buildViolation(EditStoredFileValueCommandConstraint::FILE_EXTENSION_NOT_ALLOWED_MESSAGE)
                                 ->setParameter('%file_extension%', '.' . $extension)
-                                ->setParameter('%allowed_file_extensions%',
-                                    implode(',', $attribute->getAllowedExtensions()->normalize()))
+                                ->setParameter(
+                                    '%allowed_file_extensions%',
+                                    implode(',', $attribute->getAllowedExtensions()->normalize())
+                                )
                                 ->atPath((string) $attribute->getCode())
                                 ->addViolation();
                         }

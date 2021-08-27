@@ -21,12 +21,13 @@ class InMemoryReferenceEntityPermissionRepository implements ReferenceEntityPerm
         $this->referenceEntityPermissions[$refEntityIdentifier] = $referenceEntityPermission;
     }
 
-    public function getByReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier
+    public function getByReferenceEntityIdentifier(
+        ReferenceEntityIdentifier $referenceEntityIdentifier
     ): ReferenceEntityPermission {
         return $this->referenceEntityPermissions[(string) $referenceEntityIdentifier] ?? ReferenceEntityPermission::create(
-                $referenceEntityIdentifier,
-                []
-            );
+            $referenceEntityIdentifier,
+            []
+        );
     }
 
     public function hasPermission(

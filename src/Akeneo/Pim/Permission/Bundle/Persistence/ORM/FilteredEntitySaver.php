@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Before saving a filtered entity, we need to merge not granted data into this entity to avoid to lose data.
