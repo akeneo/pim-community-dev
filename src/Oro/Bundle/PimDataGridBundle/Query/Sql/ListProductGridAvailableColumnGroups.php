@@ -40,9 +40,11 @@ class ListProductGridAvailableColumnGroups implements ListProductGridAvailableCo
         $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
 
         $systemColumns = $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::COLUMNS_KEY), []
+            sprintf('[%s]', Configuration::COLUMNS_KEY),
+            []
         ) + $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY), []
+            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY),
+            []
         );
 
         $columnGroups = [[
@@ -73,7 +75,8 @@ LEFT JOIN pim_catalog_attribute_group_translation AS trans ON g.id = trans.forei
 ORDER BY g.sort_order ASC;
 SQL;
 
-        $stmt = $this->connection->executeQuery($sql,
+        $stmt = $this->connection->executeQuery(
+            $sql,
             [
                 'locale'              => $locale,
                 'attributesToExclude' => $attributesToExclude,

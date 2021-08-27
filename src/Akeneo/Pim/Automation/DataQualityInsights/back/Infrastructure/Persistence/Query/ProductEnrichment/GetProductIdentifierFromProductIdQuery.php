@@ -29,7 +29,8 @@ final class GetProductIdentifierFromProductIdQuery implements GetProductIdentifi
 SELECT identifier FROM pim_catalog_product WHERE id=:product_id;
 SQL;
 
-        $statement = $this->db->executeQuery($sql,
+        $statement = $this->db->executeQuery(
+            $sql,
             [
                 'product_id' => $productId->toInt(),
             ],
