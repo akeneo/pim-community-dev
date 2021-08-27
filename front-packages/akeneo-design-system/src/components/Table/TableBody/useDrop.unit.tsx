@@ -31,6 +31,8 @@ test('it does not call on reorder callback when user try to drag and drop to ano
         },
       },
     },
+    stopPropagation: jest.fn(),
+    preventDefault: jest.fn(),
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -89,7 +91,8 @@ test('it throws an error when it cannot find the target index', () => {
         dataset: {},
         parentElement: null,
       },
-      stopPropagation: jest.fn,
+      stopPropagation: jest.fn(),
+      preventDefault: jest.fn(),
     };
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
