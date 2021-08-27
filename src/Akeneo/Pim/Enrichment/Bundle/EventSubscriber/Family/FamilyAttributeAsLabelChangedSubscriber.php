@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family;
 
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\FindAttributeCodeAsLabelForFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
