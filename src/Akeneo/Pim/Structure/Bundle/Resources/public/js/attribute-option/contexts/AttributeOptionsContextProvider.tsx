@@ -108,6 +108,15 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
     setIsSaving(false);
   }, []);
 
+  const handleRefreshEvaluation = async() => {
+    if (attributeOptionsQualityFetcher && attributeOptions !== null) {
+      const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+      let newAttributeOptions = [...attributeOptions];
+      newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
+      setAttributeOptions(newAttributeOptions);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       if (attributeOptions === null) {
@@ -121,6 +130,14 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
       }
     })();
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('refreshEvaluation', handleRefreshEvaluation);
+
+    return () => {
+      window.removeEventListener('refreshEvaluation', handleRefreshEvaluation);
+    };
+  }, [handleRefreshEvaluation]);
 
   useEffect(() => {
     if (attributeOptions === null) {
