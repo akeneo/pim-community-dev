@@ -96,6 +96,7 @@
 - PIM-10003: Fix translation in setting page are not plurializable
 - PIM-9989: Fix record code of reference entity field is case-sensitive
 - PIM-10026: Avoid session persistance for API
+- PIM-9990: Fix lost of keyup event when tab key is pressed too fast on input field
 
 ## New features
 
