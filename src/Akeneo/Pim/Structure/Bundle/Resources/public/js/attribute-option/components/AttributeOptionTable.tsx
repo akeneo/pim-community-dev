@@ -40,7 +40,7 @@ const AttributeOptionTable = ({
     useState<AttributeOption[] | null>(sortedAttributeOptions);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchString, setSearchString] = useState('');
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
   const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
 
@@ -96,9 +96,8 @@ const AttributeOptionTable = ({
     [sortedAttributeOptions]
   );
 
-  const debouncedSearch = useDebounceCallback(filterOnLabelOrCode, 300);
-
-  const onSearch = (searchValue: string) => {
+  const search = useCallback((searchValue: string) => {
+    filterOnLabelOrCode(searchValue);
     if (searchValue) {
       setIsDraggable(false);
       setAutoSortingReadOnly(true);
@@ -108,8 +107,12 @@ const AttributeOptionTable = ({
       }
       setAutoSortingReadOnly(false);
     }
+  }, [filterOnLabelOrCode]);
 
-    setSearchValue(searchValue);
+  const debouncedSearch = useDebounceCallback(search, 300);
+
+  const onSearch = (searchValue: string) => {
+    setSearchString(searchValue);
     debouncedSearch(searchValue);
   };
 
@@ -129,7 +132,7 @@ const AttributeOptionTable = ({
 
   useEffect(() => {
     setFilteredAttributeOptions(sortedAttributeOptions);
-    setSearchValue('');
+    setSearchString('');
   }, [sortedAttributeOptions]);
 
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
@@ -155,7 +158,7 @@ const AttributeOptionTable = ({
       <SearchBar
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
         count={filteredAttributeOptionsCount}
-        searchValue={searchValue}
+        searchValue={searchString}
         onSearchChange={onSearch}
       />
 
