@@ -12,5 +12,6 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'tests',
     'src/microfrontend',
+    'src/components/PimView.tsx'
   ],
 };
