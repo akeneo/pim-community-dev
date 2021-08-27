@@ -66,12 +66,15 @@ class AssertionContext extends PimContext
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
-        $this->spin(function () use ($expectedTitle) {
-            return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
-        }, sprintf(
-            'Incorrect title. Expected "%s", found "%s"',
-            $expectedTitle,
-            $this->getCurrentPage()->getHeadTitle())
+        $this->spin(
+            function () use ($expectedTitle) {
+                return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
+            },
+            sprintf(
+                'Incorrect title. Expected "%s", found "%s"',
+                $expectedTitle,
+                $this->getCurrentPage()->getHeadTitle()
+            )
         );
     }
 
@@ -525,24 +528,27 @@ class AssertionContext extends PimContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $this->spin(function () use ($count) {
-            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
+        $this->spin(
+            function () use ($count) {
+                $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
-            if (!$countContainer) {
-                return false;
-            }
-            $actualCount = (int) $countContainer->getText();
+                if (!$countContainer) {
+                    return false;
+                }
+                $actualCount = (int) $countContainer->getText();
 
-            Assert::assertEquals(
-                $actualCount,
-                $count,
-                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
-            );
+                Assert::assertEquals(
+                    $actualCount,
+                    $count,
+                    sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+                );
 
-            return true;
-        }, sprintf(
-            'Expecting to see %d new notifications',
-            $count)
+                return true;
+            },
+            sprintf(
+                'Expecting to see %d new notifications',
+                $count
+            )
         );
     }
 

@@ -56,12 +56,12 @@ class ChannelRemover implements RemoverInterface
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::PRE_REMOVE);
 
         $this->objectManager->remove($object);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::POST_REMOVE);
     }
 
     /**

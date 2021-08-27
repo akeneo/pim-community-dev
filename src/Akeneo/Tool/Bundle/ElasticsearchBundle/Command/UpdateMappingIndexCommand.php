@@ -44,10 +44,10 @@ class UpdateMappingIndexCommand extends Command
     {
         $this
             ->addArgument(
-            'indices',
-            InputArgument::IS_ARRAY,
-            'Elasticsearch indices name to reindex, separated by spaces'
-        );
+                'indices',
+                InputArgument::IS_ARRAY,
+                'Elasticsearch indices name to reindex, separated by spaces'
+            );
 
         $this->addOption('all', 'a', InputOption::VALUE_NONE, "Use --all if you want to update all mappings of all indices", null);
     }

@@ -26,7 +26,8 @@ class InstallSubscriber implements EventSubscriberInterface
 
     public function createIndexMigrationTable(): void
     {
-        $this->dbalConnection->exec(<<<SQL
+        $this->dbalConnection->exec(
+            <<<SQL
             CREATE TABLE IF NOT EXISTS pim_index_migration(
                 `index_alias` VARCHAR(100) NOT NULL,
                 `hash` VARCHAR(100) NOT NULL,

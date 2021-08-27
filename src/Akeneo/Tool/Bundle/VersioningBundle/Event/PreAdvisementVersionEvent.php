@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Event;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\PurgeableVersionList;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event sent before a version is processed by the version purger

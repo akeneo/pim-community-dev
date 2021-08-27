@@ -29,8 +29,8 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
         $attribute = $this->getAttributes->forCode($data->getAttributeCode());
 
         return null !== $attribute && AttributeTypes::BACKEND_TYPE_DECIMAL === $attribute->backendType() && (
-                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        );
     }
 
     /**

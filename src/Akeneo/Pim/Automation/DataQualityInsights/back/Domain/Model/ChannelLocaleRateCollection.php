@@ -40,9 +40,11 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         $rateCollection = new self();
 
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
-            $rawRates, function ($rawRate) {
+            $rawRates,
+            function ($rawRate) {
                 return new Rate(intval($rawRate));
-            });
+            }
+        );
 
         return $rateCollection;
     }
@@ -55,7 +57,8 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
             $normalizedRates,
             function ($normalizedRate) use ($getNormalizedRateValue) {
                 return new Rate(intval($getNormalizedRateValue($normalizedRate)));
-            });
+            }
+        );
 
         return $rateCollection;
     }
