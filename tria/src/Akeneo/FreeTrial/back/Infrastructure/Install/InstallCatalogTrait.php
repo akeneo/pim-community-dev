@@ -123,4 +123,9 @@ trait InstallCatalogTrait
     {
         return $this->getFixturesPath() . '/measurement_families.json';
     }
+
+    private function getConnectionImageFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/images';
+    }
 }

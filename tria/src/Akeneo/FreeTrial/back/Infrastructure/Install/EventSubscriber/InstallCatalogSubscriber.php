@@ -34,6 +34,7 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
     {
         return [
             InstallerEvents::PRE_LOAD_FIXTURES => 'onPreLoadFixtures',
+            InstallerEvents::POST_LOAD_FIXTURES => 'onPostLoadFixtures',
             InstallerEvents::PRE_LOAD_FIXTURE => 'onPreLoadFixture',
             InstallerEvents::POST_LOAD_FIXTURE => 'onPostLoadFixture',
         ];
@@ -47,6 +48,15 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
 
         $this->installFixture('measurement_family');
         $this->installFixture('media_file');
+    }
+
+    public function onPostLoadFixtures(InstallerEvent $installerEvent): void
+    {
+        if (!$this->isFreeTrialCatalogInstallation($installerEvent)) {
+            return;
+        }
+
+        $this->installFixture('connection');
     }
 
     public function onPreLoadFixture(InstallerEvent $installerEvent): void
