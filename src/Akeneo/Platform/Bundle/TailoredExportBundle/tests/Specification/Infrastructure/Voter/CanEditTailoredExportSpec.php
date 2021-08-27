@@ -46,7 +46,7 @@ class CanEditTailoredExportSpec extends ObjectBehavior
             [
                 'sources' => [
                     [
-                        'code' => 'weight',
+                        'code' => 'Weight',
                         'type' => 'attribute',
                         'locale' => null
                     ]
@@ -81,15 +81,15 @@ class CanEditTailoredExportSpec extends ObjectBehavior
 
         $description = $this->createAttribute('description');
         $name = $this->createAttribute('name');
-        $weight = $this->createAttribute('weight');
+        $Weight = $this->createAttribute('Weight');
 
-        $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
+        $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
             'name' => $name,
-            'weight' => $weight
+            'Weight' => $Weight
         ]);
 
-        $getViewableAttributes->forAttributeCodes(['description', 'name', 'weight'], $userId)->willReturn([
+        $getViewableAttributes->forAttributeCodes(['description', 'name', 'Weight'], $userId)->willReturn([
             'description',
             'name'
         ]);
@@ -107,16 +107,16 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $jobInstance->getRawParameters()->willReturn(self::COLUMNS);
 
         $description = $this->createAttribute('description');
-        $weight = $this->createAttribute('weight');
+        $Weight = $this->createAttribute('Weight');
 
-        $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
+        $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
-            'weight' => $weight
+            'Weight' => $Weight
         ]);
 
-        $getViewableAttributes->forAttributeCodes(['description', 'weight'], $userId)->willReturn([
+        $getViewableAttributes->forAttributeCodes(['description', 'Weight'], $userId)->willReturn([
             'description',
-            'weight'
+            'Weight'
         ]);
 
         $getAllViewableLocales->fetchAll($userId)->willReturn([
@@ -137,16 +137,16 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $jobInstance->getRawParameters()->willReturn(self::COLUMNS);
 
         $description = $this->createAttribute('description');
-        $weight = $this->createAttribute('weight');
+        $Weight = $this->createAttribute('Weight');
 
-        $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
+        $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
-            'weight' => $weight
+            'Weight' => $Weight
         ]);
 
-        $getViewableAttributes->forAttributeCodes(['description', 'weight'], $userId)->willReturn([
+        $getViewableAttributes->forAttributeCodes(['description', 'Weight'], $userId)->willReturn([
             'description',
-            'weight'
+            'Weight'
         ]);
 
         $getAllViewableLocales->fetchAll($userId)->willReturn([

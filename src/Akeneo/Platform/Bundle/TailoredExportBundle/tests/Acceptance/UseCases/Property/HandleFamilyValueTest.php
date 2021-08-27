@@ -71,9 +71,7 @@ final class HandleFamilyValueTest extends PropertyTestCase
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FamilyCodeSelection(),
                 'value' => new NullValue(),
@@ -81,9 +79,7 @@ final class HandleFamilyValueTest extends PropertyTestCase
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FamilyCodeSelection(),
                 'value' => new FamilyValue('pants'),

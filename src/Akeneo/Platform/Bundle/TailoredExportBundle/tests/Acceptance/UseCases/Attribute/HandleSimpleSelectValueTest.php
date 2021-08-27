@@ -53,39 +53,35 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new SimpleSelectValue('cotton'),
-                'expected' => [self::TARGET_NAME => 'cotton']
+                'expected' => [self::TARGET_NAME => 'cotton'],
             ],
             'it selects the label' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('cotton'),
-                'expected' => [self::TARGET_NAME => 'Cotton']
+                'expected' => [self::TARGET_NAME => 'Cotton'],
             ],
             'it fallbacks on the code when label is not found' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('option_without_label'),
-                'expected' => [self::TARGET_NAME => '[option_without_label]']
+                'expected' => [self::TARGET_NAME => '[option_without_label]'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new SimpleSelectValue('cotton'),
-                'expected' => [self::TARGET_NAME => 'cotton']
+                'expected' => [self::TARGET_NAME => 'cotton'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
         ];
     }

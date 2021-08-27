@@ -18,11 +18,11 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-job-instance-xlsx-tailored-product-export-edit-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-xlsx-tailored-product-export-edit
         targetZone: breadcrumbs
         config:
-            tab: pim-menu-exports
+            isEdit: true
 
     pim-job-instance-xlsx-tailored-product-export-edit-cache-invalidator:
         module: pim/cache-invalidator
@@ -238,6 +238,16 @@ extensions:
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
 
+    pim-job-instance-xlsx-tailored-product-export-edit-duplicate:
+        module: pim/job/common/duplicate/duplicate
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_importexport_export_profile_create
+        position: 80
+        config:
+            subTitle: pim_menu.tab.exports
+            editRoute: pim_importexport_export_profile_edit
+
     pim-job-instance-xlsx-tailored-product-export-edit-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-job-instance-xlsx-tailored-product-export-edit
@@ -245,12 +255,10 @@ extensions:
         position: 120
 
     pim-job-instance-xlsx-tailored-product-export-edit-save:
-        module: pim/job-instance-export-edit-form/save
+        module: akeneotailoredexport/js/job/product/edit/save
         parent: pim-job-instance-xlsx-tailored-product-export-edit
         targetZone: buttons
         position: 0
-        config:
-            redirectPath: pim_importexport_export_profile_show
 
     pim-job-instance-xlsx-tailored-product-export-edit-state:
         module: pim/form/common/state
