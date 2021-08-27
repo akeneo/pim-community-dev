@@ -29,8 +29,8 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'attribute_option_table' => ['css' => sprintf('tr[data-testid=%s]', 'attribute-options-list')],
-                'attribute_options'      => ['css' => sprintf('tr[data-testid=%s]', 'attribute-option-item')],
+                'attribute_option_table' => ['css' => '.AknAttributeOption-list-optionsList'],
+                'attribute_options'      => ['css' => '.AknAttributeOption-listItem'],
                 'new_option'             => ['css' => '.in-edition']
             ]
         );
@@ -70,7 +70,7 @@ class Creation extends Form
         }, 'Loading mask is still visible');
 
         $addAttributeCodeButton = $this->spin(function () {
-            return $this->find('css', '[data-testid="add-new-attribute-option-button"]');
+            return $this->find('css', '[role="add-new-attribute-option-button"]');
         }, 'Unable to find the new attribute code button');
         $addAttributeCodeButton->click();
     }
@@ -82,7 +82,7 @@ class Creation extends Form
     public function fillNewOption($name, $labels = [])
     {
         $codeField = $this->spin(function () {
-            return $this->find('css', 'input[data-testid="attribute-option-label"]');
+            return $this->find('css', '.AknTextField[role="attribute-option-label"]');
         }, 'Unable to find the attribute option code field');
         $codeField->setValue($name);
 
@@ -90,7 +90,7 @@ class Creation extends Form
 
         foreach ($labels as $locale => $label) {
             $labelField = $this->spin(function () use ($locale) {
-                return $this->find('css', sprintf('input[data-testid=%s][data-locale="%s"]', 'attribute-option-label', $locale));
+                return $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
             }, 'Unable to find the attribute option label for locale ' . $locale);
             $this->spin(function () use ($locale, $label, $labelField) {
                 $labelField->setValue($label);
@@ -189,7 +189,7 @@ class Creation extends Form
      */
     public function countOrderableOptions()
     {
-        return count($this->findAll('css', sprintf('td[data-testid=%s]', 'dragAndDrop')));
+        return count($this->findAll('css', $this->elements['attribute_option_table']['css'].' .AknAttributeOption-move-icon:not(.AknAttributeOption-move-icon--disabled)'));
     }
 
     /**
@@ -207,7 +207,7 @@ class Creation extends Form
 
         $optionRow->click();
 
-        $deleteBtn = $optionRow->find('css', sprintf('button[data-testid=%s]', 'attribute-option-delete-button'));
+        $deleteBtn = $optionRow->find('css', '.AknAttributeOption-delete-option-icon');
 
         $this->spin(function () use ($deleteBtn) {
             $deleteBtn->click();
@@ -226,7 +226,7 @@ class Creation extends Form
         $this->spin(function () use ($expectedOrder) {
             $rows = $this->getOptionsElement();
             $actualOrder = array_map(function ($row) {
-                $option = $row->find('css', sprintf('*[data-testid=%s]', 'attribute-option-item-code'));
+                $option = $row->find('css', '.AknAttributeOption-itemCode');
 
                 return null !== $option ? strtolower($option->getText()) : '';
             }, $rows);
@@ -257,8 +257,8 @@ class Creation extends Form
     protected function getOptionElement($optionName)
     {
         foreach ($this->getOptionsElement() as $optionRow) {
-            if ($optionRow->find('css', sprintf('*[data-testid=%s]', 'attribute-option-item-code')) &&
-                strtolower($optionRow->find('css', sprintf('*[data-testid=%s]', 'attribute-option-item-code'))->getText()) === strtolower($optionName)
+            if ($optionRow->find('css', '.AknAttributeOption-itemCode') &&
+                strtolower($optionRow->find('css', '.AknAttributeOption-itemCode')->getText()) === strtolower($optionName)
             ) {
                 return $optionRow;
             }
@@ -301,7 +301,8 @@ class Creation extends Form
                 'css',
                 sprintf(
                     '.error-message:contains("%s"), .validation-tooltip[data-original-title="%s"]',
-                    $text, $text
+                    $text,
+                    $text
                 )
             );
         }, sprintf('Cannot find error message "%s" in validation tooltip', $text));

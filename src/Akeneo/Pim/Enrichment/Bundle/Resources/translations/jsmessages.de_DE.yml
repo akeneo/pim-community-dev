@@ -330,11 +330,13 @@ pim_enrich.export.product:
   global_settings:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
+  title: Produkt-Massenaktion
   confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen. ]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
   step:
     select:
       label: Produkte auswählen
     choose:
+      title: Produkt-Massenaktionen
       label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren
@@ -353,8 +355,14 @@ pim_enrich.mass_edit.product:
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       field: Aktivieren
     edit_common:
+      label: Attributwerte bearbeiten
+      label_count: "{0}Bearbeite Attributwerte einiger <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf [Attributwerte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten bearbeiten</span>"
       description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
       no_update: Bitte wählen Sie mindestens ein Feld aus, das Sie aktualisieren möchten
+    add_attribute_value:
+      label: Attributwerte hinzufügen
+      label_count: "{0}Attributwerte für einige <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Attributwerte für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte hinzufügen</span>"
+      description: Nur die multiplizierten Attribute der Produktfamilien werden mit den folgenden Daten für die {{ locale }} Gebietsschema und den {{ scope }} Kanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte werden beibehalten.
     change_family:
       label: Familie wechseln
       label_count: "{0}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Ändern der Produktfamilie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
@@ -389,6 +397,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Konvertieren <span class=\"AknFullPage-title--highlight\">Produkte</span> in einfache Produkte|{1}Konvertieren Sie <span class=\"AknFullPage-title--highlight\">1 Produkt</span> in ein einfaches Produkt|]1, Inf[Konvertieren <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> in einfache Produkte"
       description: Alle früheren Werte, Kategorien und Verbindungen werden gespeichert.
     associate_to_product_and_product_model:
+      label: Produkte verknüpfen
       label_count: "{0}verknüpfen <span class=\"AknFullPage-title--highlight\">Produkte</span> mit Produkten oder Produktmodellen|{1} <span class=\"AknFullPage-title--highlight\">1 Produkt</span> mit Produkten oder Produktmodellen verknüpfen|]1, Inf[Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> mit Produkten oder Produktmodellen"
       description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
       validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
@@ -480,6 +489,7 @@ pim_datagrid:
       label: Eltern
     identifier:
       label: Kennung
+  search: Suche in {{ label }}
 batch_jobs:
   add_association:
     label: Verbinden
@@ -543,6 +553,7 @@ batch_jobs:
     perform.label: XLSX Produkt-Schnellexport
   default_steps:
     delete_products_and_product_models: Produkte und Produktmodelle löschen
+    remove_completeness_for_channel_and_locale: Entferne Vollständigkeit für Kanal und Gebietsschema
 error:
   removing:
     group: Gruppe kann nicht entfernt werden

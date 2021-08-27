@@ -66,7 +66,9 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $this->regenerateClientSecret('magento');
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $apiConnection->username(),
                 'password'   => $apiConnection->password(),
@@ -95,7 +97,9 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         ];
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $apiConnection->username(),
                 'password'   => $apiConnection->password(),
@@ -177,7 +181,9 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $this->regenerateUserPassword('magento');
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $apiConnection->username(),
                 'password'   => $apiConnection->password(),
@@ -203,7 +209,9 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         ];
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $apiConnection->username(),
                 'password'   => $apiConnection->password(),

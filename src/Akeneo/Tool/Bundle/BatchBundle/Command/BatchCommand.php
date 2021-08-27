@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -54,8 +54,7 @@ class BatchCommand extends Command
     /** @var JobRepositoryInterface */
     private $jobRepository;
 
-    /** @var RegistryInterface */
-    private $doctrine;
+    private ManagerRegistry $doctrine;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -82,7 +81,7 @@ class BatchCommand extends Command
         LoggerInterface $logger,
         BatchLogHandler $batchLogHandler,
         JobRepositoryInterface $jobRepository,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ValidatorInterface $validator,
         Notifier $notifier,
         JobRegistry $jobRegistry,

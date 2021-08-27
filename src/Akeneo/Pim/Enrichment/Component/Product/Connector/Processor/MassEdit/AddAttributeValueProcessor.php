@@ -113,7 +113,8 @@ class AddAttributeValueProcessor extends AbstractProcessor
                     [
                         'locale' => $value['locale'],
                         'scope' => $value['scope'],
-                    ]);
+                    ]
+                );
             }
         }
 

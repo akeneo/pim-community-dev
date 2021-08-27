@@ -237,7 +237,8 @@ final class ConnectorProductModel
         );
     }
 
-    public function filterAssociatedProductsByProductIdentifiers(array $productIdentifiersToFilter
+    public function filterAssociatedProductsByProductIdentifiers(
+        array $productIdentifiersToFilter
     ): ConnectorProductModel {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {

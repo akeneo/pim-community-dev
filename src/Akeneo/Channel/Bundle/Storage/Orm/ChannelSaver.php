@@ -6,7 +6,7 @@ namespace Akeneo\Channel\Bundle\Storage\Orm;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Saver\ChannelSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -130,7 +130,7 @@ final class ChannelSaver implements ChannelSaverInterface
         $channelsEvents = array_merge(...$channelsEvents);
 
         foreach ($channelsEvents as $channelEvent) {
-            $this->eventDispatcher->dispatch($channelEvent, get_class($channelEvent));
+            $this->eventDispatcher->dispatch($channelEvent);
         }
     }
 }

@@ -48,8 +48,8 @@ class ValueCollectionNormalizer implements NormalizerInterface, CacheableSupport
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof WriteValueCollection && (
-                $format === self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $format === self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        );
     }
 
     public function hasCacheableSupportsMethod(): bool

@@ -119,9 +119,9 @@ class Edit extends Form
     {
         return $this->spin(function () use ($attribute) {
             return $this->find(
-                    'css',
-                    sprintf('.remove-attribute[data-attribute="%s"]', $attribute)
-                );
+                'css',
+                sprintf('.remove-attribute[data-attribute="%s"]', $attribute)
+            );
         }, sprintf('Remove link for field "%s" was not found', $attribute));
     }
 

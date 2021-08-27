@@ -3,7 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Context\UserContext;

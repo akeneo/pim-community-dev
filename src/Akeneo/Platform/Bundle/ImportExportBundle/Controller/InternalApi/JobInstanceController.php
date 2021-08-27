@@ -353,8 +353,8 @@ class JobInstanceController
 
         try {
             $this->eventDispatcher->dispatch(
-                JobInstanceEvents::PRE_SAVE,
-                new GenericEvent($jobInstance, ['data' => $data])
+                new GenericEvent($jobInstance, ['data' => $data]),
+                JobInstanceEvents::PRE_SAVE
             );
         } catch (JobInstanceCannotBeUpdatedException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
@@ -375,8 +375,8 @@ class JobInstanceController
         $this->saver->save($jobInstance);
 
         $this->eventDispatcher->dispatch(
-            JobInstanceEvents::POST_SAVE,
-            new GenericEvent($jobInstance, ['data' => $data])
+            new GenericEvent($jobInstance, ['data' => $data]),
+            JobInstanceEvents::POST_SAVE
         );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
@@ -739,8 +739,8 @@ class JobInstanceController
         $this->saver->save($jobInstance);
 
         $this->eventDispatcher->dispatch(
-            JobInstanceEvents::POST_SAVE,
-            new GenericEvent($jobInstance, ['data' => $data])
+            new GenericEvent($jobInstance, ['data' => $data]),
+            JobInstanceEvents::POST_SAVE
         );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));

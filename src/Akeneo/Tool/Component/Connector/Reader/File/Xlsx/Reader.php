@@ -109,7 +109,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
                 new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
                 $exception->getMessageParameters(),
                 $exception->getCode(),
-                $exception);
+                $exception
+            );
         } catch (DataArrayConversionException $e) {
             $this->skipItemFromConversionException($item, $e);
         }

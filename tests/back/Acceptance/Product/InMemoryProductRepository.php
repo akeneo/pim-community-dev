@@ -64,7 +64,8 @@ class InMemoryProductRepository implements
         $product = $this->products->filter(
             function (ProductInterface $product) use ($id) {
                 return $product->getId() === $id;
-            })->first();
+            }
+        )->first();
 
         return (false === $product) ? null : $product;
     }

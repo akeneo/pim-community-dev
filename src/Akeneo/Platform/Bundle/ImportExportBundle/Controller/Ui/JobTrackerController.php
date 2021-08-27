@@ -86,7 +86,7 @@ class JobTrackerController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(new GenericEvent($jobExecution), JobExecutionEvents::PRE_DOWNLOAD_FILES);
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 

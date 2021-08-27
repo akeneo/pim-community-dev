@@ -13,6 +13,7 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Doctrine\Inflector',
+        'Doctrine\Persistence',
         'Akeneo\Tool',
         'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid

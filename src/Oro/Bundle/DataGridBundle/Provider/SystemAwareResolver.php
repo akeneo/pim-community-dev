@@ -12,6 +12,7 @@ class SystemAwareResolver implements ContainerAwareInterface
     const STATIC_METHOD_CLEAN_REGEX = '#([^\'"%:\s]+)::([\w\._]+)#';
     const SERVICE_METHOD = '#@([\w\._]+)->([\w\._]+)(\((.*)\))*#';
     const SERVICE = '#@([\w\._]+)#';
+    const TWIG_TEMPLATE = '#^@.+\.twig$#';
 
     /**
      * @var ContainerInterface
@@ -87,6 +88,9 @@ class SystemAwareResolver implements ContainerAwareInterface
         }
 
         switch (true) {
+            case preg_match(static::TWIG_TEMPLATE, $val, $match):
+                break;
+            // static call class:method or class::const
             case preg_match(static::PARAMETER_REGEX, $val, $match):
                 $val = $this->container->getParameter($match[1]);
                 break;
