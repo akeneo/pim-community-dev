@@ -45,6 +45,7 @@ cp composer.lock /tmp/composer.lock
 echo "Checkout EE 4.0 branch..."
 git branch -D real40 || true
 git checkout -b real40 --track origin/4.0
+sudo chown 1000:1000 -R .
 
 echo "Creation of image with php 7.3..."
 make php-image-dev
@@ -81,6 +82,7 @@ echo "Checkout EE PR branch (or master if it does not exist)..."
 git checkout $PR_BRANCH || git checkout master
 cp /tmp/composer.lock ./composer.lock
 touch composer.lock
+sudo chown 1000:1000 -R .
 make vendor
 
 echo "Copy CE migrations into EE to launch branch migrations..."
