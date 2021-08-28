@@ -313,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Moure entre categories
       label_count: "{1}Moure <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories|]1, Inf[Moure <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
+      no_update: Si us plau, selecciona una categoria
     remove_from_category:
       label: Eliminar de les categories
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
