@@ -12,10 +12,16 @@ authentication:
       section:
         activation:
           title: Activació SSO
+          info:
+            description: Si vas a activar la autenticació SSO, la seva sessió actual no és vàlida. Serà desconnectat i redirigit al seu proveïdor d'identitat un cop guardada la configuració
         identity_provider:
           title: Proveïdor d'identitat (IdP)
+          info:
+            description: Aquí pot configurar tots els paràmetres necessaris per comunicar-se amb el seu IdP. Aquesta informació ha de ser proporcionada pel seu IdP. Si us plau, contacti amb el seu administrador de SSO per obtanir-los.
         service_provider:
           title: Proveïdor de servei (SP)
+          info:
+            description: A continuació trobarà la informació del proveïdor de serveis. Són valors generats automàticament i pot editar-los si ho necessita. Aquestes dades hauran de ser donades pel seu administrador de SSO per configurar el IdP.
       field:
         activation:
           label: Activat SSO
