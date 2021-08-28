@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: La variant de família no s'ha pogut actualitzar.
     create:
       success: Variant de família creada correctament
+    delete:
+      success: Variant de família eliminada correctament
   module:
     edit:
       common_attributes: Atributs comuns
@@ -135,7 +137,6 @@ pim_enrich.entity.attribute:
     date_min: Data mínima
     decimals_allowed: Valors decimals permesos
     default_metric_unit:
-      label: Unitat mètrica per defecte
       choose: Trieu una unitat
     group:
       label: Grup d'atributs
@@ -145,7 +146,6 @@ pim_enrich.entity.attribute:
     max_characters: Màxim de caràcters
     max_file_size: Mida màxima de l'arxiu (MB)
     metric_family:
-      label: Família mètrica
       choose: Trieu una família
     minimum_input_length: Longitud mínima d'auto compleció
     name: Nom
@@ -169,7 +169,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Imatge
       pim_catalog_boolean: "Sí/No"
       pim_catalog_date: Data
-      pim_catalog_metric: Mètrica
       pim_reference_data_simpleselect: Selecció simple de dades de referència
       pim_reference_data_multiselect: Selecció múltiple de dades de referència
     unique: Valor únic
@@ -200,6 +199,10 @@ pim_enrich.entity.attribute_group:
   label: grup d'atributs
   uppercase_label: Grup d'atributs
   plural_label: Grups d'atribut
+  show_more_attribute:
+    title: Esta una mica encreuat per aquí. T'ho ensenyem {{ attributeCount }}/{{ totalAttributeCount }} atributs.
+    subtitle: Per descobrir tots els atributs d'aquest grup, cliqueu a continuació!
+    button: Mostrar tots els atributs
   flash:
     update:
       success: Grup d'atributs actualitzat correctament
