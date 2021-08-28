@@ -434,3 +434,4 @@ batch_jobs:
     perform.label: XLSX Produkt-Schnellexport
   default_steps:
     delete_products_and_product_models: Produkte und Produktmodelle löschen
+    remove_completeness_for_channel_and_locale: Entferne Vollständigkeit für Kanal und Gebietsschema
