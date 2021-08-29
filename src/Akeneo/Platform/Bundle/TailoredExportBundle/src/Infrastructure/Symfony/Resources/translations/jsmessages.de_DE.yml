@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: Spalten
     header:
-      column_name: Spaltenkopfzeile
       source_data: Spalteninhalt
     column_row:
       target_placeholder: Definieren Sie hier Ihren Spaltennamen
