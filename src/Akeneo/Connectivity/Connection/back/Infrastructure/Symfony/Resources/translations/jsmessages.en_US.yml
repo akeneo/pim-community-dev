@@ -77,7 +77,6 @@ akeneo_connectivity.connection:
                 helper: To know more about about app authorization,
                 helper_link: check out our Help Center for more information.
                 error:
-                    no_client_id: No client_id specified.
                     sub_text: Please contact the app developer or Akeneo support
                 scope:
                     type:

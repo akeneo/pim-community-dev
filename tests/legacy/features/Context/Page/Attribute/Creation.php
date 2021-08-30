@@ -301,7 +301,8 @@ class Creation extends Form
                 'css',
                 sprintf(
                     '.error-message:contains("%s"), .validation-tooltip[data-original-title="%s"]',
-                    $text, $text
+                    $text,
+                    $text
                 )
             );
         }, sprintf('Cannot find error message "%s" in validation tooltip', $text));

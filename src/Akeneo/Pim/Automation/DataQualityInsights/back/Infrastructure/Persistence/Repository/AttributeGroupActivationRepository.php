@@ -31,7 +31,8 @@ VALUES (:attributeGroupCode, :activated, NOW())
 ON DUPLICATE KEY UPDATE activated = :activated, updated_at = NOW();
 SQL;
 
-        $this->dbConnection->executeQuery($query,
+        $this->dbConnection->executeQuery(
+            $query,
             [
                 'attributeGroupCode' => $attributeGroupActivation->getAttributeGroupCode(),
                 'activated' => $attributeGroupActivation->isActivated(),

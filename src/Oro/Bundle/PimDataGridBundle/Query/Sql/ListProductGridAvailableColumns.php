@@ -66,11 +66,13 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
         $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
 
         $propertiesColumns = $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::COLUMNS_KEY), []
+            sprintf('[%s]', Configuration::COLUMNS_KEY),
+            []
         );
 
         $otherColumns = $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY), []
+            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY),
+            []
         );
 
         return $propertiesColumns + $otherColumns;

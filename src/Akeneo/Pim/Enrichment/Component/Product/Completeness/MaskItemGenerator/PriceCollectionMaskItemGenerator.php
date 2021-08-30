@@ -62,7 +62,8 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
 
         $result = [];
         foreach ($this->getCurrencyCombinations($filledCurrencies) as $currencyCombination) {
-            $result[] = sprintf('%s-%s-%s-%s',
+            $result[] = sprintf(
+                '%s-%s-%s-%s',
                 $attributeCode,
                 join('-', $currencyCombination),
                 $channelCode,

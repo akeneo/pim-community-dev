@@ -70,9 +70,12 @@ class PimRequirements
         $requirements[] = new Requirement(
             version_compare($phpVersion, self::REQUIRED_PHP_VERSION, '>='),
             sprintf('PHP version must be at least %s (%s installed)', self::REQUIRED_PHP_VERSION, $phpVersion),
-            sprintf('You are running PHP version "<strong>%s</strong>", but needs at least PHP "<strong>%s</strong>" to run.
+            sprintf(
+                'You are running PHP version "<strong>%s</strong>", but needs at least PHP "<strong>%s</strong>" to run.
                 Before using, upgrade your PHP installation, preferably to the latest version.',
-                $phpVersion, self::REQUIRED_PHP_VERSION)
+                $phpVersion,
+                self::REQUIRED_PHP_VERSION
+            )
         );
 
         foreach (self::REQUIRED_EXTENSIONS as $requiredExtension) {

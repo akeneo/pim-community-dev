@@ -131,7 +131,12 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [placeholderPosition, placeholderDragEnter, placeholderDragLeave] = usePlaceholderPosition(rowIndex);
+    const [
+      placeholderPosition,
+      placeholderDragEnter,
+      placeholderDragLeave,
+      placeholderDragEnd,
+    ] = usePlaceholderPosition(rowIndex);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
@@ -152,19 +157,24 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       onDragStart?.(rowIndex);
     };
 
+    const handleDragEnd = () => {
+      placeholderDragEnd();
+      onDragEnd?.();
+    };
+
     return (
       <RowContainer
         ref={forwardedRef}
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
-        placeholderPosition={placeholderPosition}
+        placeholderPosition={isDragAndDroppable ? placeholderPosition : 'none'}
         draggable={isDragAndDroppable && draggable}
         data-draggable-index={rowIndex}
         onDragEnter={handleDragEnter}
         onDragLeave={placeholderDragLeave}
         onDragStart={handleDragStart}
-        onDragEnd={onDragEnd}
+        onDragEnd={handleDragEnd}
         {...rest}
       >
         {isSelectable && (

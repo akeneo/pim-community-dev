@@ -96,6 +96,16 @@ class MeasureManager
     }
 
     /**
+     * Check if provided family exists
+     */
+    public function familyExists(string $familyCode): bool
+    {
+        $families = $this->legacyMeasurementProvider->getMeasurementFamilies();
+
+        return array_key_exists($familyCode, $families);
+    }
+
+    /**
      * Get the family config
      *
      * @param string $family

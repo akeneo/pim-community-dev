@@ -56,19 +56,23 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         foreach ($entity->getValuesForVariation()->getAttributeCodes() as $modelAttributeCode) {
             if (!in_array($modelAttributeCode, $familyAttributeCodes)) {
                 $this->context->buildViolation(
-                    OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [
+                    OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY,
+                    [
                     '%attribute%' => $modelAttributeCode,
                     '%family%' => $family->getCode()
-                ])->atPath('attribute')->addViolation();
+                ]
+                )->atPath('attribute')->addViolation();
 
                 continue;
             }
 
             if (!in_array($modelAttributeCode, $levelAttributeCodes, true)) {
                 $this->context->buildViolation(
-                    OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED, [
+                    OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED,
+                    [
                     '%attribute%' => $modelAttributeCode
-                ])->atPath('attribute')->addViolation();
+                ]
+                )->atPath('attribute')->addViolation();
             }
         }
     }

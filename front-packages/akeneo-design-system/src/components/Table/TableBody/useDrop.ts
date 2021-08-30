@@ -31,14 +31,14 @@ const useDrop = (tableSize: number, draggedElementIndex: number | null) => {
   const {onReorder} = useContext(TableContext);
 
   const handleDrop = (event: DragEvent<HTMLTableSectionElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (event.currentTarget.dataset.tableId === tableId && onReorder && null !== draggedElementIndex) {
       const droppedElementIndex = getDropRow(event.target as HTMLElement);
       const newIndices = generateReorderedIndices(tableSize, draggedElementIndex, droppedElementIndex);
 
       onReorder(newIndices);
-
-      event.stopPropagation();
-      event.preventDefault();
     }
   };
 

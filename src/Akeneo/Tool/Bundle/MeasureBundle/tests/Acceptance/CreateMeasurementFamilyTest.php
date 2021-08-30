@@ -649,7 +649,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
                             Operation::create("mul", "1"),
                         ],
                         "km",
-                        );
+                    );
                 }, $unitCodes)
             )
         );
