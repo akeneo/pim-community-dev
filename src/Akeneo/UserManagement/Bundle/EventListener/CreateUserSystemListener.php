@@ -5,8 +5,8 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\DBAL\DBALException;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
