@@ -172,7 +172,7 @@ RUN mkdir var && \
 #
 # Intermediate image to install BigCommerce Connector
 #
-FROM builder AS bigcommerceconnector
+FROM builder AS bigcommerceconnector-back
 
 ARG COMPOSER_AUTH
 
@@ -191,11 +191,15 @@ RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
         --prefer-dist \
         --optimize-autoloader
 
+FROM node:lts AS bigcommerceconnector-front
+
+COPY --from=bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/front /srv/pim/tmp/build-connector/front
+
 # Build front
 WORKDIR /srv/pim/tmp/build-connector/front
 
-RUN yarnpkg install --frozen-lockfile
-RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" yarnpkg run build
+RUN yarn install --frozen-lockfile
+RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" yarn build
 
 #
 # Image used for production
@@ -218,8 +222,8 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 
 # Copy big commerce connector
-COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
-COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
+COPY --from=bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
+COPY --from=bigcommerceconnector-front --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
