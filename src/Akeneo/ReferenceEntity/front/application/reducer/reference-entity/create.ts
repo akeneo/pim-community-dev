@@ -3,7 +3,7 @@ import {
   createEmptyReferenceEntityCreation,
   NormalizedReferenceEntityCreation,
 } from 'akeneoreferenceentity/domain/model/reference-entity/creation';
-import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {sanitize} from '@akeneo-pim-community/shared';
 
 export interface CreateState {
   active: boolean;

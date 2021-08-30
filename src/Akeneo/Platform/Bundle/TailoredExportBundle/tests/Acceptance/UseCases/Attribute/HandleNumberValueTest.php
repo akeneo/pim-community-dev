@@ -50,39 +50,35 @@ final class HandleNumberValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10'),
-                'expected' => [self::TARGET_NAME => '10']
+                'expected' => [self::TARGET_NAME => '10'],
             ],
             'it handles number with default decimal selection' => [
                 'operations' => [],
                 'selection' => new NumberSelection('.'),
                 'value' => new NumberValue('10.73737443838'),
-                'expected' => [self::TARGET_NAME => '10.73737443838']
+                'expected' => [self::TARGET_NAME => '10.73737443838'],
             ],
             'it handles number with decimal selection' => [
                 'operations' => [],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10.73737443838'),
-                'expected' => [self::TARGET_NAME => '10,73737443838']
+                'expected' => [self::TARGET_NAME => '10,73737443838'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new NumberSelection(','),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10'),
-                'expected' => [self::TARGET_NAME => '10']
+                'expected' => [self::TARGET_NAME => '10'],
             ],
         ];
     }

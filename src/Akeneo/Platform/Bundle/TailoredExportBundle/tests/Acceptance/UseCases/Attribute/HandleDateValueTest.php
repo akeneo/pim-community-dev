@@ -46,37 +46,33 @@ final class HandleDateValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the date' => [
                 'operations' => [],
                 'selection' => new DateSelection('dd-mm-yyyy'),
                 'value' => new DateValue(new \DateTime('16-05-2020T02:12:25')),
-                'expected' => [self::TARGET_NAME => '16-05-2020']
+                'expected' => [self::TARGET_NAME => '16-05-2020'],
             ],
-            [
+            'it selects the date with another date format' => [
                 'operations' => [],
                 'selection' => new DateSelection('dd/mm/yy'),
                 'value' => new DateValue(new \DateTime('16-05-2020T02:12:25')),
-                'expected' => [self::TARGET_NAME => '16/05/20']
+                'expected' => [self::TARGET_NAME => '16/05/20'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new DateSelection('dd/mm/yy'),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new DateSelection('dd/mm/yy'),
                 'value' => new DateValue(new \DateTime('16-05-2020T02:12:25')),
-                'expected' => [self::TARGET_NAME => '16/05/20']
+                'expected' => [self::TARGET_NAME => '16/05/20'],
             ],
         ];
     }

@@ -1,4 +1,4 @@
-import {isMeasurementSource, MeasurementSource} from './model';
+import {isMeasurementSource, MeasurementSource, isMeasurementConversionOperation} from './model';
 
 const source: MeasurementSource = {
   uuid: '123',
@@ -21,6 +21,10 @@ test('it validates that something is a measurement source', () => {
           type: 'default_value',
           value: 'a default value',
         },
+        measurement_conversion: {
+          type: 'measurement_conversion',
+          target_unit_code: null,
+        },
       },
     })
   ).toEqual(true);
@@ -34,4 +38,26 @@ test('it validates that something is a measurement source', () => {
       },
     })
   ).toEqual(false);
+});
+
+test('it can validate that it is a measurement conversion operation', async () => {
+  expect(
+    isMeasurementConversionOperation({
+      type: 'measurement_conversion',
+      target_unit_code: 'meter',
+    })
+  ).toBe(true);
+  expect(
+    isMeasurementConversionOperation({
+      type: 'measurement_conversion',
+      target_unit_code: null,
+    })
+  ).toBe(true);
+  expect(
+    isMeasurementConversionOperation({
+      type: 'test',
+      target_unit_code: null,
+    })
+  ).toBe(false);
+  expect(isMeasurementConversionOperation(undefined)).toBe(false);
 });

@@ -105,7 +105,9 @@ const SourcesConcatenation = ({
         <Button
           title={
             !canAddText
-              ? translate('akeneo.tailored_export.validation.concatenation.max_text_count_reached')
+              ? translate('akeneo.tailored_export.validation.concatenation.max_text_count_reached', {
+                  limit: MAX_TEXT_COUNT,
+                })
               : undefined
           }
           disabled={!canAddText}

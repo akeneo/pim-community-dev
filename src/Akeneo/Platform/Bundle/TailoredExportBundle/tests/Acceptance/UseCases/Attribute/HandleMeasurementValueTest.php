@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
@@ -54,45 +55,49 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new MeasurementValueSelection(','),
                 'value' => new MeasurementValue('10.4', 'KILOGRAM'),
-                'expected' => [self::TARGET_NAME => '10,4']
+                'expected' => [self::TARGET_NAME => '10,4'],
             ],
             'it selects the unit code' => [
                 'operations' => [],
                 'selection' => new MeasurementUnitCodeSelection(),
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
-                'expected' => [self::TARGET_NAME => 'KILOGRAM']
+                'expected' => [self::TARGET_NAME => 'KILOGRAM'],
             ],
             'it selects the unit label' => [
                 'operations' => [],
-                'selection' => new MeasurementUnitLabelSelection('weight', 'fr_FR'),
+                'selection' => new MeasurementUnitLabelSelection('Weight', 'fr_FR'),
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
-                'expected' => [self::TARGET_NAME => 'Kilogramme']
+                'expected' => [self::TARGET_NAME => 'Kilogramme'],
             ],
             'it fallbacks on unit code when unit label is not found' => [
                 'operations' => [],
-                'selection' => new MeasurementUnitLabelSelection('weight', 'fr_FR'),
+                'selection' => new MeasurementUnitLabelSelection('Weight', 'fr_FR'),
                 'value' => new MeasurementValue('10', 'GRAM'),
-                'expected' => [self::TARGET_NAME => '[GRAM]']
+                'expected' => [self::TARGET_NAME => '[GRAM]'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new MeasurementValueSelection('.'),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new MeasurementValueSelection('.'),
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
-                'expected' => [self::TARGET_NAME => '10']
+                'expected' => [self::TARGET_NAME => '10'],
+            ],
+            'it selects the value and applies the conversion operation' => [
+                'operations' => [
+                    new MeasurementConversionOperation('Weight', 'GRAM'),
+                ],
+                'selection' => new MeasurementValueSelection(','),
+                'value' => new MeasurementValue('10.4123', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10412,3'],
             ],
         ];
     }
@@ -101,7 +106,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
     {
         /** @var InMemoryFindUnitLabel $unitLabels */
         $unitLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface');
-        $unitLabels->addUnitLabel('weight', 'KILOGRAM', 'fr_FR', 'Kilogramme');
-        $unitLabels->addUnitLabel('weight', 'KILOGRAM', 'en_US', 'Kilogram');
+        $unitLabels->addUnitLabel('Weight', 'KILOGRAM', 'fr_FR', 'Kilogramme');
+        $unitLabels->addUnitLabel('Weight', 'KILOGRAM', 'en_US', 'Kilogram');
     }
 }
