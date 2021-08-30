@@ -95,3 +95,9 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@pim_api.security.scope_mapper'
+
+    akeneo_connectivity.connection.apps.controller.apps.confirm_authorization:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'

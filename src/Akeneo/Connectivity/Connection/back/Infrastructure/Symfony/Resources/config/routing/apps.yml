@@ -7,3 +7,8 @@ akeneo_connectivity_connection_apps_rest_get_wizard_data:
     path: '/load-wizard-data/{clientId}'
     controller: akeneo_connectivity.connection.public.controller.apps.get_wizard_data
     methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_confirm_authorization:
+    path: '/connect/apps/confirm-authorization/{clientId}'
+    controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authorization
+    methods: [ POST ]
