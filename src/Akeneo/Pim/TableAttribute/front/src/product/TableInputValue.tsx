@@ -15,7 +15,7 @@ import {
   SelectOptionCode,
   TextColumnValidation,
 } from '../models/TableConfiguration';
-import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
@@ -26,6 +26,7 @@ import {TableInputText} from './CellInputs/TableInputText';
 import {TableAttribute} from '../models/Attribute';
 import {CenteredHelper} from '../shared/CenteredHelper';
 import {useFetchOptions} from './useFetchOptions';
+import {LoadingPlaceholderContainer} from '../shared/LoadingPlaceholder';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
