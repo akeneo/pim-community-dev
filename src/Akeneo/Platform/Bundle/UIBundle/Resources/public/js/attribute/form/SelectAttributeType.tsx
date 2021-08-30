@@ -1,6 +1,6 @@
 import React from 'react';
 import {AddAttributeIcon, IconProps, Modal, Tile, Tiles} from 'akeneo-design-system';
-import {baseFetcher, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import * as icons from 'akeneo-design-system/lib/icons';
 import styled from 'styled-components';
 import {CreateAttributeButtonStepProps} from './CreateAttributeButtonApp';
@@ -27,15 +27,17 @@ const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap,
   const castIcons = icons as {[component: string]: React.FC<IconProps>};
 
   React.useEffect(() => {
-    baseFetcher(Router.generate('pim_enrich_attribute_type_index')).then(attributeTypes => {
-      const newAttributeTypes = Object.keys(attributeTypes);
-      const sortedAttributeTypes = newAttributeTypes.sort((a, b) => {
-        return translate(`pim_enrich.entity.attribute.property.type.${a}`).localeCompare(
-          translate(`pim_enrich.entity.attribute.property.type.${b}`)
-        );
-      });
+    fetch(Router.generate('pim_enrich_attribute_type_index')).then(response => {
+      response.json().then(attributeTypes => {
+        const newAttributeTypes = Object.keys(attributeTypes);
+        const sortedAttributeTypes = newAttributeTypes.sort((a, b) => {
+          return translate(`pim_enrich.entity.attribute.property.type.${a}`).localeCompare(
+            translate(`pim_enrich.entity.attribute.property.type.${b}`)
+          );
+        });
 
-      setAttributeTypes(sortedAttributeTypes);
+        setAttributeTypes(sortedAttributeTypes);
+      });
     });
   }, []);
 
