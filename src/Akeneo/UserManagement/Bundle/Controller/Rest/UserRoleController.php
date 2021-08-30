@@ -141,11 +141,7 @@ class UserRoleController
         ));
     }
 
-    /**
-     * @param $identifier
-     * @return Role
-     */
-    private function getUserRoleOr404($identifier):Role
+    private function getUserRoleOr404($identifier): Role
     {
         $userRole = $this->roleRepository->findOneBy(['id' => $identifier]);
 
