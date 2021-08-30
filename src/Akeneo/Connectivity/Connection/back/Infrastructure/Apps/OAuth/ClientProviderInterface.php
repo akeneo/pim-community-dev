@@ -19,4 +19,6 @@ interface ClientProviderInterface
      * @return Client
      */
     public function findOrCreateClient(App $app): Client;
+
+    public function findClientByAppId(string $appId): ?Client;
 }

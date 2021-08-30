@@ -13,6 +13,8 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppUserProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppConnectionProvider'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
@@ -25,3 +27,22 @@ services:
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
         public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppConnectionProvider:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppUserProvider:
+        arguments:
+            - '@pim_user.manager'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
+            - '@validator'
