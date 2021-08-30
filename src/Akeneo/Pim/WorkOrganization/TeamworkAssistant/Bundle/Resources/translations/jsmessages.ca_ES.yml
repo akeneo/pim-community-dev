@@ -66,3 +66,4 @@ pim_notification:
     project_created: Un nou projecte per a vostè
     project_finished: Projecte acabat
     project_calculation: Càlcul de projecte
+    project_due_date: Data de finalització del projecte

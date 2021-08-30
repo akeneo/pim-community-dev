@@ -102,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
+      text:
+        incompatible_with_regular_expression: 'Si us plau, introdueix un text que compleixi l''expressió regular: "{{ %regular_expression% }}"'
+        invalid_email: 'Introduïu una adreça de correu electrònic: xxxxx@xx.xx'
+        invalid_url: 'Introduïu una URL: http(s)://xxxx.XXX'
     no_data:
       title: No hi ha cap registre per {{ entityLabel }}
       subtitle: Feu clic al botó "Afegir nou" per crear el primer registre
