@@ -8,14 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateUserRoleEndToEnd extends InternalApiTestCase
 {
-
-    private DbalConnection $dbalConnection;
-
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->dbalConnection = $this->get('database_connection');
         $this->authenticate($this->getAdminUser());
     }
 
