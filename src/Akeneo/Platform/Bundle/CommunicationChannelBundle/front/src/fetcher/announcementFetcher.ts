@@ -1,4 +1,3 @@
-import {baseFetcher} from '@akeneo-pim-community/shared';
 import {validateAnnouncement} from '../validator/announcement';
 import {Announcement} from '../models/announcement';
 
@@ -14,7 +13,8 @@ const formatBackendUri = (searchAfter: string | null) => {
 const fetchAnnouncements = async (searchAfter: string | null = null): Promise<Announcement[]> => {
   const route = formatBackendUri(searchAfter);
 
-  const jsonResponse = await baseFetcher(route);
+  const response = await fetch(route);
+  const jsonResponse = await response.json();
   const announcements = jsonResponse.items;
   announcements.map(validateAnnouncement);
 

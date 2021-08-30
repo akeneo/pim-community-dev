@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders, mockedDependencies} from '../../tests';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
 import {fireEvent, screen} from '@testing-library/react';
-import {aSubNavigationMenu} from './navigationHelper';
+import {aSubNavigationMenu} from './navigationTestHelper';
 
 const {subNavigationEntries} = aSubNavigationMenu();
 

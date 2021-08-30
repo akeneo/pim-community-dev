@@ -10,6 +10,7 @@ import {
 } from 'akeneo-design-system';
 import {useRouter, useTranslate} from '../../hooks';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
+import {useTheme} from 'akeneo-design-system';
 
 type SubNavigationType = {
   title?: string;
@@ -61,6 +62,8 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
     router.redirect(router.generate(subEntry.route, subEntry.routeParams));
   };
 
+  const theme = useTheme();
+
   return (
     <SubNavContainer role="menu" data-testid="pim-sub-menu">
       <SubNavigationPanel
@@ -74,7 +77,6 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
           <SubNavigationDropdown entries={entries} title={title} />
         </SubNavigationPanel.Collapsed>
         {backLink && (
-          // @ts-ignore
           <Backlink onClick={() => router.redirectToRoute(backLink.route)}>{translate(backLink.title)}</Backlink>
         )}
         {sections.map(section => {
@@ -95,7 +97,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                     {subEntry.title}
                     {subEntry.disabled && freeTrialEnabled &&
                       <Tag tint="blue">
-                        <StyledLockIcon size={16} color={'#5992c7'}/>
+                        <StyledLockIcon size={16} color={theme.color.blue100}/>
                       </Tag>
                     }
                   </StyledSubNavigationItem>
@@ -137,7 +139,7 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean} & 
     align-self: center;
     padding: 0;
   }
-  
+
   ${({disabled}) => disabled && css`
     cursor: pointer;
   `}
