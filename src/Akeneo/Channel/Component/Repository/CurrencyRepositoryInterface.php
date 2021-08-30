@@ -4,7 +4,7 @@ namespace Akeneo\Channel\Component\Repository;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Currency repository interface
