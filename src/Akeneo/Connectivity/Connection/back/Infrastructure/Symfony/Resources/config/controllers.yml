@@ -100,4 +100,5 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
         arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationHandler'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'

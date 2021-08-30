@@ -8,6 +8,12 @@ services:
         arguments:
             - '@session'
 
+    Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
             - '@validator'

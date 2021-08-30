@@ -104,6 +104,7 @@ akeneo_connectivity.connection:
                 client_id:
                     not_blank: The client_id is required.
                     must_be_valid: The client_id does not match any known client.
+                    must_have_ongoing_authorization: The client_id do not have any ongoing authorization process at the moment
                 response_type:
                     not_blank: The response_type is required.
                     must_be_code: The response_type must be "code".

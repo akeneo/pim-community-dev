@@ -46,6 +46,12 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustHaveOngoingAuthorizationValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
         arguments:
             - '@pim_api.security.scope_mapper'
