@@ -59,3 +59,5 @@ doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
+    column_name: 'version'
+    column_length: 191

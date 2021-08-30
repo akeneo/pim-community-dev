@@ -3,6 +3,7 @@ includes:
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
 parameters:
     reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml
     ignoreErrors:

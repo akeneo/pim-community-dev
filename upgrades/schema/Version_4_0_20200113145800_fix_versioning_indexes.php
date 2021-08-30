@@ -8,7 +8,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 class Version_4_0_20200113145800_fix_versioning_indexes extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->updateVersioningIndexes();
     }
@@ -56,7 +56,7 @@ SQL;
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

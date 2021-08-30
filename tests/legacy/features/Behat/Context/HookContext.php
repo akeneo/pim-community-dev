@@ -219,7 +219,7 @@ class HookContext extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getDoctrine()->getEntityManagers() as $manager) {
+        foreach ($this->getDoctrine()->getManagers() as $manager) {
             $manager->clear();
         }
     }
