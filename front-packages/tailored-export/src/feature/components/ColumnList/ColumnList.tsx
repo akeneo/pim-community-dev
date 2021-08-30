@@ -1,6 +1,5 @@
 import React, {ClipboardEvent, Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from 'react';
 import {
-  getColor,
   Helper,
   RulesIllustration,
   Search,
@@ -23,14 +22,20 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 
-const SourceList = styled.div`
-  color: ${getColor('grey', 100)};
-  font-style: italic;
+const PlaceholderHelper = styled(Helper)`
   margin-left: 20px;
 `;
 
 const SourceDataHeaderCell = styled(Table.HeaderCell)`
   padding-left: 20px;
+`;
+
+const ColumnNameHeaderCell = styled(Table.HeaderCell)`
+  width: 300px;
+`;
+
+const CellPlaceholder = styled(Table.Cell)`
+  width: 40px;
 `;
 
 const SpacedSearch = styled(Search)`
@@ -88,7 +93,7 @@ const ColumnList = ({
   const filteredColumns = filterColumns(columns, searchValue);
 
   const canAddColumn = MAX_COLUMN_COUNT > columns.length;
-  const shouldDisplayNewColumnRow = canAddColumn && '' === searchValue;
+  const shouldDisplayNewColumnRow = !placeholderDisplayed && canAddColumn && '' === searchValue;
   const shouldDisplayNoResults = !placeholderDisplayed && 0 === filteredColumns.length && '' !== searchValue;
   const shouldDisplayTable = !placeholderDisplayed && !shouldDisplayNoResults;
 
@@ -136,9 +141,11 @@ const ColumnList = ({
       ))}
       {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
       {shouldDisplayTable && (
-        <Table isDragAndDroppable={true} onReorder={onColumnReorder}>
+        <Table isDragAndDroppable={'' === searchValue} onReorder={onColumnReorder}>
           <Table.Header sticky={88}>
-            <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
+            <ColumnNameHeaderCell>
+              {translate('akeneo.tailored_export.column_list.header.column_name')}
+            </ColumnNameHeaderCell>
             <SourceDataHeaderCell>
               {translate('akeneo.tailored_export.column_list.header.source_data')}
             </SourceDataHeaderCell>
@@ -158,24 +165,29 @@ const ColumnList = ({
               />
             ))}
           </Table.Body>
+        </Table>
+      )}
+      {shouldDisplayNewColumnRow && (
+        <Table>
           <Table.Body>
-            {shouldDisplayNewColumnRow && (
-              <Table.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
-                <TargetCell>
-                  <TextInput
-                    ref={null === selectedColumn ? inputRef : null}
-                    onChange={onColumnCreated}
-                    onPaste={handlePaste}
-                    placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
-                    value=""
-                  />
-                </TargetCell>
-                <Table.Cell>
-                  <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
-                </Table.Cell>
-                <Table.Cell />
-              </Table.Row>
-            )}
+            <Table.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
+              <CellPlaceholder />
+              <TargetCell>
+                <TextInput
+                  ref={null === selectedColumn ? inputRef : null}
+                  onChange={onColumnCreated}
+                  onPaste={handlePaste}
+                  placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
+                  value=""
+                />
+              </TargetCell>
+              <Table.Cell>
+                <PlaceholderHelper inline={true} level="info">
+                  {translate('akeneo.tailored_export.column_list.column_row.placeholder_helper')}
+                </PlaceholderHelper>
+              </Table.Cell>
+              <Table.Cell />
+            </Table.Row>
           </Table.Body>
         </Table>
       )}

@@ -130,7 +130,8 @@ class ProductAssignmentsValidator
     {
         $validator = Validation::createValidator();
 
-        return $validator->validate($productAssignments,
+        return $validator->validate(
+            $productAssignments,
             [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY])]
         );
     }
@@ -142,16 +143,17 @@ class ProductAssignmentsValidator
 
         return $validator->validate(
             $productAssignment[self::MODE_FIELD],
-            new Callback(function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
-                if (!in_array($actualMode, $allowedModes)) {
-                    $context
+            new Callback(
+                function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
+                    if (!in_array($actualMode, $allowedModes)) {
+                        $context
                         ->buildViolation(
                             ProductLinkRulesShouldBeExecutable::ASSIGNMENT_MODE_NOT_SUPPORTED,
                             ['%assignment_mode%' => $actualMode]
                         )
                         ->addViolation();
+                    }
                 }
-            }
             )
         );
     }
@@ -164,11 +166,12 @@ class ProductAssignmentsValidator
 
         return $validator->validate(
             $productAssignment['attribute'],
-            new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
-                try {
-                    $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
-                    if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
-                        $context
+            new Callback(
+                function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
+                    try {
+                        $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
+                        if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
+                            $context
                             ->buildViolation(
                                 ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
                                 [
@@ -177,19 +180,19 @@ class ProductAssignmentsValidator
                                 ]
                             )
                             ->addViolation();
+                        }
+                    } catch (ProductAttributeCannotContainAssetsException $exception) {
+                        $context->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION,
+                            ['%product_attribute_code%' => $productAttributeCode]
+                        )->addViolation();
+                    } catch (ProductAttributeDoesNotExistException $exception) {
+                        $context->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
+                            ['%product_attribute_code%' => $productAttributeCode]
+                        )->addViolation();
                     }
-                } catch (ProductAttributeCannotContainAssetsException $exception) {
-                    $context->buildViolation(
-                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION,
-                        ['%product_attribute_code%' => $productAttributeCode]
-                    )->addViolation();
-                } catch (ProductAttributeDoesNotExistException $exception) {
-                    $context->buildViolation(
-                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
-                        ['%product_attribute_code%' => $productAttributeCode]
-                    )->addViolation();
                 }
-            }
             )
         );
     }

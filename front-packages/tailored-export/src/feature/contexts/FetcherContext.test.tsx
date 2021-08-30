@@ -24,3 +24,11 @@ test('Fetch association type needs to be implemented', async () => {
     result.current.associationType.fetchByCodes();
   }).toThrowError('Fetch association types by codes needs to be implemented');
 });
+
+test('Fetch measurement family needs to be implemented', async () => {
+  const {result} = renderHookWithProviders(() => useFetchers());
+
+  expect(() => {
+    result.current.measurementFamily.fetchByCode('Weight');
+  }).toThrowError('Fetch measurement family by code needs to be implemented');
+});

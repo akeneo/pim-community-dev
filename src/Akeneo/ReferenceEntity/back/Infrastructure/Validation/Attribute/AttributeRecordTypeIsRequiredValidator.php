@@ -47,8 +47,11 @@ class AttributeRecordTypeIsRequiredValidator extends ConstraintValidator
     private function checkCommandType($command): void
     {
         if (!$command instanceof AbstractCreateAttributeCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                AbstractCreateAttributeCommand::class, get_class($command)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                AbstractCreateAttributeCommand::class,
+                get_class($command)
+            ));
         }
     }
 

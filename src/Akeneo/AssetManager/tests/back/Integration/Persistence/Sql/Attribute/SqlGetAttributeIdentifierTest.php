@@ -54,7 +54,8 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     {
         $identifier = $this->loadAttribute('designer', 'name');
         $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
         Assert::assertEquals($identifier, $attributeIdentifier);
     }
@@ -66,7 +67,8 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     {
         $this->expectException(\LogicException::class);
         $this->getAttributeIdentifier->withAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
     }
 

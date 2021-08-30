@@ -40,15 +40,17 @@ class ProductDestination
         Assert::nullOrStringNotEmpty($this->currency);
         Assert::nullOrStringNotEmpty($this->unit);
 
-        return array_filter([
+        return array_filter(
+            [
             'field' => $this->field,
             'scope' => $this->scope,
             'locale' => $this->locale,
             'currency' => $this->currency,
             'unit' => $this->unit,
         ],
-        function ($value): bool {
-            return null !== $value;
-        });
+            function ($value): bool {
+                return null !== $value;
+            }
+        );
     }
 }

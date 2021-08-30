@@ -72,7 +72,8 @@ class EditValueCommandValidator extends ConstraintValidator
         if (!$command instanceof AbstractEditValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditValueCommand::class,
                     get_class($command)
                 )
             );

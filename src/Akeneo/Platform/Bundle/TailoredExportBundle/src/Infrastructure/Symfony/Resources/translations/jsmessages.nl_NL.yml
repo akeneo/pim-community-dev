@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: Kolommen
     header:
-      column_name: Koptekst van kolom
       source_data: Inhoud van kolom
     column_row:
       target_placeholder: Geef hier de naam van de kolom op

@@ -116,7 +116,8 @@ class FileData implements ValueDataInterface
 
         foreach ($keys as $key) {
             Assert::keyExists($normalizedData, $key, sprintf(
-                'The key "%s" should be present in the normalized file data', $key
+                'The key "%s" should be present in the normalized file data',
+                $key
             ));
         }
 

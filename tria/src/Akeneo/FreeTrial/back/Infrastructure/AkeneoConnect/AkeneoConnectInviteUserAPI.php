@@ -22,9 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AkeneoConnectInviteUserAPI implements InviteUserAPI
 {
-    public const INVITATION_ALREADY_SENT = 'invitation_already_sent';
-    public const INVALID_EMAIL = 'invalid_email';
-    public const INVALID_REQUEST_BODY = 'invalid_request_body';
+    public const INVITATION_ALREADY_SENT = 'user_is_already_invited_invitation';
+    public const INVALID_REQUEST_BODY = 'invalid_request_invitation';
+    public const INTERNAL_ERROR = 'internal_server_error_invitation';
 
     private APIClient $client;
 
@@ -62,11 +62,9 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
         switch ($responseContentError['error']['code']) {
             case self::INVITATION_ALREADY_SENT:
                 throw new InvitationAlreadySentException();
-            case self::INVALID_EMAIL:
-                throw new InvalidEmailException();
             case self::INVALID_REQUEST_BODY:
-                $this->logger->error('Error while calling Akeneo Connect : invalid request');
-                throw new InvitationFailedException();
+                $this->logger->error('Error while calling Akeneo Connect : invalid request', $responseContentError);
+                throw new InvalidEmailException();
             default:
                 $this->logger->error('Error while calling Akeneo Connect', $responseContentError);
                 throw new InvitationFailedException();

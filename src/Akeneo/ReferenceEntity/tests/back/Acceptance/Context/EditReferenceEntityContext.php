@@ -143,7 +143,8 @@ final class EditReferenceEntityContext implements Context
         );
 
         if (key_exists('attribute_as_label', $expectedInformation)) {
-            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+            $expectedAttributeIdentifier = sprintf(
+                '%s_%s_%s',
                 $expectedInformation['attribute_as_label'],
                 $actualReferenceEntity->getIdentifier(),
                 md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_label']))
@@ -157,7 +158,8 @@ final class EditReferenceEntityContext implements Context
         }
 
         if (key_exists('attribute_as_image', $expectedInformation)) {
-            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+            $expectedAttributeIdentifier = sprintf(
+                '%s_%s_%s',
                 $expectedInformation['attribute_as_image'],
                 $actualReferenceEntity->getIdentifier(),
                 md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_image']))

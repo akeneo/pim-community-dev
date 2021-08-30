@@ -11,12 +11,14 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Exception;
 
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 /**
  * Exception raises when try to remove an entity linked to published product
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class PublishedProductConsistencyException extends \Exception
+class PublishedProductConsistencyException extends \Exception implements HttpExceptionInterface
 {
     /**
      * @param string     $message
@@ -29,5 +31,15 @@ class PublishedProductConsistencyException extends \Exception
         \Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->getCode();
+    }
+
+    public function getHeaders(): array
+    {
+        return [];
     }
 }

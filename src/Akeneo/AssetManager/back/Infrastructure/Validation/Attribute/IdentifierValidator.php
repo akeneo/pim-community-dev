@@ -38,11 +38,14 @@ class IdentifierValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier, [
+        $violations = $validator->validate(
+            $identifier,
+            [
                 new NotBlank(),
                 new Type(['type' => 'string']),
                 new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Regex([
+                new Regex(
+                    [
                         'pattern' => '/^[a-zA-Z0-9_-]+$/',
                         'message' => Identifier::MESSAGE_WRONG_PATTERN,
                     ]

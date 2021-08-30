@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AssociationType, Attribute, FetcherContext, QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
+import {
+  AssociationType,
+  Attribute,
+  FetcherContext,
+  MeasurementFamily,
+  QualityScoreFilter,
+} from '@akeneo-pim-enterprise/tailored-export';
 import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 const _ = require('underscore');
 const BaseFilter = require('pim/filter/filter');
@@ -116,6 +122,16 @@ class FilterQualityScore extends BaseFilter {
                       fetcherRegistry
                         .getFetcher('association-type')
                         .fetchByIdentifiers(codes)
+                        .then(resolve)
+                    );
+                  },
+                },
+                measurementFamily: {
+                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('measure')
+                        .fetch(code)
                         .then(resolve)
                     );
                   },

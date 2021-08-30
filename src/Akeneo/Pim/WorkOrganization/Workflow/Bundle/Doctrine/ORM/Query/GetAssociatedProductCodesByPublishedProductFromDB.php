@@ -62,7 +62,8 @@ WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
 ORDER BY p.identifier ASC;
 SQL;
 
-        $stmt = $this->connection->executeQuery($sql,
+        $stmt = $this->connection->executeQuery(
+            $sql,
             [
                 'userGroupsIds'     => $userGroupsIds,
                 'ownerId'           => $publishedProductId,

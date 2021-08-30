@@ -46,8 +46,11 @@ class RawLocaleShouldBeActivatedValidator extends ConstraintValidator
         }
 
         if (!$localeIdentifier instanceof LocaleIdentifier) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                LocaleIdentifierCollection::class, get_class($localeIdentifier)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                LocaleIdentifierCollection::class,
+                get_class($localeIdentifier)
+            ));
         }
 
         $collection = new LocaleIdentifierCollection([$localeIdentifier]);

@@ -37,8 +37,28 @@ const getDefaultMeasurementSelection = (): MeasurementSelection => ({type: 'unit
 
 const isDefaultMeasurementSelection = (selection?: MeasurementSelection): boolean => 'unit_code' === selection?.type;
 
+type MeasurementConversionOperation = {
+  type: 'measurement_conversion';
+  target_unit_code: string | null;
+};
+
+const isMeasurementConversionOperation = (operation?: any): operation is MeasurementConversionOperation =>
+  undefined !== operation &&
+  'type' in operation &&
+  'measurement_conversion' === operation.type &&
+  'target_unit_code' in operation;
+
+const getDefaultMeasurementConversionOperation = (): MeasurementConversionOperation => ({
+  type: 'measurement_conversion',
+  target_unit_code: null,
+});
+
+const isDefaultMeasurementConversionOperation = (operation?: MeasurementConversionOperation): boolean =>
+  operation?.type === 'measurement_conversion' && operation.target_unit_code === null;
+
 type MeasurementOperations = {
   default_value?: DefaultValueOperation;
+  measurement_conversion?: MeasurementConversionOperation;
 };
 
 type MeasurementSource = {
@@ -70,6 +90,8 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
     switch (type) {
       case 'default_value':
         return isDefaultValueOperation(operation);
+      case 'measurement_conversion':
+        return isMeasurementConversionOperation(operation);
       default:
         return false;
     }
@@ -78,7 +100,7 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
 const isMeasurementSource = (source: Source): source is MeasurementSource =>
   isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
-export type {MeasurementSelection, MeasurementSource};
+export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation};
 export {
   availableDecimalSeparators,
   getDefaultMeasurementSource,
@@ -86,4 +108,7 @@ export {
   isMeasurementDecimalSeparator,
   isMeasurementSelection,
   isMeasurementSource,
+  isDefaultMeasurementConversionOperation,
+  getDefaultMeasurementConversionOperation,
+  isMeasurementConversionOperation,
 };

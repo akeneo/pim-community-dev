@@ -25,10 +25,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 final class AssociationTypeValueHydrator
 {
-    public function hydrateFromSource(ProductInterface $product, AssociationTypeSource $source): SourceValueInterface
+    public function hydrate(ProductInterface $product, string $associationTypeCode, bool $isQuantified): SourceValueInterface
     {
-        $associationTypeCode = $source->getCode();
-        if ($source->isQuantified()) {
+        if ($isQuantified) {
             $normalizedQuantifiedAssociations = $product->getQuantifiedAssociations()->normalize()[$associationTypeCode] ?? [];
 
             return new QuantifiedAssociationsValue(
@@ -98,7 +97,7 @@ final class AssociationTypeValueHydrator
      */
     private function getProductQuantifiedAssociations(array $normalizedQuantifiedAssociations): array
     {
-        $normalizedProductQuantifiedAssociations = $normalizedQuantifiedAssociations['products']  ?? [];
+        $normalizedProductQuantifiedAssociations = $normalizedQuantifiedAssociations['products'] ?? [];
 
         return array_map(
             static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
@@ -119,7 +118,7 @@ final class AssociationTypeValueHydrator
      */
     private function getProductModelQuantifiedAssociations(array $normalizedQuantifiedAssociations): array
     {
-        $normalizedProductModelQuantifiedAssociations = $normalizedQuantifiedAssociations['product_models']  ?? [];
+        $normalizedProductModelQuantifiedAssociations = $normalizedQuantifiedAssociations['product_models'] ?? [];
 
         return array_map(
             static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(

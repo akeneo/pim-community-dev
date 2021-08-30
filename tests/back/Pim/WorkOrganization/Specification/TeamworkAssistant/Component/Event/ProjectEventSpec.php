@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ProjectEventSpec extends ObjectBehavior
 {

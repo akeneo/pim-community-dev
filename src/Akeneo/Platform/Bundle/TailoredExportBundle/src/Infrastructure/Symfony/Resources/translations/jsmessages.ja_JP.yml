@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: 列
     header:
-      column_name: 列ヘッダ
       source_data: 列コンテンツ
     column_row:
       target_placeholder: ここに新しい列名を定義する

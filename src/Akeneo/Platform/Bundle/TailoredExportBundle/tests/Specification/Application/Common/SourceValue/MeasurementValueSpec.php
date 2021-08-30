@@ -33,8 +33,8 @@ class MeasurementValueSpec extends ObjectBehavior
         $this->getValue()->shouldReturn('10');
     }
 
-    public function it_returns_the_unit()
+    public function it_returns_the_unit_code()
     {
-        $this->getUnit()->shouldReturn('kilogram');
+        $this->getUnitCode()->shouldReturn('kilogram');
     }
 }

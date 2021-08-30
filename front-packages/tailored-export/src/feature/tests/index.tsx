@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {act} from '@testing-library/react';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
-import {AssociationType, Attribute} from '../models';
+import {AssociationType, Attribute, MeasurementFamily} from '../models';
 import {FetcherContext} from '../contexts';
 import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
 
@@ -151,6 +151,21 @@ const channels: Channel[] = [
   },
 ];
 
+const measurementFamilies: MeasurementFamily[] = [
+  {
+    code: 'Weight',
+    units: [
+      {
+        code: 'meter',
+        labels: {
+          en_US: 'Meter',
+          fr_FR: 'Metre',
+        },
+      },
+    ],
+  },
+];
+
 const fetchers = {
   attribute: {
     fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
@@ -160,6 +175,10 @@ const fetchers = {
   associationType: {
     fetchByCodes: (codes: string[]): Promise<AssociationType[]> =>
       Promise.resolve(associationTypes.filter(({code}) => codes.includes(code))),
+  },
+  measurementFamily: {
+    fetchByCode: (measurementFamilyCode: string): Promise<MeasurementFamily | undefined> =>
+      Promise.resolve(measurementFamilies.find(({code}) => code === measurementFamilyCode)),
   },
 };
 

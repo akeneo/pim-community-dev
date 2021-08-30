@@ -59,7 +59,8 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
         );
 
         $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
         Assert::assertEquals($identifier, $attributeIdentifier);
     }
@@ -71,7 +72,8 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->getAttributeIdentifier->withAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
     }
 
