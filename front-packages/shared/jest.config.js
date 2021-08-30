@@ -8,5 +8,19 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageReporters: ['text-summary', 'html'],
-  coverageDirectory: 'coverage'
+  coverageDirectory: 'coverage',
+  coveragePathIgnorePatterns: [
+    'tests',
+    'src/microfrontend',
+    'src/components/PimView.tsx',
+    'index.ts',
+    'src/components/CategoryTree'
+  ],
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+  },
 };

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {baseFetcher, useRoute} from '@akeneo-pim-community/shared';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 type CountEntities = {
   [key: string]: number;
@@ -11,7 +11,8 @@ const useCountEntities = (): CountEntities => {
 
   useEffect(() => {
     (async () => {
-      setCountEntities(await baseFetcher(url));
+      const response = await fetch(url);
+      setCountEntities(await response.json());
     })();
   }, []);
 

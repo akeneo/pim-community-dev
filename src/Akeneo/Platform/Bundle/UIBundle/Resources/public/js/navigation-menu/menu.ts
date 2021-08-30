@@ -29,7 +29,7 @@ type EntryView = View & {
     isLandingSectionPage?: boolean;
     tab?: string;
     icon: string;
-    align?: string;
+    align?: 'bottom';
     disabled?: boolean;
   };
   items: SubEntry[];

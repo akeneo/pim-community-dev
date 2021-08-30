@@ -14,13 +14,6 @@ describe('PageHeader', () => {
     expect(queryByText(invalidContent)).not.toBeInTheDocument();
   });
 
-  test('it hides title when placeholder is shown', () => {
-    const title = 'DUMMY_TITLE';
-
-    const {queryByText} = renderWithContext(<PageHeader.Title>{title}</PageHeader.Title>, true);
-    expect(queryByText(title)).not.toBeInTheDocument();
-  });
-
   test('it shows title when placeholder is hidden', () => {
     const title = 'DUMMY_TITLE';
 

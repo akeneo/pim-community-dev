@@ -75,7 +75,7 @@ YAML;
             );
     }
 
-    public function it_indicates_wether_a_unit_symbol_exists_for_a_family()
+    public function it_indicates_whether_or_not_a_unit_symbol_exists_for_a_family()
     {
         $this
             ->unitSymbolExistsInFamily('mg', 'Weight')
@@ -83,6 +83,17 @@ YAML;
 
         $this
             ->unitSymbolExistsInFamily('foo', 'Weight')
+            ->shouldReturn(false);
+    }
+
+    public function it_indicates_whether_or_not_a_family_exists()
+    {
+        $this
+            ->familyExists('Weight')
+            ->shouldReturn(true);
+
+        $this
+            ->familyExists('unknown_family')
             ->shouldReturn(false);
     }
 
@@ -100,7 +111,7 @@ YAML;
             ->shouldReturn(['MILLIGRAM', 'GRAM', 'KILOGRAM']);
     }
 
-    public function it_indicates_wether_a_unit_code_exists_for_a_family()
+    public function it_indicates_whether_or_not_a_unit_code_exists_for_a_family()
     {
         $this
             ->unitCodeExistsInFamily('GRAM', 'Weight')

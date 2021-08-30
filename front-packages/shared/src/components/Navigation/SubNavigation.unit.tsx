@@ -2,7 +2,8 @@ import React from 'react';
 import {mockedDependencies, renderWithProviders} from '../../tests';
 import {SubNavigation} from './SubNavigation';
 import {fireEvent, screen} from '@testing-library/react';
-import {aSubNavigationMenu} from './navigationHelper';
+import {aSubNavigationMenu} from './navigationTestHelper';
+import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -50,4 +51,13 @@ test('It redirects the user to the clicked entry route', () => {
   mockedDependencies.router.redirect = jest.fn();
   fireEvent.click(screen.getByText('Sub entry 1'));
   expect(mockedDependencies.router.redirect).toHaveBeenCalledWith('subentry1_route');
+});
+
+test('It handles back link', () => {
+  renderWithProviders(
+    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} backLink={{route: 'pim_catalog_product', title: 'Back link'}}/>
+  );
+
+  expect(screen.getByText('Back link')).toBeInTheDocument();
+  userEvent.click(screen.getByText('Back link'));
 });

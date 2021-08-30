@@ -10,6 +10,7 @@ const mockedDependencies = {
   router: {
     generate: (route: string) => route,
     redirect: (url: string) => url,
+    redirectToRoute: (route: string) => route,
   },
   translate: (key: string) => key,
   viewBuilder: {
@@ -38,6 +39,9 @@ const mockedDependencies = {
     trigger: (event: string) => event,
     on: (event: string, _callback: () => void) => event,
     off: (event: string, _callback: () => void) => event,
+  },
+  featureFlags: {
+    isEnabled: (_feature: string) => true,
   },
 };
 

@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import {LoadingPlaceholderContainer} from '@akeneo-pim-community/shared';
 import React, {FC} from 'react';
+import styled from 'styled-components';
+import {Placeholder} from 'akeneo-design-system';
 
-const Container = styled(LoadingPlaceholderContainer)`
+const Container = styled.div`
   display: grid;
   grid-row-gap: 10px;
 
@@ -15,7 +15,7 @@ const TreeSkeleton: FC = () => {
   return (
     <Container>
       {[...Array(5)].map((_e, i) => (
-        <div key={i} />
+        <Placeholder key={i} />
       ))}
     </Container>
   );

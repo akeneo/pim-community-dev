@@ -76,7 +76,7 @@ const List = () => {
   return (
     <>
       <CreateMeasurementFamily isOpen={isCreateModalOpen} onClose={handleModalClose} />
-      <PageHeader>
+      <PageHeader showPlaceholder={null === filteredMeasurementFamilies}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step href={`#${settingsHref}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -95,14 +95,10 @@ const List = () => {
           )}
         </PageHeader.Actions>
         <PageHeader.Title>
-          {null === filteredMeasurementFamilies ? (
-            <div className="AknLoadingPlaceHolder">&nbsp;</div>
-          ) : (
-            translate(
-              'measurements.family.result_count',
-              {itemsCount: filteredMeasurementFamiliesCount.toString()},
-              filteredMeasurementFamiliesCount
-            )
+          {translate(
+            'measurements.family.result_count',
+            {itemsCount: filteredMeasurementFamiliesCount.toString()},
+            filteredMeasurementFamiliesCount
           )}
         </PageHeader.Title>
       </PageHeader>
