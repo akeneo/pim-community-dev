@@ -1,6 +1,5 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {
   act,
@@ -13,22 +12,34 @@ import {
   queryAllByTestId,
 } from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 import {AttributeOption} from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AttributeOptionTable from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/components/AttributeOptionTable';
+import {
+  AttributeOptionsContextProvider,
+  LocalesContextProvider,
+} from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts';
+import OverridePimStyle from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/components/OverridePimStyles';
+import baseFetcher from 'akeneopimstructure/js/attribute-option/fetchers/baseFetcher';
+
+jest.mock('akeneopimstructure/js/attribute-option/fetchers/baseFetcher');
 
 let container: HTMLElement;
 
 beforeEach(() => {
+  jest.clearAllMocks();
   container = document.createElement('div');
   document.body.appendChild(container);
 });
 
 afterEach(() => {
   document.body.removeChild(container);
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
 });
 
 const blueOption: AttributeOption = {
@@ -38,6 +49,7 @@ const blueOption: AttributeOption = {
     en_US: {id: 1, value: 'Blue', locale: 'en_US'},
     fr_FR: {id: 2, value: 'Bleu', locale: 'fr_FR'},
   },
+  toImprove: undefined,
 };
 
 const blackOption: AttributeOption = {
@@ -47,6 +59,7 @@ const blackOption: AttributeOption = {
     en_US: {id: 3, value: 'Black', locale: 'en_US'},
     fr_FR: {id: 4, value: 'Noir', locale: 'fr_FR'},
   },
+  toImprove: undefined,
 };
 
 const options = [blueOption, blackOption];
@@ -221,10 +234,20 @@ describe('Attribute options table', () => {
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
 
-    await fireEvent.dragStart(blueOption);
-    await fireEvent.dragEnter(blackOption);
-    await fireEvent.dragOver(blackOption);
-    await fireEvent.drop(blackOption);
+    let dataTransferred = '';
+    const dataTransfer = {
+      getData: (_format: string) => {
+        return dataTransferred;
+      },
+      setData: (_format: string, data: string) => {
+        dataTransferred = data;
+      },
+    };
+
+    await fireEvent.dragStart(blueOption, {dataTransfer});
+    await fireEvent.dragEnter(blackOption, {dataTransfer});
+    await fireEvent.dragOver(blackOption, {dataTransfer});
+    await fireEvent.drop(blackOption, {dataTransfer});
 
     let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
@@ -246,10 +269,20 @@ describe('Attribute options table', () => {
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
 
-    await fireEvent.dragStart(blueOption);
-    await fireEvent.dragEnter(blackOption);
-    await fireEvent.dragOver(blackOption);
-    await fireEvent.drop(blackOption);
+    let dataTransferred = '';
+    const dataTransfer = {
+      getData: (_format: string) => {
+        return dataTransferred;
+      },
+      setData: (_format: string, data: string) => {
+        dataTransferred = data;
+      },
+    };
+
+    await fireEvent.dragStart(blueOption, {dataTransfer});
+    await fireEvent.dragEnter(blackOption, {dataTransfer});
+    await fireEvent.dragOver(blackOption, {dataTransfer});
+    await fireEvent.drop(blackOption, {dataTransfer});
 
     expect(manuallySortAttributeOptionsCallback).not.toHaveBeenCalled();
   });
@@ -308,22 +341,27 @@ async function renderComponent(
   deleteAttributeOptionCallback: jest.Mock<any, any>,
   selectedOptionId: number | null
 ) {
+  baseFetcher.mockResolvedValueOnce(options);
+
   await act(async () => {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <Provider store={createStoreWithInitialState({attributeOptions: options})}>
-            <AttributeContextProvider attributeId={8} autoSortOptions={autoSortOptions}>
-              <AttributeOptionTable
-                selectAttributeOption={selectOptionCallback}
-                isNewOptionFormDisplayed={false}
-                showNewOptionForm={showNewOptionFormCallback}
-                selectedOptionId={selectedOptionId}
-                deleteAttributeOption={deleteAttributeOptionCallback}
-                manuallySortAttributeOptions={manuallySortAttributeOptionsCallback}
-              />
-            </AttributeContextProvider>
-          </Provider>
+          <AttributeContextProvider attributeId={8} autoSortOptions={autoSortOptions}>
+            <LocalesContextProvider>
+              <AttributeOptionsContextProvider>
+                <OverridePimStyle />
+                <AttributeOptionTable
+                  selectAttributeOption={selectOptionCallback}
+                  selectedOptionId={selectedOptionId}
+                  isNewOptionFormDisplayed={false}
+                  showNewOptionForm={showNewOptionFormCallback}
+                  deleteAttributeOption={deleteAttributeOptionCallback}
+                  manuallySortAttributeOptions={manuallySortAttributeOptionsCallback}
+                />
+              </AttributeOptionsContextProvider>
+            </LocalesContextProvider>
+          </AttributeContextProvider>
         </ThemeProvider>
       </DependenciesProvider>,
       container
