@@ -164,6 +164,7 @@ pim_common:
   done: Fet
   edit: Editar
   entity_updated: Hi ha canvis sense guardar.
+  export: Exportació
   from: Des de
   general_properties: Propietats generals
   history: Històric
@@ -238,18 +239,6 @@ pim_enrich.entity.fallback:
       leave: Esteu segur que voleu sortir d'aquesta pàgina?
       discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
       discard_changes_title: Estàs segur?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Connexió API creada correctament
-    delete:
-      success: Connexió d'API revocada amb èxit
-      fail: No pot revocar aquesta connexió API
-  page_title:
-    index: "]-Inf, 1]{{ count }} connexió API|]1, Inf[{{ count }} connexions API"
-  module:
-    revoke:
-      confirm: Està segur que vol revocar aquesta connexió d'API?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
@@ -296,8 +285,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Editar en massa | Realitzar
   pim_enrich_job_tracker_index: Seguiment del procés
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
-  pim_enrich_api_connection_index: Connexions d'API
-  pim_enrich_api_connection_create: Connexions d'API | Crear
   pim_enrich_mass_edit_action: Edició massiva
   pim_analytics_system_info_index: Informació del sistema
 pim_menu:
@@ -331,7 +318,6 @@ pim_menu:
     user_role: Rols
     info: Informació del sistema
     job_tracker: Seguiment del procés
-    api_connection: Connexions d'API
     catalog_volume: Seguiment del volum del catàleg
   navigation:
     activity: Activitat de navegació
@@ -349,8 +335,3 @@ pim_notification:
     export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
-akeneo_communication_channel:
-  link:
-    title: Anuncis
-  panel:
-    title: Anuncis

@@ -61,6 +61,15 @@ pim_common:
   properties: Propietats
   name: Nom
   remove: Eliminar
+  code: Codi
+  products: Productes
+  product_models: Models de producte
+  categories: Categories
+  enabled: Habilitat
+  family: Família
+  groups: Grups
+  yes: "Sí"
+  no: "No"
 pim_enrich:
   #ACLs
   acl:
@@ -91,7 +100,6 @@ pim_enrich:
       edit_attributes: Editar els atributs d'un model de producte
       categories_view: Consultar les categories d'un model de producte
       history: Veure l'històric del model de producte
-      remove: Eliminar un model de producte
     category:
       list: Llistar categories
       create: Crear una categoria
@@ -154,8 +162,6 @@ pim_enrich:
       remove: Eliminar associacions d'un producte
     job_tracker:
       index: Veure seguiment del procés
-    api_connection:
-      manage: Gestionar les connexions de l'API
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
@@ -347,8 +353,6 @@ Decimals allowed: Permetre decimals
 Negative allowed: Permetre valors negatius
 Date min: Data mínima
 Date max: Data màxima
-Metric family: Família mètrica
-Default metric unit: Unitat mètrica per defecte
 Max file size: Mida màxima de l'arxiu (MB)
 Allowed extensions: Extensions permeses
 None: Cap
@@ -373,7 +377,6 @@ pim_catalog_file: Arxiu
 pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
-pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
 #Locales
@@ -420,6 +423,20 @@ Updated At: Actualitzat el
 Enabled: Habilitat
 Disabled: Deshabilitat
 Status: Estat
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variant
+    family:
+      label: Família
+    groups:
+      label: Grups
+    enabled:
+      label: Estat
+    completeness:
+      label: Complet
+    identifier:
+      label: Identificador
 #Versioning / history
 Change History: Historial de canvis
 Data Audit: Auditoria de dades

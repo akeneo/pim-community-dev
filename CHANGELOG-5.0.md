@@ -1,5 +1,13 @@
 # 5.0.x
 
+# 5.0.45 (2021-08-26)
+
+## Bug fixes
+
+- PIM-10011: Fix the categoryId update when changin view
+
+# 5.0.44 (2021-08-16)
+
 # 5.0.43 (2021-07-26)
 
 # 5.0.42 (2021-07-20)
@@ -10,6 +18,7 @@
 
 ## Bug fixes
 
+- PIM-10025: [Backport] PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
 - PIM-9943: Fix product-grid quality score filter all
 
