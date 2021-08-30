@@ -159,7 +159,7 @@ const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
     const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElementIndex);
+    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex);
     const {isDragAndDroppable} = useContext(TableInputContext);
 
     useEffect(() => {
