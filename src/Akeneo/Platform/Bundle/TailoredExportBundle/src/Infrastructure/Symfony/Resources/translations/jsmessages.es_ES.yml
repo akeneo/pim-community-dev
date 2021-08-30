@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: Columnas
     header:
-      column_name: Encabezado de columna
       source_data: Contenido de columna
     column_row:
       target_placeholder: Defina el nombre de su columna aquí

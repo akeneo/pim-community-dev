@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\MeasurementConversionOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -29,6 +30,9 @@ class MeasurementSourceValidator extends ConstraintValidator
         $sourceConstraintFields['selection'] = new MeasurementSelectionConstraint();
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
+            'measurement_conversion' => new Optional(new MeasurementConversionOperationConstraint([
+                'attributeCode' => $source['code'],
+            ])),
         ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));

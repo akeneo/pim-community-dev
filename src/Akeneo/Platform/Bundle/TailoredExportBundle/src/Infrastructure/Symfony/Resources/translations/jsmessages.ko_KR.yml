@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: 열
     header:
-      column_name: 열 헤더
       source_data: 열 콘텐츠
     column_row:
       target_placeholder: 여기에서 열 이름 정의

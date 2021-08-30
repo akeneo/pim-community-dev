@@ -47,62 +47,50 @@ final class HandleEnabledValueTest extends PropertyTestCase
     public function provider(): array
     {
         return [
-            [
+            'it replaces enabled value' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'active',
-                                'false' => 'inactive'
-                            ]
-                        ]
-                    )
+                    new ReplacementOperation([
+                        'true' => 'active',
+                        'false' => 'inactive',
+                    ]),
                 ],
                 'selection' => new EnabledSelection(),
                 'value' => new EnabledValue(true),
-                'expected' => [self::TARGET_NAME => 'active']
+                'expected' => [self::TARGET_NAME => 'active'],
             ],
-            [
+            'it replaces disabled value' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'active',
-                                'false' => 'inactive'
-                            ]
-                        ]
-                    )
+                    new ReplacementOperation([
+                        'true' => 'active',
+                        'false' => 'inactive',
+                    ]),
                 ],
                 'selection' => new EnabledSelection(),
                 'value' => new EnabledValue(false),
-                'expected' => [self::TARGET_NAME => 'inactive']
+                'expected' => [self::TARGET_NAME => 'inactive'],
             ],
-            [
+            'it fallbacks on the default disabled value when mapping not found' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'active',
-                            ]
-                        ]
-                    )
+                    new ReplacementOperation([
+                        'true' => 'active',
+                    ]),
                 ],
                 'selection' => new EnabledSelection(),
                 'value' => new EnabledValue(false),
-                'expected' => [self::TARGET_NAME => '0']
+                'expected' => [self::TARGET_NAME => '0'],
             ],
-            [
+            'it selects the disabled value' => [
                 'operations' => [],
                 'selection' => new EnabledSelection(),
                 'value' => new EnabledValue(false),
-                'expected' => [self::TARGET_NAME => '0']
+                'expected' => [self::TARGET_NAME => '0'],
             ],
-            [
+            'it selects the enabled value' => [
                 'operations' => [],
                 'selection' => new EnabledSelection(),
                 'value' => new EnabledValue(true),
-                'expected' => [self::TARGET_NAME => '1']
-            ]
+                'expected' => [self::TARGET_NAME => '1'],
+            ],
         ];
     }
 }

@@ -30,7 +30,7 @@ class MeasurementUnitCodeSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement unit code selection on this entity');
         }
 
-        return $value->getUnit() ?? '';
+        return $value->getUnitCode() ?? '';
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

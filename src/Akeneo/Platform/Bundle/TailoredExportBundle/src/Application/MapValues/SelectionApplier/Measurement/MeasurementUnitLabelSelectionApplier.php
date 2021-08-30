@@ -38,15 +38,15 @@ class MeasurementUnitLabelSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement unit label selection on this entity');
         }
 
-        $unit = $value->getUnit();
+        $unitCode = $value->getUnitCode();
 
         $unitTranslation = $this->findUnitLabels->byFamilyCodeAndUnitCode(
-            $selection->getMeasurementFamily(),
-            $unit,
+            $selection->getMeasurementFamilyCode(),
+            $unitCode,
             $selection->getLocale()
         );
 
-        return $unitTranslation ?? sprintf('[%s]', $unit);
+        return $unitTranslation ?? sprintf('[%s]', $unitCode);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

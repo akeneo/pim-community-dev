@@ -69,7 +69,7 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
         invalid={invalid}
         uploader={uploader}
         uploadingLabel={translate('pim_asset_manager.attribute.media_file.uploading')}
-        clearTitle={translate('pim_common.clear')}
+        clearTitle={translate('pim_common.clear_value')}
         size="small"
         uploadErrorLabel={translate('pim_asset_manager.asset.upload.upload_failure')}
       >
