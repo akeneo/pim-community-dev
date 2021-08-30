@@ -78,6 +78,7 @@ $rules = [
             // Not ok
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Doctrine\Common\Persistence\ObjectRepository',
+            'Doctrine\Persistence',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
             'Symfony\Component\Security\Core\User\UserInterface',
