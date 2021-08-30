@@ -96,6 +96,7 @@
 - PIM-10003: Fix translation in setting page are not plurializable
 - PIM-9989: Fix record code of reference entity field is case-sensitive
 - PIM-10026: Avoid session persistance for API
+- PIM-10019: Update product indexation on attribute as label change
 
 ## New features
 

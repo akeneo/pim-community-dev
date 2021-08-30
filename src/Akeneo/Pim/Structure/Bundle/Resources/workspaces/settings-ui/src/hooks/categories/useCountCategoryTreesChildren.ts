@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {baseFetcher, useRoute} from '@akeneo-pim-community/shared';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 type CountCategoryTreesChildren = {
   [key: string]: number;
@@ -11,7 +11,8 @@ const useCountCategoryTreesChildren = (): CountCategoryTreesChildren | null => {
 
   useEffect(() => {
     (async () => {
-      setCountChildren(await baseFetcher(url));
+      const response = await fetch(url);
+      setCountChildren(await response.json());
     })();
   }, []);
 

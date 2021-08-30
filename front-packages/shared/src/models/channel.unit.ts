@@ -221,6 +221,7 @@ describe('akeneo > shared > model --- channel', () => {
 
     expect(getLocaleFromChannel(channels, 'ecommerce', 'fr_FR')).toEqual('fr_FR');
     expect(getLocaleFromChannel(channels, 'ecommerce', 'de_DE')).toEqual('en_US');
+    expect(getLocaleFromChannel(channels, 'ecommerce', null)).toEqual(null);
   });
 
   test('I can get the list of locales for a channel', () => {
