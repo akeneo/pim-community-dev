@@ -42,23 +42,30 @@ class CreateUser implements CreateUserInterface
         $this->userSaver = $userSaver;
     }
 
-    public function execute(string $username, string $firstname, string $lastname): User
+    public function execute(string $username, string $firstname, string $lastname, ?array $groups = null, ?array $roles = null): User
     {
         $password = $this->generatePassword();
         $username = $this->generateUsername($username);
 
+        $userPayload = [
+            'username' => $username,
+            'password' => $password,
+            'first_name' => strtr($firstname, '<>&"', '____'),
+            'last_name' => strtr($lastname, '<>&"', '____'),
+            'email' => sprintf('%s@example.com', $username),
+        ];
+
+        if (null !== $groups) {
+            $userPayload['groups'] = $groups;
+        }
+
+        if (null !== $roles) {
+            $userPayload['roles'] = $roles;
+        }
+
         $user = $this->userFactory->create();
         $user->defineAsApiUser();
-        $this->userUpdater->update(
-            $user,
-            [
-                'username' => $username,
-                'password' => $password,
-                'first_name' => strtr($firstname, '<>&"', '____'),
-                'last_name' => strtr($lastname, '<>&"', '____'),
-                'email' => sprintf('%s@example.com', $username),
-            ]
-        );
+        $this->userUpdater->update($user, $userPayload);
 
         $errors = $this->validator->validate($user);
         if (0 < count($errors)) {

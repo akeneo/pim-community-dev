@@ -13,8 +13,11 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppUserProvider'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppConnectionProvider'
+            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@akeneo_connectivity.connection.service.user.create_user_group'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
+            - '@akeneo_connectivity.connection.service.apps.client_provider'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
@@ -28,12 +31,10 @@ services:
             - '@pim_user.saver.role_with_permissions'
         public: true
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppConnectionProvider:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateConnection:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
-            - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
-
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AppUserProvider:
         arguments:
