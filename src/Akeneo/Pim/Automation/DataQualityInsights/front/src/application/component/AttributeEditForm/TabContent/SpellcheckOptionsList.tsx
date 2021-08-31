@@ -12,7 +12,6 @@ import ActiveHighlightsOnIntersection from '../../Common/HighlightableContent/Ac
 import UpdateHighlightsOnInputChange from '../../Common/HighlightableContent/UpdateHighlightsOnInputChange';
 import SpellcheckPopoverDisclosure from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopoverDisclosure';
 import SpellcheckPopover from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopover';
-import {useAttributeSpellcheckEvaluationContext} from '../../../context/AttributeSpellcheckEvaluationContext';
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from '../../../constant';
 import UpdateHighlightsOnAttributeChange from '../../Common/HighlightableContent/UpdateHighlightsOnAttributeChange';
 

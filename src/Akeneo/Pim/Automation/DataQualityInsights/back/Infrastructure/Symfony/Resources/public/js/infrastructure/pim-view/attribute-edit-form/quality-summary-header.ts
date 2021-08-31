@@ -26,14 +26,15 @@ class QualitySummaryHeader extends BaseView {
     $.ajax({
       url: url,
       type: 'GET',
-    }).then(impactedProductsNumber => {
-      if (impactedProductsNumber === 0) {
-        this.$el.html('');
+    })
+      .then(impactedProductsNumber => {
+        if (impactedProductsNumber === 0) {
+          this.$el.html('');
 
-        return;
-      }
+          return;
+        }
 
-      this.$el.html(`
+        this.$el.html(`
         <div class="AknDescriptionHeader-AttributeEditForm">
           <div class="AknDescriptionHeader-AttributeEditForm-Icon">
             <img src="/bundles/pimui/images/icon-info.svg"/>
@@ -43,7 +44,8 @@ class QualitySummaryHeader extends BaseView {
           </div>
         </div>
       `);
-    }).then(() => window.dispatchEvent(new CustomEvent('quality_summary_header_updated')));
+      })
+      .then(() => window.dispatchEvent(new CustomEvent('quality_summary_header_updated')));
 
     return this;
   }
