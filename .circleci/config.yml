@@ -746,9 +746,10 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - test_database:
-                requires:
-                    - build_dev
+          # Uncomment for next GA
+#          - test_database:
+#                requires:
+#                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -829,7 +830,8 @@ workflows:
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
-                    - test_database
+                    # Uncomment for next GA
+#                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:
