@@ -1,2 +1,9 @@
 user:
   email_notifications: Notificacions per correu electrònic
+pimee_enrich.entity.product:
+  duplicate:
+    title: Duplicar el producte {{ product_identifier }}
+    button: Duplica
+    flash:
+      success: El producte {{ product_identifier }} s'ha duplicat correctament.
+      success_with_attribute_codes: El producte {{ product_identifier }} s'ha duplicat correctament. Necessita enriquir els {{ unique_attribute_codes }} amb valors únics
