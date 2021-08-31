@@ -54,6 +54,9 @@
     "composer/xdebug-handler": {
         "version": "1.3.3"
     },
+    "cutwise/oauth-server-bundle": {
+        "version": "v2.0.4"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

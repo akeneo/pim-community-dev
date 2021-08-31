@@ -71,7 +71,7 @@
         "dompdf/dompdf" : "1.0.2",
         "elasticsearch/elasticsearch": "7.11.0",
         "friendsofsymfony/jsrouting-bundle": "2.7.0",
-        "friendsofsymfony/oauth-server-bundle": "dev-master",
+        "cutwise/oauth-server-bundle": "2.0.4",
         "friendsofsymfony/rest-bundle": "^3.0.5",
         "gedmo/doctrine-extensions":"v3.0.3",
         "google/cloud-pubsub": "1.29.1",
