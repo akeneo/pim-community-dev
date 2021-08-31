@@ -1,8 +1,6 @@
 import React, {createContext, FC, useCallback, useEffect, useState} from 'react';
 import {AttributeOption, SpellcheckEvaluation} from '../model';
 import {
-  ATTRIBUTE_OPTIONS_LIST_LOADED,
-  AttributeOptionsListStateEvent,
   useCreateAttributeOption,
   useDeleteAttributeOption,
   useManualSortAttributeOptions,
@@ -15,7 +13,7 @@ import baseFetcher from '../fetchers/baseFetcher';
 type AttributeOptionsState = {
   attributeOptions: AttributeOption[] | null;
   saveAttributeOption: (updatedAttributeOption: AttributeOption) => void;
-  createAttributeOption: (optionCode: string) => AttributeOption;
+  createAttributeOption: (optionCode: string) => Promise<AttributeOption>;
   deleteAttributeOption: (attributeOptionId: number) => void;
   reorderAttributeOptions: (sortedAttributeOptions: AttributeOption[]) => void;
   isSaving: boolean;
@@ -24,7 +22,14 @@ type AttributeOptionsState = {
 const AttributeOptionsContext = createContext<AttributeOptionsState>({
   attributeOptions: null,
   saveAttributeOption: () => {},
-  createAttributeOption: () => {},
+  createAttributeOption: (optionCode) => {
+    return Promise.resolve({
+      code: optionCode,
+      id: 0,
+      optionValues: {},
+      toImprove: undefined,
+    })
+  },
   deleteAttributeOption: () => {},
   reorderAttributeOptions: () => {},
   isSaving: false,
@@ -138,20 +143,6 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
       window.removeEventListener('refreshEvaluation', handleRefreshEvaluation);
     };
   }, [handleRefreshEvaluation]);
-
-  useEffect(() => {
-    if (attributeOptions === null) {
-      return;
-    }
-
-    window.dispatchEvent(
-      new CustomEvent<AttributeOptionsListStateEvent>(ATTRIBUTE_OPTIONS_LIST_LOADED, {
-        detail: {
-          attributeOptions,
-        },
-      })
-    );
-  }, [attributeOptions]);
 
   return <AttributeOptionsContext.Provider value={{attributeOptions, saveAttributeOption, createAttributeOption, deleteAttributeOption, reorderAttributeOptions, isSaving}}>
     {children}

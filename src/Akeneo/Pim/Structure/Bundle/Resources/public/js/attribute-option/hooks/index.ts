@@ -1,4 +1,3 @@
-import useAttributeOptions from './useAttributeOptions';
 import useLocales from './useLocales';
 import {useSaveAttributeOption} from './useSaveAttributeOption';
 import {useCreateAttributeOption} from './useCreateAttributeOption';
@@ -9,7 +8,6 @@ export * from './useEditingOptionContextState';
 export * from './useSortedAttributeOptions';
 
 export {
-  useAttributeOptions,
   useSaveAttributeOption,
   useCreateAttributeOption,
   useDeleteAttributeOption,
