@@ -16,3 +16,7 @@ config:
         akeneopimworkflow/js/datagrid/cell/proposal-cell:
             proposal_diffs:
                 pim_catalog_table: '@akeneopimtableattribute/proposals/ProposalDiffTable.tsx'
+
+        pimee/attribute-edit-form/rules/edit-rules:
+            views:
+                pim_catalog_table: '@akeneopimtableattribute/rules/TableValue'

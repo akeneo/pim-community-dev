@@ -1,4 +1,5 @@
 import {TableConfiguration} from './TableConfiguration';
+import {AttributeId} from 'rule_definition/src/models';
 
 export type Attribute = {
   code: string;
@@ -33,7 +34,7 @@ export type Attribute = {
   field_type: string;
   filter_types: {[type: string]: string};
   is_locale_specific: boolean;
-  meta: {id: string} & {[key: string]: any};
+  meta: {id: number} & {[key: string]: any};
   table_configuration?: TableConfiguration;
 };
 

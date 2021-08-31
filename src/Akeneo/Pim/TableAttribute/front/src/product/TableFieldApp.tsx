@@ -9,6 +9,7 @@ import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 import {clearCacheSelectOptions} from '../repositories/SelectOption';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
+import {useUniqueIds} from './useUniqueIds';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -95,20 +96,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   violations = [],
 }) => {
   const translate = useTranslate();
-  const addUniqueId = (value: TableValue) => {
-    return value.map(row => {
-      return Object.keys(row).reduce(
-        (previousRow: TableRow & {'unique id': string}, columnCode) => {
-          previousRow[columnCode] = row[columnCode];
-
-          return previousRow;
-        },
-        {'unique id': uuid()}
-      );
-    });
-  };
-
-  const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueId(value.data || []));
+  const {addUniqueIds, removeUniqueIds} = useUniqueIds();
+  const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value.data || []));
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
@@ -146,16 +135,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
-    onChange(
-      value.map(row => {
-        return Object.keys(row)
-          .filter(columnCode => columnCode !== 'unique id')
-          .reduce((newRow: TableRow, columnCode) => {
-            newRow[columnCode] = row[columnCode];
-            return newRow;
-          }, {});
-      })
-    );
+    onChange(removeUniqueIds(value));
   };
 
   const handleToggleRow = (optionCode: SelectOptionCode) => {
@@ -275,7 +255,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                 <div className='AknFieldContainer-inputContainer field-input'>
                   <TableInputValue
                     attribute={attribute}
-                    valueData={addUniqueId(copyContext.data || [])}
+                    valueData={addUniqueIds(copyContext.data || [])}
                     readOnly={true}
                     isCopying={!!copyContext}
                   />

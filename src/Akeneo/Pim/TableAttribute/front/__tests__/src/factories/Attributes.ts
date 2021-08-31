@@ -24,7 +24,7 @@ const getTableAttribute: () => TableAttribute = () => {
     max_characters: null,
     max_file_size: null,
     meta: {
-      id: '42',
+      id: 42,
     },
     metric_family: null,
     minimum_input_length: null,

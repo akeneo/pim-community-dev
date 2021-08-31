@@ -10,5 +10,7 @@
     "prettier-check": "prettier --check \"./src/**/*.{ts,tsx}\" --config .prettierrc"
   },
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@testing-library/dom": "7.22.3"
+  }
 }
