@@ -7,8 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeC
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Load quantified associations into a QuantifiedAssociation Value Object.
@@ -54,8 +54,6 @@ final class LoadEntitySubscriber implements EventSubscriber
      *
      * For products, we also add the identifier as a regular value
      * so that it can be used in the product edit form transparently.
-     *
-     * @param LifecycleEventArgs $event
      */
     public function postLoad(LifecycleEventArgs $event)
     {
