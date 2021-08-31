@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\UserManagement\Component\Connector\Reader\Database\UserRole;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 
 class UserRoleSpec extends ObjectBehavior

@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber;
 
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 
 class ResolveTargetRepositorySubscriberSpec extends ObjectBehavior
