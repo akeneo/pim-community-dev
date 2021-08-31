@@ -1,11 +1,10 @@
 import styled, {css} from 'styled-components';
-import React, {forwardRef, HTMLAttributes, ReactNode, Ref, useContext, useEffect} from 'react';
+import React, {forwardRef, HTMLAttributes, ReactNode, Ref, useContext, DragEvent} from 'react';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 import {TableInputContext} from '../TableInputContext';
 import {RowIcon} from '../../../../icons';
 import {TableInputCell} from '../TableInputCell/TableInputCell';
-import {useBooleanState} from '../../../../hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../../hooks/usePlaceholderPosition';
 
 const getZebraBackgroundColor: (highlighted: boolean, rowIndex: number) => (props: AkeneoThemedProps) => string = (
@@ -149,41 +148,60 @@ export type TableInputRowProps = Override<
     /**
      * @private
      */
-    draggedElementIndex?: number | null;
+    onDragStart?: (rowIndex: number) => void;
+
+    /**
+     * @private
+     */
+    onDragEnd?: () => void;
   }
 >;
 
 const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
   (
-    {children, rowIndex = 0, draggedElementIndex = null, highlighted = false, ...rest}: TableInputRowProps,
+    {children, rowIndex = 0, draggable, highlighted = false, onDragStart, onDragEnd, ...rest}: TableInputRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex);
+    const [
+      placeholderPosition,
+      placeholderDragEnter,
+      placeholderDragLeave,
+      placeholderDragEnd,
+    ] = usePlaceholderPosition(rowIndex);
+
     const {isDragAndDroppable} = useContext(TableInputContext);
 
-    useEffect(() => {
-      if (null === draggedElementIndex) {
-        drop();
-        dragEnd();
-      }
-    }, [draggedElementIndex]);
+    const handleDragEnter = (event: DragEvent<HTMLTableRowElement>) => {
+      placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
+    };
+
+    const handleDragStart = (event: DragEvent<HTMLTableRowElement>) => {
+      event.dataTransfer.setData('text', rowIndex.toString());
+      onDragStart?.(rowIndex);
+    };
+
+    const handleDragEnd = () => {
+      placeholderDragEnd();
+      onDragEnd?.();
+    };
 
     return (
       <TableInputTr
         highlighted={highlighted}
-        draggable={isDragAndDroppable && isDragged}
+        draggable={isDragAndDroppable && draggable}
         isDragAndDroppable={isDragAndDroppable}
         data-draggable-index={rowIndex}
-        onDragEnter={dragEnter}
-        onDragLeave={dragLeave}
+        onDragEnter={handleDragEnter}
+        onDragLeave={placeholderDragLeave}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         ref={forwardedRef}
         placeholderPosition={placeholderPosition}
         rowIndex={rowIndex}
         {...rest}
       >
         {isDragAndDroppable && (
-          <DragAndDropCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
+          <DragAndDropCell onMouseDown={() => onDragStart?.(rowIndex)} onMouseUp={onDragEnd} data-testid="dragAndDrop">
             <div>
               <RowIcon size={16} />
             </div>

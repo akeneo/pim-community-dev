@@ -21,8 +21,8 @@ const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyP
       return isDragAndDroppable
         ? cloneElement(child, {
             rowIndex,
-            draggedElementIndex,
-            onDragStart: () => onDragStart(rowIndex),
+            draggable: rowIndex === draggedElementIndex,
+            onDragStart,
             onDragEnd,
           })
         : cloneElement(child, {
