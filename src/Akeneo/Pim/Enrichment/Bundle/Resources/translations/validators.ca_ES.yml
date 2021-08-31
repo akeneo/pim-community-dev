@@ -15,9 +15,8 @@ Option code may contain only letters, numbers and underscores: El codi d'opció 
 Option code may contain only letters (at least one), numbers and underscores: El codi d'opció només pot contenir lletres (una com a mínim), nombres i guions baixos
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ja es troba a un altre producte per l'atribut únic %attribute%
 The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
-regex.comma_or_semicolon.message: Aquest camp no hauria de contenir cap coma ni punt i coma.
+regex.comma_or_semicolon_or_surrounding_space.message: Aquest camp no hauria de contenir cap coma ni punt i coma i ni espais
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Aquest tipus de valor espera l'ús de {{ decimal_separator }} per separar els decimals.
 "This type of value expects the use of dot (.) to separate decimals.": Aquest tipus de valor espera l'ús d'un punt (.) per separar els decimals.
@@ -26,8 +25,6 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
 "The category \"%category%\" has to be a root category.": La categoria "%category%" ha de ser una categoria d'arrel.
 "The attribute \"%attributeCode%\" does not exist.": L'atribut "%attributeCode%" no existeix.
-"The attribute \"%attributeCode%\" is not a metric attribute.": L'atribut "%attributeCode%" no és un atribut mètric.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mètriques per defecte de l'atribut determinat "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
 product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
@@ -51,7 +48,6 @@ pim_catalog:
     family_variant_axes_unique: Els variants d'eixos han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
     family_variant_axes_immutable: 'Els variants d''eixos no poden ser modificats per el nivell "%level%"'
     family_variant_axes_attribute_type_unique: Els variants d'eixos "%axis%" no poden ser únics o un identificador
-    family_variant_axes_attribute_type: Els variant d'eixos "%axis%" tenen que ser booleans, selecció simple, data de referència simple o mètrica
     family_variant_axes_wrong_type: Els variants d'eixos %axis% no poden ser localitzables, ni accesibles i no tenen un local específic
     family_variant_axes_number_of_axes: 'La configuració d''un atribut no pot tenir més de %max_axes_number% eixos'
     family_variant_no_axis: Ha d'haver almenys un atribut definit com a eix per a l'atribut de nivell "%level%"
