@@ -102,7 +102,15 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
 
   return (
     <BooleanButtonDropdown {...rest}>
-      <BooleanButton tabIndex={-1} highlighted={highlighted} onClick={open} inError={inError}>
+      <BooleanButton
+        tabIndex={-1}
+        highlighted={highlighted}
+        onClick={(e: MouseEvent) => {
+          e.preventDefault();
+          open();
+        }}
+        inError={inError}
+      >
         {value !== null && (value ? YesBadge : NoBadge)}
         &nbsp;
       </BooleanButton>
