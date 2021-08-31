@@ -1,5 +1,10 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-10046: [Backport] Fix asset code case in the product edit form
+- PIM-10050: [Backport] Fix Asset creation modal failing when no label
+
 # 4.0.121 (2021-07-28)
 
 # 4.0.120 (2021-07-26)
@@ -156,6 +161,7 @@ PIM-9738: transform the hidden `pim:catalog:remove-completeness-for-channel-and-
 # 4.0.88 (2021-01-28)
 
 ## Bug fixes
+
 RAC-473: Fix slow COUNT query on asset manager
 
 # 4.0.87 (2021-01-26)
@@ -293,9 +299,9 @@ RAC-473: Fix slow COUNT query on asset manager
 ## Bug fixes
 
 - PIM-9455: Make total_fields limit of elasticsearch configurable
-- PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
+- PIM-9451: Filter out Asset Manager attribute labels of disabled locales
 - PIM-9435: Fix duplicated listener
- 
+
 # 4.0.57 (2020-09-15)
 
 # 4.0.56 (2020-09-09)
@@ -317,7 +323,7 @@ RAC-473: Fix slow COUNT query on asset manager
 
 ## Improvements
 
-- DAPI-1201: Remove unused ES index configuration file 
+- DAPI-1201: Remove unused ES index configuration file
 - PIM-9315: Improve error message when you have no rights on a published product
 
 ## Bug fixes
@@ -350,13 +356,14 @@ RAC-473: Fix slow COUNT query on asset manager
 
 ## Technical Improvements
 
-- PIM-9381: add new asset clear thumbnail cache command 
+- PIM-9381: add new asset clear thumbnail cache command
 
 # 4.0.47 (2020-08-07)
 
 ## Bug fixes
+
 - PIM-9386: Notification reminder message not compliant
-- PIM-9385: Fix fatal error: Out of Sort memory on Record query 
+- PIM-9385: Fix fatal error: Out of Sort memory on Record query
 
 # 4.0.46 (2020-07-31)
 
@@ -609,7 +616,7 @@ RAC-473: Fix slow COUNT query on asset manager
 ## Improvements
 
 - DAPI-810: Evaluate synchronous criteria on unitary product save
-- DAPI-874: Call spellcheck only when clicking in a field 
+- DAPI-874: Call spellcheck only when clicking in a field
 
 # 4.0.6 (2020-02-19)
 
@@ -666,11 +673,13 @@ RAC-473: Fix slow COUNT query on asset manager
 ## BC breaks
 
 ### PHP Server
+
 - Install the GNU Aspell spell-checker package: `aspell`
   Install the dictionaries for Aspell: `aspell-en`, `aspell-es`, `aspell-de`, `aspell-fr`
   Define the binary path for Aspell in the ENV variable: `ASPELL_BINARY_PATH`. (The default path is `aspell`)
 
 ### Storage configuration
+
 - Removes the "%tmp_storage_dir%" parameter. Please use "sys_get_temp_dir()" in your code instead.
 - Removes all the directories parameter. Please use the associated Flysystem filesystem in your code instead.
 
@@ -689,7 +698,7 @@ RAC-473: Fix slow COUNT query on asset manager
 - Remove service `pimee_workflow.manager.completeness`
 - Remove service `pimee_workflow.completeness.calculator`
 - Remove service `pimee_workflow.completeness.generator`
-- All the table names used by the TeamWork Assistant are now hardcoded. 
+- All the table names used by the TeamWork Assistant are now hardcoded.
 - Remove `published_product_and_published_product_model` ES index. To search on published products, use `PublishedProductQueryBuilder`
 - Remove `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryProductProposalCommand`
 - Update `Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RefreshIndexesBeforeRuleSelectionSubscriber` to remove `$productClient` and `$productModelClient`.
@@ -699,37 +708,37 @@ RAC-473: Fix slow COUNT query on asset manager
 - Rename `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber` in `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionListener`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 - Remove the following class and the corresponding command:
-     - `Akeneo\Asset\Bundle\Command\GenerateVariationFilesFromReferenceCommand`
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand  `
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand`
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\PublishProductCommand `
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryPublishedProductCommand`
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalCommand`
-     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\UnpublishProductCommand `
-     - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveAllRightsToAllUsersCommand`
-     - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveBackendProcessesRightsToAllUsersCommand`
+  - `Akeneo\Asset\Bundle\Command\GenerateVariationFilesFromReferenceCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\PublishProductCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryPublishedProductCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalCommand`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\UnpublishProductCommand`
+  - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveAllRightsToAllUsersCommand`
+  - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveBackendProcessesRightsToAllUsersCommand`
 - Remove class `Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
-- Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface` 
+- Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct`
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher`
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer` to add 
-    `Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator` and `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer` to add
+  `Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator` and `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
 - As SSO Log are now in a dedicated table, the following classes are unused and have been removed:
-    - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive
-    - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler
+  - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive
+  - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler
 - Change `Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\ProductSubscriptionsExistQueryInterface` interface to add `executeWithIdentifiers(array $productIdentifiers): array;` new method
 - Remove class `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer`
 - Remove class `Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
 - Remove interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface` and its implementation `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompleteness`
 - Update `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductSaver` to remove:
-    - `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` and
-    - `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface`
+  - `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` and
+  - `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface`
 - Update `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter` to remove:
-    - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`
-    - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
-    - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
-    - `string $jobName`
-- Change interface `Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface` to remove the second parameter `$author` of the method `process` 
+  - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`
+  - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+  - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+  - `string $jobName`
+- Change interface `Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface` to remove the second parameter `$author` of the method `process`
 - Change constructor of `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert` to add `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory $draftSourceFactory`
 - Change interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface` to replace the parameter `string $username` of the method `build` by `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource $draftSource`
 - Change interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory` to replace the parameter `string $username` of the method `createEntityWithValueDraft` by `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource $draftSource`
@@ -740,9 +749,7 @@ RAC-473: Fix slow COUNT query on asset manager
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductModelDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget\ProposalWidget` to remove `Akeneo\UserManagement\Bundle\Manager\UserManager $userManager`
-- Remove class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber',
-    replaced by `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnSave\ComputePublishedProductsSubscriber`
-    and `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnDelete\ComputePublishedProductsSubscriber`
+- Remove class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber', replaced by`Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnSave\ComputePublishedProductsSubscriber`and`Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnDelete\ComputePublishedProductsSubscriber`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension` to remove `Akeneo\Pim\Structure\Component\Factory\AttributeFactory`
 - Rename `supportsChange` method to `supports` in
   - `Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityCollectionValuePresenter`
@@ -799,36 +806,36 @@ RAC-473: Fix slow COUNT query on asset manager
   - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface`
   - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\EditAttributesProcessor` to
-    - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productEmptyValuesFilter`)
-    - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productModelEmptyValuesFilter`)
+  - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productEmptyValuesFilter`)
+  - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productModelEmptyValuesFilter`)
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi` to
-    - remove `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
-    - add `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues`
+  - remove `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+  - add `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues`
 - Change Constructor of `Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter` to
-    - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
-        and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
-        and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` 
+  - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
+    and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+  - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change Constructor of `Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter` to
-    - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
-        and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
-        and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+  - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
+    and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+  - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change Constructor of `Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger` to
-    - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`,
-        `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
-        and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+  - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`,
+    `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory`
+  - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator` to remove `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
-    and add `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`. Also, protected method `findFilledAttributes()` was removed.        
+  and add `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`. Also, protected method `findFilledAttributes()` was removed.
 - Remove class `Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetCollectionValueFactory`
 - Update interface `src/Akeneo/UserManagement/Component/Model/UserInterface` and class `src/Akeneo/UserManagement/Component/Model/User`: add `defineAsApiUser` and `isApiUser` methods.
 
-
 ### CLI commands
 
 The following CLI commands have been deleted:
+
 - pim:installer:grant-backend-processes-accesses
 - pim:installer:grant-user-accesses
 - pim:product:unpublish
@@ -839,7 +846,7 @@ The following CLI commands have been deleted:
 - pim:proposal:approve
 - pim:asset:generate-variation-files-from-reference
 - pim:asset:send-expiration-notification
- 
+
 ### Services
 
 - Remove `pimee_workflow.query.select_category_codes_by_product_grid_filters`
@@ -851,10 +858,10 @@ The following CLI commands have been deleted:
 - Update `akeneo.pim.enrichment.category.category_tree.query.list_children_categories_with_count_not_including_sub_categories` to use `akeneo_elasticsearch.client.product_and_product_model`.
 - Update `pim_catalog.factory.product_cursor_without_permission` to use `akeneo_elasticsearch.client.product_and_product_model`.
 - Remove decoration from `pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions` and add parameters:
-    - `pim_catalog.repository.attribute`
-    - `pim_catalog.query.filter.product_and_product_model_registry`
-    - `pim_catalog.query.sorter.registry`
-    - `pim_catalog.query.product_query_builder_resolver`
+  - `pim_catalog.repository.attribute`
+  - `pim_catalog.query.filter.product_and_product_model_registry`
+  - `pim_catalog.query.sorter.registry`
+  - `pim_catalog.query.product_query_builder_resolver`
 - Remove `pimee_workflow.factory.product_proposal_cursor`
 - Remove `pimee_workflow.factory.product_proposal_from_size_cursor`
 - Update `pim_datagrid.extension.mass_action.handler.mass_refuse` to use `pimee_workflow.factory.product_and_product_model_proposal_cursor` as the second argument
