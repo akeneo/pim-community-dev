@@ -48,7 +48,8 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
     ): void {
         $newOptionCodes = $selectOptionCollection->getOptionCodes();
         if (count($newOptionCodes) === 0) {
-            $this->connection->executeQuery(<<<SQL
+            $this->connection->executeQuery(
+                <<<SQL
                 DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
                     INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
                     INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
@@ -66,7 +67,8 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
                 ),
                 $newOptionCodes
             );
-            $this->connection->executeQuery(<<<SQL
+            $this->connection->executeQuery(
+                <<<SQL
                 DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
                     INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
                     INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id

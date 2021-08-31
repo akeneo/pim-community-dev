@@ -60,7 +60,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             $tableConfiguration->normalize()
         );
 
-        $this->connection->executeQuery(<<<SQL
+        $this->connection->executeQuery(
+            <<<SQL
             DELETE table_column.* FROM pim_catalog_table_column table_column
             INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
             WHERE attribute.code = :attribute_code

@@ -92,7 +92,8 @@ final class TableConfiguration
      */
     public function getSelectColumns(): array
     {
-        return \array_values(\array_filter($this->columnDefinitions,
+        return \array_values(\array_filter(
+            $this->columnDefinitions,
             fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof SelectColumn
         ));
     }

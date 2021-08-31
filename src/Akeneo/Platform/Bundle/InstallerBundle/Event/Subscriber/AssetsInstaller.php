@@ -78,8 +78,12 @@ class AssetsInstaller
         }
         $this->filesystem->symlink($originDir, $this->targetDir);
         if (!file_exists($this->targetDir)) {
-            throw new IOException(sprintf('Symbolic link "%s" was created but appears to be broken.', $this->targetDir), 0,
-                null, $this->targetDir);
+            throw new IOException(
+                sprintf('Symbolic link "%s" was created but appears to be broken.', $this->targetDir),
+                0,
+                null,
+                $this->targetDir
+            );
         }
     }
 

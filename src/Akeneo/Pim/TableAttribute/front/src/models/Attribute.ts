@@ -1,5 +1,4 @@
 import {TableConfiguration} from './TableConfiguration';
-import {AttributeId} from 'rule_definition/src/models';
 
 export type Attribute = {
   code: string;
