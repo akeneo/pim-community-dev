@@ -6,7 +6,8 @@
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/router'], function(
+define(['jquery', 'oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/router'], function (
+  $,
   translate,
   BaseRedirect,
   FetcherRegistry,
@@ -16,7 +17,7 @@ define(['oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/ro
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       this.isVisible().then(isVisible => {
         this.$el.html(
           this.template({
@@ -33,7 +34,7 @@ define(['oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/ro
     /**
      * Redirect to the route given in the config
      */
-    redirect: function() {
+    redirect: function () {
       this.isVisible().then(isVisible => {
         isVisible && router.redirect(this.getUrl());
       });
@@ -42,19 +43,17 @@ define(['oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/ro
     /**
      * {@inheritdoc}
      */
-    isVisible: function() {
+    isVisible: function () {
       //If we are in CE, the permission registry does not exists so the button is visible
-      if (undefined === FetcherRegistry.getFetcher('permission')?.options?.urls) return $.Deferred.resolve(true);
+      if (undefined === FetcherRegistry.getFetcher('permission')?.options?.urls) return $.Deferred().resolve(true);
 
       return FetcherRegistry.getFetcher('permission')
         .fetchAll()
-        .then(
-          (permissions) => {
-            const permission = permissions.job_instances.find(({code}) =>this.getFormData().code === code)
+        .then(permissions => {
+          const permission = permissions.job_instances.find(({code}) => this.getFormData().code === code);
 
-            return permission?.edit ?? false;
-          }
-        );
+          return permission?.edit ?? false;
+        });
     },
   });
 });
