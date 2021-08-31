@@ -2093,9 +2093,10 @@ workflows:
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
-          - test_database:
-                requires:
-                    - build_srnt_dev
+          # Uncomment for next GA
+#          - test_database:
+#                requires:
+#                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
@@ -2118,7 +2119,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
-                    - test_database
+                    # Uncomment for next GA
+#                    - test_database
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
