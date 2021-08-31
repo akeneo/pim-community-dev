@@ -77,6 +77,7 @@
 - PIM-10028: Fix the ETA time displayed when executing a rule with several actions
 - PIM-10042: Fix infinite loop when using get all reference entity records API endpoint
 - PIM-10043: Fix search not filtering family list on the asset export settings
+- PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
 
 ## Improvements
 
