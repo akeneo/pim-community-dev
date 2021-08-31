@@ -1,4 +1,4 @@
-import {UserContext} from '@src/shared/user';
+import {UserContext} from '../src/shared/user';
 import {render} from '@testing-library/react';
 import React, {FC} from 'react';
 import {create} from 'react-test-renderer';

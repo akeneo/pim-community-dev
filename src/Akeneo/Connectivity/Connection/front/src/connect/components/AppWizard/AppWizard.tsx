@@ -6,7 +6,6 @@ import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {ScopeListContainer} from './ScopeListContainer';
-import {Authorizations} from "./Authorizations";
 
 const Content = styled.div`
     display: grid;
@@ -86,7 +85,9 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                         <Logo src={wizardData.appLogo} alt={wizardData.appName} />
                     </LogoFrame>
                 </LogoContainer>
-                <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages}>
+                <InfoContainer>
+                    <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
+                    <ScopeListContainer appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                     <Actions>
                         <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
@@ -95,7 +96,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                         </ActionButton>
                     </Actions>
-                </Authorizations>
+                </InfoContainer>
             </Content>
         </Modal>
     );
