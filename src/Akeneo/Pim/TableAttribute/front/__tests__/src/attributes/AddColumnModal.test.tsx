@@ -19,7 +19,7 @@ describe('AddColumnModal', () => {
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
 
     act(() => {
@@ -34,7 +34,7 @@ describe('AddColumnModal', () => {
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
 
     act(() => {
@@ -54,9 +54,9 @@ describe('AddColumnModal', () => {
       <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
     );
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
-    const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
+    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
     fireEvent.change(labelInput, {target: {value: 'Ingredients'}});
@@ -86,7 +86,7 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
-    const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
+    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     fireEvent.focus(dataTypeInput);
 
     expect(await screen.findByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
@@ -101,8 +101,8 @@ describe('AddColumnModal', () => {
     renderWithProviders(
       <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
     );
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
-    const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
+    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
     fireEvent.focus(dataTypeInput);

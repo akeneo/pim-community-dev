@@ -17,7 +17,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Test\Integration\Configuration;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;

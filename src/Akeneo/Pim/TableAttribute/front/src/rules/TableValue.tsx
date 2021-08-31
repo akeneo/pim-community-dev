@@ -3,14 +3,13 @@ import {Attribute, ScopeCode} from 'rule_definition/src/models';
 import {TableAttribute} from '../models/Attribute';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
-import {uuid} from 'akeneo-design-system';
 import {TableInputValue} from '../product/TableInputValue';
 import {AddRowsButton} from '../product/AddRowsButton';
 import {TableValue} from '../models/TableValue';
-import {TableRowWithId, TableValueWithId} from '../product/TableFieldApp';
-import {SelectOptionCode} from '../models/TableConfiguration';
+import {TableValueWithId} from '../product/TableFieldApp';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {useUniqueIds} from '../product/useUniqueIds';
+import {useToggleRow} from '../product/useToggleRow';
 
 const TableValueContainer = styled.div`
   width: calc((100vw - 580px) / 2);
@@ -22,7 +21,7 @@ const AttributeLabel = styled.div`
   justify-content: space-between;
 `;
 
-type InputValueProps = {
+export type InputValueProps = {
   id: string;
   attribute: Attribute;
   name: string;
@@ -39,32 +38,13 @@ const TableValue: React.FC<InputValueProps> = ({attribute, value, onChange}) => 
 
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value || []));
   const firstColumnCode = (attribute as TableAttribute).table_configuration[0].code;
-  const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
-
-  const handleToggleRow = (optionCode: SelectOptionCode) => {
-    const index = tableValue.findIndex(row => row[firstColumnCode] === optionCode);
-    if (index >= 0) {
-      const removed = tableValue.splice(index, 1);
-      if (removed.length === 1) {
-        removedRows[optionCode] = removed[0];
-        setRemovedRows({...removedRows});
-      }
-    } else {
-      if (typeof removedRows[optionCode] !== 'undefined') {
-        tableValue.push(removedRows[optionCode]);
-      } else {
-        const newRow: TableRowWithId = {'unique id': uuid()};
-        newRow[firstColumnCode] = optionCode;
-        tableValue.push(newRow);
-      }
-    }
-    handleChange([...tableValue]);
-  };
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
     onChange(removeUniqueIds(value));
   };
+
+  const handleToggleRow = useToggleRow(tableValue, firstColumnCode, handleChange);
 
   return (
     <TableValueContainer>

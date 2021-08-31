@@ -65,7 +65,7 @@ describe('CreateAttributeCodeLabelTemplate', () => {
 
     expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
     act(() => {
-      fireEvent.change(screen.getByLabelText('pim_common.code'), {target: {value: 'name'}});
+      fireEvent.change(screen.getByLabelText(/pim_common.code/), {target: {value: 'name'}});
     });
     expect(await screen.findByText('pim_enrich.entity.attribute.property.code.is_duplicate')).toBeInTheDocument();
   });

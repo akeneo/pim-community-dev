@@ -1,14 +1,11 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {ColumnDefinitionProperties} from '../../../src/attribute/ColumnDefinitionProperties';
-import {screen, fireEvent} from '@testing-library/react';
+import {fireEvent, screen} from '@testing-library/react';
 import {getEnUsLocale} from '../factories/Locales';
-import {
-  getNumberColumnDefinitionWithId,
-  getSelectColumnDefinitionWithId,
-  getTextColumnDefinitionWithId,
-} from '../factories/ColumnDefinition';
+import {getNumberColumnDefinitionWithId, getSelectColumnDefinitionWithId} from '../factories/ColumnDefinition';
 import {getTableAttribute} from '../factories/Attributes';
+
 jest.mock('../../../src/attribute/ManageOptionsModal');
 
 describe('ColumnDefinitionProperties', () => {
@@ -41,28 +38,9 @@ describe('ColumnDefinitionProperties', () => {
       />
     );
 
-    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
     fireEvent.change(codeInput, {target: {value: 'somethingelse'}});
     expect(handleChange).toBeCalledWith({...getSelectColumnDefinitionWithId(), code: 'somethingelse'});
-  });
-
-  it('should update the max length', () => {
-    const handleChange = jest.fn();
-    renderWithProviders(
-      <ColumnDefinitionProperties
-        selectedColumn={getTextColumnDefinitionWithId()}
-        onChange={handleChange}
-        activeLocales={[getEnUsLocale()]}
-        catalogLocaleCode={'en_US'}
-        isDuplicateColumnCode={() => false}
-        savedColumnIds={[]}
-        attribute={getTableAttribute()}
-      />
-    );
-
-    const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
-    fireEvent.change(maxLengthInput, {target: {value: '10'}});
-    expect(handleChange).toBeCalledWith({...getTextColumnDefinitionWithId(), validations: {max_length: 10}});
   });
 
   it('should display violations on validation fields', () => {

@@ -1,15 +1,16 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Locale, uuid, Search, AkeneoThemedProps, getColor, Checkbox} from 'akeneo-design-system';
+import {Locale, Search, AkeneoThemedProps, getColor, Checkbox} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
 import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
-import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
+import {ColumnCode} from '../models/TableConfiguration';
 import {clearCacheSelectOptions} from '../repositories/SelectOption';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
 import {useUniqueIds} from './useUniqueIds';
+import {useToggleRow} from './useToggleRow';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -98,11 +99,17 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const translate = useTranslate();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value.data || []));
-  const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
   const [violatedCellsById, setViolatedCellsById] = React.useState<ViolatedCell[]>([]);
+
+  const handleChange = (value: TableValueWithId) => {
+    setTableValue(value);
+    onChange(removeUniqueIds(value));
+  };
+
+  const handleToggleRow = useToggleRow(tableValue, firstColumnCode, handleChange);
 
   React.useEffect(() => {
     setViolatedCellsById(
@@ -132,31 +139,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   }, []);
 
   const renderElements = useRenderElements(attribute.code, elements);
-
-  const handleChange = (value: TableValueWithId) => {
-    setTableValue(value);
-    onChange(removeUniqueIds(value));
-  };
-
-  const handleToggleRow = (optionCode: SelectOptionCode) => {
-    const index = tableValue.findIndex(row => row[firstColumnCode] === optionCode);
-    if (index >= 0) {
-      const removed = tableValue.splice(index, 1);
-      if (removed.length === 1) {
-        removedRows[optionCode] = removed[0];
-        setRemovedRows({...removedRows});
-      }
-    } else {
-      if (typeof removedRows[optionCode] !== 'undefined') {
-        tableValue.push(removedRows[optionCode]);
-      } else {
-        const newRow: TableRowWithId = {'unique id': uuid()};
-        newRow[firstColumnCode] = optionCode;
-        tableValue.push(newRow);
-      }
-    }
-    handleChange([...tableValue]);
-  };
 
   const handleCopyCheckedChange = (value: boolean) => {
     setCopyChecked(value);

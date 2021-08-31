@@ -25,8 +25,8 @@ describe('TableStructureApp', () => {
     );
     await waitPageToBeLoaded();
 
-    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
-    const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
+    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     const german = screen.getByLabelText('German (Germany)') as HTMLInputElement;
     expect(codeInput.value).toEqual('ingredient');
@@ -51,7 +51,7 @@ describe('TableStructureApp', () => {
       await fireEvent.click(screen.getAllByRole('row')[1]);
     });
 
-    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     expect(codeInput.value).toEqual('quantity');
     expect(codeInput).not.toHaveAttribute('readonly');
@@ -91,7 +91,7 @@ describe('TableStructureApp', () => {
     ]);
   });
 
-  it.only('should drag and drop', async () => {
+  it('should drag and drop', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableStructureApp
@@ -160,7 +160,7 @@ describe('TableStructureApp', () => {
       fireEvent.click(screen.getAllByRole('row')[1]);
     });
 
-    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
     expect(codeInput.value).toEqual('quantity');
     await act(async () => {
       const deleteButtons = await screen.findAllByTitle('pim_common.delete');
@@ -194,7 +194,7 @@ describe('TableStructureApp', () => {
     );
     await waitPageToBeLoaded();
 
-    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
     expect(codeInput).toHaveAttribute('readonly');
   });
 
@@ -234,7 +234,7 @@ describe('TableStructureApp', () => {
       getComplexTableConfiguration()[4],
     ]);
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(decimalsAllowedCheckbox);
     });
 
@@ -251,6 +251,15 @@ describe('TableStructureApp', () => {
     });
     const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
     expect(maxLengthInput).toBeInTheDocument();
+    fireEvent.change(maxLengthInput, {target: {value: 50}});
+
+    expect(handleChange).toHaveBeenCalledWith([
+      getComplexTableConfiguration()[0],
+      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50, decimals_allowed: true}},
+      getComplexTableConfiguration()[2],
+      {...getComplexTableConfiguration()[3], validations: {max_length: 50}},
+      getComplexTableConfiguration()[4],
+    ]);
   });
 
   it('should add a column', async () => {
