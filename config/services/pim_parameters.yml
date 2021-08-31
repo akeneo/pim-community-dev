@@ -76,7 +76,6 @@ parameters:
 
     index_list_changed_total_field_limit:
         - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
-        - '%env(APP_ASSET_INDEX_NAME)%'
     # url to request to fetch announcements in the communication panel
     comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'
 
