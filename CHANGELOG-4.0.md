@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.122 (2021-08-31)
+
 ## Bug fixes
 
 - PIM-10046: [Backport] Fix asset code case in the product edit form
