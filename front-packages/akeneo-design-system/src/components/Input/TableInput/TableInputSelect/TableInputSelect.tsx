@@ -122,7 +122,16 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
 
   return (
     <SelectButtonDropdown {...rest}>
-      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted} title={value} inError={inError}>
+      <SelectButton
+        onClick={(e: MouseEvent) => {
+          e.preventDefault();
+          open();
+        }}
+        tabIndex={-1}
+        highlighted={highlighted}
+        title={value}
+        inError={inError}
+      >
         {value}&nbsp;
       </SelectButton>
       <IconsPart>
