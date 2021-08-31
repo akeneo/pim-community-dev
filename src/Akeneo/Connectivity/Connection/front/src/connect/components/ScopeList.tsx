@@ -2,13 +2,15 @@ import React, {FC} from 'react';
 import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {
-    AddAttributeIcon, AssociateIcon,
+    AddAttributeIcon,
+    AssociateIcon,
     CategoryIcon,
     getColor,
     getFontSize,
     GroupsIcon,
-    LocaleIcon, ProductIcon,
-    ShopIcon
+    LocaleIcon,
+    ProductIcon,
+    ShopIcon,
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
@@ -45,29 +47,31 @@ export const ScopeList: FC<Props> = ({scopeMessages}) => {
     const translate = useTranslate();
 
     return (
-        <ul>
-            {
-                scopeMessages.map((scopeMessage, key) => {
-                    const entities = translate(
-                        `akeneo_connectivity.connection.connect.apps.scope.entities.${scopeMessage.entities}`
-                    );
-                    const Icon = iconsMap[scopeMessage.icon];
+        <ul data-testid={'scope-list'}>
+            {scopeMessages.map((scopeMessage, key) => {
+                const entities = translate(
+                    `akeneo_connectivity.connection.connect.apps.scope.entities.${scopeMessage.entities}`
+                );
+                const Icon = iconsMap[scopeMessage.icon];
 
-                    return (
-                        <ScopeItem key={key}>
-                            <Icon title={entities} size={24}/>
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: translate(
-                                        `akeneo_connectivity.connection.connect.apps.scope.type.${scopeMessage.type}`,
-                                        {entities: `<span class='AknConnectivityConnection-helper--highlight'>${entities}</span>`}
-                                    ),
-                                }}
-                            />
-                        </ScopeItem>
-                    );
-                })
-            }
+                return (
+                    <ScopeItem key={key}>
+                        <Icon title={entities} size={24} />
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: translate(
+                                    `akeneo_connectivity.connection.connect.apps.scope.type.${scopeMessage.type}`,
+                                    {
+                                        entities: `<span class='AknConnectivityConnection-helper--highlight'>
+                                                    ${entities}
+                                                </span>`,
+                                    }
+                                ),
+                            }}
+                        />
+                    </ScopeItem>
+                );
+            })}
         </ul>
     );
 };

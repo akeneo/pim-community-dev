@@ -45,7 +45,7 @@ const Connect = styled.h3`
     font-size: ${getFontSize('default')};
     text-transform: uppercase;
     font-weight: normal;
-    margin: 0;
+    margin: 0 0 6px 0;
 `;
 
 const ActionButton = styled(Button)`
