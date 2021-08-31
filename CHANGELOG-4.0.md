@@ -1,6 +1,12 @@
 # 4.0.x
 
+# 4.0.122 (2021-08-31)
+
 # 4.0.121 (2021-07-28)
+
+## Bug fixes
+
+- PIM-9988: Fix quick export with attributes that are scopable, localizable and locale specific 
 
 ## Improvements
 
@@ -104,7 +110,6 @@ PIM-9941: Metrics: Change Bar symbol for bar
 - PIM-9766: Prevent letter usage in grid Number filters
 - PIM-9774: Fix variant axis 'metric' validation on import.
 - PIM-9789: Synchronously update product form image on change
-- PIM-9988: Fix quick export with attributes that are scopable, localizable and locale specific 
 
 # 4.0.101 (2021-03-29)
 
