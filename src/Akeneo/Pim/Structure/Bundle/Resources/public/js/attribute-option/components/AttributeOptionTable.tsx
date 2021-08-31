@@ -5,7 +5,7 @@ import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, SectionTitle, Table,} from 'akeneo-design-system';
+import {Button, SectionTitle, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
@@ -96,18 +96,21 @@ const AttributeOptionTable = ({
     [sortedAttributeOptions]
   );
 
-  const search = useCallback((searchValue: string) => {
-    filterOnLabelOrCode(searchValue);
-    if (searchValue) {
-      setIsDraggable(false);
-      setAutoSortingReadOnly(true);
-    } else {
-      if (!attributeContext.autoSortOptions) {
-        setIsDraggable(true);
+  const search = useCallback(
+    (searchValue: string) => {
+      filterOnLabelOrCode(searchValue);
+      if (searchValue) {
+        setIsDraggable(false);
+        setAutoSortingReadOnly(true);
+      } else {
+        if (!attributeContext.autoSortOptions) {
+          setIsDraggable(true);
+        }
+        setAutoSortingReadOnly(false);
       }
-      setAutoSortingReadOnly(false);
-    }
-  }, [filterOnLabelOrCode]);
+    },
+    [filterOnLabelOrCode]
+  );
 
   const debouncedSearch = useDebounceCallback(search, 300);
 
