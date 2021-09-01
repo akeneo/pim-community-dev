@@ -13,10 +13,5 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface ReferenceDataRepositoryResolverInterface
 {
-    /**
-     * @param string $referenceDataType
-     *
-     * @return ObjectRepository
-     */
-    public function resolve($referenceDataType);
+    public function resolve(string $referenceDataType): ObjectRepository;
 }
