@@ -4,3 +4,9 @@ services:
         arguments:
             - '%env(bool:FLAG_MARKETPLACE_ACTIVATE_ENABLED)%'
         public: true
+
+    akeneo_connectivity.connection.connect_app_with_permissions.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_CONNECT_APP_WITH_PERMISSIONS_ENABLED)%'
+        public: true
