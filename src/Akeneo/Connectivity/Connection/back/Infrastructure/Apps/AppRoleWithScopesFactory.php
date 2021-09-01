@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
 
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper;
+use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
@@ -18,16 +18,16 @@ final class AppRoleWithScopesFactory
 {
     private const APP_ROLE_TYPE = 'app';
 
-    private ScopeToAclMapper $scopeToAclMapper;
+    private ScopeMapper $scopeMapper;
     private SimpleFactoryInterface $roleFactory;
     private RoleWithPermissionsSaver $roleWithPermissionsSaver;
 
     public function __construct(
-        ScopeToAclMapper $scopeToAclMapper,
+        ScopeMapper $scopeMapper,
         SimpleFactoryInterface $roleFactory,
         RoleWithPermissionsSaver $roleWithPermissionsSaver
     ) {
-        $this->scopeToAclMapper = $scopeToAclMapper;
+        $this->scopeMapper = $scopeMapper;
         $this->roleFactory = $roleFactory;
         $this->roleWithPermissionsSaver = $roleWithPermissionsSaver;
     }
@@ -43,7 +43,7 @@ final class AppRoleWithScopesFactory
         $permissions = [];
 
         foreach ($scopes as $scope) {
-            $acls = $this->scopeToAclMapper->getAcls($scope);
+            $acls = $this->scopeMapper->getAcls($scope);
 
             foreach ($acls as $acl) {
                 $permissions[sprintf('action:%s', $acl)] = true;

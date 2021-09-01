@@ -5,6 +5,15 @@ import {create} from 'react-test-renderer';
 import {ThemeProvider} from 'styled-components';
 import {theme} from '../src/common/styled-with-theme';
 import fetchMock from 'jest-fetch-mock';
+import {Router} from 'react-router-dom';
+import {createMemoryHistory} from 'history';
+
+export const historyMock = {
+    history: createMemoryHistory(),
+    reset: () => {
+        historyMock.history = createMemoryHistory();
+    },
+};
 
 const UserProvider: FC = ({children}) => {
     const data: {[key: string]: string} = {uiLocale: 'en_US', timezone: 'UTC'};
@@ -21,7 +30,9 @@ const UserProvider: FC = ({children}) => {
 const DefaultProviders: FC = ({children}) => {
     return (
         <ThemeProvider theme={theme}>
-            <UserProvider>{children}</UserProvider>
+            <UserProvider>
+                <Router history={historyMock.history}>{children}</Router>
+            </UserProvider>
         </ThemeProvider>
     );
 };
