@@ -48,6 +48,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
         arguments:
-            - '@Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper'
+            - '@pim_api.security.scope_mapper'
         tags:
             - { name: validator.constraint_validator }

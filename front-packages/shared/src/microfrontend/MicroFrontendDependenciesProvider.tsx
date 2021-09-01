@@ -130,6 +130,7 @@ const MicroFrontendDependenciesProvider = ({
         router: {
           generate: generateUrl,
           redirect: (_fragment: string, _options?: object) => alert('Not implemented'),
+          redirectToRoute: (_route: string, _parameters?: object) => alert('Not implemented'),
         },
         translate: (id: string, placeholders = {}) => {
           const message = translations.messages[`jsmessages:${id}`] ?? id;

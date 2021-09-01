@@ -61,9 +61,9 @@ class ConversionUnitsValidator extends ConstraintValidator
                 }
 
                 if (!$this->measureManager->unitCodeExistsInFamily(
-                        $conversionUnit,
-                        $attribute->getMetricFamily()
-                    )
+                    $conversionUnit,
+                    $attribute->getMetricFamily()
+                )
                 ) {
                     $this->context
                         ->buildViolation($constraint->invalidUnitCode)

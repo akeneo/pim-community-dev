@@ -52,3 +52,8 @@ pim_enrich_job_instance_rest_jobs_get:
     path: /rest/jobs
     defaults: { _controller: pim_enrich.controller.rest.job_instance:getJobNamesAction }
     methods: [GET]
+
+pim_enrich_job_instance_rest_duplicate:
+    path: /rest/{code}/duplicate
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:duplicateAction }
+    methods: [POST]

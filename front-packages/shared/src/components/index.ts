@@ -1,7 +1,6 @@
 export * from './CategoryTree';
 export * from './DeleteModal';
 export * from './FullScreenError';
-export * from './LoadingPlaceholder';
 export * from './LocaleSelector';
 export * from './Navigation';
 export * from './NoData';
@@ -10,6 +9,5 @@ export * from './page';
 export * from './PimView';
 export * from './SearchBar';
 export * from './SecondaryActions';
-export * from './skeleton';
 export * from './TextField';
 export * from './UnsavedChanges';

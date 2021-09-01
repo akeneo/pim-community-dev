@@ -35,5 +35,5 @@
     "incremental": true
   },
   "include": ["src"],
-  "exclude": ["src/**/*.unit.ts", "src/**/*.unit.tsx"]
+  "exclude": ["src/**/*.unit.ts", "src/**/*.unit.tsx", "**/__mocks__/*"]
 }

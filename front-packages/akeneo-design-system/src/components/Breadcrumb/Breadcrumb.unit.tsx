@@ -41,15 +41,27 @@ test('it throws when passing children that are not `Breadcrumb.Step`', () => {
 
   expect(() => {
     render(
-      //@ts-expect-error This other child should trigger an error
       <Breadcrumb>
-        Other child
+        <button>Other child</button>
         <Breadcrumb.Step>Breadcrumb content</Breadcrumb.Step>
       </Breadcrumb>
     );
   }).toThrowError();
 
   mockConsole.mockRestore();
+});
+
+test('it does not throw when using conditional Steps', () => {
+  const displayStep = false;
+
+  render(
+    <Breadcrumb>
+      <Breadcrumb.Step>Breadcrumb content</Breadcrumb.Step>
+      {displayStep && <Breadcrumb.Step>Conditional step</Breadcrumb.Step>}
+    </Breadcrumb>
+  );
+
+  expect(screen.queryByText('Conditional step')).not.toBeInTheDocument();
 });
 
 test('Breadcrumb supports ...rest props', () => {

@@ -2,7 +2,7 @@ import React, {FC, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
-import {IconProps, LockIcon, MainNavigationItem, Tag} from 'akeneo-design-system';
+import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 
 type NavigationEntry = {
@@ -13,7 +13,7 @@ type NavigationEntry = {
   icon: React.ReactElement<IconProps>;
   subNavigations: SubNavigationType[];
   isLandingSectionPage: boolean;
-  align?: string;
+  align?: 'bottom';
 };
 
 type Props = {
@@ -25,6 +25,7 @@ type Props = {
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
+  const theme = useTheme();
 
   const handleFollowEntry = (event: any, entry: NavigationEntry) => {
     event.stopPropagation();
@@ -37,13 +38,13 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   }, [entries, activeEntryCode]);
 
   const activeSubNavigation = useMemo((): SubNavigationType | undefined => {
-    if (activeNavigationEntry) {
-      return activeNavigationEntry.subNavigations.find((column: SubNavigationType) => {
-        return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntryCode);
-      });
+    if (undefined === activeNavigationEntry) {
+      return;
     }
 
-    return;
+    return activeNavigationEntry.subNavigations.find((column: SubNavigationType) => {
+      return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntryCode);
+    });
   }, [activeNavigationEntry, activeSubEntryCode]);
 
   const getMainNavigationItemStyles = useCallback(
@@ -93,7 +94,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               {entry.disabled && freeTrialEnabled && (
                 <LockIconContainer data-testid="locked-entry">
                   <StyledTag tint="blue">
-                    <StyledLockIcon size={16} color={'#5992c7'} />
+                    <StyledLockIcon size={16} color={theme.color.blue100}/>
                   </StyledTag>
                 </LockIconContainer>
               )}

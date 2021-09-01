@@ -13,20 +13,24 @@ class TreeDecorator extends ElementDecorator
 
     public function findNodeInTree(string $nodeName): TreeDecorator
     {
-        return $this->spin(function () use ($nodeName) {
-            $trees = $this->findAll('css', 'li[role=treeitem]');
-            foreach ($trees as $tree) {
-                if (strpos($tree->getText(), $nodeName) === 0) {
-                    return $this->decorate($tree, [TreeDecorator::class]);
+        return $this->spin(
+            function () use ($nodeName) {
+                $trees = $this->findAll('css', 'li[role=treeitem]');
+                foreach ($trees as $tree) {
+                    if (strpos($tree->getText(), $nodeName) === 0) {
+                        return $this->decorate($tree, [TreeDecorator::class]);
+                    }
                 }
-            }
 
-            return false;
-        }, sprintf('Node "%s" not found, found %s',
+                return false;
+            },
+            sprintf(
+                'Node "%s" not found, found %s',
                 $nodeName,
                 join(', ', array_map(function ($tree) {
                     return sprintf('"%s"', $tree->getText());
-                }, $this->findAll('css', 'li[role=treeitem]'))))
+                }, $this->findAll('css', 'li[role=treeitem]')))
+            )
         );
     }
 

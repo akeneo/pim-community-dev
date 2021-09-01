@@ -12,9 +12,8 @@ const isLabelCollection = (labelCollection: any): labelCollection is LabelCollec
   );
 };
 
-const getLabel = (labels: LabelCollection, locale: string, fallback: string): string => {
-  return labels && labels[locale] ? labels[locale] : `[${fallback}]`;
-};
+const getLabel = (labels: LabelCollection, locale: string, fallback: string): string =>
+  labels && labels[locale] ? labels[locale] : `[${fallback}]`;
 
 export {getLabel, isLabelCollection};
 export type {LabelCollection};

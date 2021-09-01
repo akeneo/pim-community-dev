@@ -2,7 +2,7 @@ import React from 'react';
 import {mockedDependencies, renderWithProviders} from '../../tests';
 import {fireEvent, screen} from '@testing-library/react';
 import {PimNavigation} from './PimNavigation';
-import {aMainNavigation} from './navigationHelper';
+import {aMainNavigation} from './navigationTestHelper';
 
 jest.mock('../PimView');
 
@@ -40,7 +40,7 @@ test('It redirects the user to the clicked entry route', async() => {
 
 test('It show disabled entries as locked for the Free Trial', async() => {
   renderWithProviders(
-    <PimNavigation entries={aMainNavigation()} activeEntryCode='entry1' activeSubEntryCode='subentry2' freeTrialEnabled={true}/>
+    <PimNavigation entries={aMainNavigation()} activeEntryCode='entry10' activeSubEntryCode='subentry2' freeTrialEnabled={true}/>
   );
 
   expect(screen.queryAllByTestId('pim-main-menu-item')).toHaveLength(3);
