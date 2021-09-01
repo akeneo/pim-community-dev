@@ -1,9 +1,9 @@
-import {UserContext} from '../src/shared/user';
+import {UserContext} from '@src/shared/user';
 import {render} from '@testing-library/react';
 import React, {FC} from 'react';
 import {create} from 'react-test-renderer';
 import {ThemeProvider} from 'styled-components';
-import {theme} from '../src/common/styled-with-theme';
+import {theme} from '@src/common/styled-with-theme';
 import fetchMock from 'jest-fetch-mock';
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';

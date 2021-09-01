@@ -11,6 +11,7 @@ import {
     LocaleIcon,
     ProductIcon,
     ShopIcon,
+    CheckRoundIcon
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
@@ -52,7 +53,7 @@ export const ScopeList: FC<Props> = ({scopeMessages}) => {
                 const entities = translate(
                     `akeneo_connectivity.connection.connect.apps.scope.entities.${scopeMessage.entities}`
                 );
-                const Icon = iconsMap[scopeMessage.icon];
+                const Icon = iconsMap[scopeMessage.icon] ?? CheckRoundIcon;
 
                 return (
                     <ScopeItem key={key}>
