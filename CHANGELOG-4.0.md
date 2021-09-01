@@ -6,6 +6,7 @@
 
 - PIM-10046: [Backport] Fix asset code case in the product edit form
 - PIM-10050: [Backport] Fix Asset creation modal failing when no label
+- PIM-10039: Fix out of sort memory when fetching all rules on big catalog
 
 # 4.0.121 (2021-07-28)
 

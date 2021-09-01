@@ -12,6 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -39,7 +40,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
      */
     public function findAllOrderedByPriority()
     {
-        return $this->findBy([], ['priority' => 'DESC']);
+        return $this->orderByPriority($this->findBy([]));
     }
 
     /**
@@ -56,5 +57,18 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
+    }
+
+    /**
+     * @param RuleDefinitionInterface[] $ruleDefinitions
+     * @return RuleDefinitionInterface[]
+     */
+    private function orderByPriority(array $ruleDefinitions): array
+    {
+        usort($ruleDefinitions, static function (RuleDefinitionInterface $ruleA, RuleDefinitionInterface $ruleB) {
+            return $ruleA->getPriority() < $ruleB->getPriority();
+        });
+
+        return $ruleDefinitions;
     }
 }
