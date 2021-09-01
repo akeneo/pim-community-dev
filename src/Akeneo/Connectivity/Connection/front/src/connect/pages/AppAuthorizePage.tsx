@@ -3,6 +3,8 @@ import {useLocation} from 'react-router-dom';
 import {AuthorizeClientError} from '../components/AuthorizeClientError';
 import {AppWizard} from '../components/AppWizard/AppWizard';
 import {useHistory} from 'react-router';
+import {AppWizardWithSteps} from '../components/AppWizardWithSteps/AppWizardWithSteps';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const AppAuthorizePage: FC = () => {
     const history = useHistory();
@@ -10,6 +12,7 @@ export const AppAuthorizePage: FC = () => {
     const query = new URLSearchParams(location.search);
     const error = query.get('error');
     const clientId = query.get('client_id');
+    const featureFlags = useFeatureFlags();
 
     if (null !== error) {
         return <AuthorizeClientError error={error} />;
@@ -18,6 +21,10 @@ export const AppAuthorizePage: FC = () => {
     if (null === clientId) {
         history.push('/connect/marketplace');
         return null;
+    }
+
+    if (true === featureFlags.isEnabled('connect_app_with_permissions')) {
+        return <AppWizardWithSteps clientId={clientId} />;
     }
 
     return <AppWizard clientId={clientId} />;
