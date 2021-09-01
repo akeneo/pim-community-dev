@@ -50,8 +50,11 @@ class RecordShouldExistValidator extends ConstraintValidator
     private function checkCommandType($command): void
     {
         if (!$command instanceof DeleteRecordCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                DeleteRecordCommand::class, get_class($command)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                DeleteRecordCommand::class,
+                get_class($command)
+            ));
         }
     }
 

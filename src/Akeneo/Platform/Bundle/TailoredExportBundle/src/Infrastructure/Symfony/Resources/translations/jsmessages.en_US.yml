@@ -29,10 +29,11 @@ akeneo.tailored_export:
   column_list:
     title: Columns
     header:
-      column_name: Column header
+      column_name: Column name
       source_data: Column content
     column_row:
       target_placeholder: Define your column name here
+      placeholder_helper: You can copy all the column names from a spreadsheet to automatically create your columns.
       remove: Remove column
       no_source: Define content source
     no_column_selection:
@@ -110,6 +111,10 @@ akeneo.tailored_export:
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
         header: Operations
+        measurement_conversion:
+          title: Conversion
+          placeholder: No conversion
+          target_unit_code.label: Convert to
         replacement:
           title: Replace value
           placeholder: Define the replacement value
@@ -155,3 +160,8 @@ akeneo.tailored_export:
       locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
       channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
       invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
+    measurement:
+      family:
+        does_not_exist: The measurement family {{ measurement_family_code }} does not exist.
+      unit:
+        does_not_exist: The unit {{ unit_code }} does not exist in measurement family {{ measurement_family_code }}.

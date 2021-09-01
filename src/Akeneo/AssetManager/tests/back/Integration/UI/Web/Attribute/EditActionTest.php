@@ -151,7 +151,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub->setIsGranted('akeneo_assetmanager_attribute_edit', true);
 
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
-        $assetFamilyRepository->create(AssetFamily::create(AssetFamilyIdentifier::fromString('designer'),
+        $assetFamilyRepository->create(AssetFamily::create(
+            AssetFamilyIdentifier::fromString('designer'),
             [],
             Image::createEmpty(),
             RuleTemplateCollection::empty()

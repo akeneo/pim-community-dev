@@ -52,22 +52,34 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
     public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_asset_family(
     ) {
         $assetFamilyIdentifier = $this->createAssetFamily();
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily($assetFamilyIdentifier,
-            4);
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily(
+            $assetFamilyIdentifier,
+            4
+        );
         $this->createAttributesHelper->loadScopableOnlyAttributesForAssetFamily($assetFamilyIdentifier, 10);
         $this->createAttributesHelper->loadLocalizableOnlyAttributesForAssetFamily($assetFamilyIdentifier, 10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily($assetFamilyIdentifier,
-            10);
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily(
+            $assetFamilyIdentifier,
+            10
+        );
 
         $anotherAssetFamilyIdentifier = $this->createAssetFamily();
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily($anotherAssetFamilyIdentifier,
-            2);
-        $this->createAttributesHelper->loadScopableOnlyAttributesForAssetFamily($anotherAssetFamilyIdentifier,
-            10);
-        $this->createAttributesHelper->loadLocalizableOnlyAttributesForAssetFamily($anotherAssetFamilyIdentifier,
-            10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily($anotherAssetFamilyIdentifier,
-            10);
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily(
+            $anotherAssetFamilyIdentifier,
+            2
+        );
+        $this->createAttributesHelper->loadScopableOnlyAttributesForAssetFamily(
+            $anotherAssetFamilyIdentifier,
+            10
+        );
+        $this->createAttributesHelper->loadLocalizableOnlyAttributesForAssetFamily(
+            $anotherAssetFamilyIdentifier,
+            10
+        );
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForAssetFamily(
+            $anotherAssetFamilyIdentifier,
+            10
+        );
 
         $volume = $this->averageMaxPercentageOfScopableOnlyAttributesPerAssetFamily->fetch();
 

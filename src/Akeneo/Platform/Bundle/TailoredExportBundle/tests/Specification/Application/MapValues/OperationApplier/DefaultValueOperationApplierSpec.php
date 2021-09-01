@@ -23,7 +23,7 @@ class DefaultValueOperationApplierSpec extends ObjectBehavior
 {
     public function it_supports_default_value_operation_and_null_value()
     {
-        $operation = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $operation = new DefaultValueOperation('n/a');
         $value = new NullValue();
 
         $this->supports($operation, $value)->shouldReturn(true);
@@ -31,7 +31,7 @@ class DefaultValueOperationApplierSpec extends ObjectBehavior
 
     public function it_does_not_support_other_selections_and_values()
     {
-        $notSupportedSelection = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
 
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
@@ -39,7 +39,7 @@ class DefaultValueOperationApplierSpec extends ObjectBehavior
 
     public function it_applies_default_value_operation()
     {
-        $operation = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $operation = new DefaultValueOperation('n/a');
         $value = new NullValue();
 
         $this->applyOperation($operation, $value)->shouldBeLike(new StringValue('n/a'));
@@ -47,7 +47,7 @@ class DefaultValueOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_when_operation_or_value_is_invalid()
     {
-        $notSupportedSelection = ReplacementOperation::createFromNormalized(['mapping' => []]);
+        $notSupportedSelection = new ReplacementOperation([]);
         $notSupportedValue = new StringValue('name');
 
         $this->shouldThrow(\InvalidArgumentException::class)

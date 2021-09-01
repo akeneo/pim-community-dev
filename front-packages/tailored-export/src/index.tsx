@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {
-  baseFetcher,
   Channel,
   MicroFrontendDependenciesProvider,
   Routes,
@@ -13,9 +12,15 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute} from './feature/models';
+import {Attribute, MeasurementFamily} from './feature/models';
 import {FetcherContext} from './feature/contexts';
 import {AssociationType} from './feature/models/AssociationType';
+
+const baseFetcher = async (route: string) => {
+  const response = await fetch(route);
+
+  return await response.json();
+};
 
 const cache = {};
 const cachedFetcher = (route: string) => {
@@ -54,6 +59,15 @@ const FetcherProvider: FC = ({children}) => {
           });
 
           return cachedFetcher(route);
+        },
+      },
+      measurementFamily: {
+        fetchByCode: async (measurementFamilyCode: string): Promise<MeasurementFamily | undefined> => {
+          const route = router.generate('pim_enrich_measures_rest_index');
+
+          const measurementFamilies = await cachedFetcher(route);
+
+          return measurementFamilies.find(({code}) => code === measurementFamilyCode);
         },
       },
     }),

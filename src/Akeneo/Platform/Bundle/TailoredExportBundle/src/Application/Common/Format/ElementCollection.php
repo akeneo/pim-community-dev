@@ -42,19 +42,4 @@ class ElementCollection implements \IteratorAggregate
     {
         return new self($elements);
     }
-
-    public static function createFromNormalized(array $normalizedElements): self
-    {
-        $elements = array_map(static function (array $element) {
-            if ('text'  === $element['type']) {
-                return new TextElement($element['value']);
-            } elseif ('source' === $element['type']) {
-                return new SourceElement($element['value']);
-            } else {
-                throw new \InvalidArgumentException(sprintf('Unsupported element type "%s"', $element['type']));
-            }
-        }, $normalizedElements);
-
-        return new self($elements);
-    }
 }

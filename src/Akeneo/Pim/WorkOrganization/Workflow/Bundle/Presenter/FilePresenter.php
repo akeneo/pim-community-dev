@@ -27,8 +27,8 @@ class FilePresenter implements PresenterInterface
     protected $fileInfoRepository;
 
     public function __construct(
-        FileInfoRepositoryInterface $fileInfoRepository)
-    {
+        FileInfoRepositoryInterface $fileInfoRepository
+    ) {
         $this->fileInfoRepository = $fileInfoRepository;
     }
 

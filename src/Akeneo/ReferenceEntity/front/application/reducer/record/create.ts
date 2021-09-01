@@ -1,5 +1,5 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {sanitize} from '@akeneo-pim-community/shared';
 
 export interface CreateState {
   active: boolean;

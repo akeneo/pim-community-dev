@@ -151,7 +151,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_edit', true);
 
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository->create(ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         ));

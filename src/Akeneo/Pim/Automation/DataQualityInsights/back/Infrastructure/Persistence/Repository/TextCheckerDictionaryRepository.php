@@ -94,7 +94,8 @@ INSERT IGNORE INTO  pimee_data_quality_insights_text_checker_dictionary (locale_
 VALUES (:localeCode, :word)
 SQL;
 
-        $this->db->executeUpdate($query,
+        $this->db->executeUpdate(
+            $query,
             [
                 'localeCode' => strval($dictionaryWord->getLocaleCode()),
                 'word' => mb_strtolower(strval($dictionaryWord->getWord())),

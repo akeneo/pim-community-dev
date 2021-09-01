@@ -23,11 +23,9 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 {
     public function it_supports_replacement_operation_and_boolean_value()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [
-                'true' => 'vrai',
-                'false' => 'faux',
-            ]
+        $operation = new ReplacementOperation([
+            'true' => 'vrai',
+            'false' => 'faux',
         ]);
 
         $value = new BooleanValue(true);
@@ -37,7 +35,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_does_not_support_other_selections_and_values()
     {
-        $notSupportedSelection = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
 
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
@@ -45,11 +43,9 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_applies_boolean_replacement_operation()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [
-                'true' => 'vrai',
-                'false' => 'faux',
-            ]
+        $operation = new ReplacementOperation([
+            'true' => 'vrai',
+            'false' => 'faux',
         ]);
 
         $trueValue = new BooleanValue(true);
@@ -61,9 +57,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_does_nothing_when_value_is_not_mapped()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [],
-        ]);
+        $operation = new ReplacementOperation([]);
 
         $trueValue = new BooleanValue(true);
         $falseValue = new BooleanValue(false);
@@ -74,7 +68,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_when_operation_or_value_is_invalid()
     {
-        $notSupportedSelection = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
 
         $this->shouldThrow(\InvalidArgumentException::class)

@@ -168,8 +168,10 @@ class IndexRecordsCommand extends Command
                 $existingReferenceEntityCodes[] = ReferenceEntityIdentifier::fromString($referenceEntityCode);
             } else {
                 $output->writeln(
-                    sprintf('<info>Skip "%s", this reference entity does not exist.</info>',
-                        ReferenceEntityIdentifier::fromString($referenceEntityCode))
+                    sprintf(
+                        '<info>Skip "%s", this reference entity does not exist.</info>',
+                        ReferenceEntityIdentifier::fromString($referenceEntityCode)
+                    )
                 );
             }
         }

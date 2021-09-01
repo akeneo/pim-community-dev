@@ -119,8 +119,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/unsynchronised_record_identifier.json');
+        $this->webClientHelper->assertRequest(
+            $this->client,
+            'Record/Edit/unsynchronised_record_identifier.json'
+        );
     }
 
     /**
@@ -128,8 +130,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_reference_entity_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/unsynchronised_reference_entity_identifier.json');
+        $this->webClientHelper->assertRequest(
+            $this->client,
+            'Record/Edit/unsynchronised_reference_entity_identifier.json'
+        );
     }
 
     /**
@@ -210,8 +214,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_record_collection_value()
     {
-        $this->webClientHelper->assertRequest($this->client,
-            'Record/Edit/invalid_record_collection_value.json');
+        $this->webClientHelper->assertRequest(
+            $this->client,
+            'Record/Edit/invalid_record_collection_value.json'
+        );
     }
 
     /**

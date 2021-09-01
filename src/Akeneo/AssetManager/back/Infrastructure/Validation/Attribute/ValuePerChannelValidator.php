@@ -34,7 +34,9 @@ class ValuePerChannelValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($valuePerChannel, [
+        $violations = $validator->validate(
+            $valuePerChannel,
+            [
                 new NotNull(),
                 new Type(['type' => 'boolean'])
             ]

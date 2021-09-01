@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: Colonnes
     header:
-      column_name: En-tête de la colonne
       source_data: Contenu de la colonne
     column_row:
       target_placeholder: Définissez votre en-tête de colonne ici

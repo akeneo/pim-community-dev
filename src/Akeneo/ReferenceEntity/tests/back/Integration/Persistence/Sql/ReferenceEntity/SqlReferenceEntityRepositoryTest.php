@@ -223,8 +223,10 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
         foreach ($referenceEntityExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($referenceEntityExpected->getLabel($localeCode),
-                $referenceEntityFound->getLabel($localeCode));
+            $this->assertEquals(
+                $referenceEntityExpected->getLabel($localeCode),
+                $referenceEntityFound->getLabel($localeCode)
+            );
         }
     }
 

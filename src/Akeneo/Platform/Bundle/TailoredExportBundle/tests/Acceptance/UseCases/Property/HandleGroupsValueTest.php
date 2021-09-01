@@ -55,39 +55,35 @@ final class HandleGroupsValueTest extends PropertyTestCase
                 'operations' => [],
                 'selection' => new GroupsCodeSelection(','),
                 'value' => new GroupsValue([]),
-                'expected' => [self::TARGET_NAME => '']
+                'expected' => [self::TARGET_NAME => ''],
             ],
             [
                 'operations' => [],
                 'selection' => new GroupsCodeSelection(','),
                 'value' => new GroupsValue(['tshirt', 'summerSale2021']),
-                'expected' => [self::TARGET_NAME => 'tshirt,summerSale2021']
+                'expected' => [self::TARGET_NAME => 'tshirt,summerSale2021'],
             ],
             [
                 'operations' => [],
                 'selection' => new GroupsLabelSelection(',', 'en_US'),
                 'value' => new GroupsValue(['tshirt', 'summerSale2020', 'summerSale2021']),
-                'expected' => [self::TARGET_NAME => 'Tshirt,[summerSale2020],Summer sale 2021']
+                'expected' => [self::TARGET_NAME => 'Tshirt,[summerSale2020],Summer sale 2021'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new GroupsCodeSelection(','),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new GroupsCodeSelection(','),
                 'value' => new GroupsValue(['tshirt', 'summerSale2021']),
-                'expected' => [self::TARGET_NAME => 'tshirt,summerSale2021']
+                'expected' => [self::TARGET_NAME => 'tshirt,summerSale2021'],
             ],
         ];
     }

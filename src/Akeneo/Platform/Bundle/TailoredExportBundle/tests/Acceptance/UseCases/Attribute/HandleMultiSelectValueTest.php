@@ -63,9 +63,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new MultiSelectCodeSelection('/'),
                 'value' => new NullValue(),
@@ -73,9 +71,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new MultiSelectCodeSelection('/'),
                 'value' => new MultiSelectValue(['cotton', 'wool']),

@@ -856,12 +856,6 @@ jobs:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project
           - run:
-                name: Execute static analysis
-                command: PIM_CONTEXT=onboarder make test-static-analysis
-          - run:
-                name: PHP coupling detector
-                command: PIM_CONTEXT=onboarder make test-coupling-detector
-          - run:
                 name: Execute specifications
                 command: PIM_CONTEXT=onboarder make test-spec
           - run:
@@ -1967,6 +1961,46 @@ jobs:
                 command: |
                     make delete_expired_uptime_check
 
+  zdd_compliancy_diff:
+      parameters:
+        TYPE:
+          default: "srnt"
+          type: string
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - checkout
+          - set_gcloud_config_dev
+          - run:
+                name: Run the tool zdd_compliancy_checker
+                command: |
+                    TYPE=<<parameters.TYPE>> bash -x deployments/bin/zdd_compliancy_checker.sh
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - zdd_compliancy_checker
+
+  zdd_compliancy_checker:
+      parameters:
+        TYPE:
+          default: "srnt"
+          type: string
+        CONTEXT:
+          default: "diff_infra"
+          type: string
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - checkout
+          - run:
+                name: Run the tool zdd_compliancy_checker
+                command: |
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
+
 workflows:
   pull_request:
       jobs:
@@ -2099,9 +2133,10 @@ workflows:
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
-          - test_database:
-                requires:
-                    - build_srnt_dev
+          # Uncomment for next GA
+#          - test_database:
+#                requires:
+#                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
@@ -2124,7 +2159,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
-                    - test_database
+                    # Uncomment for next GA
+#                    - test_database
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
@@ -2451,6 +2487,29 @@ workflows:
          - delete_expired_uptime_check:
                requires:
                    - checkout
+
+  on_demand_compliancy_checker:
+    jobs:
+        - ready_to_build?:
+            type: approval
+            filters:
+              branches:
+                only: master
+        - zdd_compliancy_diff:
+            name: "[<< matrix.TYPE >>] Get ZDD compliancy files"
+            matrix:
+                parameters:
+                    TYPE: ["grth", "srnt"]
+            requires:
+                - ready_to_build?
+        - zdd_compliancy_checker:
+            name: "[<< matrix.TYPE >>] Check ZDD << matrix.CONTEXT >> compliancy"
+            matrix:
+                parameters:
+                    TYPE: ["grth", "srnt"]
+                    CONTEXT: ["infra", "db"]
+            requires:
+                - "[<< matrix.TYPE >>] Get ZDD compliancy files"
 
 commands:
   set_gcloud_config_dev:

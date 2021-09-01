@@ -66,7 +66,8 @@ class ClearThumbnailCacheCommand extends Command
         $supportedPreviewTypes = $this->getSupportedPreviewTypes();
         if (! in_array($previewType, $supportedPreviewTypes)) {
             throw new \RuntimeException(
-                sprintf('The preview type "%s" is not supported.\n Supported formats are: %s',
+                sprintf(
+                    'The preview type "%s" is not supported.\n Supported formats are: %s',
                     $previewType,
                     implode(', ', $supportedPreviewTypes)
                 )

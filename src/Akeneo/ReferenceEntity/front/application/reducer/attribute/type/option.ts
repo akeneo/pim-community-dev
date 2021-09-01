@@ -2,7 +2,7 @@ import {NormalizedOptionAttribute} from 'akeneoreferenceentity/domain/model/attr
 import {NormalizedOptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {sanitize} from '@akeneo-pim-community/shared';
 
 const optionAttributeReducer = (
   normalizedAttribute: NormalizedOptionAttribute | NormalizedOptionCollectionAttribute
