@@ -36,10 +36,15 @@ services:
             - '@pim_api.repository.media_file'
 
     # Reference entities query functions
-    akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists:
+    akeneo_assetmanager.infrastructure.persistence.sql.query.asset_family_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyExists
         arguments:
             - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\AssetFamily\LRUCachedAssetFamilyExists
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.query.asset_family_exists'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyItems
