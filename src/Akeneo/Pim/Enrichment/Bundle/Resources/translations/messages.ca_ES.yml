@@ -80,3 +80,4 @@ tree:
   edit: Editar arbre
   remove:
     error_linked: Aquest arbre de categoria no es pot eliminar. Està vinculat a un canal
+  create: Crear un arbre de categories

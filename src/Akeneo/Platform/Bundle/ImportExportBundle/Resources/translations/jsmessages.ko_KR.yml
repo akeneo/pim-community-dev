@@ -220,3 +220,4 @@ pim_title:
   pim_importexport_import_profile_show: 가져오기 프로필 {{ job.label }} | 표시
   pim_importexport_import_execution_index: 가져오기 실행 기록
   pim_importexport_import_execution_show: 가져오기 실행 | 세부 정보
+

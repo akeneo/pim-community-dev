@@ -115,7 +115,7 @@ const ExecutionDetail = () => {
 
   return (
     <Container>
-      <PageHeader>
+      <PageHeader showPlaceholder={null === jobExecution}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step href={`#${dashboardHref}`}>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
@@ -230,7 +230,7 @@ const ExecutionDetail = () => {
               </Dropdown>
             ))}
         </PageHeader.Actions>
-        <PageHeader.Title>{jobExecution?.jobInstance.label}</PageHeader.Title>
+        <PageHeader.Title>{jobExecution?.jobInstance.label ?? jobExecutionId}</PageHeader.Title>
         <PageHeader.Content>
           {jobExecution && <Status tracking={jobExecution.tracking} />}
           {jobExecution?.tracking && (

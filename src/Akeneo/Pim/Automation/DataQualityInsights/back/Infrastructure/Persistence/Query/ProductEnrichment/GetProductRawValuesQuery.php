@@ -37,7 +37,8 @@ FROM pim_catalog_product as product
 WHERE product.id = :product_id;
 SQL;
 
-        $statement = $this->db->executeQuery($query,
+        $statement = $this->db->executeQuery(
+            $query,
             [
                 'product_id' => $productId->toInt(),
             ],

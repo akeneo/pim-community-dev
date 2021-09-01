@@ -734,9 +734,6 @@
     "symfony/options-resolver": {
         "version": "v4.3.4"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.6"
-    },
     "symfony/polyfill-apcu": {
         "version": "v1.4.0"
     },
@@ -759,9 +756,6 @@
         "version": "v1.17.1"
     },
     "symfony/polyfill-mbstring": {
-        "version": "v1.12.0"
-    },
-    "symfony/polyfill-php70": {
         "version": "v1.12.0"
     },
     "symfony/polyfill-php72": {

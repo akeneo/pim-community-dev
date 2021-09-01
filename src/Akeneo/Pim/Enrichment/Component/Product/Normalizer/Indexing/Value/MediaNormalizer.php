@@ -22,8 +22,8 @@ class MediaNormalizer extends AbstractProductValueNormalizer implements Normaliz
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof MediaValueInterface && (
-                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        );
     }
 
     public function hasCacheableSupportsMethod(): bool

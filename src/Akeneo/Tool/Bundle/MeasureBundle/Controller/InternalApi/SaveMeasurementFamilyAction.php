@@ -59,7 +59,7 @@ class SaveMeasurementFamilyAction
             );
         }
         if (!(
-                $this->securityFacade->isGranted('akeneo_measurements_manage_settings') &&
+            $this->securityFacade->isGranted('akeneo_measurements_manage_settings') &&
                 (
                     $this->securityFacade->isGranted('akeneo_measurements_measurement_family_edit_properties') ||
                     $this->securityFacade->isGranted('akeneo_measurements_measurement_family_delete') ||
@@ -67,7 +67,7 @@ class SaveMeasurementFamilyAction
                     $this->securityFacade->isGranted('akeneo_measurements_measurement_unit_edit') ||
                     $this->securityFacade->isGranted('akeneo_measurements_measurement_unit_delete')
                 )
-            )
+        )
         ) {
             throw new AccessDeniedException();
         }
