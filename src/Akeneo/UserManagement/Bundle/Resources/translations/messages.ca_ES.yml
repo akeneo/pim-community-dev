@@ -67,13 +67,11 @@ pim_user:
       username_or_email: Usuari o correu electrònic
       remember_me: Recorda'm en aquest ordinador
       password_forgotten: Heu oblidat la contrasenya?
-      log_in: Entrar
       forgot_password: He oblidat la contrasenya
       request: Petició
       password_reset: Reiniciar contrasenya
       reset: Reinicia
       password_reset_email_sent: S'ha enviat un correu electrònic a l'usuari. Conté un enllaç per restablir la contrasenya.
-      homepage: Anar a la pàgina d'inici
   group:
     tab:
       general.title: General

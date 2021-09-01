@@ -107,7 +107,11 @@ export const ScopeList: FC<Props> = ({appName, scopeMessages}) => {
             <AppTitle>{title}</AppTitle>
             <Helper>
                 <p>{translate('akeneo_connectivity.connection.connect.apps.authorize.helper')}</p>
-                <Link href={'https://help.akeneo.com/'}>
+                <Link
+                    href={
+                        'https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html#all-editions-authorization-step'
+                    }
+                >
                     {translate('akeneo_connectivity.connection.connect.apps.authorize.helper_link')}
                 </Link>
             </Helper>

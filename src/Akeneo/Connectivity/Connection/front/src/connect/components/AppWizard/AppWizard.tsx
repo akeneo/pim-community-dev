@@ -24,9 +24,19 @@ const Actions = styled.div`
     margin-top: 20px;
 `;
 
-const Logo = styled.img`
+const LogoFrame = styled.div`
     width: 220px;
     height: 220px;
+    border: 1px ${getColor('grey', 40)} solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+`;
+
+const Logo = styled.img`
+    max-width: 220px;
+    max-height: 220px;
 `;
 
 const Connect = styled.h3`
@@ -70,7 +80,9 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         >
             <Content>
                 <LogoContainer>
-                    <Logo src={wizardData.appLogo} alt={wizardData.appName} />
+                    <LogoFrame>
+                        <Logo src={wizardData.appLogo} alt={wizardData.appName} />
+                    </LogoFrame>
                 </LogoContainer>
                 <InfoContainer>
                     <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>

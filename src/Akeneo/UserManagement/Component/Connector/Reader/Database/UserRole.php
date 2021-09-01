@@ -7,7 +7,7 @@ namespace Akeneo\UserManagement\Component\Connector\Reader\Database;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
