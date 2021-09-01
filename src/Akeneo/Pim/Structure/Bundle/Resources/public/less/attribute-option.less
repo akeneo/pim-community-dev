@@ -11,7 +11,6 @@
     &-optionsList {
       height: calc(100vh - 352px);
       overflow-y: auto;
-      margin-top: 20px;
     }
 
     .has-switch {
@@ -47,15 +46,37 @@
 
     .AknAttributeOption-itemCode {
       font-size: 13px;
-      font-weight: bold;
-      color: @AknLightPurple;
       cursor: pointer;
       display: table-cell;
 
       &>div {
         display: table;
         table-layout: fixed;
-        width: 100%;
+        width: 50%;
+        &>span {
+          white-space: nowrap;
+          display: table-cell;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &--new {
+        padding-left: 44px;
+      }
+    }
+
+    .AknAttributeOption-itemLabel {
+      font-size: 13px;
+      cursor: pointer;
+      display: table-cell;
+      color: @AknLightPurple;
+      font-style: italic;
+
+      &>div {
+        display: table;
+        table-layout: fixed;
+        width: 50%;
         &>span {
           white-space: nowrap;
           display: table-cell;

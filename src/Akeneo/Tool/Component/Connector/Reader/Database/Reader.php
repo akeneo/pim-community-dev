@@ -5,7 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\Database;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Base reader
