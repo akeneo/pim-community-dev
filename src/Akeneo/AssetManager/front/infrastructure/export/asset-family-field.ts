@@ -14,6 +14,8 @@ const UserContext = require('pim/user-context');
 const Property = require('pim/common/property');
 
 class FamilySelector extends BaseSelect {
+  private searchValue: string = '';
+
   /**
    * {@inheritdoc}
    */
@@ -23,7 +25,30 @@ class FamilySelector extends BaseSelect {
 
     return {
       more: more,
-      results: response.items.map(item => this.convertBackendItem(item)),
+      results: response.items.map(this.convertBackendItem).filter(this.filterResult.bind(this)),
+    };
+  }
+
+  private filterResult(item: {id: string; text: string}): boolean {
+    return (
+      item.id.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+      item.text.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  select2Data(term: string, page: number) {
+    this.searchValue = term;
+
+    return {
+      search: this.searchValue,
+      options: {
+        limit: this.resultsPerPage,
+        page,
+        catalogLocale: UserContext.get('catalogLocale'),
+      },
     };
   }
 

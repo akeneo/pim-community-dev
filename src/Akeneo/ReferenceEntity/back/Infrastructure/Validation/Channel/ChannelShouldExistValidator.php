@@ -66,8 +66,11 @@ class ChannelShouldExistValidator extends ConstraintValidator
     private function checkChannelReferenceType($channelReference): void
     {
         if (null !== $channelReference && !$channelReference instanceof ChannelReference) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                ChannelIdentifier::class, get_class($channelReference)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                ChannelIdentifier::class,
+                get_class($channelReference)
+            ));
         }
     }
 }

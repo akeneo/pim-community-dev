@@ -76,8 +76,11 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
     private function checkLocaleIdentifierCollectionType($channelReference): void
     {
         if (null !== $channelReference && !$channelReference instanceof LocaleIdentifierCollection) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                LocaleIdentifierCollection::class, get_class($channelReference)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                LocaleIdentifierCollection::class,
+                get_class($channelReference)
+            ));
         }
     }
 }

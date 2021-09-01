@@ -146,8 +146,10 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
-                LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -169,8 +171,10 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
-                LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -211,7 +215,8 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $optionCodes = array_map(
             function (string $optionCode) {
                 return OptionCode::fromString($optionCode);
-            }, $optionCodes
+            },
+            $optionCodes
         );
         $recordRepository->create(
             Record::create(

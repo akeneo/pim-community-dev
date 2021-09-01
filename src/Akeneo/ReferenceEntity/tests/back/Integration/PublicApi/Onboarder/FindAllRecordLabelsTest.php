@@ -77,16 +77,16 @@ class FindAllRecordLabelsTest extends SqlIntegrationTestCase
             'designer'
         ), $records);
         Assert::assertContainsEquals(new RecordLabels(
-           (string) $this->starckIdentifier,
-           ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
-           'starck',
-           'designer'
+            (string) $this->starckIdentifier,
+            ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
+            'starck',
+            'designer'
         ), $records);
         Assert::assertContainsEquals(new RecordLabels(
-           (string) $this->dysonIdentifier,
-           ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
-           'dyson',
-           'designer'
+            (string) $this->dysonIdentifier,
+            ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
+            'dyson',
+            'designer'
         ), $records);
     }
 

@@ -60,9 +60,10 @@ class SqlRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductVarian
             }
 
             if (0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
-                    $familyVariantsIdentifiers,
-                    $attributeCode,
-                    $recordCode)
+                $familyVariantsIdentifiers,
+                $attributeCode,
+                $recordCode
+            )
             ) {
                 return true;
             }

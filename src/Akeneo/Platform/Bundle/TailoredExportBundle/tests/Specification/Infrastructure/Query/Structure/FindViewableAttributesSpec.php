@@ -62,7 +62,10 @@ class FindViewableAttributesSpec extends ObjectBehavior
                 $attributeGroupLabel
             ),
             new FlattenAttribute(
-                $unviewableAttributeCode, $attributeLabel, $attributeGroupCode, $attributeGroupLabel
+                $unviewableAttributeCode,
+                $attributeLabel,
+                $attributeGroupCode,
+                $attributeGroupLabel
             ),
         ];
         $findFlattenAttributes->execute($localeCode, $limit, $attributeTypes, $offset, $search)

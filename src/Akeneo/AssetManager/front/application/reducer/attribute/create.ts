@@ -1,5 +1,4 @@
-import {ValidationError} from '@akeneo-pim-community/shared';
-import sanitize from 'akeneoassetmanager/tools/sanitize';
+import {ValidationError, sanitize} from '@akeneo-pim-community/shared';
 
 export interface CreateState {
   active: boolean;

@@ -28,7 +28,6 @@ akeneo.tailored_export:
   column_list:
     title: 列
     header:
-      column_name: 列标题
       source_data: 列内容
     column_row:
       target_placeholder: 在此定义您的列名称

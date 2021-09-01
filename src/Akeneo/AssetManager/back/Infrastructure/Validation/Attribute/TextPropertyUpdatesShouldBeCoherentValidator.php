@@ -78,8 +78,11 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     private function checkCommandType($editAttributeCommand): void
     {
         if (!$editAttributeCommand instanceof EditAttributeCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                EditAttributeCommand::class, get_class($editAttributeCommand)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                EditAttributeCommand::class,
+                get_class($editAttributeCommand)
+            ));
         }
     }
 

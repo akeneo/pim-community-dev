@@ -8,6 +8,7 @@ import {
   Attribute,
   AssociationType,
   ColumnConfiguration,
+  MeasurementFamily,
 } from '@akeneo-pim-enterprise/tailored-export';
 import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
@@ -112,6 +113,16 @@ class ColumnView extends BaseView {
                       fetcherRegistry
                         .getFetcher('association-type')
                         .fetchByIdentifiers(codes)
+                        .then(resolve)
+                    );
+                  },
+                },
+                measurementFamily: {
+                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('measure')
+                        .fetch(code)
                         .then(resolve)
                     );
                   },

@@ -46,9 +46,10 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
             }
 
             if (0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
-                    $familyVariantsIdentifiers,
-                    $attributeCode,
-                    $recordCode)
+                $familyVariantsIdentifiers,
+                $attributeCode,
+                $recordCode
+            )
             ) {
                 return true;
             }

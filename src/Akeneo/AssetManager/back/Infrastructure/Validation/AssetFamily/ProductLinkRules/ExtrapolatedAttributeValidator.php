@@ -103,17 +103,19 @@ class ExtrapolatedAttributeValidator
 
         return $validator->validate(
             $isAttributeExisting,
-            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
-                $extrapolatedAttributeCode
-            ) {
-                if (!$attributeExists) {
-                    $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST,
+            new Callback(
+                function ($attributeExists, ExecutionContextInterface $context) use (
+                    $extrapolatedAttributeCode
+                ) {
+                    if (!$attributeExists) {
+                        $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST,
                             ['%attribute_code%' => $extrapolatedAttributeCode]
                         )
                         ->addViolation();
+                    }
                 }
-            }
             )
         );
     }
@@ -213,7 +215,8 @@ class ExtrapolatedAttributeValidator
                 new NotBlank(),
                 new Type(['type' => 'string']),
                 new Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
-                new Regex([
+                new Regex(
+                    [
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => Code::MESSAGE_WRONG_PATTERN,
                     ]

@@ -43,7 +43,8 @@ class EditTargetValueValidator extends ConstraintValidator
         if (!$command instanceof AbstractEditValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', AbstractEditValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    AbstractEditValueCommand::class,
                     get_class($command)
                 )
             );

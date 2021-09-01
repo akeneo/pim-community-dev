@@ -68,9 +68,7 @@ final class HandleFileValueTest extends AttributeTestCase
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FileNameSelection(self::ATTRIBUTE_CODE),
                 'value' => new NullValue(),
@@ -78,9 +76,7 @@ final class HandleFileValueTest extends AttributeTestCase
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FileNameSelection(self::ATTRIBUTE_CODE),
                 'value' => new FileValue('my_product', 'catalog', 'file_key_hash', 'my_file.jpg', null, null),

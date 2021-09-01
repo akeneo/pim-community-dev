@@ -17,14 +17,9 @@ class ReplacementOperation implements OperationInterface
 {
     private array $mapping;
 
-    private function __construct(array $mapping)
+    public function __construct(array $mapping)
     {
         $this->mapping = $mapping;
-    }
-
-    public static function createFromNormalized(array $normalizedOperation): self
-    {
-        return new self($normalizedOperation['mapping']);
     }
 
     public function hasMappedValue(string $value): bool

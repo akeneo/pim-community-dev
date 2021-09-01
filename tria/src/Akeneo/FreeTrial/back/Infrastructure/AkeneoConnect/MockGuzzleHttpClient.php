@@ -88,7 +88,7 @@ final class MockGuzzleHttpClient implements ClientInterface
             return new Response(200, [], '{}');
         }
 
-        return new Response(400, [], sprintf('{"error": {"code": "%s"}}', AkeneoConnectInviteUserAPI::INVALID_EMAIL));
+        return new Response(500, [], sprintf('{"error": {"code": "%s"}}', AkeneoConnectInviteUserAPI::INTERNAL_ERROR));
     }
 
     private function isEmailAlreadyInvited(string $email): bool

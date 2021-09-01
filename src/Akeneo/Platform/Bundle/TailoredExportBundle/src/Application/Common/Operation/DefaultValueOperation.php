@@ -17,14 +17,9 @@ class DefaultValueOperation implements OperationInterface
 {
     private string $defaultValue;
 
-    private function __construct(string $defaultValue)
+    public function __construct(string $defaultValue)
     {
         $this->defaultValue = $defaultValue;
-    }
-
-    public static function createFromNormalized(array $normalizedOperation): self
-    {
-        return new self((string) $normalizedOperation['value']);
     }
 
     public function getDefaultValue(): string
