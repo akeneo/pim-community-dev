@@ -1,7 +1,7 @@
-export type NormalizedCompleteness = {completeChildren: number; totalChildren: number; ratio: number};
+export type NormalizedCompleteness = {completeChildren: number; totalChildren: number; ratio: number | null};
 
 class Completeness {
-  private constructor(private completeChildren: number, private totalChildren: number, private ratio: number) {
+  private constructor(private completeChildren: number, private totalChildren: number, private ratio: number | null) {
     Object.freeze(this);
   }
 
@@ -26,7 +26,7 @@ class Completeness {
   }
 
   public hasCompleteItems() {
-    return this.ratio > 0 || this.completeChildren > 0;
+    return (null !== this.ratio && this.ratio > 0) || this.completeChildren > 0;
   }
 
   public getRatio() {
