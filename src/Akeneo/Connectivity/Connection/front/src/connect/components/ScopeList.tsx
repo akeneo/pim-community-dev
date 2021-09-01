@@ -11,7 +11,7 @@ import {
     LocaleIcon,
     ProductIcon,
     ShopIcon,
-    CheckRoundIcon
+    CheckRoundIcon,
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 

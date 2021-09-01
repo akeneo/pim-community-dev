@@ -33,7 +33,7 @@ export const Authorizations: FC<Props> = ({appName, scopeMessages}) => {
     const translate = useTranslate();
 
     return (
-        <InfoContainer data-testid={'authorizations-step'}>
+        <InfoContainer>
             <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
             <ScopeListContainer appName={appName} scopeMessages={scopeMessages} />
         </InfoContainer>

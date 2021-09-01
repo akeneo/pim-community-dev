@@ -48,11 +48,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
-    const steps: string[] = [
-        'authorizations',
-        'permission',
-        'well_done',
-    ];
+    const steps: string[] = ['authorizations', 'permissions', 'well_done'];
     const [isCurrent, next, previous] = useProgress(steps);
     useEffect(() => {
         fetchWizardData().then(setWizardData);
@@ -71,38 +67,33 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
             onClose={redirectToMarketplace}
             closeTitle={translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
         >
-            {
-                !isCurrent('authorizations') &&
+            {!isCurrent('authorizations') && (
                 <PreviousButton level={'tertiary'} onClick={previous}>
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.previous')}
                 </PreviousButton>
-            }
+            )}
             <AllowAndNextButton onClick={next}>
-                {translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')}
+                {isCurrent('authorizations')
+                    ? translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
+                    : translate('akeneo_connectivity.connection.connect.apps.wizard.action.next')}
             </AllowAndNextButton>
 
             <Content>
                 <LogoContainer>
                     <Logo src={wizardData.appLogo} alt={wizardData.appName} />
                 </LogoContainer>
-                {
-                    isCurrent('authorizations') &&
-                    <Authorizations
-                        appName={wizardData.appName}
-                        scopeMessages={wizardData.scopeMessages}
-                    />
-                }
-                {
-                    isCurrent('permission') && <Permissions />
-                }
+                {isCurrent('authorizations') && (
+                    <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
+                )}
+                {isCurrent('permissions') && <Permissions />}
             </Content>
 
             <ProgressIndicatorContainer>
-                {steps.map(step =>
+                {steps.map(step => (
                     <ProgressIndicator.Step key={step} current={isCurrent(step)}>
                         {translate(`akeneo_connectivity.connection.connect.apps.wizard.progress.${step}`)}
                     </ProgressIndicator.Step>
-                )}
+                ))}
             </ProgressIndicatorContainer>
         </Modal>
     );

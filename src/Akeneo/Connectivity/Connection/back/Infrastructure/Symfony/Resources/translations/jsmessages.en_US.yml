@@ -68,6 +68,13 @@ akeneo_connectivity.connection:
                 action:
                     confirm: Confirm
                     cancel: Cancel
+                    previous: Previous
+                    next: Next
+                    allow_and_next: Allow and next
+                progress:
+                    authorizations: Authorizations
+                    permissions: Permissions
+                    well_done: Well done!
                 authorize:
                     title: 'App {{ app_name }} needs to'
                     no_scope_title: 'The {{ app_name }} App would like to access your PIM.'

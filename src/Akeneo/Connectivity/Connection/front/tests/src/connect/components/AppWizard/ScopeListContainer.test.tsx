@@ -10,6 +10,11 @@ beforeEach(() => {
     historyMock.reset();
 });
 
+jest.mock('@src/connect/components/ScopeList', () => ({
+    ScopeList: () => <div>ScopeListComponent</div>,
+    ScopeItem: () => <div>ScopeItemComponent</div>,
+}));
+
 test('The scope list renders with scopes', () => {
     const scopes = [
         {
@@ -22,10 +27,12 @@ test('The scope list renders with scopes', () => {
     renderWithProviders(<ScopeListContainer appName='MyApp' scopeMessages={scopes} />);
 
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.title', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.title', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')).toBeInTheDocument();
-    expect(screen.getByTestId('scope-list')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('ScopeListComponent')).toBeInTheDocument();
 });
 
 test('The scope list still renders with unknown scopes', () => {
@@ -39,18 +46,20 @@ test('The scope list still renders with unknown scopes', () => {
 
     renderWithProviders(<ScopeListContainer appName='MyApp' scopeMessages={scopes} />);
 
-    expect(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')).toBeInTheDocument();
-    expect(screen.getByTestId('scope-list')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('ScopeListComponent')).toBeInTheDocument();
 });
 
 test('The scope list renders without scopes', () => {
     renderWithProviders(<ScopeListContainer appName='MyApp' scopeMessages={[]} />);
 
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope_title', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope_title', {
+            exact: false,
+        })
     ).toBeInTheDocument();
-    expect(
-        screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')
-    ).toBeInTheDocument();
-    expect(screen.queryByTestId('scope-list')).not.toBeInTheDocument();
+    expect(screen.queryByText('ScopeItemComponent')).toBeInTheDocument();
+    expect(screen.queryByText('ScopeListComponent')).not.toBeInTheDocument();
 });
