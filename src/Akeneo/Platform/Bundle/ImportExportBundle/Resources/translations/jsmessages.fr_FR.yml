@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.
 pim_import_export:
+  validation:
+    max_length_reached: Cette valeur est trop longue. Elle doit contenir {{ max }} caractères ou moins.
   entity:
     job_instance:
       label: profil
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Le profil n'a pas pu être mis à jour.
         delete:
           success: La tâche a bien été supprimée
+      duplicate:
+        title: Dupliquer le profil {{ job_code }}
+        success: Le profil a été dupliqué avec succès.
+        fail: Le profil n'a pas pu être dupliqué.
     import_profile:
       uppercase_label: Profil d'import
       flash:
