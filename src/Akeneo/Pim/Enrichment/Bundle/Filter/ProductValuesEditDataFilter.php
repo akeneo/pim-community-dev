@@ -139,7 +139,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
                 return false;
             }
 
-            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getLocaleSpecificCodes())) {
+            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getAvailableLocaleCodes())) {
                 return false;
             }
         }
