@@ -47,7 +47,6 @@
         "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
-        "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
