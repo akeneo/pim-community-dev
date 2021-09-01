@@ -100,6 +100,7 @@
 - PIM-10019: Update product indexation on attribute as label change
 - PIM-10037: Fix family variant query to return correct number of results
 - PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
+- PIM-9990: Fix lost of keyup event when tab key is pressed too fast on input field
 
 ## New features
 
