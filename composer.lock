@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a5f23d60aad2c9cdbf9ee492d0ad0bb",
+    "content-hash": "e46913cf02fb8d875cc0f729d57f3297",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -16218,7 +16218,6 @@
         "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
-        "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
