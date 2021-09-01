@@ -25,9 +25,7 @@ export const Apps = withDependencies(({routes}: Props) => (
     <StrictMode>
         <AkeneoThemeProvider>
             <Router>
-                <Switch>
-                    {renderRoutes(routes)}
-                </Switch>
+                <Switch>{renderRoutes(routes)}</Switch>
             </Router>
         </AkeneoThemeProvider>
     </StrictMode>

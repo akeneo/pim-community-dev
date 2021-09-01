@@ -7,12 +7,4 @@ import {Apps, AppsRoutes} from './infrastructure/Apps';
 
 export * from './infrastructure/routing';
 
-export {
-    Settings,
-    Audit,
-    ErrorManagement,
-    WebhookSettings,
-    Marketplace,
-    Apps,
-    AppsRoutes,
-};
+export {Settings, Audit, ErrorManagement, WebhookSettings, Marketplace, Apps, AppsRoutes};

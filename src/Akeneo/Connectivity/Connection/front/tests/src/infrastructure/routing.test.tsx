@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {mergeRoutes} from '@src/infrastructure/routing';
 
-const ComponentA: FC = () => (<div>A</div>);
-const ComponentB: FC = () => (<div>B</div>);
-const ComponentC: FC = () => (<div>C</div>);
-const ComponentD: FC = () => (<div>D</div>);
+const ComponentA: FC = () => <div>A</div>;
+const ComponentB: FC = () => <div>B</div>;
+const ComponentC: FC = () => <div>C</div>;
+const ComponentD: FC = () => <div>D</div>;
 
 test('it merges routes', () => {
     const original = [

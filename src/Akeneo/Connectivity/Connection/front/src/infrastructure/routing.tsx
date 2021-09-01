@@ -8,11 +8,9 @@ export type RouteDefinition = {
 
 export const renderRoutes = (routes: RouteDefinition[]): ReactNode => {
     return routes.map((route, i) => (
-        <Route key={i} path={route.path} render={props => (
-            <route.component {...props}/>
-        )}/>
+        <Route key={i} path={route.path} render={props => <route.component {...props} />} />
     ));
-}
+};
 
 export const mergeRoutes = (routes: RouteDefinition[], overrides: RouteDefinition[]): RouteDefinition[] => {
     // first, replace any route from "routes" by a route from "overrides" if the path is the same
