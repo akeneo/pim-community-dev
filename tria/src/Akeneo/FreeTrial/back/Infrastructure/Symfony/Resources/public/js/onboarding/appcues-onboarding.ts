@@ -93,6 +93,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Clicked on "Next" after choosing a bulk action');
           }
           break;
+        case 'grid:mass-edit:attributes-added':
+          if (eventOptions && eventOptions.name && eventOptions.name.includes('certifications')) {
+            appcues.track('Attribute "Certifications" added in a bulk action');
+          }
+          break;
       }
     });
   },
