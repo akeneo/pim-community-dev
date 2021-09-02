@@ -1,8 +1,5 @@
 oneup_flysystem:
     adapters:
-        asset_storage_adapter:
-            local:
-                location: '%kernel.project_dir%/var/file_storage/asset'
         catalog_storage_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.catalog_storage_adapter'

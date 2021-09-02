@@ -23,7 +23,6 @@ final class FileStorageChecker
         'catalogStorage',
         'archivist',
         'jobsStorage',
-        'assetStorage',
     ];
 
     private FileSystemProvider $filesystemProvider;
