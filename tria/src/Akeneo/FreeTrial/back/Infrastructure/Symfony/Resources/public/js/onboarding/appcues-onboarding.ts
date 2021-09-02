@@ -55,6 +55,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Completeness badge for product "Elka Peacock Armchair" opened');
           }
           break;
+        case 'product-grid:attribute-group:selected':
+          if (eventOptions && eventOptions.name === 'contentcopy') {
+            appcues.track('Attribute group "Content / Copy" selected');
+          }
+          break;
       }
     });
   },
