@@ -54,6 +54,7 @@ class ConfirmAppAuthorizationHandlerIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->handler = $this->get(ConfirmAppAuthorizationHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
@@ -64,7 +65,7 @@ class ConfirmAppAuthorizationHandlerIntegration extends TestCase
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->scopeMapper = $this->get('pim_api.security.scope_mapper');
 
-        //$this->loadAppsFixtures();
+        $this->loadAppsFixtures();
 
         $this->createOAuth2Client([
             'marketplacePublicAppId' => '90741597-54c5-48a1-98da-a68e7ee0a715',
