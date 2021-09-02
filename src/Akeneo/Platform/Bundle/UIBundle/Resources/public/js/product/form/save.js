@@ -60,7 +60,7 @@ define([
       this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
       analytics.track('product-grid:product:saved', {
-        name: product.identifier
+        name: product.identifier,
       });
 
       return ProductSaver.save(productId, product)
