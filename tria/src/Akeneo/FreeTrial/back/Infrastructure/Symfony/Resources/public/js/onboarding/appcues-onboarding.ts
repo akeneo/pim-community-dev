@@ -78,6 +78,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'product-grid:product:all-selected':
           appcues.track('All products are selected');
           break;
+        case 'grid:mass-edit:clicked':
+          if (eventOptions && eventOptions.name === 'product-edit') {
+            appcues.track('Button "Bulk actions" in product grid clicked');
+          }
+          break;
       }
     });
   },
