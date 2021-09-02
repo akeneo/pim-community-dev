@@ -394,6 +394,10 @@ delete_expired_uptime_check:
 	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
 	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
 
+.PHONY: remove_unused_gcloud_bucket
+remove_unused_gcloud_bucket:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
+
 .PHONY: clone_serenity
 clone_serenity:
 	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
