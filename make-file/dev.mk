@@ -49,3 +49,6 @@ xdebug-on:
 cypress-interactive:
 	docker-compose -f docker-compose-cypress.yml run --rm -u 1000:1000 -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --entrypoint cypress cypress open --project .
 
+.PHONY: lint-fix-back
+lint-fix-back: #Doc: run php-cs-fixer with symfony codestyle
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --config=.php_cs_symfony.dist --diff --path-mode=intersection ${O}
