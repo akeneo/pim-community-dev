@@ -56,7 +56,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.4-imagick \
         php7.4-gd \
         php7.4-apcu \
-        php7.4-exif && \
+        php7.4-exif \
+        php7.4-grpc \
+        php7.4-protobuf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.4 /usr/local/sbin/php-fpm && \
@@ -166,6 +168,38 @@ RUN mkdir var && \
     (test -d vendor/akeneo/pim-onboarder/upgrades/schema/ && cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/ || true)
 
 #
+# Intermediate images to install BigCommerce Connector
+#
+FROM builder AS builder-bigcommerceconnector-back
+
+ARG COMPOSER_AUTH
+
+WORKDIR /srv/pim
+
+COPY tmp tmp
+
+# Build back
+WORKDIR /srv/pim/tmp/build-connector/back/
+
+RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
+        --no-scripts \
+        --no-interaction \
+        --no-ansi \
+        --no-dev \
+        --prefer-dist \
+        --optimize-autoloader
+
+FROM node:14 AS builder-bigcommerceconnector-front
+
+COPY --from=builder-bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/front /srv/pim/tmp/build-connector/front
+
+# Build front
+WORKDIR /srv/pim/tmp/build-connector/front
+
+RUN yarn install --frozen-lockfile
+RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" yarn build
+
+#
 # Image used for production
 #
 FROM base AS prod
@@ -183,6 +217,10 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .
+
+# Copy big commerce connector
+COPY --from=builder-bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
+COPY --from=builder-bigcommerceconnector-front --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
