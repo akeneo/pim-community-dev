@@ -66,6 +66,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Designer" filled with "Studio Plumen"');
           }
           break;
+        case 'product-grid:product:saved':
+          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+            appcues.track('Product "Elka Peacock Armchair" saved');
+          }
+          break;
       }
     });
   },
