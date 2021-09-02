@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\AppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,13 +23,16 @@ class ConfirmAuthorizationAction
 {
     private ConfirmAppAuthorizationHandler $handler;
     private FeatureFlag $featureFlag;
+    private AppRepositoryInterface $appRepository;
 
     public function __construct(
         ConfirmAppAuthorizationHandler $handler,
-        FeatureFlag $featureFlag
+        FeatureFlag $featureFlag,
+        AppRepositoryInterface $appRepository
     ) {
         $this->handler = $handler;
         $this->featureFlag = $featureFlag;
+        $this->appRepository = $appRepository;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -40,8 +45,17 @@ class ConfirmAuthorizationAction
             return new RedirectResponse('/');
         }
 
-        $this->handler->handle(new ConfirmAppAuthorizationCommand($clientId));
+        $app = $this->appRepository->findOneById($clientId);
+        if(null === $app) {
+            try {
+                $app = $this->handler->handle(new ConfirmAppAuthorizationCommand($clientId));
+            } catch (InvalidAppAuthorizationRequest $exception) {
+                return new JsonResponse([
+                    'error' => $exception->getConstraintViolationList()[0]->getMessage()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
 
-        return new JsonResponse(['clientId' => $clientId]);
+        return new JsonResponse(['appId' => $app->getId()]);
     }
 }

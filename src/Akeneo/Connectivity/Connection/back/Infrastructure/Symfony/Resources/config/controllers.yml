@@ -102,3 +102,4 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationHandler'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'

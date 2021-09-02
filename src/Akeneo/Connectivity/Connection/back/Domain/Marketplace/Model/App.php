@@ -174,4 +174,36 @@ class App
     {
         return $this->logo;
     }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function getPartner(): ?string
+    {
+        return $this->partner;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
+    }
+
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+
 }

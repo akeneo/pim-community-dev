@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -30,6 +32,7 @@ final class ConfirmAppAuthorizationHandler
     private CreateUserGroupInterface $createUserGroup;
     private AppRoleWithScopesFactory $roleFactory;
     private ClientProviderInterface $clientProvider;
+    private CreateAppInterface $createApp;
 
     public function __construct(
         ValidatorInterface               $validator,
@@ -39,7 +42,8 @@ final class ConfirmAppAuthorizationHandler
         CreateUserGroupInterface         $createUserGroup,
         CreateConnectionInterface        $createConnection,
         AppRoleWithScopesFactory         $roleFactory,
-        ClientProviderInterface $clientProvider
+        ClientProviderInterface $clientProvider,
+        CreateAppInterface $createApp
     ) {
         $this->validator = $validator;
         $this->session = $session;
@@ -49,51 +53,40 @@ final class ConfirmAppAuthorizationHandler
         $this->createConnection = $createConnection;
         $this->roleFactory = $roleFactory;
         $this->clientProvider = $clientProvider;
+        $this->createApp = $createApp;
     }
 
-    public function handle(ConfirmAppAuthorizationCommand $command): void
+    public function handle(ConfirmAppAuthorizationCommand $command): App
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
             throw new InvalidAppAuthorizationRequest($violations);
         }
 
-        $clientId = $command->getClientId();
+        $appId = $command->getClientId();
 
-        $appAuthorization = $this->session->getAppAuthorization($command->getClientId());
+        $appAuthorization = $this->session->getAppAuthorization($appId);
 
-        $app = $this->getAppQuery->execute($clientId);
-        if (null === $app) {
+        $marketplaceApp = $this->getAppQuery->execute($appId);
+        if (null === $marketplaceApp) {
             throw new \RuntimeException('App not found');
         }
 
-        $appId = $app->getId();
-
-        $group = $this->createUserGroup->execute($this->generateGroupName($app->getName()));
-        $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
-
-        $user = $this->createUser->execute(
-            $appId,
-            $appId,
-            $appId,
-            [$group->getName()],
-            [$role->getRole()],
-        );
-
         $client = $this->clientProvider->findClientByAppId($appId);
-        if (null === $client) {
-            throw new \RuntimeException("No client found with client id $appId");
-        }
+
+        $group = $this->createUserGroup->execute($this->generateGroupName($marketplaceApp->getName()));
+        $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
+        $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
 
         $connection = $this->createConnection->execute(
             $this->generateConnectionCode($appId),
-            $app->getName(),
+            $marketplaceApp->getName(),
             FlowType::OTHER,
             $client->getId(),
             $user->id(),
         );
 
-        dd($connection);
+        return $this->createApp->execute($marketplaceApp, $appAuthorization->scopeList(), $connection->code());
     }
 
     /**

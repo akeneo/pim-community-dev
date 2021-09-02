@@ -74,7 +74,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
 
     const confirm = () => {
         confirmAuthorization().then(() => {
-            console.log('confirmed');
+            history.push('/connect/marketplace');
         });
     };
 
