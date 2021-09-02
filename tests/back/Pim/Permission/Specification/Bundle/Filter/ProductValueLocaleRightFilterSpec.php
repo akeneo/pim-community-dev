@@ -104,7 +104,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $price->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
 
-        $priceAttribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
+        $priceAttribute->getAvailableLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $priceAttribute->isLocaleSpecific()->willReturn(true);
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
         $cachedLocaleRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
@@ -128,7 +128,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $price->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
 
-        $priceAttribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
+        $priceAttribute->getAvailableLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $priceAttribute->isLocaleSpecific()->willReturn(true);
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
         $cachedLocaleRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);

@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Repository;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
@@ -37,11 +38,13 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param QueryBuilder $qb
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {
         if (!empty($values)) {
-            $rootAlias = $qb->getRootAlias();
+            $rootAlias = $qb->getRootAliases()[0];
             $valueWhereCondition =
                 $inset
                     ? $qb->expr()->in($rootAlias, $values)
