@@ -40,6 +40,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
             appcues.track('View "Furniture - To enrich" selected');
           }
+
+          if (eventOptions && eventOptions.name === 'Food - To enrich') {
+            appcues.track('View "Food - To enrich" selected');
+          }
           break;
         case 'product-grid:column:selected':
           if (eventOptions && eventOptions.name && eventOptions.name.includes('designer')) {
