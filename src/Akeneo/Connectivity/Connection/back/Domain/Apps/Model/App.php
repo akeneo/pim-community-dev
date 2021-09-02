@@ -12,15 +12,21 @@ final class App
 {
     private string $id;
     private string $name;
-    private array $scopes;
     private string $connectionCode;
     private string $logo;
     private string $author;
+    /** @var string[] $scopes */
+    private array $scopes;
+    /** @var string[] $categories */
     private array $categories;
     private bool $certified;
     private ?string $partner;
     private ?string $externalUrl;
 
+    /**
+     * @param string[] $scopes
+     * @param string[] $categories
+     */
     public function __construct(
         string $id,
         string $name,
@@ -32,8 +38,7 @@ final class App
         bool $certified = false,
         string $partner = null,
         string $externalUrl = null
-    )
-    {
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->scopes = $scopes;

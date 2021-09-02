@@ -200,10 +200,11 @@ class App
         return $this->certified;
     }
 
+    /**
+     * @return string[]
+     */
     public function getCategories(): array
     {
         return $this->categories;
     }
-
-
 }

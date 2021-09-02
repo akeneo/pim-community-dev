@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -16,6 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
+use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -35,13 +37,13 @@ final class ConfirmAppAuthorizationHandler
     private CreateAppInterface $createApp;
 
     public function __construct(
-        ValidatorInterface               $validator,
+        ValidatorInterface $validator,
         AppAuthorizationSessionInterface $session,
-        GetAppQueryInterface             $getAppQuery,
-        CreateUserInterface              $createUser,
-        CreateUserGroupInterface         $createUserGroup,
-        CreateConnectionInterface        $createConnection,
-        AppRoleWithScopesFactory         $roleFactory,
+        GetAppQueryInterface $getAppQuery,
+        CreateUserInterface $createUser,
+        CreateUserGroupInterface $createUserGroup,
+        CreateConnectionInterface $createConnection,
+        AppRoleWithScopesFactory $roleFactory,
         ClientProviderInterface $clientProvider,
         CreateAppInterface $createApp
     ) {
@@ -65,18 +67,25 @@ final class ConfirmAppAuthorizationHandler
 
         $appId = $command->getClientId();
 
-        $appAuthorization = $this->session->getAppAuthorization($appId);
-
         $marketplaceApp = $this->getAppQuery->execute($appId);
         if (null === $marketplaceApp) {
             throw new \RuntimeException('App not found');
         }
 
+        /** @var AppAuthorization $appAuthorization */
+        $appAuthorization = $this->session->getAppAuthorization($appId);
+
+        /** @var Client $client */
         $client = $this->clientProvider->findClientByAppId($appId);
 
         $group = $this->createUserGroup->execute($this->generateGroupName($marketplaceApp->getName()));
         $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
-        $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
+
+        /** @var string $groupName */
+        $groupName = $group->getName();
+        /** @var string $roleName */
+        $roleName = $role->getRole();
+        $user = $this->createUser->execute($appId, $appId, $appId, [$groupName], [$roleName]);
 
         $connection = $this->createConnection->execute(
             $this->generateConnectionCode($appId),

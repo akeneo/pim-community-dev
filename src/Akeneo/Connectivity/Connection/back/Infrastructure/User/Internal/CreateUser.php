@@ -42,6 +42,9 @@ class CreateUser implements CreateUserInterface
         $this->userSaver = $userSaver;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function execute(string $username, string $firstname, string $lastname, ?array $groups = null, ?array $roles = null): User
     {
         $password = $this->generatePassword();
