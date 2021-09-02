@@ -5,24 +5,17 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\RecordIsUsedAsProductVariantAxisInterface;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindRecordsUsedAsProductVariantAxisInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProductAttributeRepository;
 use Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 
-class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductVariantAxisInterface
+class InMemoryFindRecordsUsedAsProductVariantAxis implements FindRecordsUsedAsProductVariantAxisInterface
 {
-    /** @var InMemoryFamilyVariantsByAttributeAxes */
-    private $familyVariantsByAttributeAxes;
-
-    /** @var InMemoryProductAttributeRepository */
-    private $attributeRepository;
-
-    /** @var InMemoryProductRepository */
-    private $productRepository;
+    private InMemoryFamilyVariantsByAttributeAxes $familyVariantsByAttributeAxes;
+    private InMemoryProductAttributeRepository $attributeRepository;
+    private InMemoryProductRepository $productRepository;
 
     public function __construct(
         InMemoryFamilyVariantsByAttributeAxes $familyVariantsByAttributeAxes,
@@ -34,7 +27,7 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
         $this->productRepository = $productRepository;
     }
 
-    public function execute(RecordCode $recordCode, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function areUsed(array $recordCodes, string $referenceEntityIdentifier): bool
     {
         $attributeCodes = $this->findProductAttributeCodesLinkedToReferenceEntity($referenceEntityIdentifier);
 
@@ -45,11 +38,12 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
                 continue;
             }
 
-            if (0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
-                $familyVariantsIdentifiers,
-                $attributeCode,
-                $recordCode
-            )
+            if (
+                0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
+                    $familyVariantsIdentifiers,
+                    $attributeCode,
+                    $recordCodes
+                )
             ) {
                 return true;
             }
@@ -58,8 +52,36 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
         return false;
     }
 
+    public function getUsedCodes(array $recordCodes, string $referenceEntityIdentifier): array
+    {
+        $attributeCodes = $this->findProductAttributeCodesLinkedToReferenceEntity($referenceEntityIdentifier);
+        $recordCodesUsedAsAxis = [];
+
+        foreach ($attributeCodes as $attributeCode) {
+            $familyVariantsIdentifiers = $this->familyVariantsByAttributeAxes->findIdentifiers([$attributeCode]);
+
+            if (empty($familyVariantsIdentifiers)) {
+                continue;
+            }
+
+            foreach ($recordCodes as $recordCode) {
+                if (
+                    0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
+                        $familyVariantsIdentifiers,
+                        $attributeCode,
+                        $recordCodes
+                    )
+                ) {
+                    $recordCodesUsedAsAxis[] = $recordCode;
+                }
+            }
+        }
+
+        return $recordCodesUsedAsAxis;
+    }
+
     private function findProductAttributeCodesLinkedToReferenceEntity(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        string $referenceEntityIdentifier
     ): array {
         $identifier = (string)$referenceEntityIdentifier;
 
@@ -90,7 +112,7 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
     private function countEntitiesUsingRecordAsProductVariantAxis(
         array $familyVariantsIdentifier,
         string $attributeCode,
-        RecordCode $recordCode
+        array $recordCodes
     ): int {
         /** @var Product[] $products */
         $products = $this->productRepository->findAll();
@@ -98,8 +120,10 @@ class InMemoryRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductV
         $count = 0;
 
         foreach ($products as $product) {
-            if (in_array($product->getFamilyVariant(), $familyVariantsIdentifier)
-                && $product->getValue($attributeCode)->getData() === (string)$recordCode) {
+            if (
+                in_array($product->getFamilyVariant(), $familyVariantsIdentifier)
+                && in_array($product->getValue($attributeCode)->getData(), $recordCodes)
+            ) {
                 $count++;
             }
         }
