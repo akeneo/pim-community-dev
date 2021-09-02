@@ -6,10 +6,6 @@
   version "0.0.0"
   uid ""
 
-"@akeneo-pim-community/shared@link:features/measurement/shared":
-  version "0.0.0"
-  uid ""
-
 "@akeneo-pim-community/shared@link:front-packages/shared":
   version "0.0.0"
   uid ""
@@ -3513,17 +3509,9 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"akeneo-design-system@link:features/measurement/akeneo-design-system":
-  version "0.0.0"
-  uid ""
-
 "akeneo-design-system@link:front-packages/akeneo-design-system":
   version "0.0.0"
-  dependencies:
-    draft-js "^0.10.5"
-    draftjs-to-html "^0.8.4"
-    html-to-draftjs "^1.5.0"
-    react-draft-wysiwyg "^1.12.13"
+  uid ""
 
 alphanum-sort@^1.0.0:
   version "1.0.2"

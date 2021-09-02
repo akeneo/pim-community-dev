@@ -15,7 +15,7 @@ const unsavedChanges = {
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations} dependencies={{security: {isGranted: () => true}}}>
         <ConfigContext.Provider value={{families_max: 10, operations_max: 10, units_max: 10}}>
           <UnsavedChangesContext.Provider value={unsavedChanges}>
             <MeasurementApp />
