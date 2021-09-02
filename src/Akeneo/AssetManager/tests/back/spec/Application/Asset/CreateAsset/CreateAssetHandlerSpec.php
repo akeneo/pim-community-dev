@@ -138,11 +138,17 @@ class CreateAssetHandlerSpec extends ObjectBehavior
             $assetIdentifier,
             $assetFamilyIdentifier
         ) {
-            $expectedAsset = Asset::create(
+            Assert::count($asset->getRecordedEvents(), 1);
+            Assert::isInstanceOf(current($asset->getRecordedEvents()), AssetCreatedEvent::class);
+            $asset->clearRecordedEvents();
+
+            $expectedAsset = Asset::fromState(
                 $assetIdentifier,
                 $assetFamilyIdentifier,
                 AssetCode::fromString('intel'),
                 ValueCollection::fromValues([]),
+                $asset->getCreatedAt(),
+                $asset->getUpdatedAt(),
             );
 
             Assert::eq($expectedAsset, $asset);
