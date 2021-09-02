@@ -75,6 +75,9 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Product "Elka Peacock Armchair" saved');
           }
           break;
+        case 'product-grid:product:all-selected':
+          appcues.track('All products are selected');
+          break;
       }
     });
   },
