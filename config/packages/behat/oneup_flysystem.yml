@@ -1,7 +1,5 @@
 oneup_flysystem:
     adapters:
-        asset_storage_adapter:
-            memory: ~
         catalog_storage_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'

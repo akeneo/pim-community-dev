@@ -1,8 +1,5 @@
 oneup_flysystem:
     filesystems:
-        asset_storage:
-            adapter: asset_storage_adapter
-            mount: assetStorage
         catalog_storage:
             adapter: catalog_storage_adapter
             mount: catalogStorage
