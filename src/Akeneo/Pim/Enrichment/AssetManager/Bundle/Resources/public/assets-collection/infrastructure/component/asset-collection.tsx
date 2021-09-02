@@ -135,36 +135,40 @@ export const AssetCollection = ({
               {__('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
             </Helper>
           )}
-          {assets.map((asset: ListAsset) => (
-            <AssetCard key={asset.code} data-asset={asset.code}>
-              <Thumbnail
-                asset={asset}
-                context={context}
-                readonly={readonly}
-                assetCollection={assets}
-                onRemove={() => {
-                  const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
-                  setAssets(filteredAssets);
-                  onChange(getAssetCodes(filteredAssets));
-                }}
-                onMove={(direction: MoveDirection) => {
-                  const orderedAssets = moveAssetInCollection(assets, asset, direction);
-                  setAssets(orderedAssets);
-                  onChange(getAssetCodes(orderedAssets));
-                }}
-                onClick={() => {
-                  setInitialPreviewAssetCode(asset.code);
-                  setPreviewModalOpen(true);
-                }}
-              />
-              <AssetTitle>
-                <Label color={readonly ? akeneoTheme.color.grey100 : undefined}>
-                  {getAssetLabel(asset, context.locale)}
-                </Label>
-                {!isComplete(asset) ? <BaselinePill /> : null}
-              </AssetTitle>
-            </AssetCard>
-          ))}
+          {assets.map((asset: ListAsset) => {
+            const assetLabel = getAssetLabel(asset, context.locale);
+            const isCode = `[${asset.code}]` === assetLabel;
+            return (
+              <AssetCard key={asset.code} data-asset={asset.code}>
+                <Thumbnail
+                  asset={asset}
+                  context={context}
+                  readonly={readonly}
+                  assetCollection={assets}
+                  onRemove={() => {
+                    const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
+                    setAssets(filteredAssets);
+                    onChange(getAssetCodes(filteredAssets));
+                  }}
+                  onMove={(direction: MoveDirection) => {
+                    const orderedAssets = moveAssetInCollection(assets, asset, direction);
+                    setAssets(orderedAssets);
+                    onChange(getAssetCodes(orderedAssets));
+                  }}
+                  onClick={() => {
+                    setInitialPreviewAssetCode(asset.code);
+                    setPreviewModalOpen(true);
+                  }}
+                />
+                <AssetTitle>
+                  <Label isCode={isCode} color={readonly ? akeneoTheme.color.grey100 : undefined}>
+                    {assetLabel}
+                  </Label>
+                  {!isComplete(asset) ? <BaselinePill /> : null}
+                </AssetTitle>
+              </AssetCard>
+            );
+          })}
           {isPreviewModalOpen && null !== initialPreviewAssetCode ? (
             <AssetPreview
               productIdentifier={productIdentifier}
