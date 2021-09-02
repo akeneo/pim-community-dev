@@ -108,4 +108,53 @@ class CreateAssetHandlerSpec extends ObjectBehavior
 
         $this->__invoke($createAssetCommand);
     }
+
+    function it_creates_and_save_a_new_asset_and_ignores_empty_labels(
+        AssetRepositoryInterface $assetRepository,
+        CreateAssetCommand $createAssetCommand,
+        FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
+    ) {
+        $createAssetCommand->code = 'intel';
+        $createAssetCommand->assetFamilyIdentifier = 'brand';
+        $createAssetCommand->labels = [
+            'en_US' => '',
+            'fr_FR' => '',
+        ];
+
+        $assetIdentifier = AssetIdentifier::fromString('brand_intel_a1677570-a278-444b-ab46-baa1db199392');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($createAssetCommand->assetFamilyIdentifier);
+        $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
+
+        $findAttributeAsLabel
+            ->find(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($labelAttributeReference);
+
+        $assetRepository->nextIdentifier(
+            Argument::type(AssetFamilyIdentifier::class),
+            Argument::type(AssetCode::class)
+        )->willReturn($assetIdentifier);
+
+        $assetRepository->create(Argument::that(function ($asset) use (
+            $assetIdentifier,
+            $assetFamilyIdentifier
+        ) {
+            Assert::count($asset->getRecordedEvents(), 1);
+            Assert::isInstanceOf(current($asset->getRecordedEvents()), AssetCreatedEvent::class);
+            $asset->clearRecordedEvents();
+
+            $expectedAsset = Asset::fromState(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
+                AssetCode::fromString('intel'),
+                ValueCollection::fromValues([]),
+                $asset->getCreatedAt(),
+                $asset->getUpdatedAt(),
+            );
+
+            Assert::eq($expectedAsset, $asset);
+            return true;
+        }))->shouldBeCalled();
+
+        $this->__invoke($createAssetCommand);
+    }
 }

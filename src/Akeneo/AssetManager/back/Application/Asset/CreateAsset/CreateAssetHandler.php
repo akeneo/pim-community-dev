@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -76,6 +77,10 @@ class CreateAssetHandler
 
         $labelValues = [];
         foreach ($createAssetCommand->labels as $locale => $label) {
+            if (empty($label)) {
+                continue;
+            }
+
             $labelValues[] = Value::create(
                 $attributeAsLabelReference->getIdentifier(),
                 ChannelReference::noReference(),
