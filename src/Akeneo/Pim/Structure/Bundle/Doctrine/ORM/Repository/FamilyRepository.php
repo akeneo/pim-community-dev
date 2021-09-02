@@ -60,7 +60,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         if (isset($options['identifiers'])) {
             $qb->andWhere('f.code IN (:identifiers)')
-               ->setParameter('identifiers', $options['identifiers']);
+                ->setParameter('identifiers', $options['identifiers']);
         }
 
         if ($limit) {
@@ -69,6 +69,8 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
                 $qb->setFirstResult((int) $limit * ((int) $options['page'] - 1));
             }
         }
+
+        $qb->distinct();
         $qb->orderBy('f.code');
 
         return $qb->getQuery()->getResult();

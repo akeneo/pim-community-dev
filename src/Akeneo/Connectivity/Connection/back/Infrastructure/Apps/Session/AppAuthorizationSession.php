@@ -35,8 +35,26 @@ class AppAuthorizationSession implements AppAuthorizationSessionInterface
     }
 
     /**
+     * Retrieves an App authorization from the session given an App client id
+     *
+     * @param string $clientId
+     * @return AppAuthorization|null returns null if none found
+     */
+    public function getAppAuthorization(string $clientId): ?AppAuthorization
+    {
+        $key = $this->getSessionKey($clientId);
+
+        $sessionAppAuthorization = $this->session->get($key);
+        if (null === $sessionAppAuthorization) {
+            return null;
+        }
+
+        return AppAuthorization::createFromNormalized(json_decode($sessionAppAuthorization, true));
+    }
+
+    /**
      * The session key includes the client_id.
-     * It will prevent any override when sereval activations of different apps are started during the same session.
+     * It will prevent any override when several activations of different apps are started during the same session.
      */
     private function getSessionKey(string $clientId): string
     {

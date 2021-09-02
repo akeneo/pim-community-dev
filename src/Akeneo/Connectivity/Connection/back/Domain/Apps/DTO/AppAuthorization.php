@@ -70,4 +70,12 @@ final class AppAuthorization
             'state' => $this->state,
         ];
     }
+
+    /**
+     * @return string[]
+     */
+    public function scopeList(): array
+    {
+        return empty($this->scope) ? [] : explode(' ', $this->scope);
+    }
 }
