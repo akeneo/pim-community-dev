@@ -83,6 +83,16 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Button "Bulk actions" in product grid clicked');
           }
           break;
+        case 'grid:mass-edit:item-chosen':
+          if (eventOptions && eventOptions.name === 'add_attribute_value') {
+            appcues.track('Bulk action "Add attribute values" selected');
+          }
+          break;
+        case 'grid:mass-edit:action-step':
+          if (eventOptions && eventOptions.name === 'configure') {
+            appcues.track('Clicked on "Next" after choosing a bulk action');
+          }
+          break;
       }
     });
   },
