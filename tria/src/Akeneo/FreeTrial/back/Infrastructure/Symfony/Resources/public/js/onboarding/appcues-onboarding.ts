@@ -7,6 +7,7 @@ const Mediator = require('oro/mediator');
 
 interface EventOptions {
   name?: string,
+  attribute?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -58,6 +59,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'product-grid:attribute-group:selected':
           if (eventOptions && eventOptions.name === 'contentcopy') {
             appcues.track('Attribute group "Content / Copy" selected');
+          }
+          break;
+        case 'form:field:selected':
+          if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.name === 'studio_plumen') {
+            appcues.track('Attribute "Designer" filled with "Studio Plumen"');
           }
           break;
       }
