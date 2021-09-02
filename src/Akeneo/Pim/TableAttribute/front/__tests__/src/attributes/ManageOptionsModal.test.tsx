@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {fireEvent, screen} from '@testing-library/react';
+import {fireEvent, screen, act} from '@testing-library/react';
 import {ManageOptionsModal} from '../../../src/attribute/ManageOptionsModal';
 import {getTableAttribute} from '../factories/Attributes';
 import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
@@ -176,6 +176,29 @@ describe('ManageOptionsModal', () => {
       ingredientsSelectOptions[2],
       ingredientsSelectOptions[3],
     ]);
+  });
+
+  it('should remove a new option', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getTableAttribute()}
+        onChange={handleChange}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={jest.fn()}
+      />
+    );
+    expect(await findCodeInput(0)).toHaveValue('salt');
+
+    await act(async () => {
+      fireEvent.change(getCodeInput('new'), {target: {value: 'code'}});
+      fireEvent.change(await findLabelInput(ingredientsSelectOptions.length), {target: {value: 'label'}});
+      fireEvent.click(screen.getAllByTitle('pim_common.remove')[4]);
+    });
+
+    expect(screen.getAllByTitle('pim_common.remove').length).toBe(4);
+    const confirmationInput = screen.queryByLabelText('pim_table_attribute.form.attribute.please_type');
+    expect(confirmationInput).not.toBeInTheDocument();
   });
 
   it('should display already fetched options', async () => {

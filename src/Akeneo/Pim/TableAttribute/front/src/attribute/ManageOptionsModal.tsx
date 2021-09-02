@@ -140,6 +140,17 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   }, []);
 
   React.useEffect(() => {
+    if (typeof indexToRemove === 'undefined' || !options) {
+      return;
+    }
+    if (options[indexToRemove]?.isNew) {
+      handleDelete();
+    } else {
+      openDeleteOptionModal();
+    }
+  }, [indexToRemove]);
+
+  React.useEffect(() => {
     if (scrollToBottom) {
       if (filteredOptions && filteredOptions.length > 0) {
         const option = filteredOptions[filteredOptions.length - 1];
@@ -366,14 +377,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                           onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(option), option)}
                           key={option.id}
                           option={option}
-                          onDelete={() => {
-                            setIndexToRemove(getRealIndex(option));
-                            if (option.isNew) {
-                              handleDelete();
-                            } else {
-                              openDeleteOptionModal();
-                            }
-                          }}
+                          onDelete={() => setIndexToRemove(getRealIndex(option))}
                           violations={violations[option.id]}
                           localeCode={currentLocaleCode}
                           onLabelEnter={isLastOption(option) ? () => newLabelInputRef.current?.focus() : undefined}
