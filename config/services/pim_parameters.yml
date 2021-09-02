@@ -27,3 +27,8 @@ parameters:
     count_assets_limit: -1
     count_asset_categories_limit: -1
     count_asset_category_trees_limit: -1
+
+    index_list_changed_total_field_limit:
+        - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+        - '%env(APP_ASSET_INDEX_NAME)%'
+        - '%env(APP_RECORD_INDEX_NAME)%'

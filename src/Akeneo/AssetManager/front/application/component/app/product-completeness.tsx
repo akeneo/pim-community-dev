@@ -1,12 +1,17 @@
 import React from 'react';
 import {Badge} from 'akeneo-design-system';
+import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 
-const getLabel = (completeness: Completeness, type: ProductType) =>
-  PRODUCT_TYPE === type
-    ? `${completeness.getRatio()} %`
-    : `${completeness.getCompleteChildren()}/${completeness.getTotalChildren()}`;
+const getLabel = (translate: Translate, completeness: Completeness, type: ProductType) => {
+  switch (type) {
+    case PRODUCT_TYPE:
+      return null === completeness.getRatio() ? translate('pim_common.not_available') : `${completeness.getRatio()} %`;
+    default:
+      return `${completeness.getCompleteChildren()}/${completeness.getTotalChildren()}`;
+  }
+};
 
 const getLevel = (completeness: Completeness) => {
   if (completeness.isComplete()) {
@@ -23,8 +28,10 @@ type ProductCompletenessProps = {
   type: ProductType;
 };
 
-const ProductCompleteness = ({completeness, type}: ProductCompletenessProps) => (
-  <Badge level={getLevel(completeness)}>{getLabel(completeness, type)}</Badge>
-);
+const ProductCompleteness = ({completeness, type}: ProductCompletenessProps) => {
+  const translate = useTranslate();
+
+  return <Badge level={getLevel(completeness)}>{getLabel(translate, completeness, type)}</Badge>;
+};
 
 export {ProductCompleteness};

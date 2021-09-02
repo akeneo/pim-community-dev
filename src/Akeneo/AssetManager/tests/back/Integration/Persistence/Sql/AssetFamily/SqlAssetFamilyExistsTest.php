@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyExists;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 /**
@@ -26,13 +26,13 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlAssetFamilyExistsTest extends SqlIntegrationTestCase
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
+    private SqlAssetFamilyExists $assetFamilyExists;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->assetFamilyExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists');
+        $this->assetFamilyExists = $this->get('akeneo_assetmanager.infrastructure.persistence.sql.query.asset_family_exists');
         $this->resetDB();
     }
 

@@ -65,7 +65,7 @@
 - PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
 - PIM-9984: Fix image preview in asset manager in media link attributes
 - PIM-9981: Fix permission to download logs of clean removed attribute values job
-- PIM-9980: Prevent root category selection in Rule Engine set categories action 
+- PIM-9980: Prevent root category selection in Rule Engine set categories action
 - PIM-9942: Fix message on DQI dashboard in French UI locale
 - PIM-9983: Fix optimization of query to get info about projects
 - PIM-10009: Fix error being printed in the response of partial update of product models API
@@ -76,6 +76,9 @@
 - PIM-10026: Avoid session persistance for API
 - PIM-10028: Fix the ETA time displayed when executing a rule with several actions
 - PIM-10042: Fix infinite loop when using get all reference entity records API endpoint
+- PIM-10043: Fix search not filtering family list on the asset export settings
+- PIM-10052: Fix completeness display in Linked products
+- PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
 
 ## Improvements
 
