@@ -15,15 +15,24 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.user.create_user'
             - '@akeneo_connectivity.connection.service.user.create_user_group'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateApp'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateApp'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateApp:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
         arguments:
@@ -35,12 +44,3 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository:
         arguments:
             - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateApp:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\CreateConnection:
-        arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'

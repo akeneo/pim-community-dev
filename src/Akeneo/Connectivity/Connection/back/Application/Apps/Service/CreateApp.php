@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Service;
+namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\AppRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App as MarketplaceApp;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -15,9 +14,9 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppReposi
  */
 final class CreateApp implements CreateAppInterface
 {
-    private DbalAppRepository $repository;
+    private AppRepositoryInterface $repository;
 
-    public function __construct(DbalAppRepository $repository) {
+    public function __construct(AppRepositoryInterface $repository) {
         $this->repository = $repository;
     }
 

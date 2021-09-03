@@ -26,9 +26,8 @@ class CreateUserGroup implements CreateUserGroupInterface
         SimpleFactoryInterface $userGroupFactory,
         ObjectUpdaterInterface $userGroupUpdater,
         SaverInterface $userGroupSaver,
-        ValidatorInterface  $validator
-    )
-    {
+        ValidatorInterface $validator
+    ) {
         $this->userGroupFactory = $userGroupFactory;
         $this->userGroupUpdater = $userGroupUpdater;
         $this->userGroupSaver = $userGroupSaver;
@@ -47,7 +46,7 @@ class CreateUserGroup implements CreateUserGroupInterface
                 $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
             }
 
-            throw new \LogicException("The user group creation failed :\n" . implode("\n", $errorMessages));
+            throw new \LogicException('The user group creation failed :\n' . implode('\n', $errorMessages));
         }
 
         $this->userGroupSaver->save($group);

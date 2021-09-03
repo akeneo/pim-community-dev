@@ -21,16 +21,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ConfirmAuthorizationAction
 {
-    private ConfirmAppAuthorizationHandler $handler;
+    private ConfirmAppAuthorizationHandler $confirmAppAuthorizationHandler;
     private FeatureFlag $featureFlag;
     private AppRepositoryInterface $appRepository;
 
     public function __construct(
-        ConfirmAppAuthorizationHandler $handler,
+        ConfirmAppAuthorizationHandler $confirmAppAuthorizationHandler,
         FeatureFlag $featureFlag,
         AppRepositoryInterface $appRepository
     ) {
-        $this->handler = $handler;
+        $this->confirmAppAuthorizationHandler = $confirmAppAuthorizationHandler;
         $this->featureFlag = $featureFlag;
         $this->appRepository = $appRepository;
     }
@@ -46,9 +46,9 @@ class ConfirmAuthorizationAction
         }
 
         $app = $this->appRepository->findOneById($clientId);
-        if(null === $app) {
+        if (null === $app) {
             try {
-                $app = $this->handler->handle(new ConfirmAppAuthorizationCommand($clientId));
+                $app = $this->confirmAppAuthorizationHandler->handle(new ConfirmAppAuthorizationCommand($clientId));
             } catch (InvalidAppAuthorizationRequest $exception) {
                 return new JsonResponse([
                     'error' => $exception->getConstraintViolationList()[0]->getMessage()
