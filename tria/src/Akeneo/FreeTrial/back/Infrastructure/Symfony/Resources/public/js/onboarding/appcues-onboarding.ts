@@ -97,6 +97,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name && eventOptions.name.includes('certifications')) {
             appcues.track('Attribute "Certifications" added in a bulk action');
           }
+
+          if (eventOptions && eventOptions.name && eventOptions.name.includes('food_standard')) {
+            appcues.track('Attribute "Industry Standards" added in a bulk action');
+          }
           break;
       }
     });
