@@ -24,16 +24,16 @@ test('it renders with the expected configuration', () => {
         />,
     );
     expect(select2).toBeCalledWith({
-        "ajax": {
-            "cache": true,
-            "dataType": "json",
-            "quietMillis": 250,
-            "results": props.processResults,
-            "url": props.url,
+        'ajax': {
+            'cache': true,
+            'dataType': 'json',
+            'quietMillis': 250,
+            'results': props.processResults,
+            'url': props.url,
         },
-        "closeOnSelect": true,
-        "initSelection": expect.any(Function),
-        "multiple": true,
+        'closeOnSelect': true,
+        'initSelection': expect.any(Function),
+        'multiple': true,
     });
     expect(select2).toBeCalledWith('enable', true);
 });
