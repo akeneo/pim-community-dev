@@ -34,6 +34,11 @@ jobs:
             git checkout ${CIRCLE_BRANCH} || git checkout master
             echo "Current commit: $(git rev-parse --short HEAD)"
       - run:
+          name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
+          command: |
+              mkdir -p tmp
+              git clone --branch v0 git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+      - run:
           name: Require proper dev CE branch
           command: |
             sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
