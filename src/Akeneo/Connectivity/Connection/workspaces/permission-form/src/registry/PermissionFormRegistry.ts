@@ -23,12 +23,13 @@ const PermissionFormRegistry = {
     },
     all: async (): Promise<PermissionFormProvider<any>[]> => {
         const config = PermissionFormRegistry._getModuleConfig();
+        const providers = config.providers || {};
 
-        const modules = Object.keys(config.providers)
+        const modules = Object.keys(providers)
             .sort((a, b) => {
-                return (config.providers[a].order ?? 0) - (config.providers[b].order ?? 0);
+                return (providers[a].order ?? 0) - (providers[b].order ?? 0);
             })
-            .map(key => config.providers[key].module);
+            .map(key => providers[key].module);
 
         return await Promise.all(modules.map(async (module): Promise<any> => {
             return (await requireContext(module)).default;

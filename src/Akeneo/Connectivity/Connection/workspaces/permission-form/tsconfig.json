@@ -6,5 +6,5 @@
         "esModuleInterop": true,
         "lib": ["dom", "es2015", "es2016", "es2017","es2018", "es2019"]
     },
-    "include": ["js", "types.d.ts"]
+    "include": ["src", "tests/types.d.ts"]
 }

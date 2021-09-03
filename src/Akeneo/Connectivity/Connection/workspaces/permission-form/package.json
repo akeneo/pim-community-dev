@@ -1,0 +1,9 @@
+{
+    "name": "@akeneo-pim-community/permission-form",
+    "version": "1.0.0",
+    "license": "OSL-3.0",
+    "scripts": {
+        "jest": "jest --config jest.config.js"
+    },
+    "private": true
+}
