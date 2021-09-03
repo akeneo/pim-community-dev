@@ -1,4 +1,4 @@
-import PermissionFormRegistry from '@akeneo-pim-community/permission-form';
+import {PermissionFormRegistry} from '@akeneo-pim-community/permission-form';
 
 // @ts-ignore
 PermissionFormRegistry.setModuleConfig(__moduleConfig);

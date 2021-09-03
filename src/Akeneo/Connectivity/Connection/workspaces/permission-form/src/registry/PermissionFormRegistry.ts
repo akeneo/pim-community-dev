@@ -12,7 +12,8 @@ type ModuleConfig = {
 
 export interface PermissionFormProvider<T> {
     key: string;
-    render: (onChange: (state: T) => void) => ReactNode;
+    renderForm: (onChange: (state: T) => void) => ReactNode;
+    renderPreview: (state: T) => ReactNode;
     save: (role: string, state: T) => boolean;
 }
 
