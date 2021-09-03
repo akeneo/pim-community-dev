@@ -345,7 +345,7 @@ upgrade-instance:
 	-a "productTypePrefixFilter=$(TYPE)" \
 	-a "googleProjectIdFilter=akecld-saas-dev" \
 	-a "googleCloudZoneFilter=*" \
-	-a "forceUpdate=false"
+	-a "forceUpdate=true"
 
 .PHONY: test-prod
 test-prod:
