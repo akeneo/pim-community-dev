@@ -8,8 +8,7 @@ jest.mock('../dependencies/require-context', () => ({
 }));
 
 test('it can retrieve the list of registered providers', async () => {
-    const spy = jest.spyOn(PermissionFormRegistry, '_getModuleConfig');
-    spy.mockImplementation(() => ({
+    PermissionFormRegistry.setModuleConfig({
         providers: {
             'd': {
                 module: 'module/d',
@@ -26,7 +25,7 @@ test('it can retrieve the list of registered providers', async () => {
                 module: 'module/b',
             },
         },
-    }));
+    });
 
     const providers = await PermissionFormRegistry.all();
 

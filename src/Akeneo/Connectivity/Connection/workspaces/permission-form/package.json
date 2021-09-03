@@ -2,6 +2,7 @@
     "name": "@akeneo-pim-community/permission-form",
     "version": "1.0.0",
     "license": "OSL-3.0",
+    "main": "src/index.ts",
     "scripts": {
         "jest": "jest --config jest.config.js"
     },
