@@ -57,7 +57,7 @@ final class CreateAppWithAuthorizationHandler
         $this->createApp = $createApp;
     }
 
-    public function handle(CreateAppWithAuthorizationCommand $command)
+    public function handle(CreateAppWithAuthorizationCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
