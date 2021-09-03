@@ -6,14 +6,14 @@ module.exports = {
         },
     },
     moduleDirectories: [
-        '<rootDir>/../../../../../../../../../../../node_modules/',
-        '<rootDir>/../../../../../../../../../../../public/bundles/',
+        '<rootDir>/../../../../../../node_modules/',
+        '<rootDir>/../../../../../../public/bundles/',
     ],
     setupFiles: [
-        './jquery.ts',
+        './tests/jquery.ts',
     ],
     moduleNameMapper: {
-        '\\.(svg|css)$': '<rootDir>/file-mock.ts',
+        '\\.(svg|css)$': '<rootDir>/tests/file-mock.ts',
     },
     collectCoverageFrom: [
       '<rootDir>/src/**/*.{ts,tsx}',
