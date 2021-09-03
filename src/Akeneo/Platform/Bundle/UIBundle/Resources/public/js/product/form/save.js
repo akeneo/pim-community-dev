@@ -59,7 +59,7 @@ define([
       this.showLoadingMask();
       this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-      analytics.track('product-grid:product:saved', {
+      analytics.track('product:form:saved', {
         name: product.identifier,
       });
 
