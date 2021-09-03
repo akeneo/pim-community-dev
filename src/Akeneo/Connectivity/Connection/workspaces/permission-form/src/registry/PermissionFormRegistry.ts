@@ -16,14 +16,16 @@ export interface PermissionFormProvider<T> {
     save: (role: string, state: T) => boolean;
 }
 
+let _config: ModuleConfig = {
+    providers: {},
+};
+
 const PermissionFormRegistry = {
-    _getModuleConfig: /* istanbul ignore next */ (): ModuleConfig => {
-        // @ts-ignore
-        return __moduleConfig;
+    setModuleConfig: (config: ModuleConfig) => {
+        _config = config;
     },
     all: async (): Promise<PermissionFormProvider<any>[]> => {
-        const config = PermissionFormRegistry._getModuleConfig();
-        const providers = config.providers || {};
+        const providers = _config.providers;
 
         const modules = Object.keys(providers)
             .sort((a, b) => {

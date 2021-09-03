@@ -52,4 +52,4 @@ config:
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
 
-#        pim/permission-form-registry: akeneoconnectivityconnection/js/permission-form/src/registry/PermissionFormRegistry
+        pim/permission-form-registry: akeneoconnectivityconnection/js/registry/permission-form-registry
