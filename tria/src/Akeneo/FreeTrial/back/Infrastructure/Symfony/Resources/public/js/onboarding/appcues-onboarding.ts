@@ -92,6 +92,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'configure') {
             appcues.track('Clicked on "Next" after choosing a bulk action');
           }
+
+          if (eventOptions && eventOptions.name === 'validate') {
+            appcues.track('Clicked on "Confirm" after configuring a bulk action');
+          }
           break;
         case 'grid:mass-edit:attributes-added':
           if (eventOptions && eventOptions.name && eventOptions.name.includes('certifications')) {
