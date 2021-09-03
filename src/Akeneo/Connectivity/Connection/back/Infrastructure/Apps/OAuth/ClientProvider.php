@@ -44,6 +44,9 @@ class ClientProvider implements ClientProviderInterface
 
     public function findClientByAppId(string $appId): ?Client
     {
-        return $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
+        /** @var Client | null */
+        $client = $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
+
+        return $client;
     }
 }
