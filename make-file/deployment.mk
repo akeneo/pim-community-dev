@@ -398,6 +398,17 @@ delete_expired_uptime_check:
 remove_unused_gcloud_bucket:
 	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
 
+.PHONY: remove_unused_disk
+remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
+
+.PHONY: remove_unused_kube_disk
+remove_unused_kube_disk:
+	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
+
+.PHONY: remove_unused_gcloud_disk
+remove_unused_gcloud_disk:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+
 .PHONY: clone_serenity
 clone_serenity:
 	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
