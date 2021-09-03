@@ -15,36 +15,19 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInter
  */
 class FamilyVariantRepository implements DatagridRepositoryInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private string $entityName;
 
-    /** @var string */
-    private $entityName;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $entityName
-     */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function createDatagridQueryBuilder($parameters = []): QueryBuilder
+    public function createDatagridQueryBuilder(array $parameters = []): QueryBuilder
     {
         $qb = $this->entityManager->createQueryBuilder()->select('fv')->from($this->entityName, 'fv');
-        $rootAlias = $qb->getRootAlias();
-
-        $labelExpr = sprintf(
-            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
-            $rootAlias
-        );
+        $rootAlias = $qb->getRootAliases()[0];
 
         $qb
             ->select($rootAlias)
