@@ -79,6 +79,7 @@
 - PIM-10043: Fix search not filtering family list on the asset export settings
 - PIM-10052: Fix completeness display in Linked products
 - PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
+- PIM-10034: Implement LRU cache for Asset Attributes to optimize performance
 - PIM-10054: Check records are not used as variant axes before mass delete
 - PIM-10038: Optimize Rule logger to be executed only depending of the log level
 
