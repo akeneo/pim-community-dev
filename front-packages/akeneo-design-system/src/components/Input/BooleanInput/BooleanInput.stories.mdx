@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {BooleanInput} from './BooleanInput.tsx';
+import {Link} from '../../Link/Link';
 import {useArgs, updateArgs} from '@storybook/client-api';
 
 <Meta
@@ -91,6 +92,28 @@ The input can in some cases have a 3rd state, EMPTY. In this case, a clear butto
           <BooleanInput {...args} value={null} readOnly={true} />
           <BooleanInput {...args} value={true} readOnly={true} />
           <BooleanInput {...args} value={false} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <BooleanInput {...args} value={null} invalid={true}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
+          <BooleanInput {...args} value={true} invalid={true}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
+          <BooleanInput {...args} value={false} invalid={true}>
+            There is an error. <Link href="#">Link</Link>
+          </BooleanInput>
         </>
       );
     }}

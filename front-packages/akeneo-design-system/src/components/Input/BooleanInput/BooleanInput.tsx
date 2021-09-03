@@ -1,7 +1,7 @@
-import React, {Ref, useCallback} from 'react';
+import React, {ReactNode, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
-import {EraseIcon, LockIcon} from '../../../icons';
+import {DangerIcon, EraseIcon, LockIcon} from '../../../icons';
 import {InputProps} from '../common';
 import {Override} from '../../../shared';
 
@@ -26,32 +26,24 @@ const BooleanButton = styled.button<
   text-overflow: ellipsis;
   background: ${getColor('white')};
 
-  ${({readOnly, invalid}) => {
-    switch (readOnly) {
-      case true:
-        return css`
+  ${({readOnly, invalid}) =>
+    readOnly
+      ? css`
           border: 1px solid ${getColor('grey', 60)};
           color: ${getColor('grey', 80)};
-
           &:hover {
             background: ${getColor('white')};
             color: ${getColor('grey', 80)};
           }
-        `;
-      default:
-        return css`
+        `
+      : css`
           border: 1px solid ${invalid ? getColor('red', 100) : getColor('grey', 80)};
           cursor: pointer;
-
           &:hover {
             background: ${getColor('grey', 20)};
-            color: ${getColor('grey', 140)}
+            color: ${getColor('grey', 140)};
           }
-        ;
-        }
-        `;
-    }
-  }}
+        `}
 `;
 
 const NoButton = styled(BooleanButton)`
@@ -137,6 +129,27 @@ const IconContainer = styled.span`
 `;
 const BooleanInputLockIcon = styled(LockIcon)``;
 
+const ContainerInvalid = styled.div<AkeneoThemedProps>`
+  display: flex;
+  font-weight: 400;
+  padding-right: 20px;
+  color: ${getColor('red', 100)};
+`;
+const IconInvalidContainer = styled.span<AkeneoThemedProps>`
+  margin: 2px 0;
+  color: ${getColor('red', 100)};
+`;
+const TextInvalidContainer = styled.div<AkeneoThemedProps>`
+  font-size: 11px;
+  padding-left: 4px;
+  white-space: break-spaces;
+  flex: 1;
+
+  a {
+    color: ${getColor('red', 100)};
+  }
+`;
+
 type BooleanInputProps = Override<
   InputProps<boolean>,
   (
@@ -157,6 +170,7 @@ type BooleanInputProps = Override<
     yesLabel: string;
     noLabel: string;
     invalid?: boolean;
+    children: ReactNode;
   }
 >;
 
@@ -165,7 +179,18 @@ type BooleanInputProps = Override<
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
-    {value, readOnly, onChange, clearable = false, yesLabel, noLabel, clearLabel, invalid, ...rest}: BooleanInputProps,
+    {
+      value,
+      readOnly,
+      onChange,
+      clearable = false,
+      yesLabel,
+      noLabel,
+      clearLabel,
+      invalid,
+      children,
+      ...rest
+    }: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
@@ -230,6 +255,12 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           <IconContainer>
             <BooleanInputLockIcon size={16} />
           </IconContainer>
+        )}
+        {invalid && (
+          <ContainerInvalid>
+            <IconInvalidContainer>{React.cloneElement(<DangerIcon size={13} />)}</IconInvalidContainer>
+            <TextInvalidContainer>{children}</TextInvalidContainer>
+          </ContainerInvalid>
         )}
       </BooleanInputContainer>
     );
