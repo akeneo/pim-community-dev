@@ -241,7 +241,9 @@ pim_common:
   products: 产品
   product_models: 产品模型
   more: 更多
+  public_view: 公共视图
 error:
+  exception: 发生错误 {{ status_code }}… 
   forbidden: 您无权访问此页面
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
     rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
 pim_system:
+  system_menu: 系统菜单
   system_navigation: 系统导航
   users_management_navigation: 用户管理导航
+  count:
+    product_values: '{0}您有 0 个产品值 |{1}您有 1 个产品值 |]1，Inf[您有 {{ count }} 个产品值'
+    users: '{0}您有 0 个用户 |{1}您有 1 个用户 |]1，Inf[您有 {{ count }} 个用户'
+    user_groups: '{0}您有 0 个用户组 |{1}您有 1 个用户组 |]1，Inf[您有 {{ count }} 个用户组'
+    roles: '{0}您有 0 个角色 |{1}您有 1 个角色 |]1，Inf[您有 {{ count }} 个角色'
+  sso:
+    enabled: SSO 已启用
+    disabled: SSO 已禁用
+    title: 基于 SAML 的单点登录
