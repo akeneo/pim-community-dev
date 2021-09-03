@@ -100,6 +100,6 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
         arguments:
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConfirmAppAuthorizationHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'

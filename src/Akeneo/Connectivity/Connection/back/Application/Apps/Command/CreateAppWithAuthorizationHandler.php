@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterf
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -24,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConfirmAppAuthorizationHandler
+final class CreateAppWithAuthorizationHandler
 {
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
@@ -58,7 +57,7 @@ final class ConfirmAppAuthorizationHandler
         $this->createApp = $createApp;
     }
 
-    public function handle(ConfirmAppAuthorizationCommand $command): App
+    public function handle(CreateAppWithAuthorizationCommand $command)
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
@@ -95,7 +94,7 @@ final class ConfirmAppAuthorizationHandler
             $user->id(),
         );
 
-        return $this->createApp->execute($marketplaceApp, $appAuthorization->scopeList(), $connection->code());
+        $this->createApp->execute($marketplaceApp, $appAuthorization->scopeList(), $connection->code());
     }
 
     /**

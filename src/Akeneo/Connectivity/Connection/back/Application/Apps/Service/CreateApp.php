@@ -16,7 +16,8 @@ final class CreateApp implements CreateAppInterface
 {
     private AppRepositoryInterface $repository;
 
-    public function __construct(AppRepositoryInterface $repository) {
+    public function __construct(AppRepositoryInterface $repository)
+    {
         $this->repository = $repository;
     }
 
