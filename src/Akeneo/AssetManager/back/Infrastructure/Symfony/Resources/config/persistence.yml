@@ -46,10 +46,15 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.sql.query.asset_family_exists'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
+    akeneo_assetmanager.infrastructure.persistence.sql.find_asset_family_items:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyItems
         arguments:
             - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\AssetFamily\LRUCachedFindAssetFamilyItems
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.find_asset_family_items'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyDetails
