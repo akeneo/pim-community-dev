@@ -140,6 +140,7 @@ connectivity-connection-back:
 
 connectivity-connection-unit-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
+	$(NODE_RUN) ./node_modules/.bin/jest --config src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/public/js/permission-form/jest.config.js --ci --coverage
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint

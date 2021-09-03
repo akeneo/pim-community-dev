@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "jest": "jest --config jest.config.js"
+    },
+    "private": true
+}
