@@ -85,7 +85,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 {isCurrent('authorizations') && (
                     <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                 )}
-                {isCurrent('permissions') && <Permissions />}
+                {isCurrent('permissions') && <Permissions appName={wizardData.appName} />}
             </Content>
 
             <ProgressIndicatorContainer>
