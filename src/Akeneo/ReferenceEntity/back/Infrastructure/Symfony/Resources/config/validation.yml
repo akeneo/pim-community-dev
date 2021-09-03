@@ -159,6 +159,10 @@ Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand:
     constraints:
         - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordShouldNotBeUsedAsProductVariantAxis: ~
 
+Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsCommand:
+    constraints:
+        - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordsShouldNotBeUsedAsProductVariantAxis: ~
+
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:

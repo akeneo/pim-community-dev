@@ -16,10 +16,8 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\RecordIsUsedAsProductVariantAxisInterface;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindRecordsUsedAsProductVariantAxisInterface;
 use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -27,16 +25,11 @@ use Doctrine\DBAL\Types\Types;
 /**
  * @copyright 2020 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductVariantAxisInterface
+class SqlFindRecordsUsedAsProductVariantAxis implements FindRecordsUsedAsProductVariantAxisInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var FamilyVariantsByAttributeAxesInterface */
-    private $familyVariantsByAttributeAxes;
-
-    /** @var ProductAndProductModelQueryBuilderFactory */
-    private $pqbFactory;
+    private Connection $sqlConnection;
+    private FamilyVariantsByAttributeAxesInterface $familyVariantsByAttributeAxes;
+    private ProductAndProductModelQueryBuilderFactory $pqbFactory;
 
     public function __construct(
         Connection $sqlConnection,
@@ -48,22 +41,26 @@ class SqlRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductVarian
         $this->pqbFactory = $pqbFactory;
     }
 
-    public function execute(RecordCode $recordCode, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function areUsed(array $recordCodes, string $referenceEntityIdentifier): bool
     {
         $attributeCodes = $this->findProductAttributeCodesLinkedToReferenceEntity($referenceEntityIdentifier);
 
         foreach ($attributeCodes as $attributeCode) {
-            $familyVariantsIdentifiers = $this->familyVariantsByAttributeAxes->findIdentifiers([$attributeCode]);
+            $familyVariantIdentifiers = $this->familyVariantsByAttributeAxes->findIdentifiers([$attributeCode]);
 
-            if (empty($familyVariantsIdentifiers)) {
+            if (empty($familyVariantIdentifiers)) {
                 continue;
             }
 
-            if (0 !== $this->countEntitiesUsingRecordAsProductVariantAxis(
-                $familyVariantsIdentifiers,
-                $attributeCode,
-                $recordCode
-            )
+            if (
+                0 !== $this->countEntitiesUsingRecordsAsProductVariantAxis(
+                    $familyVariantIdentifiers,
+                    $attributeCode,
+                    $recordCodes
+                )
             ) {
                 return true;
             }
@@ -72,8 +69,37 @@ class SqlRecordIsUsedAsProductVariantAxis implements RecordIsUsedAsProductVarian
         return false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsedCodes(array $recordCodes, string $referenceEntityIdentifier): array
+    {
+        $attributeCodes = $this->findProductAttributeCodesLinkedToReferenceEntity($referenceEntityIdentifier);
+        $recordCodesUsedAsAxis = [];
+
+        foreach ($attributeCodes as $attributeCode) {
+            $familyVariantIdentifiers = $this->familyVariantsByAttributeAxes->findIdentifiers([$attributeCode]);
+
+            if (empty($familyVariantIdentifiers)) {
+                continue;
+            }
+
+            foreach ($recordCodes as $recordCode) {
+                if (0 !== $this->countEntitiesUsingRecordsAsProductVariantAxis(
+                    $familyVariantIdentifiers,
+                    $attributeCode,
+                    [$recordCode]
+                )) {
+                    $recordCodesUsedAsAxis[] = $recordCode;
+                }
+            }
+        }
+
+        return $recordCodesUsedAsAxis;
+    }
+
     private function findProductAttributeCodesLinkedToReferenceEntity(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
+        string $referenceEntityIdentifier
     ): array {
         $query = <<<SQL
         SELECT code, properties
@@ -90,7 +116,7 @@ SQL;
             ],
             [
                 'attribute_types' => Connection::PARAM_STR_ARRAY,
-            ]
+            ],
         );
 
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -101,32 +127,32 @@ SQL;
         $results = array_filter($results, function ($result) use ($platform, $referenceEntityIdentifier) {
             $properties = Type::getType(Types::ARRAY)->convertToPhpValue($result['properties'], $platform);
 
-            return $properties['reference_data_name'] === $referenceEntityIdentifier->normalize();
+            return $properties['reference_data_name'] === $referenceEntityIdentifier;
         });
 
-        $results = array_map(function ($result) {
-            return $result['code'];
-        }, $results);
-
-        return $results;
+        return array_column($results, 'code');
     }
 
-    private function countEntitiesUsingRecordAsProductVariantAxis(
-        array $familyVariantsIdentifier,
+    /**
+     * @param string[] $familyVariantIdentifiers
+     * @param string[] $recordCodes
+     */
+    private function countEntitiesUsingRecordsAsProductVariantAxis(
+        array $familyVariantIdentifiers,
         string $attributeCode,
-        RecordCode $recordCode
+        array $recordCodes
     ): int {
         $pqb = $this->pqbFactory->create([
             'filters' => [
                 [
                     'field' => 'family_variant',
                     'operator' => 'IN',
-                    'value' => $familyVariantsIdentifier,
+                    'value' => $familyVariantIdentifiers,
                 ],
                 [
                     'field' => $attributeCode,
                     'operator' => 'IN',
-                    'value' => [(string)$recordCode],
+                    'value' => $recordCodes,
                 ],
             ],
         ]);
