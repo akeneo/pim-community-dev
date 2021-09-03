@@ -1,0 +1,6 @@
+config:
+    config:
+        pim/permission-form-registry:
+            providers:
+                categories:
+                    module: akeneopimpermission/js/provider/CategoryPermissionFormProvider
