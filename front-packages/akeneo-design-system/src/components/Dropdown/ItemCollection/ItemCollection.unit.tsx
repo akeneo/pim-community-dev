@@ -13,6 +13,8 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('it handles arrow navigation', () => {
+  jest.useFakeTimers();
+
   render(
     <ItemCollection>
       <Item>First item</Item>
@@ -20,6 +22,8 @@ test('it handles arrow navigation', () => {
       An invalid element
     </ItemCollection>
   );
+
+  jest.runAllTimers();
 
   expect(screen.getByText('First item').parentNode).toHaveFocus();
   fireEvent.keyDown(screen.getByText('First item'), {key: 'ArrowDown', code: 'ArrowDown'});
