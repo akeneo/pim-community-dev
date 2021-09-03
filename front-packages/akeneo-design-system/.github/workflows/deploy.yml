@@ -10,10 +10,10 @@ jobs:
       - name: Checkout the current branch
         uses: actions/checkout@v2
 
-      - name: Install node 13.13 for the rest of the workflow
+      - name: Install node 12.20.2 for the rest of the workflow
         uses: actions/setup-node@v1
         with:
-          node-version: 13.13
+          node-version: 12.20.2
 
       - name: Install peer dependencies
         # TODO RAC-594 Do not used fixed peer dependencies
