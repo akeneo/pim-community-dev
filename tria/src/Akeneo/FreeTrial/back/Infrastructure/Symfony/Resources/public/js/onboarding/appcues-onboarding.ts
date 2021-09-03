@@ -8,6 +8,9 @@ const Mediator = require('oro/mediator');
 interface EventOptions {
   name?: string,
   attribute?: string,
+  gridName?: string,
+  identifier?: string,
+  value?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -46,12 +49,12 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'product-grid:column:selected':
-          if (eventOptions && eventOptions.name && eventOptions.name.includes('designer')) {
+          if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.name && eventOptions.name.includes('designer')) {
             appcues.track('Column "Designer" added in the product grid');
           }
           break;
         case 'product-grid:product:selected':
-          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+          if (eventOptions && eventOptions.identifier === 'PLGCHAELK001') {
             appcues.track('Product "Elka Peacock Armchair" selected');
           }
           break;
@@ -65,12 +68,12 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute group "Content / Copy" selected');
           }
           break;
-        case 'form:field:selected':
-          if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.name === 'studio_plumen') {
+        case 'product:attribute-value:updated':
+          if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.value === 'studio_plumen') {
             appcues.track('Attribute "Designer" filled with "Studio Plumen"');
           }
           break;
-        case 'product-grid:product:saved':
+        case 'product:form:saved':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
             appcues.track('Product "Elka Peacock Armchair" saved');
           }
