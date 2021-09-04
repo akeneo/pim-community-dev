@@ -34,7 +34,6 @@ pim_reference_entity:
         codes_dont_exist: "I codici opzione seguenti non esistono per questo attributo : \"%option_codes%\""
       record:
         should_exist: 'Il registro "%record_code%" non è stato trovato.'
-        should_not_be_used_as_product_variant_axis: 'Impossibile eliminare questa entità poiché è utilizzata come un asse variante in uno dei tuoi prodotti variante'
       record_collection:
         should_exist: 'I registri "%record_codes%" non sono stati trovati.'
       limit_reached: 'Non puoi creare il registro "%record_label%" perché hai raggiunto il limite di registri %limit% per quest''entità di riferimento'

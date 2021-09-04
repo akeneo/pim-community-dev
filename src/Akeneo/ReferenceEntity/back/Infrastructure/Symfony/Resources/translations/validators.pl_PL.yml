@@ -34,7 +34,6 @@ pim_reference_entity:
         codes_dont_exist: "Następujące kody opcji nie istnieją dla tego atrybutu: \"%option_codes%\""
       record:
         should_exist: 'Nie znaleziono rekordu "%record_code%".'
-        should_not_be_used_as_product_variant_axis: 'Nie możesz usunąć tego obiektu, ponieważ jest on używany jako oś wariantu w jednym z wariantów produktu'
       record_collection:
         should_exist: 'Nie znaleziono rekordów "%record_codes%".'
       limit_reached: 'Nie można utworzyć rekordu "%record_label%", ponieważ osiągnąłeś limit %limit% rekordów dla tego obiektu odniesienia'
