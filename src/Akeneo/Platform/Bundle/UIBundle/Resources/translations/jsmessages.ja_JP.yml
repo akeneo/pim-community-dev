@@ -241,7 +241,9 @@ pim_common:
   products: 商品
   product_models: 商品モデル
   more: 詳細
+  public_view: パブリックビュー
 error:
+  exception: '{{ status_code }}エラーが発生しました...'
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}0 個のグループがあります|{1}1 個のグループがあります|]1, Inf[{{ count }} 個のグループがあります'
     rules: '{0}0 項目の有効なルールがあります|{1}1 項目の有効なルールがあります|]1, Inf[{{ count }} 項目の有効なルールがあります'
 pim_system:
+  system_menu: システムメニュー
   system_navigation: システムナビゲーション
   users_management_navigation: ユーザー管理ナビゲーション
+  count:
+    product_values: '{0}0 個の商品値があります|{1}1 個の商品値があります|]1, Inf[{{ count }} 個の商品値があります'
+    users: '{0}0 人のユーザーがいます|{1}1 人のユーザーがいます|]1, Inf[{{ count }} 人のユーザーがいます'
+    user_groups: '{0}0 組のユーザーグループがあります|{1}1 組のユーザーグループがあります|]1, Inf[{{ count }} 組のユーザーグループがあります'
+    roles: '{0}0 個の権限があります|{1}1 個の権限があります|]1, Inf[{{ count }} 個の権限があります'
+  sso:
+    enabled: SSO有効
+    disabled: SSO無効
+    title: SAMLベースのシングルサインオン
