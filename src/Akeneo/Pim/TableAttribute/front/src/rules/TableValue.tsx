@@ -65,7 +65,7 @@ const TableValue: React.FC<InputValueProps> = ({attribute, value, onChange}) => 
 const render: (props: InputValueProps) => JSX.Element = props => {
   return (
     <DependenciesProvider>
-      <TableValue {...props} key={props.attribute.code}/>
+      <TableValue {...props} key={props.attribute.code} />
     </DependenciesProvider>
   );
 };
