@@ -265,6 +265,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Kies families
     choose:
+      title: Bulkacties voor families
       label_count: "]0, Inf[Selecteer uw actie"
     configure:
       label: Configureer

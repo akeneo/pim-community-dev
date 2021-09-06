@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Rynek
   akeneo_connectivity_connection_connect_marketplace_profile: Rynek
+  akeneo_connectivity_connection_connect_apps_activate: Połącz
+  akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_settings_index: Ustawienia połączeń
   akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
   akeneo_connectivity_connection_settings_any: Ustawienie połączenia
@@ -57,6 +59,47 @@ akeneo_connectivity.connection:
         empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
+    apps:
+      title: Połącz
+      action:
+        confirm: Potwierdź
+        cancel: Anuluj
+      activate:
+        flash:
+          error: Przepraszamy, wystąpił błąd podczas łączenia z aplikacją.
+      authorize:
+        title: 'Aplikacja {{ app_name }} musi'
+        no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
+        no_scope: Nie zażądano żadnych określonych autoryzacji.
+        helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
+        helper_link: zajrzyj do naszego Centrum Pomocy.
+        error:
+          sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
+        scope:
+          type:
+            view: 'Zobacz {{ entities }}'
+            edit: 'Zobacz i edytuj {{ entities }}'
+            delete: 'Zobacz, edytuj i usuń {{ entities }}'
+          entities:
+            catalog_structure: atrybuty, grupy atrybutów, rodziny i warianty rodziny
+            attribute_options: opcje atrybutów
+            categories: kategorie
+            channel_localization: wersje językowe i waluty
+            channel_settings: kanały
+            association_types: typy powiązań
+            products: produkty i modele produktów
+      constraint:
+        client_id:
+          not_blank: Atrybut client_id jest wymagany.
+          must_be_valid: Atrybut client_id nie odpowiada żadnemu znanemu klientowi.
+        response_type:
+          not_blank: Atrybut response_type jest wymagany.
+          must_be_code: Atrybut response_type musi mieć wartość kodową.
+        scope:
+          must_be_valid: Zakresy są nieprawidłowe.
+        redirect_uri:
+          not_blank: Atrybut redirect_uri jest wymagany.
+          must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
   connections: Połączenia
   secondary_actions:
     title: Inne działania
