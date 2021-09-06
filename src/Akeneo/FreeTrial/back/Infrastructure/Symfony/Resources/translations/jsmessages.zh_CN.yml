@@ -1,0 +1,15 @@
+free_trial:
+  menu:
+    assets: 资产
+    entities: 实体
+    proposals: 提案
+    sso: 基于 SAML 的单点登录
+    rules: 规则
+    feature_ee_only: 此功能仅适用于 Enterprise Edition
+  dqi:
+    dashboard:
+      helper: Akeneo PIM Enterprise Edition 为现有的数据质量洞察功能提供了额外的强大功能。您可以访问扩展的拼写检查功能、更广泛的语言覆盖面和其他关键指标，这些帮助您在销售的各个方面提供卓越的产品体验。
+  activity:
+    dashboard:
+      projects: 项目
+      helper: Akeneo PIM Enterprise Edition 中的项目帮助您组织并跟踪参与丰富产品数据的贡献者群组的工作。这些项目生成任务并分配给正确的用户，使每个人都能在构建出色的产品经验方面发挥自己的作用。创建项目以构建丰富的工作流程并监控项目状况。这些简化了处理产品丰富度的工作团队成员之间的沟通。

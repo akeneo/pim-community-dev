@@ -33,11 +33,9 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
     function it_removes_value_when_the_attribute_is_locale_specific_and_current_locale_is_not_in_available_list(
         FormEvent $event,
         FormInterface $form,
-        FormInterface $field,
-        FormInterface $rootForm,
         ValueInterface $taxValue,
         AttributeInterface $taxAttribute,
-        $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
@@ -48,7 +46,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $fr = new Locale();
         $fr->setCode('fr_FR');
         $taxAttribute->isLocaleSpecific()->willReturn(true);
-        $taxAttribute->getLocaleSpecificCodes()->willReturn(['fr_FR']);
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR']);
         $form->remove('tax')->shouldBeCalled();
 
         $this->preSetData($event);
@@ -57,11 +55,9 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
     function it_doesnt_remove_value_when_the_attribute_is_locale_specific_and_current_locale_is_in_available_list(
         FormEvent $event,
         FormInterface $form,
-        FormInterface $field,
-        FormInterface $rootForm,
         ValueInterface $taxValue,
         AttributeInterface $taxAttribute,
-        $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
@@ -74,7 +70,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $en = new Locale();
         $en->setCode('en_US');
         $taxAttribute->isLocaleSpecific()->willReturn(true);
-        $taxAttribute->getLocaleSpecificCodes()->willReturn(['fr_FR', 'en_US']);
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $form->remove('tax')->shouldNotBeCalled();
 
@@ -84,11 +80,9 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
     function it_doesnt_remove_value_when_the_attribute_is_not_locale_specific(
         FormEvent $event,
         FormInterface $form,
-        FormInterface $field,
-        FormInterface $rootForm,
         ValueInterface $nameValue,
         AttributeInterface $nameAttribute,
-        $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['name' => $nameValue]);
