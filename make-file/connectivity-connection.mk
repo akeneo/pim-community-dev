@@ -160,3 +160,5 @@ connectivity-connection-unit-front_watch:
 connectivity-connection-lint-front_fix:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write
+	$(_PERMISSION_FORM_YARN_RUN) eslint --fix
+	$(_PERMISSION_FORM_YARN_RUN) prettier --write
