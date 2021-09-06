@@ -4,7 +4,7 @@ import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 type Select2Option = {
     id: string;
     text: string;
-}
+};
 
 type Select2Configuration = {
     multiple: boolean;
@@ -12,7 +12,7 @@ type Select2Configuration = {
     ajax: {
         url: string;
         dataType: string;
-        results: (data: any) => { results: Select2Option[] };
+        results: (data: any) => {results: Select2Option[]};
         cache?: boolean;
         quietMillis?: number;
     };
@@ -26,7 +26,7 @@ type Select2Change = {
 };
 
 type Props = {
-    url: string,
+    url: string;
     fetchByIdentifiers: (identifiers: string[]) => Promise<Select2Option[]>;
     processResults: (data: any) => {
         results: Select2Option[];
@@ -38,46 +38,50 @@ type Props = {
     onRemove?: (value: string) => void;
 };
 
-export const MultiSelectInputWithDynamicOptions = (
-    {
-        url,
-        fetchByIdentifiers,
-        processResults,
-        disabled,
-        value,
-        onChange,
-        onAdd,
-        onRemove,
-    }: Props,
-) => {
+export const MultiSelectInputWithDynamicOptions = ({
+    url,
+    fetchByIdentifiers,
+    processResults,
+    disabled,
+    value,
+    onChange,
+    onAdd,
+    onRemove,
+}: Props) => {
     const ref = useRef<HTMLInputElement>(null);
-    const handleInitSelection = useCallback((element, callback) => {
-        const val = element.val().trim();
+    const handleInitSelection = useCallback(
+        (element, callback) => {
+            const val = element.val().trim();
 
-        if (val.length === 0) {
-            callback([]);
-            return;
-        }
+            if (val.length === 0) {
+                callback([]);
+                return;
+            }
 
-        const identifiers = val.split(',');
+            const identifiers = val.split(',');
 
-        fetchByIdentifiers(identifiers).then(results => {
-            callback(results);
-        });
-    }, [fetchByIdentifiers, processResults]);
-
-    const configuration: Select2Configuration = useMemo(() => ({
-        multiple: true,
-        closeOnSelect: true,
-        ajax: {
-            url: url,
-            cache: true,
-            quietMillis: 250,
-            dataType: 'json',
-            results: processResults,
+            fetchByIdentifiers(identifiers).then(results => {
+                callback(results);
+            });
         },
-        initSelection: handleInitSelection,
-    }), [url, processResults]);
+        [fetchByIdentifiers, processResults]
+    );
+
+    const configuration: Select2Configuration = useMemo(
+        () => ({
+            multiple: true,
+            closeOnSelect: true,
+            ajax: {
+                url: url,
+                cache: true,
+                quietMillis: 250,
+                dataType: 'json',
+                results: processResults,
+            },
+            initSelection: handleInitSelection,
+        }),
+        [url, processResults]
+    );
 
     useEffect(() => {
         if (null === ref.current) {
@@ -132,5 +136,5 @@ export const MultiSelectInputWithDynamicOptions = (
         $select.select2('enable', !disabled);
     }, [disabled]);
 
-    return <input type="hidden" ref={ref} data-testid="select2"/>;
+    return <input type='hidden' ref={ref} data-testid='select2' />;
 };

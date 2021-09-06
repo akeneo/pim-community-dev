@@ -13,7 +13,7 @@ const Field = styled.div`
 type Option = {
     id: string;
     text: string;
-}
+};
 
 type Props = {
     selection: string[];
@@ -30,23 +30,21 @@ type Props = {
         more: boolean;
     };
     fetchByIdentifiers: (identifiers: string[]) => Promise<Option[]>;
-}
+};
 
-export const PermissionFormWidget: FC<Props> = (
-    {
-        selection,
-        onAdd,
-        onRemove,
-        disabled,
-        allByDefaultIsSelected,
-        onSelectAllByDefault,
-        onDeselectAllByDefault,
-        onClear,
-        ajaxUrl,
-        processAjaxResponse,
-        fetchByIdentifiers,
-    }: Props,
-) => {
+export const PermissionFormWidget: FC<Props> = ({
+    selection,
+    onAdd,
+    onRemove,
+    disabled,
+    allByDefaultIsSelected,
+    onSelectAllByDefault,
+    onDeselectAllByDefault,
+    onClear,
+    ajaxUrl,
+    processAjaxResponse,
+    fetchByIdentifiers,
+}: Props) => {
     return (
         <Field>
             <MultiSelectInputWithDynamicOptions
@@ -60,16 +58,16 @@ export const PermissionFormWidget: FC<Props> = (
             />
             <Checkbox
                 checked={allByDefaultIsSelected}
-                onChange={(checked) => {
-                    checked ? onSelectAllByDefault() : onDeselectAllByDefault()
+                onChange={checked => {
+                    checked ? onSelectAllByDefault() : onDeselectAllByDefault();
                 }}
             >
                 {translate('pim_permissions.widget.action.all')}
             </Checkbox>
             <IconButton
-                ghost="borderless"
-                level="tertiary"
-                icon={<EraseIcon/>}
+                ghost='borderless'
+                level='tertiary'
+                icon={<EraseIcon />}
                 onClick={onClear}
                 title={translate('pim_permissions.widget.action.clear')}
             />

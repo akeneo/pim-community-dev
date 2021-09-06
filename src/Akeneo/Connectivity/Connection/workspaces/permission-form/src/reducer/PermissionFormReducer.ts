@@ -8,17 +8,17 @@ const remove = <T>(entries: T[], entryToRemove: T): T[] => {
 
 export type State = {
     own: {
-        all: boolean,
+        all: boolean;
         identifiers: string[];
-    },
+    };
     edit: {
-        all: boolean,
+        all: boolean;
         identifiers: string[];
-    },
+    };
     view: {
-        all: boolean,
+        all: boolean;
         identifiers: string[];
-    },
+    };
 };
 
 export const initialState = {
@@ -55,21 +55,21 @@ export enum Actions {
 }
 
 type PermissionFormAction =
-    | { type: Actions.ENABLE_ALL_OWN }
-    | { type: Actions.DISABLE_ALL_OWN }
-    | { type: Actions.ENABLE_ALL_EDIT }
-    | { type: Actions.DISABLE_ALL_EDIT }
-    | { type: Actions.ENABLE_ALL_VIEW }
-    | { type: Actions.DISABLE_ALL_VIEW }
-    | { type: Actions.CLEAR_OWN }
-    | { type: Actions.CLEAR_EDIT }
-    | { type: Actions.CLEAR_VIEW }
-    | { type: Actions.ADD_TO_OWN, identifier: string }
-    | { type: Actions.ADD_TO_EDIT, identifier: string }
-    | { type: Actions.ADD_TO_VIEW, identifier: string }
-    | { type: Actions.REMOVE_FROM_OWN, identifier: string }
-    | { type: Actions.REMOVE_FROM_EDIT, identifier: string }
-    | { type: Actions.REMOVE_FROM_VIEW, identifier: string };
+    | {type: Actions.ENABLE_ALL_OWN}
+    | {type: Actions.DISABLE_ALL_OWN}
+    | {type: Actions.ENABLE_ALL_EDIT}
+    | {type: Actions.DISABLE_ALL_EDIT}
+    | {type: Actions.ENABLE_ALL_VIEW}
+    | {type: Actions.DISABLE_ALL_VIEW}
+    | {type: Actions.CLEAR_OWN}
+    | {type: Actions.CLEAR_EDIT}
+    | {type: Actions.CLEAR_VIEW}
+    | {type: Actions.ADD_TO_OWN; identifier: string}
+    | {type: Actions.ADD_TO_EDIT; identifier: string}
+    | {type: Actions.ADD_TO_VIEW; identifier: string}
+    | {type: Actions.REMOVE_FROM_OWN; identifier: string}
+    | {type: Actions.REMOVE_FROM_EDIT; identifier: string}
+    | {type: Actions.REMOVE_FROM_VIEW; identifier: string};
 
 export const reducer = (state: State, action: PermissionFormAction): State => {
     switch (action.type) {
@@ -195,25 +195,16 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: unique([
-                        ...state.own.identifiers,
-                        action.identifier,
-                    ]),
+                    identifiers: unique([...state.own.identifiers, action.identifier]),
                 },
                 edit: {
                     all: false,
-                    identifiers: unique([
-                        ...state.edit.identifiers,
-                        action.identifier,
-                    ]),
+                    identifiers: unique([...state.edit.identifiers, action.identifier]),
                 },
                 view: {
                     all: false,
-                    identifiers: unique([
-                        ...state.view.identifiers,
-                        action.identifier,
-                    ]),
-                }
+                    identifiers: unique([...state.view.identifiers, action.identifier]),
+                },
             };
 
         case Actions.ADD_TO_EDIT:
@@ -221,18 +212,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 edit: {
                     all: false,
-                    identifiers: unique([
-                        ...state.edit.identifiers,
-                        action.identifier,
-                    ]),
+                    identifiers: unique([...state.edit.identifiers, action.identifier]),
                 },
                 view: {
                     all: false,
-                    identifiers: unique([
-                        ...state.view.identifiers,
-                        action.identifier,
-                    ]),
-                }
+                    identifiers: unique([...state.view.identifiers, action.identifier]),
+                },
             };
 
         case Actions.ADD_TO_VIEW:
@@ -240,11 +225,8 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 view: {
                     all: false,
-                    identifiers: unique([
-                        ...state.view.identifiers,
-                        action.identifier,
-                    ]),
-                }
+                    identifiers: unique([...state.view.identifiers, action.identifier]),
+                },
             };
 
         case Actions.REMOVE_FROM_OWN:
@@ -254,7 +236,7 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                     all: false,
                     identifiers: remove(state.own.identifiers, action.identifier),
                 },
-            }
+            };
 
         case Actions.REMOVE_FROM_EDIT:
             return {
@@ -267,7 +249,7 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                     all: false,
                     identifiers: remove(state.edit.identifiers, action.identifier),
                 },
-            }
+            };
 
         case Actions.REMOVE_FROM_VIEW:
             return {
@@ -284,7 +266,7 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                     all: false,
                     identifiers: remove(state.view.identifiers, action.identifier),
                 },
-            }
+            };
     }
 
     /* istanbul ignore next */

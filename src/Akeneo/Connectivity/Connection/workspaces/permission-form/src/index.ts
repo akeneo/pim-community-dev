@@ -2,9 +2,4 @@ import PermissionFormRegistry, {PermissionFormProvider} from './registry/Permiss
 import {PermissionFormWidget} from './component/PermissionFormWidget';
 import * as PermissionFormReducer from './reducer/PermissionFormReducer';
 
-export {
-    PermissionFormRegistry,
-    PermissionFormProvider,
-    PermissionFormWidget,
-    PermissionFormReducer,
-};
+export {PermissionFormRegistry, PermissionFormProvider, PermissionFormWidget, PermissionFormReducer};
