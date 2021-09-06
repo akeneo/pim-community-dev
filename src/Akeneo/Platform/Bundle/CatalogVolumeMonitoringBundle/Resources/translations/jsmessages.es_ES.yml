@@ -15,6 +15,7 @@ pim_catalog_volume:
     count_products: Productos
     average_max_attributes_per_family: Atributos por familia
     count_channels: Canales
+    count_locales: Configuraciones regionales (habilitado)
     count_scopable_attributes: Atributos alcanzables
     count_localizable_and_scopable_attributes: Atributos localizables y alcanzables
     count_localizable_attributes: Atributos localizables
