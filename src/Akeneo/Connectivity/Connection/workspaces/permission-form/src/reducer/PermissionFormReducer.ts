@@ -6,7 +6,7 @@ const remove = <T>(entries: T[], entryToRemove: T): T[] => {
     return entries.filter(entry => entry !== entryToRemove);
 };
 
-export type PermissionFormState = {
+export type State = {
     own: {
         all: boolean,
         identifiers: string[];
@@ -21,7 +21,7 @@ export type PermissionFormState = {
     },
 };
 
-export const permissionFormInitialState = {
+export const initialState = {
     own: {
         all: false,
         identifiers: [],
@@ -36,7 +36,7 @@ export const permissionFormInitialState = {
     },
 };
 
-export enum PermissionFormActions {
+export enum Actions {
     ENABLE_ALL_OWN = 'ENABLE_ALL_OWN',
     DISABLE_ALL_OWN = 'DISABLE_ALL_OWN',
     ENABLE_ALL_EDIT = 'ENABLE_ALL_EDIT',
@@ -55,25 +55,25 @@ export enum PermissionFormActions {
 }
 
 type PermissionFormAction =
-    | { type: PermissionFormActions.ENABLE_ALL_OWN }
-    | { type: PermissionFormActions.DISABLE_ALL_OWN }
-    | { type: PermissionFormActions.ENABLE_ALL_EDIT }
-    | { type: PermissionFormActions.DISABLE_ALL_EDIT }
-    | { type: PermissionFormActions.ENABLE_ALL_VIEW }
-    | { type: PermissionFormActions.DISABLE_ALL_VIEW }
-    | { type: PermissionFormActions.CLEAR_OWN }
-    | { type: PermissionFormActions.CLEAR_EDIT }
-    | { type: PermissionFormActions.CLEAR_VIEW }
-    | { type: PermissionFormActions.ADD_TO_OWN, identifier: string }
-    | { type: PermissionFormActions.ADD_TO_EDIT, identifier: string }
-    | { type: PermissionFormActions.ADD_TO_VIEW, identifier: string }
-    | { type: PermissionFormActions.REMOVE_FROM_OWN, identifier: string }
-    | { type: PermissionFormActions.REMOVE_FROM_EDIT, identifier: string }
-    | { type: PermissionFormActions.REMOVE_FROM_VIEW, identifier: string };
+    | { type: Actions.ENABLE_ALL_OWN }
+    | { type: Actions.DISABLE_ALL_OWN }
+    | { type: Actions.ENABLE_ALL_EDIT }
+    | { type: Actions.DISABLE_ALL_EDIT }
+    | { type: Actions.ENABLE_ALL_VIEW }
+    | { type: Actions.DISABLE_ALL_VIEW }
+    | { type: Actions.CLEAR_OWN }
+    | { type: Actions.CLEAR_EDIT }
+    | { type: Actions.CLEAR_VIEW }
+    | { type: Actions.ADD_TO_OWN, identifier: string }
+    | { type: Actions.ADD_TO_EDIT, identifier: string }
+    | { type: Actions.ADD_TO_VIEW, identifier: string }
+    | { type: Actions.REMOVE_FROM_OWN, identifier: string }
+    | { type: Actions.REMOVE_FROM_EDIT, identifier: string }
+    | { type: Actions.REMOVE_FROM_VIEW, identifier: string };
 
-export const permissionFormReducer = (state: PermissionFormState, action: PermissionFormAction): PermissionFormState => {
+export const reducer = (state: State, action: PermissionFormAction): State => {
     switch (action.type) {
-        case PermissionFormActions.ENABLE_ALL_OWN:
+        case Actions.ENABLE_ALL_OWN:
             return {
                 ...state,
                 own: {
@@ -90,7 +90,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.DISABLE_ALL_OWN:
+        case Actions.DISABLE_ALL_OWN:
             return {
                 ...state,
                 own: {
@@ -99,7 +99,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.ENABLE_ALL_EDIT:
+        case Actions.ENABLE_ALL_EDIT:
             return {
                 ...state,
                 edit: {
@@ -112,7 +112,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.DISABLE_ALL_EDIT:
+        case Actions.DISABLE_ALL_EDIT:
             return {
                 ...state,
                 own: {
@@ -125,7 +125,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.ENABLE_ALL_VIEW:
+        case Actions.ENABLE_ALL_VIEW:
             return {
                 ...state,
                 view: {
@@ -134,7 +134,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.DISABLE_ALL_VIEW:
+        case Actions.DISABLE_ALL_VIEW:
             return {
                 ...state,
                 own: {
@@ -151,7 +151,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.CLEAR_OWN:
+        case Actions.CLEAR_OWN:
             return {
                 ...state,
                 own: {
@@ -160,7 +160,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.CLEAR_EDIT:
+        case Actions.CLEAR_EDIT:
             return {
                 ...state,
                 own: {
@@ -173,7 +173,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.CLEAR_VIEW:
+        case Actions.CLEAR_VIEW:
             return {
                 ...state,
                 own: {
@@ -190,7 +190,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             };
 
-        case PermissionFormActions.ADD_TO_OWN:
+        case Actions.ADD_TO_OWN:
             return {
                 ...state,
                 own: {
@@ -216,7 +216,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 }
             };
 
-        case PermissionFormActions.ADD_TO_EDIT:
+        case Actions.ADD_TO_EDIT:
             return {
                 ...state,
                 edit: {
@@ -235,7 +235,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 }
             };
 
-        case PermissionFormActions.ADD_TO_VIEW:
+        case Actions.ADD_TO_VIEW:
             return {
                 ...state,
                 view: {
@@ -247,7 +247,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 }
             };
 
-        case PermissionFormActions.REMOVE_FROM_OWN:
+        case Actions.REMOVE_FROM_OWN:
             return {
                 ...state,
                 own: {
@@ -256,7 +256,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             }
 
-        case PermissionFormActions.REMOVE_FROM_EDIT:
+        case Actions.REMOVE_FROM_EDIT:
             return {
                 ...state,
                 own: {
@@ -269,7 +269,7 @@ export const permissionFormReducer = (state: PermissionFormState, action: Permis
                 },
             }
 
-        case PermissionFormActions.REMOVE_FROM_VIEW:
+        case Actions.REMOVE_FROM_VIEW:
             return {
                 ...state,
                 own: {
