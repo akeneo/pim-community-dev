@@ -11,6 +11,11 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:react/recommended"
     ],
+    "ignorePatterns": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "src/dependencies/**"
+    ],
     "rules": {
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/explicit-function-return-type": "off",

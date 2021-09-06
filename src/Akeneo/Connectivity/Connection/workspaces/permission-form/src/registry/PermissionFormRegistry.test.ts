@@ -10,18 +10,18 @@ jest.mock('../dependencies/require-context', () => ({
 test('it can retrieve the list of registered providers', async () => {
     PermissionFormRegistry.setModuleConfig({
         providers: {
-            'd': {
+            d: {
                 module: 'module/d',
                 order: 20,
             },
-            'c': {
+            c: {
                 module: 'module/c',
                 order: 10,
             },
-            'a': {
+            a: {
                 module: 'module/a',
             },
-            'b': {
+            b: {
                 module: 'module/b',
             },
         },

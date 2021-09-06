@@ -7,8 +7,8 @@ type ModuleConfig = {
             module: string;
             order?: number;
         };
-    }
-}
+    };
+};
 
 export interface PermissionFormProvider<T> {
     key: string;
@@ -34,9 +34,11 @@ const PermissionFormRegistry = {
             })
             .map(key => providers[key].module);
 
-        return await Promise.all(modules.map(async (module): Promise<any> => {
-            return (await requireContext(module)).default;
-        }));
+        return await Promise.all(
+            modules.map(async (module): Promise<any> => {
+                return (await requireContext(module)).default;
+            })
+        );
     },
 };
 

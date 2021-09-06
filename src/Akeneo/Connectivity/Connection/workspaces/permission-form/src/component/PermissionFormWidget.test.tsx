@@ -10,9 +10,7 @@ jest.mock('../dependencies/translate', () => ({
     default: (key: string) => key,
 }));
 jest.mock('./MultiSelectInputWithDynamicOptions', () => ({
-    MultiSelectInputWithDynamicOptions: () => (
-        <input type="hidden"/>
-    ),
+    MultiSelectInputWithDynamicOptions: () => <input type='hidden' />,
 }));
 
 const props = {
@@ -32,9 +30,7 @@ const props = {
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget
-                {...props}
-            />
+            <PermissionFormWidget {...props} />
         </ThemeProvider>
     );
 });
@@ -42,9 +38,7 @@ test('it renders without error', () => {
 test('it can check and uncheck the checkbox', () => {
     const {rerender} = render(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget
-                {...props}
-            />
+            <PermissionFormWidget {...props} />
         </ThemeProvider>
     );
 
@@ -55,12 +49,9 @@ test('it can check and uncheck the checkbox', () => {
 
     rerender(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget
-                {...props}
-                allByDefaultIsSelected={true}
-            />
+            <PermissionFormWidget {...props} allByDefaultIsSelected={true} />
         </ThemeProvider>
-    )
+    );
 
     fireEvent.click(checkbox);
     expect(props.onDeselectAllByDefault).toBeCalledTimes(1);
