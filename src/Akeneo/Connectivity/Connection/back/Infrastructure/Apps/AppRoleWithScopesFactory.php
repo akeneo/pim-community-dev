@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
 
+use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
@@ -14,7 +15,7 @@ use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AppRoleWithScopesFactory
+final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterface
 {
     private const APP_ROLE_TYPE = 'app';
 

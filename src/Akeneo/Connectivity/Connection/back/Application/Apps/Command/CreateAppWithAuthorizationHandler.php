@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
@@ -14,7 +15,6 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorization
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,7 +31,7 @@ final class CreateAppWithAuthorizationHandler
     private CreateConnectionInterface $createConnection;
     private CreateUserInterface $createUser;
     private CreateUserGroupInterface $createUserGroup;
-    private AppRoleWithScopesFactory $roleFactory;
+    private AppRoleWithScopesFactoryInterface $roleFactory;
     private ClientProviderInterface $clientProvider;
     private CreateAppInterface $createApp;
 
@@ -42,7 +42,7 @@ final class CreateAppWithAuthorizationHandler
         CreateUserInterface $createUser,
         CreateUserGroupInterface $createUserGroup,
         CreateConnectionInterface $createConnection,
-        AppRoleWithScopesFactory $roleFactory,
+        AppRoleWithScopesFactoryInterface $roleFactory,
         ClientProviderInterface $clientProvider,
         CreateAppInterface $createApp
     ) {
