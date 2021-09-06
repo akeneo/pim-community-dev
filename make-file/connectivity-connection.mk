@@ -53,6 +53,7 @@
 #
 
 _CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
+_PERMISSION_FORM_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/workspaces/permission-form/
 
 # Tests Back
 
@@ -140,11 +141,13 @@ connectivity-connection-back:
 
 connectivity-connection-unit-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/workspaces/permission-form/ jest --ci --coverage
+	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
+	$(_PERMISSION_FORM_YARN_RUN) eslint
+	$(_PERMISSION_FORM_YARN_RUN) prettier --check
 
 # Development
 
