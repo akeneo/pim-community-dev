@@ -65,12 +65,6 @@ class ClearThumbnailCacheCommand extends Command
                 InputOption::VALUE_NONE,
                 'Remove the thumbnails for all preview types of the asset manager'
             )
-            ->addOption(
-                'yes',
-                null,
-                InputOption::VALUE_NONE,
-                'Force clearing the thumbnail cache without confirmation message'
-            )
             ->setDescription('Remove cache entries for preview types of the asset manager.');
     }
 
@@ -82,7 +76,6 @@ class ClearThumbnailCacheCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $previewType = $input->getArgument('preview_type');
         $shouldClearAllPreviewTypes = $input->getOption('all');
-        $forceClear = $input->getOption('yes');
 
         if ($shouldClearAllPreviewTypes && $previewType) {
             $output->writeln('<error>Preview type cannot be cleared with the --all option.</error>');
@@ -97,7 +90,7 @@ class ClearThumbnailCacheCommand extends Command
             return;
         }
 
-        if (!$forceClear && $shouldClearAllPreviewTypes) {
+        if ($shouldClearAllPreviewTypes) {
             $output->writeln('<info>Clearing all the thumbnail caches will cause the PIM to recreate the thumbnail caches the next time they are needed in the PIM which can cause performance issues.</info>');
             if (!$io->confirm('Are you sure you want to clear all the caches ?', true)) {
                 return;
