@@ -1,21 +1,27 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
-import certifiedIcon from '../../common/assets/icons/certified.svg';
+import certifiedIcon from '../../../common/assets/icons/certified.svg';
 import {getColor, getFontSize, Button, Link} from 'akeneo-design-system';
-import {useTranslate} from '../../shared/translate';
-import {Extension} from '../../model/extension';
-import {App} from '../../model/app';
+import {useTranslate} from '../../../shared/translate';
+import {ConnectedApp} from "../../../model/connected-app";
+
+const Grid = styled.section`
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    gap: 20px;
+`;
 
 const CardContainer = styled.div`
     padding: 20px;
     border: 1px ${getColor('grey', 40)} solid;
     display: grid;
-    gap: 20px 20px;
+    gap: 0 20px;
     grid-template-columns: 100px 1fr 50px;
-    grid-template-rows: 1fr 50px;
+    grid-template-rows: 50px 50px;
     grid-template-areas:
         'logo text text'
-        'actions actions certified';
+        'logo actions certified';
 `;
 
 const Logo = styled.img`
@@ -35,25 +41,14 @@ const LogoContainer = styled.div`
 const TextInformation = styled.div`
     grid-area: text;
     max-width: 100%;
+    height: 50px;
 `;
 
 const Name = styled.h1`
     color: ${getColor('grey', 140)};
     font-size: ${getFontSize('big')};
     font-weight: bold;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const Author = styled.h3`
-    color: ${getColor('grey', 120)};
-    font-size: ${getFontSize('big')};
-    font-weight: normal;
-    margin: 0;
-    margin-bottom: 5px;
-
+    margin: 0 0 5px 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,13 +80,6 @@ const PartnerTag = styled(Tag)`
     border: 1px ${getColor('purple', 100)} solid;
 `;
 
-const Description = styled.p`
-    color: ${getColor('grey', 140)};
-    font-size: ${getFontSize('default')};
-    font-weight: normal;
-    margin-top: 10px;
-`;
-
 const CertifiedIcon = styled.div`
     background-image: url(${certifiedIcon});
     background-position: center;
@@ -116,24 +104,11 @@ const Actions = styled.div`
 `;
 
 type Props = {
-    item: Extension | App;
-    additionalActions?: ReactNode[];
+    item: ConnectedApp;
 };
 
-export const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
+const ConnectedAppCard: FC<Props> = ({item}) => {
     const translate = useTranslate();
-
-    const normalizedDescription =
-        null !== item.description && item.description.length > 150 ? (
-            <>
-                {item.description.substring(0, 139)}&hellip;&nbsp;
-                <Link decorated href={item.url} target='_blank'>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.card.read_more')}
-                </Link>
-            </>
-        ) : (
-            item.description
-        );
 
     return (
         <CardContainer>
@@ -142,22 +117,20 @@ export const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
             </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                <Author>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by')}
-                    &nbsp;
-                    {item.author}
-                </Author>
                 {item.partner && <PartnerTag>{item.partner}</PartnerTag>}
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
-                <Description>{normalizedDescription}</Description>
             </TextInformation>
-            {item.certified && <CertifiedIcon />}
             <Actions>
                 <Button ghost level='tertiary' href={item.url} target='_blank'>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.card.more_info')}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.card.manage_app')}
                 </Button>
-                {additionalActions}
+                <Button level='secondary' href={item.url} target='_blank'>
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.card.open_app')}
+                </Button>
             </Actions>
+            {item.certified && <CertifiedIcon />}
         </CardContainer>
     );
 };
+
+export {ConnectedAppCard, Grid};
