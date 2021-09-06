@@ -60,4 +60,4 @@ doctrine_migrations:
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
     column_name: 'version'
-    column_length: 191
+    column_length: 190
