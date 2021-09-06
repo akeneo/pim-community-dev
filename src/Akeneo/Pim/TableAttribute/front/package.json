@@ -12,8 +12,7 @@
   "private": true,
   "dependencies": {
     "@akeneo-pim-community/shared": "link:../../../../../vendor/akeneo/pim-community-dev/front-packages/shared",
-    "akeneo-design-system": "link:../../../../../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system",
-    "@akeneo-pim-community/legacy-bridge": "link:../../../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge"
+    "akeneo-design-system": "link:../../../../../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system"
   },
   "peerDependencies": {
     "react": "^16.14.0",
@@ -23,6 +22,6 @@
     "@types/styled-components": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10"
+    "@testing-library/user-event": "^7.1.2"
   }
 }
