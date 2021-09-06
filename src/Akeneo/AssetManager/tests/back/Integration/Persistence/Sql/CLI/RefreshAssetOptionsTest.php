@@ -282,6 +282,6 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
     private function clearCache(): void
     {
         $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
-        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.sql.find_attributes_indexed_by_identifier')->clearCache();
     }
 }

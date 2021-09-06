@@ -181,13 +181,23 @@ jobs:
             - project
 
   build_srnt_prod:
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: false
       environment:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      working_directory: ~/project
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+              fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - connector_bigcommerce_checkout_steps:
+                is_pull_request: << parameters.is_pull_request >>
           - set_gcloud_config_dev
           - run:
               name: Define value for next steps
@@ -312,6 +322,8 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
+    - connector_bigcommerce_checkout_steps:
+        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Growth Edition prod image
         command: make php-image-prod
@@ -425,6 +437,8 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
+    - connector_bigcommerce_checkout_steps:
+        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Free Trial Edition prod image
         command: make php-image-prod
@@ -2001,6 +2015,74 @@ jobs:
                 command: |
                     TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
 
+  remove_unused_gcloud_bucket:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Delete expired gcloud bucket
+                command: |
+                    make remove_unused_gcloud_bucket
+
+  remove_unused_kube_disk:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Remove unused kube disk(s)
+                command: |
+                    make remove_unused_kube_disk
+
+  remove_unused_gcloud_disk:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Remove unused gcloud disk(s)
+                command: |
+                    make remove_unused_gcloud_disk
+
+  remove_unused_gcloud_pubsub:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Delete expired gcloud pubsub
+                command: |
+                    make remove_unused_gcloud_pubsub
+
 workflows:
   pull_request:
       jobs:
@@ -2487,6 +2569,18 @@ workflows:
          - delete_expired_uptime_check:
                requires:
                    - checkout
+         - remove_unused_gcloud_bucket:
+               requires:
+                   - checkout
+         - remove_unused_kube_disk:
+               requires:
+                   - checkout
+         - remove_unused_gcloud_disk:
+               requires:
+                   - remove_unused_kube_disk
+         - remove_unused_gcloud_pubsub:
+               requires:
+                   - checkout
 
   on_demand_compliancy_checker:
     jobs:
@@ -2563,3 +2657,49 @@ commands:
             wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
             sudo chmod +x /usr/local/bin/yq
+
+  connector_bigcommerce_checkout_steps:
+      description: "Checkout big commerce connector repository"
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: true
+      steps:
+          - run:
+                name: BIG COMMERCE CONNECTOR - Ensure to use the ssh key of akeneo-circle-ci account
+                command: |
+                    ssh-add -D
+                    ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
+          - when:
+              condition: << parameters.is_pull_request >>
+              steps:
+                  - run:
+                      name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
+                      command: |
+                          if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
+                            CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
+                          else
+                            CONNECTOR_BC_BRANCH=master
+                          fi
+                          echo ${CONNECTOR_BC_BRANCH}
+                          echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
+          - when:
+              condition:
+                  not: << parameters.is_pull_request >>
+              steps:
+                  - run:
+                      name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
+                      command: |
+                          #TODO Retrieve last tagged version for production
+                          CONNECTOR_BC_BRANCH=v0
+
+                          echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
+          - run:
+              name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
+              command: |
+                  mkdir -p tmp
+                  echo ${CONNECTOR_BC_BRANCH}
+                  git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+                  cd tmp/build-connector
+                  pwd
+                  echo `git rev-parse --short HEAD`

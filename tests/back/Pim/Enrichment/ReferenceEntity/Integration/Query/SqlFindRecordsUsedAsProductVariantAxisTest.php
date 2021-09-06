@@ -15,7 +15,7 @@ namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlRecordIsUsedAsProductVariantAxis;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlFindRecordsUsedAsProductVariantAxis;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\Family;
@@ -35,25 +35,33 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Webmozart\Assert\Assert;
 
-class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
+class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
 {
-    /** @var SqlRecordIsUsedAsProductVariantAxis */
-    private $recordIsUsedAsProductVariantAxis;
+    private SqlFindRecordsUsedAsProductVariantAxis $findRecordsUsedAsProductVariantAxis;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->resetDatabase();
 
-        $this->recordIsUsedAsProductVariantAxis = $this->get('akeneo_referenceentity.infrastructure.persistence.query.enrich.record_is_used_as_product_variant_axis');
+        $this->findRecordsUsedAsProductVariantAxis = $this->get('akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_used_as_product_variant_axis');
         $catalog = $this->get('akeneo_integration_tests.catalogs');
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($catalog->useTechnicalCatalog());
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        $this->createReferenceEntity('designer');
+        $attribute = $this->createAttributeReferenceEntitySingleLink(
+            'a_reference_entity_single_link',
+            'designer',
+            'other'
+        );
+        $this->addAttributeToFamily($attribute, 'familyA');
+        $this->createFamilyVariantWithAxis('familyA', $attribute, 'familyA_variant');
     }
 
-    private function resetDB(): void
+    private function resetDatabase(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
@@ -61,51 +69,74 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_return_false_when_record_is_not_used_as_product_variant_axis()
+    public function it_returns_false_when_records_are_not_used_as_product_variant_axis()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('stark');
+        $this->createRecord('stark');
+        $this->createRecord('jambon');
 
-        Assert::same($this->recordIsUsedAsProductVariantAxis->execute($recordCode, $referenceEntityIdentifier), false);
+        self::assertFalse($this->findRecordsUsedAsProductVariantAxis->areUsed(['stark', 'jambon'], 'designer'));
     }
 
     /**
      * @test
      */
-    public function it_return_true_when_record_is_used_as_product_variant_axis()
+    public function it_returns_true_when_record_are_used_as_product_variant_axis()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('stark');
+        $this->createRecord('stark');
+        $this->createRecord('jambon');
+        $this->createProductVariantUsingRecordAsAxis('stark', 'stark-product-variant');
+        $this->createProductVariantUsingRecordAsAxis('jambon', 'jambon-product-variant');
 
-        $this->createProductVariantUsingReferenceEntityRecordAsAxis(
-            $referenceEntityIdentifier,
-            $recordCode
-        );
-
-        Assert::same($this->recordIsUsedAsProductVariantAxis->execute($recordCode, $referenceEntityIdentifier), true);
+        self::assertTrue($this->findRecordsUsedAsProductVariantAxis->areUsed(['stark', 'jambon'], 'designer'));
     }
 
-    private function createProductVariantUsingReferenceEntityRecordAsAxis(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $recordCode
-    ): void {
-        $referenceEntity = $this->createReferenceEntity((string)$referenceEntityIdentifier);
-        $this->createReferenceEntityRecord($referenceEntity, (string)$recordCode);
+    /**
+     * @test
+     */
+    public function it_returns_no_codes_when_records_are_not_used_as_product_variant_axis()
+    {
+        $this->createRecord('stark');
+        $this->createRecord('jambon');
 
-        $family = $this->findFamily('familyA');
-        $attribute = $this->createAttributeReferenceEntitySingleLink('a_reference_entity_single_link', $referenceEntity,
-            'other');
-        $this->addAttributeToFamily($family, $attribute);
-        $familyVariant = $this->createFamilyVariant($family, $attribute, 'a_reference_entity_single_link');
+        self::assertEmpty($this->findRecordsUsedAsProductVariantAxis->getUsedCodes(['stark', 'jambon'], 'designer'));
+    }
 
-        $productModel = $this->createProductModel($familyVariant, 'jacket');
-        $this->createProductVariant('jacket-stark', $family, [
+    /**
+     * @test
+     */
+    public function it_returns_record_codes_used_as_product_variant_axis()
+    {
+        $this->createRecord('stark');
+        $this->createRecord('jambon');
+        $this->createRecord('jeanpaul');
+        $this->createRecord('michel');
+        $this->createProductVariantUsingRecordAsAxis('stark', 'stark-product-variant');
+        $this->createProductVariantUsingRecordAsAxis('jambon', 'jambon-product-variant');
+
+        self::assertEquals($this->findRecordsUsedAsProductVariantAxis->getUsedCodes(
+            [
+                'stark',
+                'jambon',
+                'jeanpaul',
+                'michel',
+            ],
+            'designer'
+        ), [
+            'stark',
+            'jambon',
+        ]);
+    }
+
+    private function createProductVariantUsingRecordAsAxis(string $recordCode, string $productVariantCode): void
+    {
+        $productModel = $this->createProductModel('familyA_variant', $productVariantCode . '-product-model');
+        $this->createProductVariant($productVariantCode, 'familyA', [
             'enabled' => true,
             'parent' => $productModel->getCode(),
             'values' => [
                 'a_reference_entity_single_link' => [
                     [
-                        'data' => (string)$recordCode,
+                        'data' => $recordCode,
                         'scope' => null,
                         'locale' => null,
                     ],
@@ -119,18 +150,18 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
 
         $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString($identifier),
             ['en_US' => $identifier],
-            Image::createEmpty()
+            Image::createEmpty(),
         );
         $referenceEntityRepository->create($referenceEntity);
 
         return $referenceEntity;
     }
 
-    private function createReferenceEntityRecord(ReferenceEntity $referenceEntity, string $code): Record
+    private function createRecord(string $code): Record
     {
-        $referenceEntityIdentifier = $referenceEntity->getIdentifier();
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
         /** @var ReferenceEntityRepositoryInterface $referenceEntityRepository */
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -164,7 +195,14 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         return $familyRepository->findOneByIdentifier($code);
     }
 
-    private function createProductModel(FamilyVariant $familyVariant, string $code): ProductModel
+    private function findFamilyVariant(string $code): FamilyVariant
+    {
+        $familyVariantRepository = $this->get('pim_catalog.repository.family_variant');
+
+        return $familyVariantRepository->findOneByIdentifier($code);
+    }
+
+    private function createProductModel(string $familyVariantCode, string $code): ProductModel
     {
         $productModelUpdater = $this->get('pim_catalog.updater.product_model');
 
@@ -173,7 +211,7 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
             'code' => $code,
         ]);
 
-        $productModel->setFamilyVariant($familyVariant);
+        $productModel->setFamilyVariant($this->findFamilyVariant($familyVariantCode));
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexFromProductModelCode($code, [
@@ -185,10 +223,10 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
 
     private function createProductVariant(
         string $identifier,
-        Family $family,
+        string $familyCode,
         array $values
     ): Product {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family->getCode());
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
 
         $this->get('pim_catalog.updater.product')->update($product, $values);
         $this->get('pim_catalog.saver.product')->save($product);
@@ -199,15 +237,9 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         return $product;
     }
 
-    private function addAttributeToFamily(Family $family, Attribute $attribute): void
+    private function createFamilyVariantWithAxis(string $familyCode, Attribute $attribute, string $code): FamilyVariant
     {
-        $family->addAttribute($attribute);
-
-        $this->get('pim_catalog.saver.family')->save($family);
-    }
-
-    private function createFamilyVariant(Family $family, Attribute $attribute, string $code): FamilyVariant
-    {
+        $family = $this->findFamily($familyCode);
         $variantAttributeSet = new VariantAttributeSet();
         $variantAttributeSet->setLevel(1);
         $variantAttributeSet->addAttribute($attribute);
@@ -225,7 +257,7 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
 
     private function createAttributeReferenceEntitySingleLink(
         string $code,
-        ReferenceEntity $referenceEntity,
+        string $referenceEntityIdentifier,
         string $attributeGroupCode
     ): Attribute {
         $attributeReferenceEntity = $this->get('pim_catalog.factory.attribute')
@@ -233,12 +265,19 @@ class SqlRecordIsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         $this->get('pim_catalog.updater.attribute')
             ->update($attributeReferenceEntity, [
                 'code' => $code,
-                'reference_data_name' => (string)$referenceEntity->getIdentifier(),
+                'reference_data_name' => $referenceEntityIdentifier,
                 'group' => $attributeGroupCode,
             ]);
 
         $this->get('pim_catalog.saver.attribute')->save($attributeReferenceEntity);
 
         return $attributeReferenceEntity;
+    }
+
+    private function addAttributeToFamily(Attribute $attribute, string $familyCode): void
+    {
+        $family = $this->findFamily($familyCode);
+        $family->addAttribute($attribute);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 }

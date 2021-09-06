@@ -2,10 +2,11 @@ parameters:
     akeneo_rule_engine.event_subscriber.log_execution.class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\LogExecutionSubscriber
 
 services:
-    akeneo_rule_engine.event_subscriber.log_exexution:
+    akeneo_rule_engine.event_subscriber.log_execution:
         class: '%akeneo_rule_engine.event_subscriber.log_execution.class%'
         arguments:
             - '@logger'
+            - '%env(LOGGING_LEVEL)%'
         tags:
             - { name: kernel.event_subscriber }
 
