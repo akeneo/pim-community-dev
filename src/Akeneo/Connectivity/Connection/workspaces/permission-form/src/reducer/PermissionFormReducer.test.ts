@@ -1,4 +1,4 @@
-import {PermissionFormActions, permissionFormReducer} from './PermissionFormReducer';
+import {Actions, reducer} from './PermissionFormReducer';
 
 test('it update the state with the action ENABLE_ALL_OWN', () => {
   const state = {
@@ -15,7 +15,7 @@ test('it update the state with the action ENABLE_ALL_OWN', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ENABLE_ALL_OWN})).toEqual({
+  expect(reducer(state, {type: Actions.ENABLE_ALL_OWN})).toEqual({
     own: {
       all: true,
       identifiers: [],
@@ -46,7 +46,7 @@ test('it update the state with the action ENABLE_ALL_EDIT', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ENABLE_ALL_EDIT})).toEqual({
+  expect(reducer(state, {type: Actions.ENABLE_ALL_EDIT})).toEqual({
     own: {
       all: false,
       identifiers: ['a'],
@@ -77,7 +77,7 @@ test('it update the state with the action ENABLE_ALL_VIEW', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ENABLE_ALL_VIEW})).toEqual({
+  expect(reducer(state, {type: Actions.ENABLE_ALL_VIEW})).toEqual({
     own: {
       all: false,
       identifiers: ['a'],
@@ -108,7 +108,7 @@ test('it update the state with the action DISABLE_ALL_OWN', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.DISABLE_ALL_OWN})).toEqual({
+  expect(reducer(state, {type: Actions.DISABLE_ALL_OWN})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -139,7 +139,7 @@ test('it update the state with the action DISABLE_ALL_EDIT', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.DISABLE_ALL_EDIT})).toEqual({
+  expect(reducer(state, {type: Actions.DISABLE_ALL_EDIT})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -170,7 +170,7 @@ test('it update the state with the action DISABLE_ALL_VIEW', () => {
       identifiers: [],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.DISABLE_ALL_VIEW})).toEqual({
+  expect(reducer(state, {type: Actions.DISABLE_ALL_VIEW})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -201,7 +201,7 @@ test('it update the state with the action CLEAR_OWN', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.CLEAR_OWN})).toEqual({
+  expect(reducer(state, {type: Actions.CLEAR_OWN})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -232,7 +232,7 @@ test('it update the state with the action CLEAR_EDIT', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.CLEAR_EDIT})).toEqual({
+  expect(reducer(state, {type: Actions.CLEAR_EDIT})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -263,7 +263,7 @@ test('it update the state with the action CLEAR_VIEW', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.CLEAR_VIEW})).toEqual({
+  expect(reducer(state, {type: Actions.CLEAR_VIEW})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -294,7 +294,7 @@ test('it update the state with the action ADD_TO_OWN', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ADD_TO_OWN, identifier: 'new'})).toEqual({
+  expect(reducer(state, {type: Actions.ADD_TO_OWN, identifier: 'new'})).toEqual({
     own: {
       all: false,
       identifiers: ['a', 'new'],
@@ -325,7 +325,7 @@ test('it update the state with the action ADD_TO_EDIT', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ADD_TO_EDIT, identifier: 'new'})).toEqual({
+  expect(reducer(state, {type: Actions.ADD_TO_EDIT, identifier: 'new'})).toEqual({
     own: {
       all: false,
       identifiers: ['a'],
@@ -356,7 +356,7 @@ test('it update the state with the action ADD_TO_VIEW', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.ADD_TO_VIEW, identifier: 'new'})).toEqual({
+  expect(reducer(state, {type: Actions.ADD_TO_VIEW, identifier: 'new'})).toEqual({
     own: {
       all: false,
       identifiers: ['a'],
@@ -387,7 +387,7 @@ test('it update the state with the action REMOVE_FROM_OWN', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.REMOVE_FROM_OWN, identifier: 'a'})).toEqual({
+  expect(reducer(state, {type: Actions.REMOVE_FROM_OWN, identifier: 'a'})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -418,7 +418,7 @@ test('it update the state with the action REMOVE_FROM_EDIT', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.REMOVE_FROM_EDIT, identifier: 'a'})).toEqual({
+  expect(reducer(state, {type: Actions.REMOVE_FROM_EDIT, identifier: 'a'})).toEqual({
     own: {
       all: false,
       identifiers: [],
@@ -449,7 +449,7 @@ test('it update the state with the action REMOVE_FROM_VIEW', () => {
       identifiers: ['a', 'b', 'c'],
     },
   };
-  expect(permissionFormReducer(state, {type: PermissionFormActions.REMOVE_FROM_VIEW, identifier: 'a'})).toEqual({
+  expect(reducer(state, {type: Actions.REMOVE_FROM_VIEW, identifier: 'a'})).toEqual({
     own: {
       all: false,
       identifiers: [],
