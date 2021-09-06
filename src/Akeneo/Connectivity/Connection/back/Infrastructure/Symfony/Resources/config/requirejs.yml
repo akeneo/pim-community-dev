@@ -37,10 +37,6 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/connectivity/connection/audit
-#        pim/permission-form-registry:
-#            providers:
-#                categories:
-#                    module: akeneopimpermission/js/provider/CategoryPermissionFormProvider
 
     paths:
         pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
