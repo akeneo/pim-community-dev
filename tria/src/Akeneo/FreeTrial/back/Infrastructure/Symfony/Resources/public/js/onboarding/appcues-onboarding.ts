@@ -11,6 +11,7 @@ interface EventOptions {
   gridName?: string,
   identifier?: string,
   value?: string,
+  column?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -49,7 +50,7 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'product-grid:column:selected':
-          if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.name && eventOptions.name.includes('designer')) {
+          if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.column && eventOptions.column.includes('designer')) {
             appcues.track('Column "Designer" added in the product grid');
           }
           break;
