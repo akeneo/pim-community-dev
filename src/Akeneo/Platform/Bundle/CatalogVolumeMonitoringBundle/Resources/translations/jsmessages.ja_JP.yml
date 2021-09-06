@@ -15,6 +15,7 @@ pim_catalog_volume:
     count_products: 商品
     average_max_attributes_per_family: ファミリーごとの属性
     count_channels: チャンネル
+    count_locales: ロケール（有効）
     count_scopable_attributes: 参照可能な属性
     count_localizable_and_scopable_attributes: ローカライズ可能な属性および参照可能な属性
     count_localizable_attributes: ローカライズ可能な属性

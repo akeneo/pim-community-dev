@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Connetti
+  akeneo_connectivity_connection_connect_apps_authorize: Connetti
   akeneo_connectivity_connection_settings_index: Impostazioni di connessione
   akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
   akeneo_connectivity_connection_settings_any: Impostazioni di connessione
@@ -57,6 +59,47 @@ akeneo_connectivity.connection:
         empty: Non ci sono app compatibili con la tua versione
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
+    apps:
+      title: Connetti
+      action:
+        confirm: Conferma
+        cancel: Annulla
+      activate:
+        flash:
+          error: Spiacenti, si è verificato un errore durante la connessione dell'App.
+      authorize:
+        title: 'L''app {{ app_name }} deve'
+        no_scope_title: 'L''app {{ app_name }} vorrebbe accedere al tuo PIM.'
+        no_scope: Nessuna autorizzazione specifica richiesta.
+        helper: Per scoprire di più sull'autorizzazione dell'app,
+        helper_link: consulta il nostro Help Center per ulteriori informazioni.
+        error:
+          sub_text: Contatta lo sviluppatore dell'app o il supporto di Akeneo
+        scope:
+          type:
+            view: 'Visualizza {{ entities }}'
+            edit: 'Visualizza e modifica {{ entities }}'
+            delete: 'Visualizza, modifica ed elimina {{ entities }}'
+          entities:
+            catalog_structure: attributi, gruppi di attributi, famiglie e famiglie varianti
+            attribute_options: opzioni attributo
+            categories: categorie
+            channel_localization: impostazioni locali e valute
+            channel_settings: canali
+            association_types: tipi di associazione
+            products: prodotti e modelli prodotto
+      constraint:
+        client_id:
+          not_blank: Client_id obbligatorio.
+          must_be_valid: Il client_id non corrisponde ad alcun client conosciuto.
+        response_type:
+          not_blank: Response_type obbligatorio.
+          must_be_code: Il response_type deve essere "code".
+        scope:
+          must_be_valid: Gli ambiti non sono validi.
+        redirect_uri:
+          not_blank: Redirect_uri obbligatorio.
+          must_be_url: Il redirect_uri non è un url valido.
   connections: Connessioni
   secondary_actions:
     title: Altre azioni

@@ -49,6 +49,11 @@ akeneo_connectivity.connection:
         empty: Aucun connecteur compatible avec votre version
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
+    apps:
+      authorize:
+        scope:
+          entities:
+            categories: catégories
   connections: Connexions
   secondary_actions:
     title: Autres actions
