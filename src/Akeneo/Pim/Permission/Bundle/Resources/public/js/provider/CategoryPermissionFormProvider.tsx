@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import {getColor, Helper, SectionTitle} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
 import {PermissionFormProvider, PermissionFormWidget, PermissionFormReducer} from '@akeneo-pim-community/permission-form';
-// import {permissionFormInitialState, permissionFormReducer, PermissionFormState, PermissionFormActions} from '../reducer/PermissionFormReducer';
-// import {PermissionFormWidget} from '../component/PermissionFormWidget';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -41,10 +39,10 @@ const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
         .then((results: any) => processCategories(results).results);
 }
 
-const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormState> = {
+const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
     key: 'categories',
     renderForm: (onChange) => {
-        const [state, dispatch] = useReducer(PermissionFormReducer.permissionFormReducer, PermissionFormReducer.permissionFormInitialState);
+        const [state, dispatch] = useReducer(PermissionFormReducer.reducer, PermissionFormReducer.initialState);
 
         useEffect(() => {
             onChange(state);
@@ -61,13 +59,13 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormState
                 <Label>{translate('pim_permissions.widget.level.own')}</Label>
                 <PermissionFormWidget
                     selection={state.own.identifiers}
-                    onAdd={code => dispatch({type: PermissionFormReducer.PermissionFormActions.ADD_TO_OWN, identifier: code})}
-                    onRemove={code => dispatch({type: PermissionFormReducer.PermissionFormActions.REMOVE_FROM_OWN, identifier: code})}
+                    onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
+                    onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
                     disabled={state.own.all}
                     allByDefaultIsSelected={state.own.all}
-                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.ENABLE_ALL_OWN})}
-                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.DISABLE_ALL_OWN})}
-                    onClear={() => dispatch({type: PermissionFormReducer.PermissionFormActions.CLEAR_OWN})}
+                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
+                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
+                    onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
                     ajaxUrl={categoriesAjaxUrl}
                     processAjaxResponse={processCategories}
                     fetchByIdentifiers={fetchCategoriesByIdentifiers}
@@ -75,13 +73,13 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormState
                 <Label>{translate('pim_permissions.widget.level.edit')}</Label>
                 <PermissionFormWidget
                     selection={state.edit.identifiers}
-                    onAdd={code => dispatch({type: PermissionFormReducer.PermissionFormActions.ADD_TO_EDIT, identifier: code})}
-                    onRemove={code => dispatch({type: PermissionFormReducer.PermissionFormActions.REMOVE_FROM_EDIT, identifier: code})}
+                    onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+                    onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
                     disabled={state.edit.all}
                     allByDefaultIsSelected={state.edit.all}
-                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.ENABLE_ALL_EDIT})}
-                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.DISABLE_ALL_EDIT})}
-                    onClear={() => dispatch({type: PermissionFormReducer.PermissionFormActions.CLEAR_EDIT})}
+                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+                    onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
                     ajaxUrl={categoriesAjaxUrl}
                     processAjaxResponse={processCategories}
                     fetchByIdentifiers={fetchCategoriesByIdentifiers}
@@ -89,13 +87,13 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormState
                 <Label>{translate('pim_permissions.widget.level.view')}</Label>
                 <PermissionFormWidget
                     selection={state.view.identifiers}
-                    onAdd={code => dispatch({type: PermissionFormReducer.PermissionFormActions.ADD_TO_VIEW, identifier: code})}
-                    onRemove={code => dispatch({type: PermissionFormReducer.PermissionFormActions.REMOVE_FROM_VIEW, identifier: code})}
+                    onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
+                    onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
                     disabled={state.view.all}
                     allByDefaultIsSelected={state.view.all}
-                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.ENABLE_ALL_VIEW})}
-                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.PermissionFormActions.DISABLE_ALL_VIEW})}
-                    onClear={() => dispatch({type: PermissionFormReducer.PermissionFormActions.CLEAR_VIEW})}
+                    onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
+                    onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
+                    onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
                     ajaxUrl={categoriesAjaxUrl}
                     processAjaxResponse={processCategories}
                     fetchByIdentifiers={fetchCategoriesByIdentifiers}
@@ -103,8 +101,8 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormState
             </>
         );
     },
-    renderPreview: (_state: PermissionFormReducer.PermissionFormState) => null,
-    save: (_role: string, _state: PermissionFormReducer.PermissionFormState) => {
+    renderPreview: (_state: PermissionFormReducer.State) => null,
+    save: (_role: string, _state: PermissionFormReducer.State) => {
         // @todo
         return true;
     },
