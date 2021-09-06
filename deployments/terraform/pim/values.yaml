@@ -134,6 +134,10 @@ pim:
           cpu: "200m"
           memory: "128Mi"
   api:
+    ratelimit:
+      enabled: false
+      average: 200
+      burst: 50
     replicas: 2
     fpm:
       resources:
