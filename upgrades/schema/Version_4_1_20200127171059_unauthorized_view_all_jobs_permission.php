@@ -3,6 +3,7 @@
 namespace Pim\Upgrade\Schema;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
@@ -12,17 +13,18 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
-final class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission extends AbstractMigration implements ContainerAwareInterface
+final class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission extends AbstractMigration implements
+    ContainerAwareInterface
 {
     private const ACL_ID = 'pim_enrich_job_tracker_view_all_jobs';
 
     /** @var ContainerInterface */
     private $container;
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $aclManager = $this->container->get('oro_security.acl.manager');
-        $roles = $this->container->get('pim_user.repository.role')->findAll();
+        $roles = $this->fetchRoles();
 
         foreach ($roles as $role) {
             $privilege = new AclPrivilege();
@@ -39,7 +41,7 @@ final class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission ext
         $aclManager->clearCache();
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
@@ -50,5 +52,12 @@ final class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission ext
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    private function fetchRoles(): array
+    {
+        $sql = 'SELECT role FROM oro_access_role';
+
+        return $this->connection->executeQuery($sql)->fetchAll(FetchMode::COLUMN);
     }
 }
