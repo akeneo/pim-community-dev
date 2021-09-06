@@ -1,4 +1,7 @@
 {
+    "akeneo/oauth-server-bundle": {
+        "version": "1.7.x-dev"
+    },
     "akeneo/php-coupling-detector": {
         "version": "0.3.1"
     },
