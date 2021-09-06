@@ -45,15 +45,14 @@ type RowProps = {
 };
 
 const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions}) => {
-    const handleChange = useCallback((state: any) => {
-        setPermissions((permissions: Permissions) => ({...permissions, [provider.key]: state}))
-    }, [setPermissions]);
-
-    return (
-        <div>
-            {provider.renderForm(handleChange)}
-        </div>
+    const handleChange = useCallback(
+        (state: any) => {
+            setPermissions((permissions: Permissions) => ({...permissions, [provider.key]: state}));
+        },
+        [setPermissions]
     );
+
+    return <div>{provider.renderForm(handleChange)}</div>;
 });
 
 type Props = {
@@ -81,11 +80,7 @@ export const Permissions: FC<Props> = ({appName}) => {
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow
-                    key={provider.key}
-                    provider={provider}
-                    setPermissions={setPermissions}
-                />
+                <PermissionRow key={provider.key} provider={provider} setPermissions={setPermissions} />
             ))}
         </InfoContainer>
     );
