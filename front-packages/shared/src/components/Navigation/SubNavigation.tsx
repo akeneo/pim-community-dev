@@ -27,6 +27,7 @@ type SubNavigationEntry = {
   title: string;
   sectionCode: string;
   disabled?: boolean;
+  new?: boolean;
 };
 
 type SubNavigationSection = {
@@ -100,6 +101,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                         <StyledLockIcon size={16} color={theme.color.blue100}/>
                       </Tag>
                     }
+                    {subEntry.new && <Tag tint="green">New</Tag>}
                   </StyledSubNavigationItem>
                 ))}
             </Section>
@@ -135,9 +137,8 @@ const Backlink = styled.div`
 
 const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean} & AkeneoThemedProps>`
   ${Tag} {
-    height: 24px;
     align-self: center;
-    padding: 0;
+    box-sizing: content-box;
   }
 
   ${({disabled}) => disabled && css`
