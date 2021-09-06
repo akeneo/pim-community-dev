@@ -345,7 +345,7 @@ upgrade-instance:
 	-a "productTypePrefixFilter=$(TYPE)" \
 	-a "googleProjectIdFilter=akecld-saas-dev" \
 	-a "googleCloudZoneFilter=*" \
-	-a "forceUpdate=false"
+	-a "forceUpdate=true"
 
 .PHONY: test-prod
 test-prod:
@@ -394,9 +394,24 @@ delete_expired_uptime_check:
 	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
 	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
 
+.PHONY: remove_unused_gcloud_pubsub
+remove_unused_gcloud_pubsub:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_pubsub.sh
+
 .PHONY: remove_unused_gcloud_bucket
 remove_unused_gcloud_bucket:
 	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
+
+.PHONY: remove_unused_disk
+remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
+
+.PHONY: remove_unused_kube_disk
+remove_unused_kube_disk:
+	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
+
+.PHONY: remove_unused_gcloud_disk
+remove_unused_gcloud_disk:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
 
 .PHONY: clone_serenity
 clone_serenity:

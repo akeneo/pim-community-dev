@@ -20,7 +20,7 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.find_attributes_indexed_by_identifier'
             - '@event_dispatcher'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
@@ -46,10 +46,15 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.sql.query.asset_family_exists'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
+    akeneo_assetmanager.infrastructure.persistence.sql.find_asset_family_items:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyItems
         arguments:
             - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\AssetFamily\LRUCachedFindAssetFamilyItems
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.find_asset_family_items'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyDetails
@@ -244,11 +249,16 @@ services:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.inactive_label_filter'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+    akeneo_assetmanager.infrastructure.persistence.sql.find_attributes_indexed_by_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\AssetAttribute\LRUCachedFindAttributesIndexedByIdentifier
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.sql.find_attributes_indexed_by_identifier'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection

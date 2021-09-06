@@ -2032,6 +2032,57 @@ jobs:
                 command: |
                     make remove_unused_gcloud_bucket
 
+  remove_unused_kube_disk:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Remove unused kube disk(s)
+                command: |
+                    make remove_unused_kube_disk
+
+  remove_unused_gcloud_disk:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Remove unused gcloud disk(s)
+                command: |
+                    make remove_unused_gcloud_disk
+
+  remove_unused_gcloud_pubsub:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Prepare the environment
+                command: |
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+          - run:
+                name: Delete expired gcloud pubsub
+                command: |
+                    make remove_unused_gcloud_pubsub
+
 workflows:
   pull_request:
       jobs:
@@ -2519,6 +2570,15 @@ workflows:
                requires:
                    - checkout
          - remove_unused_gcloud_bucket:
+               requires:
+                   - checkout
+         - remove_unused_kube_disk:
+               requires:
+                   - checkout
+         - remove_unused_gcloud_disk:
+               requires:
+                   - remove_unused_kube_disk
+         - remove_unused_gcloud_pubsub:
                requires:
                    - checkout
 
