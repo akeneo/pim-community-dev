@@ -87,15 +87,20 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const createAttributeOption = useCallback(
     async (optionCode: string) => {
       setIsSaving(true);
-      const attributeOption = await attributeOptionCreate(optionCode);
-      if (attributeOptions === null) {
-        setAttributeOptions([attributeOption]);
-      } else {
-        setAttributeOptions([...attributeOptions, attributeOption]);
-      }
-      setIsSaving(false);
+      try {
+        const attributeOption = await attributeOptionCreate(optionCode);
+        if (attributeOptions === null) {
+          setAttributeOptions([attributeOption]);
+        } else {
+          setAttributeOptions([...attributeOptions, attributeOption]);
+        }
 
-      return attributeOption;
+        return attributeOption;
+      } catch (error) {
+        throw error;
+      } finally {
+        setIsSaving(false);
+      }
     },
     [attributeOptions, attributeOptionCreate]
   );
