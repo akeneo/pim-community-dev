@@ -12,7 +12,6 @@ services:
             - '@akeneo_elasticsearch.registry.clients'
             - '@Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit'
             - '%index_hosts%'
-            -
-                - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+            - '%index_list_changed_total_field_limit%'
         tags:
             - { name: 'console.command' }

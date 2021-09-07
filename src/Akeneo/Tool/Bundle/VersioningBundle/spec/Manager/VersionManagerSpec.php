@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Manager;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;

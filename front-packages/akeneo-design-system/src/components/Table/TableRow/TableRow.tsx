@@ -1,13 +1,4 @@
-import React, {
-  ReactNode,
-  Ref,
-  SyntheticEvent,
-  HTMLAttributes,
-  forwardRef,
-  useContext,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -15,7 +6,6 @@ import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
 import {RowIcon} from '../../../icons';
-import {useBooleanState} from '../../../hooks';
 import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
 
 const RowContainer = styled.tr<
@@ -73,16 +63,19 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const HandleContainer = styled.div`
+const HandleCell = styled(TableCell)`
   cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 20px;
+
+  > div {
+    justify-content: center;
+  }
 
   :active {
     cursor: grabbing;
   }
 `;
+
 type TableRowProps = Override<
   HTMLAttributes<HTMLTableRowElement>,
   {
@@ -119,7 +112,7 @@ type TableRowProps = Override<
     /**
      * @private
      */
-    draggedElementIndex?: number | null;
+    onDragEnd?: () => void;
   }
 >;
 
@@ -127,18 +120,23 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     {
       rowIndex = 0,
-      draggedElementIndex = null,
       isSelected,
       onSelectToggle,
       onClick,
+      draggable,
       onDragStart,
+      onDragEnd,
       children,
       ...rest
     }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [isDragged, drag, drop] = useBooleanState();
-    const [placeholderPosition, dragEnter, dragLeave, dragEnd] = usePlaceholderPosition(rowIndex, draggedElementIndex);
+    const [
+      placeholderPosition,
+      placeholderDragEnter,
+      placeholderDragLeave,
+      placeholderDragEnd,
+    ] = usePlaceholderPosition(rowIndex);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
@@ -150,14 +148,19 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       onSelectToggle?.(!isSelected);
     };
 
-    useEffect(() => {
-      if (null === draggedElementIndex) {
-        drop();
-        dragEnd();
-      }
-    }, [draggedElementIndex]);
+    const handleDragEnter = (event: DragEvent<HTMLTableRowElement>) => {
+      placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
+    };
 
-    const internalOnDragStart = useCallback(() => onDragStart?.(rowIndex), [rowIndex, onDragStart]);
+    const handleDragStart = (event: DragEvent<HTMLTableRowElement>) => {
+      event.dataTransfer.setData('text', rowIndex.toString());
+      onDragStart?.(rowIndex);
+    };
+
+    const handleDragEnd = () => {
+      placeholderDragEnd();
+      onDragEnd?.();
+    };
 
     return (
       <RowContainer
@@ -165,12 +168,13 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
         onClick={onClick}
-        placeholderPosition={placeholderPosition}
-        draggable={isDragAndDroppable && isDragged}
+        placeholderPosition={isDragAndDroppable ? placeholderPosition : 'none'}
+        draggable={isDragAndDroppable && draggable}
         data-draggable-index={rowIndex}
-        onDragEnter={dragEnter}
-        onDragLeave={dragLeave}
-        onDragStart={internalOnDragStart}
+        onDragEnter={handleDragEnter}
+        onDragLeave={placeholderDragLeave}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         {...rest}
       >
         {isSelectable && (
@@ -188,11 +192,9 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           </CheckboxContainer>
         )}
         {isDragAndDroppable && (
-          <TableCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
-            <HandleContainer>
-              <RowIcon size={16} />
-            </HandleContainer>
-          </TableCell>
+          <HandleCell onMouseDown={() => onDragStart?.(rowIndex)} onMouseUp={onDragEnd} data-testid="dragAndDrop">
+            <RowIcon size={16} />
+          </HandleCell>
         )}
         {children}
       </RowContainer>

@@ -78,7 +78,7 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@event_dispatcher'
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - '%kernel.environment%'
             - '%kernel.logs_dir%'
 

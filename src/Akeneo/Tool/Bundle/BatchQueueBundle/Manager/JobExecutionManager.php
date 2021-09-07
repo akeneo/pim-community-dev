@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * Repository to manage the status of a job.
@@ -94,7 +94,7 @@ SQL;
         $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('status', BatchStatus::FAILED);
         $stmt->bindValue('exit_code', ExitStatus::FAILED);
-        $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
+        $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
         $stmt->execute();
     }
 
@@ -115,8 +115,8 @@ SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
-        $stmt->bindValue('health_check_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
-        $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
+        $stmt->bindValue('health_check_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
+        $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
         $stmt->execute();
     }
 }

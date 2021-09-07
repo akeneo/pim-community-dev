@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\IsAttributeCodeBlacklistedInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 final class IsAttributeCodeBlacklisted implements IsAttributeCodeBlacklistedInterface
 {
@@ -29,6 +30,6 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_blacklisted'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_blacklisted'], $platform);
     }
 }

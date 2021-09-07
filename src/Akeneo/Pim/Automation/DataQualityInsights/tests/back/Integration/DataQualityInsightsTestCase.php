@@ -268,10 +268,12 @@ class DataQualityInsightsTestCase extends TestCase
 UPDATE pim_data_quality_insights_attribute_group_activation
 SET updated_at = :updatedAt WHERE attribute_group_code = :attributeGroupCode
 SQL
-            , [
+            ,
+                [
                 'updatedAt' => $updatedAt->format(Clock::TIME_FORMAT),
                 'attributeGroupCode' => $code,
-            ]);
+            ]
+            );
         }
 
         return $attributeGroupActivation;
@@ -337,7 +339,7 @@ SQL;
 
         // Kill background process to avoid a race condition during loading fixtures for the next integration test.
         // @see DAPI-1477
-        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
+        exec('pkill -f "remove_completeness_for_channel_and_locale"');
     }
 
     protected function getLocaleId(string $code): int
@@ -352,7 +354,8 @@ SQL;
 
     protected function resetProductsScores(): void
     {
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 TRUNCATE TABLE pim_data_quality_insights_product_score;
 SQL
         );

@@ -68,7 +68,8 @@ SQL;
         $queryResults = $this->connection->fetchAll(
             $forProductQuery,
             [$identifiers, $identifiers, $identifiers],
-            [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]);
+            [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
+        );
 
 
         foreach ($queryResults as $queryResult) {

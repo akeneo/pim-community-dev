@@ -21,7 +21,20 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'pim/form-builder',
-], function ($, _, __, Backbone, BaseForm, template, initSelect2, DatagridState, FetcherRegistry, FormBuilder) {
+  'oro/mediator',
+], function (
+  $,
+  _,
+  __,
+  Backbone,
+  BaseForm,
+  template,
+  initSelect2,
+  DatagridState,
+  FetcherRegistry,
+  FormBuilder,
+  mediator
+) {
   return BaseForm.extend({
     template: _.template(template),
     resultsPerPage: 20,
@@ -304,6 +317,7 @@ define([
 
           DatagridState.set(this.gridAlias, {initialViewState: this.initialView.filters});
           this.getRoot().trigger('grid:view-selector:initialized', this.currentView);
+          mediator.trigger('grid:view:selected', this.currentView);
 
           return initView;
         }.bind(this)
@@ -452,6 +466,7 @@ define([
 
       this.currentView = view;
       this.trigger('grid:view-selector:view-selected', view);
+      mediator.trigger('grid:view:selected', view);
       FetcherRegistry.getFetcher('locale').clear();
       this.reloadPage();
     },

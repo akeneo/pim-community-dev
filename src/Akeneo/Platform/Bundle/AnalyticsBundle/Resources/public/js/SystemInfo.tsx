@@ -18,7 +18,7 @@ const TableCellList = styled(Table.Cell)`
 
 const SystemInfo = () => {
   const translate = useTranslate();
-  const systemHomeRoute = useRoute('oro_config_configuration_system');
+  const systemHomeRoute = useRoute('pim_system_index');
   const downloadTxtRoute = useRoute('pim_analytics_system_info_download');
   const systemInfoData = useSystemInfo();
 

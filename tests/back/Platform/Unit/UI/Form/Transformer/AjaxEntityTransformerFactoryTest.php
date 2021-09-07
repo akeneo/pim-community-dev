@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepositor
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Tests related class
@@ -19,7 +19,7 @@ class AjaxEntityTransformerFactoryTest extends TestCase
 {
     public function testCreate()
     {
-        $doctrine = $this->createMock(RegistryInterface::class);
+        $doctrine = $this->createMock(ManagerRegistry::class);
         $transformerClass = AjaxEntityTransformer::class;
         $options = [
             'class' => 'class'

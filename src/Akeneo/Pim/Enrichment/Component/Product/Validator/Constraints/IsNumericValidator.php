@@ -40,7 +40,6 @@ class IsNumericValidator extends ConstraintValidator
                     '{{ attribute }}' => $constraint->attributeCode,
                     '{{ value }}' => $value,
                 ]
-
             )
                 ->setCode(IsNumeric::IS_NUMERIC);
 

@@ -356,13 +356,13 @@ pim_enrich.mass_edit.product:
       field: 有効にするには
     edit_common:
       label: 属性値を編集
-      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>の属性値を数点編集|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]の属性値を1点編集1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を{{ itemsCount }}点編集"
+      label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|{1}1つの<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}つの商品</span>の属性値を編集"
       description: 選択した商品のファミリーに属する属性のみが、{{ locale }}ロケールならびに{{ scope }}チャンネルで編集されます
       no_update: アップデートするフィールドを1つ以上選択してください
     add_attribute_value:
       label: 属性値を追加
-      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>の属性値を数点追加|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]の属性値を1点追加1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を{{ itemsCount }}点追加"
-      description: 商品ファミリーに属した多値属性のみが{{ locale }}ロケールならびに{{ scope }}チャンネルにより編集されます。属性値が追加され、以前の値は保持されます
+      label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を追加|{1}1つの<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を追加|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}つの商品</span>の属性値を追加"
+      description: 商品ファミリーに属した多値属性のみが{{ locale }}ロケールならびに{{ scope }}チャンネルにより編集されます。属性値が追加され、以前の値は保持されます。
     change_family:
       label: ファミリーを変更
       label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを数点変更|{1}<span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを1点変更|]1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを{{ itemsCount }}点変更"
@@ -397,7 +397,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>をシンプル商品に変換|{1}<span class=\"AknFullPage-title--highlight\">1 個の商品</span>をシンプル商品に変換|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個の商品</span>をシンプル商品に変換"
       description: 以前の値、カテゴリ、および関連付けはすべて保存されます。
     associate_to_product_and_product_model:
-      label: 関連付ける
+      label: 関連商品
       label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点、別の商品もしくは商品モデルに関連付け|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点、別の商品もしくは商品モデルに関連付け1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点、別の商品もしくは商品モデルに関連付け"
       description: 一覧表で選択された商品は、関連タイプによって選択された商品および商品モデルに関連付けされます
       validate: 次に進む前に、関連性を追加してください
@@ -489,7 +489,7 @@ pim_datagrid:
       label: 親
     identifier:
       label: 識別子
-  search: '{{ label }} で検索'
+  search: '{{ label }}で検索'
 batch_jobs:
   add_association:
     label: 関連付ける
@@ -551,6 +551,9 @@ batch_jobs:
     quick_export.label: XLSX商品のクイックエクスポート
     quick_export_product_model.label: XLSX商品モデルのクイックエクスポート
     perform.label: XLSX商品のクイックエクスポート
+  default_steps:
+    delete_products_and_product_models: 商品と商品モデルを削除
+    remove_completeness_for_channel_and_locale: チャネルとロケールの完全性を削除
 error:
   removing:
     group: グループを削除できません

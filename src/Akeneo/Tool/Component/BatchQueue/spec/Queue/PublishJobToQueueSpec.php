@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -102,7 +102,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
         $jobExecutionQueue->publish($jobExecutionMessage)->shouldBeCalled();
-        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldBeCalled();
 
         $this->publish('job-code', []);
     }

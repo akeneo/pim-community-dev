@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 

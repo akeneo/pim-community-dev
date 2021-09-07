@@ -51,6 +51,8 @@ class StepExecution
     /** @var integer */
     private $filterCount = 0;
 
+    private int $warningCount = 0;
+
     /** @var \DateTime */
     private $startTime;
 
@@ -482,6 +484,8 @@ class StepExecution
                 $data
             )
         );
+
+        $this->warningCount++;
     }
 
     /**
@@ -492,6 +496,11 @@ class StepExecution
     public function getWarnings()
     {
         return $this->warnings;
+    }
+
+    public function getWarningCount(): int
+    {
+        return $this->warningCount;
     }
 
     /**

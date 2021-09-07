@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -70,8 +71,8 @@ final class FetchProductModelRowsFromCodes
             $productModels[] = ReadModel\Row::fromProductModel(
                 $row['code'],
                 $row['family_label'],
-                Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform),
-                Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform),
+                Type::getType(Types::DATETIME_MUTABLE)->convertToPhpValue($row['created'], $platform),
+                Type::getType(Types::DATETIME_MUTABLE)->convertToPhpValue($row['updated'], $platform),
                 $row['label'],
                 $row['image'],
                 (int) $row['id'],

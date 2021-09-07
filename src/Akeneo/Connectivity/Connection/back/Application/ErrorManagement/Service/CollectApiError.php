@@ -50,8 +50,8 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-       \Throwable $error,
-       Context $context
+        \Throwable $error,
+        Context $context
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;

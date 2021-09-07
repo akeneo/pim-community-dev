@@ -13,6 +13,7 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Doctrine\Inflector',
+        'Doctrine\Persistence',
         'Akeneo\Tool',
         'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
@@ -51,6 +52,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
+        'Symfony\Bundle\SecurityBundle',
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
         'Swift_Mailer',

@@ -4,9 +4,9 @@ import {
   useBooleanState,
   Locale as LocaleWithFlag,
   AkeneoThemedProps,
-  pimTheme,
   getColor,
   SwitcherButton,
+  getFontSize, Pill,
 } from 'akeneo-design-system';
 import styled, {css} from 'styled-components';
 import {useTranslate} from '../hooks';
@@ -14,7 +14,7 @@ import {Locale, LocaleCode} from '../models';
 
 const DropdownContainer = styled(Dropdown)`
   text-transform: none;
-  font-size: ${pimTheme.fontSize.default};
+  font-size: ${getFontSize('default')};
   color: ${getColor('grey', 120)};
 `;
 
@@ -72,10 +72,7 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
                   selected={locale.code === value}
                 />
                 {completeValues && !completeValues.includes(locale.code) && (
-                  <span
-                    className="AknBadge AknBadge--small AknBadge--highlight"
-                    data-testid={`LocaleSelector.incomplete.${locale.code}`}
-                  />
+                  <Pill level='warning' data-testid={`LocaleSelector.incomplete.${locale.code}`} />
                 )}
               </LocaleDropdownItem>
             ))}

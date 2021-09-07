@@ -32,6 +32,11 @@ extensions:
         config:
             title: pim_enrich.entity.product.page_title.index
 
+    pim-product-index-grid-view-title-context:
+        module: pim/product/product-grid-view-title-context
+        parent: pim-product-index
+        targetZone: context
+
     pim-product-index-left-column:
         module: pim/form/common/column
         parent: pim-product-index

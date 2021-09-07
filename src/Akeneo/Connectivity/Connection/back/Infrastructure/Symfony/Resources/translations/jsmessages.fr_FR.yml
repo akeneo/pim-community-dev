@@ -49,6 +49,11 @@ akeneo_connectivity.connection:
         empty: Aucun connecteur compatible avec votre version
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
+    apps:
+      authorize:
+        scope:
+          entities:
+            categories: catégories
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -300,7 +305,7 @@ akeneo_connectivity.connection:
         link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
       search_filter:
         placeholder: Rechercher dans les messages d'erreur
-        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
+        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ count }} résultats'
       error_list:
         date_time_column:
           title: Jour et heure

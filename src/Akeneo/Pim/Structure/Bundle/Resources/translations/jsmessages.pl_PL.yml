@@ -265,7 +265,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Wybierz rodziny
     choose:
-      title: Działania zbiorcze rodzin
+      title: Działania zbiorcze rodziny
       label_count: "] 0, Inf [Wybierz działanie"
     configure:
       label: Konfiguruj

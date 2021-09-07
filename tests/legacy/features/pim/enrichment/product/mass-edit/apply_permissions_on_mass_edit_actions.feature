@@ -23,7 +23,7 @@ Feature: Apply ACL permissions on mass edit actions
     When I am on the products grid
     And I select rows kickers and hiking_shoes
     And I press the "Bulk actions" button
-    Then I should see the text "Edit attributes"
+    Then I should see the text "Edit attribute"
     And I should see the text "Add to groups"
     And I should not see the text "Change family"
     And I should not see the text "Change status"

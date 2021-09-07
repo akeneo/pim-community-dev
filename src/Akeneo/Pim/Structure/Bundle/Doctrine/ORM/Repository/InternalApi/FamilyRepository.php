@@ -2,10 +2,12 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
@@ -19,15 +21,9 @@ class FamilyRepository extends EntityRepository implements
     DatagridRepositoryInterface,
     MassActionRepositoryInterface
 {
-    /** @var UserContext */
-    protected $userContext;
+    protected UserContext $userContext;
 
-    /**
-     * @param UserContext   $userContext
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(UserContext $userContext, EntityManager $em, $class)
+    public function __construct(UserContext $userContext, EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
 
@@ -61,7 +57,7 @@ class FamilyRepository extends EntityRepository implements
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('f');
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAliases()[0];
 
         $labelExpr = sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
@@ -82,11 +78,13 @@ class FamilyRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * @param QueryBuilder|ProductQueryBuilderInterface $qb
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {
         if ($values) {
-            $rootAlias = $qb->getRootAlias();
+            $rootAlias = $qb->getRootAliases()[0];
             $valueWhereCondition =
                 $inset
                     ? $qb->expr()->in($rootAlias, $values)

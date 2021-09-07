@@ -25,7 +25,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
           return cloneElement(child, {
             rowIndex,
-            draggedElementIndex,
+            draggable: rowIndex === draggedElementIndex,
             onDragStart,
             onDragEnd,
           });

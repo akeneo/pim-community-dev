@@ -107,7 +107,8 @@ class CreateUserCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription(<<<DESC
+            ->setDescription(
+                <<<DESC
 Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
 When launched non interactively you have to provide arguments to the command. For instance:
 

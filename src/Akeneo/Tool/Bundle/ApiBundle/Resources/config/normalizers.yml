@@ -11,13 +11,14 @@ services:
         arguments:
             - '@pim_external_api_exception_serializer'
 
-    fos_rest.serializer.exception_normalizer.symfony:
-        class: FOS\RestBundle\Serializer\Normalizer\ExceptionNormalizer
+    Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer:
+        decorates: fos_rest.serializer.flatten_exception_normalizer
         arguments:
-            - '@fos_rest.exception.messages_map'
-            - false
+            - '@Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer.inner'
+        calls:
+            - [ 'setNormalizer', [ '@pim_external_api_exception_serializer' ] ]
         tags:
-            - { name: pim_external_api_exception_serializer.normalizer, priority: 90 }
+            - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
 
     pim_api.normalizer.exception.documented:
         class: '%pim_api.normalizer.exception.documented.class%'

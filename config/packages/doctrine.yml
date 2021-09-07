@@ -31,7 +31,7 @@ doctrine:
                 type: annotation
                 alias: Gedmo
                 prefix: Gedmo\Tree\Entity
-                dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/src/Tree/Entity'
+                dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
 
 services:
     doctrine.result_cache_provider:
@@ -59,3 +59,5 @@ doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
+    column_name: 'version'
+    column_length: 190

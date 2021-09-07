@@ -134,6 +134,7 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Doctrine\Inflector',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
@@ -261,6 +262,8 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+
+        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

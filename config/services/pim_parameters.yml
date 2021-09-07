@@ -15,7 +15,7 @@ parameters:
     pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
     pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
 
-    doctrine_migrations_dir: '%kernel.root_dir%/../upgrades/schema'
+    doctrine_migrations_dir: '%kernel.project_dir%/upgrades/schema'
 
     pim_analytics_update_server_url: https://updates.akeneo.com
 
@@ -74,6 +74,8 @@ parameters:
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
 
+    index_list_changed_total_field_limit:
+        - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
     # url to request to fetch announcements in the communication panel
     comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'
 

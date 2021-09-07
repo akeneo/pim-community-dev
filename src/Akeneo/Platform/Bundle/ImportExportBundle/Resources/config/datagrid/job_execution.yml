@@ -22,13 +22,13 @@ datagrid:
                 frontend_type: datetime
             status:
                 label:         Status
-                template:      PimImportExportBundle:Property:status.html.twig
+                template:      '@PimImportExport/Property/status.html.twig'
                 type:          twig
                 frontend_type: html
                 data_name:     statusLabel
             warning:
                 label:         Warnings
-                template:      PimImportExportBundle:Property:warning.html.twig
+                template:      '@PimImportExport/Property/warning.html.twig'
                 type:          twig
                 frontend_type: html
                 data_name:     warningCount

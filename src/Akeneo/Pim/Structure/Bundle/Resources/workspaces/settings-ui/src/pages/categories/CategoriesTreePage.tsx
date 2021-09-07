@@ -1,14 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Breadcrumb, Placeholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
-  BreadcrumbStepSkeleton,
   FullScreenError,
   PageContent,
   PageHeader,
   PimView,
   useRouter,
   useSecurity,
+  useSessionStorageState,
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
@@ -26,12 +26,27 @@ type CategoryToCreate = {
   onCreate: () => void;
 };
 
+type lastSelectedCategory = {
+  treeId: string;
+  categoryId: string;
+};
+
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId));
+  const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
+    {
+      treeId: treeId,
+      categoryId: '-1',
+    },
+    'lastSelectedCategory'
+  );
+  const {tree, loadingStatus, loadTree} = useCategoryTree(
+    parseInt(treeId),
+    lastSelectedCategory.treeId === treeId ? lastSelectedCategory.categoryId : '-1'
+  );
   const [treeLabel, setTreeLabel] = useState<string>('');
   const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
   const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);
@@ -104,7 +119,7 @@ const CategoriesTreePage: FC = () => {
             <Breadcrumb.Step onClick={followCategoriesIndex}>
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
-            <Breadcrumb.Step>{treeLabel || <BreadcrumbStepSkeleton />}</Breadcrumb.Step>
+            <Breadcrumb.Step>{treeLabel || <Placeholder as="span">{treeId}</Placeholder>}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
@@ -113,7 +128,7 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Title>{tree ? tree.label : ''}</PageHeader.Title>
+        <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
         <section>

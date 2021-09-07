@@ -50,7 +50,13 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
             ->addAttribute($localizablePrice)
             ->addAttribute($scopablePrice)
             ->addAttribute($scopableLocalizablePrice)
-            ->addAttribute($specificLocalizableName);
+            ->addAttribute($specificLocalizableName)
+            ->addAttribute(
+                (new Builder())
+                    ->aTextAttribute()
+                    ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->specificlocalizable()
+                    ->build()
+            );
 
 
         // common attributes: name, scopable_localizable_name, 123
@@ -137,6 +143,18 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );
@@ -182,6 +200,18 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );
@@ -242,6 +272,18 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );
@@ -357,6 +399,18 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );
@@ -534,6 +588,18 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );

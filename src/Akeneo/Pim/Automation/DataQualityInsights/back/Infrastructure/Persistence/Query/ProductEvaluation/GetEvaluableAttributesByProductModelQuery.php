@@ -55,7 +55,8 @@ WHERE product_model.id = :product_model_id
     );
 SQL;
 
-        $statement = $this->dbConnection->executeQuery($query,
+        $statement = $this->dbConnection->executeQuery(
+            $query,
             [
                 'product_model_id' => $productId->toInt(),
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
