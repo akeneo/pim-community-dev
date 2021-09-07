@@ -6,34 +6,33 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {PermissionFormRegistry, PermissionFormRegistryContext} from '@src/shared/permission-form-registry';
 
-test('The permissions step renders without error', async (done) => {
+test('The permissions step renders without error', async done => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Permissions appName="MyApp"/>
+            <Permissions appName='MyApp' />
         </ThemeProvider>
     );
     expect(await screen.findByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
     done();
 });
 
-test('The permissions step renders with the providers from the registry', async (done) => {
+test('The permissions step renders with the providers from the registry', async done => {
     const registry: PermissionFormRegistry = {
-        all: () => Promise.resolve([
-            {
-                key: 'test',
-                renderForm: () => (
-                    <div>test form</div>
-                ),
-                renderPreview: () => null,
-                save: () => true,
-            },
-        ]),
+        all: () =>
+            Promise.resolve([
+                {
+                    key: 'test',
+                    renderForm: () => <div>test form</div>,
+                    renderPreview: () => null,
+                    save: () => true,
+                },
+            ]),
     };
 
     render(
         <PermissionFormRegistryContext.Provider value={registry}>
             <ThemeProvider theme={pimTheme}>
-                <Permissions appName="MyApp"/>
+                <Permissions appName='MyApp' />
             </ThemeProvider>
         </PermissionFormRegistryContext.Provider>
     );

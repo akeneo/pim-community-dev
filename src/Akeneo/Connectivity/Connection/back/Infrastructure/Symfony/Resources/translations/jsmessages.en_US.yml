@@ -74,7 +74,7 @@ akeneo_connectivity.connection:
                 progress:
                     authorizations: Authorizations
                     permissions: Permissions
-                    well_done: Well done!
+                    summary: Well done!
                 authorize:
                     title: 'App {{ app_name }} needs to'
                     no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
@@ -407,3 +407,4 @@ pim_permissions:
             own: Own
             edit: Edit
             view: View
+        all: All

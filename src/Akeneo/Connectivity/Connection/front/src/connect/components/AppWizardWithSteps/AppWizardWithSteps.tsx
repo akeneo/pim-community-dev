@@ -3,10 +3,12 @@ import {useHistory} from 'react-router';
 import {Button, Modal, useProgress, ProgressIndicator} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Permissions} from './Permissions';
+import {PermissionsSummary} from './PermissionsSummary';
 import {Authorizations} from './Authorizations';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
+import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 
 const Content = styled.div`
     display: grid;
@@ -39,6 +41,10 @@ const ProgressIndicatorContainer = styled(ProgressIndicator)`
     bottom: 20px;
 `;
 
+export type PermissionsType = {
+    [key: string]: any;
+};
+
 interface Props {
     clientId: string;
 }
@@ -48,8 +54,17 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
-    const steps: string[] = ['authorizations', 'permissions', 'well_done'];
+    const steps: string[] = ['authorizations', 'permissions', 'summary'];
     const [isCurrent, next, previous] = useProgress(steps);
+
+    const permissionFormRegistry = usePermissionFormRegistry();
+    const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
+    const [permissions, setPermissions] = useState<PermissionsType>({});
+
+    useEffect(() => {
+        permissionFormRegistry.all().then(providers => setProviders(providers));
+    }, []);
+
     useEffect(() => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
@@ -85,7 +100,12 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 {isCurrent('authorizations') && (
                     <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                 )}
-                {isCurrent('permissions') && <Permissions appName={wizardData.appName} />}
+                {isCurrent('permissions') && (
+                    <Permissions appName={wizardData.appName} providers={providers} setPermissions={setPermissions} />
+                )}
+                {isCurrent('summary') && (
+                    <PermissionsSummary appName={wizardData.appName} providers={providers} permissions={permissions} />
+                )}
             </Content>
 
             <ProgressIndicatorContainer>
