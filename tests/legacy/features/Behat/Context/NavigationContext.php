@@ -381,19 +381,19 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page)
     {
         if (null === $this->pageFactory) {
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
+        $page = implode('\\', array_map('ucfirst', explode(' ', $page)));
 
-        return $this->pageFactory->createPage($name);
+        return $this->pageFactory->createPage($page);
     }
 
     /**
@@ -563,13 +563,13 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @deprecated This method is deprecated and should be removed avoid its use
-     * @see For more information regarding to deprecation see TIP-442
+     * @param string|null $condition
+     *@see For more information regarding to deprecation see TIP-442
      * @todo Delete method
      *
-     * @param string $condition
+     * @deprecated This method is deprecated and should be removed avoid its use
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }

@@ -170,12 +170,12 @@ legacy:
                         capabilities: { "browserName": "chrome", "browser": "chrome", "chrome": {"switches":["--no-sandbox"]}}
             base_url: 'http://httpd/'
             files_path: 'tests/legacy/features/Context/fixtures/'
-        Behat\Symfony2Extension:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
             kernel:
-                bootstrap: config/bootstrap.php
                 path: src/Kernel.php
                 class: Kernel
-                env: behat
+                environment: test_fake
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
             namespaces:

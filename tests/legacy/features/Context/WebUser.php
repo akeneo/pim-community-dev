@@ -34,13 +34,13 @@ class WebUser extends PimContext
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page)
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($page);
     }
 
     /**
@@ -2764,9 +2764,9 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
