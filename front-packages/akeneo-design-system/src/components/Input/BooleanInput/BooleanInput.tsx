@@ -248,7 +248,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             <BooleanInputLockIcon size={16} />
           </IconContainer>
         )}
-        {invalid && (
+        {invalid && children && (
           <ContainerInvalid>
             <IconInvalidContainer>{React.cloneElement(<DangerIcon size={13} />)}</IconInvalidContainer>
             <TextInvalidContainer>{children}</TextInvalidContainer>
