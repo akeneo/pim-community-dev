@@ -5,6 +5,11 @@ const FeatureFlags = require('pim/feature-flags');
 const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
 
+interface EventOptions {
+  name?: string,
+  attribute?: string,
+}
+
 const AppcuesOnboarding: PimOnboarding = {
   registerUser: () => {
     getAppcuesAgent().then(appcues => {
@@ -24,13 +29,49 @@ const AppcuesOnboarding: PimOnboarding = {
       appcues.page();
     });
   },
-  track: (event: string, eventOptions?: object) => {
+  track: (event: string, eventOptions?: EventOptions) => {
     getAppcuesAgent().then(appcues => {
       if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
         return;
       }
 
-      appcues.track(event, eventOptions);
+      switch (event) {
+        case 'product-grid:view:selected':
+          if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
+            appcues.track('View "Furniture - To enrich" selected');
+          }
+          break;
+        case 'product-grid:column:selected':
+          if (eventOptions && eventOptions.name && eventOptions.name.includes('designer')) {
+            appcues.track('Column "Designer" added in the product grid');
+          }
+          break;
+        case 'product-grid:product:selected':
+          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+            appcues.track('Product "Elka Peacock Armchair" selected');
+          }
+          break;
+        case 'product-grid:completeness:opened':
+          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+            appcues.track('Completeness badge for product "Elka Peacock Armchair" opened');
+          }
+          break;
+        case 'product-grid:attribute-group:selected':
+          if (eventOptions && eventOptions.name === 'contentcopy') {
+            appcues.track('Attribute group "Content / Copy" selected');
+          }
+          break;
+        case 'form:field:selected':
+          if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.name === 'studio_plumen') {
+            appcues.track('Attribute "Designer" filled with "Studio Plumen"');
+          }
+          break;
+        case 'product-grid:product:saved':
+          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+            appcues.track('Product "Elka Peacock Armchair" saved');
+          }
+          break;
+      }
     });
   },
   loadLaunchpad: (element: string) => {
