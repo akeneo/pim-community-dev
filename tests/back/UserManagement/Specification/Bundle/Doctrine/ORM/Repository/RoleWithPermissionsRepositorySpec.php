@@ -26,7 +26,7 @@ class RoleWithPermissionsRepositorySpec extends ObjectBehavior
         AclPrivilegeRepository $privilegeRepository
     ) {
         $aclManager->getSid(Argument::type(RoleInterface::class))->will(
-            fn (...$role): RoleSecurityIdentity => new RoleSecurityIdentity($role)
+            fn ($role): RoleSecurityIdentity => new RoleSecurityIdentity($role[0])
         );
         $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
         $this->beConstructedWith($roleRepository, $aclManager);

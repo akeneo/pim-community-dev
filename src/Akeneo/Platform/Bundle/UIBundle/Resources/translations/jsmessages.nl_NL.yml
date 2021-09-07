@@ -241,7 +241,9 @@ pim_common:
   products: Producten
   product_models: Productmodellen
   more: Meer
+  public_view: Openbare weergave
 error:
+  exception: Er is een {{ status_code }}-fout opgetreden
   forbidden: U heeft geen toegang tot deze pagina
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
     rules: '{0}U heeft 0 ingeschakelde regels|{1}U heeft 1 ingeschakelde regel|]1, Inf[U heeft {{ count }} ingeschakelde regels'
 pim_system:
+  system_menu: Systeemmenu
   system_navigation: Systeem navigatie
   users_management_navigation: Gebruikersbeheer navigatie
+  count:
+    product_values: '{0}U heeft 0 productwaarden|{1}U heeft 1 productwaarde|]1, Inf[U heeft {{ count }} productwaarden'
+    users: '{0}U heeft 0 gebruikers|{1}U heeft 1 gebruiker|]1, Inf[U heeft {{ count }} gebruikers'
+    user_groups: '{0}U heeft 0 gebruikersgroepen|{1}U heeft 1 gebruikersgroep|]1, Inf[U heeft {{ count }} gebruikersgroepen'
+    roles: '{0}U heeft 0 rollen|{1}U heeft 1 rol|]1, Inf[U heeft {{ count }} rollen'
+  sso:
+    enabled: Eenmalige aanmelding ingeschakeld
+    disabled: Eenmalige aanmelding uitgeschakeld
+    title: Eenmalige aanmelding (SSO) op basis van SAML

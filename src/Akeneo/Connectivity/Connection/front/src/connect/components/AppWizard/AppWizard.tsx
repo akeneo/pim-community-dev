@@ -2,9 +2,10 @@ import React, {FC, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import {useHistory} from 'react-router';
-import {AppWizardData, useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
+import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
-import {ScopeList} from './ScopeList';
+import {AppWizardData} from '../../../model/Apps/wizard-data';
+import {ScopeListContainer} from './ScopeListContainer';
 
 const Content = styled.div`
     display: grid;
@@ -44,7 +45,7 @@ const Connect = styled.h3`
     font-size: ${getFontSize('default')};
     text-transform: uppercase;
     font-weight: normal;
-    margin: 0;
+    margin: 0 0 6px 0;
 `;
 
 const ActionButton = styled(Button)`
@@ -76,7 +77,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
     return (
         <Modal
             onClose={redirectToMarketplace}
-            closeTitle={translate('akeneo_connectivity.connection.connect.apps.action.cancel')}
+            closeTitle={translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
         >
             <Content>
                 <LogoContainer>
@@ -86,13 +87,13 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 </LogoContainer>
                 <InfoContainer>
                     <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
-                    <ScopeList appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
+                    <ScopeListContainer appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                     <Actions>
                         <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
-                            {translate('akeneo_connectivity.connection.connect.apps.action.cancel')}
+                            {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
                         </ActionButton>
                         <ActionButton>
-                            {translate('akeneo_connectivity.connection.connect.apps.action.confirm')}
+                            {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                         </ActionButton>
                     </Actions>
                 </InfoContainer>

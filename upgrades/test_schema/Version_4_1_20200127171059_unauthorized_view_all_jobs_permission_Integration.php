@@ -105,7 +105,8 @@ class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission_Integrati
 
     private function findAccessLevelForRole(Role $role): ?int
     {
-        $aclPrivileges = $this->aclManager->getPrivilegeRepository()->getPrivileges(new RoleSecurityIdentity($role));
+        $aclPrivileges = $this->aclManager->getPrivilegeRepository()
+            ->getPrivileges(new RoleSecurityIdentity($role->getRole()));
         foreach ($aclPrivileges as $aclPrivilege) {
             if ($aclPrivilege->getIdentity()->getId() === static::PRIVILEGE_ID) {
                 return $aclPrivilege->getPermissions()->get('EXECUTE')->getAccessLevel();
@@ -126,7 +127,7 @@ class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission_Integrati
         $this
             ->aclManager
             ->getPrivilegeRepository()
-            ->savePrivileges(new RoleSecurityIdentity($role), new ArrayCollection([$privilege]));
+            ->savePrivileges(new RoleSecurityIdentity($role->getRole()), new ArrayCollection([$privilege]));
     }
 
     private function getMigrationLabel(): string

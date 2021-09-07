@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Resolves the repository given a reference data type
@@ -29,7 +30,7 @@ class ReferenceDataRepositoryResolver implements ReferenceDataRepositoryResolver
     /**
      * {@inheritdoc}
      */
-    public function resolve($referenceDataType)
+    public function resolve(string $referenceDataType): ObjectRepository
     {
         $referenceDataConf = $this->configurationRegistry->get($referenceDataType);
         $referenceDataClass = $referenceDataConf->getClass();

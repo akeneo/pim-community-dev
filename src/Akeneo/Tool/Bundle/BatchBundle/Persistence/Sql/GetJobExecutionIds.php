@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use DateTime;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDOStatement;
+use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Types\Types;
+use InvalidArgumentException;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,21 +17,22 @@ use Doctrine\DBAL\Types\Types;
  */
 final class GetJobExecutionIds
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-    public function olderThanDays(int $days): PDOStatement
+    public function olderThanDays(int $days): ResultStatement
     {
         if ($days < 1) {
-            throw new \InvalidArgumentException(sprintf('Number of days should be strictly superior to 0, "%s% given', $days));
+            throw new InvalidArgumentException(
+                sprintf('Number of days should be strictly superior to 0, "%s given', $days)
+            );
         }
 
-        $endTime = new \DateTime();
+        $endTime = new DateTime();
         $endTime->modify(sprintf('- %d days', $days));
 
         $query = <<<SQL
@@ -41,7 +44,7 @@ final class GetJobExecutionIds
                 WHERE last_job_execution.status = :status 
                 GROUP BY last_job_execution.job_instance_id
             )
-SQL;
+        SQL;
 
         return $this->connection->executeQuery(
             $query,
@@ -50,7 +53,7 @@ SQL;
         );
     }
 
-    public function all(): PDOStatement
+    public function all(): ResultStatement
     {
         $query = <<<SQL
             SELECT id
