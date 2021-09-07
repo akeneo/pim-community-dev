@@ -48,6 +48,7 @@ const BooleanButton = styled.button<
 
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
+  border-right-width: 1px;
 
   ${({value, readOnly, invalid}) =>
     value === false &&
@@ -63,16 +64,11 @@ const NoButton = styled(BooleanButton)`
         background: ${getColor('grey', readOnly ? 80 : 140)};
       }
     `}
-
-  ${({value}) =>
-    value === true &&
-    css`
-      border-right-width: 0;
-    `}
 `;
 
 const YesButton = styled(BooleanButton)`
   border-radius: 0 2px 2px 0;
+  border-left-width: 0;
 
   ${({value, readOnly, invalid}) =>
     value === true &&
@@ -89,12 +85,6 @@ const YesButton = styled(BooleanButton)`
       &:active {
         background: ${getColor('green', readOnly ? 60 : 140)};
       }
-    `}
-
-  ${({value}) =>
-    value === false &&
-    css`
-      border-left-width: 0;
     `}
 `;
 
