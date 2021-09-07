@@ -162,7 +162,7 @@ type BooleanInputProps = Override<
     yesLabel: string;
     noLabel: string;
     invalid?: boolean;
-    children: ReactNode;
+    children?: ReactNode;
   }
 >;
 
