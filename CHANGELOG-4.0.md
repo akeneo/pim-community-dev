@@ -1,5 +1,7 @@
 # 4.0.x
 
+- RAC-868: Improve the thumbnail cache clear command to clear with an option to clear all caches.
+
 # 4.0.123 (2021-09-01)
 
 # 4.0.122 (2021-08-31)
