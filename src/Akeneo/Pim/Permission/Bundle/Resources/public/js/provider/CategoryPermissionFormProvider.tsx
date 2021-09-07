@@ -1,8 +1,14 @@
 import React, {useEffect, useReducer} from 'react';
 import styled from 'styled-components';
-import {getColor, Helper, SectionTitle} from 'akeneo-design-system';
+import {getColor, Helper, KeyIcon, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
-import {PermissionFormProvider, PermissionFormWidget, PermissionFormReducer} from '@akeneo-pim-community/permission-form';
+import {
+  PermissionFormProvider,
+  PermissionFormWidget,
+  PermissionFormReducer,
+  PermissionSectionSummary,
+  LevelSummaryField
+} from '@akeneo-pim-community/permission-form';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -101,7 +107,40 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
             </>
         );
     },
-    renderPreview: (_state: PermissionFormReducer.State) => null,
+    renderSummary: (state: PermissionFormReducer.State) => (
+        <PermissionSectionSummary label={'pim_permissions.widget.entity.category.label'}>
+            <LevelSummaryField
+                levelLabel={'pim_permissions.widget.level.own'}
+                icon={<KeyIcon size={20}/>}
+            >
+                {
+                    state.own.all ?
+                        translate('pim_permissions.widget.all') :
+                        state.own.identifiers.join(', ')
+                }
+            </LevelSummaryField>
+            <LevelSummaryField
+                levelLabel={'pim_permissions.widget.level.edit'}
+                icon={<EditIcon size={20}/>}
+            >
+                {
+                    state.edit.all ?
+                        translate('pim_permissions.widget.all') :
+                        state.edit.identifiers.join(', ')
+                }
+            </LevelSummaryField>
+            <LevelSummaryField
+                levelLabel={'pim_permissions.widget.level.view'}
+                icon={<ViewIcon size={20}/>}
+            >
+                {
+                    state.view.all ?
+                        translate('pim_permissions.widget.all') :
+                        state.view.identifiers.join(', ')
+                }
+            </LevelSummaryField>
+        </PermissionSectionSummary>
+    ),
     save: (_role: string, _state: PermissionFormReducer.State) => {
         // @todo
         return true;
