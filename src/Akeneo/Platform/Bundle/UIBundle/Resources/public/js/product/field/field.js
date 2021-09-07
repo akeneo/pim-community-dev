@@ -369,8 +369,8 @@ define([
       productValue.data = value;
       mediator.trigger('pim_enrich:form:entity:update_state');
 
-      analytics.track('form:field:selected', {
-        name: value,
+      analytics.track('product:attribute-value:updated', {
+        value: value,
         attribute: this.attribute.code,
       });
     },

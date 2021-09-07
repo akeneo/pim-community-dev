@@ -35,7 +35,7 @@ define([
   FetcherRegistry,
   FormBuilder,
   mediator,
-  analytics,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),

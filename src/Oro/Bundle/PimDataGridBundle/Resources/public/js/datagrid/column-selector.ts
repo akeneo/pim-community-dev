@@ -478,7 +478,8 @@ class ColumnSelector extends BaseView {
     }
 
     analytics.track('product-grid:column:selected', {
-      name: selected,
+      gridName: this.config.gridName,
+      column: selected,
     });
 
     DatagridState.set(this.config.gridName, 'columns', selected);

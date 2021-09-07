@@ -288,9 +288,9 @@ define([
         if (!actionConfiguration || actionConfiguration[action.name] !== false) {
           action.run();
 
-          if (action.datagrid && action.datagrid.entityHint === 'product') {
+          if (this.name === 'product-grid' && action.datagrid && action.datagrid.entityHint === 'product') {
             analytics.track('product-grid:product:selected', {
-              name: action.model.attributes.identifier,
+              identifier: action.model.attributes.identifier,
             });
           }
         }
