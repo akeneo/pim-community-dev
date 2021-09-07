@@ -16,6 +16,11 @@ pim_title:
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
   akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
+  connect:
+    apps:
+      wizard:
+        progress:
+          permissions: Permissions
   connections: Connections
   secondary_actions:
     title: Other actions
