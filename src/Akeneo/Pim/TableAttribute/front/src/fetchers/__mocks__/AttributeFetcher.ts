@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {Attribute} from '../../models/Attribute';
+import {Attribute} from '../../models';
 
 const attribute: Attribute = {
   code: 'nutrition',
@@ -66,4 +66,8 @@ const fetchAttribute = async (_router: Router, attributeCode: string): Promise<A
   throw new Error(`Non mocked attribute ${attributeCode}`);
 };
 
-export {fetchAttribute};
+const AttributeFetcher = {
+  fetch: fetchAttribute,
+};
+
+export {AttributeFetcher};

@@ -1,7 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {AddColumnModal} from '../../../src/attribute/AddColumnModal';
-import {act, screen, fireEvent} from '@testing-library/react';
+import {AddColumnModal} from '../../../src/attribute';
+import {act, fireEvent, screen} from '@testing-library/react';
+
 jest.mock('../../../src/attribute/LocaleLabel');
 
 describe('AddColumnModal', () => {

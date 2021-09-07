@@ -1,12 +1,13 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, act} from '@testing-library/react';
-import {TableStructureApp} from '../../../src/attribute/TableStructureApp';
+import {act, screen} from '@testing-library/react';
+import {TableStructureApp} from '../../../src/attribute';
 import {getComplexTableConfiguration, getSimpleTableConfiguration} from '../factories/TableConfiguration';
 import {getTableAttribute} from '../factories/Attributes';
+import {fireEvent} from '@testing-library/dom';
+
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
-import {fireEvent} from '@testing-library/dom';
 
 const waitPageToBeLoaded = async () => {
   expect(await screen.findByText('English (United States)')).toBeInTheDocument();

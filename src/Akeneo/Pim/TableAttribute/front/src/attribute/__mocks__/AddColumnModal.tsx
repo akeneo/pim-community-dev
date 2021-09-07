@@ -1,5 +1,5 @@
 import React from 'react';
-import {ColumnCode, ColumnDefinition} from '../../models/TableConfiguration';
+import {ColumnCode, ColumnDefinition} from '../../models';
 
 type AddColumnModalProps = {
   close: () => void;

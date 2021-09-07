@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, act, fireEvent} from '@testing-library/react';
-import {DeleteOptionModal} from '../../../src/attribute/DeleteOptionModal';
+import {act, fireEvent, screen} from '@testing-library/react';
+import {DeleteOptionModal} from '../../../src/attribute';
 
 describe('DeleteOptionModal', () => {
   it('renders a disabled delete button when the text is not filled', async () => {

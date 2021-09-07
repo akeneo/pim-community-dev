@@ -1,16 +1,15 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Locale, Search, AkeneoThemedProps, getColor, Checkbox} from 'akeneo-design-system';
+import {AkeneoThemedProps, Checkbox, getColor, Locale, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
-import {TableRow, TableValue} from '../models/TableValue';
+import {ColumnCode, TableRow, TableValue} from '../models';
 import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
-import {ColumnCode} from '../models/TableConfiguration';
-import {clearCacheSelectOptions} from '../repositories/SelectOption';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
 import {useUniqueIds} from './useUniqueIds';
 import {useToggleRow} from './useToggleRow';
+import {SelectOptionRepository} from '../repositories';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -135,7 +134,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   }, [JSON.stringify(violations)]);
 
   React.useEffect(() => {
-    clearCacheSelectOptions();
+    SelectOptionRepository.clearCache();
   }, []);
 
   const renderElements = useRenderElements(attribute.code, elements);

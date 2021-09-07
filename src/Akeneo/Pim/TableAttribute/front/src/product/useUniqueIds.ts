@@ -1,4 +1,4 @@
-import {TableRow, TableValue} from '../models/TableValue';
+import {TableRow, TableValue} from '../models';
 import {uuid} from 'akeneo-design-system';
 import {TableValueWithId} from './TableFieldApp';
 

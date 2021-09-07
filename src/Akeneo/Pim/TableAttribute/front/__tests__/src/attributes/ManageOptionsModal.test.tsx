@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {fireEvent, screen, act} from '@testing-library/react';
-import {ManageOptionsModal} from '../../../src/attribute/ManageOptionsModal';
+import {ManageOptionsModal} from '../../../src/attribute';
 import {getTableAttribute} from '../factories/Attributes';
 import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';

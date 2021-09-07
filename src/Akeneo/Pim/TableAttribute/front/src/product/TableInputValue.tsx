@@ -13,20 +13,17 @@ import {
   ColumnDefinition,
   NumberColumnValidation,
   SelectOptionCode,
+  TableAttribute,
+  TableCell,
   TextColumnValidation,
-} from '../models/TableConfiguration';
+} from '../models';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {TableInputSelect} from './CellInputs/TableInputSelect';
-import {TableCell} from '../models/TableValue';
-import {TableInputNumber} from './CellInputs/TableInputNumber';
-import {TableInputText} from './CellInputs/TableInputText';
-import {TableAttribute} from '../models/Attribute';
-import {CenteredHelper} from '../shared/CenteredHelper';
+import {TableInputNumber, TableInputSelect, TableInputText} from './CellInputs';
+import {CenteredHelper, LoadingPlaceholderContainer} from '../shared';
 import {useFetchOptions} from './useFetchOptions';
-import {LoadingPlaceholderContainer} from '../shared/LoadingPlaceholder';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 

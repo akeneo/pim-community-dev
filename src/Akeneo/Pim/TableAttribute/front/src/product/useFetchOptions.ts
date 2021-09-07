@@ -1,8 +1,7 @@
 import React from 'react';
-import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
-import {ColumnCode, SelectOption, TableConfiguration} from '../models/TableConfiguration';
+import {ColumnCode, SelectOption, TableCell, TableConfiguration, TableRow} from '../models';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {TableCell, TableRow} from '../models/TableValue';
+import {SelectOptionRepository} from '../repositories';
 
 const useFetchOptions: (
   tableConfiguration: TableConfiguration | undefined,
@@ -19,7 +18,7 @@ const useFetchOptions: (
   const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
 
   const innerGetOptionLabel = async (columnCode: ColumnCode, value: string) => {
-    const selectOption = await getSelectOption(router, attributeCode, columnCode, value);
+    const selectOption = await SelectOptionRepository.findFromCell(router, attributeCode, columnCode, value);
 
     return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : null;
   };
@@ -30,7 +29,8 @@ const useFetchOptions: (
         for await (const column of tableConfiguration.filter(
           columnDefinition => columnDefinition.data_type === 'select'
         )) {
-          options[column.code] = (await getSelectOptions(router, attributeCode, column.code)) || [];
+          options[column.code] =
+            (await SelectOptionRepository.findFromColumn(router, attributeCode, column.code)) || [];
           for await (const row of valueData) {
             selectOptionLabels[`${column.code}-${row[column.code]}`] = await innerGetOptionLabel(
               column.code,

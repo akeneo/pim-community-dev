@@ -13,14 +13,13 @@ import {
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {ColumnCode, ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
+import {Attribute, ColumnCode, ColumnDefinition, TableConfiguration} from '../models';
 import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
-import {Attribute} from '../models/Attribute';
-import {getActivatedLocales} from '../repositories/Locale';
-import {CenteredHelper} from '../shared/CenteredHelper';
+import {CenteredHelper} from '../shared';
+import {LocaleRepository} from '../repositories';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -68,7 +67,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   const [savedColumnIds, setSavedColumnIds] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    getActivatedLocales(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
+    LocaleRepository.findActivated(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
 
   React.useEffect(() => {

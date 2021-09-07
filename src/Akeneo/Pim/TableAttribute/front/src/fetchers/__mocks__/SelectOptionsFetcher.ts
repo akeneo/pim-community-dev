@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../../models/TableConfiguration';
+import {ColumnCode, SelectOption} from '../../models';
 
 const ingredientsSelectOptions = [
   {code: 'salt', labels: {en_US: 'Salt', de_DE: 'Achtzergüntlich'}},
@@ -54,4 +54,8 @@ const fetchSelectOptions = async (
   }
 };
 
-export {fetchSelectOptions, getSelectOptions, ingredientsSelectOptions};
+const SelectOptionFetcher = {
+  fetchFromColumn: fetchSelectOptions,
+};
+
+export {SelectOptionFetcher, ingredientsSelectOptions};

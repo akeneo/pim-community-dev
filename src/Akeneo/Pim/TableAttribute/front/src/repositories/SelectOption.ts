@@ -1,6 +1,6 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../models/TableConfiguration';
-import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
+import {ColumnCode, SelectOption} from '../models';
+import {SelectOptionFetcher} from '../fetchers';
 
 const selectOptionsCalls: {[key: string]: Promise<SelectOption[] | undefined>} = {};
 const selectOptionsCache: {[key: string]: SelectOption[] | null} = {};
@@ -19,7 +19,7 @@ const getSelectOptions = async (
   const key = `${attributeCode}-${columnCode}`;
   if (!(key in selectOptionsCache)) {
     if (!(key in selectOptionsCalls)) {
-      selectOptionsCalls[key] = fetchSelectOptions(router, attributeCode, columnCode);
+      selectOptionsCalls[key] = SelectOptionFetcher.fetchFromColumn(router, attributeCode, columnCode);
     }
     selectOptionsCache[key] = (await selectOptionsCalls[key]) ?? null;
   }
@@ -37,4 +37,10 @@ const getSelectOption = async (
   return options?.find(option => option.code === selectOptionCode) ?? null;
 };
 
-export {getSelectOptions, getSelectOption, clearCacheSelectOptions};
+const SelectOptionRepository = {
+  findFromColumn: getSelectOptions,
+  findFromCell: getSelectOption,
+  clearCache: clearCacheSelectOptions,
+};
+
+export {SelectOptionRepository};

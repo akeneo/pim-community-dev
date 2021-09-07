@@ -1,6 +1,6 @@
 import {TableInput} from 'akeneo-design-system';
 import React from 'react';
-import {TextColumnValidation} from '../../models/TableConfiguration';
+import {TextColumnValidation} from '../../models';
 
 type TableInputTextProps = {
   value?: string;

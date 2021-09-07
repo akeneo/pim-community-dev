@@ -3,10 +3,9 @@ import * as ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {TableValue} from '../models/TableValue';
-import {TableFieldApp} from '../product/TableFieldApp';
+import {TableAttribute, TableValue} from '../models';
+import {TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {TableAttribute} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires

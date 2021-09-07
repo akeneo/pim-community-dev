@@ -1,8 +1,8 @@
-import {DeleteIllustration, Button, Field, Modal, TextInput, Helper} from 'akeneo-design-system';
+import {Button, DeleteIllustration, Field, Helper, Modal, TextInput} from 'akeneo-design-system';
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SelectOptionCode} from '../models/TableConfiguration';
-import {FieldsList} from '../shared/FieldsList';
+import {SelectOptionCode} from '../models';
+import {FieldsList} from '../shared';
 
 type DeleteOptionModalProps = {
   close: () => void;

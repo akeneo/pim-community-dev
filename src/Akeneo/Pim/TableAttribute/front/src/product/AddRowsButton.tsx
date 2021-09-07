@@ -11,11 +11,10 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption, SelectOptionCode} from '../models/TableConfiguration';
-import {getSelectOptions} from '../repositories/SelectOption';
+import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../models';
 import styled from 'styled-components';
-import {TableAttribute} from '../models/Attribute';
-import {CenteredHelper} from '../shared/CenteredHelper';
+import {CenteredHelper} from '../shared';
+import {SelectOptionRepository} from '../repositories';
 
 const BATCH_SIZE = 20;
 
@@ -66,7 +65,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
 
   React.useEffect(() => {
     if (isOpen && typeof items === 'undefined') {
-      getSelectOptions(router, attribute.code, columnCode).then(selectOptions => {
+      SelectOptionRepository.findFromColumn(router, attribute.code, columnCode).then(selectOptions => {
         setItems(
           (selectOptions ?? []).map((option: SelectOption) => {
             return {

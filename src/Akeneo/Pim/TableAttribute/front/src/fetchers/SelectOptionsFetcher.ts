@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../models/TableConfiguration';
+import {ColumnCode, SelectOption} from '../models';
 
 const fetchSelectOptions = async (
   router: Router,
@@ -24,4 +24,8 @@ const fetchSelectOptions = async (
   return await response.json();
 };
 
-export {fetchSelectOptions};
+const SelectOptionFetcher = {
+  fetchFromColumn: fetchSelectOptions,
+};
+
+export {SelectOptionFetcher};

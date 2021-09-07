@@ -16,17 +16,14 @@ import {
   uuid,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
-import {Attribute} from '../models/Attribute';
+import {Attribute, SelectColumnDefinition, SelectOption} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
-import {FieldsList} from '../shared/FieldsList';
+import {CenteredHelper, FieldsList} from '../shared';
 import styled from 'styled-components';
-import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
-import {getActivatedLocales} from '../repositories/Locale';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 import {DeleteOptionModal} from './DeleteOptionModal';
-import {CenteredHelper} from '../shared/CenteredHelper';
+import {LocaleRepository, SelectOptionRepository} from '../repositories';
 
 const TableContainer = styled.div`
   height: calc(100vh - 270px);
@@ -127,8 +124,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       );
     };
     if (typeof columnDefinition.options === 'undefined') {
-      fetchSelectOptions(router, attribute.code, columnDefinition.code).then(fetchOptions => {
-        if (typeof fetchOptions === 'undefined') {
+      SelectOptionRepository.findFromColumn(router, attribute.code, columnDefinition.code).then(fetchOptions => {
+        if (fetchOptions === null) {
           initializeOptions([]);
         } else {
           initializeOptions(fetchOptions);
@@ -167,7 +164,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   }, [options?.length]);
 
   React.useEffect(() => {
-    getActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
+    LocaleRepository.findActivated(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
   }, [router]);
 
   const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {

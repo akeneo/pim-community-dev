@@ -2,7 +2,7 @@ import React from 'react';
 import {CreateAttributeModal} from '@akeneo-pim-community/settings-ui/src/pages/CreateAttributeModal';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Template, TEMPLATES} from '../models/Template';
+import {Template, TEMPLATES} from '../models';
 
 type AttributeType = string;
 

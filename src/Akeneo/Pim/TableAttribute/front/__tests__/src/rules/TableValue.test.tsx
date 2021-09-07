@@ -2,7 +2,8 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, fireEvent, screen} from '@testing-library/react';
 import render, {InputValueProps} from '../../../src/rules/TableValue';
 import {getTableAttribute} from '../factories/Attributes';
-import {Attribute} from '../../../src/models/Attribute';
+import {Attribute} from '../../../src/models';
+
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 

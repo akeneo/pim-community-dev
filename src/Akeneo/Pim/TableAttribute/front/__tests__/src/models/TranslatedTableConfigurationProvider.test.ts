@@ -1,6 +1,11 @@
-import {getTranslatedTableConfigurationFromVariationTemplate} from '../../../src/models/TranslatedTableConfigurationProvider';
+import {
+  ColumnCode,
+  getTranslatedTableConfigurationFromVariationTemplate,
+  SelectOption,
+  SelectOptionCode,
+  TableConfiguration,
+} from '../../../src/models';
 import 'jest-fetch-mock';
-import {ColumnCode, SelectOption, SelectOptionCode, TableConfiguration} from '../../../src/models/TableConfiguration';
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
 const getOptionLabels: (

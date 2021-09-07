@@ -1,5 +1,5 @@
-import {ColumnDefinitionWithId} from '../../../src/attribute/TableStructureApp';
-import {SelectColumnDefinition} from '../../../src/models/TableConfiguration';
+import {ColumnDefinitionWithId} from '../../../src/attribute';
+import {SelectColumnDefinition} from '../../../src/models';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {...getSelectColumnDefinition(), id: 'uniqueidingredient'};

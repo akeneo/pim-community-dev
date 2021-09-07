@@ -1,15 +1,9 @@
 import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
-import {
-  ColumnCode,
-  ColumnDefinition,
-  ColumnType,
-  DATA_TYPES,
-  FIRST_COLUMN_DATA_TYPES,
-} from '../models/TableConfiguration';
+import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES, FIRST_COLUMN_DATA_TYPES} from '../models';
 import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
-import {FieldsList} from '../shared/FieldsList';
+import {FieldsList} from '../shared';
 
 type AddColumnModalProps = {
   close: () => void;

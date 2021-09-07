@@ -1,5 +1,6 @@
 import React from 'react';
-import {SelectOption} from '../../models/TableConfiguration';
+import {SelectOption} from '../../models';
+
 type ManageOptionsModalProps = {
   onChange: (options: SelectOption[]) => void;
 };

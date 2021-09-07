@@ -1,4 +1,4 @@
-import {TableAttribute} from '../../../src/models/Attribute';
+import {TableAttribute} from '../../../src/models';
 import {getSimpleTableConfiguration} from './TableConfiguration';
 
 const getTableAttribute: () => TableAttribute = () => {

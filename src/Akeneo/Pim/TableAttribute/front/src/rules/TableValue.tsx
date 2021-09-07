@@ -1,15 +1,10 @@
 import React from 'react';
 import {Attribute, ScopeCode} from 'rule_definition/src/models';
-import {TableAttribute} from '../models/Attribute';
+import {TableAttribute, TableValue} from '../models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
-import {TableInputValue} from '../product/TableInputValue';
-import {AddRowsButton} from '../product/AddRowsButton';
-import {TableValue} from '../models/TableValue';
-import {TableValueWithId} from '../product/TableFieldApp';
+import {AddRowsButton, TableInputValue, TableValueWithId, useToggleRow, useUniqueIds} from '../product';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {useUniqueIds} from '../product/useUniqueIds';
-import {useToggleRow} from '../product/useToggleRow';
 
 const TableValueContainer = styled.div`
   width: calc((100vw - 580px) / 2);

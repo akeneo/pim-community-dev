@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Dropdown, Link, TableInput} from 'akeneo-design-system';
-import {SelectOption, SelectOptionCode} from '../../models/TableConfiguration';
+import {Attribute, SelectOption, SelectOptionCode} from '../../models';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {Attribute} from '../../models/Attribute';
-import {CenteredHelper} from '../../shared/CenteredHelper';
-import {LoadingPlaceholderContainer} from '../../shared/LoadingPlaceholder';
+import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 
 const BATCH_SIZE = 20;
 

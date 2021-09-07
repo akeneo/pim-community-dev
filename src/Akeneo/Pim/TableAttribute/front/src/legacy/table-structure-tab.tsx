@@ -1,14 +1,17 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {TableStructureApp} from '../attribute/TableStructureApp';
-import {TableConfiguration} from '../models/TableConfiguration';
+import {TableStructureApp} from '../attribute';
+import {
+  Attribute,
+  AttributeType,
+  getTranslatedTableConfigurationFromVariationTemplate,
+  TableConfiguration,
+} from '../models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Attribute, AttributeType} from '../models/Attribute';
-import {getTranslatedTableConfigurationFromVariationTemplate} from '../models/TranslatedTableConfigurationProvider';
 import {Locale} from '@akeneo-pim-community/settings-ui';
 import {LocaleCode} from '@akeneo-pim-community/shared';
-import {clearCacheSelectOptions} from '../repositories/SelectOption';
+import {SelectOptionRepository} from '../repositories';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -65,7 +68,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
   }
 
   resetSavedColumns(): void {
-    clearCacheSelectOptions();
+    SelectOptionRepository.clearCache();
     this.savedColumnCodes = undefined;
   }
 

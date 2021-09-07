@@ -2,18 +2,18 @@ import React from 'react';
 import {Button, Field, Helper, NumberInput, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {
+  Attribute,
   ColumnCode,
   ColumnValidation,
   SelectColumnDefinition,
   SelectOption,
   TextColumnValidation,
-} from '../models/TableConfiguration';
+} from '../models';
 import styled from 'styled-components';
 import {ColumnDefinitionWithId} from './TableStructureApp';
 import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
 import {ManageOptionsModal} from './ManageOptionsModal';
-import {Attribute} from '../models/Attribute';
-import {FieldsList} from '../shared/FieldsList';
+import {FieldsList} from '../shared';
 
 const ManageOptionsButtonContainer = styled.div`
   text-align: right;

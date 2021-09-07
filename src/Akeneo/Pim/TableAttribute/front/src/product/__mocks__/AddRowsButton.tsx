@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from 'akeneo-design-system';
-import {ColumnCode, SelectOptionCode} from '../../models/TableConfiguration';
+import {ColumnCode, SelectOptionCode} from '../../models';
 
 type AddRowsButtonProps = {
   attributeCode: string;

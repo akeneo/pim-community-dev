@@ -1,7 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent, act} from '@testing-library/react';
-import {TableFooter} from '../../../src/product/TableFooter';
+import {act, fireEvent, screen} from '@testing-library/react';
+import {TableFooter} from '../../../src/product';
+
 jest.mock('../../../src/attribute/LocaleLabel');
 
 describe('TableFooter', () => {

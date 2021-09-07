@@ -1,11 +1,12 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, act, fireEvent} from '@testing-library/react';
-import {TableFieldApp} from '../../../src/product/TableFieldApp';
+import {act, fireEvent, screen} from '@testing-library/react';
+import {TableFieldApp} from '../../../src/product';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
 import {getTableValueSelectRow} from '../factories/TableValue';
 import {getTableAttribute} from '../factories/Attributes';
+
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/product/AddRowsButton');

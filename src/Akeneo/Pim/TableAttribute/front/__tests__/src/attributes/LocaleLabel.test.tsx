@@ -1,7 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {LocaleLabel} from '../../../src/attribute/LocaleLabel';
+import {LocaleLabel} from '../../../src/attribute';
 import {act, screen} from '@testing-library/react';
+
 jest.mock('../../../src/fetchers/LocaleFetcher');
 
 describe('LocaleLabel', () => {

@@ -1,6 +1,6 @@
 import {TableInput} from 'akeneo-design-system';
 import React from 'react';
-import {NumberColumnValidation} from '../../models/TableConfiguration';
+import {NumberColumnValidation} from '../../models';
 
 type TableInputNumberProps = {
   value?: string;

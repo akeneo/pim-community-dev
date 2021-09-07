@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableInputSelect} from '../../../../src/product/CellInputs/TableInputSelect';
+import {TableInputSelect} from '../../../../src/product';
 import {getTableAttribute} from '../../factories/Attributes';
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;

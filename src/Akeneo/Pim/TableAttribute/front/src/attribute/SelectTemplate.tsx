@@ -1,7 +1,7 @@
 import React from 'react';
-import {Modal, Tiles, Tile} from 'akeneo-design-system';
+import {Modal, Tile, Tiles} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {TEMPLATES} from '../models/Template';
+import {TEMPLATES} from '../models';
 import styled from 'styled-components';
 
 const ModalContent = styled.div`

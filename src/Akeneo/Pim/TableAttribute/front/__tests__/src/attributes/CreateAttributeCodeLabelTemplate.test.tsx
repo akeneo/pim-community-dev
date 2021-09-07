@@ -1,8 +1,9 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {view} from '../../../src/attribute/CreateAttributeCodeLabelTemplate';
+import {view} from '../../../src/attribute';
 import 'jest-fetch-mock';
+
 const CreateAttributeCodeLabelTemplate = view;
 
 describe('CreateAttributeCodeLabelTemplate', () => {

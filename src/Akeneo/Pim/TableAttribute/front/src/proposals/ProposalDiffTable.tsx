@@ -3,12 +3,9 @@ import {Badge, LoaderIcon, TableInput} from 'akeneo-design-system';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {diffChars} from 'diff';
 import styled from 'styled-components';
-import {ColumnCode, ColumnDefinition} from '../models/TableConfiguration';
-import {TableRowWithId} from '../product/TableFieldApp';
-import {useFetchOptions} from '../product/useFetchOptions';
-import {TableAttribute} from '../models/Attribute';
-import {TableValue} from '../models/TableValue';
-import {getAttribute} from '../repositories/Attribute';
+import {ColumnCode, ColumnDefinition, TableAttribute, TableValue} from '../models';
+import {TableRowWithId, useFetchOptions} from '../product';
+import {AttributeRepository} from '../repositories';
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
   min-width: auto;
@@ -54,7 +51,7 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   const {getOptionLabel} = useFetchOptions(attribute?.table_configuration, change.attributeCode, valueData);
 
   React.useEffect(() => {
-    getAttribute(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
+    AttributeRepository.find(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
   }, []);
 
   if (typeof attribute === 'undefined') {

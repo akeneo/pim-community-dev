@@ -23,4 +23,10 @@ const fetchUiLocales = async (router: Router): Promise<Locale[]> => {
   return await response.json();
 };
 
-export {fetchActivatedLocales, fetchUiLocales, fetchLocales};
+const LocaleFetcher = {
+  fetchAll: fetchLocales,
+  fetchActivated: fetchActivatedLocales,
+  fetchUi: fetchUiLocales,
+};
+
+export {LocaleFetcher};

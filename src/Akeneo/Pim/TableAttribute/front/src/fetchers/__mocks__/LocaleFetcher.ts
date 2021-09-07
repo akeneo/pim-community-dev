@@ -30,4 +30,10 @@ const fetchActivatedLocales = async (_router: Router): Promise<Locale[]> => {
   return new Promise(resolve => resolve([en_US, fr_FR, de_DE]));
 };
 
-export {fetchLocales, fetchActivatedLocales};
+const LocaleFetcher = {
+  fetchAll: fetchLocales,
+  fetchActivated: fetchActivatedLocales,
+  fetchUi: fetchActivatedLocales,
+};
+
+export {LocaleFetcher};
