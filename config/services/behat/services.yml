@@ -8,6 +8,11 @@ imports:
 services:
     _defaults:
         public: true
+        autowire: true
+        autoconfigure: true
+
+    Pim\Behat\Context\:
+        resource: '%kernel.project_dir%/tests/legacy/features/Behat/Context/*'
 
     akeneo_legacy_behat_tests.doctrine.connection.connection_closer:
         class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser

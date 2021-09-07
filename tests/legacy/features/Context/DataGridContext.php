@@ -1338,9 +1338,9 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * Wait
      *
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
