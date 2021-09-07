@@ -49,61 +49,53 @@ const BooleanButton = styled.button<
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
 
-  ${({value, readOnly, invalid}) => {
-    switch (value) {
-      case false:
-        return css`
-          background: ${getColor('grey', readOnly ? 80 : 100)};
-          border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 80 : 100)};
-          color: ${getColor('white')};
+  ${({value, readOnly, invalid}) =>
+    value === false &&
+    css`
+      background: ${getColor('grey', readOnly ? 80 : 100)};
+      border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 80 : 100)};
+      color: ${getColor('white')};
+      &:hover {
+        background: ${getColor('grey', readOnly ? 80 : 120)};
+        color: ${getColor('white')};
+      }
+      &:active {
+        background: ${getColor('grey', readOnly ? 80 : 140)};
+      }
+    `}
 
-          &:hover {
-            background: ${getColor('grey', readOnly ? 80 : 120)};
-            color: ${getColor('white')};
-          }
-
-          &:active {
-            background: ${getColor('grey', readOnly ? 80 : 140)};
-          }
-        `;
-      case true:
-        return css`
-          border-right-width: 0;
-        `;
-      default:
-        return '';
-    }
-  }}
+  ${({value}) =>
+    value === true &&
+    css`
+      border-right-width: 0;
+    `}
 `;
 
 const YesButton = styled(BooleanButton)`
   border-radius: 0 2px 2px 0;
 
-  ${({value, readOnly, invalid}) => {
-    switch (value) {
-      case true:
-        return css`
-          background: ${getColor('green', readOnly ? 60 : 100)};
-          border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 60 : 100)};
-          color: ${getColor('white')};
+  ${({value, readOnly, invalid}) =>
+    value === true &&
+    css`
+      background: ${getColor('green', readOnly ? 60 : 100)};
+      border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 60 : 100)};
+      color: ${getColor('white')};
 
-          &:hover {
-            background: ${getColor('green', readOnly ? 60 : 120)};
-            color: ${getColor('white')};
-          }
+      &:hover {
+        background: ${getColor('green', readOnly ? 60 : 120)};
+        color: ${getColor('white')};
+      }
 
-          &:active {
-            background: ${getColor('green', readOnly ? 60 : 140)};
-          }
-        `;
-      case false:
-        return css`
-          border-left-width: 0;
-        `;
-      default:
-        return '';
-    }
-  }}
+      &:active {
+        background: ${getColor('green', readOnly ? 60 : 140)};
+      }
+    `}
+
+  ${({value}) =>
+    value === false &&
+    css`
+      border-left-width: 0;
+    `}
 `;
 
 const ClearButton = styled.button`
