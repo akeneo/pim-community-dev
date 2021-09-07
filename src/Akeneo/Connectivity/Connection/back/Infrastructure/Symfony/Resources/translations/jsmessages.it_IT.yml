@@ -60,34 +60,13 @@ akeneo_connectivity.connection:
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
     apps:
+      wizard:
+        progress:
+          permissions: Permessi
       title: Connetti
-      action:
-        confirm: Conferma
-        cancel: Annulla
       activate:
         flash:
           error: Spiacenti, si è verificato un errore durante la connessione dell'App.
-      authorize:
-        title: 'L''app {{ app_name }} deve'
-        no_scope_title: 'L''app {{ app_name }} vorrebbe accedere al tuo PIM.'
-        no_scope: Nessuna autorizzazione specifica richiesta.
-        helper: Per scoprire di più sull'autorizzazione dell'app,
-        helper_link: consulta il nostro Help Center per ulteriori informazioni.
-        error:
-          sub_text: Contatta lo sviluppatore dell'app o il supporto di Akeneo
-        scope:
-          type:
-            view: 'Visualizza {{ entities }}'
-            edit: 'Visualizza e modifica {{ entities }}'
-            delete: 'Visualizza, modifica ed elimina {{ entities }}'
-          entities:
-            catalog_structure: attributi, gruppi di attributi, famiglie e famiglie varianti
-            attribute_options: opzioni attributo
-            categories: categorie
-            channel_localization: impostazioni locali e valute
-            channel_settings: canali
-            association_types: tipi di associazione
-            products: prodotti e modelli prodotto
       constraint:
         client_id:
           not_blank: Client_id obbligatorio.

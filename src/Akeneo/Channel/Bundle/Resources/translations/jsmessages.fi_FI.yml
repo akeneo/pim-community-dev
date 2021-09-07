@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Kategoriahierarkia
     do_not_convert: Älä muunna
+    measurement: Mittayksiköiden asetukset
     label_conversion_units: Valitse jokaiselle metriselle attribuutille muunnosyksikkö, jota käytetään tuotteiden viennin yhteydessä.
   module:
     create:
@@ -63,6 +64,15 @@ pim_enrich.entity.locale:
   label: lokaatio
   uppercase_label: Lokaatio
   plural_label: Lokaatiot
+  page_title:
+    index: "]-Inf, 1]{{ count }} aktivoitu lokaatio ]1, Inf[{{ count }} aktivoitua lokaatiota"
+  helper: "Aktivoi lokaali käyttöön tai poista käytöstä muokkaamalla yhtä <a href={{ href }}>kanavistasi</a> ja lisäämällä tai poistamalla lokaatio."
+  grid:
+    columns:
+      code: Aktivoidut lokaalit
+    filters:
+      search_placeholder: Etsi aktivoitua lokaalia
+    no_search_result: Valitettavasti haullesi ei löytynyt tuloksia
 pim_enrich.entity.currency:
   plural_label: Valuutat
   page_title:

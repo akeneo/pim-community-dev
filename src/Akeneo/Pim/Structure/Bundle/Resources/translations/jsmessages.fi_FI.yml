@@ -76,8 +76,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Peruuta muokkaukset
       cancel_description: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta vaihtoehtoa?
+      options_labels: Valintalistan arvojen otsikot
+      options_settings: Valintalistan arvojen asetukset
+      options_codes: Valintalistan arvojen tunnisteet
+      option_code: Valintalistan arvon tunniste
+      new_option_code: uusi_arvo
+      no_options_msg: Valitettavasti valintalistan arvoja ei ole!
+      add_option: Klikkaa tästä luodaksesi sellainen
+      delete_confirmation_title_msg: Poista "{{ optionCode }}" valintalistan arvoista?
+      delete_confirmation_subtitle_msg: Haluatko varmasti poistaa tämän valintalistan arvon? Et voi peruuttaa tätä toimenpidettä.
 pim_enrich.entity.association_type:
   label: assosiaatiotyyppi
+  property:
+    is_two_way: 2-suuntainen assosiaatio
+    is_quantified: Lukumäärällinen assosiaatio
   flash:
     update:
       success: Assosiaatiotyypin päivittäminen onnistui.
@@ -92,9 +104,15 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
   module:
     create:
+      title: Luo uusi assosiaatiotyyppi
       button: Luo assosiaatiotyyppi
+      is_two_way:
+        message_on_read_only: Assosiaatiotyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
+      is_quantified:
+        message_on_read_only: Assosiaatiotyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
     delete:
       confirm: Oletko varma, että haluat poistaa tämän liitostyypin?
+  hint: <a href="{{link}}" target="_blank">Tästä artikkelissa</a>löydät kaiken mitä tarvitset luodaksesi oman assosiaatiotyypin.
 pim_enrich.entity.group_type:
   label: ryhmän tyyppi
   flash:
@@ -135,6 +153,7 @@ pim_enrich.entity.attribute:
     date_min: Min päivämäärä
     decimals_allowed: Desimaaliarvot sallittu
     default_metric_unit:
+      label: Oletusarvoinen mittausyksikkö
       choose: Valitse yksikkö
     group:
       label: Attribuuttiryhmä
@@ -144,6 +163,7 @@ pim_enrich.entity.attribute:
     max_characters: Maksimimerkkimäärä
     max_file_size: Suurin tiedostokoko (Mt)
     metric_family:
+      label: Mittaperhe
       choose: Valitse perhe
     minimum_input_length: Automaattisen täydennyshaun minimimerkkimäärä
     name: Nimi
@@ -167,6 +187,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Kuva
       pim_catalog_boolean: "Kyllä/ei"
       pim_catalog_date: Päivämäärä
+      pim_catalog_metric: Mitta
       pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
       pim_reference_data_multiselect: Viitetiedot monivalinta
     unique: Yksilöllinen arvo
@@ -178,6 +199,7 @@ pim_enrich.entity.attribute:
       regexp: Säännöllinen lauseke
       url: URL-osoite
     wysiwyg_enabled: Tekstin muotoilu käytössä
+    default_value: Oletusarvo
   module:
     add_attribute:
       no_available_attributes: Ei ole enää attribuutteja lisättäväksi
@@ -190,6 +212,13 @@ pim_enrich.entity.attribute:
       validation: Validaatioparametrit
     delete:
       confirm: Oletko varma, että haluat poistaa tämän attribuutin?
+      product_count: '{0}0 tuotetta|{1}1 tuote|]1, Inf[{{ count }} tuotetta'
+      product_model_count: '{0}0 tuotemallia|{1}1 tuotemalli|]1, Inf[{{ count }} tuotemallia'
+      used: currently have values set for this attribute, they will be removed.
+      helper:
+        content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
+        link: opastamme sinut eri vaiheiden läpi
+      type: Kirjoita "{{ attributeCode }}"
       confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
       confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
       confirm_from_product: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
@@ -197,6 +226,7 @@ pim_enrich.entity.attribute_group:
   label: attribuuttiryhmä
   uppercase_label: Attribuuttiryhmä
   plural_label: Attribuuttiryhmät
+  result_count: '{0}0 attribuuttiryhmää|{1}1 attribuuttiryhmä|]1, Inf[{{ count }} attribuuttiryhmää'
   show_more_attribute:
     title: Täällä on hiukan tungosta. Näytämme {{ productCount }}/{{ totalCount }} tuotteista.
     subtitle: Löytääksesi kaikki tämän ryhmän attribuutit, klikkaa vain alta!
@@ -216,6 +246,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
     delete:
       confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
+  grid:
+    columns:
+      name: Attribuuttiryhmien nimi
+    no_search_result: Valitettavasti haullesi ei löytynyt tuloksia.
 pim_enrich.mass_edit.family:
   title: Perheiden massamuokkaus
   confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -223,7 +257,6 @@ pim_enrich.mass_edit.family:
     select:
       label: Valitse tuoteperheet
     choose:
-      title: Perheiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Muuta asetuksia
