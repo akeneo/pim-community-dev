@@ -118,3 +118,38 @@ variable "mysql_disk_type" {
   default = "pd-ssd"
   type    = string
 }
+
+variable "akeneo_connect_saml_entity_id" {
+  default = ""
+  type    = string
+}
+
+variable "akeneo_connect_saml_certificate" {
+  default = ""
+  type    = string
+}
+
+variable "akeneo_connect_api_client_secret" {
+  default = ""
+  type    = string
+}
+
+variable "akeneo_connect_api_client_password" {
+  default = ""
+  type    = string
+}
+
+variable "ft_catalog_api_client_id" {
+  default = ""
+  type    = string
+}
+
+variable "ft_catalog_api_password" {
+  default = ""
+  type    = string
+}
+
+variable "ft_catalog_api_secret" {
+  default = ""
+  type    = string
+}
