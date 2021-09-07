@@ -134,6 +134,10 @@ pim:
           cpu: "200m"
           memory: "128Mi"
   api:
+    ratelimit:
+      enabled: false
+      average: 200
+      burst: 50
     replicas: 2
     fpm:
       resources:
@@ -283,7 +287,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.23"
+      tag: "8.0.26"
   common:
     class: ssd-retain
   mysql:

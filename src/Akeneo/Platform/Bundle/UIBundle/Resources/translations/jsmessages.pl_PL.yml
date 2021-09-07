@@ -11,6 +11,7 @@ pim_dashboard:
   widget:
     teamwork_assistant:
       title: Projekty
+      helper: Aby dowiedzieć się więcej o projektach i zwiększaniu kompletności, <a href="{{ link }}" target="_blank">zajrzyj do naszego centrum pomocy</a>.
       no_project:
         title: Projekty mogą pomóc w śledzeniu postępu we wzbogacaniu wybranych produktów.
         subtitle: Utwórz swój pierwszy projekt.

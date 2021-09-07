@@ -331,6 +331,13 @@ jobs:
         name: Push the Growth Edition prod image on docker registry
         command: make push-php-image-prod
     - run:
+        name: Push Terraform modules to GCS
+        command: |
+          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+    # ===================================
+    # TO BE REMOVED AFTER COMMIT IN PROD
+    # ===================================
+    - run:
         name: Prepare the Terraform module with the upgrade script
         command: |
           mkdir -p deployments/terraform/deployments
@@ -343,6 +350,9 @@ jobs:
         command: |
           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
+    # ===================================
+    # TO BE REMOVED AFTER COMMIT IN PROD
+    # ===================================
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -1300,6 +1310,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
               command: make delete
@@ -1403,7 +1417,7 @@ jobs:
                     echo "Instance name: ${INSTANCE_NAME}"
                     echo "Image tag: ${IMAGE_TAG}"
                     echo "Latest image tag: ${LATEST_RELEASE}"
-                    echo "DEPLOYMENTS_INSTANCES_DIR: ${DEPLOYMENTS_INSTANCES_DIR}"
+                    echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1443,10 +1457,8 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Define value for next steps
+                name: Prepare the environment
                 command: |
-                    PIM_CONTEXT=deployment
-                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
                     REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
@@ -1484,10 +1496,8 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-              name: Define value for next steps
+              name: Prepare the environment
               command: |
-                    PIM_CONTEXT=deployment
-                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
                     REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
@@ -1598,8 +1608,8 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/terraform/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
           - run:
               name: PIM_CONTEXT=deployment make release
               command: |
@@ -1616,6 +1626,17 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Push Terraform modules to GCS
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME/
+          - run:
+              name: Make the release
+              command: OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
+          # ===================================
+          # TO BE REMOVED AFTER COMMIT IN PROD
+          # ===================================
+          - run:
               name: Prepare the Terraform module with the upgrade script
               command: |
                 mkdir -p deployments/terraform/deployments
@@ -1626,14 +1647,9 @@ jobs:
                 BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
                 BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/terraform/deployments/terraform
                 BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME
-          - run:
-              name: Tag the Docker image with the definitive tag
-              command: |
-                  docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
+          # ===================================
+          # TO BE REMOVED AFTER COMMIT IN PROD
+          # ===================================
 
   release_tria:
       environment:
@@ -2109,6 +2125,7 @@ workflows:
                 requires:
                     - test_cronjobs_existence_srnt
           - infracost/infracost:
+                name: infracost_srnt
                 pre-steps:
                     - attach_workspace:
                         at: ~/
@@ -2143,6 +2160,16 @@ workflows:
           - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
+          - infracost/infracost:
+                name: infracost_grth
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/grth
+                path: ~/grth/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_grth
           - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
@@ -2153,15 +2180,6 @@ workflows:
                 type: approval
                 requires:
                     - test_cronjobs_existence_grth
-          - infracost/infracost:
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/grth
-                path: ~/grth/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_grth
           - deploy_pr_grth_environment:
                 requires:
                     - deploy_pr_grth_environment?
@@ -2178,6 +2196,16 @@ workflows:
           - test_deploy_tria:
                 requires:
                     - test_cronjobs_existence_tria
+          - infracost/infracost:
+                name: infracost_tria
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/tria
+                path: ~/tria/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_tria
           - deploy_pr_tria_environment?:
                 type: approval
                 requires:

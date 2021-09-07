@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\Re
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

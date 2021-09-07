@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Permission\Component\Updater\Setter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;

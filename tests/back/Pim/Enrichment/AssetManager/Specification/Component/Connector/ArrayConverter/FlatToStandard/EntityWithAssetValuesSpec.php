@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionTy
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\FlatToStandard\EntityWithAssetValues;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 
 class EntityWithAssetValuesSpec extends ObjectBehavior
