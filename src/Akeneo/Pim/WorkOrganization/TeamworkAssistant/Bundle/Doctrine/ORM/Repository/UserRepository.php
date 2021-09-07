@@ -17,7 +17,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -28,11 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UserRepository extends EntityRepository implements UserRepositoryInterface, SearchableRepositoryInterface
 {
-    /**
-     * @param EntityManager $em
-     * @param ClassMetadata $class
-     */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
     }
@@ -59,7 +54,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function isProjectContributor(ProjectInterface $project, UserInterface $user)
+    public function isProjectContributor(ProjectInterface $project, UserInterface $user): bool
     {
         $qb = $this->createQueryBuilder('u');
 

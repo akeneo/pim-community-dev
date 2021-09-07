@@ -28,9 +28,11 @@ akeneo.tailored_export:
   column_list:
     title: Kolommen
     header:
+      column_name: Kolomnaam
       source_data: Inhoud van kolom
     column_row:
       target_placeholder: Geef hier de naam van de kolom op
+      placeholder_helper: U kunt alle kolomnamen van een spreadsheet kopiëren om automatisch kolommen te maken.
       remove: Kolom verwijderen
       no_source: Geef de bron van de inhoud op
     no_column_selection:
@@ -108,6 +110,10 @@ akeneo.tailored_export:
             channel: Als het attribuut dat als label wordt gebruikt een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
       operation:
         header: Bewerkingen
+        measurement_conversion:
+          title: Conversie
+          placeholder: Geen conversie
+          target_unit_code.label: Omzetten naar
         replacement:
           title: Waarde vervangen
           placeholder: Geef de vervangende waarde op
@@ -119,6 +125,12 @@ akeneo.tailored_export:
           title: Standaardwaarde gebruiken indien leeg
           label: Standaardwaarde
           placeholder: Waarde definiëren
+    concatenation:
+      title: Samenvoeging
+      preview: Voorbeeld
+      space_between: Spatie toevoegen tussen de bronnen
+      add_text: Tekst toevoegen
+      text_placeholder: Tekst definiëren
   column:
     delete_message: Weet u zeker dat u deze kolom wilt verwijderen?
   validation:
@@ -133,6 +145,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan deze kolom.
       association_type_should_exist: Het associatietype {{ association_type_code }} bestaat niet. Maak het aan of kies een andere bron.
+    concatenation:
+      max_text_count_reached: U heeft de limiet van {{ limit }} tekstelementen bereikt. U kunt geen tekst meer toevoegen.
     locale:
       should_be_active: De taal {{ locale_code }} is gedeactiveerd. Activeer deze opnieuw of selecteer een andere taal.
       should_be_bound_to_channel: De taal {{ locale_code }} is gedeactiveerd voor het kanaal {{ channel_code }}. Activeer het kanaal opnieuw of selecteer een andere taal.
@@ -145,3 +159,8 @@ akeneo.tailored_export:
       locale_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per taal meer. Maak deze aan of kies een andere bron.
       channel_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per kanaal meer. Maak dit aan of kies een andere bron.
       invalid_specific_locale: Het attribuut {{ attribute_code }} is taalspecifiek. Selecteer een andere taal.
+    measurement:
+      family:
+        does_not_exist: De afmetingenfamilie {{ measurement_family_code }} bestaat niet.
+      unit:
+        does_not_exist: De eenheid {{ unit_code }} bestaat niet in de afmetingenfamilie {{ measurement_family_code }}.

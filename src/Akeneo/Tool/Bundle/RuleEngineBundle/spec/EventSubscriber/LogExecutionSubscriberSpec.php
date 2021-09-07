@@ -4,28 +4,30 @@ namespace spec\Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\LogExecutionSubscriber;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LogExecutionSubscriberSpec extends ObjectBehavior
 {
     function let(LoggerInterface $logger)
     {
-        $this->beConstructedWith($logger);
+        $this->beConstructedWith($logger, LogExecutionSubscriber::LOGGING_LEVEL_INFO);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\LogExecutionSubscriber');
+        $this->shouldHaveType(LogExecutionSubscriber::class);
     }
 
     function it_is_a_subscriber()
     {
-        $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldHaveType(EventSubscriberInterface::class);
     }
 
     function it_logs_pre_apply_rule_information(
@@ -71,8 +73,57 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $definition->getCode()->willReturn('rule_code');
         $subject->getId()->willReturn(42);
 
-        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.skip": subject "42" has been skipped due to "My name should be shorter".')->shouldBeCalled();
+        $logger->warning(
+            'Rule "rule_code", event "pim_rule_engine.rule.skip": subject "42" has been skipped due to "My name should be shorter".'
+        )->shouldBeCalled();
 
         $this->skip($event);
+    }
+
+    function it_logs_if_logger_severity_is_info(
+        $logger,
+        SelectedRuleEvent $event,
+        RuleDefinitionInterface $definition,
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $subject
+    ) {
+        $this->beConstructedWith($logger, LogExecutionSubscriber::LOGGING_LEVEL_INFO);
+
+        $event->getDefinition()->willReturn($definition);
+        $event->getSubjectSet()->willReturn($subjectSet);
+        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
+
+        $logger->info(Argument::any())->shouldBeCalled();
+
+        $this->postSelect($event);
+    }
+
+    function it_logs_if_logger_severity_is_lower_than_info(
+        $logger,
+        SelectedRuleEvent $event,
+        RuleDefinitionInterface $definition,
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $subject
+    ) {
+        $this->beConstructedWith($logger, LogExecutionSubscriber::LOGGING_LEVEL_DEBUG);
+
+        $event->getDefinition()->willReturn($definition);
+        $event->getSubjectSet()->willReturn($subjectSet);
+        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
+
+        $logger->info(Argument::any())->shouldBeCalled();
+
+        $this->postSelect($event);
+    }
+
+    function it_does_not_log_if_logger_severity_is_higher_than_info(
+        $logger,
+        SelectedRuleEvent $event
+    ) {
+        $this->beConstructedWith($logger, 'a_logging_level');
+
+        $logger->info(Argument::any())->shouldNotBeCalled();
+
+        $this->postSelect($event);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -25,18 +27,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LogExecutionSubscriber implements EventSubscriberInterface
 {
-    /** @var LoggerInterface */
-    protected $logger;
-
-    /** @staticvar string */
+    protected LoggerInterface $logger;
     const NAME_PATTERN = 'Rule "%s", event "%s"';
+    const LOGGING_LEVEL_INFO = 'info';
+    const LOGGING_LEVEL_DEBUG = 'debug';
+    private string $loggingLevel;
 
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, string $loggingLevel)
     {
         $this->logger = $logger;
+        $this->loggingLevel = $loggingLevel;
     }
 
     /**
@@ -45,23 +45,24 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_BUILD   => 'preBuild',
-            RuleEvents::POST_BUILD  => 'postBuild',
-            RuleEvents::PRE_SELECT  => 'preSelect',
-            RuleEvents::SKIP        => 'skip',
+            RuleEvents::PRE_BUILD => 'preBuild',
+            RuleEvents::POST_BUILD => 'postBuild',
+            RuleEvents::PRE_SELECT => 'preSelect',
+            RuleEvents::SKIP => 'skip',
             RuleEvents::POST_SELECT => 'postSelect',
-            RuleEvents::PRE_APPLY   => 'preApply',
-            RuleEvents::POST_APPLY  => 'postApply'
+            RuleEvents::PRE_APPLY => 'preApply',
+            RuleEvents::POST_APPLY => 'postApply',
         ];
     }
 
     /**
      * Track preBuild events
-     *
-     * @param RuleEvent $event
      */
-    public function preBuild(RuleEvent $event)
+    public function preBuild(RuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), RuleEvents::PRE_BUILD);
         $this->logger->info($message);
@@ -69,11 +70,12 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track postBuild events
-     *
-     * @param RuleEvent $event
      */
-    public function postBuild(RuleEvent $event)
+    public function postBuild(RuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), RuleEvents::POST_BUILD);
         $this->logger->info($message);
@@ -81,11 +83,12 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track preSelect events
-     *
-     * @param RuleEvent $event
      */
-    public function preSelect(RuleEvent $event)
+    public function preSelect(RuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), RuleEvents::PRE_SELECT);
         $this->logger->info($message);
@@ -93,13 +96,11 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track skipped events
-     *
-     * @param SkippedSubjectRuleEvent $event
      */
-    public function skip(SkippedSubjectRuleEvent $event)
+    public function skip(SkippedSubjectRuleEvent $event): void
     {
         $skippedReasons = implode(', ', $event->getReasons());
-        $patternItem = static::NAME_PATTERN . ': subject "%s" has been skipped due to "%s".';
+        $patternItem = static::NAME_PATTERN.': subject "%s" has been skipped due to "%s".';
         $messageItem = sprintf(
             $patternItem,
             $event->getDefinition()->getCode(),
@@ -112,14 +113,15 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track postSelect events
-     *
-     * @param SelectedRuleEvent $event
      */
-    public function postSelect(SelectedRuleEvent $event)
+    public function postSelect(SelectedRuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN . ': %s items selected.';
+        $pattern = static::NAME_PATTERN.': %s items selected.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -131,14 +133,15 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track preApply events
-     *
-     * @param SelectedRuleEvent $event
      */
-    public function preApply(SelectedRuleEvent $event)
+    public function preApply(SelectedRuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN . ': %s items to update.';
+        $pattern = static::NAME_PATTERN.': %s items to update.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -150,14 +153,15 @@ class LogExecutionSubscriber implements EventSubscriberInterface
 
     /**
      * Track postApply events
-     *
-     * @param SelectedRuleEvent $event
      */
-    public function postApply(SelectedRuleEvent $event)
+    public function postApply(SelectedRuleEvent $event): void
     {
+        if (!$this->isInfoOrLowerSeverityLogger()) {
+            return;
+        }
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN . ': %s items updated.';
+        $pattern = static::NAME_PATTERN.': %s items updated.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -165,5 +169,13 @@ class LogExecutionSubscriber implements EventSubscriberInterface
             count($subjectSet->getSubjectsCursor())
         );
         $this->logger->info($message);
+    }
+
+    private function isInfoOrLowerSeverityLogger(): bool
+    {
+        return in_array(strtolower($this->loggingLevel), [
+            self::LOGGING_LEVEL_INFO,
+            self::LOGGING_LEVEL_DEBUG,
+        ]);
     }
 }

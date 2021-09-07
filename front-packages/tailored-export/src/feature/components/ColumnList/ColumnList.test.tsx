@@ -7,6 +7,8 @@ import {ColumnConfiguration, ColumnsState} from '../../models/ColumnConfiguratio
 import {renderWithProviders} from 'feature/tests';
 
 test('it renders a placeholder when no column is selected', async () => {
+  jest.useFakeTimers();
+
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -42,6 +44,8 @@ test('it renders a placeholder when no column is selected', async () => {
       setColumnsState={jest.fn()}
     />
   );
+
+  jest.runAllTimers();
 
   expect(screen.getByDisplayValue(/my first column/i)).toBeInTheDocument();
   expect(screen.getByDisplayValue(/my second column/i)).toBeInTheDocument();
@@ -325,7 +329,9 @@ test('it moves to next line when user type enter', async () => {
   expect(handleSetColumnsState).toHaveBeenCalled();
 });
 
-test('it focus the selected column', async () => {
+test('it focuses the selected column', async () => {
+  jest.useFakeTimers();
+
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -361,6 +367,8 @@ test('it focus the selected column', async () => {
       setColumnsState={jest.fn()}
     />
   );
+
+  jest.runAllTimers();
 
   const firstInput = screen.getAllByPlaceholderText(
     'akeneo.tailored_export.column_list.column_row.target_placeholder'
