@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: Tiedotukset
+  panel:
+    title: Tiedotukset
+    list:
+      empty: Ei uutisia tällä hetkellä. Pysy kuulolla!
+      error: Emme voineet päivittää uutisia. Yritä myöhemmin uudelleen.

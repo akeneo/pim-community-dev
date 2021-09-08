@@ -51,6 +51,16 @@ pim_analytics:
     server_version: Palvelimen versio
     php_extensions: PHP-laajennukset
     email_domains: Liittyvät sähköpostiosoitteet
+    api_connection: API-yhteydet
+    nb_media_files_in_products: Tuotteilla olevien mediatiedostojen määrä
+    nb_media_images_in_products: Tuotteilla olevien kuvien määrä
+    is_demo_catalog: Demo-katalogi asennettu
+    data_source.tracked: Seurattavien lähdetyyppisten API-yhteyksien määrä
+    data_source.untracked: Ei-seurattavien lähdetyyppisten API-yhteyksien määrä
+    data_destination.tracked: Seurattavien kohdetyyppisten API-yhteyksien määrä
+    data_destination.untracked: Ei-seurattavien kohdetyyppisten API-yhteyksien määrä
+    other.tracked: Seurattavien muiden API-yhteyksien määrä
+    other.untracked: Ei-seurattavien muiden API-yhteyksien määrä
   acl:
     system_info:
       index: Järjestelmätiedot

@@ -70,6 +70,9 @@ pim_enrich:
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
       success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
       launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Tuote "{{ identifier }}" on jo yksittäistuote, sitä ei tarvitse muuntaa.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
