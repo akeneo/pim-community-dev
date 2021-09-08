@@ -1,3 +1,5 @@
+import {ReactNode} from 'react';
+
 export interface PermissionFormProvider<T> {
     key: string;
     renderForm: (onChange: (state: T) => void) => ReactNode;

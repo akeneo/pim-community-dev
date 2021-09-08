@@ -63,7 +63,7 @@ export const Permissions: FC<Props> = ({appName}) => {
     const translate = useTranslate();
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
-    const [permissions, setPermissions] = useState<Permissions>({});
+    const [, setPermissions] = useState<Permissions>({});
 
     useEffect(() => {
         permissionFormRegistry.all().then(providers => setProviders(providers));
