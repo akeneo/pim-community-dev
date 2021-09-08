@@ -1483,10 +1483,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-#          - run:
-#              name: Remove upgraded env
-#              command: make uncommit-instance
-#              when: always
+          - run:
+              name: Remove upgraded env
+              command: make uncommit-instance
+              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -2030,7 +2030,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> bash -x deployments/bin/zdd_compliancy_checker.sh
+                    TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
           - persist_to_workspace:
               root: ~/
               paths:
@@ -2053,7 +2053,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
 
   remove_unused_gcloud_bucket:
       environment:
