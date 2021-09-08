@@ -241,7 +241,9 @@ pim_common:
   products: 제품
   product_models: 제품 모델
   more: 더보기 
+  public_view: 공개 뷰
 error:
+  exception: '{{ status_code }} 오류가 발생했습니다...'
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}0개의 그룹이 있습니다|{1}1개의 그룹이 있습니다|]1, Inf[{{ count }}개의 그룹이 있습니다'
     rules: '{0}0개의 규칙이 활성화되어 있습니다|{1}1개의 규칙이 활성화되어 있습니다|]1, Inf[{{ count }}개의 규칙이 활성화되어 있습니다'
 pim_system:
+  system_menu: 시스템 메뉴
   system_navigation: 시스템 탐색
   users_management_navigation: 사용자 관리 탐색
+  count:
+    product_values: '{0}0개의 제품 값이 있습니다|{1}1개의 제품 값이 있습니다|]1, Inf[{{ count }}개의 제품 값이 있습니다'
+    users: '{0}0명의 사용자가 있습니다|{1}1명의 사용자가 있습니다|]1, Inf[{{ count }}명의 사용자가 있습니다'
+    user_groups: '{0}0개의 사용자 그룹이 있습니다|{1}1개의 사용자 그룹이 있습니다|]1, Inf[{{ count }}개의 사용자 그룹이 있습니다'
+    roles: '{0}0개의 역할이 있습니다|{1}1개의 역할이 있습니다|]1, Inf[{{ count }}개의 역할이 있습니다'
+  sso:
+    enabled: SSO 활성화됨
+    disabled: SSO 비활성화됨
+    title: SAML 기반 Single Sign-On
