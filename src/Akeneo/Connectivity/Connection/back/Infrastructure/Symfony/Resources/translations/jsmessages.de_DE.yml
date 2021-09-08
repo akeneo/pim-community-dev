@@ -61,6 +61,7 @@ akeneo_connectivity.connection:
       scroll_to_top: Zum Anfang scrollen
     apps:
       wizard:
+        title: Verbinde
         progress:
           permissions: Berechtigungen
       activate:
