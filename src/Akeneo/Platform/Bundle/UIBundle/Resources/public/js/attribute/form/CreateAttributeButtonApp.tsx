@@ -1,11 +1,13 @@
 import React from 'react';
 import SelectAttributeType from './SelectAttributeType';
 import {Button, useBooleanState} from 'akeneo-design-system';
+import {Modal} from 'akeneo-design-system';
 
 export type CreateAttributeButtonStepProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
+  onBack?: () => void;
 };
 
 export type CreateAttributeButtonAppProps = {
@@ -61,10 +63,15 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
     close();
   };
 
+  const handleBack = () => {
+    setCurrentStepIndex(currentStepIndex - 1);
+  }
+
   return (
     <>
       {isOpen && (
         <>
+          <Modal closeTitle={''} onClose={() => {}}/>
           {currentStepIndex === -1 && (
             <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm} />
           )}
@@ -75,6 +82,7 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
                 <Component
                   key={stepIndex}
                   onClose={handleClose}
+                  onBack={handleBack}
                   onStepConfirm={handleStepConfirm}
                   initialData={attributeData}
                 />
