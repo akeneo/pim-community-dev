@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_asset_manager_asset_family_index: Assettien hallinta
   akeneo_asset_manager_asset_family_edit: Muokkaa assettiperhettä
   akeneo_asset_manager_asset_edit: Muokkaa assettia
 pim_asset_manager:
@@ -6,9 +7,11 @@ pim_asset_manager:
   asset_counter: '{0} Ei assetteja|{1} {{ count }} assetti|]1,Inf] {{ count }} assettia'
   asset_collection:
     add_asset: 'Lisää assetti'
+    upload_asset: 'Lataa assetti'
     add_asset_title: 'Avaa assettivalitsin lisätäksesi assetteja kokoelmaan'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
     helper:
+      title: 'Tervetuloa täysin uuteen tuotteiden medialiitteiden hallintatilaan!'
       link: 'Miten assettikokoelma lisätään?'
     notification:
       product_rule: 'Tämä kokoelma voidaan päivittää säännöllä:'
@@ -29,7 +32,6 @@ pim_asset_manager:
     filter:
       title: Assettisuodattimet
     basket:
-      title: '{{ assetCount }} assetti valittu|{{ assetCount }} assettia valittu'
       empty_title: Korisi on tyhjä
       remove_one_asset: Poista assetti {{ assetName }} assettivalikoimasta
       remove_all_assets: Poista kaikki
@@ -85,6 +87,7 @@ pim_asset_manager:
       create: Luo assettiperhe
       edit: Muokkaa assettiperhettä
       view: Näytä assettiperhe
+      execute_product_link_rules: Suorita säännöt
     permission:
       title: Assettiperheen käyttöoikeudet
     title: Assetit
@@ -96,21 +99,15 @@ pim_asset_manager:
       properties: Ominaisuudet
       permission: Käyttöoikeudet
       transformations: Muunnokset
+      product_link_rules: Tuotteiden linkityssäännöt
     transformations:
-      help:
-        title: 'Tervetuloa uuteen assettien hallintaan!'
-        description: 'Voit määritellä tässä jopa 10 muunnosta assettiperheelle.'
-        link: 'Jos haluat tutustua uuden Asset Managerin muunnoksiin, klikkaa tästä'
       subsection: 'Muunnoksen ominaisuudet'
     product_link_rules:
-      help:
-        title: 'Tervetuloa uuteen assettien hallintaan!'
-        description: 'Voit määritellä tässä jopa 2 tuotelinkityssääntöä assettiperheelle'
-        link: 'Jos haluat tutustua Product Link Rules -ominaisuuteen, klikkaa tästä'
       execute_rules:
-        cancel: Peruuta
+        confirm_title: Vahvista suoritus
+        execute_rules: Suorita säännöt
       execute_naming_convention:
-        cancel: Peruuta
+        confirm_title: Vahvista suoritus
     properties:
       title: Assettiperheen ominaisuudet
       identifier: Koodi
@@ -145,10 +142,8 @@ pim_asset_manager:
       input:
         label: Nimike
         code: Koodi (pakollinen)
-      confirm: Tallenna
     delete:
       message: Oletko varma, että haluat poistaa assettiperheen "{{ assetFamilyLabel }}"?
-      title: Attribuutti
     notification:
       save:
         success: Assettiperheen päivittäminen onnistui.
@@ -162,6 +157,8 @@ pim_asset_manager:
       compute_transformations:
         success: Muunnokset on käynnistetty. Kun työ on valmis, näet uudet muunnokset päivitettynä assetillesi.
         fail: Tapahtui virhe, kun yritettiin tehdä muunnoksia
+      execute_product_link_rules:
+        success: Tuotteiden linkityssäännöt on käynnistetty
     helper:
       no_asset_family:
         link: Saadaksesi lisätietoja, tutustu tähän artikkeliin.
@@ -182,6 +179,8 @@ pim_asset_manager:
       link: Klikkaa tästä lisätäksesi ensimmäisen käyttäjäryhmäsi
   asset:
     img: Assettiperheen  "{{ label }}" päämedialiite
+    created_at: Luotu
+    updated_at: Päivitetty
     validation:
       limit_reached: 'Assettia "{{ %asset_label% }}" ei voi luoda, koska assettien enimmäismäärä {{ %limit% }} on saavutettu tälle assettiperheelle'
       code:
@@ -200,7 +199,6 @@ pim_asset_manager:
       create: Luo assetti
       mass_upload: Massatuonti
       delete: Poista
-      delete_all: Poista kaikki assetit
       back: Takaisin listaan
       launch_transformations: Käynnistä muunnokset
       fullscreen: Kokoruutu
@@ -224,6 +222,7 @@ pim_asset_manager:
       code: Koodi
       label: Nimike
       edit_subsection: Muokkaa assettia
+      product_subsection: Linkitetyt tuotteet
     title: Assetit
     create:
       header:
@@ -234,7 +233,6 @@ pim_asset_manager:
         label: Nimike
         code: Koodi (pakollinen)
         create_another: Luo uusi assetti
-      confirm: Tallenna
     upload:
       line_count: '[0,1]{{ count }} tiedosto]1,Inf] {{ count }} tiedostoa'
       title: Tuo assetteja
@@ -261,8 +259,8 @@ pim_asset_manager:
         created: luotu
     delete:
       title: Assetti
-    delete_all:
-      confirm: Oletko varma, että haluat poistaa kaikki "{{ entityIdentifier }}" assetit? Jos ne on linkitetty tuotteisiin, linkit poistetaan.
+    mass_delete:
+      title: Assetit
     grid:
       search: Etsi otsikolla, koodilla tai tekstiattribuutilla
       filter:
@@ -304,9 +302,6 @@ pim_asset_manager:
       delete:
         success: Assetti "{{ code }}" onnistuneesti poistettu.
         fail: Assetin poistamisen aikana tapahtui virhe
-      delete_all:
-        success: Kaikki "{{ entityIdentifier }}" assetit onnistuneesti poistettu.
-        fail: Tämän assettiperheen kaikkien assettien poistamisen yhteydessä tapahtui virhe.
     completeness:
       label: Valmis
   attribute:
@@ -348,7 +343,6 @@ pim_asset_manager:
         value_per_channel: Kanavakohtainen
       placeholder:
         asset_type: Valitse linkitetty assettiperhe
-      confirm: Tallenna
     edit:
       delete: Poista attribuutti
       title: Muokkaa attribuuttia {{ code }}
@@ -415,13 +409,9 @@ pim_asset_manager:
       reload: Päivitä medialinkin pikkukuva
     media_file:
       placeholder: Vedä ja pudota tuodaksesi tai klikkaa tästä
+      read_only: Tämä mediatiedosto on vain luku -tyyppinen
+      uploading: Lataa...
     used_as_transformation_target: Tämä kenttä ei ole muokattavissa, koska se on muunnoksen kohde.
-  modal:
-    delete:
-      subtitle: Vahvista poisto
-      button:
-        cancel: Peruuta
-        confirm: Poista
 pim_enrich:
   confirmation:
     discard_changes: 'Menetät muutokset "{{ entity }}" -entiteettiin, jos poistut sivulta.'
@@ -450,6 +440,9 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Muodosta assetin muunnokset"
         asset_manager_link_assets_to_products: "Linkitä assetit tuotteisiin"
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Linkitä assetit tuotteisiin
 job_execution:
   summary:
     assets: Assetit

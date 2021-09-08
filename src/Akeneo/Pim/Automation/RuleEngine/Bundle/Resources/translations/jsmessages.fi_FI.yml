@@ -19,6 +19,7 @@ pimee_catalog_rule:
       no_rule_yet.label: Ei sääntöjä toistaiseksi
   rule:
     value: Value
+    include_children: Sisällytä alatasot
     condition:
       if.label: jos
     action:
@@ -37,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: Oletko varma, että haluat suorittaa säännön?
       mass_edit_action:
         confirm_title: Vahvista laskenta
+        confirm_content: Oletko varma, että haluat laskea niiden tuotteiden lukumäärän, joita säännöt koskevat?
       mass_action:
         execute:
           confirm_title: Vahvista suoritus
+          confirm_content: Oletko varma, että haluat suorittaa säännöt? (Se voi kestää hetken)
           success: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
           error: Sääntöjen suorituksessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
@@ -49,8 +52,11 @@ pimee_catalog_rule:
           success: Säännöt poistettu onnistuneesti.
           error: Sääntöjen poistamisessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
+      tags:
+        add: Lisää
   form:
     category:
+      catalog: Katalogi
       select: Valitse kategoria
       open_tree: Avaa kategoriapuu
       tree: Kategoriapuu
@@ -64,12 +70,16 @@ pimee_catalog_rule:
       arrow:
         open: Avaa haarakategoria
         close: Sulje haarakategoria
+    tab:
+      list: Sääntökonfiguraattori ja ominaisuudet välilehdet
+      rule_builder: Sääntökonfiguraattori
     attribute:
       tab:
         rules:
           title: Säännöt
     creation:
       helper: Sääntömoottori voi merkittävästi parantaa tuottavuuttasi PIM:ssä automatisoimalla toimintoja,
+      english_flag: Englanninkielinen otsikko
       title: Luo uusi sääntö
       notification:
         success: Sääntö luotu onnistuneesti
@@ -86,25 +96,339 @@ pimee_catalog_rule:
         welcome: Tervetuloa uuteen sääntömoottoriin!
         description: Luodaksesi säännön, sinun on määriteltävä tuotteiden valintakriteerit ja lisättävä sitten yksi tai useampi toiminto.
         documentation_link: Klikkaa tästä tutustuaksesi sääntömoottorin kyvykkyyksiin koko laajuudeltaan.
+      properties:
+        section:
+          general: Yleiset parametrit
+          labels: Otsikoiden käännökset
+      character_left: "]-Inf, 1]{{ count }} merkki jäljellä|]1, +Inf[{{ count }} merkkiä jäljellä"
+      priority:
+        label: Prioriteetti
+      status:
+        label: Status
+        enabled: Otettu käyttöön
+        disabled: Poistettu käytöstä
+      add_to_category: Lisää kategoriaan
+      add_conditions: Lisää ehtoja
+      products_count:
+        products: "]-Inf, 1]{{ count }} tuote|]1, +Inf[{{ count }} tuotetta"
+        product_models: "]-Inf, 1]{{ count }} tuotemalli ]1, +Inf[{{ count }} tuotemallia"
+        products_and_product_models: "{{ products }} ja {{ product_models }}"
+        pending: Lasketaan tuotteita ja tuotemalleja
+        error: Tuotteita ja tuotemalleja ei voi laskea
+      product_selection: Tuotevalinta
+      preview: Esikatselu
+      fields:
+        family: Attribuuttiperhe
+        family_variant: Varianttiperhe
+        category: Kategoria
+        identifier: Tunniste
+        attribute: Attribuutti
+        groups: Ryhmät
+        parent: Ylätaso
+        measurement_unit: Mittayksikkö
+        measurement_default_unit: "Oletusyksikkö ({{ unit }})"
+        currency: Valuutta
+        operator: operaattori
+        entity_type:
+          label: Entiteettityyppi
+          placeholder: Valitse entiteettityyppi
+      execute:
+        button: Tallenna ja suorita
+        title: Tallenna ja suorita sääntö
+        description: Tallenna nykyinen sääntö ja suorita se taustalla. Saat ilmoituksen, kun se on valmis.
+      duplicate:
+        button: Tallenna ja kopioi
+        title: Kopioi "{{ originalRuleCode }}" sääntö
+      actions:
+        add_action: Lisää toimenpide
+        add_category:
+          title: LISÄÄ kategorioita
+          helper: Lisätäksesi valitut tuotteet yhteen tai useampaan kategoriaan, aloita valitsemalla kategoriapuu ja sitten kategoriat
+        add_groups:
+          title: LISÄÄ tuotteita ryhmiin
+          helper: Lisätäksesi tuotteet ryhmiin, valitse yksi tai useampi ryhmä
+          subtitle: Valitse ryhmät
+        set_groups:
+          title: ASETA/KORVAA tuotteen ryhmät
+          helper: Asettaaksesi tuotteiden ryhmä, valitse yksi tai useampi ryhmä
+          subtitle: Valitse ryhmät
+        set_category:
+          title: ASETA/KORVAA kategoriat
+          helper: Asettaaksesi valitut tuotteet yhteen tai useampaan kategoriaan, aloita valitsemalla kategoriapuu ja sitten kategoriat
+        category:
+          select_category_trees: Valitse kategoriapuut
+          select_category_tree: Valitse kategoriapuu
+          select_categories: Valitse kategoriat
+          select_category: Valitse kategoria
+          category_tree: Kategoriapuu
+          categories_selected: "]-Inf, 1]{{ count }} kategoria valittu|]1, +Inf[{{ count }} kategoriaa valittu"
+          no_category_tree: Valitse kategoriapuu ensin
+          remove_unknown_category: " Klikkaa tästä poistaaksesi tämän kategorian."
+        set_family:
+          title: ASETA/KORVAA perhe
+          subtitle: Valitse perhe
+        set_attribute:
+          title: ASETA/KORVAA attribuutin arvo
+          helper: Asettaaksesi attribuutin arvon, aloita valitsemalla kohdeattribuutti ja sitten arvo, jonka haluat asettaa
+          target_subtitle: Valitse kohde
+          value_subtitle: Aseta arvo
+          attribute_label: Attribuutti
+          attribute_placeholder: Valitse kohdeattribuutti
+          select_reference_entity: Valitse viitetiedot
+          select_asset: Valitse assetit
+          select_measurement_unit: Valitse yksikkö
+        set_quantified_associations:
+          title: ASETA/KORVAA lukumäärällinen assosiaatio
+          helper: Asettaaksesi lukumäärällisiä assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+        set_associations:
+          title: ASETA/KORVAA assosiaatiot
+          helper: Asettaaksesi assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+          select_association_type: Valitse assosiaatiotyyppi
+          association_types: Assosiaatiotyypit
+          add_group: Lisää ryhmä
+          add_product: Lisää tuote
+          add_product_model: Lisää tuotemalli
+          add_association_type: Lisää assosiaatiotyyppi
+          select_title:
+            products: Valitse tuotteet
+            product_models: Valitse tuotemallit
+            groups: Valitse ryhmät
+          select:
+            products: Tuotteet
+            product_models: Tuotemallit
+            groups: Ryhmät
+          counts:
+            products: ']-Inf, 1]{{ count }} tuote|]1, +Inf[{{ count }} tuotetta'
+            product_models: ']-Inf, 1]{{ count }} tuotemalli|]1, +Inf[{{ count }} tuotemallia'
+            groups: ']-Inf, 1]{{ count }} ryhmä|]1, +Inf[{{ count }} ryhmää'
+        add_associations:
+          title: LISÄÄ assosiaatioita
+          helper: Asettaaksesi assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+        clear_attribute:
+          title: TYHJENNÄ attribuutin arvo
+          subtitle: Valitse tyhjennettävä attribuutti
+          attribute_label: Attribuutti
+        clear_associations:
+          title: TYHJENNÄ assosiaatiot
+          helper: Kaikki valittujen tuotteiden assosiaatiot tyhjennetään.
+        clear_quantified_associations:
+          title: TYHJENNÄ määrällinen assosiaatio
+          helper: Kaikki valittujen tuotteiden määrälliset assosiaatiot poistetaan.
+        clear_categories:
+          title: TYHJENNÄ kategoriat
+        clear_groups:
+          title: TYHJENNÄ ryhmät
+        remove_category:
+          title: POISTA kategoriat
+          helper: Poistaaksesi tuotevalintasi yhdestä tai useammasta kategoriasta, ole hyvä ja aloita valitsemalla kategorian puut ja sitten kategoriat
+        remove_attribute_value:
+          title: POISTA attribuutin arvo
+          helper: Jos haluat poistaa arvot attribuutistasi, aloita valitsemalla kohdeattribuuttisi ja sitten arvot, jotka haluat poistaa.
+          value_subtitle: Määritä poistettavat arvot
+        add_attribute_value:
+          title: LISÄÄ attribuutin arvo
+          helper: Lisätäksesi attribuutin arvoja aloita valitsemalla kohdeattribuutti ja sitten arvot, jotka haluat lisätä.
+          value_subtitle: Määritä lisättävät arvot
+        copy:
+          title: KOPIOI attribuutin arvo
+          helper: Jos haluat kopioida arvoja attribuutista toiseen, aloita valitsemalla lähdeattribuutti ja sitten kohdeattribuutti.
+          select_source: Valitse lähde
+          select_target: Valitse kohde
+          no_source: Ole hyvä ja valitse ensin lähdeattribuutti
+        delete:
+          label: Poista toiminto
+          description: Haluatko varmasti poistaa tämän toiminnon?
+        set_status:
+          title: ASETA/KORVAA tila
+          subtitle: Määritä tila
+          helper: Määrittääksesi tuotteiden tilan valitse tila alla olevasta listasta
+          placeholder: Valitse tila
+        remove_groups:
+          title: POISTA tuotteet ryhmistä
+          helper: Poistaaksesi tuotteita ryhmistä, valitse yksi tai useampi ryhmä
+          subtitle: Valitse ryhmät
+        calculate:
+          title: LASKE arvot
+          helper: Jos haluat laskea numeerisia attribuuttien arvoja, valitse ensin attribuutti ja/tai arvot ja sitten kohdeattribuutti, johon haluat asettaa tuloksen. Voit myös tarvittaessa pyöristää lopputuloksen.
+          add_value: Lisää arvo
+          add_attribute: Lisää attribuutti
+          select_target: Valitse kohde
+          attribute_placeholder: Valitse kohdeattribuutti
+          round_precision: Pyöristystarkkuus
+          operator:
+            add: Lisää
+            subtract: Vähennä
+            multiply: Kerro
+            divide: Jaa
+            choose: Valitse operaattori
+        concatenate:
+          title: YHDISTÄ arvot
+          helper: Yhdistääksesi attribuutin arvot, valitse attribuutit ja sitten kohdeattribuutti
+          select_target: Valitse kohde
+          attribute_placeholder: Valitse kohdeattribuutti
+          add_text: Lisää teksti
+          add_attribute: Lisää attribuutti
+          add_new_line: Lisää rivinvaihto
+          line_break: Rivinvaihto
+          date_format: Valitse päivämäärän muoto
+          label_locale: Otsikon lokaali
+          unit_label_locale: Yksikön lokaali
+          remove_new_line_confirm:
+            label: Poista rivinvaihdot
+            description: Uusi kohdeattribuutti ei hyväksy rivinvaihtoja. Tämä muutos poistaa kaikki rivinvaihdot.
       conditions:
+        delete:
+          label: Poista ehto
+          description: Oletko varma, että haluat poistaa tämän ehdon?
         operators:
+          "STARTS WITH": alkaa
+          "ENDS WITH": päättyy
+          "CONTAINS": sisältää
+          "DOES NOT CONTAIN": ei sisällä
+          "EMPTY": on tyhjä
           "NOT EMPTY": ei tyhjä
+          "IN": on joukossa
+          "NOT IN": ei ole joukossa
+          "IN CHILDREN": alatasoilla
+          "NOT IN CHILDREN": ei alatasoilla
+          "UNCLASSIFIED": on luokittelematon
+          "IN OR UNCLASSIFIED": on luokittelematon tai on joukossa
+          "BETWEEN": välillä
+          "NOT BETWEEN": ei välillä
+          "=": on yhtä suuri
+          "!=": ei ole yhtä suuri
+          ">": suurempi kuin
+          ">=": yhtä suuri tai suurempi kuin
+          "<": pienempi kuin
+          "<=": yhtä suuri tai pienempi kuin
+      notification:
+        success: Sääntö päivitetty onnistuneesti
+        failed: Säännön päivitys epäonnistui
+        execute_success: Sääntö päivitetty ja suoritettu onnistuneesti
+        execute_failed: Sääntö tallennettiin, mutta suorituksen aikana tapahtui virhe
+      discard_changes: Muutokset menetetään, jos poistut sivulta.
+      please_select_attribute: Valitse ensin kohdeattribuutti.
+      unhandled_attribute_type: Valitettavasti tätä attribuuttityyppiä ei tueta vielä. Käytä sääntöjen tuontia.
+      empty_section:
+        set_up_action: Hienoa! Määrittelit tuotevalintasi. Seuraavaksi on aika määrittää toimenpiteet.
+        set_up_condition: Jos et halua vaikuttaa koko katalogiin, lisää vähintään yksi ehto.
+        add_action: Sitten, lisää yksi tai useampi tuotteita/tuotemalleja koskeva toimenpide.
+        doc: Etkö tiedä mikä toimenpide on?
+        doc_link: Tämä artikkeli voi auttaa sinua.
+    delete:
+      description: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
+      notification:
+        failed: Säännön poistaminen epäonnistui
+        success: Säännön poisto onnistui!
+    helper:
+      add_to_category: Lisätäksesi valitut tuotteet yhteen tai useampaan kategoriaan, aloita valitsemalla kategoriapuu ja sitten kategoriat
+      clear_attribute: Jos haluat poistaa attribuutin arvon, aloita valitsemalla attribuutti.
+      clear_categories: Kaikki valittujen tuotteiden kategorialiitokset poistetaan.
+      clear_groups: Kaikki valittujen tuotteiden ryhmäliitokset poistetaan.
+      product_selection: "Sinun täytyy määritellä tuotevalintasi luodaksesi säännön. Jos et tiedä miten, "
+      product_selection_doc_link: Tarkastele tätä artikkelia.
+      set_attribute_info_clear: Sinun on määritettävä asetettava arvo. Jos haluat tyhjentää attribuutin arvon, käytä "Tyhjennä attribuutin arvo" -toimintoa.
+    legend:
+      add_to_category: Luo uusi toimenpide
+      product_selection: Luo ehto
+    tree:
+      item:
+        selected: Kohde valittu
+        not_selected: Valitse kohde
+    date:
+      operators:
+        specific_date: Tietty päivämäärä
+      label:
+        date_type: Valitse päivämäärän tyyppi
+        operator: Valitse operaattori
+        date: Valitse päivämäärä
+        relative_date: Valitse päivämäärä
+        locale: Valitse lokaali
+        period: Valitse aikayksikkö
+        open_period: Avaa aikayksikön valikko
+        date_from: Valitse aloituspäivämäärä
+        date_to: Valitse päättymispäivä
+        date_past: Päivämäärä menneisyydessä
+        date_future: Päivämäärä tulevaisuudessa
+        date_present: Nyt
+      day: "]-Inf, 1] Päivä ]1, +Inf[ Päivää"
+      week: "]-Inf, 1] Viikko]1, +Inf[ Viikkoa"
+      month: "]-Inf, 1] Kuukausi]1, +Inf[ Kuukautta"
+      year: "]-Inf, 1] Vuosi ]1, +Inf[ Vuotta"
+      hour: "]-Inf, 1] Tunti]1, +Inf[ Tuntia"
+      minute: "]-Inf, 1] Minuutti]1, +Inf[ Minuuttia"
+  exceptions:
+    loading: Säännön määrittelyn lataamisessa tapahtui virhe.
+    required: Tämä kenttä on pakollinen.
+    required_attribute: Attribuutti vaaditaan
+    required_locale: Attribuutille {{ attributeLabel }} vaaditaan lokaali
+    required_scope: Attribuutille {{ attributeLabel }} vaaditaan kanava
+    required_currency: Attribuutille {{ attributeLabel }} vaaditaan valuutta
+    required_locale_completeness: Valmiusastetta varten tarvitaan lokaali
+    required_scope_completeness: Valmiusastetta varten tarvitaan kanava
+    required_value: Tälle toimenpiteelle vaaditaan arvo
+    required_categories: Tähän toimenpiteeseen vaaditaan vähintään yksi kategoria
+    required_constant_for_operation: Tälle toimenpiteelle vaaditaan vakioarvo
+    required_operator_for_operation: Tälle toimenpiteelle vaaditaan operaattori
+    required_unit: Mittayksikkö vaaditaan
+    identifier_or_quantity_missing: Tunniste ja lukumäärä vaaditaan jokaiselle elementille
+    required_item: Tätä toimenpidettä varten tarvitaan vähintään yksi kohde
+    division_by_zero: Nollalla jakaminen ei ole mahdollista
+    two_items_are_required: Luettelossa on oltava vähintään 2 kohdetta.
+    unknown_or_inactive_locale: 'Lokaalia "{{ localeCode }} ei ole olemassa tai sitä ei ole aktivoitu'
+    unknown_or_inactive_currency: 'Valuuttaa "{{ currencyCode }} ei ole olemassa tai sitä ei ole aktivoitu'
+    unbound_locale: 'Lokaalia "{{ localeCode }}" ei ole aktivoitu kanavassa "{{ channelCode }}"'
+    unbound_currency: 'Valuuttaa "{{ currencyCode }}" ei ole aktivoitu kanavassa {{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Tämä attribuutti ei ole lokalisoitavissa. Poista lokaali ennen kuin jatkat.
+    unknown_scope: 'Kanavaa "{{ scopeCode }}" ei ole olemassa'
+    scope_on_unscopable_attribute: Tämä attribuutti ei ole kanavakohtainen. Poista kanava ennen kuin jatkat.
+    unknown_families: "{1}Attribuuttiperhettä {{ familyCodes }} ei ole olemassa]1,+Inf[Attribuuttiperheitä {{ familyCodes }} ei ole olemassa"
+    unknown_family_variants: "{1}Varianttiperhettä {{ familyVariantCodes }} ei ole olemassa]1,+Inf[Varianttiperheitä {{ familyVariantCodes }} ei ole olemassa"
+    unknown_attribute_options: "{1}Valintalistan arvoa {{ attributeOptionCodes }} ei ole olemassa]1,+Inf[Valintalistan arvoja {{ attributeOptionCodes }} ei ole olemassa"
+    unknown_attribute_code: "Attribuuttia {{ attributeCode }} ei ole olemassa"
+    unknown_categories: "{1}Kateogriaa {{ categoryCodes }} ei ole olemassa. ]1, +Inf[Kategorioita {{ categoryCodes }} ei ole olemassa"
+    unknown_attribute: "Tätä attribuuttia ei ole olemassa."
+    unknown_groups: "{1} Ryhmää {{ groupCodes }} ei ole olemassa]1, +Inf[Seuraavia ryhmiä ei ole olemassa: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Valitse toinen attribuutti tai poista tämä toimenpide."
+    select_another_attribute: "Valitse toinen attribuutti"
+    or: tai
+    create_attribute_link: klikkaa tästä luodaksesi attribuutin
+    edit_unauthorize: Sinulla ei ole oikeutta muokata sääntöjä
+    wrong_date_timespan: Määrittääksesi kelvollisen aikavälin, varmista, että päättymispäivämäärää ei ole asetettu ennen alkamispäivää.
+    measurement_family_not_found: Mittayksikköperhettä "{{ measurement_code }}" ei ole olemassa
+    unit_not_found: Mittayksikköä "{{ unitCode }}" ei löydy mittayksikköperheestä "{{ measurement_code }}"
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
+      flash:
+        delete:
+          success: Säännön poisto onnistui!
 flash:
   rule:
+    impacted_product_count: Massatoiminto sääntöjä koskevien tuotteiden laskemiseksi on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
+    enabled: Sääntö on otettu käyttöön
+    disabled: Sääntö on poistettu käytöstä
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Sääntöjen suorittaminen
   default_steps:
+    export_rules: Sääntöjen vienti
+    import_rules: Sääntöjen tuonti
+    calculate_affected_products: Laske tuotteet, joita sääntö koskee
     execute_rules: Sääntöjen suorittaminen
+  yml_rule_import:
+    label: Sääntöjen tuonti YAML-muodossa
+    import.label: Sääntöjen tuonti
+  yml_rule_export:
+    label: Sääntöjen vienti YAML-muodossa
+    export.label: Sääntöjen vienti
   rule_impacted_product_count:
+    label: Koskevien tuotteiden lukumäärä
     perform.label: Laske päivitetyt tuotteet
   csv_product_import_with_rules:
     label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
@@ -126,6 +450,7 @@ pim_menu:
     rule: Säännöt
 pim_title:
   pimee_catalog_rule_rule_index: Säännöt
+  pimee_catalog_rule_edit: Muokkaa sääntöä
   pimee_catalog_rule_new: Säännöt
 pim_import_export:
   widget:
