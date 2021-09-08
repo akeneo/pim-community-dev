@@ -72,6 +72,7 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Et ole tuotteen omistaja, et voi muokata sitä.
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Jotta voit muuntaa tämän varianttituotteen, sinulla on oltava omistusoikeus sen kategorioihin."
 pimee_enrich:
   attribute_group:
     tab:

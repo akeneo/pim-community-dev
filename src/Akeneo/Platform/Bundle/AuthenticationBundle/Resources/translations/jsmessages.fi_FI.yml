@@ -33,7 +33,6 @@ authentication:
           label: Ulkoskirjautumisosoite
         certificate:
           label: Sertifikaatti
-          expiration_warning: Tämä sertifikaatti vanhenee {{date}}.
         private_key:
           label: Yksityinen avain
         metadata_url:
