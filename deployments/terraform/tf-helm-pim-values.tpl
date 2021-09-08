@@ -97,3 +97,16 @@ mysql:
     persistentDisks:
     - ${mysql_disk_name}
     class: ${mysql_disk_storage_class}
+
+
+%{ if type == "tria" }
+free_trial:
+  enabled: true
+  akeneo_connect_saml_entity_id: ${akeneo_connect_saml_entity_id}
+  akeneo_connect_saml_certificate: ${akeneo_connect_saml_certificate}
+  akeneo_connect_api_client_secret: ${akeneo_connect_api_client_secret}
+  akeneo_connect_api_client_password: ${akeneo_connect_api_client_password}
+  ft_catalog_api_client_id: ${ft_catalog_api_client_id}
+  ft_catalog_api_password: ${ft_catalog_api_password}
+  ft_catalog_api_secret: ${ft_catalog_api_secret}
+%{ endif }

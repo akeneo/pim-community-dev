@@ -9,8 +9,6 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
-      record:
-        should_not_be_used_as_product_variant_axis: 'Et voi poistaa tätä entiteettiä, koska sitä on käytetty varianttiulottuvuutena tuotevarianteilla'
       number:
         should_be_string: 'Arvon on oltava merkkijono'
         should_be_integer: 'Arvon on oltava kokonaisluku'

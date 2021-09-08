@@ -61,6 +61,17 @@ data:
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
   FLAG_FREE_TRIAL_ENABLED: "1"
+  FT_CATALOG_API_CLIENT_ID: {{ required "Environment variable FT_CATALOG_API_CLIENT_ID is missing" .Values.free_trial.ft_catalog_api_client_id | quote }}
+  FT_CATALOG_API_PASSWORD: {{ required "Environment variable FT_CATALOG_API_PASSWORD is missing" .Values.free_trial.ft_catalog_api_password | quote }}
+  FT_CATALOG_API_SECRET: {{ required "Environment variable FT_CATALOG_API_SECRET is missing" .Values.free_trial.ft_catalog_api_secret | quote }}
+  AKENEO_CONNECT_API_CLIENT_SECRET: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_SECRET is missing" .Values.free_trial.akeneo_connect_api_client_secret | quote }}
+  AKENEO_CONNECT_API_CLIENT_PASSWORD: {{ required "Environment variable AKENEO_CONNECT_API_CLIENT_PASSWORD is missing" .Values.free_trial.akeneo_connect_api_client_password | quote }}
+  AKENEO_CONNECT_SAML_ENTITY_ID: {{ required "Environment variable AKENEO_CONNECT_SAML_ENTITY_ID is missing" .Values.free_trial.akeneo_connect_saml_entity_id | quote }}
+  AKENEO_CONNECT_SAML_CERTIFICATE: {{ required "Environment variable AKENEO_CONNECT_SAML_CERTIFICATE is missing" .Values.free_trial.akeneo_connect_saml_certificate | quote }}
+  AKENEO_CONNECT_SAML_SIGNIN_URL: {{ .Values.free_trial.akeneo_connect_saml_signin_url | quote }}
+  AKENEO_CONNECT_SAML_LOGOUT_URL: {{ .Values.free_trial.akeneo_connect_saml_logout_url | quote }}
+  AKENEO_CONNECT_API_CLIENT_ID: {{ .Values.free_trial.akeneo_connect_api_client_id | quote }}
+  AKENEO_CONNECT_API_CLIENT_USERNAME: {{ .Values.free_trial.akeneo_connect_api_client_username | quote }}
   {{- else }}
   FLAG_FREE_TRIAL_ENABLED: "0"
   {{- end }}
