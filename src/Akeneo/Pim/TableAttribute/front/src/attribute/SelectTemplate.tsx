@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Tile, Tiles} from 'akeneo-design-system';
+import {Button, Modal, Tile, Tiles} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TEMPLATES} from '../models';
 import styled from 'styled-components';
@@ -22,9 +22,10 @@ export type CreateAttributeButtonStepProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
+  onBack?: () => void;
 };
 
-const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm, onClose, initialData}) => {
+const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm, onClose, initialData, onBack}) => {
   const translate = useTranslate();
 
   React.useEffect(() => {
@@ -33,8 +34,17 @@ const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm
     }
   }, []);
 
+  const handleBack = () => {
+    onBack?.();
+  };
+
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
+      <Modal.TopRightButtons>
+        <Button level={'tertiary'} onClick={handleBack}>
+          {translate('pim_common.previous')}
+        </Button>
+      </Modal.TopRightButtons>
       <Modal.SectionTitle color='brand'>
         {translate('pim_enrich.entity.attribute.module.create.button')}
       </Modal.SectionTitle>

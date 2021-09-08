@@ -22,6 +22,17 @@ describe('SelectTemplateApp', () => {
     expect(handleClose).toBeCalledTimes(1);
   });
 
+  it('should callback the previous', () => {
+    const handleBack = jest.fn();
+    renderWithProviders(<SelectTemplate onStepConfirm={jest.fn()} onClose={jest.fn()} onBack={handleBack} />);
+
+    act(() => {
+      fireEvent.click(screen.getByText(/pim_common.previous/));
+    });
+
+    expect(handleBack).toBeCalled();
+  })
+
   it('should callback the click', () => {
     const handleStepConfirm = jest.fn();
     renderWithProviders(<SelectTemplate onStepConfirm={handleStepConfirm} onClose={jest.fn()} />);

@@ -14,12 +14,14 @@ export type CreateAttributeButtonStepProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
+  onBack?: () => void;
 };
 
 const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps> = ({
   onClose,
   onStepConfirm,
   initialData,
+  onBack,
 }) => {
   const translate = useTranslate();
   const [templateVariationCode, setTemplateVariationCode] = React.useState<string | null>(null);
@@ -69,6 +71,7 @@ const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps>
       onStepConfirm={onStepConfirm}
       initialData={initialData}
       extraFields={extraFields}
+      onBack={onBack}
     />
   );
 };
