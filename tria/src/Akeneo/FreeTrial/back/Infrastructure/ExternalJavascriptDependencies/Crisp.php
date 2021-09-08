@@ -9,14 +9,13 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface
 
 final class Crisp implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    // @todo replace by a proper ID, may be one different by Symfony envs (prod, dev) ?
-    private const CRISP_WEBSITE_ID = 'fbbf32c2-0cb1-4142-a8d4-272be589e1f8';
-
     private ScriptNonceGenerator $nonceGenerator;
+    private string $crispWebsiteId;
 
-    public function __construct(ScriptNonceGenerator $nonceGenerator)
+    public function __construct(ScriptNonceGenerator $nonceGenerator, string $crispWebsiteId)
     {
         $this->nonceGenerator = $nonceGenerator;
+        $this->crispWebsiteId = $crispWebsiteId;
     }
 
     /**
@@ -41,7 +40,7 @@ final class Crisp implements ExternalDependencyProviderInterface, ContentSecurit
         return sprintf(
             '<script type="text/javascript" nonce="%s">window.$crisp=[];window.CRISP_WEBSITE_ID="%s";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>',
             $nonce,
-            self::CRISP_WEBSITE_ID
+            $this->crispWebsiteId
         );
     }
 }
