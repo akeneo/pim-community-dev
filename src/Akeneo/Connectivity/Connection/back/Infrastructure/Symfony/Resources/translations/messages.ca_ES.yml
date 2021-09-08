@@ -1,0 +1,2 @@
+akeneo_connectivity.connection:
+  acl.manage_settings: Administrar la configuració de les connexions

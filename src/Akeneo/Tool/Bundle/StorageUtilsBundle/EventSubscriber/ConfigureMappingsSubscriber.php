@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
  * Configure the mappings of the metadata classes.
@@ -21,12 +21,6 @@ class ConfigureMappingsSubscriber implements EventSubscriber
     /** @var array */
     protected $mappingOverrides;
 
-    /**
-     * Constructor
-     *
-     * @param MappingsOverrideConfiguratorInterface $configurator
-     * @param array                                 $mappingOverrides
-     */
     public function __construct(MappingsOverrideConfiguratorInterface $configurator, array $mappingOverrides)
     {
         $this->configurator = $configurator;
@@ -43,9 +37,6 @@ class ConfigureMappingsSubscriber implements EventSubscriber
         ];
     }
 
-    /**
-     * @param LoadClassMetadataEventArgs $eventArgs
-     */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
         $this->configurator->configure(

@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 商城
   akeneo_connectivity_connection_connect_marketplace_profile: 商城
+  akeneo_connectivity_connection_connect_apps_activate: 连接
+  akeneo_connectivity_connection_connect_apps_authorize: 连接
   akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
@@ -57,6 +59,26 @@ akeneo_connectivity.connection:
         empty: 没有与您的版本兼容的应用
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
+    apps:
+      wizard:
+        progress:
+          permissions: 权限
+      title: 连接
+      activate:
+        flash:
+          error: 抱歉，连接应用时发生错误。
+      constraint:
+        client_id:
+          not_blank: client_id 为必填项。
+          must_be_valid: client_id 与任何已知的客户不匹配。
+        response_type:
+          not_blank: response_type 为必填项。
+          must_be_code: response_type 必须为“代码”。
+        scope:
+          must_be_valid: 范围无效。
+        redirect_uri:
+          not_blank: redirect_uri 为必填项。
+          must_be_url: redirect_uri 不是有效的 URL。
   connections: 连接
   secondary_actions:
     title: 其他操作

@@ -15,11 +15,7 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInter
  */
 class ChannelRepository extends EntityRepository implements DatagridRepositoryInterface
 {
-    /**
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
     }
@@ -30,7 +26,7 @@ class ChannelRepository extends EntityRepository implements DatagridRepositoryIn
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('c');
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAliases()[0];
 
         $treeExpr = '(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)';
 

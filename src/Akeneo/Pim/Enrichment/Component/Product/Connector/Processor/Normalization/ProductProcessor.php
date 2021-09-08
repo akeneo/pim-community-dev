@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQua
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -109,8 +110,10 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $valuesToExport = [];
         $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
         foreach ($values as $code => $value) {
+            /** @var AttributeInterface $attribute */
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (!$attribute->isLocaleSpecific() || !empty(array_intersect($jobLocales, $attribute->getLocaleSpecificCodes()))) {
+            if (!$attribute->isLocaleSpecific()
+                || !empty(array_intersect($jobLocales, $attribute->getAvailableLocaleCodes()))) {
                 $valuesToExport[$code] = $value;
             }
         }
