@@ -25,6 +25,7 @@ type CreateAttributeModalProps = {
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
   extraFields?: CreateAttributeModalExtraField[];
+  onBack?: () => void;
 };
 
 const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
@@ -32,6 +33,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
   onStepConfirm,
   initialData,
   extraFields = [],
+  onBack,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -52,8 +54,15 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
 
   useAutoFocus(labelRef);
 
+  const handleBack = () => {
+    onBack?.();
+  }
+
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
+      <Modal.TopRightButtons>
+        <Button level={'tertiary'} onClick={handleBack}>{translate('pim_common.previous')}</Button>
+      </Modal.TopRightButtons>
       <Modal.SectionTitle color="brand">
         {translate('pim_enrich.entity.attribute.module.create.button')}
       </Modal.SectionTitle>
