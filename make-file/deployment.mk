@@ -276,6 +276,13 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
+	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
+	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
+	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
+	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
+	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
+	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
@@ -345,7 +352,7 @@ upgrade-instance:
 	-a "productTypePrefixFilter=$(TYPE)" \
 	-a "googleProjectIdFilter=akecld-saas-dev" \
 	-a "googleCloudZoneFilter=*" \
-	-a "forceUpdate=false"
+	-a "forceUpdate=true"
 
 .PHONY: test-prod
 test-prod:
@@ -393,6 +400,25 @@ delete_environments_hourly:
 delete_expired_uptime_check:
 	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
 	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
+
+.PHONY: remove_unused_gcloud_pubsub
+remove_unused_gcloud_pubsub:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_pubsub.sh
+
+.PHONY: remove_unused_gcloud_bucket
+remove_unused_gcloud_bucket:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
+
+.PHONY: remove_unused_disk
+remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
+
+.PHONY: remove_unused_kube_disk
+remove_unused_kube_disk:
+	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
+
+.PHONY: remove_unused_gcloud_disk
+remove_unused_gcloud_disk:
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
 
 .PHONY: clone_serenity
 clone_serenity:

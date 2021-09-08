@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $jobEvaluateProductsCriteria = 'data_quality_insights_evaluate_products_criteria';
 
@@ -39,7 +39,7 @@ SQL
         );
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

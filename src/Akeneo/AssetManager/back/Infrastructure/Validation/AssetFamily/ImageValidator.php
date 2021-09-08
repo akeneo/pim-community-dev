@@ -39,7 +39,9 @@ class ImageValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($image, [
+        $violations = $validator->validate(
+            $image,
+            [
                 new Type(['type' => 'array']),
                 new Collection(
                     [

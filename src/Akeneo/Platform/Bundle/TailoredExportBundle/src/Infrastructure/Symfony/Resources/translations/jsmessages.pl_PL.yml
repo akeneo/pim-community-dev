@@ -28,10 +28,11 @@ akeneo.tailored_export:
   column_list:
     title: Kolumny
     header:
-      column_name: Nagłówek kolumny
+      column_name: Nazwa kolumny
       source_data: Zawartość kolumny
     column_row:
       target_placeholder: Zdefiniuj nazwę kolumny
+      placeholder_helper: Możesz skopiować wszystkie nazwy kolumn z arkusza kalkulacyjnego, aby automatycznie utworzyć kolumny.
       remove: Usuń kolumnę
       no_source: Zdefiniuj źródło zawartości
     no_column_selection:
@@ -109,6 +110,10 @@ akeneo.tailored_export:
             channel: Jeśli atrybut używany jako etykieta ma wartość zależną od kanału, możesz wybrać określony kanał.
       operation:
         header: Operacje
+        measurement_conversion:
+          title: Przeliczenie
+          placeholder: Brak przeliczenia
+          target_unit_code.label: Przelicz na
         replacement:
           title: Zastąp wartość
           placeholder: Zdefiniuj wartość zastępczą
@@ -120,6 +125,12 @@ akeneo.tailored_export:
           title: Użyj wartości domyślnej przy braku zadanej
           label: Wartość domyślna
           placeholder: Zdefiniuj wartość
+    concatenation:
+      title: Konkatenacja
+      preview: Podgląd
+      space_between: Dodaj odstępy między źródłami
+      add_text: Dodaj tekst
+      text_placeholder: Zdefiniuj tekst
   column:
     delete_message: Czy na pewno chcesz usunąć tę kolumnę?
   validation:
@@ -134,6 +145,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł w tej kolumnie.
       association_type_should_exist: Typ powiązania {{ association_type_code }} nie istnieje. Utwórz go lub wybierz inne źródło.
+    concatenation:
+      max_text_count_reached: Osiągnięto limit {{ limit }} elementów tekstowych. Nie możesz już dodawać tekstu.
     locale:
       should_be_active: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.
       should_be_bound_to_channel: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane w kanale {{ channel_code }}. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.
@@ -146,3 +159,8 @@ akeneo.tailored_export:
       locale_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od ustawień regionalnych. Utwórz go lub wybierz inne źródło.
       channel_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od kanału. Utwórz go lub wybierz inne źródło.
       invalid_specific_locale: Atrybut {{ attribute_code }} jest przypisany do ustawień regionalnych. Wybierz inną wersję językową.
+    measurement:
+      family:
+        does_not_exist: Rodzina miar {{ measurement_family_code }} nie istnieje.
+      unit:
+        does_not_exist: Jednostka {{ unit_code }} nie istnieje w rodzinie miar {{ measurement_family_code }}.

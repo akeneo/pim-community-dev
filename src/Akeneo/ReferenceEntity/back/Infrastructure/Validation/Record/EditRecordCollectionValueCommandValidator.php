@@ -50,7 +50,8 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditRecordCollectionValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditRecordCollectionValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditRecordCollectionValueCommand::class,
                     get_class($command)
                 )
             );

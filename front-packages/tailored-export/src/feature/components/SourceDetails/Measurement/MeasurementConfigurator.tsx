@@ -5,9 +5,10 @@ import {isMeasurementSource} from './model';
 import {MeasurementSelector} from './MeasurementSelector';
 import {InvalidAttributeSourceError} from '../error';
 import {DefaultValue, Operations} from '../common';
+import {MeasurementConversion} from './MeasurementConversion';
 
-const MeasurementConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
-  if (!isMeasurementSource(source)) {
+const MeasurementConfigurator = ({source, attribute, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
+  if (!isMeasurementSource(source) || undefined === attribute.metric_family) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for measurement configurator`);
   }
 
@@ -18,6 +19,14 @@ const MeasurementConfigurator = ({source, validationErrors, onSourceChange}: Att
         validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <MeasurementConversion
+        operation={source.operations.measurement_conversion}
+        measurementFamilyCode={attribute.metric_family}
+        validationErrors={filterErrors(validationErrors, '[operations][measurement_conversion]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, measurement_conversion: updatedOperation}})
         }
       />
       <MeasurementSelector

@@ -81,7 +81,8 @@ class ReplacePattern
             $assetValue = self::value($propertyAccessibleAsset, $pattern);
             if (is_array($assetValue) && 1 < count($patterns)) {
                 throw new \InvalidArgumentException(
-                    sprintf('The asset property "%s" could not be replaced as his value is an array',
+                    sprintf(
+                        'The asset property "%s" could not be replaced as his value is an array',
                         trim($pattern)
                     )
                 );

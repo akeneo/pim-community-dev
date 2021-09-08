@@ -7,6 +7,8 @@ import {ColumnConfiguration, ColumnsState} from '../../models/ColumnConfiguratio
 import {renderWithProviders} from 'feature/tests';
 
 test('it renders a placeholder when no column is selected', async () => {
+  jest.useFakeTimers();
+
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -15,6 +17,7 @@ test('it renders a placeholder when no column is selected', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
     {
@@ -24,6 +27,7 @@ test('it renders a placeholder when no column is selected', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -41,10 +45,12 @@ test('it renders a placeholder when no column is selected', async () => {
     />
   );
 
+  jest.runAllTimers();
+
   expect(screen.getByDisplayValue(/my first column/i)).toBeInTheDocument();
   expect(screen.getByDisplayValue(/my second column/i)).toBeInTheDocument();
 
-  expect(screen.getAllByText(/akeneo.tailored_export.column_list.column_row.no_source/i)).toHaveLength(3);
+  expect(screen.getAllByText(/akeneo.tailored_export.column_list.column_row.no_source/i)).toHaveLength(2);
 
   const firstInput = screen.getAllByPlaceholderText(
     'akeneo.tailored_export.column_list.column_row.target_placeholder'
@@ -61,6 +67,7 @@ test('it can remove a column', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -95,6 +102,7 @@ test('it can create a new column', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -131,6 +139,7 @@ test('it can handle paste events', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -175,6 +184,7 @@ test('it can update a column', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -204,8 +214,9 @@ test('it can update a column', async () => {
     target: 'my new column name',
     sources: [],
     format: {
-      elements: [],
       type: 'concat',
+      elements: [],
+      space_between: true,
     },
   });
 });
@@ -219,6 +230,7 @@ test('it displays validation errors', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -276,6 +288,7 @@ test('it moves to next line when user type enter', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
     {
@@ -285,6 +298,7 @@ test('it moves to next line when user type enter', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -315,7 +329,9 @@ test('it moves to next line when user type enter', async () => {
   expect(handleSetColumnsState).toHaveBeenCalled();
 });
 
-test('it focus the selected column', async () => {
+test('it focuses the selected column', async () => {
+  jest.useFakeTimers();
+
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -324,6 +340,7 @@ test('it focus the selected column', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
     {
@@ -333,6 +350,7 @@ test('it focus the selected column', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];
@@ -349,6 +367,8 @@ test('it focus the selected column', async () => {
       setColumnsState={jest.fn()}
     />
   );
+
+  jest.runAllTimers();
 
   const firstInput = screen.getAllByPlaceholderText(
     'akeneo.tailored_export.column_list.column_row.target_placeholder'
@@ -403,6 +423,7 @@ test('it displays the sources labels on the row', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
     {
@@ -412,6 +433,7 @@ test('it displays the sources labels on the row', async () => {
       format: {
         type: 'concat',
         elements: [],
+        space_between: true,
       },
     },
   ];

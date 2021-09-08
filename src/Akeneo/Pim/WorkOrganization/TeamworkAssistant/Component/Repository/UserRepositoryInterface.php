@@ -29,11 +29,5 @@ interface UserRepositoryInterface extends ObjectRepository
      */
     public function findUsersToNotify(ProjectInterface $project);
 
-    /**
-     * @param ProjectInterface $project
-     * @param UserInterface    $user
-     *
-     * @return bool
-     */
-    public function isProjectContributor(ProjectInterface $project, UserInterface $user);
+    public function isProjectContributor(ProjectInterface $project, UserInterface $user): bool;
 }

@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\FindMediaFileInfoCollectionInterface;

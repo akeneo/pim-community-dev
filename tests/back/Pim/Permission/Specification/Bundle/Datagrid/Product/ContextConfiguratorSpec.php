@@ -7,7 +7,7 @@ use Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;

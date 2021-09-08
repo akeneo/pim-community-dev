@@ -3,6 +3,9 @@ kind: Ingress
 metadata:
   name: pim-api-external-{{ .Values.global.extraLabels.instanceName }}
   annotations:
+    {{ if .Values.pim.api.ratelimit.enabled -}}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.global.extraLabels.pfid }}-api-ratelimit@kubernetescrd
+    {{- end }}
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.options: default
     traefik.ingress.kubernetes.io/router.entrypoints: websecure

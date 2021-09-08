@@ -120,3 +120,17 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.channel_should_exist' }
     public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Measurement\UnitBelongsToMeasurementFamilyValidator:
+    arguments:
+      - '@akeneo_measure.manager'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\MeasurementConversionOperationValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true

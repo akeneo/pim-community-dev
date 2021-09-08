@@ -24,7 +24,7 @@ class FindUnitLabelSpec extends ObjectBehavior
     public function it_finds_unit_label(
         GetUnitTranslations $getUnitTranslations
     ): void {
-        $measurementFamilyCode = 'weight';
+        $measurementFamilyCode = 'Weight';
         $unitCode = 'GRAM';
         $localeCode = 'fr_FR';
 
@@ -38,7 +38,7 @@ class FindUnitLabelSpec extends ObjectBehavior
     public function it_returns_null_if_label_is_empty(
         GetUnitTranslations $getUnitTranslations
     ): void {
-        $measurementFamilyCode = 'weight';
+        $measurementFamilyCode = 'Weight';
         $unitCode = 'GRAM';
         $localeCode = 'fr_FR';
 

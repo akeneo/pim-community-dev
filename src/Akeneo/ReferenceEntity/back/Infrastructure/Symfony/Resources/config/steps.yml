@@ -65,5 +65,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
             - '@akeneo_batch.job.job_stopper'
+            - '@validator'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_used_as_product_variant_axis'
             - 1000
         public: false

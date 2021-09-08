@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Vain luku
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Sinun täytyy valita ainakin yksi käyttäjäryhmä muokataksesi työtä
 pimee_enrich.entity.category:
   module:
     permissions:

@@ -92,8 +92,12 @@ class SearchAssetsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function two_words_search()
     {
-        $matchingidentifiers = $this->searchAssetIndexHelper->search('brand', 'ecommerce', 'en_US',
-            ['experience', 'senses']);
+        $matchingidentifiers = $this->searchAssetIndexHelper->search(
+            'brand',
+            'ecommerce',
+            'en_US',
+            ['experience', 'senses']
+        );
         sort($matchingidentifiers);
         assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
@@ -103,8 +107,12 @@ class SearchAssetsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function another_two_words_search()
     {
-        $matchingidentifiers = $this->searchAssetIndexHelper->search('brand', 'ecommerce', 'en_US',
-            ['experience', 'starck']);
+        $matchingidentifiers = $this->searchAssetIndexHelper->search(
+            'brand',
+            'ecommerce',
+            'en_US',
+            ['experience', 'starck']
+        );
         sort($matchingidentifiers);
         assert::assertsame(['brand_kartell'], $matchingidentifiers);
     }

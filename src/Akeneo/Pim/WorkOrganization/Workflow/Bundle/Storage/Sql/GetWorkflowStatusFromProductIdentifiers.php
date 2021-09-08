@@ -93,13 +93,16 @@ final class GetWorkflowStatusFromProductIdentifiers implements PublicApi\GetWork
     HAVING workflow_status IS NOT NULL;
 SQL;
 
-        $rows = $this->sqlConnection->fetchAll($query, [
+        $rows = $this->sqlConnection->fetchAll(
+            $query,
+            [
             'userId' => $userId,
             'productIdentifiers' => $productIdentifiers
         ],
-        [
+            [
             'productIdentifiers' => Connection::PARAM_STR_ARRAY
-        ]);
+        ]
+        );
 
         $results = [];
 

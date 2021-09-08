@@ -49,8 +49,11 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
      */
     public function it_generates_an_empty_list()
     {
-        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(ReferenceEntityIdentifier::fromString('designer'),
-            ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
+        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ChannelIdentifier::fromCode('ecommerce'),
+            LocaleIdentifier::fromCode('en_US')
+        );
         Assert::assertEquals(
             [
                 'ecommerce' => ['fr_FR' => [], 'en_US' => []],

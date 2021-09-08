@@ -63,7 +63,8 @@ final class UpdateAttributeQualitySubscriber implements EventSubscriberInterface
         try {
             $this->consolidateAttributeQuality->byAttributeCode($attributeCode);
         } catch (\Throwable $exception) {
-            $this->logger->error(sprintf('Unable to consolidate quality of attribute "%s"', $attributeCode),
+            $this->logger->error(
+                sprintf('Unable to consolidate quality of attribute "%s"', $attributeCode),
                 ['error_code' => 'unable_to_consolidate_attribute_quality', 'error_message' => $exception->getMessage()]
             );
         }

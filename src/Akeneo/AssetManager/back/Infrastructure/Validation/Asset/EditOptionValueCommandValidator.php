@@ -45,7 +45,8 @@ class EditOptionValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditOptionValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditOptionValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditOptionValueCommand::class,
                     get_class($command)
                 )
             );

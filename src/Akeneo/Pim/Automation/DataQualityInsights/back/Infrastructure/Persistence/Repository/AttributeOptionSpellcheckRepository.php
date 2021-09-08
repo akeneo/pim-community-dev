@@ -37,7 +37,8 @@ VALUES (:attributeCode, :attributeOptionCode, :evaluatedAt, :toImprove, :result)
 ON DUPLICATE KEY UPDATE evaluated_at = :evaluatedAt, to_improve = :toImprove, result = :result;
 SQL;
 
-        $this->dbConnection->executeQuery($query,
+        $this->dbConnection->executeQuery(
+            $query,
             [
                 'attributeCode' => $attributeOptionSpellcheck->getAttributeCode(),
                 'attributeOptionCode' => $attributeOptionSpellcheck->getAttributeOptionCode(),

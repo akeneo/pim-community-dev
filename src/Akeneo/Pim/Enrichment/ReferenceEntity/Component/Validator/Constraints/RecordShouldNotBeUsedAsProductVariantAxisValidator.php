@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\RecordIsUsedAsProductVariantAxisInterface;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindRecordsUsedAsProductVariantAxisInterface;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -26,13 +24,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RecordShouldNotBeUsedAsProductVariantAxisValidator extends ConstraintValidator
 {
-    /** @var RecordIsUsedAsProductVariantAxisInterface */
-    private $recordIsUsedAsProductVariantAxis;
+    private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis;
 
     public function __construct(
-        RecordIsUsedAsProductVariantAxisInterface $recordIsUsedAsProductVariantAxis
+        FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis
     ) {
-        $this->recordIsUsedAsProductVariantAxis = $recordIsUsedAsProductVariantAxis;
+        $this->findRecordsUsedAsProductVariantAxis = $findRecordsUsedAsProductVariantAxis;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -45,12 +42,9 @@ class RecordShouldNotBeUsedAsProductVariantAxisValidator extends ConstraintValid
             throw new UnexpectedTypeException($command, DeleteRecordCommand::class);
         }
 
-        $recordCode = RecordCode::fromString($command->recordCode);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-
-        $recordIsUsedAsProductVariantAxis = $this->recordIsUsedAsProductVariantAxis->execute(
-            $recordCode,
-            $referenceEntityIdentifier
+        $recordIsUsedAsProductVariantAxis = $this->findRecordsUsedAsProductVariantAxis->areUsed(
+            [$command->recordCode],
+            $command->referenceEntityIdentifier
         );
 
         if ($recordIsUsedAsProductVariantAxis) {

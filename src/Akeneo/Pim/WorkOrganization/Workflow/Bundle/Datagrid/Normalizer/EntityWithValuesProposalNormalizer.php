@@ -56,7 +56,8 @@ class EntityWithValuesProposalNormalizer implements NormalizerInterface, Cacheab
             'document_label' => $entityWithValue->getLabel($this->userContext->getUser()->getCatalogLocale()->getCode()),
             'formatted_changes' => $this->changesNormalizer->normalize($entityWithValuesDraft, $context),
             'document_type' => ($entityWithValuesDraft->getEntityWithValue() instanceof ProductModelInterface) ? 'product_model_draft' : 'product_draft',
-            'id' => sprintf('%s_%s',
+            'id' => sprintf(
+                '%s_%s',
                 ($entityWithValuesDraft->getEntityWithValue() instanceof ProductModelInterface) ? 'product_model_draft' : 'product_draft',
                 (string) $entityWithValuesDraft->getId()
             ),

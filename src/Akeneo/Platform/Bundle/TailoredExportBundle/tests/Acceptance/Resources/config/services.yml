@@ -1,6 +1,9 @@
 services:
     Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface:
-            class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels
+
+    Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryMeasurementConverter
 
     Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryFindCategoryLabels

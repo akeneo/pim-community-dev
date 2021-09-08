@@ -28,10 +28,11 @@ akeneo.tailored_export:
   column_list:
     title: Colonne
     header:
-      column_name: Intestazione colonna
+      column_name: Nome colonna
       source_data: Contenuto colonna
     column_row:
       target_placeholder: Definisci qui il nome della tua colonna
+      placeholder_helper: Puoi copiare tutti i nomi delle colonne da un foglio di calcolo per creare automaticamente le colonne.
       remove: Rimuovi colonna
       no_source: Definisci origine contenuto
     no_column_selection:
@@ -109,6 +110,10 @@ akeneo.tailored_export:
             channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
       operation:
         header: Operazioni
+        measurement_conversion:
+          title: Conversione
+          placeholder: Nessuna conversione
+          target_unit_code.label: Converti in
         replacement:
           title: Sostituisci valore
           placeholder: Definisci il valore di sostituzione
@@ -120,6 +125,12 @@ akeneo.tailored_export:
           title: Se vuoto, utilizza il valore predefinito
           label: Valore predefinito
           placeholder: Definisci il valore
+    concatenation:
+      title: Concatenazione
+      preview: Anteprima
+      space_between: Aggiungi spazio tra le origini
+      add_text: Aggiungi testo
+      text_placeholder: Definisci testo
   column:
     delete_message: Sei sicuro di voler rimuovere questa colonna?
   validation:
@@ -134,6 +145,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini a questa colonna.
       association_type_should_exist: Il tipo di associazione {{ association_type_code }} non esiste. Crealo o scegli un'altra origine.
+    concatenation:
+      max_text_count_reached: Hai raggiunto il limite di {{ limit }} elementi di testo, non puoi più aggiungere testo.
     locale:
       should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.
       should_be_bound_to_channel: L'impostazione locale {{ locale_code }} è stata disattivata per il canale {{ channel_code }}. Riattivala o seleziona un'altra impostazione locale.
@@ -146,3 +159,8 @@ akeneo.tailored_export:
       locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per impostazione locale. Crealo o scegli un'altra origine.
       channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per canale. Crealo o scegli un'altra origine.
       invalid_specific_locale: L'attributo {{ attribute_code }} è specifico per impostazioni locali. Seleziona un'altra impostazione locale.
+    measurement:
+      family:
+        does_not_exist: La famiglia di unità di misura {{ measurement_family_code }} non esiste.
+      unit:
+        does_not_exist: L'unità {{ unit_code }} non esiste nella famiglia di unità di misura {{ measurement_family_code }}.

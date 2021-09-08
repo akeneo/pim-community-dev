@@ -17,6 +17,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
 use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\SourceElement;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\TextElement;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
@@ -60,26 +62,20 @@ final class HandleConcatenateTest extends KernelTestCase
                         null,
                         null,
                         OperationCollection::create([]),
-                        new BooleanSelection()
+                        new BooleanSelection(),
                     ),
                     new PropertySource(
                         'enabled-uuid',
                         'enabled',
                         OperationCollection::create([]),
-                        new EnabledSelection()
+                        new EnabledSelection(),
                     ),
                 ]),
-                new ConcatFormat(ElementCollection::createFromNormalized([
-                    [
-                        'type' => 'source',
-                        'value' => 'is_active-uuid',
-                    ],
-                    [
-                        'type' => 'source',
-                        'value' => 'enabled-uuid',
-                    ],
+                new ConcatFormat(ElementCollection::create([
+                    new SourceElement('is_active-uuid'),
+                    new SourceElement('enabled-uuid'),
                 ]), true),
-            )
+            ),
         ]);
 
         $valueCollection = new ValueCollection();
@@ -102,20 +98,17 @@ final class HandleConcatenateTest extends KernelTestCase
                 null,
                 OperationCollection::create([]),
                 new BooleanSelection(),
-            )
+            ),
         ]);
 
         $columnCollection = ColumnCollection::create([
             new Column(
                 self::TARGET_NAME,
                 $sourceCollection,
-                new ConcatFormat(ElementCollection::createFromNormalized([
-                    [
-                        'type' => 'source',
-                        'value' => 'is_active-uuid',
-                    ],
+                new ConcatFormat(ElementCollection::create([
+                    new SourceElement('is_active-uuid'),
                 ]), true),
-            )
+            ),
         ]);
 
         $valueCollection = new ValueCollection();
@@ -139,30 +132,21 @@ final class HandleConcatenateTest extends KernelTestCase
                         null,
                         null,
                         OperationCollection::create([]),
-                        new ScalarSelection()
+                        new ScalarSelection(),
                     ),
                     new PropertySource(
                         'parent-uuid',
                         'parent',
                         OperationCollection::create([]),
-                        new ParentCodeSelection()
+                        new ParentCodeSelection(),
                     ),
                 ]),
-                new ConcatFormat(ElementCollection::createFromNormalized([
-                    [
-                        'type' => 'source',
-                        'value' => 'name-uuid',
-                    ],
-                    [
-                        'type' => 'text',
-                        'value' => 'is a',
-                    ],
-                    [
-                        'type' => 'source',
-                        'value' => 'parent-uuid',
-                    ],
+                new ConcatFormat(ElementCollection::create([
+                    new SourceElement('name-uuid'),
+                    new TextElement('is a'),
+                    new SourceElement('parent-uuid'),
                 ]), true),
-            )
+            ),
         ]);
 
         $valueCollection = new ValueCollection();
@@ -187,30 +171,21 @@ final class HandleConcatenateTest extends KernelTestCase
                         null,
                         null,
                         OperationCollection::create([]),
-                        new ScalarSelection()
+                        new ScalarSelection(),
                     ),
                     new PropertySource(
                         'parent-uuid',
                         'parent',
                         OperationCollection::create([]),
-                        new ParentCodeSelection()
+                        new ParentCodeSelection(),
                     ),
                 ]),
-                new ConcatFormat(ElementCollection::createFromNormalized([
-                    [
-                        'type' => 'source',
-                        'value' => 'name-uuid',
-                    ],
-                    [
-                        'type' => 'text',
-                        'value' => '/',
-                    ],
-                    [
-                        'type' => 'source',
-                        'value' => 'parent-uuid',
-                    ],
-                ]), false)
-            )
+                new ConcatFormat(ElementCollection::create([
+                    new SourceElement('name-uuid'),
+                    new TextElement('/'),
+                    new SourceElement('parent-uuid'),
+                ]), false),
+            ),
         ]);
 
         $valueCollection = new ValueCollection();
@@ -219,8 +194,6 @@ final class HandleConcatenateTest extends KernelTestCase
 
         $mappedProduct = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
-        Assert::assertSame([
-            self::TARGET_NAME => 'My hat/red-hat'
-        ], $mappedProduct);
+        Assert::assertSame([self::TARGET_NAME => 'My hat/red-hat'], $mappedProduct);
     }
 }
