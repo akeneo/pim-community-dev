@@ -67,7 +67,7 @@ pim_reference_entity:
       confirm: Tallenna
     delete:
       message: Oletko varma, että haluat poistaa viitetiedon "{{ referenceEntityLabel }}"?
-      title: Attribuutti
+      title: Viitetieto
     notification:
       save:
         success: Viitetieto päivitetty onnistuneesti.
@@ -85,6 +85,8 @@ pim_reference_entity:
       subtitle: Voidaksesi määritellä viitetiedon käyttöoikeudet, vähintään yksi käyttäjäryhmä on oltava olemassa.
       link: Klikkaa tästä luodaksesi ensimmäisen käyttäjäryhmän
   record:
+    mass_delete:
+      title: Tietueet
     validation:
       limit_reached: 'Et voi lisätä tietuetta "{{ %record_label% }}", koska tietueiden enimmäismäärä {{ %limit% }} on saavutettu tälle viitetiedolle'
       code:
@@ -103,8 +105,6 @@ pim_reference_entity:
     button:
       save: Tallenna
       create: Luo uusi
-      delete: Poista
-      delete_all: Poista kaikki tietueet
       back: Takaisin listaan
     product:
       attribute: Tuotteen attribuutti
@@ -143,8 +143,6 @@ pim_reference_entity:
     delete:
       message: Oletko varma, että haluat poistaa tietueen ”{{ recordLabel }}”? Jos se on liitetty tuotteisiin tai tietueisiin, liitokset poistetaan.
       title: Tietue
-    delete_all:
-      confirm: Oletko varma, että haluat poistaa kaikki ”{{ entityIdentifier }}” tietueet? Jos ne on liitetty tuotteisiin, liitokset poistetaan.
     grid:
       search: Etsi otsikolla, koodilla tai tekstiattribuutilla
       filter:
@@ -182,8 +180,6 @@ pim_reference_entity:
         success: Tietue luotu onnistuneesti.
       delete:
         success: Tietue ”{{ code }}” poistettu.
-      delete_all:
-        success: Kaikki viitetiedon "{{ entityIdentifier }}" tietueet poistettu onnistuneesti.
     completeness:
       label: Valmis
   attribute:
@@ -274,12 +270,6 @@ pim_reference_entity:
       sub_title: Viitetiedot
       helper:
         title: Nimikkeiden käännökset
-  modal:
-    delete:
-      subtitle: Vahvista poisto
-      button:
-        cancel: Peruuta
-        confirm: Poista
 pim_enrich:
   confirmation:
     discard_changes: 'Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.'
@@ -314,3 +304,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Viitetiedon tietueiden tuonti XLSX-muodossa
     import.label: Tietueiden tuonti
+job_execution:
+  summary:
+    records: Tietueet
