@@ -24,7 +24,7 @@ const Logo = styled.img`
     height: 220px;
 `;
 
-const AllowAndNextButton = styled(Button)`
+const StyledActionButton = styled(Button)`
     position: fixed;
     top: 40px;
     right: 40px;
@@ -87,11 +87,22 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.previous')}
                 </PreviousButton>
             )}
-            <AllowAndNextButton onClick={next}>
-                {isCurrent('authorizations')
-                    ? translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
-                    : translate('akeneo_connectivity.connection.connect.apps.wizard.action.next')}
-            </AllowAndNextButton>
+
+            {isCurrent('authorizations') && (
+                <StyledActionButton onClick={next}>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')}
+                </StyledActionButton>
+            )}
+            {isCurrent('permissions') && (
+                <StyledActionButton onClick={next}>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.next')}
+                </StyledActionButton>
+            )}
+            {isCurrent('summary') && (
+                <StyledActionButton>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
+                </StyledActionButton>
+            )}
 
             <Content>
                 <LogoContainer>
