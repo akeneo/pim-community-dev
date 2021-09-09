@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: luo uusi projekti
     description: Kuvaus
     due_date: Määräpäivä
-    todo: Työjonossa
-    in_progress: Työnalla
-    done: Valmis
     all_contributors: Kaikki osallistujat
     you: Sinä
     display_products: Näytä tuotteet
+    projects: Projektit
     placeholder:
       contributor_selector: Etsi osallistujia
       project_selector: Etsi projektia

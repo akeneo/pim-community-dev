@@ -8,6 +8,7 @@ type Attribute = {
   localizable: boolean;
   is_locale_specific: boolean;
   available_locales: LocaleCode[];
+  metric_family?: string;
 };
 
 export type {Attribute};

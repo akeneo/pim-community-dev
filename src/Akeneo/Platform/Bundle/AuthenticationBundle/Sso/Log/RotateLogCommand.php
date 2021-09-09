@@ -43,8 +43,8 @@ final class RotateLogCommand extends Command
     protected function configure()
     {
         $this->setDescription(
-                'Rotate SSO Logs in the SSO logs table.'
-            )
+            'Rotate SSO Logs in the SSO logs table.'
+        )
             ->addArgument(
                 'max-days',
                 InputArgument::REQUIRED,

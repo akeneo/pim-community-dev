@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
-use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Format\FormatInterface;
 
 class FormatHydrator
 {
+    private ElementCollectionHydrator $elementCollectionHydrator;
+
+    public function __construct(
+        ElementCollectionHydrator $elementCollectionHydrator
+    ) {
+        $this->elementCollectionHydrator = $elementCollectionHydrator;
+    }
+
     public function hydrate(array $normalizedFormat): FormatInterface
     {
         if ($normalizedFormat['type'] !== 'concat') {
@@ -17,7 +24,7 @@ class FormatHydrator
         }
 
         return new ConcatFormat(
-            ElementCollection::createFromNormalized($normalizedFormat['elements']),
+            $this->elementCollectionHydrator->hydrate($normalizedFormat['elements']),
             $normalizedFormat['space_between']
         );
     }

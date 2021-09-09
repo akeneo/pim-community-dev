@@ -40,8 +40,10 @@ class InMemoryRecordsExists
         foreach ($codes as $code) {
             $hasRecord = true;
             try {
-                $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier,
-                    RecordCode::fromString($code));
+                $this->recordRepository->getByReferenceEntityAndCode(
+                    $referenceEntityIdentifier,
+                    RecordCode::fromString($code)
+                );
             } catch (RecordNotFoundException $exception) {
                 $hasRecord = false;
             }

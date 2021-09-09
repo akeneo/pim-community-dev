@@ -49,7 +49,10 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         /** @var AttributeOptionSpellcheck $attributeOptionSpellcheck */
         foreach ($this->getAttributeOptionSpellcheckQuery->evaluatedSince($evaluatedSince) as $attributeOptionSpellcheck) {
             foreach ($this->getProductIdsWithOutdatedAttributeOptionSpellcheckByAttributeOptionCode(
-                $attributeOptionSpellcheck->getAttributeOptionCode(), $attributeOptionSpellcheck->getEvaluatedAt(), $bulkSize) as $productIds
+                $attributeOptionSpellcheck->getAttributeOptionCode(),
+                $attributeOptionSpellcheck->getEvaluatedAt(),
+                $bulkSize
+            ) as $productIds
             ) {
                 $nbProductIdsToPick = max(0, $bulkSize - count($productIdsBulk));
                 $productIdsBulk = array_merge($productIdsBulk, array_slice($productIds, 0, $nbProductIdsToPick));
@@ -75,7 +78,9 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         $productIdsBulk = [];
         foreach ($this->getProductIdsByAttributeOptionCodesQuery->execute($attributeOptionCode, $bulkSize) as $productIds) {
             $productIds = $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-                $productIds, $evaluatedSince, new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+                $productIds,
+                $evaluatedSince,
+                new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
             );
             if (empty($productIds)) {
                 continue;

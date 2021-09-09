@@ -34,7 +34,8 @@ final class Operation
         Assert::nullOrStringNotEmpty($this->locale);
         Assert::nullOrNumeric($this->value);
 
-        return array_filter([
+        return array_filter(
+            [
             'operator' => $this->operator,
             'field' => $this->field,
             'scope' => $this->scope,
@@ -42,8 +43,9 @@ final class Operation
             'currency' => $this->currency,
             'value' => null === $this->value ? null : (float)$this->value,
         ],
-        function ($value): bool {
-            return null !== $value;
-        });
+            function ($value): bool {
+                return null !== $value;
+            }
+        );
     }
 }

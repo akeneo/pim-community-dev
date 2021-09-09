@@ -73,7 +73,7 @@ class SimpleAssociationsLabelSelectionApplier implements SelectionApplierInterfa
                 $associatedEntityCodes,
                 $selection->getChannel(),
                 $selection->getLocale(),
-             );
+            );
         }
 
         throw new \InvalidArgumentException('Entity type is not supported in this selection');

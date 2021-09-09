@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Format\ConcatFormat;
 use Akeneo\Platform\TailoredExport\Application\Common\Format\ElementCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Format\SourceElement;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
@@ -60,11 +61,8 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
         $column = new Column(
             'target1',
             SourceCollection::create([$source]),
-            new ConcatFormat(ElementCollection::createFromNormalized([
-                [
-                    'type' => 'source',
-                    'value' => 'a_code-uuid',
-                ]
+            new ConcatFormat(ElementCollection::create([
+                new SourceElement('a_code-uuid'),
             ]), false),
         );
 
@@ -91,7 +89,7 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
                 'a_filekey',
                 'catalog',
                 'files/an_id/an_attribute_code/an_original_filename',
-            )
+            ),
         ];
 
         $mediaToExport = $this->handle(new ExtractMediaQuery($columnCollection, $valueCollection));
@@ -114,11 +112,8 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
         $column = new Column(
             'target1',
             SourceCollection::create([$source]),
-            new ConcatFormat(ElementCollection::createFromNormalized([
-                [
-                    'type' => 'source',
-                    'value' => 'a_code-uuid',
-                ]
+            new ConcatFormat(ElementCollection::create([
+                new SourceElement('a_code-uuid'),
             ]), false),
         );
 
@@ -135,7 +130,7 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
             $assetCollectionValue,
             'a_code',
             null,
-            null
+            null,
         );
 
         $findMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
@@ -147,8 +142,8 @@ class ExtractMediaQueryHandlerSpec extends ObjectBehavior
             new ExtractedMedia(
                 'a_filekey',
                 'assetStorage',
-                'files/an_id/an_attribute_code/an_original_filename'
-            )
+                'files/an_id/an_attribute_code/an_original_filename',
+            ),
         ];
 
         $mediaToExport = $this->handle(new ExtractMediaQuery($columnCollection, $valueCollection));

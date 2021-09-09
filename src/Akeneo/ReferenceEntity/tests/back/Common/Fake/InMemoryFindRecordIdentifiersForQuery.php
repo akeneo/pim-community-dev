@@ -85,7 +85,11 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             }, $items);
         }
 
-        return new IdentifiersForQueryResult($identifiers, count($identifiers));
+        $lastItem = end($items);
+        reset($items);
+        $lastSortValue = $lastItem['code'] ?? null;
+
+        return new IdentifiersForQueryResult($identifiers, count($identifiers), $lastSortValue);
     }
 
     private function getItemsForFilters(array $filters): array

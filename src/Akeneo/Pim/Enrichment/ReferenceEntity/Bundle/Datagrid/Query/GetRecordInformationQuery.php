@@ -40,7 +40,8 @@ class GetRecordInformationQuery implements GetRecordInformationQueryInterface
             throw new \LogicException(
                 sprintf(
                     'There was no information to fetch for reference entity "%s" and record code "%s"',
-                    $referenceEntityIdentifier, $recordCode
+                    $referenceEntityIdentifier,
+                    $recordCode
                 )
             );
         }

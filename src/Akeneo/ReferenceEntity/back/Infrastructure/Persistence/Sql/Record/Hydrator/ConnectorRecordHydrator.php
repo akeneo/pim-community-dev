@@ -72,7 +72,8 @@ class ConnectorRecordHydrator
         foreach ($rawValues as $key => $rawValue) {
             $attributeIdentifier = $rawValue['attribute'];
             Assert::notNull($attributes[$attributeIdentifier] ?? null, sprintf(
-                'Attribute not found for the identifier %s', $attributeIdentifier
+                'Attribute not found for the identifier %s',
+                $attributeIdentifier
             ));
 
             $attribute = $attributes[$attributeIdentifier];

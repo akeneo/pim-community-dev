@@ -7,9 +7,9 @@ class FreeTrialUserNavigation extends UserNavigation {
     super.render();
 
     this.renderReact(
-        InviteUserButton,
-        {},
-        document.getElementById('invite-user-btn')
+      InviteUserButton,
+      {},
+      this.el.querySelector('#invite-user-btn')
     );
 
     return this;

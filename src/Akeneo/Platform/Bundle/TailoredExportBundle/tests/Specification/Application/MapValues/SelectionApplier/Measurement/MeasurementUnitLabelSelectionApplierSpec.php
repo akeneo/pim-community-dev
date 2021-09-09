@@ -29,11 +29,11 @@ class MeasurementUnitLabelSelectionApplierSpec extends ObjectBehavior
 
     public function it_applies_the_selection(FindUnitLabelInterface $findUnitLabel)
     {
-        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $selection = new MeasurementUnitLabelSelection('Weight', 'fr_FR');
         $value = new MeasurementValue('10', 'kilogram');
 
         $findUnitLabel->byFamilyCodeAndUnitCode(
-            'weight',
+            'Weight',
             'kilogram',
             'fr_FR'
         )->willReturn('Kilogramme');
@@ -44,11 +44,11 @@ class MeasurementUnitLabelSelectionApplierSpec extends ObjectBehavior
 
     public function it_applies_the_selection_and_fallback_when_no_translation_is_found(FindUnitLabelInterface $findUnitLabel)
     {
-        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $selection = new MeasurementUnitLabelSelection('Weight', 'fr_FR');
         $value = new MeasurementValue('10', 'kilogram');
 
         $findUnitLabel->byFamilyCodeAndUnitCode(
-            'weight',
+            'Weight',
             'kilogram',
             'fr_FR'
         )->willReturn(null);
@@ -69,7 +69,7 @@ class MeasurementUnitLabelSelectionApplierSpec extends ObjectBehavior
 
     public function it_supports_measurement_unit_label_selection_with_measurement_value()
     {
-        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $selection = new MeasurementUnitLabelSelection('Weight', 'fr_FR');
         $value = new MeasurementValue('10', 'kilogram');
 
         $this->supports($selection, $value)->shouldReturn(true);

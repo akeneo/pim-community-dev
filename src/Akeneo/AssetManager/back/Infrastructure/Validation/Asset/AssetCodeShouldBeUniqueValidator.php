@@ -53,8 +53,11 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
     private function checkCommandType($command): void
     {
         if (!$command instanceof CreateAssetCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateAssetCommand::class, get_class($command)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                CreateAssetCommand::class,
+                get_class($command)
+            ));
         }
     }
 

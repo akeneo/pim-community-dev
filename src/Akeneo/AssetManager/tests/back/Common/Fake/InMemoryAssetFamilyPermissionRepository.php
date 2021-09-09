@@ -21,12 +21,13 @@ class InMemoryAssetFamilyPermissionRepository implements AssetFamilyPermissionRe
         $this->assetFamilyPermissions[$refEntityIdentifier] = $assetFamilyPermission;
     }
 
-    public function getByAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier
+    public function getByAssetFamilyIdentifier(
+        AssetFamilyIdentifier $assetFamilyIdentifier
     ): AssetFamilyPermission {
         return $this->assetFamilyPermissions[(string) $assetFamilyIdentifier] ?? AssetFamilyPermission::create(
-                $assetFamilyIdentifier,
-                []
-            );
+            $assetFamilyIdentifier,
+            []
+        );
     }
 
     public function hasPermission(

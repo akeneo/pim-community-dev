@@ -1,8 +1,14 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {AssetsIllustration, Button, Modal, useAutoFocus} from 'akeneo-design-system';
-import {getErrorsForPath, Section, TextField, ValidationError, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  getErrorsForPath,
+  Section,
+  TextField,
+  ValidationError,
+  useTranslate,
+  sanitize,
+} from '@akeneo-pim-community/shared';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 

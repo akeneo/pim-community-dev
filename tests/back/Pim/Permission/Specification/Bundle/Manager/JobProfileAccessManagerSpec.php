@@ -6,7 +6,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\JobProfileAccess;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;

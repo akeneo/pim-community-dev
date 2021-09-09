@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Doctrine\Migrations\Exception\IrreversibleMigration;
 
 /**
  * Drops the foreign keys of the PAM-related tables
@@ -30,7 +30,7 @@ final class Version_4_0_20200506122439_drop_pam_foreign_keys extends AbstractMig
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 
     private function tableExists(string $tableName): bool

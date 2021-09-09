@@ -96,16 +96,16 @@ class RawSourceValidator extends ConstraintValidator
 
         $attribute->hasValuePerChannel() ?
             ($channelReference->isEmpty() && $this->context->buildViolation(
-                    sprintf('Attribute "%s" is scopable, you must define a channel', (string) $attribute->getCode())
-                )->addViolation()) : (!$channelReference->isEmpty() && $this->context->buildViolation(
-                    sprintf('Attribute "%s" is not scopable, you cannot define a channel', (string) $attribute->getCode())
-                )->addViolation());
+                sprintf('Attribute "%s" is scopable, you must define a channel', (string) $attribute->getCode())
+            )->addViolation()) : (!$channelReference->isEmpty() && $this->context->buildViolation(
+                sprintf('Attribute "%s" is not scopable, you cannot define a channel', (string) $attribute->getCode())
+            )->addViolation());
 
         $attribute->hasValuePerLocale() ?
             ($localeReference->isEmpty() && $this->context->buildViolation(
-                    sprintf('Attribute "%s" is localizable, you must define a locale', (string) $attribute->getCode())
-                )->addViolation()) : (!$localeReference->isEmpty() && $this->context->buildViolation(
-                    sprintf('Attribute "%s" is not localizable, you cannot define a locale', (string) $attribute->getCode())
-                )->addViolation());
+                sprintf('Attribute "%s" is localizable, you must define a locale', (string) $attribute->getCode())
+            )->addViolation()) : (!$localeReference->isEmpty() && $this->context->buildViolation(
+                sprintf('Attribute "%s" is not localizable, you cannot define a locale', (string) $attribute->getCode())
+            )->addViolation());
     }
 }

@@ -1,5 +1,8 @@
 akeneo_data_quality_insights:
   product_evaluation:
+    criteria:
+      consistency_spelling:
+        recommendation: Atributs amb problemes d'ortografia
     axis:
       consistency:
         title: Consistència

@@ -50,8 +50,11 @@ class RecordCodeShouldBeUniqueValidator extends ConstraintValidator
     private function checkCommandType($command): void
     {
         if (!$command instanceof CreateRecordCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateRecordCommand::class, get_class($command)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                CreateRecordCommand::class,
+                get_class($command)
+            ));
         }
     }
 

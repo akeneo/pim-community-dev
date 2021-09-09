@@ -45,11 +45,11 @@ class CompletenessCollectionNormalizer implements NormalizerInterface, Cacheable
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof PublishedProductCompletenessCollection && in_array(
-                $format,
-                [
+            $format,
+            [
                     ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 ]
-            );
+        );
     }
 
     public function hasCacheableSupportsMethod(): bool

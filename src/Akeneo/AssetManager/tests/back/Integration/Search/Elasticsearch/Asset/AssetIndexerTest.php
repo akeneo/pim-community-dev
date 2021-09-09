@@ -228,7 +228,8 @@ class AssetIndexerTest extends SearchIntegrationTestCase
 
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create('another_asset_family', 'name', 'fingerprint'), AssetFamilyIdentifier::fromString('another_asset_family'),
+                AttributeIdentifier::create('another_asset_family', 'name', 'fingerprint'),
+                AssetFamilyIdentifier::fromString('another_asset_family'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
@@ -268,7 +269,8 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                         AttributeIdentifier::create('designer', 'image', 'fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromNormalize([
+                        FileData::createFromNormalize(
+                            [
                                 'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
                                 'originalFilename' => 'file.gif',
                                 'size'             => 1024,
@@ -304,7 +306,8 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                         AttributeIdentifier::fromString('image'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromNormalize([
+                        FileData::createFromNormalize(
+                            [
                                 'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
                                 'originalFilename' => 'coco.gif',
                                 'size'             => 1024,

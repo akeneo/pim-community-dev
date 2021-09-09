@@ -49,8 +49,11 @@ class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
     private function checkCommandType($command): void
     {
         if (!$command instanceof CreateReferenceEntityCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateReferenceEntityCommand::class, get_class($command)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                CreateReferenceEntityCommand::class,
+                get_class($command)
+            ));
         }
     }
 

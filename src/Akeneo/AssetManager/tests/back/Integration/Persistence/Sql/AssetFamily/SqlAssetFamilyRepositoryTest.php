@@ -289,8 +289,10 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
         foreach ($assetFamilyExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($assetFamilyExpected->getLabel($localeCode),
-                                $assetFamilyFound->getLabel($localeCode));
+            $this->assertEquals(
+                $assetFamilyExpected->getLabel($localeCode),
+                $assetFamilyFound->getLabel($localeCode)
+            );
         }
 
         $this->assertEquals(

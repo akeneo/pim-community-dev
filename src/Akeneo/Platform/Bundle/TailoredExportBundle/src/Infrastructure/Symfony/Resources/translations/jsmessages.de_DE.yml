@@ -28,10 +28,11 @@ akeneo.tailored_export:
   column_list:
     title: Spalten
     header:
-      column_name: Spaltenkopfzeile
+      column_name: Spaltenname
       source_data: Spalteninhalt
     column_row:
       target_placeholder: Definieren Sie hier Ihren Spaltennamen
+      placeholder_helper: Sie können alle Spaltennamen aus einer Tabelle kopieren, um Ihre Spalten automatisch zu erstellen.
       remove: Spalte entfernen
       no_source: Inhaltsquelle definieren
     no_column_selection:
@@ -109,6 +110,10 @@ akeneo.tailored_export:
             channel: Wenn das Attribut als Label einen Wert pro Kanal hat, können Sie einen bestimmten Kanal auswählen.
       operation:
         header: Operationen
+        measurement_conversion:
+          title: Konvertierung
+          placeholder: Keine Konvertierung
+          target_unit_code.label: Konvertiere in
         replacement:
           title: Wert ersetzen
           placeholder: Ersetzungswert festlegen
@@ -120,6 +125,12 @@ akeneo.tailored_export:
           title: Standardwert verwenden, wenn leer
           label: Standardwert
           placeholder: Wert definieren
+    concatenation:
+      title: Verkettung
+      preview: Vorschau
+      space_between: Leerzeichen zwischen den Quellen hinzufügen
+      add_text: Text hinzufügen
+      text_placeholder: Text definieren
   column:
     delete_message: Sind Sie sicher, dass Sie diese Spalte entfernen möchten?
   validation:
@@ -134,6 +145,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: Sie haben das Limit von {{ limit }} Quellen erreicht, Sie können keine Quellen mehr zu dieser Spalte hinzufügen.
       association_type_should_exist: Der Verbindungstyp {{ association_type_code }} existiert nicht. Bitte erstellen Sie ihn oder wählen Sie eine andere Quelle.
+    concatenation:
+      max_text_count_reached: Sie haben die Grenze von {{ limit }} Textelementen erreicht. Sie können keinen Text mehr hinzufügen.
     locale:
       should_be_active: Das Gebietsschema {{ locale_code }} wurde deaktiviert. Reaktivieren Sie es oder wählen Sie ein anderes Gebietsschema.
       should_be_bound_to_channel: Die Gebietsschema {{ locale_code }} wurde für den Kanal {{ channel_code }}deaktiviert. Reaktivieren Sie ihn oder wählen Sie ein anderes Gebietsschema.
@@ -146,3 +159,8 @@ akeneo.tailored_export:
       locale_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Gebietsschema. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
       channel_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Kanal mehr. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
       invalid_specific_locale: Das Attribut {{ attribute_code }} ist gebietsschemaspezifisch. Bitte wählen Sie ein anderes Gebietsschema.
+    measurement:
+      family:
+        does_not_exist: Die Messfamilie {{ measurement_family_code }} existiert nicht.
+      unit:
+        does_not_exist: Die Einheit {{ unit_code }} existiert nicht in der Messfamilie {{ measurement_family_code }}.

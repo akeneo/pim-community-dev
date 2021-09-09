@@ -71,7 +71,7 @@
         "mekras/php-speller": "^2.1.4"
     },
     "require-dev": {
-        "akeneo/php-coupling-detector": "0.3.*",
+        "akeneo/php-coupling-detector": "^0.7.0",
         "symfony/debug-bundle": "4.4.7",
         "symfony/web-profiler-bundle": "4.4.7",
         "symfony/web-server-bundle": "4.4.7",
@@ -95,10 +95,11 @@
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.8.*",
         "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-symfony": "^0.12",
+        "phpstan/phpstan-symfony": "^0.12.44",
         "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
-        "jfcherng/php-diff": "^6.10"
+        "jfcherng/php-diff": "^6.10",
+        "friendsofphp/php-cs-fixer": "^3.0"
     },
     "repositories": {
         "onboarder-extension": {

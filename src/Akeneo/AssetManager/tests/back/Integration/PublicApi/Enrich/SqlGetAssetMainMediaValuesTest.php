@@ -119,11 +119,13 @@ final class SqlGetAssetMainMediaValuesTest extends SqlIntegrationTestCase
 
         foreach ([1, 2] as $index) {
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(sprintf('asset_family_%d', $index));
-            $assetFamilyRepository->create(AssetFamily::create(
-                $assetFamilyIdentifier,
-                [],
-                Image::createEmpty(),
-                RuleTemplateCollection::empty())
+            $assetFamilyRepository->create(
+                AssetFamily::create(
+                    $assetFamilyIdentifier,
+                    [],
+                    Image::createEmpty(),
+                    RuleTemplateCollection::empty()
+                )
             );
             $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
 

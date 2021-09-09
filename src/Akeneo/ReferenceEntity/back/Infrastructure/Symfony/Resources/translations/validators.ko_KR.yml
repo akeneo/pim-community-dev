@@ -34,9 +34,10 @@ pim_reference_entity:
         codes_dont_exist: "다음 옵션 코드가 이 특성에서 존재하지 않습니다.: '%option_codes%'"
       record:
         should_exist: '레코드 ''%record_code%''을(를) 찾지 못했습니다.'
-        should_not_be_used_as_product_variant_axis: '제품 변형 중 하나에서 변형 축으로 사용되는 이 엔터티를 제거할 수 없습니다.'
+        should_not_be_used_as_product_variant_axis: '이 레코드는 제품 변형 중 하나에서 변형 축으로 사용되므로 삭제할 수 없습니다'
       record_collection:
         should_exist: '레코드 ''%record_codes%''을(를) 찾지 못했습니다.'
+        should_not_be_used_as_product_variant_axis: '이 레코드는 하나 이상의 제품 변형에서 변형 축으로 사용되므로 삭제할 수 없습니다'
       limit_reached: '이 참조 엔터티의 %limit% 레코드 제한에 도달했으므로 ''%record_label%'' 레코드를 만들 수 없습니다.'
       channel:
         is_expected: '''%reference_entity_identifier%'' 참조 엔터티의 ''%attribute_code%'' 특성에는 채널당 하나의 값이 필요합니다.'

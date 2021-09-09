@@ -6,7 +6,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductPubl
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;

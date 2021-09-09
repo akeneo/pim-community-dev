@@ -44,3 +44,7 @@ behat-legacy:
 .PHONY: xdebug-on
 xdebug-on:
 	XDEBUG_MODE=debug APP_ENV=dev $(MAKE) up
+
+.PHONY: lint-fix-back
+lint-fix-back: #Doc: run php-cs-fixer with Symfony codestyle
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --config=.php_cs_symfony.dist --diff --path-mode=intersection ${O}

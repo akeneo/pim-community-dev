@@ -55,7 +55,8 @@ class ProductSelectionsValidator
     {
         $validator = Validation::createValidator();
 
-        return $validator->validate($productSelections,
+        return $validator->validate(
+            $productSelections,
             [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]
         );
     }
@@ -144,25 +145,26 @@ class ProductSelectionsValidator
 
         return $validator->validate(
             $productSelection,
-            new Callback(function ($productSelection, ExecutionContextInterface $context) {
-                $productField = $productSelection[self::FIELD_FIELD];
-                if (!in_array($productField, self::FIELDS_WITH_NO_CHANNEL_NOR_LOCALES)) {
-                    return;
-                }
+            new Callback(
+                function ($productSelection, ExecutionContextInterface $context) {
+                    $productField = $productSelection[self::FIELD_FIELD];
+                    if (!in_array($productField, self::FIELDS_WITH_NO_CHANNEL_NOR_LOCALES)) {
+                        return;
+                    }
 
-                if (!empty($productSelection[self::CHANNEL_FIELD])) {
-                    $context->buildViolation(
-                        ProductLinkRulesShouldBeExecutable::CHANNEL_NOT_SUPPORTED_FOR_FIELD,
-                        ['%product_field%' => $productField]
-                    )->addViolation();
+                    if (!empty($productSelection[self::CHANNEL_FIELD])) {
+                        $context->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::CHANNEL_NOT_SUPPORTED_FOR_FIELD,
+                            ['%product_field%' => $productField]
+                        )->addViolation();
+                    }
+                    if (!empty($productSelection[self::LOCALE_FIELD])) {
+                        $context->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::LOCALE_NOT_SUPPORTED_FOR_FIELD,
+                            ['%product_field%' => $productField]
+                        )->addViolation();
+                    }
                 }
-                if (!empty($productSelection[self::LOCALE_FIELD])) {
-                    $context->buildViolation(
-                        ProductLinkRulesShouldBeExecutable::LOCALE_NOT_SUPPORTED_FOR_FIELD,
-                        ['%product_field%' => $productField]
-                    )->addViolation();
-                }
-            }
             )
         );
     }
