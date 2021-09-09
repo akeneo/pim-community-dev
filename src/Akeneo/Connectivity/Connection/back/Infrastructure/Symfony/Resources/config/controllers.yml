@@ -95,3 +95,11 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@pim_api.security.scope_mapper'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.persistence.repository.connected_app'
