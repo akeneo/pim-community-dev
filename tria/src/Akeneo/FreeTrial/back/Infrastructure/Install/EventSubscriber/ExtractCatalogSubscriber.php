@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
 
+use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ExtractCatalogSubscriber implements EventSubscriberInterface
 {
+    use InstallCatalogTrait;
 
     public static function getSubscribedEvents()
     {
@@ -29,6 +31,10 @@ class ExtractCatalogSubscriber implements EventSubscriberInterface
 
     public function extractCatalogOnDbCreate(InstallerEvent $event): void
     {
+        if (!$this->isFreeTrialCatalogInstallation($event)) {
+            return;
+        }
+
         $event->getCommandExecutor()->runCommand('akeneo:free-trial:extract-catalog');
     }
 }
