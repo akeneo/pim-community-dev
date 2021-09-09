@@ -51,7 +51,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
     await waitForElement(() => screen.getByAltText('MyApp'));
 
     act(() => {
-        userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.action.cancel'));
+        userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
     });
 
     expect(historyMock.history.location.pathname).toBe('/connect/marketplace');

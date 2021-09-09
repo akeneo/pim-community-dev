@@ -60,12 +60,13 @@ akeneo_connectivity.connection:
       unreachable: Wir können den Marktplatz nicht erreichen, bitte kommen Sie später wieder.
       scroll_to_top: Zum Anfang scrollen
     apps:
+      wizard:
+        title: Verbinde
+        progress:
+          permissions: Berechtigungen
       activate:
         flash:
           error: Beim Verbinden mit der App ist ein Fehler aufgetreten.
-      authorize:
-        error:
-          sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
       constraint:
         client_id:
           not_blank: Die client_id ist erforderlich.

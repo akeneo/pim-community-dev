@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        limit_reached: 'Et voi luoda "%measurement_family_code%" mittayksikköperhettä, koska olet saavuttanut %limit% mittayksikköperheen rajan'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'Perusyksikkö vaaditaan'
+        should_be_in_the_list_of_units: '"%standard_unit_code%" perusyksikön koodia ei ole olemassa "%measurement_family_code%" mittayksikköperheen yksiköiden listassa.'
+        cannot_be_changed: '"%measurement_family_code%" mittayksikköperheen perusyksikön koodia ei voi muuttaa'
+        operation_should_be_multiply_by_one: 'Mittaperheen "%measurement_family_code%" perusyksikkö pitäisi olla kerrottuna yhdellä operaatio'
+      should_contain_max_elements: 'Olet saavuttanut %limit% mittayksikköperheen rajan.'
+      code:
+        must_be_unique: 'Tämä mittayksikköperheen koodi on jo olemassa.'
+      convert:
+        value_should_be_a_number_in_a_string: 'Kertoimen on oltava kelvollinen numero'
+        should_contain_min_elements: 'Vähintään yksi yksikkömuunnos vaaditaan yksikköä kohden.'
+        should_contain_max_elements: 'Olet saavuttanut yksikkömuunnosten maksimimäärän %limit%.'
+      measurement_family_units_is_locked_for_updates: 'Tuoteattribuutti on liitetty tähän mittayksikköperheeseen. Voit muokata vain käännettyjä otsikoita ja yksikön symbolia.'
+      measurement_family_unit_operations_locked_for_updates: 'Tuoteattribuutti on liitetty tähän mittaperheeseen. Voit muokata vain yksikön lokalisoituja otsikoita ja yksikön symboleita'
+      units:
+        should_contain_min_elements: 'Vähintään yksi yksikkömuunnos vaaditaan yksikköä kohden.'
+        should_contain_max_elements: 'Olet saavuttanut yksikkömuunnosten maksimimäärän %limit%.'
+        operation:
+          invalid_operator: 'Operaattori {{ value }} on virheellinen. Käytä operaattoreita {{ choices }}.'
+        should_contain_at_least_one_unit: 'Mittayksikköperheessä on oltava vähintään %limit% mittayksikköä.'
+        should_not_contain_duplicates: 'Mittayksikköperheessä havaittiin mittayksiköiden kaksoiskappaleita. Mittayksikköperheen mittayksiköiden on oltava uniikkeja.'
+        must_be_indexed_by_code: 'Indeksi ei vastaa yksikön koodia.'
+    unit:
+      code:
+        must_be_unique: 'Tämä yksikön koodi on jo olemassa.'

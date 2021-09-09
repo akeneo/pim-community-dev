@@ -1,8 +1,8 @@
-import React, {Ref, useCallback} from 'react';
+import React, {ReactNode, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
-import {EraseIcon, LockIcon} from '../../../icons';
-import {InputProps} from '../common/InputProps';
+import {DangerIcon, EraseIcon, LockIcon} from '../../../icons';
+import {InputProps} from '../common';
 import {Override} from '../../../shared';
 
 const BooleanInputContainer = styled.div``;
@@ -11,6 +11,7 @@ const BooleanButton = styled.button<
   {
     value?: boolean;
     readOnly: boolean;
+    invalid: boolean;
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
@@ -25,52 +26,66 @@ const BooleanButton = styled.button<
   text-overflow: ellipsis;
   background: ${getColor('white')};
 
-  ${({readOnly}) =>
+  ${({readOnly, invalid}) =>
     readOnly
       ? css`
-    border: 1px solid ${getColor('grey', 60)}}
-    color: ${getColor('grey', 80)}}
-  `
+          border: 1px solid ${getColor('grey', 60)};
+          color: ${getColor('grey', 80)};
+          &:hover {
+            background: ${getColor('white')};
+            color: ${getColor('grey', 80)};
+          }
+        `
       : css`
-    border: 1px solid ${getColor('grey', 80)}}
-    cursor: pointer;
-  `};
+          border: 1px solid ${invalid ? getColor('red', 100) : getColor('grey', 80)};
+          cursor: pointer;
+          &:hover {
+            background: ${getColor('grey', 20)};
+            color: ${getColor('grey', 140)};
+          }
+        `}
 `;
 
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
+  border-right-width: 1px;
 
-  ${({value, readOnly}) =>
-    value === false
-      ? css`
-          background: ${getColor('grey', readOnly ? 60 : 100)};
-          border-color: ${getColor('grey', readOnly ? 60 : 100)};
-          color: ${getColor('white')};
-        `
-      : css`
-          border-right-width: 0;
-        `}
+  ${({value, readOnly, invalid}) =>
+    value === false &&
+    css`
+      background: ${getColor('grey', readOnly ? 80 : 100)};
+      border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 80 : 100)};
+      color: ${getColor('white')};
+      &:hover {
+        background: ${getColor('grey', readOnly ? 80 : 120)};
+        color: ${getColor('white')};
+      }
+      &:active {
+        background: ${getColor('grey', readOnly ? 80 : 140)};
+      }
+    `}
 `;
 
 const YesButton = styled(BooleanButton)`
   border-radius: 0 2px 2px 0;
+  border-left-width: 0;
 
-  ${({value, readOnly}) => {
-    switch (value) {
-      case true:
-        return css`
-          background: ${getColor('green', readOnly ? 60 : 100)};
-          border-color: ${getColor('green', readOnly ? 60 : 100)};
-          color: ${getColor('white')};
-        `;
-      case false:
-        return css`
-          border-left-width: 0;
-        `;
-      default:
-        return '';
-    }
-  }}
+  ${({value, readOnly, invalid}) =>
+    value === true &&
+    css`
+      background: ${getColor('green', readOnly ? 60 : 100)};
+      border-color: ${invalid ? getColor('red', 100) : getColor('grey', readOnly ? 60 : 100)};
+      color: ${getColor('white')};
+
+      &:hover {
+        background: ${getColor('green', readOnly ? 60 : 120)};
+        color: ${getColor('white')};
+      }
+
+      &:active {
+        background: ${getColor('green', readOnly ? 60 : 140)};
+      }
+    `}
 `;
 
 const ClearButton = styled.button`
@@ -96,6 +111,27 @@ const IconContainer = styled.span`
 `;
 const BooleanInputLockIcon = styled(LockIcon)``;
 
+const ContainerInvalid = styled.div<AkeneoThemedProps>`
+  display: flex;
+  font-weight: 400;
+  padding-right: 20px;
+  color: ${getColor('red', 100)};
+`;
+const IconInvalidContainer = styled.span<AkeneoThemedProps>`
+  margin: 2px 0;
+  color: ${getColor('red', 100)};
+`;
+const TextInvalidContainer = styled.div<AkeneoThemedProps>`
+  font-size: 11px;
+  padding-left: 4px;
+  white-space: break-spaces;
+  flex: 1;
+
+  a {
+    color: ${getColor('red', 100)};
+  }
+`;
+
 type BooleanInputProps = Override<
   InputProps<boolean>,
   (
@@ -115,6 +151,8 @@ type BooleanInputProps = Override<
     readOnly: boolean;
     yesLabel: string;
     noLabel: string;
+    invalid?: boolean;
+    children?: ReactNode;
   }
 >;
 
@@ -123,7 +161,18 @@ type BooleanInputProps = Override<
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
-    {value, readOnly, onChange, clearable = false, yesLabel, noLabel, clearLabel, ...rest}: BooleanInputProps,
+    {
+      value,
+      readOnly,
+      onChange,
+      clearable = false,
+      yesLabel,
+      noLabel,
+      clearLabel,
+      invalid,
+      children,
+      ...rest
+    }: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
@@ -152,6 +201,8 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             handleChange(false);
           }}
           title={noLabel}
+          aria-invalid={invalid}
+          invalid={invalid}
         >
           {noLabel}
         </NoButton>
@@ -165,6 +216,8 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             handleChange(true);
           }}
           title={yesLabel}
+          aria-invalid={invalid}
+          invalid={invalid}
         >
           {yesLabel}
         </YesButton>
@@ -184,6 +237,12 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           <IconContainer>
             <BooleanInputLockIcon size={16} />
           </IconContainer>
+        )}
+        {invalid && children && (
+          <ContainerInvalid>
+            <IconInvalidContainer>{React.cloneElement(<DangerIcon size={13} />)}</IconInvalidContainer>
+            <TextInvalidContainer>{children}</TextInvalidContainer>
+          </ContainerInvalid>
         )}
       </BooleanInputContainer>
     );
