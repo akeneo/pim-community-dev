@@ -247,6 +247,10 @@ jobs:
               name: Push the Serenity Edition prod image on docker registry
               command: make push-php-image-prod
           - run:
+              name: Push Terraform modules to GCS
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}/
+          - run:
               name: Persist env vars for next jobs
               command: |
                 echo export TYPE=${TYPE} > persisted_env_vars
@@ -267,12 +271,14 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    working_directory: ~/project
     steps:
     - attach_workspace:
         at: ~/
     - add_ssh_keys:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - connector_bigcommerce_checkout_steps
     - set_gcloud_config_dev
     - install_yq
     - when:
@@ -338,7 +344,6 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps
     - run:
         name: Build the Growth Edition prod image
         command: make php-image-prod
@@ -349,25 +354,6 @@ jobs:
         name: Push Terraform modules to GCS
         command: |
           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
-    # ===================================
-    # TO BE REMOVED AFTER COMMIT IN PROD
-    # ===================================
-    - run:
-        name: Prepare the Terraform module with the upgrade script
-        command: |
-          mkdir -p deployments/terraform/deployments
-          cp -r deployments/automation deployments/terraform/deployments
-          cp -r deployments/bin deployments/terraform/deployments
-          cp -r deployments/config deployments/terraform/deployments
-          cp -r deployments/share deployments/terraform/deployments
-    - run:
-        name: Push Terraform modules to GCS
-        command: |
-          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
-          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
-    # ===================================
-    # TO BE REMOVED AFTER COMMIT IN PROD
-    # ===================================
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -389,12 +375,14 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    working_directory: ~/project
     steps:
     - attach_workspace:
         at: ~/
     - add_ssh_keys:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - connector_bigcommerce_checkout_steps
     - set_gcloud_config_dev
     - install_yq
     - when:
@@ -460,7 +448,6 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps
     - run:
         name: Build the Free Trial Edition prod image
         command: make php-image-prod
@@ -1373,7 +1360,7 @@ jobs:
                 name: Pull Terraform modules from last release
                 command: |
                     rm -r ~/project/deployments
-                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition/${LATEST_RELEASE}/terraform/deployments/ ~/project/
+                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition/${LATEST_RELEASE}/deployments/ ~/project/
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1436,7 +1423,7 @@ jobs:
               name: Pull Terraform modules from last release
               command: |
                   rm -r ./deployments
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ .
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1625,10 +1612,10 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}/
                 BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}/
           - run:
-              name: PIM_CONTEXT=deployment make release
+              name: Tag the Docker image with the definitive tag
               command: |
                 OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
@@ -1645,28 +1632,12 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/${RELEASE_NAME}/
           - run:
-              name: Make the release
-              command: OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
-          # ===================================
-          # TO BE REMOVED AFTER COMMIT IN PROD
-          # ===================================
-          - run:
-              name: Prepare the Terraform module with the upgrade script
+              name: Tag the Docker image with the definitive tag
               command: |
-                mkdir -p deployments/terraform/deployments
-                cp -r deployments/automation deployments/terraform/deployments
-          - run:
-              name: Push Terraform modules to GCS
-              command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/terraform/deployments/terraform
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME
-          # ===================================
-          # TO BE REMOVED AFTER COMMIT IN PROD
-          # ===================================
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   release_tria:
       environment:
