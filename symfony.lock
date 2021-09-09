@@ -87,9 +87,6 @@
     "doctrine/dbal": {
         "version": "v2.7.2"
     },
-    "doctrine/deprecations": {
-        "version": "v0.5.3"
-    },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
         "recipe": {
