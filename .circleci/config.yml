@@ -37,10 +37,6 @@ orbs:
 
 jobs:
   checkout:
-    parameters:
-        is_pull_request:
-            type: boolean
-            default: false
     docker:
       - image: alpine/git
     steps:
@@ -64,7 +60,9 @@ jobs:
           name: Remove MySQL port translation for TRIA
           command: yq delete --inplace tria/docker-compose.yml services.mysql.ports
       - when:
-            condition: << parameters.is_pull_request >>
+            condition:
+                not:
+                    equal: [master, << pipeline.git.branch >>]
             steps:
                 - run:
                       name: Update composer.json if same branch exists in CE for EE
@@ -181,10 +179,6 @@ jobs:
             - project
 
   build_srnt_prod:
-      parameters:
-          is_pull_request:
-              type: boolean
-              default: false
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -196,8 +190,7 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - connector_bigcommerce_checkout_steps:
-                is_pull_request: << parameters.is_pull_request >>
+          - connector_bigcommerce_checkout_steps
           - set_gcloud_config_dev
           - run:
               name: Define value for next steps
@@ -245,10 +238,6 @@ jobs:
                 - project/persisted_env_vars
 
   build_grth:
-    parameters:
-      is_pull_request:
-        type: boolean
-        default: false
     environment:
       <<: *envVarsDeployDev
     machine:
@@ -262,7 +251,9 @@ jobs:
     - set_gcloud_config_dev
     - install_yq
     - when:
-        condition: << parameters.is_pull_request >>
+        condition:
+            not:
+                equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on PR
@@ -279,7 +270,7 @@ jobs:
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
     - when:
         condition:
-          not: << parameters.is_pull_request >>
+            equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on master
@@ -322,8 +313,7 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps:
-        is_pull_request: << parameters.is_pull_request >>
+    - connector_bigcommerce_checkout_steps
     - run:
         name: Build the Growth Edition prod image
         command: make php-image-prod
@@ -370,10 +360,6 @@ jobs:
             - project
 
   build_tria:
-    parameters:
-      is_pull_request:
-        type: boolean
-        default: false
     environment:
       <<: *envVarsDeployDev
     machine:
@@ -387,7 +373,9 @@ jobs:
     - set_gcloud_config_dev
     - install_yq
     - when:
-        condition: << parameters.is_pull_request >>
+        condition:
+            not:
+                equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on PR
@@ -404,7 +392,7 @@ jobs:
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
     - when:
         condition:
-          not: << parameters.is_pull_request >>
+            equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on master
@@ -447,8 +435,7 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps:
-        is_pull_request: << parameters.is_pull_request >>
+    - connector_bigcommerce_checkout_steps
     - run:
         name: Build the Free Trial Edition prod image
         command: make php-image-prod
@@ -990,9 +977,6 @@ jobs:
   ##################
   ui_sanity_checks:
       parameters:
-          is_pull_request:
-              type: boolean
-              default: false
           SOURCE_PFID:
                 type: string
                 default: ""
@@ -1020,7 +1004,9 @@ jobs:
                 command: |
                     make php-image-dev
           - when:
-                condition: << parameters.is_pull_request >>
+                condition:
+                    not:
+                        equal: [master, << pipeline.git.branch >>]
                 steps:
                     - run:
                           name: Update composer.json if same branch exists in CE
@@ -2133,7 +2119,6 @@ workflows:
                         ignore:
                             - "master"
           - checkout:
-                is_pull_request: true
                 requires:
                     - ready_to_build?
           - test_helm_generated_k8s_files_srnt:
@@ -2175,7 +2160,6 @@ workflows:
                 requires:
                     - checkout
           - build_grth:
-                is_pull_request: true
                 requires:
                     - test_helm_generated_k8s_files_grth
           - test_cronjobs_existence_grth:
@@ -2211,7 +2195,6 @@ workflows:
                 requires:
                     - checkout
           - build_tria:
-                is_pull_request: true
                 requires:
                     - test_helm_generated_k8s_files_tria
           - test_cronjobs_existence_tria:
@@ -2598,7 +2581,6 @@ workflows:
                     - build_srnt_prod
           - ui_sanity_checks:
                 name: sanity_checks-<< matrix.SOURCE_PFID >>
-                is_pull_request: true
                 matrix:
                     parameters:
                         SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
@@ -2712,10 +2694,6 @@ commands:
 
   connector_bigcommerce_checkout_steps:
       description: "Checkout big commerce connector repository"
-      parameters:
-          is_pull_request:
-              type: boolean
-              default: true
       steps:
           - run:
                 name: BIG COMMERCE CONNECTOR - Ensure to use the ssh key of akeneo-circle-ci account
@@ -2723,7 +2701,9 @@ commands:
                     ssh-add -D
                     ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
           - when:
-              condition: << parameters.is_pull_request >>
+              condition:
+                  not:
+                      equal: [master, << pipeline.git.branch >>]
               steps:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
@@ -2737,7 +2717,7 @@ commands:
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - when:
               condition:
-                  not: << parameters.is_pull_request >>
+                  equal: [master, << pipeline.git.branch >>]
               steps:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
