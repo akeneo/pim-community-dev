@@ -1466,6 +1466,9 @@ jobs:
                     REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
                 name: Jenkins Upgrade
                 command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
@@ -1480,10 +1483,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-#          - run:
-#              name: Remove upgraded env
-#              command: make uncommit-instance
-#              when: always
+          - run:
+              name: Remove upgraded env
+              command: make uncommit-instance
+              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -1504,6 +1507,9 @@ jobs:
                     REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                     REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Jenkins Upgrade
                 command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
@@ -1705,6 +1711,9 @@ jobs:
                   echo "Instance name: ${INSTANCE_NAME}"
                   echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
+                name: DATADOG deployment Livetail logs page
+                command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - run:
                 name: Setup key for Jenkins
                 command: |
                   ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -1753,6 +1762,9 @@ jobs:
                   echo "Image tag: ${IMAGE_TAG}"
                   echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
+                name: DATADOG deployment Livetail logs page
+                command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - run:
                 name: Setup key for Jenkins
                 command: |
                   ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -1800,6 +1812,9 @@ jobs:
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
           - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
               name: Setup key for Jenkins
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -1838,6 +1853,9 @@ jobs:
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Check Circle CI PR
               command: |
@@ -1885,6 +1903,9 @@ jobs:
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
           - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
               name: Check Circle CI PR
               command: |
                 if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
@@ -1930,6 +1951,9 @@ jobs:
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Check Circle CI PR
               command: |
@@ -2006,7 +2030,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> bash -x deployments/bin/zdd_compliancy_checker.sh
+                    TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
           - persist_to_workspace:
               root: ~/
               paths:
@@ -2029,7 +2053,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
 
   remove_unused_gcloud_bucket:
       environment:

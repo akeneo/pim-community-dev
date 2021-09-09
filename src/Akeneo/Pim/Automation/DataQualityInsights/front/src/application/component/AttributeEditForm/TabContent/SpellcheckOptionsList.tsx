@@ -12,15 +12,14 @@ import ActiveHighlightsOnIntersection from '../../Common/HighlightableContent/Ac
 import UpdateHighlightsOnInputChange from '../../Common/HighlightableContent/UpdateHighlightsOnInputChange';
 import SpellcheckPopoverDisclosure from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopoverDisclosure';
 import SpellcheckPopover from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopover';
-import {useAttributeSpellcheckEvaluationContext} from '../../../context/AttributeSpellcheckEvaluationContext';
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from '../../../constant';
+import UpdateHighlightsOnAttributeChange from '../../Common/HighlightableContent/UpdateHighlightsOnAttributeChange';
 
 const SPELLCHECK_OPTION_ELEMENT_BASE_ID = 'attribute-option-spellcheck';
 
 const SpellcheckOptionsList: FC = () => {
   const {attribute} = useAttributeEditFormContext();
   const {elements, editingOption} = useSpellcheckOptionsListState();
-  const {refresh} = useAttributeSpellcheckEvaluationContext();
   const handleIgnore = useCallback(
     (text: string, locale: string) => {
       (async () => {
@@ -29,8 +28,8 @@ const SpellcheckOptionsList: FC = () => {
         }
 
         await fetchIgnoreOptionIssue(text, locale, attribute.code, editingOption.code);
-        await refresh();
         window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
+        window.dispatchEvent(new CustomEvent('refreshEvaluation'));
       })();
     },
     [editingOption]
@@ -48,6 +47,7 @@ const SpellcheckOptionsList: FC = () => {
           <SpellcheckElement baseId={SPELLCHECK_OPTION_ELEMENT_BASE_ID}>
             <ActiveHighlightsOnIntersection />
             <UpdateHighlightsOnInputChange />
+            <UpdateHighlightsOnAttributeChange />
             <SpellcheckPopoverDisclosure element={element} {...popoverState} />
           </SpellcheckElement>
         </SpellcheckContentContextProvider>
