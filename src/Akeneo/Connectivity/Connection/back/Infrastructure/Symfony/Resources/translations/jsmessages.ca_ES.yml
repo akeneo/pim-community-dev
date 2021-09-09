@@ -1,0 +1,156 @@
+pim_menu:
+  navigation_back:
+    connection: Tornar a connexions
+  navigation_block:
+    connection: Navegació de connexió
+  item:
+    connection_audit: Panell de connexions
+    connection_settings: Connexions
+    connection_settings_edit: Configuració de la connexió
+    connection_monitoring: Monitorització
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_settings_edit: Configuració de la connexió
+  akeneo_connectivity_connection_settings_any: Configuració de la connexió
+  akeneo_connectivity_connection_audit_index: Panell de connexions
+  akeneo_connectivity_connection_audit_any: Panell de connexions
+  akeneo_connectivity_connection_error_management_dashboard: Panell de connexions
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitorització de la connexió
+akeneo_connectivity.connection:
+  connections: Connexions
+  secondary_actions:
+    title: Altres accions
+  connection:
+    code: Codi
+    label: Etiqueta
+    image: Imatge
+    client_id: ID de client
+    secret: Secret
+    username: Nom d’usuari
+    password: Contrasenya
+    user_role_id: Rol
+    user_group_id: Grup
+    constraint:
+      code:
+        required: El codi de connexió és obligatori.
+        invalid: El codi de connexió només pot contenir lletres, números i guions baixos.
+        too_short: El codi de connexió és massa curt. Hauria de tenir 3 caràcters o més.
+        too_long: El codi de connexió és massa llarg. Hauria de tenir 100 caràcters o menys.
+        must_be_unique: El codi de connexió ha de ser únic.
+      label:
+        required: L'etiqueta de connexió és obligatoria.
+        too_short: L'etiqueta de connexió és massa curta. Hauria de tenir 3 caràcters o més.
+        too_long: L'etiqueta connexió és massa llarga. Hauria de tenir 100 caràcters o menys.
+      image:
+        must_exist: No s'ha trobat la imatge. Provi de nou.
+  flow_type:
+    data_source: Font de la dada | Font de les dades
+    data_destination: Destinació de la dada | Destinació de les dades
+    other: Altre | Altres
+  connection_count: '{{ count }} connexió | {{ count }} connexions'
+  no_connection:
+    title: Encara no s'ha declarat cap connexió.
+    message_link: feu clic aquí.
+  create_connection:
+    title: Crear una nova connexió
+    description: Pot crear fins a 50 connexions.
+    flash:
+      success: Connexió creada correctament.
+      error: Ho sentim, s'ha produït un error durant la creació de la connexió.
+  edit_connection:
+    subtitle: Preferències
+    flash:
+      success: Connexió actualitzada correctament.
+      error: Ho sentim, s'ha produït un error durant l'edició de la connexió.
+    image_uploader:
+      extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
+    credentials:
+      title: Credencials
+      helper:
+        message: 'Aquí hi ha les credencials per utilitzar la connexió {{ label }}.'
+        link: Més informació aquí...
+      password_helper:
+        message: Si ha oblidat la contrasenya, pot generar una nova aquí.
+        link: Més informació…
+      clear_password_helper:
+        link: Més informació…
+      action:
+        copy: Copiar al porta-retalls
+        regenerate: Regenera
+      flash:
+        copied: '{{ name }} copiat al porta-retalls'
+    permissions:
+      title: Permisos
+      helper:
+        message: 'En aquesta secció, pot definit els permisos per la connexió {{ label }}.'
+        link: Aprendre més sobre els permisos de connexió...
+      user_role_helper:
+        link: Més informació aquí...
+      user_group_helper:
+        link: Més informació aquí...
+  regenerate_secret:
+    title: Confirmar regeneració
+    description: Esteu segur de voler regenerar el secret de la connexió? No està segur dels impactes?
+    link: Això passarà.
+    action:
+      regenerate: Regenerat
+    flash:
+      success: Secret de connexió regenerada correctament.
+      error: Ho sentim, s'ha produït un error durant la regeneració de la connexió secreta.
+  regenerate_password:
+    title: Confirmar regeneració
+    description: Esteu segur de voler regenerar la contrasenya de la connexió? No està segur dels impactes?
+    link: Això és el que passarà.
+    action:
+      regenerate: Regenerat
+  delete_connection:
+    title: Confirmar l'eliminació
+    link: Això és el que passarà.
+    flash:
+      success: Connexió eliminada correctament.
+  flow_type_helper:
+    link: Et podem ajudar aquí mateix!
+  auditable_helper:
+    link: Més informació…
+  edit_image:
+    upload_helper: Canvia la imatge. Arrosega i deixa anar
+    remove_helper: Eliminar la imatge
+    click_here: clica aquí
+  dashboard:
+    user_survey:
+      title: Vols més dades sobre aquest panell?
+      button: Som-hi!
+    connection_selector:
+      title:
+        source: Connexions de la font
+      all: Tot
+    charts:
+      number_of_products_created: Productes creats
+      number_of_products_updated: Productes actualitzats
+      number_of_products_sent: Productes enviats
+      legend:
+        during_the_last_seven_days: 'Total en el últims 7 dies:'
+        today: Avui
+    error_management:
+      widget:
+        over_the_last_seven_days: En els últims 7 dies
+    no_connection:
+      message_without_permission:
+        message: Demana al teu administrador per crear una.
+        link: Aprendre més sobre les connexions aquí...
+  webhook:
+    form:
+      url: URL
+      secret: Secret
+      test: Test
+    error:
+      wrong_url: Aquest valor no és una URL valida.
+      required: Aquest camp és obligatori.
+    regenerate_secret:
+      title: Confirmar regeneració
+      action:
+        regenerate: Regenera
+      link: Això passarà.
+  runtime_error:
+    error_message: Oh vaja! S'ha produït un error...
+    reload_helper: Si us plau, actualitzeu la pàgina i torneu a provar.

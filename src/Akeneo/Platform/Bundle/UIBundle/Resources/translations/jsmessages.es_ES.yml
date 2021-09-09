@@ -241,7 +241,9 @@ pim_common:
   products: Productos
   product_models: Modelos de producto
   more: Más
+  public_view: Vista pública
 error:
+  exception: Ha ocurrido un error de {{ status_code }}...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}Tiene 0 grupos|{1}Tiene 1 grupo|]1, Inf[Tiene {{ count }} grupos'
     rules: '{0}Tiene 0 reglas habilitadas|{1}Tiene 1 regla habilitada|]1, Inf[Tiene {{ count }} reglas habilitadas'
 pim_system:
+  system_menu: Menú del sistema
   system_navigation: Sistema de navegación
   users_management_navigation: Navegación del gestor de usuario
+  count:
+    product_values: '{0}Tiene 0 valores de producto|{1}Tiene 1 valor de producto|]1, Inf[Tiene {{ count }} valores de producto'
+    users: '{0}Tiene 0 usuarios|{1}Tiene 1 usuario|]1, Inf[Tiene {{ count }} usuarios'
+    user_groups: '{0}Tiene 0 grupos de usuarios|{1}Tiene 1 grupo de usuarios|]1, Inf[Tiene {{ count }} grupos de usuarios'
+    roles: '{0}Tiene 0 funciones|{1}Tiene 1 función|]1, Inf[Tiene {{ count }} funciones'
+  sso:
+    enabled: SSO activado
+    disabled: SSO desactivado
+    title: Inicio de sesión único con SAML

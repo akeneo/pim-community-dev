@@ -14,7 +14,7 @@ define(['jquery', 'underscore', 'pim/form/common/fields/field', 'pim/template/fo
   return BaseField.extend({
     template: _.template(template),
     events: {
-      'keyup input': function (event) {
+      'input input': function (event) {
         this.errors = [];
         this.updateModel(this.getFieldValue(event.target));
         // Text fields don't trigger form render because there is no case of dependency with other fields.

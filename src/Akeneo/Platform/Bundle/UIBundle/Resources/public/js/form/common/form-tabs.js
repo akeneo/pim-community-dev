@@ -52,6 +52,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
      */
     configure: function () {
       this.onExtensions('tab:register', this.registerTab.bind(this));
+      this.onExtensions('tab:refresh', this.refreshTab.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:add-error', this.addError);
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:remove-error', this.removeError);
@@ -78,6 +79,15 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
       } else {
         existingTab.label = event.label;
         existingTab.isVisible = event.isVisible;
+      }
+    },
+
+    refreshTab: function (event) {
+      const existingTab = this.tabs.find(currentTab => currentTab.code === event.code);
+
+      if (existingTab) {
+        existingTab.label = event.label;
+        this.render();
       }
     },
 

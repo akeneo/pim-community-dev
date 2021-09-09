@@ -164,4 +164,14 @@ class App
     {
         return $this->callbackUrl;
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
 }

@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
   akeneo_connectivity_connection_connect_marketplace_profile: マーケットプレイス
+  akeneo_connectivity_connection_connect_apps_activate: 接続
+  akeneo_connectivity_connection_connect_apps_authorize: 接続
   akeneo_connectivity_connection_settings_index: 接続設定
   akeneo_connectivity_connection_settings_edit: 接続設定
   akeneo_connectivity_connection_settings_any: 接続設定
@@ -57,6 +59,26 @@ akeneo_connectivity.connection:
         empty: お使いのバージョンと互換性のあるアプリがありません
       unreachable: マーケットに接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
+    apps:
+      wizard:
+        progress:
+          permissions: 許可
+      title: 接続
+      activate:
+        flash:
+          error: 申し訳ございません、アプリを接続中にエラーが発生しました。
+      constraint:
+        client_id:
+          not_blank: client_idは必須です。
+          must_be_valid: client_idが既知のクライアントと一致しません。
+        response_type:
+          not_blank: response_typeは必須です。
+          must_be_code: response_typeは「コード」でなければなりません。
+        scope:
+          must_be_valid: スコープが無効です。
+        redirect_uri:
+          not_blank: redirect_uriは必須です。
+          must_be_url: redirect_uriは有効なURLではありません。
   connections: 接続
   secondary_actions:
     title: その他の操作

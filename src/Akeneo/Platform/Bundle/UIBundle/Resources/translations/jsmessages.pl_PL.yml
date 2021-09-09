@@ -241,7 +241,9 @@ pim_common:
   products: Produkty
   product_models: Modele produktu
   more: Więcej
+  public_view: Widok publiczny
 error:
+  exception: Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
 alert:
   attribute_option:
@@ -389,5 +391,15 @@ pim_settings:
     groups: '{0}Liczba grup: 0|{1}Liczba grup: 1|]1, Inf[Liczba grup: {{ count }}'
     rules: '{0}Liczba włączonych reguł: 0|{1}Liczba włączonych reguł: 1|]1, Inf[Liczba włączonych reguł: {{ count }}'
 pim_system:
+  system_menu: Menu systemowe
   system_navigation: Nawigacja systemu
   users_management_navigation: Nawigacja zarządzaniem użytkownikami
+  count:
+    product_values: '{0}Liczba wartości produktu: 0|{1}Liczba wartości produktu: 1|]1, Inf[Liczba wartości produktu: {{ count }}'
+    users: '{0}Liczba użytkowników: 0 |{1}Liczba użytkowników: 1 |]1, Inf[Liczba użytkowników: {{ count }} '
+    user_groups: '{0}Liczba grup użytkowników: 0|{1}Liczba grup użytkowników: 1|]1, Inf[Liczba grup użytkowników: {{ count }}'
+    roles: '{0}Liczba ról: 0|{1}Liczba ról: 1|]1, Inf[Liczba ról: {{ count }}'
+  sso:
+    enabled: SSO włączone
+    disabled: SSO wyłączone
+    title: Pojedyncze logowanie oparte na SAML
