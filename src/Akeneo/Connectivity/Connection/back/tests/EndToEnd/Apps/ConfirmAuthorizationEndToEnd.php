@@ -54,7 +54,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            "/rest/apps/confirm-authorization/$appId"
+            sprintf('/rest/apps/confirm-authorization/%s', $appId),
         );
         $response = $this->client->getResponse();
 
@@ -70,7 +70,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            "/rest/apps/confirm-authorization/$appId"
+            sprintf('/rest/apps/confirm-authorization/%s', $appId),
         );
 
         $response = $this->client->getResponse();
@@ -85,11 +85,9 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();
 
-        $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
-
         $this->client->request(
             'POST',
-            "/rest/apps/confirm-authorization/test",
+            '/rest/apps/confirm-authorization/test',
             [],
             [],
             [
@@ -122,7 +120,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            "/rest/apps/confirm-authorization/$appId",
+            sprintf('/rest/apps/confirm-authorization/%s', $appId),
             [],
             [],
             [
