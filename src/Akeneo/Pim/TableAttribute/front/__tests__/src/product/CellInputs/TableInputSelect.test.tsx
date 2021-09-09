@@ -1,10 +1,9 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {default as TableInputSelectModule} from '../../../../src/product/CellInputs/SelectInput';
-import {getTableAttribute} from '../../factories/Attributes';
+import SelectInput from '../../../../src/product/CellInputs/SelectInput';
 import {ColumnDefinition} from '../../../../src/models';
-import {getComplexTableConfiguration} from '../../factories/TableConfiguration';
+import {getComplexTableAttribute, getComplexTableConfiguration} from '../../factories';
 
 jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
 
@@ -24,19 +23,16 @@ const nutritionScoreColumn: ColumnDefinition = {
   labels: {},
 };
 
-const TableInputSelect = TableInputSelectModule.renderer;
-
-describe('TableInputSelect', () => {
+describe('SelectInput', () => {
   it('should render label of existing option', async () => {
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={nutritionScoreColumn}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={jest.fn()}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
 
@@ -46,14 +42,13 @@ describe('TableInputSelect', () => {
   it('should delete the value', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={nutritionScoreColumn}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={handleChange}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -65,14 +60,13 @@ describe('TableInputSelect', () => {
   it('should display nothing if no options', () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', no_options: 'B'}}
         onChange={handleChange}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
 
@@ -81,14 +75,13 @@ describe('TableInputSelect', () => {
 
   it('should paginate the options', async () => {
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={nutritionScoreColumn}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={jest.fn()}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -109,14 +102,13 @@ describe('TableInputSelect', () => {
   it('should updates the value', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={nutritionScoreColumn}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={handleChange}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -132,14 +124,13 @@ describe('TableInputSelect', () => {
 
   it('should search in the options', async () => {
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={nutritionScoreColumn}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={jest.fn()}
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
-        translate={a => a}
+        attribute={getComplexTableAttribute()}
       />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -158,14 +149,13 @@ describe('TableInputSelect', () => {
     const table_configuration = getComplexTableConfiguration();
     table_configuration[4].code = 'no_options';
     renderWithProviders(
-      <TableInputSelect
+      <SelectInput
         columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
         highlighted={false}
         inError={false}
         row={{'unique id': 'uniqueIdB'}}
         onChange={jest.fn()}
-        attribute={{...getTableAttribute(), table_configuration}}
-        translate={a => a}
+        attribute={{...getComplexTableAttribute(), table_configuration}}
       />
     );
     expect(await screen.findByTitle('pim_common.open')).toBeInTheDocument();

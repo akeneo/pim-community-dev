@@ -1,8 +1,5 @@
-import {ColumnDefinitionPropertiesMapping, ColumnDefinitionWithId, DataTypesMapping} from '../../../src/attribute';
+import {ColumnDefinitionWithId, DataTypesMapping} from '../../../src/attribute';
 import {SelectColumnDefinition} from '../../../src/models';
-import SelectProperties from '../../../src/attribute/column_definition_properties/SelectProperties';
-import NumberProperties from '../../../src/attribute/column_definition_properties/NumberProperties';
-import TextProperties from '../../../src/attribute/column_definition_properties/TextProperties';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {...getSelectColumnDefinition(), id: 'uniqueidingredient'};
@@ -37,15 +34,9 @@ export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
   } as ColumnDefinitionWithId;
 };
 
-export const dataTypesMapping: DataTypesMapping = {
+export const defaultDataTypesMapping: DataTypesMapping = {
   select: {useable_as_first_column: true},
   boolean: {useable_as_first_column: false},
   number: {useable_as_first_column: false},
   text: {useable_as_first_column: false},
-};
-
-export const columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping = {
-  select: {default: SelectProperties},
-  number: {default: NumberProperties},
-  text: {default: TextProperties},
 };

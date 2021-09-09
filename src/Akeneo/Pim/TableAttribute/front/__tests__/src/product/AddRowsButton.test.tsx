@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {AddRowsButton} from '../../../src/product';
-import {getTableAttribute} from '../factories/Attributes';
+import {getComplexTableAttribute} from "../factories";
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -20,7 +20,7 @@ describe('AddRowsButton', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <AddRowsButton
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={() => {}}
@@ -48,7 +48,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -80,7 +80,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -116,7 +116,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attribute={{...getTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
+        attribute={{...getComplexTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -140,7 +140,7 @@ describe('AddRowsButton', () => {
   it('should redirect from helper when there is no option', async () => {
     renderWithProviders(
       <AddRowsButton
-        attribute={{...getTableAttribute(), code: 'attribute_without_options'}}
+        attribute={{...getComplexTableAttribute(), code: 'attribute_without_options'}}
         columnCode={'ingredient'}
         checkedOptionCodes={[]}
         toggleChange={jest.fn()}

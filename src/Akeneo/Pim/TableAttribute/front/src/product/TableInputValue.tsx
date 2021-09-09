@@ -228,7 +228,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           onChange={value => handleChange(row['unique id'], columnCode, value)}
           data-testid={`input-${row['unique id']}-${columnCode}`}
           inError={isInErrorFromBackend(row['unique id'], columnCode)}
-          translate={translate}
           attribute={attribute}
           highlighted={matchSearch(cell, searchText, columnCode)}
         />

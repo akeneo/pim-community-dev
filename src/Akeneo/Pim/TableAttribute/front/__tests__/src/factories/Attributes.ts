@@ -1,7 +1,7 @@
 import {TableAttribute} from '../../../src/models';
-import {getSimpleTableConfiguration} from './TableConfiguration';
+import {getComplexTableConfiguration} from './TableConfiguration';
 
-const getTableAttribute: () => TableAttribute = () => {
+const getComplexTableAttribute: () => TableAttribute = () => {
   return {
     code: 'nutrition',
     labels: {
@@ -40,8 +40,8 @@ const getTableAttribute: () => TableAttribute = () => {
     validation_regexp: null,
     validation_rule: null,
     wysiwyg_enabled: null,
-    table_configuration: getSimpleTableConfiguration(),
+    table_configuration: getComplexTableConfiguration(),
   };
 };
 
-export {getTableAttribute};
+export {getComplexTableAttribute};

@@ -1,10 +1,10 @@
-import {ColumnProperties} from '../TableStructureApp';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {ManageOptionsModal} from '../ManageOptionsModal';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../../models';
+import {ColumnProperties} from "./index";
 
 const ManageOptionsButtonContainer = styled.div`
   text-align: right;

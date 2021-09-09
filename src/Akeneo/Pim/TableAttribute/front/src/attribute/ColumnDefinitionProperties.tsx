@@ -2,8 +2,9 @@ import React from 'react';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {Attribute, ColumnCode, ColumnDefinition} from '../models';
-import {ColumnDefinitionPropertiesMapping, ColumnDefinitionWithId} from './TableStructureApp';
+import {ColumnDefinitionWithId} from './TableStructureApp';
 import {FieldsList} from '../shared';
+import {ColumnDefinitionPropertiesMapping} from "./ColumDefinitionProperties";
 
 type ColumnDefinitionPropertiesProps = {
   attribute: Attribute;

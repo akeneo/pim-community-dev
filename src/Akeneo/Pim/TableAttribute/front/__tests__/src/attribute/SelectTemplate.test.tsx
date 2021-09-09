@@ -1,7 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {act, screen, fireEvent} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import {view} from '../../../src/attribute/SelectTemplate';
+
 const SelectTemplate = view;
 
 describe('SelectTemplateApp', () => {

@@ -2,10 +2,14 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen} from '@testing-library/react';
 import {TableStructureApp} from '../../../src/attribute';
-import {getComplexTableConfiguration, getSimpleTableConfiguration} from '../factories/TableConfiguration';
-import {getTableAttribute} from '../factories/Attributes';
+import {
+  columnDefinitionPropertiesMapping,
+  defaultDataTypesMapping,
+  getComplexTableAttribute,
+  getComplexTableConfiguration,
+  getSimpleTableConfiguration
+} from '../factories';
 import {fireEvent} from '@testing-library/dom';
-import {columnDefinitionPropertiesMapping, dataTypesMapping} from '../factories/ColumnDefinition';
 
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
@@ -22,8 +26,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -46,15 +50,15 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
 
-    await act(async () => {
-      await fireEvent.click(screen.getAllByRole('row')[1]);
+    act(() => {
+      fireEvent.click(screen.getAllByRole('row')[1]);
     });
 
     const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
@@ -63,8 +67,8 @@ describe('TableStructureApp', () => {
     expect(codeInput).not.toHaveAttribute('readonly');
     expect(english.value).toEqual('Quantity');
 
-    await act(async () => {
-      await fireEvent.click(screen.getAllByRole('row')[0]);
+    act(() => {
+      fireEvent.click(screen.getAllByRole('row')[0]);
     });
 
     expect(codeInput.value).toEqual('ingredient');
@@ -77,8 +81,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -106,8 +110,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -148,8 +152,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={[]}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -163,8 +167,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -203,8 +207,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -221,8 +225,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -231,38 +235,9 @@ describe('TableStructureApp', () => {
     act(() => {
       fireEvent.click(screen.getAllByRole('row')[1]);
     });
-    const minInput = screen.getByLabelText('pim_table_attribute.validations.min') as HTMLInputElement;
-    expect(minInput).toBeInTheDocument();
-    const maxInput = screen.getByLabelText('pim_table_attribute.validations.max') as HTMLInputElement;
-    expect(maxInput).toBeInTheDocument();
-    const decimalsAllowedCheckbox = screen.getByLabelText(
-      'pim_table_attribute.validations.decimals_allowed'
-    ) as HTMLInputElement;
-    expect(decimalsAllowedCheckbox).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.change(minInput, {target: {value: '10'}});
-      fireEvent.change(maxInput, {target: {value: '50'}});
-    });
-    expect(handleChange).toHaveBeenCalledWith([
-      getComplexTableConfiguration()[0],
-      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50}},
-      getComplexTableConfiguration()[2],
-      getComplexTableConfiguration()[3],
-      getComplexTableConfiguration()[4],
-    ]);
-
-    act(() => {
-      fireEvent.click(decimalsAllowedCheckbox);
-    });
-
-    expect(handleChange).toHaveBeenCalledWith([
-      getComplexTableConfiguration()[0],
-      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50, decimals_allowed: true}},
-      getComplexTableConfiguration()[2],
-      getComplexTableConfiguration()[3],
-      getComplexTableConfiguration()[4],
-    ]);
+    expect(screen.getByLabelText('pim_table_attribute.validations.min')).toBeInTheDocument();
+    expect(screen.getByLabelText('pim_table_attribute.validations.max')).toBeInTheDocument();
+    expect(screen.getByLabelText('pim_table_attribute.validations.decimals_allowed')).toBeInTheDocument();
 
     act(() => {
       fireEvent.click(screen.getAllByRole('row')[3]);
@@ -273,7 +248,7 @@ describe('TableStructureApp', () => {
 
     expect(handleChange).toHaveBeenCalledWith([
       getComplexTableConfiguration()[0],
-      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50, decimals_allowed: true}},
+      getComplexTableConfiguration()[1],
       getComplexTableConfiguration()[2],
       {...getComplexTableConfiguration()[3], validations: {max_length: 50}},
       getComplexTableConfiguration()[4],
@@ -287,8 +262,8 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
-        attribute={getTableAttribute()}
-        dataTypesMapping={dataTypesMapping}
+        attribute={getComplexTableAttribute()}
+        dataTypesMapping={defaultDataTypesMapping}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );

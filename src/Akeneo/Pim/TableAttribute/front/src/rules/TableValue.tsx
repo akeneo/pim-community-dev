@@ -5,7 +5,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
   AddRowsButton,
-  CellInputsMapping,
+  CellInputsMapping, CellMatchersMapping,
   TableInputValue,
   TableValueWithId,
   useToggleRow,
@@ -33,9 +33,10 @@ export type InputValueProps = {
   onChange: (value: any) => void;
   scopeCode?: ScopeCode;
   cellInputsMapping: CellInputsMapping;
+  cellMatchersMapping: CellMatchersMapping;
 };
 
-const TableValue: React.FC<InputValueProps> = ({attribute, value, cellInputsMapping, onChange}) => {
+const TableValue: React.FC<InputValueProps> = ({attribute, value, cellInputsMapping, cellMatchersMapping, onChange}) => {
   const UserContext = useUserContext();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
 
@@ -65,6 +66,7 @@ const TableValue: React.FC<InputValueProps> = ({attribute, value, cellInputsMapp
         valueData={tableValue}
         onChange={handleChange}
         cellInputsMapping={cellInputsMapping}
+        cellMatchersMapping={cellMatchersMapping}
       />
     </TableValueContainer>
   );

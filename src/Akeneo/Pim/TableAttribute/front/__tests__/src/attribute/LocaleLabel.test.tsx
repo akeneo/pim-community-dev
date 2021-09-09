@@ -17,7 +17,7 @@ describe('LocaleLabel', () => {
     act(() => {
       renderWithProviders(<LocaleLabel localeCode={'pt_DTC'} />);
     });
-    expect(await screen.queryByText('English')).not.toBeInTheDocument();
+    expect(screen.queryByText('English')).not.toBeInTheDocument();
     expect(await screen.findByText('pt_DTC')).toBeInTheDocument();
   });
 });

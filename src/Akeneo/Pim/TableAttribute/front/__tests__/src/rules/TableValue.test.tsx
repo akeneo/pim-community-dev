@@ -1,9 +1,8 @@
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import render, {InputValueProps} from '../../../src/rules/TableValue';
-import {getTableAttribute} from '../factories/Attributes';
 import {Attribute} from '../../../src/models';
-import {defaultCellInputsMapping} from '../factories/CellInput';
+import {defaultCellInputsMapping, defaultCellMatchersMapping, getComplexTableAttribute} from '../factories';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -18,13 +17,13 @@ describe('TableInputValue', () => {
   it('should render the component', async () => {
     const handleChange = jest.fn();
     const props = {
-      attribute: getTableAttribute() as Attribute,
+      attribute: getComplexTableAttribute() as Attribute,
       value: [],
       onChange: handleChange,
       id: 'id',
       name: 'name',
       cellInputsMapping: defaultCellInputsMapping,
-      cellMatchersMapping: defaultCellInputsMapping,
+      cellMatchersMapping: defaultCellMatchersMapping,
     } as InputValueProps;
     renderWithProviders(render(props));
 

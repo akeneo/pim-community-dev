@@ -2,9 +2,12 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {TableInputValue} from '../../../src/product';
-import {cellInputsMapping, getTableValueWithId} from '../factories/TableValue';
-import {getComplexTableConfiguration} from '../factories/TableConfiguration';
-import {getTableAttribute} from '../factories/Attributes';
+import {
+  defaultCellInputsMapping,
+  defaultCellMatchersMapping,
+  getComplexTableAttribute,
+  getTableValueWithId
+} from '../factories';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -13,11 +16,12 @@ describe('TableInputValue', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={jest.fn()}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -37,11 +41,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -69,11 +74,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={'r'}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -87,7 +93,7 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         onChange={handleChange}
         violatedCells={[
@@ -96,7 +102,8 @@ describe('TableInputValue', () => {
             columnCode: 'quantity',
           },
         ]}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -114,11 +121,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -133,11 +141,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -156,11 +165,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -179,11 +189,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -202,11 +213,12 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        attribute={getComplexTableAttribute()}
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
+        cellInputsMapping={defaultCellInputsMapping}
+        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();

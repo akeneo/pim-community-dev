@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {
   AddingValueIllustration,
@@ -20,6 +20,7 @@ import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 import {CenteredHelper} from '../shared';
 import {LocaleRepository} from '../repositories';
+import {ColumnDefinitionPropertiesMapping} from "./ColumDefinitionProperties";
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -28,18 +29,6 @@ const EmptyTableCell = styled(Table.Cell)`
 const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
 `;
-
-type ColumnDefinitionProps = {
-  attribute: Attribute;
-  selectedColumn: ColumnDefinition;
-  handleChange: (newColumn: ColumnDefinition) => void;
-};
-
-export type ColumnDefinitionPropertiesMapping = {
-  [attributeType: string]: {default: ColumnProperties};
-};
-
-export type ColumnProperties = (props: ColumnDefinitionProps) => ReactElement;
 
 type TableStructureAppProps = {
   attribute: Attribute;

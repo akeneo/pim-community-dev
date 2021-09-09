@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src/attribute';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {dataTypesMapping} from '../factories/ColumnDefinition';
+import {defaultDataTypesMapping} from '../factories/ColumnDefinition';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 
@@ -15,7 +15,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={[]}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
 
@@ -31,7 +31,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={[]}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
 
@@ -53,7 +53,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={[]}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
 
@@ -78,7 +78,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={['quantity']}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
 
@@ -118,7 +118,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={[]}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
     const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
@@ -138,7 +138,7 @@ describe('AddColumnModal', () => {
         close={handleClose}
         onCreate={handleCreate}
         existingColumnCodes={['quantity']}
-        dataTypesMapping={dataTypesMapping}
+        dataTypesMapping={defaultDataTypesMapping}
       />
     );
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;

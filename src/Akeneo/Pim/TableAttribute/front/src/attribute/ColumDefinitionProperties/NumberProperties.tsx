@@ -1,9 +1,9 @@
-import {ColumnProperties} from '../TableStructureApp';
 import {Field, Helper, NumberInput} from 'akeneo-design-system';
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnValidation, NumberColumnDefinition} from '../../models';
 import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
+import {ColumnProperties} from "./index";
 
 const NumberProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
   const translate = useTranslate();

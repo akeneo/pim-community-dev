@@ -2,82 +2,79 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {ColumnDefinitionProperties} from '../../../src/attribute';
 import {fireEvent, screen} from '@testing-library/react';
-import {getEnUsLocale} from '../factories/Locales';
 import {
   columnDefinitionPropertiesMapping,
+  getComplexTableAttribute,
+  getEnUsLocale,
   getNumberColumnDefinitionWithId,
-  getSelectColumnDefinitionWithId,
-} from '../factories/ColumnDefinition';
-import {getTableAttribute} from '../factories/Attributes';
+  getSelectColumnDefinitionWithId
+} from '../factories';
 
 jest.mock('../../../src/attribute/ManageOptionsModal');
 
 describe('ColumnDefinitionProperties', () => {
   it('should render the component', () => {
-    const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
         selectedColumn={getSelectColumnDefinitionWithId()}
-        onChange={handleChange}
+        onChange={jest.fn()}
         activeLocales={[getEnUsLocale()]}
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
+
+    expect(screen.getByText(/pim_table_attribute.form.attribute.column_code/)).toBeInTheDocument();
+    expect(screen.getByText(/pim_table_attribute.form.attribute.data_type/)).toBeInTheDocument();
+    expect(screen.getByText(/pim_table_attribute.form.attribute.labels/)).toBeInTheDocument();
   });
 
-  it('should update the code', () => {
+  it('should callback changes', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
-        selectedColumn={getSelectColumnDefinitionWithId()}
+        selectedColumn={getNumberColumnDefinitionWithId()}
         onChange={handleChange}
         activeLocales={[getEnUsLocale()]}
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
     const codeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.column_code/) as HTMLInputElement;
     fireEvent.change(codeInput, {target: {value: 'somethingelse'}});
-    expect(handleChange).toBeCalledWith({...getSelectColumnDefinitionWithId(), code: 'somethingelse'});
-  });
 
-  it('should display violations on validation fields', () => {
-    const handleChange = jest.fn();
-    renderWithProviders(
-      <ColumnDefinitionProperties
-        selectedColumn={{...getNumberColumnDefinitionWithId(), validations: {min: 50, max: 10}}}
-        onChange={handleChange}
-        activeLocales={[getEnUsLocale()]}
-        catalogLocaleCode={'en_US'}
-        isDuplicateColumnCode={() => false}
-        savedColumnIds={[]}
-        attribute={getTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-      />
-    );
+    const englishInput = screen.getByLabelText(/English \(United States\)/) as HTMLInputElement;
+    fireEvent.change(englishInput, {target: {value: 'Something Else'}});
 
-    expect(screen.getByText('pim_table_attribute.validations.max_greater_than_min')).toBeInTheDocument();
+    const minInput = screen.getByLabelText('pim_table_attribute.validations.min') as HTMLInputElement;
+    fireEvent.change(minInput, {target: {value: '10'}});
+
+    expect(handleChange).toBeCalledWith({...getNumberColumnDefinitionWithId(),
+      code: 'somethingelse',
+      labels: {'en_US': 'Something Else'},
+      validations: {
+        min: 10
+      }
+    });
   });
 
   it('should display violation on when code is empty', () => {
-    const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
         selectedColumn={{...getNumberColumnDefinitionWithId(), code: ''}}
-        onChange={handleChange}
+        onChange={jest.fn()}
         activeLocales={[getEnUsLocale()]}
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -86,16 +83,15 @@ describe('ColumnDefinitionProperties', () => {
   });
 
   it('should display violation on when code is invalid', () => {
-    const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
         selectedColumn={{...getNumberColumnDefinitionWithId(), code: '&&'}}
-        onChange={handleChange}
+        onChange={jest.fn()}
         activeLocales={[getEnUsLocale()]}
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
@@ -104,44 +100,19 @@ describe('ColumnDefinitionProperties', () => {
   });
 
   it('should display violation on when code is duplicate', () => {
-    const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
         selectedColumn={getNumberColumnDefinitionWithId()}
-        onChange={handleChange}
+        onChange={jest.fn()}
         activeLocales={[getEnUsLocale()]}
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
     expect(screen.getByText('pim_table_attribute.validations.duplicated_column_code')).toBeInTheDocument();
-  });
-
-  it('should save options', () => {
-    const handleChange = jest.fn();
-    renderWithProviders(
-      <ColumnDefinitionProperties
-        selectedColumn={getSelectColumnDefinitionWithId()}
-        onChange={handleChange}
-        activeLocales={[getEnUsLocale()]}
-        catalogLocaleCode={'en_US'}
-        isDuplicateColumnCode={() => false}
-        savedColumnIds={[]}
-        attribute={getTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-      />
-    );
-
-    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
-    fireEvent.click(screen.getByText('Fake confirm'));
-
-    expect(handleChange).toBeCalledWith({
-      ...getSelectColumnDefinitionWithId(),
-      options: [{code: 'fake_code', labels: {en_US: 'fake label '}}],
-    });
   });
 });

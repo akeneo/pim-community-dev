@@ -2,9 +2,9 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {fireEvent, screen, act} from '@testing-library/react';
 import {ManageOptionsModal} from '../../../src/attribute';
-import {getTableAttribute} from '../factories/Attributes';
 import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+import {getComplexTableAttribute} from "../factories";
 
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/LocaleFetcher');
@@ -67,7 +67,7 @@ describe('ManageOptionsModal', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -89,7 +89,7 @@ describe('ManageOptionsModal', () => {
   it('should display validations', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -108,7 +108,7 @@ describe('ManageOptionsModal', () => {
   it('should autofill the code', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -127,7 +127,7 @@ describe('ManageOptionsModal', () => {
 
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={handleChange}
         columnDefinition={getSelectColumnDefinition()}
         onClose={handleClose}
@@ -154,7 +154,7 @@ describe('ManageOptionsModal', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={handleChange}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -182,7 +182,7 @@ describe('ManageOptionsModal', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={handleChange}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -204,7 +204,7 @@ describe('ManageOptionsModal', () => {
   it('should display already fetched options', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={{
           ...getSelectColumnDefinition(),
@@ -223,7 +223,7 @@ describe('ManageOptionsModal', () => {
   it('should display empty option for a new column', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={{...getSelectColumnDefinition(), code: 'new_column'}}
         onClose={jest.fn()}
@@ -237,7 +237,7 @@ describe('ManageOptionsModal', () => {
   it('should filter the option by search', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -256,7 +256,7 @@ describe('ManageOptionsModal', () => {
   it('should paginate the options list', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={{...getTableAttribute(), code: 'test_pagination'}}
+        attribute={{...getComplexTableAttribute(), code: 'test_pagination'}}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -285,7 +285,7 @@ describe('ManageOptionsModal', () => {
     renderWithProviders(
       <ManageOptionsModal
         limit={51}
-        attribute={{...getTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
+        attribute={{...getComplexTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -303,7 +303,7 @@ describe('ManageOptionsModal', () => {
   it('should be able to change the default locale', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}
@@ -322,7 +322,7 @@ describe('ManageOptionsModal', () => {
   it('should focus on new field when entering Enter', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={getTableAttribute()}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
         columnDefinition={getSelectColumnDefinition()}
         onClose={jest.fn()}

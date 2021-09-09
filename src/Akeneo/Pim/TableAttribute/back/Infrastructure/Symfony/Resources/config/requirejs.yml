@@ -7,9 +7,9 @@ config:
     config:
         pim/table-attribute/attribute/tab:
             column_definition_properties:
-                select: '@akeneopimtableattribute/attribute/column_definition_properties/SelectProperties'
-                number: '@akeneopimtableattribute/attribute/column_definition_properties/NumberProperties'
-                text: '@akeneopimtableattribute/attribute/column_definition_properties/TextProperties'
+                select: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/SelectProperties'
+                number: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/NumberProperties'
+                text: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/TextProperties'
             data_types:
                 select:
                     useable_as_first_column: true
