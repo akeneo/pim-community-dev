@@ -34,6 +34,12 @@ jobs:
             git checkout ${CIRCLE_BRANCH} || git checkout master
             echo "Current commit: $(git rev-parse --short HEAD)"
       - run:
+          name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
+          command: |
+              mkdir -p tmp
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              git clone --branch v0 git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+      - run:
           name: Require proper dev CE branch
           command: |
             sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
@@ -746,9 +752,10 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - test_database:
-                requires:
-                    - build_dev
+          # Uncomment for next GA
+#          - test_database:
+#                requires:
+#                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -829,7 +836,8 @@ workflows:
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
-                    - test_database
+                    # Uncomment for next GA
+#                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:

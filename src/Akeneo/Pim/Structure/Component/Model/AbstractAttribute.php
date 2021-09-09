@@ -533,14 +533,6 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleSpecificCodes()
-    {
-        return $this->getAvailableLocaleCodes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAvailableLocales()
     {
         return $this->availableLocales;
@@ -549,7 +541,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getAvailableLocaleCodes()
+    public function getAvailableLocaleCodes(): array
     {
         $codes = [];
         foreach ($this->getAvailableLocales() as $locale) {
@@ -564,7 +556,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function hasLocaleSpecific(LocaleInterface $locale)
     {
-        return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
+        return in_array($locale->getCode(), $this->getAvailableLocaleCodes());
     }
 
     /**

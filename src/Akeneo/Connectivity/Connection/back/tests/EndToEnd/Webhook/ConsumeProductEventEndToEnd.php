@@ -212,7 +212,6 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     {
         return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product')->create(
             $identifier,
-
         );
     }
 

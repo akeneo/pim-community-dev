@@ -4,8 +4,6 @@ services:
         arguments:
             - '@fos_oauth_server.client_manager.default'
 
-    Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper: ~
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
         arguments:
             - '@session'
@@ -17,7 +15,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
         arguments:
-            - '@Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper'
+            - '@pim_api.security.scope_mapper'
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
         public: true

@@ -45,7 +45,8 @@ AND attribute.attribute_type IN (:attribute_types)
 AND (activation.activated IS NULL OR activation.activated = 1);
 SQL;
 
-        $statement = $this->dbConnection->executeQuery($query,
+        $statement = $this->dbConnection->executeQuery(
+            $query,
             [
                 'product_id' => $productId->toInt(),
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,

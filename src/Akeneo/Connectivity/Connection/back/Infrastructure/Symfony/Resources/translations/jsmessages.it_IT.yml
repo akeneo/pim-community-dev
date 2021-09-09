@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Connetti
+  akeneo_connectivity_connection_connect_apps_authorize: Connetti
   akeneo_connectivity_connection_settings_index: Impostazioni di connessione
   akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
   akeneo_connectivity_connection_settings_any: Impostazioni di connessione
@@ -57,6 +59,26 @@ akeneo_connectivity.connection:
         empty: Non ci sono app compatibili con la tua versione
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
+    apps:
+      wizard:
+        progress:
+          permissions: Permessi
+      title: Connetti
+      activate:
+        flash:
+          error: Spiacenti, si è verificato un errore durante la connessione dell'App.
+      constraint:
+        client_id:
+          not_blank: Client_id obbligatorio.
+          must_be_valid: Il client_id non corrisponde ad alcun client conosciuto.
+        response_type:
+          not_blank: Response_type obbligatorio.
+          must_be_code: Il response_type deve essere "code".
+        scope:
+          must_be_valid: Gli ambiti non sono validi.
+        redirect_uri:
+          not_blank: Redirect_uri obbligatorio.
+          must_be_url: Il redirect_uri non è un url valido.
   connections: Connessioni
   secondary_actions:
     title: Altre azioni

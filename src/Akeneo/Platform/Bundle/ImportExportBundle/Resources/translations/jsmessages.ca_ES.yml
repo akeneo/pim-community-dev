@@ -53,7 +53,6 @@ pim_import_export:
         show_profile.title: Mostrar perfil
         download_log.title: Descarregar registre
         download_file.title: Descarregar arxiu generat
-        download_archive.title: Descarregar arxiu generat
       summary:
         fetching: Recollida de dades sobre l'execució del job...
         warning: Avís
@@ -99,9 +98,6 @@ pim_import_export:
           with_header:
             title: Amb capçalera
             help: Si vol imprimir el nom de la columna o no
-          with_media:
-            title: Exportar arxius i imatges
-            help: Exportar, o no, arxius i imatges de productes
           lines_per_file:
             title: Nombre de línies per arxiu
             help: Definir el nombre límit de línies per arxiu
@@ -158,6 +154,15 @@ pim_import_export:
     6: Fallit
     7: Abandonat
     8: Desconegut
+  job_status:
+    COMPLETED: Acabat
+    STARTING: Començant
+    STARTED: Començat
+    STOPPING: Aturant
+    STOPPED: Aturat
+    FAILED: Fallit
+    ABANDONED: Abandonat
+    UNKNOWN: Desconegut
 confirmation:
   remove:
     import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?

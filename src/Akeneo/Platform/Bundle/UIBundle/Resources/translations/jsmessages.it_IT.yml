@@ -243,6 +243,7 @@ pim_common:
   more: Altro
   public_view: Visualizzazione pubblica
 error:
+  exception: Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
@@ -390,5 +391,15 @@ pim_settings:
     groups: '{0}Hai 0 gruppi|{1}Hai 1 gruppo|]1, Inf[Hai {{ count }} gruppi'
     rules: '{0}Hai 0 regole abilitate|{1}Hai 1 regola abilitata|]1, Inf[Hai {{ count }} regole abilitate'
 pim_system:
+  system_menu: Menu di sistema
   system_navigation: Sistema
   users_management_navigation: Gestione utenti
+  count:
+    product_values: '{0}Hai 0 valori di prodotto<unk>{1}Hai 1 valore di prodotto<unk> ]1, Inf[Hai {{ count }} valori di prodotto'
+    users: '{0}Hai 0 utenti|{1}Hai 1 utente|]1, Inf[Hai {{ count }} utenti'
+    user_groups: '{0}Hai 0 gruppi di utenti|{1}Hai 1 gruppo di utenti|]1, Inf[Hai {{ count }} gruppi di utenti'
+    roles: '{0}Hai 0 ruoli|{1}Hai 1 ruolo|]1, Inf[Hai {{ count }} ruoli'
+  sso:
+    enabled: SSO abilitato
+    disabled: SSO disabilitato
+    title: Single Sign-On basato su SAML

@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。
 pim_import_export:
+  validation:
+    max_length_reached: 値が長すぎます。{{ limit }}以下の文字数で設定してください。
   entity:
     job_instance:
       label: ジョブプロファイル
@@ -23,6 +25,10 @@ pim_import_export:
           fail: ジョブプロファイルを更新できませんでした。
         delete:
           success: ジョブインスタンスを削除しました
+      duplicate:
+        title: '{{ job_code }}プロファイルを複製'
+        success: ジョブプロファイルが正常に複製されました。
+        fail: ジョブプロファイルを複製できませんでした。
     import_profile:
       uppercase_label: プロファイルをインポート
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: インポートプロファイル{{ job.label }} |表示
   pim_importexport_import_execution_index: インポート実行履歴
   pim_importexport_import_execution_show: インポートの実行 |詳細
+

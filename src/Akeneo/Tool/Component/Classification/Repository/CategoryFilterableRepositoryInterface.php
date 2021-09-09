@@ -2,6 +2,9 @@
 
 namespace Akeneo\Tool\Component\Classification\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +24,8 @@ interface CategoryFilterableRepositoryInterface
     /**
      * Apply a filter by category ids
      *
-     * @param mixed $qb          query builder to update
+     *
+     * @param QueryBuilder|ProductQueryBuilderInterface $qb query builder to update
      * @param array $categoryIds category ids
      * @param bool  $include     if yes, get item in those categories, if false
      *                           items NOT in those categories

@@ -22,7 +22,11 @@ const usePlaceholderPosition = (rowIndex: number) => {
     setOveringCount(count => count - 1);
   }, []);
 
-  return [overingCount === 0 ? 'none' : placeholderPosition, dragEnter, dragLeave] as const;
+  const dragEnd = useCallback(() => {
+    setOveringCount(0);
+  }, []);
+
+  return [overingCount === 0 ? 'none' : placeholderPosition, dragEnter, dragLeave, dragEnd] as const;
 };
 
 export {usePlaceholderPosition};

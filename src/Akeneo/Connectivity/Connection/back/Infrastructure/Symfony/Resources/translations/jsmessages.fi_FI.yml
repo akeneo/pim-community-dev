@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Yhteydet
+  navigation:
+    connect: Yhteydet
   navigation_back:
-    connection: Palaa API-yhteyksiin
+    connection: Takaisin Yhteyksiin
   navigation_block:
     connection: API-yhteyksien hallinta
   item:
@@ -8,15 +12,41 @@ pim_menu:
     connection_settings: Yhteydet
     connection_settings_edit: API-yhteyksien asetukset
     connection_monitoring: Monitorointi
+    connection_webhook_edit: Tapahtumatilaus
+    connection_webhook_event_logs: Tapahtumalokit
+    data_flows: Tietovirrat
+    connect_connection_settings: API-yhteyksien asetukset
+    marketplace: Marketplace
 pim_title:
-  akeneo_connectivity_connection_settings_index: Yhteydet
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Yhdistä
+  akeneo_connectivity_connection_connect_apps_authorize: Yhdistä
+  akeneo_connectivity_connection_settings_index: Yhteysasetukset
   akeneo_connectivity_connection_settings_edit: API-yhteyksien asetukset
   akeneo_connectivity_connection_settings_any: API-yhteyksien asetukset
   akeneo_connectivity_connection_audit_index: Yhteyksien hallinta
   akeneo_connectivity_connection_audit_any: Yhteyksien hallinta
   akeneo_connectivity_connection_error_management_dashboard: Yhteyksien hallinta
   akeneo_connectivity_connection_error_management_connection_monitoring: API-yhteyksien monitorointi
+  akeneo_connectivity_connection_webhook_edit: Tapahtumatilaus
+  akeneo_connectivity_connection_webhook_regenerate_secret: Tapahtumatilaus
+  akeneo_connectivity_connection_webhook_event_logs: Tapahtumalokit
+  akeneo_connectivity_connection_settings_redirect: Yhteydet
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Haluatko yhdistää PIMin toiseen sovellukseen? 🤟
+      sub_title: Tarkista Marketplace-sivustolta, mitkä sovellukset voidaan yhdistää Akeneo PIMiin.
+      card:
+        more_info: Lisätietoa
+        connect: Yhdistä
+      extensions:
+        title: Konnektorit
+    apps:
+      wizard:
+        progress:
+          permissions: Käyttöoikeudet
   connections: Yhteydet
   secondary_actions:
     title: Muut toiminnot
@@ -25,6 +55,7 @@ akeneo_connectivity.connection:
     label: Nimike
     flow_type: Tietovirran tyyppi
     image: Kuva
+    auditable: Seuraa tätä API-yhteyttä monitoroinnissa
     client_id: Asiakastunnus
     secret: Salausavain
     username: Käyttäjänimi
@@ -73,6 +104,13 @@ akeneo_connectivity.connection:
       helper:
         message: 'Tässä ovat tunnistetiedot, joita voit käyttää {{ label }} yhteydessä.'
         link: Lue lisää...
+      wrong_credentials_combinations:
+        single: Huomasimme, että käytät tätä yhteyttä varten {{ wrong_username }} käyttäjänimeä (viimeksi käytetty {{ date }} klo {{ time }}). Suosittelemme käyttämään sen sijaan {{ good_username }} käyttäjänimeä.
+        link: Lue, miksi sinun pitäisi käyttää sitä.
+        link_list: Lue, miksi suosittelemme käyttämään tätä käyttäjänimeä.
+        several: Huomasimme, että et käytä {{ good_username }} käyttäjänimeä tässä API-yhteydessä.
+        list: 'Tässä on luettelo käyttäjätunnuksista, joita on käytetty viimeisten 7 päivän aikana:'
+        username_date: '{{ wrong_username }} {{ date }} klo {{ time }}'
       password_helper:
         message: Jos olet unohtanut salasanasi, voit luoda uuden salasanan täältä.
         link: Lisätietoa...
@@ -120,13 +158,12 @@ akeneo_connectivity.connection:
     flash:
       success: Yhteys poistettu onnistuneesti.
   helper:
-    title: '👋 Tervetuloa ominaisuuteen, joka yhdistää PIMisi oikein!'
     description: PIM ilman integraatioita on tavallaan hyödytön, eikö? Yhteyksien ansiosta voit määrittää kaikki tietovirrat, jotka tuodaan sisään ja viedään PIMin ulkopuolelle.
-    link: Haluaisitko tietää lisää? Selvitä, mikä on yhteys ja miten siitä saadaan kaikki irti täällä!
   flow_type_helper:
     message: Mietitkö mikä tietovirta on?
     link: Voimme auttaa sinua juuri täällä!
   auditable_helper:
+    message: Voit seurata vain lähde- ja kohdeyhteyksiä.
     link: Lisätietoa...
   edit_image:
     upload_helper: Muuta kuvaasi, vedä ja pudota tai
@@ -134,11 +171,8 @@ akeneo_connectivity.connection:
     click_here: klikkaa tästä
     flash:
       extension_not_allowed: Valitettavasti lähettämäsi tiedoston tyyppi ei ole sallittu.
+  grid.wrong_credentials_combination_helper: Osa alla olevista API-yhteyksistä eivät käytä niiden käyttäjätunnuksia. Ne on korostettu keltaisella varoitusmerkillä.
   dashboard:
-    helper:
-      title: '👋 Tervetuloa yhteyksien hallintaan!'
-      description: Täällä, voit seurata kaikkia tietovirtoja, jotka on kerätty PIMiin yhteyksien kautta, sekä kaikkia tietovirtoja, jotka on jaettu kohteisiin yhteyksiesi kautta.
-      link: Haluatko tietää lisää? Ole hyvä!
     user_survey:
       title: Haluatko lisää tietoja tähän yhteyksien hallintaan?
       content: Palautteesi on meille todella kallisarvoinen. Auta meitä valitsemaan seuraava sovellus vastaamalla tähän yhden kysymyksen kyselyyn!
@@ -146,31 +180,110 @@ akeneo_connectivity.connection:
     connection_selector:
       title:
         source: Tietolähteet
+        destination: Kohteiden API-yhteydet
       all: Kaikki
     charts:
+      inbound: Sisääntuleva
+      outbound: Lähtevä
+      number_of_products_created: Tuotteita luotu
+      number_of_products_updated: Tuotteita päivitetty
+      number_of_products_sent: Tuotteita lähetetty
       legend:
+        during_the_last_seven_days: 'Kokonaismäärä viimeisten 7 päivän aikana'
         today: Tänään
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Lähdeyhteyksien virheet
+          helper: Täällä näet virheiden kokonaismäärän, mukaan lukien liiketoiminnalliset virheet.
+        chart:
+          title: Virheiden määrä päivässä
+      widget:
+        title: Liiketoiminnalliset virheet lähdeyhteyttä kohden
+        over_the_last_seven_days: Viimeisten 7 päivän aikana
+        business_errors: liiketoiminnalliset virheet
     no_connection:
       title:
         default: Haluatko nähdä hienoja kaavioita yhteyksistäsi?
+        data_source: Haluatko nähdä hienoja kaavioita lähdeyhteyksistäsi?
+        data_destination: Haluatko nähdä hienoja kaavioita kohdeyhteyksistäsi?
       message_with_permission:
+        message: Luo ja aloita ensimmäisen API-yhteytesi seuranta
         link: täältä.
       message_without_permission:
         message: Pyydä järjestelmänvalvojaasi luomaan sellaisen.
         link: Lue lisää yhteyksistä täältä...
   webhook:
+    helper:
+      link: Lue lisää tapahtumatilauksen konfiguroimisesta...
     form:
+      url: URL-osoite
       secret: Salausavain
+      enabled: Tapahtumatilauksen aktivointi
+      test: Testaa
+    error:
+      wrong_url: Tämä arvo ei ole kelvollinen URL.
+      required: Tämä kenttä on pakollinen.
+      not_found: Yrität päivittää yhteyttä, jota ei ole olemassa.
+      limit_reached: Olet saavuttanut aktiivisten tapahtumatilausten enimmäismäärän.
+    flash:
+      success: Tapahtumatilaus päivitetty onnistuneesti
+      error: Tapahtumayhteyttä muokattaessa tapahtui valitettavasti virhe.
     regenerate_secret:
       title: Vahvista uudelleenluonti
+      description: Haluatko varmasti luoda tapahtumayhteyden avaimen uudelleen?
       action:
         regenerate: Luo uudelleen
       link: Tässä on mitä tapahtuu.
+      flash:
+        success: Webhook-avain luotu onnistuneesti uudelleen.
+        error: Webhook-avaimen luomisessa uudelleen tapahtui valitettavasti virhe.
+    active_event_subscriptions_limit_reached:
+      message: Voit yhdistää enintään {{ limit }} yhteyttä tapahtumatilaus-ominaisuuteen. Olet saavuttanut tämän rajan.
+    event_logs:
+      title: Tapahtumalokit
+      level:
+        warning: Varoitus
+        error: Virhe
+      list:
+        search:
+          placeholder: Hae viesteistä
+          all: Kaikki
+        date_range_filter:
+          from: Alkaen
+          to: Päättyen
+          all: Kaikki
   error_management:
     connection_monitoring:
+      title: Monitorointi
+      helper:
+        title: '{0} Sinulla on {{ count }} virhe |[1,Inf] Sinulla on {{ count }} virhettä'
+        description: Täällä näet yksityiskohtaisesti kunkin virheen tämän yhteyden osalta viimeisten 7 päivän aikana. Virhemäärä on rajoitettu 100 virheeseen.
+        link: Jos haluat ratkaista tämän, vieraile API-yhteyksien ohjekeskuksessamme
       search_filter:
         placeholder: Etsi virheviesteistä
-        result_count: '{0} Ei tulosta − [1,Inf] {{ count }} tulosta'
+      error_list:
+        date_time_column:
+          title: Päivämäärä ja kellonaika
+        content_column:
+          title: Liiketoiminnallisen virheen ilmoitus
+          product_name: Tuotenimi
+          with_id: tunnisteen kanssa
+        details_column:
+          title: Tarkemmat tiedot
+          locale: Lokaali
+          channel: Kanava
+          family: Attribuuttiperhe
+      no_error:
+        title: Mahtavaa, ei virheitä!
+      not_auditable:
+        title: Ei-seurattava yhteys
+        description:
+          1: Seurataksesi tämän yhteyden virheitä
+          2: aktivoi seuranta
+          3: asetuksissa.
+      not_data_source:
+        title: Seurantanäkymä on toistaiseksi saatavilla vain lähdeyhteyksille.
   runtime_error:
     error_message: Voi ei! Tapahtui virhe...
     reload_helper: Päivitä sivu ja yritä uudelleen

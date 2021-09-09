@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: 로케일 하나를 선택해야 합니다. 내보낼 로케일을 선택하십시오.
 pim_import_export:
+  validation:
+    max_length_reached: 이 값은 너무 깁니다. {{ limit }}자 이하여야 합니다.
   entity:
     job_instance:
       label: 작업 프로필
@@ -23,6 +25,10 @@ pim_import_export:
           fail: 작업 프로필을 업데이트할 수 없습니다.
         delete:
           success: 작업 인스턴스 제거됨
+      duplicate:
+        title: '{{ job_code }} 프로필 복제'
+        success: 작업 프로필이 복제되었습니다.
+        fail: 작업 프로필을 복제할 수 없습니다.
     import_profile:
       uppercase_label: 가져오기 프로필
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: 가져오기 프로필 {{ job.label }} | 표시
   pim_importexport_import_execution_index: 가져오기 실행 기록
   pim_importexport_import_execution_show: 가져오기 실행 | 세부 정보
+

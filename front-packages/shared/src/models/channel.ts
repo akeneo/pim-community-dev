@@ -29,9 +29,7 @@ type Channel = {
   };
 };
 
-const getChannelLabel = (channel: Channel, locale: LocaleCode) => {
-  return getLabel(channel.labels, locale, channel.code);
-};
+const getChannelLabel = (channel: Channel, locale: LocaleCode) => getLabel(channel.labels, locale, channel.code);
 
 const denormalizeChannel = (channel: any): Channel => {
   if ('string' !== typeof channel.code) {
@@ -57,23 +55,18 @@ const getAllLocalesFromChannels = (channels: Channel[]): Locale[] =>
     []
   );
 
-const getLocaleFromChannel = (channels: Channel[], channelCode: ChannelCode, localeCode: LocaleReference) => {
-  if (null === localeCode) return null;
+const getLocaleFromChannel = (channels: Channel[], channelCode: ChannelCode, localeReference: LocaleReference) => {
+  if (null === localeReference) return null;
   const channelLocales = getLocales(channels, channelCode);
 
-  return !localeExists(channelLocales, localeCode) ? channelLocales[0].code : localeCode;
+  return !localeExists(channelLocales, localeReference) ? channelLocales[0].code : localeReference;
 };
 
-const getLocalesFromChannel = (channels: Channel[], channelCode: ChannelCode | null) => {
-  if (null !== channelCode) {
-    return getLocales(channels, channelCode);
-  }
+const getLocalesFromChannel = (channels: Channel[], channelReference: ChannelReference) =>
+  null === channelReference ? getAllLocalesFromChannels(channels) : getLocales(channels, channelReference);
 
-  return getAllLocalesFromChannels(channels);
-};
-
-const getLocales = (channels: Channel[], channelCode: string) => {
-  const channel = channels.find((channel: Channel) => channel.code === channelCode);
+const getLocales = (channels: Channel[], channelCode: ChannelCode) => {
+  const channel = channels.find(({code}) => code === channelCode);
 
   return undefined === channel ? [] : channel.locales;
 };

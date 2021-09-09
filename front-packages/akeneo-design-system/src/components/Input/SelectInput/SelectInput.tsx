@@ -261,37 +261,40 @@ const SelectInput = ({
     }
   }, []);
 
-  const handleOptionKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-    if (null !== event.currentTarget) {
-      if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
-        if (event.key === Key.ArrowDown) {
-          const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
-          if (null === nextSibling) {
-            inputRef.current?.focus();
-          } else {
-            nextSibling.focus();
+  const handleOptionKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (null !== event.currentTarget) {
+        if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
+          if (event.key === Key.ArrowDown) {
+            const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
+            if (null === nextSibling) {
+              inputRef.current?.focus();
+            } else {
+              nextSibling.focus();
+            }
+            event.preventDefault();
           }
-          event.preventDefault();
-        }
-        if (event.key === Key.ArrowUp) {
-          const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
-          if (null === previousSibling) {
-            inputRef.current?.focus();
-          } else {
-            previousSibling.focus();
+          if (event.key === Key.ArrowUp) {
+            const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
+            if (null === previousSibling) {
+              inputRef.current?.focus();
+            } else {
+              previousSibling.focus();
+            }
+            event.preventDefault();
           }
-          event.preventDefault();
+          if (event.key === Key.Enter) {
+            const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
+            onChange?.(value);
+            handleBlur();
+          }
+        } else {
+          inputRef.current?.focus();
         }
-        if (event.key === Key.Enter) {
-          const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
-          onChange?.(value);
-          handleBlur();
-        }
-      } else {
-        inputRef.current?.focus();
       }
-    }
-  }, []);
+    },
+    [onChange]
+  );
 
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>

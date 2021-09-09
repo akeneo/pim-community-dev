@@ -55,7 +55,8 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
             $columnLabelized = null !== $translator ? $translator->translate($columnCode, $locale) :
                 sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
 
-            $columnName = sprintf('%s%s%s',
+            $columnName = sprintf(
+                '%s%s%s',
                 $columnCode,
                 FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
                 $columnLabelized

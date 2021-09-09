@@ -70,9 +70,8 @@ class RoleWithPermissionsSaverSpec extends ObjectBehavior
             ['action:privilege1' => true, 'action:privilege2' => false]
         );
 
-        $aclManager->getSid(Argument::type(RoleInterface::class))->shouldBeCalledTimes(2)->will(
-            fn (...$role) => new RoleSecurityIdentity($role)
-        );
+        $aclManager->getSid($role1)->shouldBeCalledTimes(1)->willReturn(new RoleSecurityIdentity('ROLE_ADMIN'));
+        $aclManager->getSid($role2)->shouldBeCalledTimes(1)->willReturn(new RoleSecurityIdentity('ROLE_USER'));
         $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
 
         $privilege1->getIdentity()->willReturn(new AclPrivilegeIdentity('action:privilege1'));

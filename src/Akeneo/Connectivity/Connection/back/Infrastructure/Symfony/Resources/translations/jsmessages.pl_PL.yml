@@ -20,6 +20,8 @@ pim_menu:
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Rynek
   akeneo_connectivity_connection_connect_marketplace_profile: Rynek
+  akeneo_connectivity_connection_connect_apps_activate: Połącz
+  akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_settings_index: Ustawienia połączeń
   akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
   akeneo_connectivity_connection_settings_any: Ustawienie połączenia
@@ -57,6 +59,26 @@ akeneo_connectivity.connection:
         empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
+    apps:
+      wizard:
+        progress:
+          permissions: Uprawnienia
+      title: Połącz
+      activate:
+        flash:
+          error: Przepraszamy, wystąpił błąd podczas łączenia z aplikacją.
+      constraint:
+        client_id:
+          not_blank: Atrybut client_id jest wymagany.
+          must_be_valid: Atrybut client_id nie odpowiada żadnemu znanemu klientowi.
+        response_type:
+          not_blank: Atrybut response_type jest wymagany.
+          must_be_code: Atrybut response_type musi mieć wartość kodową.
+        scope:
+          must_be_valid: Zakresy są nieprawidłowe.
+        redirect_uri:
+          not_blank: Atrybut redirect_uri jest wymagany.
+          must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
   connections: Połączenia
   secondary_actions:
     title: Inne działania

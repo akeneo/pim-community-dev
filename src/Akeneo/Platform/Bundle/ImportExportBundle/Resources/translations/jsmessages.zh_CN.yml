@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: 必须选择一个区域设置，请选择要导出的区域设置。
 pim_import_export:
+  validation:
+    max_length_reached: 此值太长。其不应超过 {{ limit }} 个字符。
   entity:
     job_instance:
       label: 作业配置文件
@@ -23,6 +25,10 @@ pim_import_export:
           fail: 作业配置文件不能更新。
         delete:
           success: 作业实例已成功移除
+      duplicate:
+        title: 复制配置文件 {{ job_code }}
+        success: 作业配置文件已成功复制。
+        fail: 无法复制作业配置文件。
     import_profile:
       uppercase_label: 导入配置文件
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: 导入配置文件 {{ job.label }} |显示
   pim_importexport_import_execution_index: 导入执行历史记录
   pim_importexport_import_execution_show: 导入执行|详细信息
+
