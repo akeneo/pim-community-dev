@@ -105,6 +105,9 @@
             "src/Repository/.gitignore"
         ]
     },
+    "doctrine/doctrine-cache-bundle": {
+        "version": "1.4.0"
+    },
     "doctrine/doctrine-fixtures-bundle": {
         "version": "3.0",
         "recipe": {
@@ -151,8 +154,8 @@
     "doctrine/persistence": {
         "version": "v1.1.0"
     },
-    "doctrine/sql-formatter": {
-        "version": "1.1.1"
+    "doctrine/reflection": {
+        "version": "1.2.2"
     },
     "dompdf/dompdf": {
         "version": "v0.6.2"
@@ -273,6 +276,9 @@
     },
     "instaclick/php-webdriver": {
         "version": "1.4.6"
+    },
+    "jdorn/sql-formatter": {
+        "version": "v1.2.17"
     },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
