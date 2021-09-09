@@ -10,7 +10,7 @@ const getCrispAgent = async (): Promise<CrispAgentInterface | null> => {
   }
 
   // @ts-ignore
-  return window.$crisp ? window.$crisp : null;
+  return window.$crisp;
 };
 
 export {getCrispAgent};
