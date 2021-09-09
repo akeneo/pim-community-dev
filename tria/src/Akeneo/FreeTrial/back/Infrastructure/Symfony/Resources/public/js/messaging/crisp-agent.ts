@@ -1,6 +1,6 @@
 export interface CrispAgentInterface {
   is: (action: string) => boolean;
-  push: (elements: []) => void;
+  push: (elements: any) => void;
 }
 
 const getCrispAgent = async (): Promise<CrispAgentInterface | null> => {
@@ -10,7 +10,7 @@ const getCrispAgent = async (): Promise<CrispAgentInterface | null> => {
   }
 
   // @ts-ignore
-  return window.$crisp ? (window.$crisp as CrispAgent) : null;
+  return window.$crisp ? window.$crisp : null;
 };
 
 export {getCrispAgent};
