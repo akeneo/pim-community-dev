@@ -174,7 +174,9 @@ class DatabaseCommand extends Command
         $entityManager->clear();
 
         $this->eventDispatcher->dispatch(
-            new InstallerEvent($this->commandExecutor),
+            new InstallerEvent($this->commandExecutor, null, [
+                'catalog' => $input->getOption('catalog')
+            ]),
             InstallerEvents::POST_DB_CREATE
         );
 
