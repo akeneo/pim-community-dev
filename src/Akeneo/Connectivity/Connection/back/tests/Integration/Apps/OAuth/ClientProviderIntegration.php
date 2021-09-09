@@ -10,6 +10,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Doctrine\DBAL\Connection;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 
@@ -21,6 +22,7 @@ class ClientProviderIntegration extends TestCase
 {
     private Connection $connection;
     private ClientProvider $clientProvider;
+    private ClientManagerInterface $clientManager;
 
     protected function getConfiguration(): Configuration
     {
@@ -33,6 +35,7 @@ class ClientProviderIntegration extends TestCase
 
         $this->connection = $this->get('database_connection');
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
     }
 
     public function test_it_creates_a_client_if_there_is_none(): void
@@ -66,6 +69,19 @@ class ClientProviderIntegration extends TestCase
         $this->assertClientIsValid($app, $secondClient);
 
         $this->assertSame($firstClient, $secondClient);
+    }
+
+    public function test_it_retrieves_a_client_by_id(): void
+    {
+        $app = $this->createApp([
+            'id' => '97bd9bb8-c86c-4faa-948a-4b4decccfd62',
+        ]);
+        $this->createClient($app->getId(), $app->getCallbackUrl());
+
+        $client = $this->clientProvider->findClientByAppId('97bd9bb8-c86c-4faa-948a-4b4decccfd62');
+
+        $this->assertNotNull($client);
+        $this->assertClientIsValid($app, $client);
     }
 
     private function assertThereIsNoClientForApp(App $app): void
@@ -107,6 +123,20 @@ class ClientProviderIntegration extends TestCase
                 'callback_url' => 'callback_url',
             ], $data)
         );
+    }
+
+    private function createClient(string $appId, string $callbackUrl): Client
+    {
+        /** @var Client $client */
+        $client = $this->clientManager->createClient();
+
+        $client->setRedirectUris([$callbackUrl]);
+        $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_AUTH_CODE]);
+        $client->setMarketplacePublicAppId($appId);
+
+        $this->clientManager->updateClient($client);
+
+        return $client;
     }
 
     private function countExistingClients(): int
