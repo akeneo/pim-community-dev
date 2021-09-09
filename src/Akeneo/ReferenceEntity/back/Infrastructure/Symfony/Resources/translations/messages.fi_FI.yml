@@ -10,8 +10,6 @@ akeneo_referenceentity:
     record:
       create: Luo tietue
       edit: Muokkaa tietueita
-      delete: Poista tietue
-      delete_all: Poista kaikki tietueet
       list_product: Listaa tietueeseen linkitetyt tuotteet
     attribute:
       create: Lisää attribuutti viitetiedolle

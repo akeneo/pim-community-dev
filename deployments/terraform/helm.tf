@@ -40,6 +40,13 @@ data "template_file" "helm_pim_config" {
     topic_job_queue_ui                      = google_pubsub_topic.job-queue-ui.name
     topic_job_queue_import_export           = google_pubsub_topic.job-queue-import-export.name
     topic_job_queue_data_maintenance        = google_pubsub_topic.job-queue-data-maintenance.name
+    akeneo_connect_saml_entity_id           = var.akeneo_connect_saml_entity_id
+    akeneo_connect_saml_certificate         = var.akeneo_connect_saml_certificate
+    akeneo_connect_api_client_secret        = var.akeneo_connect_api_client_secret
+    akeneo_connect_api_client_password      = var.akeneo_connect_api_client_password
+    ft_catalog_api_client_id                = var.ft_catalog_api_client_id
+    ft_catalog_api_password                 = var.ft_catalog_api_password
+    ft_catalog_api_secret                   = var.ft_catalog_api_secret
   }
 }
 

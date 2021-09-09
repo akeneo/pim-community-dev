@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Manager;
 
 use Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;

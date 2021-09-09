@@ -1,12 +1,13 @@
-# Adapted CircleCi Jobs (CI=true) OR manual run from release dir
-
-# Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
+
+IMAGE_TAG ?= master
+CI ?= 0
+PIM_CONTEXT ?=0
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
 TYPE ?= srnt
-PIM_SRC_PATH ?=
+PIM_SRC_PATH ?= ..
 TYPE_LONG ?= serenity
 ENV_NAME ?= dev
 EDITION_VERSION_FILE ?= EnterpriseVersion.php
@@ -14,12 +15,12 @@ EDITION_VERSION_FILE ?= EnterpriseVersion.php
 BUCKET ?= growth-edition-dev
 ifeq ($(TYPE),grth)
 	TYPE_LONG := growth_edition
-	PIM_SRC_PATH := $(TYPE)
+	PIM_SRC_PATH := ../$(TYPE)
 	EDITION_VERSION_FILE := GrowthEditionVersion.php
 endif
 ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
-	PIM_SRC_PATH := $(TYPE)
+	PIM_SRC_PATH := ../$(TYPE)
 	EDITION_VERSION_FILE := FreeTrialVersion.php
 	BUCKET := trial-edition-dev
 endif
@@ -42,7 +43,9 @@ CLUSTER_DNS_NAME ?= europe-west3-a-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.ake
 GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
-DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
+PIM_SRC_DIR ?= $(realpath $(PWD)/..)
+DEPLOYMENT_DIR ?= $(PWD)
+DEPLOYMENTS_INSTANCES_DIR ?= $(DEPLOYMENT_DIR)/instances
 CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
 OPERATIONS_TOOLS_DIR ?= /root/operation-tools
 OPERATIONS_TOOLS_BRANCH ?= master
@@ -59,18 +62,30 @@ BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terrafor
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
 CYPRESS_baseUrl ?= https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
 
+TF_INPUT_FALSE ?=
+TF_AUTOAPPROVE ?=
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
-else
-	TF_INPUT_FALSE ?=
-	TF_AUTOAPPROVE ?=
 endif
-PIM_SRC_DIR ?= $(PWD)
 
 #Vars for exec_in
 executor ?= kubectl
 migrate ?= no
+
+ifneq ($(TYPE), srnt)
+DATABASE_CATALOG_MINIMAL_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+DATABASE_CATALOG_ICECAT_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+
+
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help: #Doc: display this help
+	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:-\ \2/' | column -c2 -t -s :)"
+
+
 
 .PHONY: deploy-instance
 deploy-instance: create-ci-release-files deploy
@@ -106,7 +121,7 @@ $(INSTANCE_DIR):
 terraform-init: $(INSTANCE_DIR)
 ifeq ($(UPGRADE_STEP_2),true)
 		@echo "We are in the second step of update"
-		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/automation/upgrade.sh
 endif
 	cd $(INSTANCE_DIR) && cat main.tf.json
 	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
@@ -119,7 +134,7 @@ terraform-plan: terraform-init
 terraform-apply:
 ifeq ($(UPGRADE_STEP_2),true)
 		@echo "We are in the second step of update"
-		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/automation/upgrade.sh
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
 	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
@@ -129,7 +144,7 @@ endif
 prepare-infrastructure-artifacts: render-helm-templates
 	mkdir -p ~/artifacts/infra
 	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
-	cp -raT $(PIM_SRC_DIR)/deployments/terraform/pim/templates/ ~/artifacts/infra/ || true
+	cp -raT $(DEPLOYMENT_DIR)/terraform/pim/templates/ ~/artifacts/infra/ || true
 	rm -Rf ~/artifacts/infra/**/.terraform || true
 	rm -Rf ~/artifacts/infra/**/.kubeconfig || true
 
@@ -149,11 +164,11 @@ delete:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
 	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
 	fi
 
 .PHONY: delete_clone_flexibility
@@ -161,7 +176,7 @@ delete_clone_flexibility:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_clone_flexibility.sh ;\
+		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_clone_flexibility.sh ;\
 	fi
 
 .PHONY: create-ci-release-files
@@ -176,7 +191,7 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
 	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
 	@echo "=========================================================="
-	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
+	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
@@ -203,7 +218,7 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
+	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(DEPLOYMENT_DIR)/terraform/pim/templates/env-configmap.yaml
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),beta)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -221,9 +236,9 @@ endif
 
 .PHONY: prepare-chart-default-values
 prepare-chart-default-values:
-	yq d -i $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml 'pim.jobs'
-	yq m -i -x $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml $(PIM_SRC_DIR)/deployments/terraform/pim/values-$(TYPE).yaml
-	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
+	yq d -i $(DEPLOYMENT_DIR)/terraform/pim/values.yaml 'pim.jobs'
+	yq m -i -x $(DEPLOYMENT_DIR)/terraform/pim/values.yaml $(DEPLOYMENT_DIR)/terraform/pim/values-$(TYPE).yaml
+	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
 
 .PHONY: get_mysql_parameters_disk
 get_mysql_parameters_disk:
@@ -252,9 +267,9 @@ endif
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
 ifeq ($(ACTIVATE_MONITORING),true)
-	jq -s '.[0] * .[1]' $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+	jq -s '.[0] * .[1]' $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 else
-	cat $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+	cat $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
 	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
 endif
@@ -276,13 +291,6 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
-	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
-	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
-	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
-	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
-	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
-	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
-	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
@@ -319,7 +327,7 @@ commit-instance:
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push) || \
-	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
+	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
 uncommit-instance:
@@ -331,7 +339,7 @@ uncommit-instance:
 	git config --global user.name "pim_ci_instance_deletion"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push) || \
-	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
+	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance
 upgrade-instance:
@@ -352,7 +360,7 @@ upgrade-instance:
 	-a "productTypePrefixFilter=$(TYPE)" \
 	-a "googleProjectIdFilter=akecld-saas-dev" \
 	-a "googleCloudZoneFilter=*" \
-	-a "forceUpdate=true"
+	-a "forceUpdate=false"
 
 .PHONY: test-prod
 test-prod:
@@ -376,7 +384,7 @@ ifeq ($(CI),true)
 	git config user.email "akeneo-ci@akeneo.com"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
-	TYPE=$(TYPE) bash $(PWD)/deployments/bin/release.sh $(OLD_IMAGE_TAG) $(NEW_IMAGE_TAG)
+	TYPE=$(TYPE) bash $(DEPLOYMENT_DIR)/bin/release.sh $(OLD_IMAGE_TAG) $(NEW_IMAGE_TAG)
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
@@ -390,49 +398,30 @@ endif
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
 	@echo "Deprecated"
-	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
+	ENV_NAME=${ENV_NAME} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_environments_hourly
 delete_environments_hourly:
-	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
+	ENV_NAME=${ENV_NAME} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
-	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
-	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
-
-.PHONY: remove_unused_gcloud_pubsub
-remove_unused_gcloud_pubsub:
-	bash $(PWD)/deployments/bin/remove_unused_gcloud_pubsub.sh
-
-.PHONY: remove_unused_gcloud_bucket
-remove_unused_gcloud_bucket:
-	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
-
-.PHONY: remove_unused_disk
-remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
-
-.PHONY: remove_unused_kube_disk
-remove_unused_kube_disk:
-	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
-
-.PHONY: remove_unused_gcloud_disk
-remove_unused_gcloud_disk:
-	bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+	cd $(DEPLOYMENT_DIR)/bin/clear-uptime-check && docker-compose run --rm composer composer install
+	cd $(DEPLOYMENT_DIR)/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
 
 .PHONY: clone_serenity
 clone_serenity:
 	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/bin/clone_serenity.sh
 
 .PHONY: clone_flexibility
 clone_flexibility:
 	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
-	docker run -v $(PWD):/root/project -ti  -e ENV_NAME=dev -e GCLOUD_SERVICE_KEY -e SOURCE_PFID=$(SOURCE_PFID) -e PED_TAG -e INSTANCE_NAME=$(INSTANCE_NAME) eu.gcr.io/akeneo-cloud/cloud-deployer:2.8 /root/project/deployments/bin/clone_flexibility.sh
+	docker run -v $(realpath $(PWD)/..):/root/project -ti -e ENV_NAME=dev -e GCLOUD_SERVICE_KEY -e SOURCE_PFID=$(SOURCE_PFID) -e PED_TAG -e INSTANCE_NAME=$(INSTANCE_NAME) eu.gcr.io/akeneo-cloud/cloud-deployer:2.8 /root/project/deployments/bin/clone_flexibility.sh
 
 .PHONY: test_upgrade_from_flexibility_clone
 test_upgrade_from_flexibility_clone:
-	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(PWD)/deployments/bin/clone_flexibility.sh
+	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
@@ -455,8 +444,8 @@ push-php-image-prod: #Doc: push docker image to docker hub
 
 .PHONY: test-helm-cronjob
 test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM console
-	bash $(PWD)/deployments/bin/test-cronjob-values.sh
+	bash $(DEPLOYMENT_DIR)/bin/test-cronjob-values.sh
 
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
-	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
+	bash $(DEPLOYMENT_DIR)/bin/test_helm_generated_k8s_files.sh
