@@ -4,7 +4,7 @@ import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../../shared/scroll/utils/findScrollParent';
-import {ConnectedApp, ConnectedApps} from '../../../model/connected-app';
+import {ConnectedApp} from '../../../model/connected-app';
 import {useFeatureFlags} from '../../../shared/feature-flags';
 import ConnectedAppsContainerHelper from "./ConnectedAppsContainerHelper";
 import {ConnectedAppCard} from "./ConnectedAppCard";
@@ -28,7 +28,7 @@ const ScrollToTop = styled(IconButton)`
 `;
 
 type Props = {
-    connectedApps: ConnectedApps;
+    connectedApps: ConnectedApp[];
 };
 
 export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
@@ -37,7 +37,7 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
-    const connectedAppsList = connectedApps.connected_apps.map((connectedApp: ConnectedApp) => (
+    const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
     ));
     const handleScrollTop = () => {
@@ -47,7 +47,7 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
     return (
         <>
             <div ref={ref} />
-            <ConnectedAppsContainerHelper count={connectedApps.total} />
+            <ConnectedAppsContainerHelper count={connectedApps.length} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <>
@@ -57,14 +57,14 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
                         <SectionTitle.Information>{translate(
                             'akeneo_connectivity.connection.connect.connected_apps.apps.total',
                             {
-                                total: connectedApps.total.toString(),
+                                total: connectedApps.length.toString(),
                             },
-                            connectedApps.total
+                            connectedApps.length
                         )}</SectionTitle.Information>
                     </SectionTitle>
 
-                    {0 === connectedAppsList.length && <NoConnectedApps />}
-                    {connectedAppsList.length > 0 && <CardGrid>{connectedAppsList}</CardGrid>}
+                    {0 === connectedAppCards.length && <NoConnectedApps />}
+                    {connectedAppCards.length > 0 && <CardGrid>{connectedAppCards}</CardGrid>}
                 </>
             )}
 

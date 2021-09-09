@@ -6,7 +6,7 @@ import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
 import {ConnectedAppsContainerIsLoading} from "../components/ConnectedApps/ConnectedAppsContainerIsLoading";
 import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsContainer';
-import {ConnectedApps} from '../../model/connected-app';
+import {ConnectedApp} from '../../model/connected-app';
 import {useFetchConnectedApps} from "../hooks/use-fetch-connected-apps";
 import {useFeatureFlags} from "../../shared/feature-flags";
 
@@ -16,18 +16,15 @@ export const ConnectedAppPage: FC = () => {
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const featureFlag = useFeatureFlags();
     const fetchConnectedApps = useFetchConnectedApps();
-    const [connectedApps, setConnectedApps] = useState<ConnectedApps | null | false>(null);
+    const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 
     useEffect(() => {
         if (!featureFlag.isEnabled('marketplace_activate')) {
-            setConnectedApps({
-                total: 0,
-                connected_apps: [],
-            });
+            setConnectedApps([]);
             return;
         }
 
-        fetchConnectedApps
+        fetchConnectedApps()
             .then(setConnectedApps)
             .catch(() => setConnectedApps(false));
     }, [fetchConnectedApps]);

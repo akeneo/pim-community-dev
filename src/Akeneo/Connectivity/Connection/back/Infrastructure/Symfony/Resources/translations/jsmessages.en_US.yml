@@ -76,8 +76,8 @@ akeneo_connectivity.connection:
                 description_2: Eager to know more about Apps ?
                 link: Check out our Help Center for more information.
             card:
+                developed_by: Developed by
                 manage_app: Manage app
-                open_app: Open app
         apps:
             title: Connect
             action:

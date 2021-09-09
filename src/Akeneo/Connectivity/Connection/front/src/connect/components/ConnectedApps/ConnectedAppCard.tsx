@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import certifiedIcon from '../../../common/assets/icons/certified.svg';
 import {getColor, getFontSize, Button, Link} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from "../../../model/connected-app";
@@ -17,17 +16,11 @@ const CardContainer = styled.div`
     border: 1px ${getColor('grey', 40)} solid;
     display: grid;
     gap: 0 20px;
-    grid-template-columns: 100px 1fr 50px;
-    grid-template-rows: 50px 50px;
+    grid-template-columns: 100px 1fr 1px; /* 1px column only for ellipsis working */
+    grid-template-rows: 75px 25px;
     grid-template-areas:
         'logo text text'
-        'logo actions certified';
-`;
-
-const Logo = styled.img`
-    margin: auto;
-    max-height: 98px;
-    max-width: 98px;
+        'logo actions actions';
 `;
 
 const LogoContainer = styled.div`
@@ -38,17 +31,34 @@ const LogoContainer = styled.div`
     display: flex;
 `;
 
+const Logo = styled.img`
+    margin: auto;
+    max-height: 98px;
+    max-width: 98px;
+`;
+
 const TextInformation = styled.div`
     grid-area: text;
     max-width: 100%;
-    height: 50px;
 `;
 
 const Name = styled.h1`
     color: ${getColor('grey', 140)};
     font-size: ${getFontSize('big')};
     font-weight: bold;
-    margin: 0 0 5px 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+const Author = styled.h3`
+    color: ${getColor('grey', 120)};
+    font-size: ${getFontSize('big')};
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 5px;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -69,37 +79,18 @@ const Tag = styled.span`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: calc(50% - 3px);
 
     padding: 2px 5px;
     margin-right: 5px;
 `;
 
-const PartnerTag = styled(Tag)`
-    color: ${getColor('purple', 140)};
-    border: 1px ${getColor('purple', 100)} solid;
-`;
-
-const CertifiedIcon = styled.div`
-    background-image: url(${certifiedIcon});
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 50px;
-    width: 50px;
-    height: 50px;
-
-    grid-area: certified;
-    justify-self: end;
-    align-self: end;
-`;
-
 const Actions = styled.div`
     grid-area: actions;
-    justify-self: start;
+    justify-self: end;
     align-self: end;
 
     & > * {
-        margin-right: 10px;
+        margin-left: 10px;
     }
 `;
 
@@ -117,18 +108,18 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
             </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                {item.partner && <PartnerTag>{item.partner}</PartnerTag>}
+                <Author>
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.card.developed_by')}
+                    {' '}
+                    {item.author}
+                </Author>
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
-                <Button ghost level='tertiary' href={item.url} target='_blank'>
+                <Button ghost level='tertiary' href={item.external_url} target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.card.manage_app')}
                 </Button>
-                <Button level='secondary' href={item.url} target='_blank'>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.card.open_app')}
-                </Button>
             </Actions>
-            {item.certified && <CertifiedIcon />}
         </CardContainer>
     );
 };
