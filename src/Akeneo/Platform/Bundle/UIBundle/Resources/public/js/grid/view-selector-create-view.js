@@ -20,7 +20,6 @@ define([
   'pim/datagrid/state',
   'pim/saver/datagrid-view',
   'oro/messenger',
-  'pim/analytics',
 ], function (
   $,
   _,
@@ -32,8 +31,7 @@ define([
   templateInput,
   DatagridState,
   DatagridViewSaver,
-  messenger,
-  analytics
+  messenger
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -139,10 +137,6 @@ define([
         .done(
           function (response) {
             this.getRoot().trigger('grid:view-selector:view-created', response.id);
-
-            analytics.track('product-grid:view:saved', {
-              name: newView.label,
-            });
             modal.close();
             modal.remove();
           }.bind(this)
