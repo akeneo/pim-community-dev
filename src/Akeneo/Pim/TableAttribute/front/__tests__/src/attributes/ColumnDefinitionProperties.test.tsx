@@ -3,7 +3,11 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {ColumnDefinitionProperties} from '../../../src/attribute';
 import {fireEvent, screen} from '@testing-library/react';
 import {getEnUsLocale} from '../factories/Locales';
-import {getNumberColumnDefinitionWithId, getSelectColumnDefinitionWithId} from '../factories/ColumnDefinition';
+import {
+  columnDefinitionPropertiesMapping,
+  getNumberColumnDefinitionWithId,
+  getSelectColumnDefinitionWithId,
+} from '../factories/ColumnDefinition';
 import {getTableAttribute} from '../factories/Attributes';
 
 jest.mock('../../../src/attribute/ManageOptionsModal');
@@ -20,6 +24,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
   });
@@ -35,6 +40,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -54,6 +60,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -71,6 +78,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -88,6 +96,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -105,6 +114,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -122,6 +132,7 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttribute()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 

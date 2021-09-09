@@ -3,9 +3,6 @@ import {LabelCollection} from '@akeneo-pim-community/shared';
 export type ColumnType = 'text' | 'number' | 'boolean' | 'select';
 export type ColumnCode = string;
 
-const DATA_TYPES: ColumnType[] = ['text', 'number', 'boolean', 'select'];
-const FIRST_COLUMN_DATA_TYPES: ColumnType[] = ['select'];
-
 export type TextColumnValidation = {
   max_length?: number;
 };
@@ -65,5 +62,3 @@ export type ColumnDefinition =
   | SelectColumnDefinition;
 
 export type TableConfiguration = ColumnDefinition[];
-
-export {DATA_TYPES, FIRST_COLUMN_DATA_TYPES};

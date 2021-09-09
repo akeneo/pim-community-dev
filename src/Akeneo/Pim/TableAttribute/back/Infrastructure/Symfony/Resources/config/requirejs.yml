@@ -5,6 +5,21 @@ config:
         pim/table-attribute/attribute/properties-helper: akeneopimtableattribute/legacy/properties-helper
 
     config:
+        pim/table-attribute/attribute/tab:
+            column_definition_properties:
+                select: '@akeneopimtableattribute/attribute/column_definition_properties/SelectProperties'
+                number: '@akeneopimtableattribute/attribute/column_definition_properties/NumberProperties'
+                text: '@akeneopimtableattribute/attribute/column_definition_properties/TextProperties'
+            data_types:
+                select:
+                    useable_as_first_column: true
+                text:
+                    useable_as_first_column: false
+                number:
+                    useable_as_first_column: false
+                boolean:
+                    useable_as_first_column: false
+
         pim/form/common/attributes/create-button:
             attribute_icons:
                 pim_catalog_table: TableIcon

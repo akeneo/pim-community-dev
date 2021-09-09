@@ -1,23 +1,9 @@
 import React from 'react';
-import {Button, Field, Helper, NumberInput, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
+import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
-import {
-  Attribute,
-  ColumnCode,
-  ColumnValidation,
-  SelectColumnDefinition,
-  SelectOption,
-  TextColumnValidation,
-} from '../models';
-import styled from 'styled-components';
-import {ColumnDefinitionWithId} from './TableStructureApp';
-import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
-import {ManageOptionsModal} from './ManageOptionsModal';
+import {Attribute, ColumnCode, ColumnDefinition} from '../models';
+import {ColumnDefinitionPropertiesMapping, ColumnDefinitionWithId} from './TableStructureApp';
 import {FieldsList} from '../shared';
-
-const ManageOptionsButtonContainer = styled.div`
-  text-align: right;
-`;
 
 type ColumnDefinitionPropertiesProps = {
   attribute: Attribute;
@@ -27,6 +13,7 @@ type ColumnDefinitionPropertiesProps = {
   onChange: (column: ColumnDefinitionWithId) => void;
   savedColumnIds: string[];
   isDuplicateColumnCode: (code: ColumnCode) => boolean;
+  columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
@@ -37,13 +24,9 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   onChange,
   savedColumnIds,
   isDuplicateColumnCode,
+  columnDefinitionPropertiesMapping,
 }) => {
   const translate = useTranslate();
-  const [isManageOptionsOpen, openManageOption, closeManageOption] = useBooleanState();
-  const handleValidationChange = (validation: ColumnValidation) => {
-    selectedColumn.validations = {...selectedColumn.validations, ...validation};
-    onChange(selectedColumn);
-  };
 
   const handleLabelChange = (localeCode: LocaleCode, newValue: string) => {
     selectedColumn.labels[localeCode] = newValue;
@@ -55,82 +38,18 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     onChange(selectedColumn);
   };
 
-  const handleManageOptionChange = (options: SelectOption[]) => {
-    (selectedColumn as SelectColumnDefinition).options = options;
-    onChange(selectedColumn);
+  const handleChange = (selectedColumn: ColumnDefinition) => {
+    onChange(selectedColumn as ColumnDefinitionWithId);
   };
 
-  const isMinGreaterThanMax =
-    selectedColumn.data_type === 'number' &&
-    'undefined' !== typeof selectedColumn.validations.min &&
-    'undefined' !== typeof selectedColumn.validations.max &&
-    selectedColumn.validations.min > selectedColumn.validations.max;
-
-  const isMaxLengthInvalid =
-    typeof (selectedColumn.validations as TextColumnValidation).max_length !== 'undefined' &&
-    (((selectedColumn.validations as TextColumnValidation).max_length as number) < 1 ||
-      ((selectedColumn.validations as TextColumnValidation).max_length as number) > 100);
-
-  const validations = (
-    <>
-      {selectedColumn.data_type === 'text' && (
-        <Field label={translate('pim_table_attribute.validations.max_length')}>
-          <NumberInput
-            invalid={isMaxLengthInvalid}
-            value={`${selectedColumn.validations.max_length}`}
-            onChange={value => handleValidationChange({max_length: value === '' ? undefined : parseInt(value)})}
-            min={1}
-            max={100}
-            step={1}
-          />
-          {isMaxLengthInvalid && (
-            <Helper level='error'>
-              {translate('pim_table_attribute.validations.max_length_range', {maximum: 100})}
-            </Helper>
-          )}
-        </Field>
-      )}
-      {selectedColumn.data_type === 'number' && (
-        <>
-          <Field label={translate('pim_table_attribute.validations.min')}>
-            <NumberInput
-              value={`${selectedColumn.validations.min}`}
-              onChange={value => handleValidationChange({min: value === '' ? undefined : parseFloat(value)})}
-            />
-          </Field>
-          <Field label={translate('pim_table_attribute.validations.max')}>
-            <NumberInput
-              value={`${selectedColumn.validations.max}`}
-              onChange={value => handleValidationChange({max: value === '' ? undefined : parseFloat(value)})}
-            />
-            {isMinGreaterThanMax && (
-              <Helper level='error'>{translate('pim_table_attribute.validations.max_greater_than_min')}</Helper>
-            )}
-          </Field>
-          <Checkbox
-            checked={selectedColumn.validations.decimals_allowed ?? false}
-            onChange={event => handleValidationChange({decimals_allowed: event.target.checked})}>
-            {translate('pim_table_attribute.validations.decimals_allowed')}
-          </Checkbox>
-        </>
-      )}
-      {selectedColumn.data_type === 'select' && (
-        <ManageOptionsButtonContainer>
-          <Button onClick={openManageOption} ghost size='small' level='tertiary'>
-            {translate('pim_table_attribute.form.attribute.manage_options')}
-          </Button>
-          {isManageOptionsOpen && (
-            <ManageOptionsModal
-              attribute={attribute}
-              columnDefinition={selectedColumn}
-              onClose={closeManageOption}
-              onChange={handleManageOptionChange}
-            />
-          )}
-        </ManageOptionsButtonContainer>
-      )}
-    </>
-  );
+  const specificProperties = () => {
+    const TypeSpecificProperties = columnDefinitionPropertiesMapping[selectedColumn.data_type]?.default;
+    return (
+      TypeSpecificProperties && (
+        <TypeSpecificProperties selectedColumn={selectedColumn} attribute={attribute} handleChange={handleChange} />
+      )
+    );
+  };
 
   const codeViolations: string[] = [];
   if (selectedColumn.code === '')
@@ -175,7 +94,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             value={translate(`pim_table_attribute.properties.data_type.${selectedColumn.data_type}`)}
           />
         </Field>
-        {validations}
+        {specificProperties()}
       </FieldsList>
       <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
         <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.labels')}</SectionTitle.Title>

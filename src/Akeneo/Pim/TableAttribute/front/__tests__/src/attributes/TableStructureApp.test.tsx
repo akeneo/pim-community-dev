@@ -5,6 +5,7 @@ import {TableStructureApp} from '../../../src/attribute';
 import {getComplexTableConfiguration, getSimpleTableConfiguration} from '../factories/TableConfiguration';
 import {getTableAttribute} from '../factories/Attributes';
 import {fireEvent} from '@testing-library/dom';
+import {columnDefinitionPropertiesMapping, dataTypesMapping} from '../factories/ColumnDefinition';
 
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
@@ -22,6 +23,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -44,6 +47,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -73,6 +78,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -100,6 +107,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -140,6 +149,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={[]}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
@@ -153,6 +164,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -191,6 +204,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -207,6 +222,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -271,6 +288,8 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getTableAttribute()}
+        dataTypesMapping={dataTypesMapping}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();

@@ -1,7 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {TableStructureApp} from '../attribute';
+import {ColumnDefinitionPropertiesMapping, DataTypesMapping, TableStructureApp} from '../attribute';
 import {
   Attribute,
   AttributeType,
@@ -122,6 +122,9 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     }
     const attribute: Attribute = this.getFormData();
 
+    const columnDefinitionPropertiesMapping = __moduleConfig.column_definition_properties as ColumnDefinitionPropertiesMapping;
+    const dataTypes = __moduleConfig.data_types as DataTypesMapping;
+
     this.getTableConfiguration(initialTableConfiguration).then(tableConfiguration => {
       this.handleChange(tableConfiguration);
 
@@ -132,6 +135,8 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
             initialTableConfiguration={tableConfiguration}
             onChange={this.handleChange.bind(this)}
             savedColumnCodes={this.savedColumnCodes || []}
+            columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
+            dataTypesMapping={dataTypes}
           />
         </DependenciesProvider>,
         this.el

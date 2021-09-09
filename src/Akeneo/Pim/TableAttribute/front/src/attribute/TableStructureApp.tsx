@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {
   AddingValueIllustration,
@@ -15,7 +15,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
 import {Attribute, ColumnCode, ColumnDefinition, TableConfiguration} from '../models';
 import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AddColumnModal} from './AddColumnModal';
+import {AddColumnModal, DataTypesMapping} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 import {CenteredHelper} from '../shared';
@@ -29,11 +29,25 @@ const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
 `;
 
+type ColumnDefinitionProps = {
+  attribute: Attribute;
+  selectedColumn: ColumnDefinition;
+  handleChange: (newColumn: ColumnDefinition) => void;
+};
+
+export type ColumnDefinitionPropertiesMapping = {
+  [attributeType: string]: {default: ColumnProperties};
+};
+
+export type ColumnProperties = (props: ColumnDefinitionProps) => ReactElement;
+
 type TableStructureAppProps = {
   attribute: Attribute;
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
   savedColumnCodes: ColumnCode[];
+  columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
+  dataTypesMapping: DataTypesMapping;
 };
 
 export type ColumnDefinitionWithId = ColumnDefinition & {id: string};
@@ -48,6 +62,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   initialTableConfiguration,
   onChange,
   savedColumnCodes,
+  columnDefinitionPropertiesMapping,
+  dataTypesMapping,
 }) => {
   const translate = useTranslate();
   const router = useRouter();
@@ -201,6 +217,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           close={closeNewColumnModal}
           onCreate={handleCreate}
           existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
+          dataTypesMapping={dataTypesMapping}
         />
       )}
       <CenteredHelper>
@@ -224,6 +241,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
       onChange={handleColumnChange}
       savedColumnIds={savedColumnIds}
       isDuplicateColumnCode={isDuplicateColumnCode}
+      columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
     />
   ) : (
     <div />

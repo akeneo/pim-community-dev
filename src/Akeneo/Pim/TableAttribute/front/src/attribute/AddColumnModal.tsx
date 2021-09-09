@@ -1,14 +1,21 @@
-import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
+import {AttributesIllustration, Button, Field, Helper, Modal, SelectInput, TextInput} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES, FIRST_COLUMN_DATA_TYPES} from '../models';
-import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
+import {ColumnCode, ColumnDefinition, ColumnType} from '../models';
+import {LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import {FieldsList} from '../shared';
+
+export type DataTypesMapping = {
+  [dataType: string]: {
+    useable_as_first_column?: boolean;
+  };
+};
 
 type AddColumnModalProps = {
   close: () => void;
   onCreate: (columnDefinition: ColumnDefinition) => void;
   existingColumnCodes: ColumnCode[];
+  dataTypesMapping: DataTypesMapping;
 };
 
 type UndefinedColumnDefinition = {
@@ -22,7 +29,7 @@ type ErrorValidations = {
   data_type: string[];
 };
 
-const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existingColumnCodes}) => {
+const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existingColumnCodes, dataTypesMapping}) => {
   const userContext = useUserContext();
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
@@ -121,7 +128,9 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     } as ColumnDefinition);
   };
 
-  const dataTypes = existingColumnCodes.length ? DATA_TYPES : FIRST_COLUMN_DATA_TYPES;
+  const dataTypes = existingColumnCodes.length
+    ? Object.keys(dataTypesMapping)
+    : Object.keys(dataTypesMapping).filter(dataType => dataTypesMapping[dataType].useable_as_first_column);
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={close} illustration={<AttributesIllustration />}>
