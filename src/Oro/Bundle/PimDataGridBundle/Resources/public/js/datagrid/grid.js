@@ -15,6 +15,7 @@ define([
   'oro/datagrid/select-all-header-cell',
   'pim/template/common/no-data',
   'pim/template/common/grid',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -29,7 +30,8 @@ define([
   SelectRowCell,
   SelectAllHeaderCell,
   noDataTemplate,
-  template
+  template,
+  analytics
 ) {
   'use strict';
 
@@ -285,6 +287,12 @@ define([
           actionConfiguration = row.model.get('action_configuration');
         if (!actionConfiguration || actionConfiguration[action.name] !== false) {
           action.run();
+
+          if (this.name === 'product-grid' && action.datagrid && action.datagrid.entityHint === 'product') {
+            analytics.track('product-grid:product:selected', {
+              identifier: action.model.attributes.identifier,
+            });
+          }
         }
       }
     },

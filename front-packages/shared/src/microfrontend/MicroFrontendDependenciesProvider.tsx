@@ -158,6 +158,9 @@ const MicroFrontendDependenciesProvider = ({
         featureFlags: {
           isEnabled: () => false,
         },
+        analytics: {
+          track: (event: string, properties?: object) => console.log('Track event', event, properties)
+        },
       }}
     >
       <Notifications notifications={notifications} onNotificationClosed={handleNotificationClose} />
