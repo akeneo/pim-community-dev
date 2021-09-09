@@ -3,6 +3,7 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import render, {InputValueProps} from '../../../src/rules/TableValue';
 import {getTableAttribute} from '../factories/Attributes';
 import {Attribute} from '../../../src/models';
+import {defaultCellInputsMapping} from '../factories/CellInput';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -22,6 +23,8 @@ describe('TableInputValue', () => {
       onChange: handleChange,
       id: 'id',
       name: 'name',
+      cellInputsMapping: defaultCellInputsMapping,
+      cellMatchersMapping: defaultCellInputsMapping,
     } as InputValueProps;
     renderWithProviders(render(props));
 

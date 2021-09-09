@@ -8,22 +8,15 @@ import {
   MoreVerticalIcon,
   TableInput,
 } from 'akeneo-design-system';
-import {
-  ColumnCode,
-  ColumnDefinition,
-  NumberColumnValidation,
-  SelectOptionCode,
-  TableAttribute,
-  TableCell,
-  TextColumnValidation,
-} from '../models';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {ColumnCode, ColumnDefinition, TableAttribute, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {TableInputNumber, TableInputSelect, TableInputText} from './CellInputs';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../shared';
 import {useFetchOptions} from './useFetchOptions';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {CellInputsMapping} from './CellInputs';
+import {CellMatchersMapping} from './CellMatchers';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -66,6 +59,8 @@ type TableInputValueProps = {
   violatedCells?: ViolatedCell[];
   readOnly?: boolean;
   isCopying?: boolean;
+  cellInputsMapping: CellInputsMapping;
+  cellMatchersMapping: CellMatchersMapping;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -76,6 +71,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   searchText = '',
   violatedCells = [],
   isCopying = false,
+  cellInputsMapping,
+  cellMatchersMapping,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -86,11 +83,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
   const [firstColumn, ...otherColumns] = attribute.table_configuration;
-  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(
-    attribute.table_configuration,
-    attribute.code,
-    valueData
-  );
+  const {getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
+
+  const matchers = {};
+  Object.keys(cellInputsMapping).forEach(data_type => {
+    matchers[data_type] = cellMatchersMapping[data_type].default(attribute, valueData);
+  });
 
   React.useEffect(() => {
     setCurrentPage(0);
@@ -124,29 +122,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   let valueDataPage = valueData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   const cellMatchSearch = (cell: TableCell, columnDefinition: ColumnDefinition) => {
-    if (!isSearching || typeof cell === 'undefined') {
-      return false;
-    }
+    const matcher = matchers[columnDefinition.data_type];
 
-    switch (columnDefinition.data_type) {
-      case 'text':
-        return (cell as string).toLowerCase().includes(searchText.toLowerCase());
-      case 'number':
-        return `${cell}`.toLowerCase().includes(searchText.toLowerCase());
-      case 'boolean':
-        return translate(cell ? 'pim_common.yes' : 'pim_common.no')
-          .toLowerCase()
-          .includes(searchText.toLowerCase());
-      case 'select': {
-        const option = (getOptionsFromColumnCode(columnDefinition.code) || []).find(option => option.code === cell);
-        if (!option) {
-          return false;
-        }
-        return getLabel(option.labels, userContext.get('catalogLocale'), option.code)
-          .toLowerCase()
-          .includes(searchText.toLowerCase());
-      }
-    }
+    return matcher(cell, searchText, columnDefinition.code);
   };
 
   if (isSearching) {
@@ -236,6 +214,30 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     }
   };
 
+  const tableInputCell = (row: TableRowWithId, columnDefinition: ColumnDefinition) => {
+    const CellInput = cellInputsMapping[columnDefinition.data_type]?.default;
+    if (CellInput) {
+      const matchSearch = matchers[columnDefinition.data_type];
+      const columnCode = columnDefinition.code;
+      const cell = row[columnCode];
+
+      return (
+        <CellInput
+          row={row}
+          columnDefinition={columnDefinition}
+          onChange={value => handleChange(row['unique id'], columnCode, value)}
+          data-testid={`input-${row['unique id']}-${columnCode}`}
+          inError={isInErrorFromBackend(row['unique id'], columnCode)}
+          translate={translate}
+          attribute={attribute}
+          highlighted={matchSearch(cell, searchText, columnCode)}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <TableInputContainer isCopying={isCopying}>
       <TableInput
@@ -272,59 +274,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                   </TableInput.CellContent>
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
-                  const columnCode = columnDefinition.code;
-                  const columnType = columnDefinition.data_type;
-
                   return (
-                    <TableInput.Cell key={`${row['unique id']}-${columnCode}`}>
-                      {'number' === columnType && (
-                        <TableInputNumber
-                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
-                          value={row[columnCode] as string | undefined}
-                          onChange={value => handleChange(row['unique id'], columnCode, value)}
-                          data-testid={`input-${row['unique id']}-${columnCode}`}
-                          validations={columnDefinition.validations as NumberColumnValidation}
-                          inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                        />
-                      )}
-                      {'text' === columnType && (
-                        <TableInputText
-                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
-                          value={row[columnCode] as string | undefined}
-                          onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
-                          data-testid={`input-${row['unique id']}-${columnCode}`}
-                          validations={columnDefinition.validations as TextColumnValidation}
-                          inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                        />
-                      )}
-                      {'select' === columnType && (
-                        <TableInputSelect
-                          attribute={attribute}
-                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
-                          value={row[columnCode] as SelectOptionCode | undefined}
-                          onChange={(value: SelectOptionCode | undefined) =>
-                            handleChange(row['unique id'], columnCode, value)
-                          }
-                          data-testid={`input-${row['unique id']}-${columnCode}`}
-                          options={getOptionsFromColumnCode(columnCode)}
-                          inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                        />
-                      )}
-                      {'boolean' === columnType && (
-                        <TableInput.Boolean
-                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
-                          value={typeof row[columnCode] === 'undefined' ? null : (row[columnCode] as boolean | null)}
-                          onChange={(value: boolean | null) =>
-                            handleChange(row['unique id'], columnCode, null === value ? undefined : value)
-                          }
-                          yesLabel={translate('pim_common.yes')}
-                          noLabel={translate('pim_common.no')}
-                          clearLabel={translate('pim_common.clear')}
-                          openDropdownLabel={translate('pim_common.open')}
-                          data-testid={`input-${row['unique id']}-${columnCode}`}
-                          inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                        />
-                      )}
+                    <TableInput.Cell key={`${row['unique id']}-${columnDefinition.code}`}>
+                      {tableInputCell(row, columnDefinition)}
                     </TableInput.Cell>
                   );
                 })}

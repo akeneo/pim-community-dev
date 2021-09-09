@@ -1,6 +1,7 @@
 import {TableInput} from 'akeneo-design-system';
 import React from 'react';
 import {NumberColumnValidation} from '../../models';
+import {CellInput} from './index';
 
 type TableInputNumberProps = {
   value?: string;
@@ -11,7 +12,7 @@ type TableInputNumberProps = {
   readOnly?: boolean;
 };
 
-const TableInputNumber: React.FC<TableInputNumberProps> = ({
+const InnerNumberInput: React.FC<TableInputNumberProps> = ({
   value,
   onChange,
   highlighted = false,
@@ -41,4 +42,19 @@ const TableInputNumber: React.FC<TableInputNumberProps> = ({
   );
 };
 
-export {TableInputNumber};
+const NumberInput: CellInput = ({row, columnDefinition, onChange, inError, highlighted, ...rest}) => {
+  const cell = row[columnDefinition.code] as string | undefined;
+
+  return (
+    <InnerNumberInput
+      highlighted={highlighted}
+      value={cell}
+      onChange={onChange}
+      validations={columnDefinition.validations as NumberColumnValidation}
+      inError={inError}
+      {...rest}
+    />
+  );
+};
+
+export default NumberInput;

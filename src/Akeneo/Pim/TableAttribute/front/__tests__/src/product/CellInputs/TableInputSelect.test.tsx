@@ -1,8 +1,12 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableInputSelect} from '../../../../src/product';
+import {default as TableInputSelectModule} from '../../../../src/product/CellInputs/SelectInput';
 import {getTableAttribute} from '../../factories/Attributes';
+import {ColumnDefinition} from '../../../../src/models';
+import {getComplexTableConfiguration} from '../../factories/TableConfiguration';
+
+jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 
@@ -13,54 +17,46 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 });
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
-const nutritionScoreOptions = [
-  {code: 'A', labels: {en_US: 'A'}},
-  {code: 'B', labels: {en_US: 'B'}},
-  {code: 'C', labels: {en_US: 'C'}},
-  {code: 'D', labels: {en_US: 'D'}},
-  {code: 'E', labels: {en_US: 'E'}},
-  {code: 'F', labels: {en_US: 'F'}},
-  {code: 'G', labels: {en_US: 'G'}},
-  {code: 'H', labels: {en_US: 'H'}},
-  {code: 'I', labels: {en_US: 'I'}},
-  {code: 'J', labels: {en_US: 'J'}},
-  {code: 'K', labels: {en_US: 'K'}},
-  {code: 'L', labels: {en_US: 'L'}},
-  {code: 'M', labels: {en_US: 'M'}},
-  {code: 'N', labels: {en_US: 'N'}},
-  {code: 'O', labels: {en_US: 'O'}},
-  {code: 'P', labels: {en_US: 'P'}},
-  {code: 'Q', labels: {en_US: 'Q'}},
-  {code: 'R', labels: {en_US: 'R'}},
-  {code: 'S', labels: {en_US: 'S'}},
-  {code: 'T', labels: {en_US: 'T'}},
-  {code: 'U', labels: {en_US: 'U'}},
-];
+const nutritionScoreColumn: ColumnDefinition = {
+  code: 'nutrition_score',
+  validations: {},
+  data_type: 'select',
+  labels: {},
+};
+
+const TableInputSelect = TableInputSelectModule.renderer;
 
 describe('TableInputSelect', () => {
-  it('should render label of existing option', () => {
+  it('should render label of existing option', async () => {
     renderWithProviders(
       <TableInputSelect
-        value={'B'}
-        options={nutritionScoreOptions}
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={jest.fn()}
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
       />
     );
 
-    expect(screen.getByText('B')).toBeInTheDocument();
+    expect(await screen.findByText('B')).toBeInTheDocument();
   });
 
-  it('should delete the value', () => {
+  it('should delete the value', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputSelect
-        value={'B'}
-        options={nutritionScoreOptions}
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
         onChange={handleChange}
-        attribute={getTableAttribute()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
       />
     );
+    expect(await screen.findByText('B')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('pim_common.clear'));
     expect(handleChange).toBeCalledWith(undefined);
@@ -68,15 +64,34 @@ describe('TableInputSelect', () => {
 
   it('should display nothing if no options', () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableInputSelect value={'B'} onChange={handleChange} attribute={getTableAttribute()} />);
+    renderWithProviders(
+      <TableInputSelect
+        columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', no_options: 'B'}}
+        onChange={handleChange}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
+      />
+    );
 
     expect(screen.queryByText('B')).not.toBeInTheDocument();
   });
 
   it('should paginate the options', async () => {
     renderWithProviders(
-      <TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+      <TableInputSelect
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
+      />
     );
+    expect(await screen.findByText('B')).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -94,8 +109,17 @@ describe('TableInputSelect', () => {
   it('should updates the value', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputSelect onChange={handleChange} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+      <TableInputSelect
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={handleChange}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
+      />
     );
+    expect(await screen.findByText('B')).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -108,8 +132,17 @@ describe('TableInputSelect', () => {
 
   it('should search in the options', async () => {
     renderWithProviders(
-      <TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+      <TableInputSelect
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={{...getTableAttribute(), table_configuration: getComplexTableConfiguration()}}
+        translate={a => a}
+      />
     );
+    expect(await screen.findByText('B')).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -122,7 +155,20 @@ describe('TableInputSelect', () => {
   });
 
   it('should display a link when there is no option', async () => {
-    renderWithProviders(<TableInputSelect onChange={jest.fn()} options={[]} attribute={getTableAttribute()} />);
+    const table_configuration = getComplexTableConfiguration();
+    table_configuration[4].code = 'no_options';
+    renderWithProviders(
+      <TableInputSelect
+        columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB'}}
+        onChange={jest.fn()}
+        attribute={{...getTableAttribute(), table_configuration}}
+        translate={a => a}
+      />
+    );
+    expect(await screen.findByTitle('pim_common.open')).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));

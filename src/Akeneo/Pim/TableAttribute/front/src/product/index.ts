@@ -1,4 +1,5 @@
 export * from './CellInputs';
+export * from './CellMatchers';
 export * from './AddRowsButton';
 export * from './TableFieldApp';
 export * from './TableFooter';

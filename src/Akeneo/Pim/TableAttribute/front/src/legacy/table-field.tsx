@@ -4,7 +4,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {TableAttribute, TableValue} from '../models';
-import {TableFieldApp} from '../product';
+import {CellInputsMapping, CellMatchersMapping, TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
@@ -104,6 +104,9 @@ class TableField extends (Field as {new (config: any): any}) {
       this.selected = checked;
     };
 
+    const cellInputsMapping = __moduleConfig.cell_inputs as CellInputsMapping;
+    const cellMatchersMapping = __moduleConfig.cell_matchers as CellMatchersMapping;
+
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
@@ -115,6 +118,8 @@ class TableField extends (Field as {new (config: any): any}) {
             violations={this.violations}
             onCopyCheckboxChange={handleCopyCheckboxChange}
             copyCheckboxChecked={this.selected}
+            cellInputsMapping={cellInputsMapping}
+            cellMatchersMapping={cellMatchersMapping}
           />
         </ThemeProvider>
       </DependenciesProvider>,

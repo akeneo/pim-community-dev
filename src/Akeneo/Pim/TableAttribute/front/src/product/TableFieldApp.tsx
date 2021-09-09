@@ -10,6 +10,8 @@ import {ProductFieldElement, useRenderElements} from './useRenderElements';
 import {useUniqueIds} from './useUniqueIds';
 import {useToggleRow} from './useToggleRow';
 import {SelectOptionRepository} from '../repositories';
+import {CellMatchersMapping} from './CellMatchers';
+import {CellInputsMapping} from './CellInputs';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -67,6 +69,8 @@ type TableFieldAppProps = TemplateContext & {
   copyContext?: CopyContext;
   onCopyCheckboxChange: any;
   copyCheckboxChecked?: boolean;
+  cellInputsMapping: CellInputsMapping;
+  cellMatchersMapping: CellMatchersMapping;
 };
 
 export type TableRowWithId = TableRow & {'unique id': string};
@@ -94,6 +98,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onCopyCheckboxChange,
   copyCheckboxChecked = false,
   violations = [],
+  cellInputsMapping,
+  cellMatchersMapping,
 }) => {
   const translate = useTranslate();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
@@ -216,6 +222,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             readOnly={!isEditable}
             violatedCells={violatedCellsById}
             isCopying={!!copyContext}
+            cellInputsMapping={cellInputsMapping}
+            cellMatchersMapping={cellMatchersMapping}
           />
           {renderElements('field-input')}
         </div>
@@ -239,6 +247,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                     valueData={addUniqueIds(copyContext.data || [])}
                     readOnly={true}
                     isCopying={!!copyContext}
+                    cellInputsMapping={cellInputsMapping}
+                    cellMatchersMapping={cellMatchersMapping}
                   />
                 </div>
               </div>

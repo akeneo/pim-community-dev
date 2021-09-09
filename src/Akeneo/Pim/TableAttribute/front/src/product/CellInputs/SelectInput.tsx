@@ -1,32 +1,34 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Dropdown, Link, TableInput} from 'akeneo-design-system';
-import {Attribute, SelectOption, SelectOptionCode} from '../../models';
+import {Attribute, ColumnCode, SelectOption, SelectOptionCode} from '../../models';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
+import {useFetchOptions} from '../useFetchOptions';
+import {CellInput} from './index';
 
 const BATCH_SIZE = 20;
 
 type TableInputSelectProps = {
   value?: SelectOptionCode;
   onChange: (value: SelectOptionCode | undefined) => void;
-  options?: SelectOption[];
   inError?: boolean;
   highlighted?: boolean;
   attribute: Attribute;
+  columnCode: ColumnCode;
 };
 
 const FakeInput = styled.div`
   margin: 0 10px;
 `;
 
-const TableInputSelect: React.FC<TableInputSelectProps> = ({
+const SelectInput: React.FC<TableInputSelectProps> = ({
   value,
   onChange,
-  options,
   inError = false,
   highlighted = false,
   attribute,
+  columnCode,
   ...rest
 }) => {
   const translate = useTranslate();
@@ -39,6 +41,9 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
+
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
+  const options = getOptionsFromColumnCode(columnCode);
 
   const isLoading = typeof options === 'undefined';
   let option = null;
@@ -145,4 +150,20 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   );
 };
 
-export {TableInputSelect};
+const renderer: CellInput = ({row, columnDefinition, onChange, inError, attribute, highlighted, ...rest}) => {
+  const cell = row[columnDefinition.code] as SelectOptionCode | undefined;
+
+  return (
+    <SelectInput
+      attribute={attribute}
+      highlighted={highlighted}
+      value={cell}
+      onChange={onChange}
+      inError={inError}
+      columnCode={columnDefinition.code}
+      {...rest}
+    />
+  );
+};
+
+export default renderer;

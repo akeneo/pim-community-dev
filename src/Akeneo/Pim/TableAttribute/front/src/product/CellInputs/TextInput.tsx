@@ -1,6 +1,7 @@
 import {TableInput} from 'akeneo-design-system';
 import React from 'react';
 import {TextColumnValidation} from '../../models';
+import {CellInput} from './index';
 
 type TableInputTextProps = {
   value?: string;
@@ -11,7 +12,7 @@ type TableInputTextProps = {
   highlighted?: boolean;
 };
 
-const TableInputText: React.FC<TableInputTextProps> = ({
+const TextInputInner: React.FC<TableInputTextProps> = ({
   value,
   onChange,
   highlighted = false,
@@ -35,4 +36,19 @@ const TableInputText: React.FC<TableInputTextProps> = ({
   );
 };
 
-export {TableInputText};
+const TextInput: CellInput = ({row, columnDefinition, onChange, inError, highlighted, ...rest}) => {
+  const cell = row[columnDefinition.code] as string | undefined;
+
+  return (
+    <TextInputInner
+      highlighted={highlighted}
+      value={cell}
+      onChange={onChange}
+      validations={columnDefinition.validations as TextColumnValidation}
+      inError={inError}
+      {...rest}
+    />
+  );
+};
+
+export default TextInput;

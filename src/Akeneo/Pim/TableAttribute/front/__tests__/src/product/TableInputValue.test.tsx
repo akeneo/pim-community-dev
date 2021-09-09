@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {TableInputValue} from '../../../src/product';
-import {getTableValueWithId} from '../factories/TableValue';
+import {cellInputsMapping, getTableValueWithId} from '../factories/TableValue';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
 import {getTableAttribute} from '../factories/Attributes';
 
@@ -17,6 +17,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={jest.fn()}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -40,6 +41,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -63,7 +65,7 @@ describe('TableInputValue', () => {
     ]);
   });
 
-  it('should search', async () => {
+  it.only('should search', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
@@ -71,6 +73,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={'r'}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -93,6 +96,7 @@ describe('TableInputValue', () => {
             columnCode: 'quantity',
           },
         ]}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -114,6 +118,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -132,6 +137,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -154,6 +160,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -176,6 +183,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -198,6 +206,7 @@ describe('TableInputValue', () => {
         valueData={getTableValueWithId()}
         searchText={''}
         onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
       />
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();

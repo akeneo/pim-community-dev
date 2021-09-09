@@ -4,7 +4,7 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import {TableFieldApp} from '../../../src/product';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
-import {getTableValueSelectRow} from '../factories/TableValue';
+import {cellInputsMapping, getTableValueSelectRow} from '../factories/TableValue';
 import {getTableAttribute} from '../factories/Attributes';
 
 jest.mock('../../../src/attribute/LocaleLabel');
@@ -52,6 +52,7 @@ describe('TableFieldApp', () => {
           },
         ]}
         onCopyCheckboxChange={jest.fn()}
+        cellInputsMapping={cellInputsMapping}
       />
     );
 
@@ -89,6 +90,7 @@ describe('TableFieldApp', () => {
           footer: {from_smart: elementAsHtml},
         }}
         onCopyCheckboxChange={jest.fn()}
+        cellInputsMapping={cellInputsMapping}
       />
     );
 
@@ -104,7 +106,13 @@ describe('TableFieldApp', () => {
   it('should add and remove a row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} onCopyCheckboxChange={jest.fn()} />
+      <TableFieldApp
+        {...getTemplateContext()}
+        onChange={handleChange}
+        elements={{}}
+        onCopyCheckboxChange={jest.fn()}
+        cellInputsMapping={cellInputsMapping}
+      />
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -143,6 +151,7 @@ describe('TableFieldApp', () => {
           comparison: {nutrition: elementAsHtml},
         }}
         onCopyCheckboxChange={jest.fn()}
+        cellInputsMapping={cellInputsMapping}
       />
     );
 
@@ -159,6 +168,7 @@ describe('TableFieldApp', () => {
         copyContext={copyContext}
         onCopyCheckboxChange={handleCopyCheckboxChange}
         elements={{}}
+        cellInputsMapping={cellInputsMapping}
       />
     );
 

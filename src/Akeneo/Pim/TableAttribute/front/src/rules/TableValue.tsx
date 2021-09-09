@@ -3,7 +3,14 @@ import {Attribute, ScopeCode} from 'rule_definition/src/models';
 import {TableAttribute, TableValue} from '../models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
-import {AddRowsButton, TableInputValue, TableValueWithId, useToggleRow, useUniqueIds} from '../product';
+import {
+  AddRowsButton,
+  CellInputsMapping,
+  TableInputValue,
+  TableValueWithId,
+  useToggleRow,
+  useUniqueIds,
+} from '../product';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 
 const TableValueContainer = styled.div`
@@ -25,9 +32,10 @@ export type InputValueProps = {
   label?: string;
   onChange: (value: any) => void;
   scopeCode?: ScopeCode;
+  cellInputsMapping: CellInputsMapping;
 };
 
-const TableValue: React.FC<InputValueProps> = ({attribute, value, onChange}) => {
+const TableValue: React.FC<InputValueProps> = ({attribute, value, cellInputsMapping, onChange}) => {
   const UserContext = useUserContext();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
 
@@ -52,7 +60,12 @@ const TableValue: React.FC<InputValueProps> = ({attribute, value, onChange}) => 
           toggleChange={handleToggleRow}
         />
       </AttributeLabel>
-      <TableInputValue attribute={attribute as TableAttribute} valueData={tableValue} onChange={handleChange} />
+      <TableInputValue
+        attribute={attribute as TableAttribute}
+        valueData={tableValue}
+        onChange={handleChange}
+        cellInputsMapping={cellInputsMapping}
+      />
     </TableValueContainer>
   );
 };
