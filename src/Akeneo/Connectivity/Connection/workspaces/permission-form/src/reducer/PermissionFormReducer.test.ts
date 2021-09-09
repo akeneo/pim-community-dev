@@ -1,6 +1,6 @@
 import {Actions, reducer} from './PermissionFormReducer';
 
-test('it update the state with the action ENABLE_ALL_OWN', () => {
+test('it updates the state with the action ENABLE_ALL_OWN', () => {
     const state = {
         own: {
             all: false,
@@ -31,7 +31,7 @@ test('it update the state with the action ENABLE_ALL_OWN', () => {
     });
 });
 
-test('it update the state with the action ENABLE_ALL_EDIT', () => {
+test('it updates the state with the action ENABLE_ALL_EDIT', () => {
     const state = {
         own: {
             all: false,
@@ -62,7 +62,7 @@ test('it update the state with the action ENABLE_ALL_EDIT', () => {
     });
 });
 
-test('it update the state with the action ENABLE_ALL_VIEW', () => {
+test('it updates the state with the action ENABLE_ALL_VIEW', () => {
     const state = {
         own: {
             all: false,
@@ -93,19 +93,19 @@ test('it update the state with the action ENABLE_ALL_VIEW', () => {
     });
 });
 
-test('it update the state with the action DISABLE_ALL_OWN', () => {
+test('it updates the state with the action DISABLE_ALL_OWN', () => {
     const state = {
         own: {
             all: true,
             identifiers: [],
         },
         edit: {
-            all: false,
-            identifiers: ['a', 'b'],
+            all: true,
+            identifiers: [],
         },
         view: {
-            all: false,
-            identifiers: ['a', 'b', 'c'],
+            all: true,
+            identifiers: [],
         },
     };
     expect(reducer(state, {type: Actions.DISABLE_ALL_OWN})).toEqual({
@@ -115,34 +115,34 @@ test('it update the state with the action DISABLE_ALL_OWN', () => {
         },
         edit: {
             all: false,
-            identifiers: ['a', 'b'],
+            identifiers: [],
         },
         view: {
             all: false,
-            identifiers: ['a', 'b', 'c'],
+            identifiers: [],
         },
     });
 });
 
-test('it update the state with the action DISABLE_ALL_EDIT', () => {
+test('it updates the state with the action DISABLE_ALL_EDIT', () => {
     const state = {
         own: {
-            all: true,
-            identifiers: [],
+            all: false,
+            identifiers: ['a', 'b'],
         },
         edit: {
             all: true,
             identifiers: [],
         },
         view: {
-            all: false,
-            identifiers: ['a', 'b', 'c'],
+            all: true,
+            identifiers: [],
         },
     };
     expect(reducer(state, {type: Actions.DISABLE_ALL_EDIT})).toEqual({
         own: {
             all: false,
-            identifiers: [],
+            identifiers: ['a', 'b'],
         },
         edit: {
             all: false,
@@ -150,16 +150,47 @@ test('it update the state with the action DISABLE_ALL_EDIT', () => {
         },
         view: {
             all: false,
-            identifiers: ['a', 'b', 'c'],
+            identifiers: [],
         },
     });
 });
 
-test('it update the state with the action DISABLE_ALL_VIEW', () => {
+test('it updates the state with the action DISABLE_ALL_VIEW', () => {
     const state = {
         own: {
+            all: false,
+            identifiers: ['a', 'b'],
+        },
+        edit: {
+            all: false,
+            identifiers: ['a', 'b', 'c'],
+        },
+        view: {
             all: true,
             identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.DISABLE_ALL_VIEW})).toEqual({
+        own: {
+            all: false,
+            identifiers: ['a', 'b'],
+        },
+        edit: {
+            all: false,
+            identifiers: ['a', 'b', 'c'],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    });
+});
+
+test('it updates the state with the action DISABLE_ALL_VIEW with edit all', () => {
+    const state = {
+        own: {
+            all: false,
+            identifiers: ['a', 'b'],
         },
         edit: {
             all: true,
@@ -173,6 +204,37 @@ test('it update the state with the action DISABLE_ALL_VIEW', () => {
     expect(reducer(state, {type: Actions.DISABLE_ALL_VIEW})).toEqual({
         own: {
             all: false,
+            identifiers: ['a', 'b'],
+        },
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    });
+});
+
+test('it updates the state with the action DISABLE_ALL_EDIT with own all', () => {
+    const state = {
+        own: {
+            all: true,
+            identifiers: [],
+        },
+        edit: {
+            all: true,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.DISABLE_ALL_EDIT})).toEqual({
+        own: {
+            all: false,
             identifiers: [],
         },
         edit: {
@@ -186,7 +248,7 @@ test('it update the state with the action DISABLE_ALL_VIEW', () => {
     });
 });
 
-test('it update the state with the action CLEAR_OWN', () => {
+test('it updates the state with the action CLEAR_OWN', () => {
     const state = {
         own: {
             all: false,
@@ -217,7 +279,7 @@ test('it update the state with the action CLEAR_OWN', () => {
     });
 });
 
-test('it update the state with the action CLEAR_EDIT', () => {
+test('it updates the state with the action CLEAR_EDIT', () => {
     const state = {
         own: {
             all: false,
@@ -248,7 +310,7 @@ test('it update the state with the action CLEAR_EDIT', () => {
     });
 });
 
-test('it update the state with the action CLEAR_VIEW', () => {
+test('it updates the state with the action CLEAR_VIEW', () => {
     const state = {
         own: {
             all: false,
@@ -279,7 +341,7 @@ test('it update the state with the action CLEAR_VIEW', () => {
     });
 });
 
-test('it update the state with the action ADD_TO_OWN', () => {
+test('it updates the state with the action ADD_TO_OWN', () => {
     const state = {
         own: {
             all: false,
@@ -310,7 +372,7 @@ test('it update the state with the action ADD_TO_OWN', () => {
     });
 });
 
-test('it update the state with the action ADD_TO_EDIT', () => {
+test('it updates the state with the action ADD_TO_EDIT', () => {
     const state = {
         own: {
             all: false,
@@ -341,7 +403,7 @@ test('it update the state with the action ADD_TO_EDIT', () => {
     });
 });
 
-test('it update the state with the action ADD_TO_VIEW', () => {
+test('it updates the state with the action ADD_TO_VIEW', () => {
     const state = {
         own: {
             all: false,
@@ -372,7 +434,7 @@ test('it update the state with the action ADD_TO_VIEW', () => {
     });
 });
 
-test('it update the state with the action REMOVE_FROM_OWN', () => {
+test('it updates the state with the action REMOVE_FROM_OWN', () => {
     const state = {
         own: {
             all: false,
@@ -403,7 +465,7 @@ test('it update the state with the action REMOVE_FROM_OWN', () => {
     });
 });
 
-test('it update the state with the action REMOVE_FROM_EDIT', () => {
+test('it updates the state with the action REMOVE_FROM_EDIT', () => {
     const state = {
         own: {
             all: false,
@@ -434,7 +496,7 @@ test('it update the state with the action REMOVE_FROM_EDIT', () => {
     });
 });
 
-test('it update the state with the action REMOVE_FROM_VIEW', () => {
+test('it updates the state with the action REMOVE_FROM_VIEW', () => {
     const state = {
         own: {
             all: false,
