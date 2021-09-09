@@ -45,11 +45,13 @@ jobs:
          name: Install cUrl
          command: apk --no-cache add curl
       - run:
-          name: Install yq
-          command: |
-            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-            mv yq_linux_386 /usr/local/bin/yq
-            chmod +x /usr/local/bin/yq
+            name: Install yq
+            command: |
+                wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+                mv yq_linux_386 /usr/local/bin/yq
+                echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+                sha1sum -c /tmp/checksum
+                chmod +x /usr/local/bin/yq
       - run:
           name: Remove MySQL port translation for EE (see BH-664)
           command: yq delete --inplace docker-compose.yml services.mysql.ports
@@ -81,7 +83,7 @@ jobs:
                       command: |
                           curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
                               sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" tria/composer.json || \
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Tria file."
       - persist_to_workspace:
           root: ~/
           paths:
@@ -124,13 +126,26 @@ jobs:
               docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
+      - run:
+            name: Creating cache key for JS and PHP dependencies
+            command: |
+                cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+      - restore_cache:
+            name: Restore cache - yarn and Cypress dependency cache
+            keys:
+                - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - restore_cache:
+            name: Restore cache - composer dependency cache
+            keys:
+                - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
-              sudo chown -R 1000:1000 ~/.cache/yarn
+              sudo chown -R 1000:1000 ~/.cache/
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -143,7 +158,7 @@ jobs:
           name: Build css
           command: make css
       - run:
-          name: Create hash for front packages
+          name: Create hash for DSM front packages
           command: |
             find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
             date +%F >> ~/akeneo-design-system.hash
@@ -171,8 +186,18 @@ jobs:
           name: Build Javascript
           command: make javascript-dev
       - run:
-            name: Change owner on project dir after installing when there is no cache
-            command: sudo chmod -R 777 ../project
+            name: Change owner on project dir to have the right to cache the data
+            command: sudo chmod -R 777 ../project ~/.cache ~/.composer
+      - save_cache:
+            name: Save fontend dependency cache
+            paths:
+                - ~/.cache
+            key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - save_cache:
+            name: Save backend dependency cache
+            paths:
+                - ~/.composer
+            key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - persist_to_workspace:
           root: ~/
           paths:
@@ -2690,6 +2715,8 @@ commands:
           command: |
             wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
+            echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+            sha1sum -c /tmp/checksum
             sudo chmod +x /usr/local/bin/yq
 
   connector_bigcommerce_checkout_steps:
