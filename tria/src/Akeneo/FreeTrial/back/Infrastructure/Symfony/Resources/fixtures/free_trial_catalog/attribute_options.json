@@ -1527,10 +1527,7 @@
 {"code":"007","attribute":"food_allergens","sort_order":6,"labels":{"en_US":"Milk","es_ES":"Leche","zh_CN":"\u725b\u5976"}}
 {"code":"no","attribute":"food_allergens","sort_order":7,"labels":{"en_US":"No"}}
 {"code":"nuts","attribute":"food_allergens","sort_order":8,"labels":{"en_US":"Nuts"}}
-{"code":"brgs","attribute":"food_standard","sort_order":3,"labels":{"en_US":"BRGS","es_ES":"BRGS","zh_CN":"BRGS"}}
-{"code":"entotrust","attribute":"food_standard","sort_order":2,"labels":{"en_US":"ENTOTRUST","es_ES":"ENTOTRUST","zh_CN":"ENTOTRUST"}}
-{"code":"red_tractor","attribute":"food_standard","sort_order":0,"labels":{"en_US":"Red Tractor","es_ES":"Red Tractor","zh_CN":"Red Tractor"}}
-{"code":"usda","attribute":"food_standard","sort_order":1,"labels":{"en_US":"USDA","es_ES":"USDA","zh_CN":"USDA"}}
+{"code":"red_tractor","attribute":"food_standard","sort_order":0,"labels":{"en_US":"Red Tractor","es_ES":null,"zh_CN":null}}
 {"code":"ampoules","attribute":"forme_galenique","sort_order":1,"labels":{"en_US":"bulbs"}}
 {"code":"capsules","attribute":"forme_galenique","sort_order":2,"labels":{"en_US":"capsules"}}
 {"code":"comprimes","attribute":"forme_galenique","sort_order":3,"labels":{"en_US":"tablets"}}
