@@ -56,21 +56,9 @@ final class App
         return $this->id;
     }
 
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -81,24 +69,9 @@ final class App
         return $this->scopes;
     }
 
-    /**
-     * @param string[] $scopes
-     */
-    public function setScopes(array $scopes): self
-    {
-        $this->scopes = $scopes;
-        return $this;
-    }
-
     public function getConnectionCode(): string
     {
         return $this->connectionCode;
-    }
-
-    public function setConnectionCode(string $connectionCode): self
-    {
-        $this->connectionCode = $connectionCode;
-        return $this;
     }
 
     public function getLogo(): string
@@ -106,32 +79,14 @@ final class App
         return $this->logo;
     }
 
-    public function setLogo(string $logo): self
-    {
-        $this->logo = $logo;
-        return $this;
-    }
-
     public function getAuthor(): string
     {
         return $this->author;
     }
 
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-        return $this;
-    }
-
     public function getPartner(): ?string
     {
         return $this->partner;
-    }
-
-    public function setPartner(string $partner): self
-    {
-        $this->partner = $partner;
-        return $this;
     }
 
     /**
@@ -142,34 +97,13 @@ final class App
         return $this->categories;
     }
 
-    /**
-     * @param string[] $categories
-     */
-    public function setCategories(array $categories): self
-    {
-        $this->categories = $categories;
-        return $this;
-    }
-
     public function isCertified(): bool
     {
         return $this->certified;
     }
 
-    public function setCertified(bool $certified): self
-    {
-        $this->certified = $certified;
-        return $this;
-    }
-
     public function getExternalUrl(): ?string
     {
         return $this->externalUrl;
-    }
-
-    public function setExternalUrl(string $externalUrl): self
-    {
-        $this->externalUrl = $externalUrl;
-        return $this;
     }
 }
