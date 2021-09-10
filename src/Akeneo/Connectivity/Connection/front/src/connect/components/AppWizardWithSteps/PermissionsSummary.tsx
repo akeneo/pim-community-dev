@@ -1,4 +1,4 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
@@ -21,7 +21,7 @@ const Connect = styled.h3`
 
 const AppTitle = styled.h2`
     color: ${getColor('grey', 140)};
-    font-size: ${getFontSize('title')};
+    font-size: 28px;
     font-weight: normal;
     line-height: 28px;
     margin: 0;
@@ -38,27 +38,19 @@ const Helper = styled.div`
 
 type RowProps = {
     provider: PermissionFormProvider<any>;
-    setPermissions: (state: any) => void;
+    permissions: PermissionsType;
 };
 
-const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions}) => {
-    const handleChange = useCallback(
-        (state: any) => {
-            setPermissions((permissions: PermissionsType) => ({...permissions, [provider.key]: state}));
-        },
-        [setPermissions]
-    );
-
-    return <div>{provider.renderForm(handleChange)}</div>;
-});
+const PermissionRow: FC<RowProps> = React.memo(({provider, permissions}) => (
+    <div>{provider.renderSummary(permissions)}</div>
+));
 
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: any) => void;
+    permissions: PermissionsType;
 };
-
-export const Permissions: FC<Props> = ({appName, providers, setPermissions}) => {
+export const PermissionsSummary: FC<Props> = ({appName, providers, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -72,7 +64,7 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions}) => 
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow key={provider.key} provider={provider} setPermissions={setPermissions} />
+                <PermissionRow key={provider.key} provider={provider} permissions={permissions[provider.key]} />
             ))}
         </InfoContainer>
     );
