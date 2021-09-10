@@ -8,7 +8,7 @@ import {ThemeProvider} from 'styled-components';
 test('The permissions step renders without error', done => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Permissions appName='MyApp' providers={[]} setPermissions={jest.fn()} />
+            <Permissions appName='MyApp' providers={[]} setPermissions={jest.fn()} permissions={{}}/>
         </ThemeProvider>
     );
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
@@ -19,7 +19,7 @@ test('The permissions step renders with the providers from the registry', done =
     const providers = [
         {
             key: 'test',
-            renderForm: () => <div>test form</div>,
+            renderForm: (_onChange: any, initialState: any) => <div>test form {initialState.print}</div>,
             renderSummary: () => null,
             save: () => true,
         },
@@ -27,9 +27,14 @@ test('The permissions step renders with the providers from the registry', done =
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <Permissions appName='MyApp' providers={providers} setPermissions={jest.fn()} />
+            <Permissions
+                appName='MyApp'
+                providers={providers}
+                setPermissions={jest.fn()}
+                permissions={{test: {print: 'hello world!'}}}
+            />
         </ThemeProvider>
     );
-    expect(screen.queryByText('test form')).toBeInTheDocument();
+    expect(screen.queryByText('test form hello world!')).toBeInTheDocument();
     done();
 });
