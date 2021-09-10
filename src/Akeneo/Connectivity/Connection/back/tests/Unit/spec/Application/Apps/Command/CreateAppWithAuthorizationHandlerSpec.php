@@ -192,7 +192,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('foo');
-        $appAuthorization->scopeList()->willReturn([]);
+        $appAuthorization->getScopeList()->willReturn([]);
         $appRoleWithScopesFactory->createRole('an_app_id', [])->willReturn($role);
         $role->getRole()->willReturn(null);
 
@@ -230,7 +230,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('a_group');
-        $appAuthorization->scopeList()->willReturn(['a_scope']);
+        $appAuthorization->getScopeList()->willReturn(['a_scope']);
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
         $createUser->execute('an_app_id', 'an_app_id', 'an_app_id', ['a_group'], ['ROLE_APP'])->willReturn($user);

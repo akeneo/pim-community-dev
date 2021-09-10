@@ -85,7 +85,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
+        $role = $this->roleFactory->createRole($appId, $appAuthorization->getScopeList());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
@@ -100,7 +100,7 @@ final class CreateAppWithAuthorizationHandler
             $user->id(),
         );
 
-        $this->createApp->execute($marketplaceApp, $appAuthorization->scopeList(), $connection->code());
+        $this->createApp->execute($marketplaceApp, $appAuthorization->getScopeList(), $connection->code());
     }
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string

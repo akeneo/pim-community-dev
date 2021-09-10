@@ -74,7 +74,7 @@ class AppAuthorization
     /**
      * @return string[]
      */
-    public function scopeList(): array
+    public function getScopeList(): array
     {
         return empty($this->scope) ? [] : explode(' ', $this->scope);
     }
