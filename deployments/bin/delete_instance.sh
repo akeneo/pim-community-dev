@@ -32,7 +32,7 @@ gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${PFID}/
 
 if [[ ${PFID} =~ "grth" ]]; then
   SOURCE_PATH=$(cat ${PWD}/main.tf.json | jq -r '.module.pim.source')
-  BUCKET_PATH=$(echo $SOURCE_PATH | sed 's/:https:\/\/www\.googleapis\.com\/storage\/v1/\//g' | sed 's/gcs/gs/g')
+  BUCKET_PATH=$(echo $SOURCE_PATH | sed 's/:https:\/\/www\.googleapis\.com\/storage\/v1/\//g' | sed 's/gcs/gs/g' | sed 's/\/\/deployments/\/deployments/g')
 
   # if //deployments doesn't exist we change it to /terraform/deployments
   echo "Source path : ${SOURCE_PATH}"
@@ -41,7 +41,7 @@ if [[ ${PFID} =~ "grth" ]]; then
   if [[ ${BUCKET_EXIST} -eq 0 ]]; then
     echo "Bucket path \"${BUCKET_PATH}\" doesn't exist"
     echo "Change //deployments to /terraform/deployment"
-    sed -i 's/\/\/deployments\/terraform/\/terraform\/deployments\/terraform/g' ${PWD}/main.tf.json
+    sed -i 's/\/deployments\/terraform/\/terraform\/deployments\/terraform/g' ${PWD}/main.tf.json
   fi
 fi
 
