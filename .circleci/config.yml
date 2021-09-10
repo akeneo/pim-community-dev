@@ -1968,16 +1968,10 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    mkdir -p ~/.ssh
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
                 name: Delete environments
                 no_output_timeout: 30m
-                command: |
-                    make delete_environments_hourly
+                command:
+                    PIM_CONTEXT=deployment make delete_environments_hourly
 
   delete_expired_uptime_check:
       environment:
@@ -1989,13 +1983,22 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+                name: Delete expired uptime checks
+                command:
+                    PIM_CONTEXT=deployment make delete_expired_uptime_check
+
+  remove_unused_resources:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
           - run:
-                name: Delete expired uptime-check
-                command: |
-                    make delete_expired_uptime_check
+                name: Remove unused resources
+                command:
+                    PIM_CONTEXT=deployment make remove_unused_resources
 
   zdd_compliancy_diff:
       parameters:
@@ -2035,75 +2038,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
-
-  remove_unused_gcloud_bucket:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud bucket
-                command: |
-                    make remove_unused_gcloud_bucket
-
-  remove_unused_kube_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused kube disk(s)
-                command: |
-                    make remove_unused_kube_disk
-
-  remove_unused_gcloud_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused gcloud disk(s)
-                command: |
-                    make remove_unused_gcloud_disk
-
-  remove_unused_gcloud_pubsub:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud pubsub
-                command: |
-                    make remove_unused_gcloud_pubsub
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
 
 workflows:
   pull_request:
@@ -2596,19 +2531,10 @@ workflows:
          - delete_environments_hourly:
                requires:
                    - checkout
+         - remove_unused_resources:
+               requires:
+                   - checkout
          - delete_expired_uptime_check:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_bucket:
-               requires:
-                   - checkout
-         - remove_unused_kube_disk:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_disk:
-               requires:
-                   - remove_unused_kube_disk
-         - remove_unused_gcloud_pubsub:
                requires:
                    - checkout
 
