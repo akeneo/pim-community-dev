@@ -27,7 +27,7 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
         arguments:
@@ -41,6 +41,8 @@ services:
             - '@pim_user.saver.role_with_permissions'
         public: true
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository:
         arguments:
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~

@@ -81,6 +81,9 @@ akeneo_connectivity.connection:
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about about app authorization,
                     helper_link: check out our Help Center for more information.
+                flash:
+                    success: App successfully configured.
+                    error: Sorry, an error occurred while connecting the App.
             title: Connect
             activate:
                 flash:

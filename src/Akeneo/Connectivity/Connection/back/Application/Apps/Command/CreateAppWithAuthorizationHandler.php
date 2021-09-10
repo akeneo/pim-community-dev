@@ -90,7 +90,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
 
-        $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
+        $user = $this->createUser->execute($randomCode, $randomCode, $randomCode, [$group->getName()], [$role->getRole()]);
 
         $connection = $this->createConnection->execute(
             $randomCode,

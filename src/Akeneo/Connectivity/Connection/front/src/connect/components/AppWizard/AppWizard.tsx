@@ -7,6 +7,7 @@ import {useTranslate} from '../../../shared/translate';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {ScopeListContainer} from './ScopeListContainer';
 import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
 
 const Content = styled.div`
     display: grid;
@@ -59,6 +60,7 @@ interface Props {
 
 export const AppWizard: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
+    const notify = useNotify();
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
@@ -72,10 +74,21 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         history.push('/connect/marketplace');
     };
 
-    const confirm = () => {
-        confirmAuthorization().then(() => {
-            history.push('/connect/marketplace');
-        });
+    const handleConfirm = () => {
+        confirmAuthorization()
+            .then(() => {
+                notify(
+                    NotificationLevel.SUCCESS,
+                    translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+                );
+                history.push('/connect/marketplace');
+            })
+            .catch((e) => {
+                notify(
+                    NotificationLevel.ERROR,
+                    translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+                );
+            });
     };
 
     if (wizardData === null) {
@@ -100,7 +113,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                         <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
                         </ActionButton>
-                        <ActionButton onClick={confirm}>
+                        <ActionButton onClick={handleConfirm}>
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                         </ActionButton>
                     </Actions>
