@@ -28,7 +28,7 @@ final class CreateAppWithAuthorizationHandler
     private CreateConnectionInterface $createConnection;
     private CreateUserInterface $createUser;
     private CreateUserGroupInterface $createUserGroup;
-    private AppRoleWithScopesFactoryInterface $roleFactory;
+    private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
     private ClientProviderInterface $clientProvider;
     private CreateAppInterface $createApp;
 
@@ -39,7 +39,7 @@ final class CreateAppWithAuthorizationHandler
         CreateUserInterface $createUser,
         CreateUserGroupInterface $createUserGroup,
         CreateConnectionInterface $createConnection,
-        AppRoleWithScopesFactoryInterface $roleFactory,
+        AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
         CreateAppInterface $createApp
     ) {
@@ -49,7 +49,7 @@ final class CreateAppWithAuthorizationHandler
         $this->createUser = $createUser;
         $this->createUserGroup = $createUserGroup;
         $this->createConnection = $createConnection;
-        $this->roleFactory = $roleFactory;
+        $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
         $this->clientProvider = $clientProvider;
         $this->createApp = $createApp;
     }
@@ -85,7 +85,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        $role = $this->roleFactory->createRole($appId, $appAuthorization->getScopeList());
+        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getScopeList());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
