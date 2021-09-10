@@ -41,16 +41,20 @@ class PropertyAccessibleAsset
     public function __construct(string $code, array $values)
     {
         $this->code = $code;
-        $this->values = $values;
+        $this->values = [];
+        foreach ($values as $key => $value) {
+            $this->values[\strtolower($key)] = $value;
+        }
     }
 
     public function hasValue(string $pattern): bool
     {
-        if (self::CODE_NAME === $pattern) {
+        $sanitizedPattern = \strtolower($pattern);
+        if (self::CODE_NAME === $sanitizedPattern) {
             return true;
         }
 
-        return isset($this->values[$pattern]);
+        return isset($this->values[$sanitizedPattern]);
     }
 
     /**
@@ -58,10 +62,11 @@ class PropertyAccessibleAsset
      */
     public function getValue(string $pattern)
     {
-        if (self::CODE_NAME === $pattern) {
+        $sanitizedPattern = \strtolower($pattern);
+        if (self::CODE_NAME === $sanitizedPattern) {
             return $this->code;
         }
 
-        return $this->values[$pattern];
+        return $this->values[$sanitizedPattern];
     }
 }

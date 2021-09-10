@@ -85,6 +85,7 @@
 - PIM-10038: Optimize Rule logger to be executed only depending of the log level
 - PIM-10033: Implement LRU cache for Asset Families to optimize performance
 - PIM-10055: Optimize publication of incoming published asssocication upon product publication
+- PIM-10063: Fix product link rule execution to make the property case insensitive
 
 ## Improvements
 
