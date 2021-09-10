@@ -28,6 +28,8 @@ use Doctrine\Common\Util\Debug;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -323,20 +325,12 @@ class FixturesContext extends PimContext
         return $inflector->camelize(str_replace(' ', '_', strtolower($string)));
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
+    protected function getEntityManager(): ObjectManager
     {
         return $this->getMainContext()->getEntityManager();
     }
 
-    /**
-     * @param string $namespace
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($namespace)
+    protected function getRepository(string $namespace): ObjectRepository
     {
         return $this->getMainContext()->getEntityManager()->getRepository($namespace);
     }

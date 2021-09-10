@@ -16,8 +16,10 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context of the website
@@ -38,7 +40,7 @@ class WebUser extends PimContext
      *
      * @return Page
      */
-    public function getPage(string $page)
+    public function getPage(string $page): Page
     {
         return $this->getNavigationContext()->getPage($page);
     }
@@ -2708,10 +2710,7 @@ class WebUser extends PimContext
         return $page;
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -2771,18 +2770,12 @@ class WebUser extends PimContext
         $this->getMainContext()->wait($condition);
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
 
-    /**
-     * @return NavigationContext
-     */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }

@@ -858,10 +858,10 @@ workflows:
 #                name: test_front_static_acceptance_and_integration_ce
 #                requires:
 #                    - build_dev_ce
-          - test_back_phpunit:
-                name: test_back_phpunit_ce
-                requires:
-                    - build_dev_ce
+#          - test_back_phpunit:
+#                name: test_back_phpunit_ce
+#                requires:
+#                    - build_dev_ce
 #          - test_back_data_migrations:
 #                name: test_back_data_migrations_ce
 #                requires:

@@ -11,10 +11,12 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Feature context for the datagrid related steps
@@ -1348,15 +1350,12 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
 
-    /**
-     * @return \Behat\Behat\Context\ExtendedContextInterface
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
@@ -1373,10 +1372,7 @@ class DataGridContext extends PimContext implements PageObjectAware
         return $this->datagrid;
     }
 
-    /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }

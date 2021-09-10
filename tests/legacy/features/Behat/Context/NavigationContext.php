@@ -12,9 +12,11 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -82,9 +84,9 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct(string $mainContextClass, string $baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl, KernelInterface $kernel)
     {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
         $this->baseUrl = $baseUrl;
     }
 
@@ -247,8 +249,6 @@ class NavigationContext extends PimContext implements PageObjectAware
 
                 return true;
             }
-
-            return false;
         }, sprintf('Can access to the page "%s"', $page));
     }
 
@@ -385,7 +385,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      *
      * @return Page
      */
-    public function getPage(string $page)
+    public function getPage(string $page): Page
     {
         if (null === $this->pageFactory) {
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
@@ -498,7 +498,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @return Page
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         $page = $this->getPage($this->currentPage);
 

@@ -85,25 +85,27 @@ legacy:
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
-            default_session: symfony2
+            default_session: symfony
             browser_name: 'chrome'
+            base_url: 'http://httpd/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
             javascript_session: selenium2
             show_cmd: chromium-browser %s
             sessions:
-                symfony2:
-                    symfony2: ~
+                symfony:
+                    symfony: ~
                 selenium2:
                     selenium2:
                         wd_host: 'http://selenium:4444/wd/hub'
-                        capabilities: { "browserName": "chrome", "browser": "chrome", "chrome": {"switches":["--no-sandbox"]}}
-            base_url: 'http://httpd/'
-            files_path: 'tests/legacy/features/Context/fixtures/'
+                        capabilities:
+                            browser: "chrome"
+                            browserName: "chrome"
         FriendsOfBehat\SymfonyExtension:
             bootstrap: config/bootstrap.php
             kernel:
                 path: src/Kernel.php
                 class: Kernel
-                environment: test_fake
+                environment: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
             namespaces:

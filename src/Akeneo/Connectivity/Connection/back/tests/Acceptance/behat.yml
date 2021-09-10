@@ -14,4 +14,4 @@ default:
                 - 'src/Akeneo/Connectivity/Connection/back/tests/Acceptance/features'
                 - 'vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/features'
             contexts:
-                - Akeneo\Connectivity\Connection\Tests\Acceptance\Context\ConnectionContext
+                - 'Akeneo\Connectivity\Connection\Tests\Acceptance\Context\ConnectionContext'

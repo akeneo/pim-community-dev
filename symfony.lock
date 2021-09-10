@@ -17,6 +17,9 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
+    "behat/mink-selenium2-driver": {
+        "version": "v1.4.0"
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },
