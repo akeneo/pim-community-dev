@@ -36,8 +36,8 @@ final class ConnectedApp
         string $author,
         array $categories = [],
         bool $certified = false,
-        string $partner = null,
-        string $externalUrl = null
+        ?string $partner = null,
+        ?string $externalUrl = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -49,6 +49,62 @@ final class ConnectedApp
         $this->certified = $certified;
         $this->partner = $partner;
         $this->externalUrl = $externalUrl;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getScopes(): array
+    {
+        return $this->scopes;
+    }
+
+    public function getConnectionCode(): string
+    {
+        return $this->connectionCode;
+    }
+
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function getPartner(): ?string
+    {
+        return $this->partner;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
+    }
+
+    public function getExternalUrl(): ?string
+    {
+        return $this->externalUrl;
     }
 
     public function normalize(): array

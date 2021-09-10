@@ -19,3 +19,7 @@ services:
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
         public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository:
+        arguments:
+            - '@database_connection'

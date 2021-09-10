@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
@@ -29,7 +29,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
         $selectSQL = <<<SQL
 SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner, external_url
 FROM akeneo_connectivity_app
-ORDER BY created ASC
+ORDER BY name ASC
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
