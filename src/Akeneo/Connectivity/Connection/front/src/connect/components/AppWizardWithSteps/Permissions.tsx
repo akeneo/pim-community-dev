@@ -74,7 +74,12 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions, perm
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow key={provider.key} provider={provider} setPermissions={setPermissions} permissions={permissions[provider.key]} />
+                <PermissionRow
+                    key={provider.key}
+                    provider={provider}
+                    setPermissions={setPermissions}
+                    permissions={permissions[provider.key]}
+                />
             ))}
         </InfoContainer>
     );

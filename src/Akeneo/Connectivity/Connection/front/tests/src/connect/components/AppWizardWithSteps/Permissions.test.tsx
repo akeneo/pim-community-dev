@@ -8,7 +8,7 @@ import {ThemeProvider} from 'styled-components';
 test('The permissions step renders without error', done => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Permissions appName='MyApp' providers={[]} setPermissions={jest.fn()} permissions={{}}/>
+            <Permissions appName='MyApp' providers={[]} setPermissions={jest.fn()} permissions={{}} />
         </ThemeProvider>
     );
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
