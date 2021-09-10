@@ -413,8 +413,8 @@ delete_environments_hourly:
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
-	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
-	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
+	cd deployments/bin/uptime && docker-compose run --rm composer composer install
+	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_gcloud_pubsub
 remove_unused_gcloud_pubsub:
