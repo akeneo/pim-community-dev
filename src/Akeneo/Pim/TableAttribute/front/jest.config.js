@@ -2,8 +2,7 @@ module.exports = {
   setupFiles: ['./setupJest.ts'],
   clearMocks: true,
   moduleFileExtensions: ['js', 'ts', 'tsx'],
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
-  testPathIgnorePatterns: ['/__tests__/src/factories/'],
+  testMatch: ['**/__tests__/src/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   transform: {'^.+\\.tsx?$': 'ts-jest'},
   moduleDirectories: ['<rootDir>/../../../../../node_modules/'],
   moduleNameMapper: {

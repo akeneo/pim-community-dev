@@ -7,7 +7,6 @@ export type CellInput = React.FC<{
   columnDefinition: ColumnDefinition;
   onChange: (value: any) => void;
   inError: boolean;
-  //translate: Translate;
   attribute: TableAttribute;
   highlighted: boolean;
 }>;
