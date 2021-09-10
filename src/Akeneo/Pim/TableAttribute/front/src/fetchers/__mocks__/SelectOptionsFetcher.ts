@@ -32,44 +32,19 @@ const nutritionScoreSelectOptions = [
   {code: 'U', labels: {en_US: 'U'}},
 ];
 
-const getSelectOptions: (_router: Router, attributeCode: string) => SelectOption[] = (_router, attributeCode) => {
-  if (attributeCode === 'attribute_with_a_lot_of_options') {
-    const selectOptions = [];
-    for (let i = 0; i < 50; i++) {
-      selectOptions.push({code: `code${i}`, labels: {en_US: `label${i}`}});
-    }
-    return selectOptions;
-  }
-
-  if (attributeCode === 'test_pagination') {
-    const selectOptions = [];
-    for (let i = 0; i < 21; i++) {
-      selectOptions.push({code: `code${i}`, labels: {en_US: `label${i}`}});
-    }
-    return selectOptions;
-  }
-
-  if (attributeCode === 'attribute_without_options') {
-    return [];
-  }
-
-  return ingredientsSelectOptions;
-};
-
 const fetchSelectOptions = async (
-  router: Router,
-  attributeCode: string,
+  _router: Router,
+  _attributeCode: string,
   columnCode: ColumnCode
 ): Promise<SelectOption[] | undefined> => {
-  if (columnCode === 'ingredient') {
-    return new Promise(resolve => resolve(getSelectOptions(router, attributeCode)));
-  } else if (columnCode === 'nutrition_score') {
-    return new Promise(resolve => resolve(nutritionScoreSelectOptions));
-  } else if (columnCode === 'no_options') {
-    return new Promise(resolve => resolve([]));
-  } else {
-    return new Promise(resolve => resolve(undefined));
-  }
+  const options = {
+    ingredient: ingredientsSelectOptions,
+    nutrition_score: nutritionScoreSelectOptions,
+    no_options: [],
+    unknown: undefined,
+  };
+
+  return new Promise(resolve => resolve(options[columnCode]));
 };
 
 const SelectOptionFetcher = {

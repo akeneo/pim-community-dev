@@ -255,14 +255,15 @@ describe('ManageOptionsModal', () => {
   it('should paginate the options list', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        attribute={{...getComplexTableAttribute(), code: 'test_pagination'}}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
-        columnDefinition={getSelectColumnDefinition()}
+        columnDefinition={{...getSelectColumnDefinition(), code: 'nutrition_score'}}
         onClose={jest.fn()}
       />
     );
 
     expect(await findCodeInput(19)).toBeInTheDocument();
+    expect(screen.getAllByRole('textbox')).toHaveLength(43); // 20 * 2 + new code + new label + search
     expect(queryLabelInput(20)).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('No. 2'));
@@ -271,10 +272,12 @@ describe('ManageOptionsModal', () => {
     expect(queryLabelInput(21)).not.toBeInTheDocument(); // there is no 21st element
 
     // We remove the last element of page 2 -> we should go back to the first page
+    expect(screen.getAllByRole('textbox')).toHaveLength(5); // 1 * 2 + new code + new label + search
     fireEvent.click(screen.getAllByTitle('pim_common.remove')[0]);
     const confirmationInput = await screen.findByLabelText('pim_table_attribute.form.attribute.please_type');
     expect(confirmationInput).toBeInTheDocument();
-    fireEvent.change(confirmationInput, {target: {value: 'code20'}});
+    fireEvent.change(confirmationInput, {target: {value: 'U'}});
+    expect(screen.getByText('pim_common.delete')).not.toBeDisabled();
     fireEvent.click(screen.getByText('pim_common.delete'));
 
     expect(await findCodeInput(19)).toBeInTheDocument();
@@ -283,10 +286,10 @@ describe('ManageOptionsModal', () => {
   it('should prevent the user from adding a new option when reaching the limit', async () => {
     renderWithProviders(
       <ManageOptionsModal
-        limit={51}
-        attribute={{...getComplexTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
+        limit={22}
+        attribute={getComplexTableAttribute()}
         onChange={jest.fn()}
-        columnDefinition={getSelectColumnDefinition()}
+        columnDefinition={{...getSelectColumnDefinition(), code: 'nutrition_score'}}
         onClose={jest.fn()}
       />
     );

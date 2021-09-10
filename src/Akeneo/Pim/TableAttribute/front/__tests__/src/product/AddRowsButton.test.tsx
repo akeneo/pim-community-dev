@@ -113,38 +113,36 @@ describe('AddRowsButton', () => {
   });
 
   it('should paginate the options', async () => {
-    const toggleChange = jest.fn();
+    const attribute = getComplexTableAttribute();
+    attribute.table_configuration[0].code = 'nutrition_score';
     renderWithProviders(
       <AddRowsButton
-        attribute={{...getComplexTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
-        columnCode={'ingredient'}
+        attribute={attribute}
+        columnCode={'nutrition_score'}
         checkedOptionCodes={['salt', 'sugar']}
-        toggleChange={toggleChange}
+        toggleChange={jest.fn()}
       />
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
     await act(async () => {
       fireEvent.click(button);
-      expect(await screen.findByText('label0')).toBeInTheDocument();
+      expect(await screen.findByText('A')).toBeInTheDocument();
     });
 
-    expect(screen.queryByText('label21')).not.toBeInTheDocument();
+    expect(screen.queryByText('U')).not.toBeInTheDocument();
 
     act(() => {
       entryCallback?.([{isIntersecting: true}]);
     });
-    expect(await screen.findByText('label21')).toBeInTheDocument();
+    expect(await screen.findByText('U')).toBeInTheDocument();
   });
 
   it('should redirect from helper when there is no option', async () => {
+    const attribute = getComplexTableAttribute();
+    attribute.table_configuration[0].code = 'no_options';
     renderWithProviders(
-      <AddRowsButton
-        attribute={{...getComplexTableAttribute(), code: 'attribute_without_options'}}
-        columnCode={'ingredient'}
-        checkedOptionCodes={[]}
-        toggleChange={jest.fn()}
-      />
+      <AddRowsButton attribute={attribute} columnCode={'no_options'} checkedOptionCodes={[]} toggleChange={jest.fn()} />
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
