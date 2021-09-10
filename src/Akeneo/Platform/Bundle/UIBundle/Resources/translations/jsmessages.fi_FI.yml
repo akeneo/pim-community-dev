@@ -20,6 +20,11 @@ Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
+duration:
+  days: "{0}0 päivää{1}1 päivä|]1, Inf[{{ count }} päivää"
+  hours: "{0}0 tuntia{1}1 tunti|]1, Inf[{{ count }} tuntia"
+  minutes: "{0}0 minuuttia{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
+  seconds: "{0}0 sekuntia{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
 #PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
@@ -153,7 +158,10 @@ pim_common:
   before: Ennen
   by: tehnyt
   cancel: Peruuta
+  clear_value: Tyhjennä arvo
+  close: Sulje
   code: Koodi
+  completeness: Valmistumisaste
   confirm: Vahvista
   confirm_deletion: Vahvista poisto
   confirm_revocation: Vahvista poisto
@@ -167,6 +175,8 @@ pim_common:
   from: Alkaen
   general_properties: Yleiset ominaisuudet
   history: Historia
+  identifier: Tunniste
+  image: Kuva
   label: Nimike
   label_translations: Nimikkeiden käännökset
   Label or identifier: nimike tai tunniste
@@ -180,11 +190,13 @@ pim_common:
   not_available: Ei mitään
   now: Nyt
   ok: OK
+  other_actions: Muut toiminnot
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
   remove: Poista
   required_label: (vaadittu)
+  result_count: "{0}0 tulosta{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
   save: Tallenna
   search: Etsi
   select2:
@@ -195,6 +207,7 @@ pim_common:
   to: mihin
   type: Tyyppi
   update: Päivitä
+  updated: Päivitetty
   "yes": "Kyllä"
   operator: Operaattori
   operators:
@@ -210,6 +223,7 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
+  read_more: Lue lisää
 error:
   exception: Voi pahus! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua

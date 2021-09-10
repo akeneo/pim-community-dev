@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
   page_title:
     index: "]-Inf, 1]{{ count }} tulos|]1, Inf[{{ count }} tulosta"
+    product: "]-Inf, 1]{{ count }} tuote|]1, Inf[{{ count }} tuotetta"
+    product_model: "]-Inf, 1]{{ count }} tuotemalli ]1, Inf[{{ count }} tuotemallia"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Luo tuote
@@ -49,6 +52,11 @@ pim_enrich.entity.product:
       select: Valitse
       all_visible: Kaikki näkyvillä olevat
       copy: Kopioi
+    convert_variant_to_simple:
+      label: Muunna yksittäistuotteeksi
+      dialog:
+        title: Vahvista muuntaminen
+        content: "Oletko varma, että haluat muuntaa tämän variantin tuotteen yksittäistuotteeksi? Kaikki sen aiemmat arvot, kategoriat ja assosiaatiot tallennetaan."
     history:
       version: Versio
       author: Tekijä
@@ -70,6 +78,7 @@ pim_enrich.entity.product:
       locale_unavailable: Kielikohtaista kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
       add_attribute_option: Lisää attribuutin vaihtoehto
+      add_option: Lisää valintalistan arvo
     completeness:
       title: Valmistumisaste
       complete: Valmistumisaste
@@ -82,14 +91,29 @@ pim_enrich.entity.product:
       save_and_next: Tallenna ja seuraava
       save_and_finish: Tallenna ja lopeta
     associations:
+      title: Assosiaatiot ({{ count }})
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
       number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
+      number_of_quantified_associations: "{{ productCount }} tuotetta ja {{ productModelCount }} tuotemallia"
       association_type_selector: Assosiaatiotyyppi
       target: Kohde
       manage: Lisää {{ associationType }} assosiaatiot
+      manage_description: Valitse tuotteet, jotka haluat liittää tuotteeseen "{{ productLabel }}"
+      mass_edit_description: Valitse tuotteet, jotka haluat liittää {{ productCount }} valittuun tuotteeseen
       add_associations: Lisää assosiaatiot
+      variant_products: Varianttituotteet
+      quantified:
+        quantity: Määrä
+      search:
+        placeholder: Etsi nimellä tai tunnisteella
+      no_result: Valitettavasti haullesi ei löytynyt tuloksia.
+      no_data: Tuotteen assosiaatioita ei ole.
+      remove: Poista assosiaatio
+      edit: Muokkaa tuotetta
+      limit_reached: Et voi lisätä enemmän kuin {{ maxLimit }} assosiaatiota tähän tuotteeseen.
+      variant_updated: Olet päivittänyt lukumäärän variantilla. Lukumääriä ei enää synkronoida.
     attribute_filter:
       display: Näytä
       all: Kaikki attribuutit
@@ -261,6 +285,7 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
+  confirm: "{0}Olet päivittämässä joitakin tuotteita seuraavilla tiedoilla. Ole hyvä ja vahvista.{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. ]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
@@ -280,6 +305,7 @@ pim_enrich.mass_edit.product:
       select_attributes: Valitse attribuutit
     change_status:
       label: Muuta tuotteen tila
+      label_count: "{0}Muuta joidenkin tuotteiden statusta<span class=\"AknFullPage-title--highlight\"></span>|{1}Muuta yhden tuotteen status<span class=\"AknFullPage-title--highlight\"></span>|]1, Inf[Muuta tuotteiden status<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} </span>"
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       field: Ottaa käyttöön
     edit_common:
@@ -311,8 +337,12 @@ pim_enrich.mass_edit.product:
       label: Lisää olemassaolevaan tuotemalliin
       description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
       no_update: Valitse tuotemalli jatkaaksesi
+    convert_to_simple_products:
+      label: Muunna yksittäistuotteeksi
+      description: Kaikki aikaisemmat arvot, kategoriat ja assosiaatiot säilytetään.
     associate_to_product_and_product_model:
       label: Liitä
+      label_count: "{0}Liitä <span class=\"AknFullPage-title--highlight\">tuotteita</span> tuotteisiin tai tuotemalleihin|{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|]1, Inf[Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
       description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
       validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     change_parent_product_model:
@@ -335,11 +365,24 @@ pim_datagrid:
       xlsx_all: Excel (Kaikki attribuutit)
       xlsx_grid_context: Excel (Ruudukon konteksti)
       configurator:
+        subtitle: Nopea vienti
         title: Valitse toiminto
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Ruudukon konteksti
         all_attributes: Kaikki attribuutit
+        with_codes: Koodien kanssa
+        with_labels: Otsikoiden kanssa
+        without_media: Ilman mediaa
+        with_media: Median kanssa
+      flash:
+        message: "Voit seurata viennin etenemistä täällä."
     mass_edit: Massamuokkaus
     sequential_edit: Peräkkäinen muokkaus
     mass_delete: Massapoisto
+    selected:
+      family: "]-Inf, 1]{{ count }} perhe valittu|]1, Inf[{{ count }} perhettä valittu"
+      product: "]-Inf, 1]{{ count }} tulos valittu|]1, Inf[{{ count }} tulosta valittu"
   view_selector:
     view: Näkymät
   actions:
@@ -357,9 +400,13 @@ pim_datagrid:
     label: Suodattimet
     system: Järjestelmä
     product_typology:
+      label: 'Tuoterakenne'
+      simple: 'Yksittäistuote'
       variant: 'Variantti'
     entity_type:
       label: 'Variantti'
+      grouped: 'Ryhmitelty'
+      ungrouped: 'Erillään'
     family:
       label: Perhe
     groups:
@@ -368,6 +415,14 @@ pim_datagrid:
       label: Status
     completeness:
       label: Valmis
+    created:
+      label: Luotu
+    updated:
+      label: Päivitetty
+    label_or_identifier:
+      label: Otsikko tai tunniste
+    parent:
+      label: Ylätaso
     identifier:
       label: Tunniste
   search: Etsi {{ label }}
@@ -387,6 +442,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform.label: Lisää olemassaolevaan tuotemalliin
+  convert_to_simple_products:
+    label: Muunna yksittäistuotteeksi
+    perform.label: Muunna yksittäistuotteeksi
   csv_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV:nä
     quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti CSV-muodossa
@@ -429,3 +487,7 @@ batch_jobs:
     quick_export.label: Tuotteen nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
     perform.label: Tuotteen nopea vienti XLSX-muodossa
+error:
+  removing:
+    group: Ryhmää ei voitu poistaa
+    association type: Assosiaatiotyyppiä ei voitu poistaa
