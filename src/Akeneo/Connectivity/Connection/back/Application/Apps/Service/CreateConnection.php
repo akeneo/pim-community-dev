@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 
 /**
@@ -17,14 +16,14 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
 class CreateConnection implements CreateConnectionInterface
 {
     private ConnectionRepository $repository;
-    private FindAConnectionHandler $findAConnectionHandler;
+    private SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery;
 
     public function __construct(
         ConnectionRepository $repository,
-        FindAConnectionHandler $findAConnectionHandler
+        SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery
     ) {
         $this->repository = $repository;
-        $this->findAConnectionHandler = $findAConnectionHandler;
+        $this->selectConnectionWithCredentialsByCodeQuery = $selectConnectionWithCredentialsByCodeQuery;
     }
 
     public function execute(
@@ -41,14 +40,15 @@ class CreateConnection implements CreateConnectionInterface
             $clientId,
             $userId
         );
+
         $this->repository->create($connection);
 
-        $query = new FindAConnectionQuery((string) $connection->code());
-        $connectionDTO = $this->findAConnectionHandler->handle($query);
-        if (null === $connectionDTO) {
-            throw new \RuntimeException();
+        $connectionWithCredentials = $this->selectConnectionWithCredentialsByCodeQuery->execute($code);
+
+        if (null === $connectionWithCredentials) {
+            throw new \LogicException('The connection just created should be available, it is not.');
         }
 
-        return $connectionDTO;
+        return $connectionWithCredentials;
     }
 }
