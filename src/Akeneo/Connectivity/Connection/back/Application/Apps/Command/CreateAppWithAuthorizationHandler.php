@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterf
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -63,6 +62,8 @@ final class CreateAppWithAuthorizationHandler
         }
 
         $appId = $command->getClientId();
+        // limit the random code to 30chars long because it's the limit imposed by UserGroup name constraints.
+        $randomCode = $this->generateRandomCode(30, 'app_');
 
         $marketplaceApp = $this->getAppQuery->execute($appId);
         if (null === $marketplaceApp) {
@@ -79,7 +80,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('OAuth client should exists for the given app');
         }
 
-        $group = $this->createUserGroup->execute($this->generateGroupName($marketplaceApp->getName()));
+        $group = $this->createUserGroup->execute($randomCode);
         if (null === $group->getName()) {
             throw new \LogicException('The user group should have a name, got null.');
         }
@@ -92,7 +93,7 @@ final class CreateAppWithAuthorizationHandler
         $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
 
         $connection = $this->createConnection->execute(
-            $this->generateConnectionCode($appId),
+            $randomCode,
             $marketplaceApp->getName(),
             FlowType::OTHER,
             $client->getId(),
@@ -102,21 +103,8 @@ final class CreateAppWithAuthorizationHandler
         $this->createApp->execute($marketplaceApp, $appAuthorization->scopeList(), $connection->code());
     }
 
-    /**
-     * Generate unique connection code that match ConnectionCode constraints
-     * (unique and only between 3 and 100 chars. long)
-     * @see ConnectionCode
-     */
-    private function generateConnectionCode(string $appId): string
+    private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
     {
-        return base64_encode($appId);
-    }
-
-    /**
-     * Generate unique user group name that match UserGroup constraints (only 30chars. long)
-     */
-    private function generateGroupName(string $appName): string
-    {
-        return time() . '_' . substr($appName, 0, 19);
+        return substr(sprintf('%s%s', $prefix, base_convert(bin2hex(random_bytes(16)), 16, 36)), 0, $maxLength);
     }
 }

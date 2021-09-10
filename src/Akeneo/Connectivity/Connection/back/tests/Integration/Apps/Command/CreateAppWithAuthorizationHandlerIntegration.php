@@ -156,23 +156,12 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     /**
      * @dataProvider throwExceptionDataProvider
      */
-    public function test_it_throws_when_the_client_id_is_not_valid(string $clientId, $expectedMessage)
+    public function test_it_throws_when_the_command_is_not_valid(string $clientId, $expectedMessage)
     {
         $command = new CreateAppWithAuthorizationCommand($clientId);
 
         $this->expectException(InvalidAppAuthorizationRequest::class);
         $this->expectExceptionMessage($expectedMessage);
-        $this->handler->handle($command);
-    }
-
-    public function test_it_throws_when_app_is_not_found()
-    {
-        $this->addAppAuthorization('e4d35502-08c9-40b4-a378-05d4cb255862');
-
-        $command = new CreateAppWithAuthorizationCommand('e4d35502-08c9-40b4-a378-05d4cb255862');
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('App not found');
         $this->handler->handle($command);
     }
 
