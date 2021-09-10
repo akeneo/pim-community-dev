@@ -6,11 +6,12 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -27,14 +28,9 @@ class HookContext extends PimContext
     protected int $windowHeight;
     protected ?Process $jobConsumerProcess;
 
-    /**
-     * @param string $mainContextClass
-     * @param int    $windowWidth
-     * @param int    $windowHeight
-     */
-    public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
+    public function __construct(string $mainContextClass, KernelInterface $kernel, int $windowWidth, int $windowHeight)
     {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
         $this->windowWidth = $windowWidth;
         $this->windowHeight = $windowHeight;
     }
@@ -107,7 +103,7 @@ class HookContext extends PimContext
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path = sprintf('%s/%s', $dir, $filename);
 
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs = new Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
                 $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
@@ -142,6 +138,10 @@ class HookContext extends PimContext
     public function listenToErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            if (!$this->getSession()->isStarted()) {
+                $this->getSession()->start();
+            }
+
             try {
                 $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
 
@@ -180,26 +180,6 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function maximize()
-    {
-        try {
-            $this->getSession()->resizeWindow($this->windowWidth, $this->windowHeight);
-        } catch (UnsupportedDriverActionException $e) {
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearRecordedMails()
-    {
-        //TODO
-//        $this->getMainContext()->getMailRecorder()->clear();
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public static function resetPlaceholderValues()
     {
         parent::resetPlaceholderValues();
@@ -210,7 +190,7 @@ class HookContext extends PimContext
      */
     public function removeTmpDir()
     {
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs = new Filesystem();
         $fs->remove(self::$placeholderValues['%tmp%']);
     }
 
@@ -245,10 +225,7 @@ class HookContext extends PimContext
         $this->currentPage = null;
     }
 
-    /**
-     * @return ManagerRegistry
-     */
-    private function getDoctrine()
+    private function getDoctrine(): ManagerRegistry
     {
         return $this->getService('doctrine');
     }

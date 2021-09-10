@@ -44,6 +44,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -2602,7 +2603,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): ObjectManager
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }

@@ -6,6 +6,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\FeatureContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class PimContext extends RawMinkContext
@@ -54,12 +55,7 @@ class PimContext extends RawMinkContext
         $this->mainContext = $environment->getContext($this->mainContextClass);
     }
 
-    /**
-     * @param string $id
-     *
-     * @return object
-     */
-    protected function getService($id)
+    protected function getService(string $id): object
     {
         return $this->kernel->getContainer()->get('test.service_container')->get($id);
     }
@@ -117,7 +113,7 @@ class PimContext extends RawMinkContext
         return $this->mainContext;
     }
 
-    protected function getCurrentPage(): Page
+    protected function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
