@@ -106,16 +106,26 @@ jobs:
                       docker save -o php-pim-image.tar akeneo/pim-php-dev:master
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
+      - run:
+            name: Creating cache key for JS and PHP dependencies
+            command: |
+                cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+      - restore_cache:
+            name: Restore cache - yarn and Cypress dependency cache
+            keys:
+                - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - restore_cache:
+            name: Restore cache - composer dependency cache
+            keys:
+                - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
-              sudo chown -R 1000:1000 ~/.cache/yarn
-      - run:
-          name: Change owner on project dir after restoring cache
-          command: sudo chown -R 1000:1000 ../project
+              sudo chown -R 1000:1000 ~/.cache/
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -163,7 +173,17 @@ jobs:
           command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
-            command: sudo chmod -R 777 ../project
+            command: sudo chmod -R 777 ../project ~/.cache ~/.composer
+      - save_cache:
+            name: Save fontend dependency cache
+            paths:
+                - ~/.cache
+            key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - save_cache:
+            name: Save backend dependency cache
+            paths:
+                - ~/.composer
+            key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - persist_to_workspace:
           root: ~/
           paths:
@@ -932,4 +952,6 @@ commands:
           command: |
             wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
+            echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+            sha1sum -c /tmp/checksum
             sudo chmod +x /usr/local/bin/yq
