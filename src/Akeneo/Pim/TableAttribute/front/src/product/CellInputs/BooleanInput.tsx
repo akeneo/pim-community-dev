@@ -1,7 +1,7 @@
 import {TableInput} from 'akeneo-design-system';
 import React from 'react';
 import {CellInput} from './index';
-import {useTranslate} from "@akeneo-pim-community/shared/lib/hooks/useTranslate";
+import {useTranslate} from '@akeneo-pim-community/shared/lib/hooks/useTranslate';
 
 const BooleanInput: CellInput = ({row, columnDefinition, onChange, inError, highlighted, ...rest}) => {
   const translate = useTranslate();

@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src/attribute';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {defaultDataTypesMapping} from '../factories/ColumnDefinition';
+import {defaultDataTypesMapping} from '../../factories';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 

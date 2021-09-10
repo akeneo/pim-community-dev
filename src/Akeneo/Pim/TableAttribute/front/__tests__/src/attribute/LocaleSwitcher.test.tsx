@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {LocaleSwitcher} from '../../../src/attribute';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {getLocales} from '../factories/Locales';
+import {getLocales} from '../../factories';
 
 jest.mock('../../../src/fetchers/LocaleFetcher');
 

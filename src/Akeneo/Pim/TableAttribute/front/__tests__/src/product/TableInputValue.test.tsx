@@ -6,8 +6,9 @@ import {
   defaultCellInputsMapping,
   defaultCellMatchersMapping,
   getComplexTableAttribute,
-  getTableValueWithId
-} from '../factories';
+  getTableValueWithId,
+} from '../../factories';
+import {dragAndDrop} from '../../shared/dragAndDrop';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -70,7 +71,7 @@ describe('TableInputValue', () => {
     ]);
   });
 
-  it.only('should search', async () => {
+  it('should search', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
@@ -223,28 +224,26 @@ describe('TableInputValue', () => {
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
-    let dataTransferred = '';
-    const dataTransfer = {
-      getData: (_format: string) => {
-        return dataTransferred;
-      },
-      setData: (_format: string, data: string) => {
-        dataTransferred = data;
-      },
-    };
-
-    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
-    fireEvent.dragStart(screen.getAllByRole('row')[1], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragLeave(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.drop(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
+    dragAndDrop(0, 3);
 
     expect(handleChange).toBeCalledWith([
       {...getTableValueWithId()[1]},
       {...getTableValueWithId()[2]},
       {...getTableValueWithId()[0]},
     ]);
+  });
+
+  it('should not render anything if cell inputs are undefined', () => {
+    renderWithProviders(
+      <TableInputValue
+        attribute={getComplexTableAttribute()}
+        valueData={getTableValueWithId()}
+        searchText={''}
+        onChange={jest.fn()}
+        cellInputsMapping={{}}
+        cellMatchersMapping={{}}
+      />
+    );
+    expect(screen.queryByText('Sugar')).not.toBeInTheDocument();
   });
 });

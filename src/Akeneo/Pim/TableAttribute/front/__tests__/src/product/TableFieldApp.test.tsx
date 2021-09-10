@@ -4,10 +4,11 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import {TableFieldApp} from '../../../src/product';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {
-  defaultCellInputsMapping, defaultCellMatchersMapping,
+  defaultCellInputsMapping,
+  defaultCellMatchersMapping,
   getComplexTableAttribute,
-  getTableValueSelectRow
-} from '../factories';
+  getTableValueSelectRow,
+} from '../../factories';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -60,6 +61,8 @@ describe('TableFieldApp', () => {
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    expect(await screen.findByText('A')).toBeInTheDocument();
+
     expect(screen.getByText('Nutrition')).toBeInTheDocument();
     expect(screen.getByText('en')).toBeInTheDocument();
     expect(screen.getByText('Ecommerce')).toBeInTheDocument();
@@ -99,6 +102,7 @@ describe('TableFieldApp', () => {
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    expect(await screen.findByText('A')).toBeInTheDocument();
     expect(screen.getByText('Completeness')).toBeInTheDocument();
     expect(screen.getByText('Element as String')).toBeInTheDocument();
 
@@ -121,6 +125,7 @@ describe('TableFieldApp', () => {
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    expect(await screen.findByText('A')).toBeInTheDocument();
     const addRowButton = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
     // Add pepper
     act(() => {
@@ -161,12 +166,13 @@ describe('TableFieldApp', () => {
       />
     );
 
+    expect(screen.queryByText('Salt')).not.toBeInTheDocument();
     expect(container.innerHTML).toEqual('');
   });
 
   it('should render comparison and callback checkbox change', async () => {
     const handleCopyCheckboxChange = jest.fn();
-    const copyContext = {scope: 'mobile', locale: 'fr_FR', data: [{ingredient: 'salt'}]};
+    const copyContext = {scope: 'mobile', locale: 'fr_FR', data: []};
     renderWithProviders(
       <TableFieldApp
         {...getTemplateContext()}
@@ -180,7 +186,8 @@ describe('TableFieldApp', () => {
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
-    expect(screen.getByText('Salt')).toBeInTheDocument();
+    expect(await screen.findByText('A')).toBeInTheDocument();
+
     act(() => {
       fireEvent.click(screen.getByTestId('copyCheckbox').children[0]);
     });

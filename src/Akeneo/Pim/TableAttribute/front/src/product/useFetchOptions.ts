@@ -32,10 +32,12 @@ const useFetchOptions: (
           options[column.code] =
             (await SelectOptionRepository.findFromColumn(router, attributeCode, column.code)) || [];
           for await (const row of valueData) {
-            selectOptionLabels[`${column.code}-${row[column.code]}`] = await innerGetOptionLabel(
-              column.code,
-              row[column.code] as string
-            );
+            if (typeof row[column.code] !== 'undefined') {
+              selectOptionLabels[`${column.code}-${row[column.code]}`] = await innerGetOptionLabel(
+                column.code,
+                row[column.code] as string
+              );
+            }
           }
         }
         setOptions({...options});

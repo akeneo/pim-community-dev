@@ -20,7 +20,7 @@ import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 import {CenteredHelper} from '../shared';
 import {LocaleRepository} from '../repositories';
-import {ColumnDefinitionPropertiesMapping} from "./ColumDefinitionProperties";
+import {ColumnDefinitionPropertiesMapping} from './ColumDefinitionProperties';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;

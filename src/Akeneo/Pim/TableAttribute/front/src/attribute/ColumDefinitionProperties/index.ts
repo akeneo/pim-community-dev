@@ -1,5 +1,5 @@
-import {Attribute, ColumnDefinition} from "../../models";
-import {ReactElement} from "react";
+import {Attribute, ColumnDefinition} from '../../models';
+import {ReactElement} from 'react';
 
 type ColumnDefinitionProps = {
   attribute: Attribute;

@@ -1,5 +1,5 @@
-import {TableRow} from '../../../src/models';
-import {TableValueWithId} from '../../../src/product';
+import {TableRow} from '../../src/models';
+import {TableValueWithId} from '../../src/product';
 
 export const getTableValueSelectRow: () => TableRow = () => {
   return {

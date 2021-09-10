@@ -124,7 +124,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const cellMatchSearch = (cell: TableCell, columnDefinition: ColumnDefinition) => {
     const matcher = matchers[columnDefinition.data_type];
 
-    return matcher(cell, searchText, columnDefinition.code);
+    return matcher && matcher(cell, searchText, columnDefinition.code);
   };
 
   if (isSearching) {

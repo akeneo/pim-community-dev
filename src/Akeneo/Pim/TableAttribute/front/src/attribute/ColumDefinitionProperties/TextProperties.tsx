@@ -2,7 +2,7 @@ import {Field, Helper, NumberInput} from 'akeneo-design-system';
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnValidation, TextColumnDefinition} from '../../models';
-import {ColumnProperties} from "./index";
+import {ColumnProperties} from './index';
 
 const TextProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
   const translate = useTranslate();

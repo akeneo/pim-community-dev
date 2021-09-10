@@ -1,10 +1,9 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {fireEvent, screen, act} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import {ManageOptionsModal} from '../../../src/attribute';
-import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
+import {getComplexTableAttribute, getSelectColumnDefinition} from '../../factories';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
-import {getComplexTableAttribute} from "../factories";
 
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/LocaleFetcher');

@@ -7,8 +7,8 @@ import {
   getComplexTableAttribute,
   getEnUsLocale,
   getNumberColumnDefinitionWithId,
-  getSelectColumnDefinitionWithId
-} from '../factories';
+  getSelectColumnDefinitionWithId,
+} from '../../factories';
 
 jest.mock('../../../src/attribute/ManageOptionsModal');
 
@@ -56,12 +56,13 @@ describe('ColumnDefinitionProperties', () => {
     const minInput = screen.getByLabelText('pim_table_attribute.validations.min') as HTMLInputElement;
     fireEvent.change(minInput, {target: {value: '10'}});
 
-    expect(handleChange).toBeCalledWith({...getNumberColumnDefinitionWithId(),
+    expect(handleChange).toBeCalledWith({
+      ...getNumberColumnDefinitionWithId(),
       code: 'somethingelse',
-      labels: {'en_US': 'Something Else'},
+      labels: {en_US: 'Something Else'},
       validations: {
-        min: 10
-      }
+        min: 10,
+      },
     });
   });
 

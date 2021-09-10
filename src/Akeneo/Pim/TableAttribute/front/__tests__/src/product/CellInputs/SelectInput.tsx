@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, fireEvent, screen} from '@testing-library/react';
 import SelectInput from '../../../../src/product/CellInputs/SelectInput';
 import {ColumnDefinition} from '../../../../src/models';
-import {getComplexTableAttribute, getComplexTableConfiguration} from '../../factories';
+import {getComplexTableAttribute, getComplexTableConfiguration} from '../../../factories';
 
 jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
 

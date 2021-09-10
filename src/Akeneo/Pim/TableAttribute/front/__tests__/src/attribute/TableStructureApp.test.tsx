@@ -7,9 +7,10 @@ import {
   defaultDataTypesMapping,
   getComplexTableAttribute,
   getComplexTableConfiguration,
-  getSimpleTableConfiguration
-} from '../factories';
+  getSimpleTableConfiguration,
+} from '../../factories';
 import {fireEvent} from '@testing-library/dom';
+import {dragAndDrop} from '../../shared/dragAndDrop';
 
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
@@ -117,24 +118,8 @@ describe('TableStructureApp', () => {
     );
     await waitPageToBeLoaded();
 
-    let dataTransferred = '';
-    const dataTransfer = {
-      getData: (_format: string) => {
-        return dataTransferred;
-      },
-      setData: (_format: string, data: string) => {
-        dataTransferred = data;
-      },
-    };
-
     // Move 2nd column to 4th place
-    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
-    fireEvent.dragStart(screen.getAllByRole('row')[1], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragLeave(screen.getAllByRole('row')[2], {dataTransfer});
-    fireEvent.dragEnter(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.drop(screen.getAllByRole('row')[3], {dataTransfer});
-    fireEvent.dragEnd(screen.getAllByRole('row')[1], {dataTransfer});
+    dragAndDrop(0, 3);
 
     expect(handleChange).toBeCalledWith([
       getComplexTableConfiguration()[0],

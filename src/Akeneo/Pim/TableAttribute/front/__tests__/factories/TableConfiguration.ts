@@ -1,4 +1,4 @@
-import {TableConfiguration} from '../../../src/models';
+import {TableConfiguration} from '../../src/models';
 
 export const getComplexTableConfiguration: () => TableConfiguration = () => {
   return [

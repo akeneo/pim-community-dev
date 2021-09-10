@@ -4,7 +4,7 @@ import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/
 import {Attribute, ColumnCode, ColumnDefinition} from '../models';
 import {ColumnDefinitionWithId} from './TableStructureApp';
 import {FieldsList} from '../shared';
-import {ColumnDefinitionPropertiesMapping} from "./ColumDefinitionProperties";
+import {ColumnDefinitionPropertiesMapping} from './ColumDefinitionProperties';
 
 type ColumnDefinitionPropertiesProps = {
   attribute: Attribute;
