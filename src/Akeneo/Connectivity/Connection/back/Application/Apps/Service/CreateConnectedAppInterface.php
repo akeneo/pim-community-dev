@@ -14,12 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App as MarketplaceAp
 interface CreateConnectedAppInterface
 {
     /**
-     * Creates and persists a new App
-     *
-     * @param MarketplaceApp $marketplaceApp
      * @param string[] $scopes
-     * @param string $connectionCode
-     * @return ConnectedApp
      */
     public function execute(MarketplaceApp $marketplaceApp, array $scopes, string $connectionCode): ConnectedApp;
 }
