@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
  */
 class DbalAppRepositoryIntegration extends TestCase
 {
-    private DbalAppRepository $appRepository;
+    private DbalConnectedAppRepository $appRepository;
     private Connection $connection;
     private ConnectionLoader $connectionLoader;
 
@@ -25,7 +25,7 @@ class DbalAppRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->appRepository = $this->get(DbalAppRepository::class);
+        $this->appRepository = $this->get(DbalConnectedAppRepository::class);
         $this->connection = $this->get('database_connection');
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
     }

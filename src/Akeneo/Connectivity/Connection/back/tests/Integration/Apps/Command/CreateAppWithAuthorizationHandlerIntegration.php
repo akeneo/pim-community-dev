@@ -11,7 +11,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -40,7 +40,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     private UserManager $userManager;
     private PropertyAccessor $propertyAccessor;
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private DbalAppRepository $appRepository;
+    private DbalConnectedAppRepository $appRepository;
     private ConnectionRepository $connectionRepository;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
     private ScopeMapper $scopeMapper;
@@ -60,7 +60,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->userManager = $this->get('pim_user.manager');
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $this->appRepository = $this->get(DbalAppRepository::class);
+        $this->appRepository = $this->get(DbalConnectedAppRepository::class);
         $this->connectionRepository = $this->get('akeneo_connectivity.connection.persistence.repository.connection');
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->scopeMapper = $this->get('pim_api.security.scope_mapper');

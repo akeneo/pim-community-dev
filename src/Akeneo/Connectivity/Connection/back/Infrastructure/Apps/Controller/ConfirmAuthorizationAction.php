@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\AppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,12 +23,12 @@ class ConfirmAuthorizationAction
 {
     private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
     private FeatureFlag $featureFlag;
-    private AppRepositoryInterface $appRepository;
+    private ConnectedAppRepositoryInterface $appRepository;
 
     public function __construct(
         CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
-        AppRepositoryInterface $appRepository
+        ConnectedAppRepositoryInterface $appRepository
     ) {
         $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
         $this->featureFlag = $featureFlag;
