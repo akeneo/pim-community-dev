@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\AppRepositoryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
@@ -22,7 +22,7 @@ class DbalAppRepository implements AppRepositoryInterface
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function create(App $app): void
+    public function create(ConnectedApp $app): void
     {
         $insertQuery = <<<SQL
         INSERT INTO akeneo_connectivity_app (id, name, logo, author, partner, categories, scopes, certified, connection_code, external_url)
@@ -51,7 +51,7 @@ class DbalAppRepository implements AppRepositoryInterface
         );
     }
 
-    public function findOneById(string $appId): ?App
+    public function findOneById(string $appId): ?ConnectedApp
     {
         $selectQuery = <<<SQL
         SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, external_url
@@ -62,7 +62,7 @@ class DbalAppRepository implements AppRepositoryInterface
         $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['id' => $appId])->fetch();
 
         return $dataRow ?
-            new App(
+            new ConnectedApp(
                 $dataRow['id'],
                 $dataRow['name'],
                 json_decode($dataRow['scopes'], true),

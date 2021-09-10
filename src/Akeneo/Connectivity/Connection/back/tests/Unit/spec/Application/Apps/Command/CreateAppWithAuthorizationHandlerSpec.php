@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
@@ -43,7 +43,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         CreateConnectionInterface $createConnection,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
-        CreateAppInterface $createApp
+        CreateConnectedAppInterface $createApp
     ): void {
         $this->beConstructedWith(
             $validator,
@@ -209,7 +209,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         CreateUserGroupInterface $createUserGroup,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         CreateUserInterface $createUser,
-        CreateAppInterface $createApp,
+        CreateConnectedAppInterface $createApp,
         CreateConnectionInterface $createConnection,
         App $app,
         AppAuthorization $appAuthorization,

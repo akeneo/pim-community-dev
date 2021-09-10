@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
@@ -30,7 +30,7 @@ final class CreateAppWithAuthorizationHandler
     private CreateUserGroupInterface $createUserGroup;
     private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
     private ClientProviderInterface $clientProvider;
-    private CreateAppInterface $createApp;
+    private CreateConnectedAppInterface $createApp;
 
     public function __construct(
         ValidatorInterface $validator,
@@ -41,7 +41,7 @@ final class CreateAppWithAuthorizationHandler
         CreateConnectionInterface $createConnection,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
-        CreateAppInterface $createApp
+        CreateConnectedAppInterface $createApp
     ) {
         $this->validator = $validator;
         $this->session = $session;

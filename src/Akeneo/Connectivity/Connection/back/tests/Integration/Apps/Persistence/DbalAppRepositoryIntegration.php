@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\App;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
@@ -35,7 +35,7 @@ class DbalAppRepositoryIntegration extends TestCase
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
 
         $this->appRepository->create(
-            new App(
+            new ConnectedApp(
                 '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
                 'my app',
                 ['foo', 'bar'],
@@ -68,7 +68,7 @@ class DbalAppRepositoryIntegration extends TestCase
     {
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
 
-        $createdApp = new App(
+        $createdApp = new ConnectedApp(
             '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
             'my app',
             ['foo', 'bar'],

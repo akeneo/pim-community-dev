@@ -18,14 +18,14 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateApp'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
 
-    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateApp:
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalAppRepository'
 
