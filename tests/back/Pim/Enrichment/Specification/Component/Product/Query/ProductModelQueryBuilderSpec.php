@@ -2,24 +2,23 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductModelQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductModelQueryBuilderSpec extends ObjectBehavior
@@ -128,6 +127,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $this->setQueryBuilder($searchQb);
         $repository->findOneByIdentifier('sku')->willReturn($attribute);
         $attribute->getCode()->willReturn('sku');
+        $filterRegistry->getFieldFilter('sku', '=')->willReturn(null);
         $filterRegistry->getAttributeFilter($attribute, '=')->willReturn($filter);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -156,6 +156,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $name->setLocalizable(false);
 
         $repository->findOneByIdentifier('name')->willReturn($name);
+        $filterRegistry->getFieldFilter('name', 'EMPTY')->willReturn(null);
         $filterRegistry->getAttributeFilter($name, 'EMPTY')->willReturn($textFilter);
         $repository->findOneByIdentifier('family')->willReturn(null);
         $filterRegistry->getFieldFilter('family', 'NOT EMPTY')->willReturn($familyFilter);
@@ -372,6 +373,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $repository->findOneByIdentifier('bar')->willReturn($attribute);
+        $filterRegistry->getFieldFilter('bar', 'IN LIST')->willReturn(null);
         $filterRegistry->getAttributeFilter($attribute, 'IN LIST')->willReturn($filterAttribute);
 
         $this->addFilter('id', '=', '42', []);
