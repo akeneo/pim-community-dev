@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
@@ -67,24 +66,21 @@ final class CreateAppWithAuthorizationHandler
         $appId = $command->getClientId();
 
         $marketplaceApp = $this->getAppQuery->execute($appId);
-        if (null === $marketplaceApp) {
-            throw new \RuntimeException('App not found');
-        }
+        assert(null !== $marketplaceApp, 'App should exists when validating the authorization wizard');
 
-        /** @var AppAuthorization $appAuthorization */
         $appAuthorization = $this->session->getAppAuthorization($appId);
+        assert(null !== $appAuthorization, 'AppAuthorization should exists in the session for the given app');
 
-        /** @var Client $client */
         $client = $this->clientProvider->findClientByAppId($appId);
+        assert(null !== $client, 'OAuth client should exists for the given app');
 
         $group = $this->createUserGroup->execute($this->generateGroupName($marketplaceApp->getName()));
-        $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
+        assert(null !== $group->getName());
 
-        /** @var string $groupName */
-        $groupName = $group->getName();
-        /** @var string $roleName */
-        $roleName = $role->getRole();
-        $user = $this->createUser->execute($appId, $appId, $appId, [$groupName], [$roleName]);
+        $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
+        assert(null !== $role->getRole());
+
+        $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
 
         $connection = $this->createConnection->execute(
             $this->generateConnectionCode($appId),

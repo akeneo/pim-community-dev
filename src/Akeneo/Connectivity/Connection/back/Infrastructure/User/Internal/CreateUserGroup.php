@@ -36,6 +36,7 @@ class CreateUserGroup implements CreateUserGroupInterface
 
     public function execute(string $groupName): GroupInterface
     {
+        /** @var GroupInterface $group */
         $group = $this->userGroupFactory->create();
         $this->userGroupUpdater->update($group, ['name' => $groupName]);
 
