@@ -32,9 +32,6 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
-orbs:
-  infracost: infracost/infracost@0.8.1
-
 jobs:
   checkout:
     docker:
@@ -2064,16 +2061,6 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
-          - infracost/infracost:
-                name: infracost_srnt
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/
-                path: ~/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_srnt
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
@@ -2099,16 +2086,6 @@ workflows:
           - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
-          - infracost/infracost:
-                name: infracost_grth
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/grth
-                path: ~/grth/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_grth
           - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
@@ -2134,16 +2111,6 @@ workflows:
           - test_deploy_tria:
                 requires:
                     - test_cronjobs_existence_tria
-          - infracost/infracost:
-                name: infracost_tria
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/tria
-                path: ~/tria/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_tria
           - deploy_pr_tria_environment?:
                 type: approval
                 requires:
