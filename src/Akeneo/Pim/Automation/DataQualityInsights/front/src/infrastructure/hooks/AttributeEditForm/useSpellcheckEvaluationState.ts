@@ -52,12 +52,6 @@ export const useSpellcheckEvaluationState = (attributeCode: string): SpellcheckE
     });
   }, [setSpellcheckEvaluation, isMounted]);
 
-  /*
-  useEffect(() => {
-    refresh();
-
-  }, [attributeCode]);
-*/
   return {
     evaluation: spellcheckEvaluation,
     refresh,

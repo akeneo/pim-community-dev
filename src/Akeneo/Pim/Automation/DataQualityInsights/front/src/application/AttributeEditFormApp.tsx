@@ -8,8 +8,6 @@ import {attributeEditFormStore} from '../infrastructure/store';
 import TabContent, {useTabState} from './component/Common/Tab/TabContent';
 import SpellcheckOptionsList from './component/AttributeEditForm/TabContent/SpellcheckOptionsList';
 import SpellcheckLabelsList from './component/AttributeEditForm/TabContent/SpellcheckLabelsList';
-import AddQualityBadgesOnOptionsList from './component/AttributeEditForm/TabContent/AddQualityBadgesOnOptionsList';
-import RefreshEvaluationWhenAttributeOptionsChanged from './component/AttributeEditForm/TabContent/RefreshEvaluationWhenAttributeOptionsChanged';
 
 interface AttributeEditFormAppProps {
   attribute: Attribute;
@@ -27,8 +25,6 @@ const AttributeEditFormApp: FC<AttributeEditFormAppProps> = ({attribute, renderi
             <SpellcheckLabelsList />
           </TabContent>
           <TabContent tabId={ATTRIBUTE_EDIT_FORM_OPTIONS_TAB} {...tabState}>
-            <AddQualityBadgesOnOptionsList />
-            <RefreshEvaluationWhenAttributeOptionsChanged />
             <SpellcheckOptionsList />
           </TabContent>
         </Provider>
