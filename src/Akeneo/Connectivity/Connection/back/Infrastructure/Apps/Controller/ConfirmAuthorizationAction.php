@@ -60,7 +60,7 @@ class ConfirmAuthorizationAction
 
         $app = $this->appRepository->findOneById($clientId);
         if (null === $app) {
-            throw new \Exception("App $clientId not found");
+            throw new \LogicException('The CreateApp hander was executed without error but the resulting App cannot be found');
         }
 
         return new JsonResponse(['appId' => $app->getId()]);
