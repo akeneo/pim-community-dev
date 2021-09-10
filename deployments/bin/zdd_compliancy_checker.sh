@@ -43,7 +43,7 @@ function downloadArtifacts() {
     if [[ ${TYPE} = "srnt" ]]; then
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
-    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/terraform/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
+    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
 }
 
 function getDiffType() {

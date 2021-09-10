@@ -2,7 +2,6 @@ import React, {createContext, FC, useContext} from 'react';
 
 import {Attribute} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {AttributeSpellcheckEvaluationContextProvider} from './AttributeSpellcheckEvaluationContext';
-import {AttributeOptionsListContextProvider} from './AttributeOptionsListContext';
 
 export type AttributeEditFormContextState = {
   attribute: Attribute;
@@ -37,11 +36,9 @@ export const AttributeEditFormContextProvider: FC<ProviderProps> = ({children, .
 
   return (
     <AttributeEditFormContext.Provider value={initialState}>
-      <AttributeOptionsListContextProvider>
-        <AttributeSpellcheckEvaluationContextProvider attribute={attribute}>
-          {children}
-        </AttributeSpellcheckEvaluationContextProvider>
-      </AttributeOptionsListContextProvider>
+      <AttributeSpellcheckEvaluationContextProvider attribute={attribute}>
+        {children}
+      </AttributeSpellcheckEvaluationContextProvider>
     </AttributeEditFormContext.Provider>
   );
 };
