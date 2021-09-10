@@ -112,7 +112,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                     <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                 )}
                 {isCurrent('permissions') && (
-                    <Permissions appName={wizardData.appName} providers={providers} setPermissions={setPermissions} />
+                    <Permissions appName={wizardData.appName} providers={providers} setPermissions={setPermissions} permissions={permissions} />
                 )}
                 {isCurrent('summary') && (
                     <PermissionsSummary appName={wizardData.appName} providers={providers} permissions={permissions} />
