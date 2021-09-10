@@ -74,7 +74,7 @@ akeneo_connectivity.connection:
                 progress:
                     authorizations: Authorizations
                     permissions: Permissions
-                    well_done: Well done!
+                    summary: Well done!
                 authorize:
                     title: 'App {{ app_name }} needs to'
                     no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
@@ -84,6 +84,9 @@ akeneo_connectivity.connection:
                 flash:
                     success: App successfully configured.
                     error: Sorry, an error occurred while connecting the App.
+                permission:
+                    helper: If you need help please check our article
+                    helper_link: How to set-up app permissions?
             title: Connect
             activate:
                 flash:
@@ -398,3 +401,14 @@ akeneo_connectivity.connection:
         error_message: Oh snap! An error occurred...
         reload_helper: Please reload the page and try again.
         reload_button:  Reload
+
+pim_permissions:
+    widget:
+        action:
+            all: All
+            clear: Clear
+        level:
+            own: Own
+            edit: Edit
+            view: View
+        all: All

@@ -8,6 +8,7 @@ import {UserContext, UserInterface} from '../shared/user';
 import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
 import {FeatureFlagsContext, FeatureFlags} from '../shared/feature-flags';
+import {PermissionFormRegistryContext, PermissionFormRegistry} from '../shared/permission-form-registry';
 
 interface Props {
     router: RouterInterface;
@@ -17,6 +18,7 @@ interface Props {
     user: UserInterface;
     security: SecurityInterface;
     featureFlags: FeatureFlags;
+    permissionFormRegistry: PermissionFormRegistry;
 }
 
 const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Props>) => (
@@ -31,7 +33,9 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
                     <UserContext.Provider value={dependencies.user}>
                         <SecurityContext.Provider value={dependencies.security}>
                             <FeatureFlagsContext.Provider value={dependencies.featureFlags}>
-                                {children}
+                                <PermissionFormRegistryContext.Provider value={dependencies.permissionFormRegistry}>
+                                    {children}
+                                </PermissionFormRegistryContext.Provider>
                             </FeatureFlagsContext.Provider>
                         </SecurityContext.Provider>
                     </UserContext.Provider>
