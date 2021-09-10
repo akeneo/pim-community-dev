@@ -81,6 +81,9 @@ akeneo_connectivity.connection:
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about about app authorization,
                     helper_link: check out our Help Center for more information.
+                permission:
+                    helper: If you need help please check our article
+                    helper_link: How to set-up app permissions?
             title: Connect
             activate:
                 flash:
@@ -394,3 +397,13 @@ akeneo_connectivity.connection:
         error_message: Oh snap! An error occurred...
         reload_helper: Please reload the page and try again.
         reload_button:  Reload
+
+pim_permissions:
+    widget:
+        action:
+            all: All
+            clear: Clear
+        level:
+            own: Own
+            edit: Edit
+            view: View

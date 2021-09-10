@@ -47,3 +47,5 @@ config:
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/permission-form-registry: akeneoconnectivityconnection/js/registry/permission-form-registry
