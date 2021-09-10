@@ -24,13 +24,9 @@ interface PublishedAssociationRepositoryInterface
 {
     /**
      * Find a published association from a product association.
-     *
-     * @param AssociationTypeInterface $type
-     * @param int                      $ownerId
-     *
-     * @return PublishedProductAssociation|null
+     * @param  string|int $ownerId
      */
-    public function findOneByTypeAndOwner(AssociationTypeInterface $type, $ownerId);
+    public function findOneByTypeAndOwner(int $associationTypeId, $ownerId): ?PublishedProductAssociation;
 
     /**
      * Remove a published product from all published associations.
