@@ -84,6 +84,7 @@
 - PIM-10054: Check records are not used as variant axes before mass delete
 - PIM-10038: Optimize Rule logger to be executed only depending of the log level
 - PIM-10033: Implement LRU cache for Asset Families to optimize performance
+- PIM-10055: Optimize publication of incoming published asssocication upon product publication
 
 ## Improvements
 

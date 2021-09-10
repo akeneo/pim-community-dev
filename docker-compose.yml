@@ -45,10 +45,12 @@ services:
     image: 'akeneo/node:12'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
+      CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
       PUPPETEER_DOWNLOAD_HOST: 'http://storage.googleapis.com'
     volumes:
       - './:/srv/pim'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/node/.cypress'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
