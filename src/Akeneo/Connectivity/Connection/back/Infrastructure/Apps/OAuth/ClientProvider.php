@@ -24,17 +24,19 @@ class ClientProvider implements ClientProviderInterface
 
     public function findOrCreateClient(App $app): Client
     {
-        $appId = $app->getId();
+        $client = $this->findClientByAppId($app->getId());
 
-        /** @var Client | null $client */
-        $client = $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
         if ($client === null) {
-            /** @var Client $client */
             $client = $this->clientManager->createClient();
+            if (!$client instanceof Client) {
+                throw new \LogicException(
+                    sprintf('Expected instance of %s, got %s', Client::class, get_debug_type($client))
+                );
+            }
 
             $client->setRedirectUris([$app->getCallbackUrl()]);
             $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_AUTH_CODE]);
-            $client->setMarketplacePublicAppId($appId);
+            $client->setMarketplacePublicAppId($app->getId());
 
             $this->clientManager->updateClient($client);
         }
@@ -44,8 +46,13 @@ class ClientProvider implements ClientProviderInterface
 
     public function findClientByAppId(string $appId): ?Client
     {
-        /** @var Client | null */
         $client = $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
+
+        if (null !== $client && !$client instanceof Client) {
+            throw new \LogicException(
+                sprintf('Expected null or instance of %s, got %s', Client::class, get_debug_type($client))
+            );
+        }
 
         return $client;
     }
