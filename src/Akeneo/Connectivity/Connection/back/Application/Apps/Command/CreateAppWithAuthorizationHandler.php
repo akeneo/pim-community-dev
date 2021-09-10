@@ -15,7 +15,6 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
-use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -66,19 +65,29 @@ final class CreateAppWithAuthorizationHandler
         $appId = $command->getClientId();
 
         $marketplaceApp = $this->getAppQuery->execute($appId);
-        assert(null !== $marketplaceApp, 'App should exists when validating the authorization wizard');
+        if (null === $marketplaceApp) {
+            throw new \LogicException('App should exists when validating the authorization wizard');
+        }
 
         $appAuthorization = $this->session->getAppAuthorization($appId);
-        assert(null !== $appAuthorization, 'AppAuthorization should exists in the session for the given app');
+        if (null === $appAuthorization) {
+            throw new \LogicException('AppAuthorization should exists in the session for the given app');
+        }
 
         $client = $this->clientProvider->findClientByAppId($appId);
-        assert(null !== $client, 'OAuth client should exists for the given app');
+        if (null === $client) {
+            throw new \LogicException('OAuth client should exists for the given app');
+        }
 
         $group = $this->createUserGroup->execute($this->generateGroupName($marketplaceApp->getName()));
-        assert(null !== $group->getName());
+        if (null === $group->getName()) {
+            throw new \LogicException('The user group should have a name, got null.');
+        }
 
         $role = $this->roleFactory->createRole($appId, $appAuthorization->scopeList());
-        assert(null !== $role->getRole());
+        if (null === $role->getRole()) {
+            throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
+        }
 
         $user = $this->createUser->execute($appId, $appId, $appId, [$group->getName()], [$role->getRole()]);
 
