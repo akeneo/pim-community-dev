@@ -11,4 +11,4 @@ akeneo_connectivity_connection_apps_rest_get_wizard_data:
 akeneo_connectivity_connection_apps_rest_confirm_authorization:
     path: '/confirm-authorization/{clientId}'
     controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authorization
-    methods: [ POST ]
+    methods: [POST]
