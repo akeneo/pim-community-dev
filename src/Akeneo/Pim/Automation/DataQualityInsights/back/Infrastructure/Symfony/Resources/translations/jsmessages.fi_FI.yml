@@ -46,6 +46,10 @@ akeneo_data_quality_insights:
         recommendation: Vaaditut attribuutit, joilla on puuttuu arvot
       completeness_of_non_required_attributes:
         recommendation: Ei-vaaditut attribuutit, joilla on puuttuu arvot
+      consistency_textarea_uppercase_words:
+        recommendation: Attribuutit, joissa virheitä isojen kirjaimien kanssa
+      consistency_textarea_lowercase_words:
+        recommendation: Attribuutit, joissa virheitä pienien kirjaimien kanssa
       consistency_spelling:
         recommendation: Attribuutit, joissa kirjoitusvirheitä
     axis:

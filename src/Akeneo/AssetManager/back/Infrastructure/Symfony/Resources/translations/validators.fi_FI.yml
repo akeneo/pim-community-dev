@@ -10,7 +10,10 @@ pim_asset_manager:
         should_not_be_linked: 'Et voi poistaa tätä perhettä, koska assettiperheen attribuutteja liittyy tähän perheeseen'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Vähintään yhdellä käyttäjäryhmällä on oltava muokkausoikeudet tähän assettiperheeseen'
+      product_attributes:
+        should_not_be_linked: 'Et voi poistaa tätä perhettä, koska asset collection -attribuutti on linkitetty tähän perheeseen.'
       rule_template:
+        limit_reached: 'Olet saavuttanut tuotteiden linkityssääntöjen %limit% säännön enimmäismäärän "%asset_family_identifier%" assettiperheelle.'
         extrapolated_attribute_type_should_be_supported: 'Attribuutti "%attribute_code%", jonka tyyppi on "%attribute_type%", ei ole tuettu. Ainoastaan seuraavat attribuuttityypit on tuettuja tässä kentässä: %supported_attribute_type%'
         assignmement_attribute_does_not_exist: 'tuotteen attribuuttia "{{ %product_attribute_code% }}" ei ole olemassa'
         assignmement_attribute_is_not_an_asset_collection: 'tuotteen attribuutti "{{ %product_attribute_code% }}" ei ole tyypiltään assetti'
@@ -28,8 +31,10 @@ pim_asset_manager:
         code_is_not_unique: 'Et voi määritellä kahta muunnosta samalla koodilla "{{ %transformation_code%}}"'
         filename_prefix_suffix_empty: 'Sinulla täytyy olla vähintään joko ominaisuus filename_prefix tai filename_suffix ja yksi niistä ei saa olla tyhjä merkkijono.'
         empty_operation_list: 'Tarvitaan vähintään yksi muunnostoiminto.'
+        unknown_extra_field: 'Ominaisuutta {{ field }} ei odotettu.'
       naming_convention:
         property_should_exist: 'Ominaisuutta "%property%" ei ole tässä assettiperheessä'
+        not_main_media_attribute_code: 'Ominaisuuden on vastattava päämediaksi määritellyn attribuutin koodia.'
   asset:
     validation:
       code:
