@@ -1,0 +1,36 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'Lokaalia "{{ localeCode }} ei ole olemassa tai sitä ei ole aktivoitu'
+      currency:
+        unknown: 'Hyväksytty valuutta vaaditaan, valuuttaa "{{ currency }} ei ole olemassa tai sitä ei ole aktivoitu'
+        missing_key: 'Avain "{{ key }}" puuttuu tai on tyhjä'
+      measurement:
+        invalid_unit: 'Mittayksikköä "{{ unitCode }}" ei ole olemassa tai se ei kuulu attribuutin "{{ attributeCode }}" mittayksikköperheeseen'
+      attribute:
+        unknown: 'Attribuuttia {{ attributeCode }} ei ole olemassa'
+        unexpected_type: 'Attribuutilla "{{ attribute_code }}" on virheellinen "{{ invalid_type }}" attribuutin tyyppi. A {{ expected_types }} attribuutti vaaditaan'
+        missing_locale: 'Attribuutti "{{ attributeCode }}" vaatii lokaalin'
+        unexpected_locale: 'Attribuutti "{{ attributeCode }}" ei vaadi lokaalia. Ole hyvä, ja poista se'
+        unknown_locale: 'Attribuutti "{{ attributeCode }}" vaatii olemassa olevan ja aktivoidun lokaalin. Varmista, että lokaali on olemassa ja aktivoitu'
+        invalid_specific_locale: 'Attribuutti "{{ attributeCode }}" on lokaalikohtainen ja vaatii yhden seuraavista lokaaleista: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Kanavalla "{{ channelCode }}" ei ole lokaalia "{{ invalidLocale }}"'
+        missing_scope: 'Attribuutti "{{ attributeCode }}" vaatii kontekstin'
+        unexpected_scope: 'Attribuutti "{{ attributeCode }}" ei vaadi kontekstia. Ole hyvä, ja poista se'
+        unknown_scope: 'Attribuutti "{{ attributeCode }}" vaatii olemassa olevan kontekstin'
+      invalid_code: 'Säännön tunniste voi sisältää ainoastaan kirjaimia, numeroita ja alaviivoja'
+      actions:
+        add:
+          invalid_field: 'Et voi lisätä arvoja kenttään "{{ field }}"'
+        clear:
+          invalid_field: 'Et voi tyhjentää tietoja kentästä "{{ field }}"'
+        concatenate:
+          invalid_source: 'Et voi yhdistää tietoja kentästä "{{ field }}"'
+        calculate:
+          division_by_zero: 'Nollalla jakaminen ei ole mahdollista'
+          invalid_operator: 'Tämän arvon tulee olla joko "lisää", "vähennä", "kerro" tai "jaa"'
+        remove:
+          invalid_field: 'Et voi poistaa arvoja kentästä "{{ field }}"'
+        custom:
+          unkown_type: 'Tuntematon toimintotyyppi'

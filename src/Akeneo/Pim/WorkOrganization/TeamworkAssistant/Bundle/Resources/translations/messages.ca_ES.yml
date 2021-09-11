@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Aquest valor no es pot deixar en blanc.
     label_maxlength: Aquest valor és massa llarga. Ha de tenir {{ max }} caràcters o menys.
     project_identifier: El projecte {{ project }} no existeix.
+    project_locale: El local {{ locale }} no és compatible amb el canal {{ channel }}.
     project_due_date: No podeu seleccionar una data en el passat.
   notification:
     project_calculation:
@@ -13,9 +14,11 @@ teamwork_assistant:
     message: Teniu novetats per enriquir "%project_label%". La data límit és %due_date%.
     project_finished:
       contributor: Felicitats! Ha realitzat el 100% del producte en %project_label%.
+      owner: 'El projecte <strong>%project_label%</strong> per les dates <strong>%due_date%</strong> ha finalitzat.'
       show: Mostrar
     due_date:
       contributor: Ha realitzat un %percent%% dels productes de %project_label%. No t'oblidis d'omplir els productos pendents per el %due_date%.
+      owner: 'El projecte <strong>%project_label%</strong> per la dates <strong>%due_date%</strong> no s''ha completat al 100%.'
       start: Començar
   datagrid:
     project_completeness: Progrés del projecte

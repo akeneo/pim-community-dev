@@ -25,6 +25,7 @@ pimee_workflow:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
+    selected: "]-Inf, 1]{{ count }} muutosehdotus valittu|]1, Inf[{{ count }} muutosehdotusta valittu"
     mass_action_group:
       review:
         label: Massatoiminnot
@@ -81,6 +82,9 @@ batch_jobs:
     perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   publish_product:
     perform.label: Julkaise tuotteet
+  default_steps:
+    clean_attribute:
+      clean_draft: Muutosehdotusten puhdistaminen
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Uusi muutosehdotus
@@ -107,6 +111,7 @@ pimee_enrich.entity.product:
       published: Julkaistu
       revert: Palauta
     attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]Tätä attribuuttia voidaan päivittää säännöllä:|]1, +Inf[Tätä attribuuttia voidaan päivittää säännöillä:"
       value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio
