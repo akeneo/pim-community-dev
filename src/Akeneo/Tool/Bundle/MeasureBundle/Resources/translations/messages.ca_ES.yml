@@ -18,6 +18,7 @@ pim_measure:
     Pressure: Pressió
     Energy: Energia
     CaseBox: Embalatge
+    Brightness: Brillantor
   units:
     #Area
     ACRE: Acre
@@ -148,7 +149,6 @@ pim_measure:
     GALLON: Galó
     LITER: Litre
     MILLILITER: Mililitre
-    OUNCE: Unça
     PINT: Pinta
     #Weight
     DENIER: Denier
@@ -159,6 +159,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Mil·ligram
     ONCE: Unça
+    OUNCE: Unça
     POUND: Lliura
     TON: Tona
     #Pressure
@@ -170,8 +171,14 @@ pim_measure:
     PSI: Lliura per polzada quadrada
     TORR: Torr
     MMHG: mil·límetre de Mercuri
+    #Energy
+    CALORIE: calorie
     KILOCALORIE: quilocalories
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Peça
     DOZEN: Dotzena
+    #Brightness
+    LUMEN: Lumen
+    NIT: Nit
