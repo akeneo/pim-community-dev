@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Preferències
+    mass_delete: Supressió
 flash:
   comment:
     create:
@@ -313,6 +314,7 @@ pim_enrich.mass_edit.product:
       label: Moure entre categories
       label_count: "{1}Moure <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories|]1, Inf[Moure <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
+      no_update: Si us plau, selecciona una categoria
     remove_from_category:
       label: Eliminar de les categories
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
@@ -333,7 +335,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
-  search: "Cercar a {{ label }}"
+  no_entities: "No {{ entityHint }} trobat"
   mass_action_group:
     bulk_actions:
       label: Accions massives
@@ -371,6 +373,7 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Sistema
+  search: Cercar a {{ label }}
 batch_jobs:
   add_association:
     label: Associa
@@ -429,3 +432,6 @@ batch_jobs:
     quick_export.label: Exportació ràpida de producte en XSLX
     quick_export_product_model.label: Exportació ràpida del model de producte en XSLX
     perform.label: Exportació ràpida de producte en XSLX
+  default_steps:
+    delete_products_and_product_models: Esborrar productes i models de productes
+    remove_completeness_for_channel_and_locale: Esborrar la completitud del canal i locals

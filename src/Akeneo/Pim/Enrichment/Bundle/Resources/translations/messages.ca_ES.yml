@@ -74,9 +74,11 @@ pim_enrich:
       quick_export:
         launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
 category:
+  create: Crear una categoria
   edit: Editar categoria
   overview: Categories
 tree:
   edit: Editar arbre
   remove:
     error_linked: Aquest arbre de categoria no es pot eliminar. Està vinculat a un canal
+  create: Crear un arbre de categories

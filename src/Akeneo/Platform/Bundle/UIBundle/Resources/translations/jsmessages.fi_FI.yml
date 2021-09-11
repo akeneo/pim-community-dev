@@ -209,6 +209,7 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
+  read_more: Lue lisää
 error:
   exception: Voi pahus! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
