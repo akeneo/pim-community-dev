@@ -9,6 +9,7 @@ pim_asset_manager:
         title: Enllaç incrustat sospitós
         message: Ho sentim, no podem mostrar aquest article tot i ser guardat correctament
   result_counter: '{0} Sense resultat|{1}{{ count }} resultat|]1,Inf] {{ count }} resultats'
+  asset_counter: '{0} No actiu|{1} {{ count }} actiu|]1,Inf] {{ count }} actius'
   asset_collection:
     add_asset: 'Afegeix actiu'
     upload_asset: 'Penjar recurs'
@@ -50,16 +51,19 @@ pim_asset_manager:
   asset_preview:
     previous: Recurs anterior
     next: Següent recurs
+    empty_main_media: Aquest actiu no té multimèdia.
     other_main_media: No podem generar la vista prèvia d'aquest recurs.
     edit_asset: Editar recurs
     download: Baixar
     copy_url: Copiar URL
+    error: S'ha produït un error durant el procés de la vista prèvia
   close: Tancar el modal
   breadcrumb:
     products: Productes
   app:
     image:
       wide:
+        remove: Eliminar arxiu
         download: Descarregui el fitxer
         upload: Arrossegar i deixar per carrgar o feu clic aquí
       small:
@@ -71,27 +75,40 @@ pim_asset_manager:
     counter_empty: '0 resultats'
   asset_family:
     column:
+      title: Navegació d'actius
       selector:
         title: Families de recursos
+        no_data: Cap família d'actius disponible
     validation:
       code:
         pattern: 'Aquest camp només pot tenir lletres, números i guions baixos.'
+        should_be_unique: 'Ja existeix una familia d''actius amb el codi "{{ %asset_family_identifier% }}"'
         limit_reached: 'Vostè no pot crear la família d''actius "{{ %asset_family_label% }}" perquè ha arribat al límit de famílies d''actius {{ %limit% }}'
       transformation:
+        limit_reached: 'Has arribat al límit de transformacions {{ %limit% }}'
+        same_operation_twice: 'L''operació "{{ %operation_type% }}" no és pot definir dos cops en una transformació'
+        source_can_not_be_a_target: 'La font de l''atribut "{{ %attribute_code% }}" no pot ser un objectiu d''una transformació.'
+        attribute_reference_should_exist: 'L''atribut "{{ %attribute_code% }}" no existeix per a aquesta família d''actius'
+        filename_is_not_unique: 'Ja existeix una transformació amb el prefix "{{ %filename_prefix% }}"  i el sufix "{{ %filename_suffix% }}" per a la font d''atributs "{{ %attribute_code% }}"'
+        code_is_not_unique: 'No pot definir dos transformacions amb el mateix codi "{{ %transformation_code% }}"'
         unknown_extra_field: 'La propietat {{ {{ field }} }} no s''esperava.'
       naming_convention:
         property_should_exist: 'La propietat "{{ %property% }}" no existeix per a aquesta família de recursos'
       rule_template:
+        extrapolated_attribute_should_exist: 'L''atribut "{{ %attribute_code% }}" no existeix per a aquesta família d''actius'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existeix'
         locale_should_exist: 'El local "{{ %locale_code% }}" no està activat o no existeix'
         channel_not_supported_for_field: 'No pots especificar un canal per a cada camp "{{ %product_field% }}"'
         locale_not_supported_for_field: 'No pots especificar un local pel camp "{{ %product_field% }}"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''atribut de producte "{{ %product_attribute_code% }}" no pot contenir recursos de families de recursos "{{ %asset_family_identifier% }}"'
+        assignmement_attribute_does_not_exist: 'no existeix l''atribut del producte  "{{ %product_attribute_code% }}"'
+        assignmement_attribute_is_not_an_asset_collection: 'l''atribut de producte "{{ %product_attribute_code% }}" no és un atribut del tipus col·lecció d''actius'
     button:
       save: Desar
       save_permission: Desar
       create: Crear una família de recursos
       edit: Editar família
+      view: Veure família
       execute_product_link_rules: Executar regles
     permission:
       title: Permisos de la família de recursos
@@ -104,8 +121,18 @@ pim_asset_manager:
       permission: Permisos
       transformations: Transformacions
       product_link_rules: Regles d'enllaç del producte
+    transformations:
+      help:
+        title: 'Benvingut a la seva nova zona de gestió d''actius!'
+        description: 'Aquí pot definir fins a 10 transformacions per família d''actius.'
+        link: 'Si vol, pot profunditzar en les noves transformacions del Gestor d''actius aquí'
+      subsection: 'Propietats de transformació'
     product_link_rules:
       product_link_rules_subsection: 'Propietats de les regles d''enllaç del producte'
+      help:
+        title: 'Benvingut a la seva nova zona de gestió d''actius!'
+        description: 'Aquí pot definir fins a 2 regles d''enllaç de producte per família d''actius.'
+        link: 'Si vol profunditzar en la funció de Regles d''enllaç de producte, cliqueu aquí'
       execute_rules:
         confirm_title: Confirmar l'execució
         execute_rules: Executar regles
@@ -114,14 +141,25 @@ pim_asset_manager:
       title: Propietats de les families de recursos
       identifier: Codi
       label: Etiqueta
+      media_file: Arxiu multimèdia
+      attribute_as_main_media: Atribut com a multimèdia principal
     attribute:
       title: Atributs de recursos
+      attribute:
+        error:
+          render_list: 'S''ha produït un error durant la representació de l''atribut "{{ %attribute_code% }}"'
+          render_edit: 'S''ha produït un error durant la representació dels camps addicionals de propietat de l''atribut "{{ %attribute_code% }}"'
+    module:
+      delete:
+        button: Eliminar família d'actius
+        confirm: Esteu segur que voleu eliminar aquesta família d'actius?
     index:
       grid:
         count: '{0} Sense família de recursos|{1}{{ count }} Família de recursos|]1,Inf] {{ count }} Families de recursos'
         help:
           title: 'Benvingut a les families de Recursos!'
           description_part_one: Enriquir la informació rellevant relacionada amb els productes (per exemple, marques, fabricants, colors, materials, ingredients...).
+          description_part_two: Li permetrà oferir una millor experiència del producte als seus clients.
     create:
       header:
         title: Crear
