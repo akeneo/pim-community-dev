@@ -144,8 +144,8 @@ SQL,
             <<<SQL
 SELECT COUNT(*)
 FROM acl_entries
-LEFT JOIN acl_security_identities ON acl_security_identities.id = acl_entries.security_identity_id
-LEFT JOIN acl_classes ON acl_entries.class_id = acl_classes.id
+JOIN acl_security_identities ON acl_security_identities.id = acl_entries.security_identity_id
+JOIN acl_classes ON acl_entries.class_id = acl_classes.id
 WHERE acl_security_identities.identifier = :role
 AND acl_classes.class_type = :acl
 SQL,
