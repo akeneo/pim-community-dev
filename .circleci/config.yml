@@ -167,7 +167,9 @@ jobs:
             - << parameters.path_to_dsm >>/lib
       - run:
           name: Build front-packages
-          command: make front-packages
+          command: |
+            docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn shared:build
+            docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn measurement:build
       - run:
           name: Build Javascript
           command: make javascript-dev
