@@ -25,6 +25,7 @@ type CreateAttributeModalProps = {
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
   extraFields?: CreateAttributeModalExtraField[];
+  onBack?: () => void;
 };
 
 const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
