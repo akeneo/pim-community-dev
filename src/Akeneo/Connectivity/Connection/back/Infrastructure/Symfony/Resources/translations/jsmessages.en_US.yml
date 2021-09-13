@@ -79,8 +79,8 @@ akeneo_connectivity.connection:
                     title: 'App {{ app_name }} needs to'
                     no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
                     no_scope: No specific authorizations have been requested.
-                    helper: To know more about about app authorization,
-                    helper_link: check out our Help Center for more information.
+                    helper: To know more about app authorization,
+                    helper_link: check out our Help Center article.
                 permission:
                     helper: If you need help please check our article
                     helper_link: How to set-up app permissions?
