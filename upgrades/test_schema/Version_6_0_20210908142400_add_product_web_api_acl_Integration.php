@@ -174,7 +174,7 @@ SQL;
         foreach ($acls as $acl => $expectedValue) {
             assert(is_bool($expectedValue));
 
-            $isAllowed = (boolean) $connection->fetchOne($query, [
+            $isAllowed = (boolean) $connection->fetchColumn($query, [
                 'role' => $role,
                 'acl' => $acl,
             ]);
