@@ -87,6 +87,7 @@
 - PIM-10055: Optimize publication of incoming published asssocication upon product publication
 - PIM-10063: Fix product link rule execution to make the property case insensitive
 - PIM-10059: Fix completeness display when user does not have permission on attribute group(s)
+- PIM-10066: Product export in XLSX: option for "Export media" is missing
 
 ## Improvements
 
