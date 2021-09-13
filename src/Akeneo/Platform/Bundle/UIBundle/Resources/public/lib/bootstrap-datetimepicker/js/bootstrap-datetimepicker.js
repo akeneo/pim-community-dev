@@ -44,6 +44,7 @@
 
     init: function (element, options) {
       var icon;
+      this._unset=true;
       if (!(options.pickTime || options.pickDate)) throw new Error('Must choose at least one picker');
       this.options = options;
       this.$element = $(element);
