@@ -89,6 +89,7 @@
 - PIM-10059: Fix completeness display when user does not have permission on attribute group(s)
 - PIM-10066: Product export in XLSX: option for "Export media" is missing
 - PIM-10065: Asset textarea is not updated when the locale is changed
+- PIM-10029: Fix missing filters on proposal grid page
 
 ## Improvements
 
