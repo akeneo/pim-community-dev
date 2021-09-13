@@ -64,6 +64,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
     public function test_it_redirects_on_missing_xmlhttprequest_header(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
 
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
@@ -83,6 +84,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
     public function test_it_returns_json_with_error_on_missing_id(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
 
         $this->client->request(
@@ -98,9 +100,9 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        Assert::assertEquals([
-            'error' => 'akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid'
-        ], json_decode($response->getContent(), true));
+        $content = json_decode($response->getContent(), true);
+        Assert::assertArrayHasKey('errors', $content);
+        Assert::assertGreaterThan(0, count($content['errors']));
     }
 
     public function test_it_returns_json_with_app_id(): void
@@ -108,6 +110,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
         $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));
         $this->clientProvider->findOrCreateClient($app);
