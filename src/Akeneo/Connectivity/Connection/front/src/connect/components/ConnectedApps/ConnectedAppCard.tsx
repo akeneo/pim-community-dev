@@ -116,7 +116,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
-                <Button ghost level='tertiary' href={item.external_url} target='_blank'>
+                <Button ghost level='tertiary' href='#' target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.card.manage_app')}
                 </Button>
             </Actions>

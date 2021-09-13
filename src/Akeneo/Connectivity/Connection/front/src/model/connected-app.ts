@@ -7,6 +7,6 @@ export type ConnectedApp = {
     author: string;
     categories: string[];
     certified: boolean;
-    partner: string;
-    external_url: string;
+    partner: string | null;
+    external_url: string | null;
 };
