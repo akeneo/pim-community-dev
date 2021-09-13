@@ -37,7 +37,7 @@ const fetchSelectOptions = async (
   _attributeCode: string,
   columnCode: ColumnCode
 ): Promise<SelectOption[] | undefined> => {
-  const options = {
+  const options: {[columnCode: string]: SelectOption[] | undefined} = {
     ingredient: ingredientsSelectOptions,
     nutrition_score: nutritionScoreSelectOptions,
     no_options: [],

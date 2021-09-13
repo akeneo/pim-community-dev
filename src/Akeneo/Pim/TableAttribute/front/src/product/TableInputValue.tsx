@@ -85,7 +85,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [firstColumn, ...otherColumns] = attribute.table_configuration;
   const {getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
 
-  const matchers = {};
+  const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellInputsMapping).forEach(data_type => {
     matchers[data_type] = cellMatchersMapping[data_type].default(attribute, valueData);
   });

@@ -32,7 +32,7 @@ describe('SelectTemplateApp', () => {
     });
 
     expect(handleBack).toBeCalled();
-  })
+  });
 
   it('should callback the click', () => {
     const handleStepConfirm = jest.fn();

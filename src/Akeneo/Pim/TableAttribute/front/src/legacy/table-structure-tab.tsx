@@ -1,7 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {ColumnDefinitionPropertiesMapping, DataTypesMapping, TableStructureApp} from '../attribute';
+import {DataTypesMapping, TableStructureApp} from '../attribute';
 import {
   Attribute,
   AttributeType,
@@ -12,6 +12,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Locale} from '@akeneo-pim-community/settings-ui';
 import {LocaleCode} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
+import {ColumnDefinitionPropertiesMapping} from '../attribute/ColumDefinitionProperties';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
