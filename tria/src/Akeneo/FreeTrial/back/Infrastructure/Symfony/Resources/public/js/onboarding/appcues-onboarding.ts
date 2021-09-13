@@ -44,6 +44,8 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
             appcues.track('View "Furniture - To enrich" saved');
           }
+
+          appcues.track('View saved');
           break;
         case 'product-grid:view:selected':
           if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
@@ -53,36 +55,50 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'Food - To enrich') {
             appcues.track('View "Food - To enrich" selected');
           }
+
+          appcues.track('View selected');
           break;
         case 'product-grid:column:selected':
           if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.column && eventOptions.column.includes('designer')) {
             appcues.track('Column "Designer" added in the product grid');
           }
+
+          appcues.track('Column added in the product grid');
           break;
         case 'product-grid:product:selected':
           if (eventOptions && eventOptions.identifier === 'PLGCHAELK001') {
             appcues.track('Product "Elka Peacock Armchair" selected');
           }
+
+          appcues.track('Product selected');
           break;
         case 'product-grid:completeness:opened':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
             appcues.track('Completeness badge for product "Elka Peacock Armchair" opened');
           }
+
+          appcues.track('Completeness badge opened in product edit form');
           break;
         case 'product-grid:attribute-group:selected':
           if (eventOptions && eventOptions.name === 'contentcopy') {
             appcues.track('Attribute group "Content / Copy" selected');
           }
+
+          appcues.track('Attribute group selected in the product grid');
           break;
         case 'product:attribute-value:updated':
           if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.value === 'studio_plumen') {
             appcues.track('Attribute "Designer" filled with "Studio Plumen"');
           }
+
+          appcues.track('Attribute filled in product edit form');
           break;
         case 'product:form:saved':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
             appcues.track('Product "Elka Peacock Armchair" saved');
           }
+
+          appcues.track('Product saved');
           break;
         case 'product-grid:product:all-selected':
           appcues.track('All products are selected');
@@ -114,6 +130,8 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name && eventOptions.name.includes('food_standard')) {
             appcues.track('Attribute "Industry Standards" added in a bulk action');
           }
+
+          appcues.track('Attribute added in a bulk action');
           break;
       }
     });
