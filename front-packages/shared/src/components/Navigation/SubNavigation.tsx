@@ -105,6 +105,11 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
             </Section>
           );
         })}
+        {/*
+        PIM-10029: This div is added so that legacy modules could inject necessary content into sub-navigation panel
+        such as filters. It is a shortcut until a proper solution is developed
+        */}
+        <div className="subnavigation-additional-container"/>
       </SubNavigationPanel>
     </SubNavContainer>
   );
