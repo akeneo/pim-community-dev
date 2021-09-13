@@ -82,23 +82,5 @@ CREATE TABLE `pimee_teamwork_assistant_project_product` (
 SQL;
 
         $this->connection->exec($sql);
-
-        $this->connection->executeQuery(
-            <<<SQL
-            DROP TABLE IF EXISTS pimee_sso_log
-SQL
-        );
-
-        $this->connection->executeQuery(
-            <<<SQL
-            CREATE TABLE pimee_sso_log (
-              time DATETIME,
-              channel VARCHAR(255),
-              level SMALLINT,
-              message TEXT,
-              INDEX(time)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-SQL
-        );
     }
 }
