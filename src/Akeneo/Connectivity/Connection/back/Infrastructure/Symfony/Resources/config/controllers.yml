@@ -102,4 +102,4 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@akeneo_connectivity.connection.persistence.repository.connected_app'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'

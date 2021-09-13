@@ -10,7 +10,7 @@ import {ConnectedApp} from '../../model/connected-app';
 import {useFetchConnectedApps} from "../hooks/use-fetch-connected-apps";
 import {useFeatureFlags} from "../../shared/feature-flags";
 
-export const ConnectedAppPage: FC = () => {
+export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;

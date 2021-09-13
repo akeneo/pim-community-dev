@@ -28,7 +28,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     {
         $selectSQL = <<<SQL
 SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner
-FROM akeneo_connectivity_app
+FROM akeneo_connectivity_connected_app
 ORDER BY name ASC
 SQL;
 
