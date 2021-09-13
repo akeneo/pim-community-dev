@@ -60,7 +60,6 @@ class DbalAppRepositoryIntegration extends TestCase
             'certified' => '0',
             'connection_code' => 'bynder',
             'scopes' => '["foo", "bar"]',
-            'external_url' => null,
         ], $row);
     }
 
@@ -94,7 +93,7 @@ FROM akeneo_connectivity_app
 WHERE id = :id
 SQL;
 
-        $row = $this->connection->fetchAssociative($query, [
+        $row = $this->connection->fetchAssoc($query, [
             'id' => $id,
         ]);
 

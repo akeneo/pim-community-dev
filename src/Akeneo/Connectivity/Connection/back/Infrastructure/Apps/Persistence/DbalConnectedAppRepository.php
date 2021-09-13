@@ -25,8 +25,8 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function create(ConnectedApp $app): void
     {
         $insertQuery = <<<SQL
-        INSERT INTO akeneo_connectivity_app (id, name, logo, author, partner, categories, scopes, certified, connection_code, external_url)
-        VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code, :external_url)
+        INSERT INTO akeneo_connectivity_app (id, name, logo, author, partner, categories, scopes, certified, connection_code)
+        VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code)
         SQL;
 
         $this->dbalConnection->executeQuery(
@@ -41,7 +41,6 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
                 'scopes' => $app->getScopes(),
                 'certified' => $app->isCertified(),
                 'connection_code' => $app->getConnectionCode(),
-                'external_url' => $app->getExternalUrl(),
             ],
             [
                 'certified' => Types::BOOLEAN,
@@ -54,7 +53,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findOneById(string $appId): ?ConnectedApp
     {
         $selectQuery = <<<SQL
-        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, external_url
+        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
         FROM akeneo_connectivity_app
         WHERE id = :id
         SQL;
@@ -71,8 +70,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
                 $dataRow['author'],
                 json_decode($dataRow['categories'], true),
                 (bool) $dataRow['certified'],
-                $dataRow['partner'],
-                $dataRow['external_url']
+                $dataRow['partner']
             ) : null;
     }
 }

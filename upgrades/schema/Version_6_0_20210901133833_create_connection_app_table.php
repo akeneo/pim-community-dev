@@ -20,7 +20,6 @@ final class Version_6_0_20210901133833_create_connection_app_table extends Abstr
             certified TINYINT(1) DEFAULT 0 NOT NULL,
             connection_code VARCHAR(100) NOT NULL,
             scopes JSON NOT NULL,
-            external_url VARCHAR(255) DEFAULT NULL NULL,
             CONSTRAINT FK_CONNECTIVITY_CONNECTION_connection_code FOREIGN KEY (connection_code) REFERENCES akeneo_connectivity_connection (code)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
         SQL
