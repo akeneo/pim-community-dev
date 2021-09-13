@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/app
   php:
-    image: eu.gcr.io/akeneo-ci/php-clear-uptime-check:latest
+    image: eu.gcr.io/akeneo-ci/php-deployment:latest
     environment:
       PROJECT: '${PROJECT:-akecld-saas-dev}'
       LOG_LEVEL: '${LOG_LEVEL:-info}'

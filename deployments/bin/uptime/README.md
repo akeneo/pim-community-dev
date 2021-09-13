@@ -2,11 +2,13 @@
 
 # Description
 
-This script allows you to automatically remove uptime checks that return KO test results for at least one hour
+This script allows you to automatically interact with google cloud api (see "operations" section)
 
 By default, this script runs on the akecld-saas-dev project but the target project can be modified via the use of environment variables (cf environment)
 
 ## Operations
+
+### Deployment:uptime:clear
 
 First we search all metrics starting with pim(ci|up) among all google cloud metrics and we aggregate them by summing their test results over all locations. (gcloud metric api)
 
@@ -40,6 +42,34 @@ If there is none, we can't delete it
 
 if there is a configuration, we remove the corresponding uptime (gcloud monitoring api)
 
+### deployment:uptime:get
+
+List uptime check success rate over time by check_id only for period from wednesday 18h CEST to 21h CEST
+
+_Exemple :_
+
+_Raw data :_
+|metric|location|9h|9h10|9h20|
+|--|--|--|--|--|
+|pimci-123|usa-1|1|1|1|
+|pimci-123|europe-1|1|1|1|
+|pimci-123|asia-1|1|1|1|
+|pimci-456|usa-1|0|0|0|
+|pimci-456|europe-1|0|0|0|
+|pimci-456|asia-1|0|0|0|
+|pimup-789|usa-1|0|0|0|
+|pimup-789|europe-1|1|1|1|
+|pimup-789|asia-1|1|0|0|
+
+_Aggregation :_
+
+|metric|location|9h|9h10|9h20|
+|--|--|--|--|--|
+|pimci-123|-|3/3|3/3|3/3|
+|pimci-456|-|0/3|0/3|0/3|
+|pimup-789|-|2/3|1/3|1/3|
+
+
 # How to use
 
 ## Image build
@@ -65,13 +95,13 @@ The php extension bcmath is mandatory and you'll have to install it first
 
 ```bash
 composer install
-GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json php ./clear-uptime-check.php
+GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json ./deployment <command>
 ```
 
 ### Docker
 ```bash
 docker-compose run --rm composer composer install
-GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json docker-compose run --rm php php ./clean-uptime-check.php
+GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json docker-compose run --rm php ./deployment <command>
 ```
 
 # Environment
@@ -83,5 +113,5 @@ GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.
 # Sample
 
 ```bash
-LOG_LEVEL=info PROJECT=akecld-saas-dev php ./clear-uptime-check.php
+LOG_LEVEL=info PROJECT=akecld-saas-dev php ./deployment deployment:uptime:get
 ```
