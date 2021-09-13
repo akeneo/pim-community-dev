@@ -21,29 +21,16 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     public const DOCUMENT_TYPE_FACET_NAME = 'document_type_facet';
     private const DOCUMENT_TYPE_FIELD = 'document_type';
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var mixed */
     protected $qb;
 
-    /** @var FilterRegistryInterface */
-    protected $filterRegistry;
-
-    /** @var SorterRegistryInterface */
-    protected $sorterRegistry;
-
-    /** @var array */
-    protected $defaultContext;
-
-    /** CursorFactoryInterface */
-    protected $cursorFactory;
-
-    /** @var ProductQueryBuilderOptionsResolverInterface */
-    protected $optionResolver;
-
-    /** @var array */
-    protected $rawFilters = [];
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected FilterRegistryInterface $filterRegistry;
+    protected SorterRegistryInterface $sorterRegistry;
+    protected array $defaultContext;
+    protected CursorFactoryInterface $cursorFactory;
+    protected ProductQueryBuilderOptionsResolverInterface $optionResolver;
+    protected array $rawFilters = [];
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -110,22 +97,16 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $code = FieldFilterHelper::getCode($field);
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        // In case of non case sensitive database configuration you can have attributes with code matching a field.
-        // For example "id" would match an attribute named "ID" so we double check here that we are adding the desired
-        // filter (ref PIM-6064)
-        if (null !== $attribute && $attribute->getCode() !== $code) {
-            $attribute = null;
-        }
-
-        if (null !== $attribute) {
-            $filterType = 'attribute';
-            $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
-        } else {
-            $filterType = 'field';
-            $filter = $this->filterRegistry->getFieldFilter($field, $operator);
+        $attribute = null;
+        $filterType = 'field';
+        $filter = $this->filterRegistry->getFieldFilter($field, $operator);
+        if (null === $filter) {
+            $code = FieldFilterHelper::getCode($field);
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (null !== $attribute) {
+                $filterType = 'attribute';
+                $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
+            }
         }
 
         if (null === $filter) {
