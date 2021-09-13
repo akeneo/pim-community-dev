@@ -12,5 +12,8 @@ use Akeneo\UserManagement\Component\Model\RoleInterface;
  */
 interface AppRoleWithScopesFactoryInterface
 {
+    /**
+     * @param string[] $scopes
+     */
     public function createRole(string $label, array $scopes): RoleInterface;
 }
