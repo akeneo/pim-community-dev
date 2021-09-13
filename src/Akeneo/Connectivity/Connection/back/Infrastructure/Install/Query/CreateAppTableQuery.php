@@ -12,7 +12,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
 final class CreateAppTableQuery
 {
     const QUERY = <<<'SQL'
-    CREATE TABLE IF NOT EXISTS akeneo_connectivity_app(
+    CREATE TABLE IF NOT EXISTS akeneo_connectivity_connected_app(
         id VARCHAR(36) NOT NULL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         logo VARCHAR(255) NOT NULL,

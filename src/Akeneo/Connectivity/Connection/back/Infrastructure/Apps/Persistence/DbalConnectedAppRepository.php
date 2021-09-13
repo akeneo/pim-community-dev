@@ -25,7 +25,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function create(ConnectedApp $app): void
     {
         $insertQuery = <<<SQL
-        INSERT INTO akeneo_connectivity_app (id, name, logo, author, partner, categories, scopes, certified, connection_code)
+        INSERT INTO akeneo_connectivity_connected_app (id, name, logo, author, partner, categories, scopes, certified, connection_code)
         VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code)
         SQL;
 
@@ -54,7 +54,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     {
         $selectQuery = <<<SQL
         SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
-        FROM akeneo_connectivity_app
+        FROM akeneo_connectivity_connected_app
         WHERE id = :id
         SQL;
 

@@ -10,7 +10,7 @@ final class Version_6_0_20210901133833_create_connection_app_table extends Abstr
     public function up(Schema $schema) : void
     {
         $this->addSql(<<<'SQL'
-        CREATE TABLE IF NOT EXISTS akeneo_connectivity_app(
+        CREATE TABLE IF NOT EXISTS akeneo_connectivity_connected_app(
             id VARCHAR(36) NOT NULL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             logo VARCHAR(255) NOT NULL,

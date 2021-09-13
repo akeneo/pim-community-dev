@@ -89,7 +89,7 @@ class DbalAppRepositoryIntegration extends TestCase
     {
         $query = <<<SQL
 SELECT *
-FROM akeneo_connectivity_app
+FROM akeneo_connectivity_connected_app
 WHERE id = :id
 SQL;
 
