@@ -34,12 +34,11 @@ class ConnectedAppLoader
         string $author,
         array $categories,
         bool $certified,
-        ?string $partner,
-        ?string $externalUrl
+        ?string $partner
     ): int {
         $query = <<<SQL
-INSERT INTO akeneo_connectivity_app(id, name, logo, author, partner, categories, certified, connection_code, scopes, external_url)
-VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes, :external_url)
+INSERT INTO akeneo_connectivity_app(id, name, logo, author, partner, categories, certified, connection_code, scopes)
+VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes)
 SQL;
 
         return $this->dbalConnection->executeUpdate(
@@ -54,7 +53,6 @@ SQL;
                 'certified' => $certified,
                 'connection_code' => $connectionCode,
                 'scopes' => $scopes,
-                'external_url' => $externalUrl,
             ],
             [
                 'certified' => Types::BOOLEAN,

@@ -48,7 +48,6 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'author B',
             ['category B1'],
             true,
-            null,
             null
         );
 
@@ -62,8 +61,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'author A',
             ['category A1', 'category A2'],
             false,
-            'partner A',
-            'http://www.example.com/path/to/app/a'
+            'partner A'
         );
 
         $connectedApps = $this->repository->findAll();
@@ -82,7 +80,6 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         Assert::assertSame('category A2', $connectedApps[0]->getCategories()[1]);
         Assert::assertFalse($connectedApps[0]->isCertified());
         Assert::assertSame('partner A', $connectedApps[0]->getPartner());
-        Assert::assertSame('http://www.example.com/path/to/app/a', $connectedApps[0]->getExternalUrl());
 
         Assert::assertInstanceOf(ConnectedApp::class, $connectedApps[1]);
         Assert::assertSame('App B', $connectedApps[1]->getName());

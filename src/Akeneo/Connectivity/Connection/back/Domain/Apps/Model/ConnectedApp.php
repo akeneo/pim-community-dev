@@ -21,7 +21,6 @@ final class ConnectedApp
     private array $categories;
     private bool $certified;
     private ?string $partner;
-    private ?string $externalUrl;
 
     /**
      * @param string[] $scopes
@@ -36,8 +35,7 @@ final class ConnectedApp
         string $author,
         array $categories = [],
         bool $certified = false,
-        ?string $partner = null,
-        ?string $externalUrl = null
+        ?string $partner = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -48,7 +46,6 @@ final class ConnectedApp
         $this->categories = $categories;
         $this->certified = $certified;
         $this->partner = $partner;
-        $this->externalUrl = $externalUrl;
     }
 
     public function getId(): string
@@ -102,11 +99,6 @@ final class ConnectedApp
         return $this->certified;
     }
 
-    public function getExternalUrl(): ?string
-    {
-        return $this->externalUrl;
-    }
-
     public function normalize(): array
     {
         return [
@@ -119,7 +111,6 @@ final class ConnectedApp
             'categories' => $this->categories,
             'certified' => $this->certified,
             'partner' => $this->partner,
-            'external_url' => $this->externalUrl,
         ];
     }
 }

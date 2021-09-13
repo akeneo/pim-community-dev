@@ -46,7 +46,6 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'external_url' => 'https:\/\/www.example.com\/some\/app\/url',
         ]);
     }
 }
