@@ -263,6 +263,10 @@ jobs:
               paths:
                 - project/persisted_env_vars
 
+  ##################
+  # Build          #
+  ##################
+
   build_grth:
     environment:
       <<: *envVarsDeployDev

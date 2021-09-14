@@ -2,6 +2,7 @@ import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {DefaultValue, Operations} from '../common';
+import {CleanHTMLTags} from './CleanHTMLTags';
 import {InvalidAttributeSourceError} from '../error';
 import {isTextSource} from './model';
 
@@ -17,6 +18,12 @@ const TextConfigurator = ({source, validationErrors, onSourceChange}: AttributeC
         validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <CleanHTMLTags
+        operation={source.operations.clean_html_tags}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, clean_html_tags: updatedOperation}})
         }
       />
     </Operations>

@@ -29,17 +29,74 @@ services:
         arguments:
             - '@akeneo_measure.measure_converter'
 
-    Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface:
+    akeneo.tailored_export.query.find_product_system_sources:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
         arguments:
+            -
+                - 'categories'
+                - 'enabled'
+                - 'family'
+                - 'parent'
+                - 'groups'
+                - 'family_variant'
             - '@translator'
 
-    Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface:
+    akeneo.tailored_export.query.find_product_model_system_sources:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            -
+                - 'categories'
+                - 'family'
+                - 'parent'
+                - 'groups'
+                - 'family_variant'
+                - 'code'
+            - '@translator'
+
+    akeneo.tailored_export.query.find_product_viewable_attributes:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindViewableAttributes
         arguments:
             - '@akeneo.pim.structure.query.find_flatten_attributes'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
             - '@security.token_storage'
+            -
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_identifier'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_number'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_price_collection'
+                - 'pim_catalog_textarea'
+                - 'pim_catalog_text'
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
+
+    akeneo.tailored_export.query.find_product_model_viewable_attributes:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_number'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_price_collection'
+                - 'pim_catalog_textarea'
+                - 'pim_catalog_text'
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
 
     Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindAssetLabels

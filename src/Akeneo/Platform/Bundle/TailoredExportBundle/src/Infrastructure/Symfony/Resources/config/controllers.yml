@@ -1,8 +1,18 @@
 services:
-    Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction:
+    akeneo.tailored_export.controller.get_product_grouped_sources_action:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction'
         public: true
         arguments:
             - '@translator'
-            - '@Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface'
+            - '@akeneo.tailored_export.query.find_product_system_sources'
             - '@akeneo.pim.structure.query.find_association_types'
-            - '@Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface'
+            - '@akeneo.tailored_export.query.find_product_viewable_attributes'
+
+    akeneo.tailored_export.controller.get_product_model_grouped_sources_action:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction'
+        public: true
+        arguments:
+            - '@translator'
+            - '@akeneo.tailored_export.query.find_product_model_system_sources'
+            - '@akeneo.pim.structure.query.find_association_types'
+            - '@akeneo.tailored_export.query.find_product_model_viewable_attributes'

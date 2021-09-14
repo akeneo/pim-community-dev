@@ -74,6 +74,9 @@ class ColumnView extends BaseView {
       columnsConfiguration: formData.configuration.columns,
       onColumnsConfigurationChange: this.setColumnConfigurationData.bind(this),
       validationErrors: this.validationErrors,
+      entityType: ['xlsx_tailored_product_export', 'csv_tailored_product_export'].includes(formData.job_name)
+        ? 'product'
+        : 'product_model',
     };
 
     ReactDOM.render(

@@ -95,9 +95,6 @@ config:
         pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission
         pimee/job/common/edit/launch:      pimenterpriseui/js/job/common/edit/launch
 
-        #Job
-        pimee/job/export/edit/edit-button: pimenterpriseui/js/job/export/edit/edit-button
-
         # Templates
         pimee/template/product/meta/owner-groups:             pimenterpriseui/templates/product/meta/owner-groups.html
         pimee/template/product/tab/history/revert:            pimenterpriseui/templates/product/tab/history/revert.html

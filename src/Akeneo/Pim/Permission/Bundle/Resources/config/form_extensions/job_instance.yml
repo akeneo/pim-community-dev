@@ -178,7 +178,7 @@ extensions:
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-base-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-base-export-show
         targetZone: buttons
         position: 100
@@ -192,7 +192,7 @@ extensions:
                 name: code
 
     pim-job-instance-csv-base-import-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-base-import-show
         targetZone: buttons
         position: 100
@@ -206,7 +206,7 @@ extensions:
                 name: code
 
     pim-job-instance-csv-product-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-product-export-show
         targetZone: buttons
         position: 100
@@ -220,7 +220,7 @@ extensions:
                 name: code
 
     pim-job-instance-csv-product-import-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-product-import-show
         targetZone: buttons
         position: 100
@@ -234,7 +234,7 @@ extensions:
                 name: code
 
     pim-job-instance-xlsx-base-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: buttons
         position: 100
@@ -248,7 +248,7 @@ extensions:
                 name: code
 
     pim-job-instance-xlsx-base-import-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-xlsx-base-import-show
         targetZone: buttons
         position: 100
@@ -262,7 +262,7 @@ extensions:
                 name: code
 
     pim-job-instance-xlsx-product-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-xlsx-product-export-show
         targetZone: buttons
         position: 100
@@ -276,7 +276,7 @@ extensions:
                 name: code
 
     pim-job-instance-xlsx-product-import-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-xlsx-product-import-show
         targetZone: buttons
         position: 100
@@ -290,7 +290,7 @@ extensions:
                 name: code
 
     pim-job-instance-yml-base-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-yml-base-export-show
         targetZone: buttons
         position: 100
@@ -304,7 +304,7 @@ extensions:
                 name: code
 
     pim-job-instance-yml-base-import-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: pim/job/common/edit-button
         parent: pim-job-instance-yml-base-import-show
         targetZone: buttons
         position: 100

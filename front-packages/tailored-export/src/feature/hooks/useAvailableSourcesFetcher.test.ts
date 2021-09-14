@@ -13,7 +13,7 @@ test('It fetch the available source', async () => {
 
   availableSourcesFetcher(1);
 
-  expect(global.fetch).toBeCalledWith('pimee_tailored_export_get_grouped_sources_action', {
+  expect(global.fetch).toBeCalledWith('pimee_tailored_export_get_product_grouped_sources_action', {
     headers: {'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},
   });
 });
