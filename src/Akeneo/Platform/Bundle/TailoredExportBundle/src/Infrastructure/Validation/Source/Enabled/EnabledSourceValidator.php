@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\BooleanReplacementOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\ReplacementOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -31,7 +31,7 @@ class EnabledSourceValidator extends ConstraintValidator
             'type' => new EqualTo(['value' => 'code'])
         ]]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
-            'replacement' => new Optional(new BooleanReplacementOperationConstraint())
+            'replacement' => new Optional(new ReplacementOperationConstraint())
         ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
