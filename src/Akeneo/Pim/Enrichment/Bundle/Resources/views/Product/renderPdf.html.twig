@@ -126,14 +126,7 @@
                                         {{ attribute.label }}
                                     </div>
                                     <div class="right-column">
-                                        {% if 'pim_catalog_textarea' == attribute.type and attribute.isWysiwygEnabled %}
-                                            {{ content|raw }}
-                                        {% elseif 'pim_catalog_boolean' == attribute.type %}
-                                            {# @todo @merge: refactor on master - use new translation keys #}
-                                            {{ (content.data ? 'Yes' : 'No')|trans([], null, locale) }}
-                                        {% else %}
-                                            {{ content }}
-                                        {% endif %}
+                                        {{ render_attribute_value(attribute, content)|raw }}
                                     </div>
                                 </div>
                             {% endblock %}
