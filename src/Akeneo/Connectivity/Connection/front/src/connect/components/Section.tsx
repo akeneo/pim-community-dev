@@ -45,4 +45,4 @@ const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
     );
 };
 
-export {Section, CardGrid}
+export {Section, CardGrid};

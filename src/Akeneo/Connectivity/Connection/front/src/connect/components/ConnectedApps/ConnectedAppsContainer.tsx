@@ -52,15 +52,19 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
             {featureFlag.isEnabled('marketplace_activate') && (
                 <>
                     <SectionTitle>
-                        <SectionTitle.Title>{translate('akeneo_connectivity.connection.connect.connected_apps.apps.title')}</SectionTitle.Title>
+                        <SectionTitle.Title>
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.apps.title')}
+                        </SectionTitle.Title>
                         <SectionTitle.Spacer />
-                        <SectionTitle.Information>{translate(
-                            'akeneo_connectivity.connection.connect.connected_apps.apps.total',
-                            {
-                                total: connectedApps.length.toString(),
-                            },
-                            connectedApps.length
-                        )}</SectionTitle.Information>
+                        <SectionTitle.Information>
+                            {translate(
+                                'akeneo_connectivity.connection.connect.connected_apps.apps.total',
+                                {
+                                    total: connectedApps.length.toString(),
+                                },
+                                connectedApps.length
+                            )}
+                        </SectionTitle.Information>
                     </SectionTitle>
 
                     {0 === connectedAppCards.length && <NoConnectedApps />}
