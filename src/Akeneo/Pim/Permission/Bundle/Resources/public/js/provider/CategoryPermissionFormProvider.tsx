@@ -46,8 +46,11 @@ const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'categories',
-  renderForm: onChange => {
-    const [state, dispatch] = useReducer(PermissionFormReducer.reducer, PermissionFormReducer.initialState);
+  renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
+    const [state, dispatch] = useReducer(
+      PermissionFormReducer.reducer,
+      initialState ?? PermissionFormReducer.initialState
+    );
 
     useEffect(() => {
       onChange(state);
