@@ -20,7 +20,7 @@ class ProductValueRendererRegistry
 
     public function getProductValueRenderer($attributeType): ProductValueRenderer {
         foreach ($this->renderers as $renderer) {
-            if ($renderer->supports($attributeType)) {
+            if ($renderer->supportsAttributeType($attributeType)) {
                 return $renderer;
             }
         }
