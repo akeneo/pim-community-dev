@@ -8,6 +8,7 @@ use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Doctrine\DBAL\Exception\NonUniqueFieldNameException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -26,12 +27,17 @@ final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractM
     {
         $this->disableMigrationWarning();
 
-        /** @see Version_6_0_20210817135301_add_role_type_column */
-        $this->addSql('ALTER TABLE oro_access_role ADD type VARCHAR(30) DEFAULT NULL');
-    }
+        /**
+         * We must add this column in this migration to be up-to-date with the Doctrine ORM mapping
+         *
+         * @see Version_6_0_20210817135301_add_role_type_column
+         */
+        try {
+            $this->connection->executeUpdate('ALTER TABLE oro_access_role ADD type VARCHAR(30) DEFAULT NULL');
+        } catch (NonUniqueFieldNameException $exception) {
+            // column already exists, do nothing
+        }
 
-    public function postUp(Schema $schema): void
-    {
         /** @var AclManager $aclManager */
         $aclManager = $this->container->get('oro_security.acl.manager');
         /** @var RoleWithPermissionsRepository $roleWithPermissionsRepository */
