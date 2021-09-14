@@ -3,3 +3,8 @@ monolog:
         console:
           type:  console
           channels: ['!event', '!doctrine', '!event_api', '!business_event']
+
+services:
+    monolog.logger.event_api.test:
+        decorates: monolog.logger.event_api
+        class: Psr\Log\Test\TestLogger

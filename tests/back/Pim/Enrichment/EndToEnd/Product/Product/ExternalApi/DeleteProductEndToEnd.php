@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteProductEndToEnd extends AbstractProductTestCase
@@ -53,5 +54,25 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
         $this->assertSame('The not_found product does not exist in your PIM or you do not have permission to access it.', $content['message']);
+    }
+
+    public function testAccessDeniedWhenDeletingProductWithoutTheAcl()
+    {
+        $this->createAdminUser();
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_remove');
+
+        $client->request('DELETE', 'api/rest/v1/products/foo');
+        $response = $client->getResponse();
+
+        $logger = self::$container->get('monolog.logger.event_api');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_remove"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }
