@@ -4,11 +4,11 @@ import {useTranslate} from '../../shared/translate';
 import {PageContent, PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
-import {ConnectedAppsContainerIsLoading} from "../components/ConnectedApps/ConnectedAppsContainerIsLoading";
+import {ConnectedAppsContainerIsLoading} from '../components/ConnectedApps/ConnectedAppsContainerIsLoading';
 import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsContainer';
 import {ConnectedApp} from '../../model/connected-app';
-import {useFetchConnectedApps} from "../hooks/use-fetch-connected-apps";
-import {useFeatureFlags} from "../../shared/feature-flags";
+import {useFetchConnectedApps} from '../hooks/use-fetch-connected-apps';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();

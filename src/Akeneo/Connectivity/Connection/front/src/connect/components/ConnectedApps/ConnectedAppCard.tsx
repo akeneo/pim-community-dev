@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, Button, Link} from 'akeneo-design-system';
+import {getColor, getFontSize, Button} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
-import {ConnectedApp} from "../../../model/connected-app";
+import {ConnectedApp} from '../../../model/connected-app';
 
 const Grid = styled.section`
     margin: 20px 0;

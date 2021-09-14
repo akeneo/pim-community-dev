@@ -1,5 +1,5 @@
-import {useRoute} from "../../shared/router";
-import {useCallback} from "react";
+import {useRoute} from '../../shared/router';
+import {useCallback} from 'react';
 
 export const useFetchConnectedApps = () => {
     const url = useRoute('akeneo_connectivity_connection_apps_rest_get_all_connected_apps');

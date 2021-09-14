@@ -23,26 +23,26 @@ beforeEach(() => {
 test('The connected apps list renders with 2 connected apps card', async () => {
     const connectedApps = [
         {
-            "id": "0dfce574-2238-4b13-b8cc-8d257ce7645b",
-            "name": "App A",
-            "scopes": ["scope A1"],
-            "connection_code": "connectionCodeA",
-            "logo": "http://www.example.com/path/to/logo/a",
-            "author": "author A",
-            "categories": ["category A1", "category A2"],
-            "certified": false,
-            "partner": 'partner A'
+            id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+            name: 'App A',
+            scopes: ['scope A1'],
+            connection_code: 'connectionCodeA',
+            logo: 'http://www.example.com/path/to/logo/a',
+            author: 'author A',
+            categories: ['category A1', 'category A2'],
+            certified: false,
+            partner: 'partner A'
         },
         {
-            "id": "2677e764-f852-4956-bf9b-1a1ec1b0d145",
-            "name": "App B",
-            "scopes": ["scope B1", "scope B2"],
-            "connection_code": "connectionCodeB",
-            "logo": "http://www.example.com/path/to/logo/b",
-            "author": "author B",
-            "categories": ["category B1"],
-            "certified": true,
-            "partner": null
+            id: '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            name: 'App B',
+            scopes: ['scope B1', 'scope B2'],
+            connection_code: 'connectionCodeB',
+            logo: 'http://www.example.com/path/to/logo/b',
+            author: 'author B',
+            categories: ['category B1'],
+            certified: true,
+            partner: null
         }
     ];
 

@@ -6,9 +6,9 @@ import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplay
 import findScrollParent from '../../../shared/scroll/utils/findScrollParent';
 import {ConnectedApp} from '../../../model/connected-app';
 import {useFeatureFlags} from '../../../shared/feature-flags';
-import ConnectedAppsContainerHelper from "./ConnectedAppsContainerHelper";
-import {ConnectedAppCard} from "./ConnectedAppCard";
-import {NoConnectedApps} from "./NoConnectedApps";
+import ConnectedAppsContainerHelper from './ConnectedAppsContainerHelper';
+import {ConnectedAppCard} from './ConnectedAppCard';
+import {NoConnectedApps} from './NoConnectedApps';
 import {CardGrid} from '../Section';
 
 const ScrollToTop = styled(IconButton)`
