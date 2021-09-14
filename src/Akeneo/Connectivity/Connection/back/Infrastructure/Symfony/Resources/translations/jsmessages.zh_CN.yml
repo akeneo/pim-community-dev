@@ -60,34 +60,13 @@ akeneo_connectivity.connection:
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
     apps:
+      wizard:
+        progress:
+          permissions: 权限
       title: 连接
-      action:
-        confirm: 确认
-        cancel: 取消 
       activate:
         flash:
           error: 抱歉，连接应用时发生错误。
-      authorize:
-        title: '应用 {{ app_name }} 需要'
-        no_scope_title: '应用 {{ app_name }} 想要访问您的 PIM。'
-        no_scope: 未请求特定的授权。
-        helper: 要了解更多关于应用授权的信息，
-        helper_link: 查看我们的“帮助中心”获取更多信息。
-        error:
-          sub_text: 请联系应用开发者或 Akeneo 支持
-        scope:
-          type:
-            view: '查看 {{ entities }}'
-            edit: '查看和编辑 {{ entities }}'
-            delete: '查看、编辑和删除 {{ entities }}'
-          entities:
-            catalog_structure: 属性、 属性组、 品类和品类变型
-            attribute_options: 属性选项
-            categories: 类别
-            channel_localization: 区域和货币
-            channel_settings: 渠道
-            association_types: 关联类型
-            products: 产品和产品模型
       constraint:
         client_id:
           not_blank: client_id 为必填项。

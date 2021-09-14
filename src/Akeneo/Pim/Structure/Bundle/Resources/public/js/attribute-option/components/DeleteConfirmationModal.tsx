@@ -11,7 +11,7 @@ const DeleteConfirmationModal = ({attributeOptionCode, confirmDelete, cancelDele
   const translate = useTranslate();
 
   return (
-    <div className="modal modal--fullPage in" role="attribute-option-delete-confirmation-modal">
+    <div className="modal modal--fullPage in" data-testid="attribute-option-delete-confirmation-modal">
       <div className="AknFullPage">
         <div className="AknFullPage-content AknFullPage-content--withIllustration">
           <div>
@@ -35,14 +35,14 @@ const DeleteConfirmationModal = ({attributeOptionCode, confirmDelete, cancelDele
                 title="Delete"
                 className="AknButton AknButtonList-item AknButton--apply AknButton--important ok"
                 onClick={confirmDelete}
-                role="attribute-option-confirm-delete-button"
+                data-testid="attribute-option-confirm-delete-button"
               >
                 {translate('pim_common.delete')}
               </div>
               <div
                 className="AknButton AknButton--grey AknButtonList-item cancel"
                 onClick={cancelDelete}
-                role="attribute-option-confirm-cancel-button"
+                data-testid="attribute-option-confirm-cancel-button"
               >
                 {translate('pim_common.cancel')}
               </div>
@@ -50,7 +50,11 @@ const DeleteConfirmationModal = ({attributeOptionCode, confirmDelete, cancelDele
           </div>
         </div>
       </div>
-      <div className="AknFullPage-cancel cancel" onClick={cancelDelete} role="attribute-option-confirm-cancel-button" />
+      <div
+        className="AknFullPage-cancel cancel"
+        onClick={cancelDelete}
+        data-testid="attribute-option-confirm-cancel-button"
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -21,16 +22,13 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
         $this->dbalConnection = $dbalConnection;
     }
 
-    /**
-     * @return ConnectedApp[]
-     */
     public function findAll(): array
     {
         $selectSQL = <<<SQL
-SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner
-FROM akeneo_connectivity_connected_app
-ORDER BY name ASC
-SQL;
+        SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner
+        FROM akeneo_connectivity_connected_app
+        ORDER BY name ASC
+        SQL;
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
 
@@ -50,5 +48,57 @@ SQL;
         }
 
         return $connectedApps;
+    }
+
+    public function create(ConnectedApp $app): void
+    {
+        $insertQuery = <<<SQL
+        INSERT INTO akeneo_connectivity_connected_app (id, name, logo, author, partner, categories, scopes, certified, connection_code)
+        VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code)
+        SQL;
+
+        $this->dbalConnection->executeQuery(
+            $insertQuery,
+            [
+                'id' => $app->getId(),
+                'name' => $app->getName(),
+                'logo' => $app->getLogo(),
+                'author' => $app->getAuthor(),
+                'partner' => $app->getPartner(),
+                'categories' => $app->getCategories(),
+                'scopes' => $app->getScopes(),
+                'certified' => $app->isCertified(),
+                'connection_code' => $app->getConnectionCode(),
+            ],
+            [
+                'certified' => Types::BOOLEAN,
+                'categories' => Types::JSON,
+                'scopes' => Types::JSON,
+            ]
+        );
+    }
+
+    public function findOneById(string $appId): ?ConnectedApp
+    {
+        $selectQuery = <<<SQL
+        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
+        FROM akeneo_connectivity_connected_app
+        WHERE id = :id
+        SQL;
+
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['id' => $appId])->fetch();
+
+        return $dataRow ?
+            new ConnectedApp(
+                $dataRow['id'],
+                $dataRow['name'],
+                \json_decode($dataRow['scopes'], true),
+                $dataRow['connection_code'],
+                $dataRow['logo'],
+                $dataRow['author'],
+                \json_decode($dataRow['categories'], true),
+                (bool) $dataRow['certified'],
+                $dataRow['partner']
+            ) : null;
     }
 }

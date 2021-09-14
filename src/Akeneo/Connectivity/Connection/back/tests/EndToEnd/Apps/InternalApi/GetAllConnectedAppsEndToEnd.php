@@ -27,7 +27,6 @@ class GetAllConnectedAppsEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
-//        $this->loadAppsFixtures();
     }
 
     protected function getConfiguration(): Configuration

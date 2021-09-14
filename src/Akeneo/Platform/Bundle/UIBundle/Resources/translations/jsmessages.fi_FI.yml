@@ -20,6 +20,11 @@ Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
+duration:
+  days: "{0}0 päivää{1}1 päivä|]1, Inf[{{ count }} päivää"
+  hours: "{0}0 tuntia{1}1 tunti|]1, Inf[{{ count }} tuntia"
+  minutes: "{0}0 minuuttia{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
+  seconds: "{0}0 sekuntia{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
 #PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
@@ -153,7 +158,10 @@ pim_common:
   before: Ennen
   by: tehnyt
   cancel: Peruuta
+  clear_value: Tyhjennä arvo
+  close: Sulje
   code: Koodi
+  completeness: Valmistumisaste
   confirm: Vahvista
   confirm_deletion: Vahvista poisto
   confirm_revocation: Vahvista poisto
@@ -167,6 +175,8 @@ pim_common:
   from: Alkaen
   general_properties: Yleiset ominaisuudet
   history: Historia
+  identifier: Tunniste
+  image: Kuva
   label: Nimike
   label_translations: Nimikkeiden käännökset
   Label or identifier: nimike tai tunniste
@@ -180,11 +190,13 @@ pim_common:
   not_available: Ei mitään
   now: Nyt
   ok: OK
+  other_actions: Muut toiminnot
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
   remove: Poista
   required_label: (vaadittu)
+  result_count: "{0}0 tulosta{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
   save: Tallenna
   search: Etsi
   select2:
@@ -195,6 +207,7 @@ pim_common:
   to: mihin
   type: Tyyppi
   update: Päivitä
+  updated: Päivitetty
   "yes": "Kyllä"
   operator: Operaattori
   operators:
@@ -210,8 +223,10 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
+  read_more: Lue lisää
+  groups: Ryhmät
+  products: Tuotteet
 error:
-  exception: Voi pahus! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
@@ -258,8 +273,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Katalogin koon seuranta
   pim_enrich_categorytree_index: Kategoriahierarkia
   pim_enrich_categorytree_create: Kategoriahierarkia | Luo
-  pim_enrich_categorytree_edit: Kategoriahierarkia {{ category.label }} | Muokkaa
   pim_enrich_categorytree_create_tree: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_tree: Kategoriahierarkia {{ category.label }} | Muokkaa
   pim_enrich_attribute_index: Attribuutit
   pim_enrich_attribute_create: Attribuutit | Luo
   pim_enrich_attribute_edit: Attribuutti {{ attribute.label }} | Muokkaa
@@ -286,6 +301,8 @@ pim_title:
   pim_enrich_job_tracker_show: Prosessiseurain | Näytä työ
   pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
+  pim_settings_index: Asetukset
+  pim_system_index: Järjestelmä
 pim_menu:
   tab:
     activity: Tapahtumat
@@ -301,7 +318,6 @@ pim_menu:
     attribute_group: Attribuuttiryhmät
     channel: Kanavat
     currency: Valuutat
-    dashboard: Ohjauspaneeli
     family: Perheet
     group: Ryhmät
     group_type: Ryhmätyypit
@@ -322,7 +338,8 @@ pim_menu:
     activity: Tapahtumanavigaatio
     system: Järjestelmänavigaatio
     user: Käyttäjähallinnan navigaatio
-    settings: Asetuksien navigaatio
+    settings:
+      collapsed_label: Asetuksien navigaatio
     product: Tuotenavigaatio
     product_infos: Tuoteinformaatio
   user:
@@ -334,3 +351,6 @@ pim_notification:
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
+pim_system:
+  system_navigation: Järjestelmänavigaatio
+  users_management_navigation: Käyttäjähallinnan navigaatio

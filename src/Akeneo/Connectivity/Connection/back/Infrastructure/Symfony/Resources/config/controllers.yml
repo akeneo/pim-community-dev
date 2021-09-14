@@ -96,6 +96,17 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@pim_api.security.scope_mapper'
 
+    akeneo_connectivity.connection.apps.controller.apps.confirm_authorization:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
+            - '@oro_security.security_facade'
+            - '@logger'
+
     akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
         public: true
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'

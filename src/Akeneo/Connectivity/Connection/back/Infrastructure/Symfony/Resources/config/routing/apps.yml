@@ -8,6 +8,11 @@ akeneo_connectivity_connection_apps_rest_get_wizard_data:
     controller: akeneo_connectivity.connection.public.controller.apps.get_wizard_data
     methods: [GET]
 
+akeneo_connectivity_connection_apps_rest_confirm_authorization:
+    path: '/confirm-authorization/{clientId}'
+    controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authorization
+    methods: [POST]
+
 akeneo_connectivity_connection_apps_rest_get_all_connected_apps:
     path: '/connected-apps'
     controller: akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps

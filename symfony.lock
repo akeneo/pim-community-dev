@@ -1,4 +1,7 @@
 {
+    "akeneo/oauth-server-bundle": {
+        "version": "1.7.x-dev"
+    },
     "akeneo/php-coupling-detector": {
         "version": "0.3.1"
     },
@@ -53,6 +56,9 @@
     },
     "composer/xdebug-handler": {
         "version": "1.3.3"
+    },
+    "cutwise/oauth-server-bundle": {
+        "version": "v2.0.4"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -146,7 +152,7 @@
         "version": "v1.1.0"
     },
     "doctrine/reflection": {
-        "version": "v1.0.0"
+        "version": "1.2.2"
     },
     "dompdf/dompdf": {
         "version": "v0.6.2"
@@ -207,9 +213,6 @@
             "version": "2.0",
             "ref": "370bcf99b04c0dfd0b545745aad622d757af5e1b"
         }
-    },
-    "friendsofsymfony/oauth-server-bundle": {
-        "version": "1.6.2"
     },
     "friendsofsymfony/oauth2-php": {
         "version": "1.2.3"

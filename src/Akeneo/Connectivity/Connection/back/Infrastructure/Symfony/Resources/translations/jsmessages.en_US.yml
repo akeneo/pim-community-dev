@@ -79,38 +79,54 @@ akeneo_connectivity.connection:
                 developed_by: Developed by
                 manage_app: Manage app
         apps:
+            wizard:
+                title: Connect
+                action:
+                    confirm: Confirm
+                    cancel: Cancel
+                    previous: Previous
+                    next: Next
+                    allow_and_next: Allow and next
+                progress:
+                    authorizations: Authorizations
+                    permissions: Permissions
+                    summary: Well done!
+                authorize:
+                    title: 'App {{ app_name }} needs to'
+                    no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
+                    no_scope: No specific authorizations have been requested.
+                    helper: To know more about about app authorization,
+                    helper_link: check out our Help Center for more information.
+                flash:
+                    success: App successfully configured.
+                    error: Sorry, an error occurred while connecting the App.
+                permission:
+                    helper: If you need help please check our article
+                    helper_link: How to set-up app permissions?
             title: Connect
-            action:
-                confirm: Confirm
-                cancel: Cancel
             activate:
                 flash:
                     error: Sorry, an error occurred while connecting the App.
-            authorize:
-                title: 'App {{ app_name }} needs to'
-                no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
-                no_scope: No specific authorizations have been requested.
-                helper: To know more about about app authorization,
-                helper_link: check out our Help Center for more information.
-                error:
-                    sub_text: Please contact the app developer or Akeneo support
-                scope:
-                    type:
-                        view: 'View {{ entities }}'
-                        edit: 'View and edit {{ entities }}'
-                        delete: 'View, edit and delete {{ entities }}'
-                    entities:
-                        catalog_structure: attributes, attribute groups, families and family variants
-                        attribute_options: attribute options
-                        categories: categories
-                        channel_localization: locales and currencies
-                        channel_settings: channels
-                        association_types: association types
-                        products: products and product models
+            scope:
+                type:
+                    view: 'View {{ entities }}'
+                    edit: 'View and edit {{ entities }}'
+                    delete: 'View, edit and delete {{ entities }}'
+                entities:
+                    catalog_structure: attributes, attribute groups, families and family variants
+                    attribute_options: attribute options
+                    categories: categories
+                    channel_localization: locales and currencies
+                    channel_settings: channels
+                    association_types: association types
+                    products: products and product models
+            error:
+                sub_text: Please contact the app developer or Akeneo support
             constraint:
                 client_id:
                     not_blank: The client_id is required.
                     must_be_valid: The client_id does not match any known client.
+                    must_have_ongoing_authorization: The client_id do not have any ongoing authorization process at the moment
                 response_type:
                     not_blank: The response_type is required.
                     must_be_code: The response_type must be "code".
@@ -401,3 +417,14 @@ akeneo_connectivity.connection:
         error_message: Oh snap! An error occurred...
         reload_helper: Please reload the page and try again.
         reload_button:  Reload
+
+pim_permissions:
+    widget:
+        action:
+            all: All
+            clear: Clear
+        level:
+            own: Own
+            edit: Edit
+            view: View
+        all: All

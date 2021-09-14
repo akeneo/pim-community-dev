@@ -12,6 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
  */
 interface ConnectedAppRepositoryInterface
 {
+    public function create(ConnectedApp $app): void;
+    public function findOneById(string $appId): ?ConnectedApp;
     /**
      * @return ConnectedApp[]
      */

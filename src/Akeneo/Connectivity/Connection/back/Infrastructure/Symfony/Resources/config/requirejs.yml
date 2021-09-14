@@ -51,3 +51,5 @@ config:
         pim/controller/connectivity/connection/connect/connected-apps: akeneoconnectivityconnection/js/controller/connected-apps.tsx
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/permission-form-registry: akeneoconnectivityconnection/js/registry/permission-form-registry
