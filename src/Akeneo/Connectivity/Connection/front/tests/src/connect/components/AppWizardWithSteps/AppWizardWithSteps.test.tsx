@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {act, screen, waitForElement} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {AppWizardWithSteps} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
+import {AppWizardWithSteps, PermissionsType} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
+import {PermissionFormProvider} from '@src/shared/permission-form-registry';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -13,11 +14,31 @@ beforeEach(() => {
 jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
     Authorizations: () => <div>authorizations-component</div>,
 }));
+
+type PermissionsProps = {
+    appName: string;
+    providers: PermissionFormProvider<any>[];
+    setPermissions: (state: PermissionsType) => void;
+    permissions: PermissionsType;
+};
 jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
-    Permissions: () => <div>permissions-component</div>,
+    Permissions: ({permissions, setPermissions}: PermissionsProps) => {
+        const handleClick = () => {
+            setPermissions({data: 'hello world!'});
+        };
+
+        return (
+            <div data-testid='set-permissions' onClick={handleClick}>
+                permissions-component {permissions.data}
+            </div>
+        );
+    },
 }));
+type SummaryProps = {
+    permissions: PermissionsType;
+};
 jest.mock('@src/connect/components/AppWizardWithSteps/PermissionsSummary', () => ({
-    PermissionsSummary: () => <div>permissions-summary-component</div>,
+    PermissionsSummary: ({permissions}: SummaryProps) => <div>permissions-summary-component {permissions.data}</div>,
 }));
 test('The step wizard renders without error', async () => {
     const fetchAppWizardDataResponses: MockFetchResponses = {
@@ -89,6 +110,10 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
     assertPermissionsScreen();
+    expect(screen.queryByText('permissions-component')).toBeInTheDocument();
+    act(() => {
+        userEvent.click(screen.getByTestId('set-permissions'));
+    });
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
@@ -99,6 +124,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous'));
     });
     assertPermissionsScreen();
+    expect(screen.queryByText('permissions-component hello world!')).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous'));
@@ -120,8 +146,8 @@ const assertAuthorizationsScreen = () => {
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
     ).not.toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
-    expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
-    expect(screen.queryByText('permissions-summary-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component', {exact: false})).not.toBeInTheDocument();
 };
 
 const assertPermissionsScreen = () => {
@@ -136,8 +162,7 @@ const assertPermissionsScreen = () => {
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')
     ).not.toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
-    expect(screen.queryByText('permissions-component')).toBeInTheDocument();
-    expect(screen.queryByText('permissions-summary-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component', {exact: false})).not.toBeInTheDocument();
 };
 
 const assertPermissionsSummaryScreen = () => {
@@ -152,6 +177,6 @@ const assertPermissionsSummaryScreen = () => {
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
     ).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
-    expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
-    expect(screen.queryByText('permissions-summary-component')).toBeInTheDocument();
+    expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component hello world!')).toBeInTheDocument();
 };
