@@ -91,6 +91,7 @@
 - PIM-10065: Asset textarea is not updated when the locale is changed
 - PIM-10029: Fix missing filters on proposal grid page
 - PIM-10068: Fix the Permissions tab disappeared for XLSX and CSV Published Products export profiles
+- PIM-10072: Fix difference on the migration Serenity > Flexibility
 
 ## Improvements
 
