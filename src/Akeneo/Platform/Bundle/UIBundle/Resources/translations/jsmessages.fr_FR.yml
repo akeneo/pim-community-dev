@@ -243,6 +243,7 @@ pim_common:
   more: Plus
   public_view: Vue publique
 error:
+  exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
