@@ -11,6 +11,7 @@ use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExistValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -48,8 +49,8 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
     ) {
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
 
@@ -64,7 +65,7 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            TableValue::value('nutrition', Table::fromNormalized([['ingredient' => 'sugar', 'non_existing' => 'kiwi']])),
+            TableValue::value('nutrition', Table::fromNormalized([[ColumnIdGenerator::ingredient() => 'sugar', 'non_existing' => 'kiwi']])),
             new TableColumnsShouldExist()
         );
     }
@@ -77,8 +78,8 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['code' => 'ingredient']),
-                    NumberColumn::fromNormalized(['code' => 'quantity']),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                    NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ]
             )
         );
@@ -95,36 +96,7 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(
             TableValue::value(
                 'nutrition',
-                Table::fromNormalized([['ingredient' => 'sugar', 'non_existing' => 'kiwi', 'other' => 'foobar']])
-            ),
-            new TableColumnsShouldExist()
-        );
-    }
-
-    function it_does_not_add_a_violation_when_every_column_exists(
-        TableConfigurationRepository $tableConfigurationRepository,
-        ExecutionContext $context
-    ) {
-        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
-            TableConfiguration::fromColumnDefinitions(
-                [
-                    SelectColumn::fromNormalized(['code' => 'INGredient']),
-                    NumberColumn::fromNormalized(['code' => 'quantity']),
-                ]
-            )
-        );
-
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate(
-            TableValue::value(
-                'nutrition',
-                Table::fromNormalized(
-                    [
-                        ['ingredient' => 'sugar', 'quantity' => '12'],
-                        ['ingredient' => 'salt'],
-                    ]
-                )
+                Table::fromNormalized([[ColumnIdGenerator::ingredient() => 'sugar', 'non_existing' => 'kiwi', 'other' => 'foobar']])
             ),
             new TableColumnsShouldExist()
         );

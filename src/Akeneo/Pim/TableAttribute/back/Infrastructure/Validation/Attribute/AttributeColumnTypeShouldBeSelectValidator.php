@@ -64,11 +64,8 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
         }
 
         $configuration = $this->tableConfigurationRepository->getByAttributeCode($value->attributeCode());
-        $columnCodes = \array_map(
-            fn (ColumnCode $columnCode): string => $columnCode->asString(),
-            $configuration->columnCodes()
-        );
-        if (!\in_array($value->columnCode(), $columnCodes)) {
+        $column = $configuration->getColumnByCode(ColumnCode::fromString($value->columnCode()));
+        if (null === $column) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.column_does_not_exist',
                 [
@@ -80,8 +77,7 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
             return;
         }
 
-        $dataType = $configuration->getColumnDataType(ColumnCode::fromString($value->columnCode()))->asString();
-        if (SelectColumn::DATATYPE !== $dataType) {
+        if (SelectColumn::DATATYPE !== $column->dataType()->asString()) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.not_select_column',
                 [

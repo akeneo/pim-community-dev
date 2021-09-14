@@ -21,10 +21,13 @@ services:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
 
     # value normalizers
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Storage\TableNormalizer:
+        tags:
+            - { name: 'pim_storage_serializer.normalizer', priority: 90 }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer:
         tags:
             - { name: 'pim_standard_format_serializer.normalizer', priority: 90 }
-            - { name: 'pim_storage_serializer.normalizer', priority: 90 }
 
     Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning\TableNormalizer:
         tags:

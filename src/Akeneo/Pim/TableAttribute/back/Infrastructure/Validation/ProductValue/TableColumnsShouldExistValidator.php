@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -36,20 +36,20 @@ final class TableColumnsShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        $columnCodes = \array_map('strtolower', $value->getData()->uniqueColumnCodes());
+        $columnIdentifiers = \array_map('strtolower', $value->getData()->uniqueColumnIds());
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getAttributeCode());
-        $existingColumnCodes = \array_map(
-            fn (ColumnCode $columnCode): string => \strtolower($columnCode->asString()),
-            $tableConfiguration->columnCodes()
+        $existingColumnIds = \array_map(
+            fn (ColumnId $columnId): string => \strtolower($columnId->asString()),
+            $tableConfiguration->columnIds()
         );
 
-        $nonExistingColumnCodes = \array_diff($columnCodes, $existingColumnCodes);
-        if ([] !== $nonExistingColumnCodes) {
+        $nonExistingColumnIdentifiers = \array_diff($columnIdentifiers, $existingColumnIds);
+        if ([] !== $nonExistingColumnIdentifiers) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '{{ non_existing_columns }}' => \implode(', ', $nonExistingColumnCodes),
-                    '%count%' => count($nonExistingColumnCodes),
+                    '{{ non_existing_columns }}' => \implode(', ', $nonExistingColumnIdentifiers),
+                    '%count%' => count($nonExistingColumnIdentifiers),
                 ]
             )->addViolation();
         }

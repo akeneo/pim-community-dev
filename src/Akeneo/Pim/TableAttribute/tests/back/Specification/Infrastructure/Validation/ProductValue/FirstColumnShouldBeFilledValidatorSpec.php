@@ -21,6 +21,7 @@ use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilled;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilledValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -37,8 +38,8 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
     }
@@ -54,7 +55,10 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during(
                 'validate',
-                [TableValue::value('nutrition', Table::fromNormalized([['ingredient' => 'sugar']])), new NotBlank()]
+                [
+                    TableValue::value('nutrition', Table::fromNormalized([[ColumnIdGenerator::ingredient() => 'sugar']])),
+                    new NotBlank()
+                ]
             );
     }
 
@@ -70,9 +74,9 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['quantity' => 'sugar'],
-            ['ingredient' => 'salt', 'quantity' => 'sugar'],
-            ['quantity' => 'sugar'],
+            [ColumnIdGenerator::quantity() => 'sugar'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::quantity() => 'sugar'],
+            [ColumnIdGenerator::quantity() => 'sugar'],
         ]));
         $constraint = new FirstColumnShouldBeFilled();
         $context->buildViolation($constraint->message, ['{{ columnCode }}' => 'ingredient'])
@@ -87,19 +91,8 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_first_column_is_filled(ExecutionContext $context)
     {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'sugar'],
-            ['ingredient' => 'salt'],
-        ]));
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($tableValue, new FirstColumnShouldBeFilled());
-    }
-
-    function it_does_not_add_violation_when_first_column_is_filled_case_insensitive(ExecutionContext $context)
-    {
-        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['INGredient' => 'sugar'],
-            ['ingrediENT' => 'salt'],
+            [ColumnIdGenerator::ingredient() => 'sugar'],
+            [ColumnIdGenerator::ingredient() => 'salt'],
         ]));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 

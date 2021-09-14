@@ -15,10 +15,11 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -29,24 +30,23 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 {
     private Connection $connection;
     private ColumnFactory $columnFactory;
-    private SelectOptionCollectionRepository $selectOptionCollectionRepository;
 
-    public function __construct(Connection $connection, ColumnFactory $columnFactory, SelectOptionCollectionRepository $selectOptionCollectionRepository)
+    public function __construct(Connection $connection, ColumnFactory $columnFactory)
     {
         $this->connection = $connection;
         $this->columnFactory = $columnFactory;
-        $this->selectOptionCollectionRepository = $selectOptionCollectionRepository;
     }
 
-    private function getNextIdentifier(string $columnCode): string
+    public function getNextIdentifier(ColumnCode $columnCode): ColumnId
     {
-        return sprintf('%s_%s', $columnCode, Uuid::uuid4()->toString());
+        return ColumnId::createFromColumnCode($columnCode, Uuid::uuid4()->toString());
     }
 
     public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
         if ($this->connection->isTransactionActive()) {
             $this->doSave($attributeCode, $tableConfiguration);
+
             return;
         }
 
@@ -55,9 +55,9 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     private function doSave(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
-        $newColumnCodesAndTypes = array_map(
-            fn (array $columnDefinition): string => $columnDefinition['code'] . '-' . $columnDefinition['data_type'],
-            $tableConfiguration->normalize()
+        $columnIds = \array_map(
+            fn (array $normalizedColumn): string => $normalizedColumn['id'],
+            $tableConfiguration->normalize(),
         );
 
         $this->connection->executeQuery(
@@ -65,16 +65,17 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             DELETE table_column.* FROM pim_catalog_table_column table_column
             INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
             WHERE attribute.code = :attribute_code
-                AND CONCAT(table_column.code, '-', table_column.data_type) NOT IN (:newColumnCodesAndTypes)
+                AND table_column.id NOT IN (:column_ids)
             SQL,
             [
                 'attribute_code' => $attributeCode,
-                'newColumnCodesAndTypes' => $newColumnCodesAndTypes,
+                'column_ids' => $columnIds,
             ],
             [
-                'newColumnCodesAndTypes' => Connection::PARAM_STR_ARRAY,
+                'column_ids' => Connection::PARAM_STR_ARRAY,
             ]
         );
+
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $this->connection->executeQuery(
                 <<<SQL
@@ -82,11 +83,11 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 SELECT * FROM (
                     SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations
                     FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
-                ) AS newvalues                
+                ) AS newvalues
                 ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations
                 SQL,
                 [
-                    'column_id' =>  $this->getNextIdentifier($columnDefinition['code']),
+                    'column_id' => $columnDefinition['id'],
                     'attribute_code' => $attributeCode,
                     'code' => $columnDefinition['code'],
                     'data_type' => $columnDefinition['data_type'],
@@ -127,6 +128,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             array_map(
                 fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
                     [
+                        'id' => $row['id'],
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
                         'labels' => \json_decode($row['labels'], true),

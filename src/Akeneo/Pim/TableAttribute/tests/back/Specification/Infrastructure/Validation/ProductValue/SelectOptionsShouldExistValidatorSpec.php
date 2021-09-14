@@ -14,6 +14,7 @@ use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExistValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -32,12 +33,12 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         $this->initialize($context);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredient', 'options' => [
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'options' => [
                 ['code' => 'salt'],
                 ['code' => 'sugar'],
             ]]),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            SelectColumn::fromNormalized(['code' => 'supplier', 'options' => [
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier', 'options' => [
                 ['code' => 'Akeneo'],
             ]]),
         ]);
@@ -72,8 +73,8 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new SelectOptionsShouldExist();
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'unknown_ingredient', 'quantity' => 'foo'],
-            ['ingredient' => 'salt', 'isAllergen' => true, 'supplier' => 'unknown_supplier'],
+            [ColumnIdGenerator::ingredient() => 'unknown_ingredient', ColumnIdGenerator::quantity() => 'foo'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => true, ColumnIdGenerator::supplier() => 'unknown_supplier'],
         ]));
 
         $getNonExistingSelectOptionCodes
@@ -100,8 +101,8 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new SelectOptionsShouldExist();
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'sugar', 'quantity' => 'foo'],
-            ['ingredient' => 'salt', 'isAllergen' => true, 'supplier' => 'Akeneo'],
+            [ColumnIdGenerator::ingredient() => 'sugar', ColumnIdGenerator::quantity() => 'foo'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => true, ColumnIdGenerator::supplier() => 'Akeneo'],
         ]));
 
         $getNonExistingSelectOptionCodes
@@ -121,8 +122,8 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         ExecutionContext $context
     ) {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => true, 'quantity' => 'foo'],
-            ['ingredient' => 'salt', 'isAllergen' => true, 'supplier' => 4],
+            [ColumnIdGenerator::ingredient() => true, ColumnIdGenerator::quantity() => 'foo'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => true, ColumnIdGenerator::supplier() => 4],
         ]));
 
         $getNonExistingSelectOptionCodes

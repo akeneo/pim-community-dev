@@ -13,34 +13,38 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
-final class TableNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class TableNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($table, string $format = null, array $context = []): array
     {
-        Assert::isInstanceOf($object, Table::class);
+        Assert::isInstanceOf($table, Table::class);
+        $normalizedTable = $table->normalize();
 
-        return $object->normalize();
+        foreach ($normalizedTable as $index => $row) {
+            foreach ($row as $stringId => $value) {
+                $columnId = ColumnId::fromString($stringId);
+                unset($normalizedTable[$index][$stringId]);
+                $normalizedTable[$index][$columnId->extractColumnCode()->asString()] = $value;
+            }
+        }
+
+        return $normalizedTable;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supportsNormalization($data, string $format = null): bool
     {
-        return $data instanceof Table && in_array($format, ['standard', 'storage', 'versioning']);
+        return 'standard' === $format && $data instanceof Table;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;

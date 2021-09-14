@@ -23,6 +23,7 @@ use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatch;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatchValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -39,9 +40,9 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity']),
-                BooleanColumn::fromNormalized(['code' => 'isAllergen']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+                BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'isAllergen']),
             ])
         );
     }
@@ -73,9 +74,9 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 12, 'quantity' => 1],
-            ['ingredient' => 'pepper', 'quantity' => 'foo'],
-            ['ingredient' => 'salt', 'isAllergen' => 'yes'],
+            [ColumnIdGenerator::ingredient() => 12, ColumnIdGenerator::quantity() => 1],
+            [ColumnIdGenerator::ingredient() => 'pepper', ColumnIdGenerator::quantity() => 'foo'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => 'yes'],
         ]));
 
         $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'string', '{{ given }}' => 'integer', '{{ columnCode }}' => 'ingredient'])
@@ -98,9 +99,9 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_every_type_is_valid(ExecutionContext $context)
     {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([[
-            'ingredient' => 'red hot chili peppers',
-            'quantity' => 4,
-            'isAllergen' => true,
+            ColumnIdGenerator::ingredient() => 'red hot chili peppers',
+            ColumnIdGenerator::quantity() => 4,
+            ColumnIdGenerator::isAllergenic() => true,
         ]]));
 
         $context->buildViolation(Argument::cetera())

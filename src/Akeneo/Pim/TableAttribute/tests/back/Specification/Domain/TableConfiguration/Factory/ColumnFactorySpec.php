@@ -18,6 +18,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
 class ColumnFactorySpec extends ObjectBehavior
@@ -39,33 +41,39 @@ class ColumnFactorySpec extends ObjectBehavior
     function it_returns_a_text_column()
     {
         $column = $this->createFromNormalized([
+            'id' => ColumnIdGenerator::ingredient(),
             'data_type' => 'text',
-            'code' => 'ingredients',
+            'code' => 'ingredient',
             'labels' => [],
         ]);
         $column->shouldHaveType(TextColumn::class);
-        $column->code()->shouldBeLike(ColumnCode::fromString('ingredients'));
+        $column->id()->shouldBeLike(ColumnId::fromString(ColumnIdGenerator::ingredient()));
+        $column->code()->shouldBeLike(ColumnCode::fromString('ingredient'));
     }
 
     function it_returns_a_number_column()
     {
         $column = $this->createFromNormalized([
+            'id' => ColumnIdGenerator::quantity(),
             'data_type' => 'number',
             'code' => 'quantities',
             'labels' => [],
         ]);
         $column->shouldHaveType(NumberColumn::class);
+        $column->id()->shouldBeLike(ColumnId::fromString(ColumnIdGenerator::quantity()));
         $column->code()->shouldBeLike(ColumnCode::fromString('quantities'));
     }
 
     function it_returns_a_boolean_column()
     {
         $column = $this->createFromNormalized([
+            'id' => ColumnIdGenerator::quantity(),
             'data_type' => 'boolean',
             'code' => 'quantities',
             'labels' => [],
         ]);
         $column->shouldHaveType(BooleanColumn::class);
+        $column->id()->shouldBeLike(ColumnId::fromString(ColumnIdGenerator::quantity()));
         $column->code()->shouldBeLike(ColumnCode::fromString('quantities'));
     }
 

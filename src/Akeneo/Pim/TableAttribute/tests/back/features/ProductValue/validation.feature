@@ -7,9 +7,9 @@ Feature: Enrich a table attribute value
   Background:
     Given an authenticated user
     And the following attributes:
-      | code        | type                     | table_configuration                                                                                                                                                                                                                   |
-      | sku         | pim_catalog_identifier   |                                                                                                                                                                                                                                       |
-      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "select", "labels": {"en_US": "Ingredient"}, "options": [{"code": "sugar", "labels": {"fr_FR": "Sucre"}}, {"code": "salt"}]}, {"code": "quantity", "data_type": "number"}, {"code":"isAllergen", "data_type":"boolean"}, {"code":"comments", "data_type":"text"}] |
+      | code        | type                     | table_configuration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+      | sku         | pim_catalog_identifier   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+      | nutrition   | pim_catalog_table        | [{"id": "ingredient_f6492fb4-d815-4d30-a912-8db321a3e38a", "code": "ingredient", "data_type": "select", "labels": {"en_US": "Ingredient"}, "options": [{"code": "sugar", "labels": {"fr_FR": "Sucre"}}, {"code": "salt"}]}, {"id": "quantity_f967d82a-b54c-41da-959e-1fa43124afee", "code": "quantity", "data_type": "number"}, {"id": "is_allergenic_c8ef6a66-cca8-49c6-9448-b71a48f3636b", "code":"isAllergen", "data_type":"boolean"}, {"id": "comments_d39d3c48-46e6-4744-8196-56e08563fd46", "code":"comments", "data_type":"text"}] |
     And the following select options:
       | attribute_code | column_code | options                                                             |
       | nutrition      | ingredient  | [{"code": "sugar", "labels": {"fr_FR": "Sucre"}}, {"code": "salt"}] |
@@ -67,9 +67,9 @@ Feature: Enrich a table attribute value
 
   Scenario: Providing a valid table using numerics as column codes and select option codes should not raise any error
     Given the following attributes:
-      | code        | type                     | table_configuration                                                                                               |
-      | sku         | pim_catalog_identifier   |                                                                                                                   |
-      | test_number | pim_catalog_table        | [{"code": "1", "data_type": "select"}, {"code": "2", "data_type": "number"}, {"code":"3", "data_type":"boolean"}] |
+      | code        | type                     | table_configuration                                                                                                                                                                                                                                               |
+      | sku         | pim_catalog_identifier   |                                                                                                                                                                                                                                                                   |
+      | test_number | pim_catalog_table        | [{"id": "1_d39d3c48-46e6-4744-8196-56e08563fd46", "code": "1", "data_type": "select"}, {"id": "2_d39d3c48-46e6-4744-8196-56e08563fd47", "code": "2", "data_type": "number"}, {"id": "3_d39d3c48-46e6-4744-8196-56e08563fd48", "code":"3", "data_type":"boolean"}] |
     And the following select options:
       | attribute_code | column_code | options                          |
       | test_number    | 1           | [{"code": "11"}, {"code": "12"}] |

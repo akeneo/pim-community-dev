@@ -8,6 +8,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedTableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
 class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
@@ -27,8 +28,8 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
-                NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $actualRepository->save('nutrition', $tableConfiguration)->shouldBeCalled();
@@ -41,8 +42,8 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
-                NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $actualRepository->getByAttributeCode('nutrition')->shouldBeCalledOnce()->willReturn($tableConfiguration);
@@ -55,16 +56,16 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
-                NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $otherTableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'package']),
-                NumberColumn::fromNormalized(['code' => 'width']),
-                NumberColumn::fromNormalized(['code' => 'height']),
-                NumberColumn::fromNormalized(['code' => 'depth']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('package'), 'code' => 'package']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('width'), 'code' => 'width']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('height'), 'code' => 'height']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('depth'), 'code' => 'depth']),
             ]
         );
         $actualRepository->getByAttributeCode('nutrition')->shouldBeCalledOnce()->willReturn($tableConfiguration);
@@ -81,8 +82,8 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
-                NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $actualRepository->getByAttributeCode('nutrition')->shouldBeCalledTimes(2)->willReturn($tableConfiguration);

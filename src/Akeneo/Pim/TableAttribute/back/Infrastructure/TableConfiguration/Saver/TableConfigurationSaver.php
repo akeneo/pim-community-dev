@@ -18,10 +18,12 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Webmozart\Assert\Assert;
@@ -31,15 +33,18 @@ class TableConfigurationSaver implements SaverInterface
     private TableConfigurationRepository $tableConfigurationRepository;
     private SelectOptionCollectionRepository $optionCollectionRepository;
     private ColumnFactory $columnFactory;
+    private TableConfigurationUpdater $tableConfigurationUpdater;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
-        ColumnFactory $columnFactory
+        ColumnFactory $columnFactory,
+        TableConfigurationUpdater $tableConfigurationUpdater
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->optionCollectionRepository = $optionCollectionRepository;
         $this->columnFactory = $columnFactory;
+        $this->tableConfigurationUpdater = $tableConfigurationUpdater;
     }
 
     public function save($attribute, array $options = []): void
@@ -52,14 +57,7 @@ class TableConfigurationSaver implements SaverInterface
         Assert::isArray($attribute->getRawTableConfiguration());
         Assert::allIsArray($attribute->getRawTableConfiguration());
 
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $rawColumnDefinition): ColumnDefinition =>  $this->columnFactory->createFromNormalized(
-                    $rawColumnDefinition
-                ),
-                $attribute->getRawTableConfiguration()
-            )
-        );
+        $tableConfiguration = $this->createOrUpdateTableConfiguration($attribute);
         $this->tableConfigurationRepository->save($attribute->getCode(), $tableConfiguration);
 
         foreach ($attribute->getRawTableConfiguration() as $rawColumnDefinition) {
@@ -78,6 +76,34 @@ class TableConfigurationSaver implements SaverInterface
                     SelectOptionCollection::fromNormalized($rawColumnDefinition['options'] ?? [])
                 );
             }
+        }
+    }
+
+    private function createOrUpdateTableConfiguration(AttributeInterface $attribute): TableConfiguration
+    {
+        try {
+            $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
+
+            return $this->tableConfigurationUpdater->update(
+                $tableConfiguration,
+                $attribute->getRawTableConfiguration()
+            );
+        } catch (TableConfigurationNotFoundException $e) {
+            return TableConfiguration::fromColumnDefinitions(
+                array_map(
+                    fn (array $rawColumnDefinition): ColumnDefinition => $this->columnFactory->createFromNormalized(
+                        array_merge(
+                            $rawColumnDefinition,
+                            [
+                                'id' => $this->tableConfigurationRepository->getNextIdentifier(
+                                    ColumnCode::fromString($rawColumnDefinition['code'])
+                                )->asString(),
+                            ]
+                        )
+                    ),
+                    $attribute->getRawTableConfiguration()
+                )
+            );
         }
     }
 }

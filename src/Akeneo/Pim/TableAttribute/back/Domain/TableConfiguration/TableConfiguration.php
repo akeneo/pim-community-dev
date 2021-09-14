@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Webmozart\Assert\Assert;
 
 final class TableConfiguration
@@ -45,6 +46,11 @@ final class TableConfiguration
             $columnDefinitions
         );
         Assert::uniqueValues($codes, 'The column codes are not unique');
+        $ids = \array_map(
+            fn (ColumnDefinition $definition): string => strtolower($definition->id()->asString()),
+            $columnDefinitions
+        );
+        Assert::uniqueValues($ids, 'The column ids are not unique');
 
         return new self($columnDefinitions);
     }
@@ -61,6 +67,17 @@ final class TableConfiguration
     }
 
     /**
+     * @return ColumnId[]
+     */
+    public function columnIds(): array
+    {
+        return \array_map(
+            fn (ColumnDefinition $column): ColumnId => $column->id(),
+            $this->columnDefinitions
+        );
+    }
+
+    /**
      * @return ColumnCode[]
      */
     public function columnCodes(): array
@@ -71,15 +88,9 @@ final class TableConfiguration
         );
     }
 
-    public function getColumnDataType(ColumnCode $columnCode): ?ColumnDataType
+    public function getFirstColumnId(): ColumnId
     {
-        foreach ($this->columnDefinitions as $columnDefinition) {
-            if ($columnDefinition->code()->equals($columnCode)) {
-                return $columnDefinition->dataType();
-            }
-        }
-
-        return null;
+        return $this->columnDefinitions[0]->id();
     }
 
     public function getFirstColumnCode(): ColumnCode
@@ -103,6 +114,28 @@ final class TableConfiguration
         foreach ($this->columnDefinitions as $columnDefinition) {
             if ($columnDefinition->code()->equals($columnCode)) {
                 return $columnDefinition->validations();
+            }
+        }
+
+        return null;
+    }
+
+    public function getColumn(ColumnId $columnId): ?ColumnDefinition
+    {
+        foreach ($this->columnDefinitions as $columnDefinition) {
+            if ($columnDefinition->id()->equals($columnId)) {
+                return $columnDefinition;
+            }
+        }
+
+        return null;
+    }
+
+    public function getColumnByCode(ColumnCode $columnCode): ?ColumnDefinition
+    {
+        foreach ($this->columnDefinitions as $columnDefinition) {
+            if ($columnDefinition->code()->equals($columnCode)) {
+                return $columnDefinition;
             }
         }
 

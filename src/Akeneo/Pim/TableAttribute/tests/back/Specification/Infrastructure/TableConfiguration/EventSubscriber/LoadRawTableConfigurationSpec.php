@@ -9,6 +9,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\LoadRawTableConfiguration;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
@@ -68,14 +69,14 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['code' => 'ingredients', 'labels' => []]),
-                    TextColumn::fromNormalized(['code' => 'quantity', 'labels' => []]),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredients', 'labels' => []]),
+                    TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => []]),
                 ]
             )
         );
         $attribute->setRawTableConfiguration([
-            ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
-            ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+            ['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
+            ['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
         ])->shouldBeCalled();
 
         $this->postLoad($event);

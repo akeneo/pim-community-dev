@@ -7,6 +7,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Versioning\AttributeNormalizer;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -53,6 +54,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getRawTableConfiguration()->willReturn(
             [
                 [
+                    'id' => ColumnIdGenerator::ingredient(),
                     'data_type' => 'select',
                     'code' => 'ingredient',
                     'labels' => ['en_US' => 'Ingredient'],
@@ -60,6 +62,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                     'options' => [['code' => 'salt'],['code' => 'sugar']],
                 ],
                 [
+                    'id' => ColumnIdGenerator::quantity(),
                     'data_type' => 'number',
                     'code' => 'quantity',
                     'labels' => (object)[],
@@ -86,12 +89,14 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getRawTableConfiguration()->willReturn(
             [
                 [
+                    'id' => ColumnIdGenerator::ingredient(),
                     'data_type' => 'select',
                     'code' => 'ingredient',
                     'labels' => ['en_US' => 'Ingredient'],
                     'validations' => (object)[],
                 ],
                 [
+                    'id' => ColumnIdGenerator::quantity(),
                     'data_type' => 'number',
                     'code' => 'quantity',
                     'labels' => (object)[],
@@ -125,6 +130,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getRawTableConfiguration()->willReturn(
             [
                 [
+                    'id' => ColumnIdGenerator::ingredient(),
                     'data_type' => 'select',
                     'code' => 'ingredient',
                     'labels' => (object)[],
@@ -132,6 +138,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                     'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']]],
                 ],
                 [
+                    'id' => ColumnIdGenerator::quantity(),
                     'data_type' => 'number',
                     'code' => 'quantity',
                     'labels' => (object)[],
@@ -161,6 +168,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getRawTableConfiguration()->willReturn(
             [
                 [
+                    'id' => ColumnIdGenerator::ingredient(),
                     'data_type' => 'select',
                     'code' => 'ingredient',
                     'labels' => (object)[],
@@ -168,6 +176,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                     'options' => $options,
                 ],
                 [
+                    'id' => ColumnIdGenerator::quantity(),
                     'data_type' => 'number',
                     'code' => 'quantity',
                     'labels' => (object)[],

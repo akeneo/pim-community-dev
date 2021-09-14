@@ -44,8 +44,8 @@ class TableSpec extends ObjectBehavior
         );
     }
 
-    function it_exposes_unique_column_codes()
+    function it_exposes_unique_column_ids()
     {
-        $this->uniqueColumnCodes()->shouldReturn(['foo', '0', 'bar']);
+        $this->uniqueColumnIds()->shouldReturn(['foo', '0', 'bar']);
     }
 }

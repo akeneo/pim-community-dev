@@ -45,7 +45,7 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
-                    'validations' => (object)[],
+                    'validations' => [],
                     'options' => [],
                 ],
                 [
@@ -69,7 +69,8 @@ final class ExportTableAttributeIntegration extends TestCase
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
-                Assert::assertJsonStringEqualsJsonString($expectedConfig, $row['table_configuration']);
+                Assert::assertEquals(new \stdClass(), \json_decode($row['table_configuration'], false)[0]->validations);
+                Assert::assertJsonStringEqualsJsonString($expectedConfig, $this->removeIds($row['table_configuration']));
             }
         }
     }
@@ -100,7 +101,7 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
-                    'validations' => (object)[],
+                    'validations' => [],
                     'options' => [],
                 ],
                 [
@@ -124,7 +125,8 @@ final class ExportTableAttributeIntegration extends TestCase
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
-                Assert::assertJsonStringEqualsJsonString($expectedConfig, $row['table_configuration']);
+                Assert::assertEquals(new \stdClass(), \json_decode($row['table_configuration'], false)[0]->validations);
+                Assert::assertJsonStringEqualsJsonString($expectedConfig, $this->removeIds($row['table_configuration']));
             }
         }
     }
@@ -198,5 +200,19 @@ final class ExportTableAttributeIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function removeIds(string $rawTableConfiguration): string
+    {
+        $decoded = \json_decode($rawTableConfiguration, true);
+        if (null === $decoded) {
+            return $rawTableConfiguration;
+        }
+
+        foreach (array_keys($decoded) as $index) {
+            unset($decoded[$index]['id']);
+        }
+
+        return \json_encode($decoded);
     }
 }

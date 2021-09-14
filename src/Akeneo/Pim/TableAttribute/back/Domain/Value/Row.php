@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Webmozart\Assert\Assert;
 
 /**
@@ -71,7 +72,7 @@ final class Row implements \IteratorAggregate
     /**
      * @return string[]
      */
-    public function columnCodes(): array
+    public function columnIds(): array
     {
         return \array_map(
             'strval',
@@ -79,17 +80,17 @@ final class Row implements \IteratorAggregate
         );
     }
 
-    public function cell(ColumnCode $columnCode): ?Cell
+    public function cell(ColumnId $columnId): ?Cell
     {
         // Early return for optimistic path (good string case)
-        $value = $this->cells[$columnCode->asString()] ?? null;
+        $value = $this->cells[$columnId->asString()] ?? null;
         if (null !== $value) {
             return $value;
         }
 
-        $expectedStringColumnCode = \strtolower($columnCode->asString());
-        foreach ($this->cells as $stringColumnCode => $cell) {
-            if (\strtolower(\strval($stringColumnCode)) === $expectedStringColumnCode) {
+        $expectedStringColumnId = \strtolower($columnId->asString());
+        foreach ($this->cells as $stringColumnId => $cell) {
+            if (\strtolower(\strval($stringColumnId)) === $expectedStringColumnId) {
                 return $cell;
             }
         }

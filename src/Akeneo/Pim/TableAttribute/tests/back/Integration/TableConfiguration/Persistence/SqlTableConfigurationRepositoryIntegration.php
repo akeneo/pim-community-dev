@@ -20,6 +20,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -43,108 +44,116 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_saves_a_new_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients', 'options' => [
-                ['code' => 'sugar'],
-                ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
-            ]]),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            TextColumn::fromNormalized(['code' => 'isAllergenic']),
+            SelectColumn::fromNormalized([
+                'id' => ColumnIdGenerator::ingredient(),
+                'code' => 'ingredient',
+                'options' => [
+                    ['code' => 'sugar'],
+                    ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
+                ],
+            ]),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
-        self::assertEquals(0, $rows[0]['column_order']);
-        self::assertSame('ingredients', $rows[0]['code']);
+        self::assertSame(0, (int)$rows[0]['column_order']);
+        self::assertSame('ingredient', $rows[0]['code']);
         self::assertSame('select', $rows[0]['data_type']);
-        self::assertSame('ingredients_', substr($rows[0]['id'], 0, strlen('ingredients_')));
-        self::assertEquals(1, $rows[1]['column_order']);
+        self::assertSame(ColumnIdGenerator::ingredient(), $rows[0]['id']);
+        self::assertSame(1, (int)$rows[1]['column_order']);
         self::assertSame('quantity', $rows[1]['code']);
         self::assertSame('text', $rows[1]['data_type']);
-        self::assertSame('quantity_', substr($rows[1]['id'], 0, strlen('quantity_')));
+        self::assertSame(ColumnIdGenerator::quantity(), $rows[1]['id']);
         self::assertSame('text', $rows[2]['data_type']);
-        self::assertSame('isAllergenic', $rows[2]['code']);
-        self::assertSame('2', $rows[2]['column_order']);
+        self::assertSame('is_allergenic', $rows[2]['code']);
+        self::assertSame(ColumnIdGenerator::isAllergenic(), $rows[2]['id']);
+        self::assertSame(2, (int)$rows[2]['column_order']);
     }
 
     /** @test */
     public function it_updates_a_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            BooleanColumn::fromNormalized(['code' => 'isAllergenic']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+        $ids = $this->connection->executeQuery(
+            'SELECT id FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
+        )->fetchFirstColumn();
 
-        self::assertCount(3, $rows);
-        $idQuantity = $rows[1]['id'];
+        self::assertCount(3, $ids);
+        [$ingredientId, $quantityId,] = $ids;
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'aqr']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['id' => $ingredientId, 'code' => 'ingredient']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('aqr'), 'code' => 'aqr']),
+            TextColumn::fromNormalized(['id' => $quantityId, 'code' => 'quantity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
-        self::assertSame('quantity', $rows[2]['code']);
-        self::assertSame($idQuantity, $rows[2]['id']);
+        self::assertSame('ingredient', $rows[0]['code']);
+        self::assertSame($ingredientId, $rows[0]['id']);
         self::assertSame('aqr', $rows[1]['code']);
+        self::assertSame('quantity', $rows[2]['code']);
+        self::assertSame($quantityId, $rows[2]['id']);
     }
 
     /** @test */
     public function it_updates_a_table_configuration_with_case_insensitive(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            BooleanColumn::fromNormalized(['code' => 'isAllergenic']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'isAllergenic']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+        $ids = $this->connection->executeQuery(
+            'SELECT id FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
+        )->fetchFirstColumn();
 
-        self::assertCount(3, $rows);
-        $idIngredients = $rows[0]['id'];
-        $idQuantity = $rows[1]['id'];
+        self::assertCount(3, $ids);
+        self::assertContains(ColumnIdGenerator::ingredient(), $ids);
+        self::assertContains(ColumnIdGenerator::quantity(), $ids);
+        self::assertContains(ColumnIdGenerator::isAllergenic(), $ids);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'INGredients']),
-            TextColumn::fromNormalized(['code' => 'aqr']),
-            TextColumn::fromNormalized(['code' => 'QUANTITY']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'INGredients']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('aqr'), 'code' => 'aqr']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'QUANTITY']),
         ]);
         $this->sqlTableConfigurationRepository->save('NUTrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
-        self::assertSame('ingredients', $rows[0]['code']);
+        self::assertSame('ingredient', $rows[0]['code']);
         // It's really important the column is not recreated (= the id still the same).
         // Otherwise all its options are deleted by cascade.
-        self::assertSame($idIngredients, $rows[0]['id']);
+        self::assertSame(ColumnIdGenerator::ingredient(), $rows[0]['id']);
         self::assertSame('quantity', $rows[2]['code']);
-        self::assertSame($idQuantity, $rows[2]['id']);
+        self::assertSame(ColumnIdGenerator::quantity(), $rows[2]['id']);
         self::assertSame('aqr', $rows[1]['code']);
     }
 
@@ -153,10 +162,10 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['code' => 'select']),
-                TextColumn::fromNormalized(['code' => 'text']),
-                BooleanColumn::fromNormalized(['code' => 'boolean']),
-                NumberColumn::fromNormalized(['code' => 'number']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('select'), 'code' => 'select']),
+                TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('text'), 'code' => 'text']),
+                BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('boolean'), 'code' => 'boolean']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('number'), 'code' => 'number']),
             ]
         );
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
@@ -172,10 +181,18 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     /** @test */
     public function it_updates_a_table_configuration_and_changes_the_columns_order(): void
     {
+        $priceId = ColumnIdGenerator::generateAsString('price');
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            TextColumn::fromNormalized(['code' => 'price']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            TextColumn::fromNormalized(['id' => $priceId, 'code' => 'price']),
+        ]);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
+
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            TextColumn::fromNormalized(['id' => $priceId, 'code' => 'price']),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -185,67 +202,12 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         )->fetchAll();
 
         self::assertCount(3, $rows);
-        $idIngredients = $rows[0]['id'];
-        $idQuantity = $rows[1]['id'];
-        $idPrice = $rows[2]['id'];
-
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'price']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-        ]);
-        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
-
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
-            ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
-
-        self::assertCount(3, $rows);
-        self::assertSame('ingredients', $rows[0]['code']);
-        self::assertSame($idIngredients, $rows[0]['id']);
+        self::assertSame('ingredient', $rows[0]['code']);
+        self::assertSame(ColumnIdGenerator::ingredient(), $rows[0]['id']);
         self::assertSame('price', $rows[1]['code']);
-        self::assertSame($idPrice, $rows[1]['id']);
+        self::assertSame($priceId, $rows[1]['id']);
         self::assertSame('quantity', $rows[2]['code']);
-        self::assertSame($idQuantity, $rows[2]['id']);
-    }
-
-    /** @test */
-    public function it_recreates_the_column_when_data_type_is_updated(): void
-    {
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-        ]);
-        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
-
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
-            ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
-
-        self::assertCount(2, $rows);
-        $idIngredients = $rows[0]['id'];
-        $idQuantity = $rows[1]['id'];
-        self::assertSame('text', $rows[1]['data_type']);
-
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredients']),
-            NumberColumn::fromNormalized(['code' => 'quantity']),
-        ]);
-        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
-
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
-            ['attribute_id' => $this->tableAttributeId]
-        )->fetchAll();
-
-        self::assertCount(2, $rows);
-        self::assertSame('ingredients', $rows[0]['code']);
-        self::assertSame($idIngredients, $rows[0]['id']);
-        self::assertSame('quantity', $rows[1]['code']);
-        self::assertSame('number', $rows[1]['data_type'], 'The column data type should have changed');
-        self::assertNotSame($idQuantity, $rows[1]['id'], 'The column id should have changed when the type is updated');
+        self::assertSame(ColumnIdGenerator::quantity(), $rows[2]['id']);
     }
 
     /** @test */
@@ -258,19 +220,19 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $this->connection->executeQuery(
             $sql,
             [
-                'id' => 'ingredients_1234567890',
+                'id' => ColumnIdGenerator::ingredient(),
                 'attribute_id' => $this->tableAttributeId,
-                'code' => 'ingredients',
+                'code' => 'ingredient',
                 'data_type' => 'select',
                 'column_order' => 0,
-                'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']),
+                'labels' => \json_encode(['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']),
                 'validations' => '{}',
             ]
         );
         $this->connection->executeQuery(
             $sql,
             [
-                'id' => 'quantity_2345678901',
+                'id' => ColumnIdGenerator::quantity(),
                 'attribute_id' => $this->tableAttributeId,
                 'code' => 'quantity',
                 'data_type' => 'text',
@@ -286,13 +248,13 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         SQL;
 
         $this->connection->executeQuery($sql, [
-            'column_id' => 'ingredients_1234567890',
+            'column_id' => ColumnIdGenerator::ingredient(),
             'code' => 'sugar',
             'labels' => '{}',
         ]);
 
         $this->connection->executeQuery($sql, [
-            'column_id' => 'ingredients_1234567890',
+            'column_id' => ColumnIdGenerator::ingredient(),
             'code' => 'salt',
             'labels' => '{}',
         ]);
@@ -302,17 +264,19 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertEqualsCanonicalizing(
             [
                 [
-                    'code' => 'ingredients',
+                    'id' => ColumnIdGenerator::ingredient(),
+                    'code' => 'ingredient',
                     'data_type' => 'select',
-                    'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
+                    'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
                     'validations' => (object)[],
                 ],
                 [
+                    'id' => ColumnIdGenerator::quantity(),
                     'code' => 'quantity',
                     'data_type' => 'text',
                     'labels' => (object)[],
                     'validations' => ['max_length' => 90],
-                ]
+                ],
             ],
             $result->normalize()
         );
@@ -340,6 +304,6 @@ VALUES (1, 0, 1, 1, 0, 0, 'nutrition', 'Akeneo\\Pim\\Enrichment\\Component\\Prod
 SQL;
         $this->connection->executeQuery($loadAttributeSql);
 
-        $this->tableAttributeId = (int) $this->connection->lastInsertId();
+        $this->tableAttributeId = (int)$this->connection->lastInsertId();
     }
 }

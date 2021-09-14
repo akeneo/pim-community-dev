@@ -7,6 +7,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use PhpSpec\ObjectBehavior;
 
 class NumberColumnSpec extends ObjectBehavior
@@ -15,7 +16,13 @@ class NumberColumnSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'fromNormalized',
-            [['code' => 'quantities', 'labels' => ['en_US' => 'Quantities', 'fr_FR' => 'Quantités']]]
+            [
+                [
+                    'id' => 'quantity_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
+                    'code' => 'quantities',
+                    'labels' => ['en_US' => 'Quantities', 'fr_FR' => 'Quantités'],
+                ],
+            ]
         );
     }
 
@@ -36,6 +43,12 @@ class NumberColumnSpec extends ObjectBehavior
         $this->code()->asString()->shouldBe('quantities');
     }
 
+    function it_has_an_id()
+    {
+        $this->id()->shouldHaveType(ColumnId::class);
+        $this->id()->asString()->shouldBe('quantity_cf30d88f-38c9-4c01-9821-4b39a5e3c224');
+    }
+
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
@@ -48,6 +61,7 @@ class NumberColumnSpec extends ObjectBehavior
             'fromNormalized',
             [
                 [
+                    'id' => 'quantity_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                     'code' => 'number',
                     'validations' => ['min' => 5],
                 ],
@@ -64,6 +78,7 @@ class NumberColumnSpec extends ObjectBehavior
     {
         $this->normalize()->shouldBeLike(
             [
+                'id' => 'quantity_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                 'data_type' => 'number',
                 'code' => 'quantities',
                 'labels' => ['en_US' => 'Quantities', 'fr_FR' => 'Quantités'],

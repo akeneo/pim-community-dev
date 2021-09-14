@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
@@ -42,16 +42,20 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
 
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
-            foreach ($row as $stringColumnCode => $cell) {
-                $expectedDataType = $tableConfiguration->getColumnDataType(
-                    ColumnCode::fromString((string) $stringColumnCode)
-                );
-                if (null === $expectedDataType) {
+            foreach ($row as $stringColumnId => $cell) {
+                try {
+                    $columnId = ColumnId::fromString((string) $stringColumnId);
+                } catch (\Exception $e) {
+                    continue;
+                }
+                $column = $tableConfiguration->getColumn($columnId);
+                if (null === $column) {
                     continue;
                 }
 
+                $stringColumnCode = $column->code()->asString();
                 $data = $cell->normalize();
-                switch ($expectedDataType->asString()) {
+                switch ($column->dataType()->asString()) {
                     case 'text':
                     case 'select':
                         if (!is_string($data)) {
@@ -70,7 +74,7 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                         break;
                     default:
                         throw new \LogicException(
-                            sprintf('Cannot validate the "%s" data type', $expectedDataType->asString())
+                            sprintf('Cannot validate the "%s" data type', $column->dataType()->asString())
                         );
                 }
             }

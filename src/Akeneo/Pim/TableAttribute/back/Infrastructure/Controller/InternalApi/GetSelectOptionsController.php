@@ -69,12 +69,14 @@ final class GetSelectOptionsController
             )
         );
 
-        $columnDataType = $tableConfiguration->getColumnDataType(ColumnCode::fromString($columnCode));
-        if (null === $columnDataType) {
+        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
+        if (null === $column) {
             throw new NotFoundHttpException(
                 sprintf('The "%s" column is not found', $columnCode)
             );
-        } elseif ($columnDataType->asString() !== SelectColumn::DATATYPE) {
+        }
+
+        if ($column->dataType()->asString() !== SelectColumn::DATATYPE) {
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => sprintf('The "%s" column is not a select', $columnCode),

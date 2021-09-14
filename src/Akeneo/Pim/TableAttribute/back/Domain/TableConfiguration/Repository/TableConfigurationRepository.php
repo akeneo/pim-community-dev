@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 
 interface TableConfigurationRepository
 {
+    public function getNextIdentifier(ColumnCode $columnCode): ColumnId;
+
     public function save(string $attributeCode, TableConfiguration $tableConfiguration): void;
 
     /**

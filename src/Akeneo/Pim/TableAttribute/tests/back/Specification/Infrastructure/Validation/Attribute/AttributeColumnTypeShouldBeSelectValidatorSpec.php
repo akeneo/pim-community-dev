@@ -11,6 +11,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AttributeColumnTypeShouldBeSelect;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AttributeColumnTypeShouldBeSelectValidator;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -98,8 +99,8 @@ class AttributeColumnTypeShouldBeSelectValidatorSpec extends ObjectBehavior
         );
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
 
@@ -128,8 +129,8 @@ class AttributeColumnTypeShouldBeSelectValidatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['code' => 'ingredient']),
-                    NumberColumn::fromNormalized(['code' => 'quantity']),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                    NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ]
             )
         );
@@ -161,8 +162,8 @@ class AttributeColumnTypeShouldBeSelectValidatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['code' => 'ingredient']),
-                    NumberColumn::fromNormalized(['code' => 'quantity']),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                    NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ]
             )
         );

@@ -21,6 +21,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MaxValidation
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MinValidation;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
@@ -54,12 +55,22 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
         $table = $tableValue->getData();
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
-            foreach ($row as $stringColumnCode => $cell) {
-                $constraints = $this->buildConstraints($tableConfiguration, ColumnCode::fromString((string) $stringColumnCode));
+            foreach ($row as $stringColumnId => $cell) {
+                try {
+                    $columnId = ColumnId::fromString($stringColumnId);
+                } catch (\Exception $e) {
+                    continue;
+                }
+
+                $column = $tableConfiguration->getColumn($columnId);
+                if (null === $column) {
+                    continue;
+                }
+                $constraints = $this->buildConstraints($tableConfiguration, $column->code());
 
                 if (0 < count($constraints)) {
                     $validator
-                        ->atPath(sprintf('[%d].%s', $rowIndex, $stringColumnCode))
+                        ->atPath(sprintf('[%d].%s', $rowIndex, $column->code()->asString()))
                         ->validate($cell->normalize(), $constraints);
                 }
             }
@@ -71,13 +82,13 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
      */
     private function buildConstraints(TableConfiguration $tableConfiguration, ColumnCode $columnCode): array
     {
-        $columnDataType = $tableConfiguration->getColumnDataType($columnCode);
+        $column = $tableConfiguration->getColumnByCode($columnCode);
         $validations = $tableConfiguration->getValidations($columnCode);
-        if (null === $columnDataType || null === $validations) {
+        if (null === $column || null === $validations) {
             return [];
         }
 
-        switch ($columnDataType->asString()) {
+        switch ($column->dataType()->asString()) {
             case 'text':
                 return $this->buildConstraintsForText($validations);
             case 'number':

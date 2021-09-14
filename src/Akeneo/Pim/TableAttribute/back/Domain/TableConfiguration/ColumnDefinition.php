@@ -15,9 +15,11 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 
 interface ColumnDefinition
 {
+    public function id(): ColumnId;
     public function code(): ColumnCode;
     public function dataType(): ColumnDataType;
     public function labels(): LabelCollection;

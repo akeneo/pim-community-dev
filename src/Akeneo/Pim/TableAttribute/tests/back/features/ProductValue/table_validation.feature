@@ -7,9 +7,9 @@ Feature: Enrich a table attribute value
   Background:
     Given an authenticated user
     And the following attributes:
-      | code        | type                     | table_configuration                                                                                                                                                                                                                            |
-      | sku         | pim_catalog_identifier   |                                                                                                                                                                                                                                                |
-      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "select"}, {"code": "quantity", "data_type": "number", "validations": {"min": 10, "max": 100, "decimals_allowed": false}}, {"code":"description", "data_type":"text", "validations": {"max_length": 15}}] |
+      | code        | type                     | table_configuration                                                                                                                                                                                                                                                                                                                                                                                                      |
+      | sku         | pim_catalog_identifier   |                                                                                                                                                                                                                                                                                                                                                                                                                          |
+      | nutrition   | pim_catalog_table        | [{"id": "ingredient_f6492fb4-d815-4d30-a912-8db321a3e38a", "code": "ingredient", "data_type": "select"}, {"id": "quantity_f967d82a-b54c-41da-959e-1fa43124afee", "code": "quantity", "data_type": "number", "validations": {"min": 10, "max": 100, "decimals_allowed": false}}, {"id": "description_8bb00280-d04f-4c19-a6cf-46b83ad9553d", "code":"description", "data_type":"text", "validations": {"max_length": 15}}] |
     And the following select options:
       | attribute_code | column_code | options                               |
       | nutrition      | ingredient  | [{"code": "sugar"}, {"code": "salt"}] |

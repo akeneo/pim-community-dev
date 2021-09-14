@@ -68,8 +68,8 @@ final class Table implements \IteratorAggregate
     /**
      * @return string[]
      */
-    public function uniqueColumnCodes(): array
+    public function uniqueColumnIds(): array
     {
-        return \array_unique(\array_merge(...\array_map(fn (Row $row): array => $row->columnCodes(), $this->rows)));
+        return \array_unique(\array_merge(...\array_map(fn (Row $row): array => $row->columnIds(), $this->rows)));
     }
 }

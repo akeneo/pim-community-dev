@@ -42,6 +42,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         if ($object instanceof AttributeInterface && $object->getType() === AttributeTypes::TABLE) {
             $configuration = $object->getRawTableConfiguration();
             foreach ($configuration as $index => $columnDefinition) {
+                unset($configuration[$index]['id']);
                 if (SelectColumn::DATATYPE === ($columnDefinition['data_type'] ?? null)) {
                     $options = $columnDefinition['options'] ?? null;
                     if (null === $options) {

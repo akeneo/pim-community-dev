@@ -45,8 +45,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $attribute->getType()->willReturn('pim_catalog_table');
         $attribute->getRawTableConfiguration()->willReturn([
-            ['data_type' => 'select', 'code' => 'ingredient'],
-            ['data_type' => 'number', 'code' => 'quantity'],
+            ['data_type' => 'select', 'code' => 'ingredient', 'id' => 'ingredient_123'],
+            ['data_type' => 'number', 'code' => 'quantity', 'id' => 'quantity_123'],
         ]);
         $baseNormalizer->normalize($attribute, 'standard', [])->shouldBeCalled()->willReturn(['code' => 'nutrition']);
         $this->normalize($attribute, 'standard', [])->shouldReturn([

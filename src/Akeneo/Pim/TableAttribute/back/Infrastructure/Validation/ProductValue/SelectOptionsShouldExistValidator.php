@@ -15,7 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
@@ -46,33 +46,43 @@ final class SelectOptionsShouldExistValidator extends ConstraintValidator
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($tableValue->getAttributeCode());
         $indexedSelectColumns = [];
         foreach ($tableConfiguration->getSelectColumns() as $selectColumn) {
-            $indexedSelectColumns[$selectColumn->code()->asString()] = $selectColumn;
+            $indexedSelectColumns[$selectColumn->id()->asString()] = $selectColumn;
         }
 
         $table = $tableValue->getData();
 
-        $optionCodesPerColumnCode = [];
+        $optionCodesPerColumnId = [];
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
-            foreach ($row as $stringColumnCode => $cell) {
-                $selectColumn = $indexedSelectColumns[$stringColumnCode] ?? null;
+            foreach ($row as $stringColumnId => $cell) {
+                $selectColumn = $indexedSelectColumns[$stringColumnId] ?? null;
                 $data = $cell->normalize();
                 if (null === $selectColumn || !is_string($data)) {
                     continue;
                 }
 
-                $optionCodesPerColumnCode[$stringColumnCode][$rowIndex] = $data;
+                $optionCodesPerColumnId[$stringColumnId][$rowIndex] = $data;
             }
         }
 
-        foreach ($optionCodesPerColumnCode as $stringColumnCode => $optionCodes) {
+        foreach ($optionCodesPerColumnId as $stringColumnId => $optionCodes) {
+            try {
+                $columnId = ColumnId::fromString($stringColumnId);
+            } catch (\Exception $e) {
+                continue;
+            }
+            $column = $tableConfiguration->getColumn($columnId);
+            if (null === $column) {
+                continue;
+            }
+
             $optionCodeObjects = array_map(
                 fn (string $optionCode): SelectOptionCode => SelectOptionCode::fromString((string) $optionCode),
                 array_values(array_unique($optionCodes))
             );
             $nonExistingOptions = $this->getNonExistingSelectOptionCodes->forOptionCodes(
                 $tableValue->getAttributeCode(),
-                ColumnCode::fromString((string) $stringColumnCode),
+                $column->code(),
                 $optionCodeObjects
             );
             $nonExistingOptions = array_map(
@@ -82,7 +92,7 @@ final class SelectOptionsShouldExistValidator extends ConstraintValidator
             foreach ($optionCodes as $rowIndex => $optionCode) {
                 if (in_array($optionCode, $nonExistingOptions)) {
                     $this->context->buildViolation($constraint->message, ['{{ optionCode }}' => $optionCode])
-                        ->atPath(sprintf('[%d].%s', $rowIndex, $stringColumnCode))
+                        ->atPath(sprintf('[%d].%s', $rowIndex, $column->code()->asString()))
                         ->addViolation();
                 }
             }

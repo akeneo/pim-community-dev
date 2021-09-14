@@ -35,6 +35,12 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $normalized = $this->baseAttributeNormalizer->normalize($object, $format, $context);
         if ($object instanceof AttributeInterface && $object->getType() === AttributeTypes::TABLE) {
             $normalized['table_configuration'] = $object->getRawTableConfiguration();
+
+            if (null !== $normalized['table_configuration']) {
+                foreach ($normalized['table_configuration'] as $index => $columnDefinition) {
+                    unset($normalized['table_configuration'][$index]['id']);
+                }
+            }
         }
 
         return $normalized;

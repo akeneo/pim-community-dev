@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Import;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -50,7 +51,7 @@ CSV;
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50]],
             ],
-            $nutritionAttribute->getRawTableConfiguration()
+            $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );
         Assert::assertEqualsCanonicalizing(
             [['code' => 'salt', 'labels' => ['en_US' => 'Salt']]],
@@ -69,7 +70,7 @@ CSV;
                 ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
-            $storageAttribute->getRawTableConfiguration()
+            $this->getRawTableConfigurationWithoutIds($storageAttribute)
         );
         Assert::assertEqualsCanonicalizing(
             [],
@@ -130,7 +131,7 @@ CSV;
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
             ],
-            $nutritionAttribute->getRawTableConfiguration()
+            $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );
         Assert::assertEqualsCanonicalizing(
             [['code' => 'salt', 'labels' => ['en_US' => 'Salt']]],
@@ -149,7 +150,7 @@ CSV;
                 ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
-            $storageAttribute->getRawTableConfiguration()
+            $this->getRawTableConfigurationWithoutIds($storageAttribute)
         );
         Assert::assertEqualsCanonicalizing(
             [],
@@ -218,6 +219,14 @@ CSV;
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
 
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function getRawTableConfigurationWithoutIds(AttributeInterface $tableAttribute): array
+    {
+        return \array_map(
+            fn (array $normalizedColumnDefinition): array => \array_diff_key($normalizedColumnDefinition, ['id' => 'whatever']),
+            $tableAttribute->getRawTableConfiguration()
+        );
     }
 
     protected function getConfiguration(): Configuration

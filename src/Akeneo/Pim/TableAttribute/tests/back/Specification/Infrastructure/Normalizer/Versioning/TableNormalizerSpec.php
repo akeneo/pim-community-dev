@@ -48,8 +48,19 @@ class TableNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_table()
     {
-        $this->normalize(Table::fromNormalized([['foo' => 'bar']]), 'flat', ['field_name' => 'nutritional_info'])
-             ->shouldBe(['nutritional_info' => '[{"foo":"bar"}]']);
+        $table = Table::fromNormalized([
+            [
+                'ingre_dient_9095d213-3188-4167-b551-cfcb75b285d1' => 'sugar',
+                'quantity_4d06f549-348e-4769-8031-21203e149ebb' => 50,
+            ],
+            [
+                'ingre_dient_a7fb7602-a993-4fff-a548-e60f21ab2a53' => 'pepper',
+                'quantity_fe7dc246-4353-4209-858f-981b3a02f287' => 10,
+            ],
+        ]);
+
+        $this->normalize($table, 'flat', ['field_name' => 'nutritional_info'])
+             ->shouldBe(['nutritional_info' => '[{"ingre_dient":"sugar","quantity":50},{"ingre_dient":"pepper","quantity":10}]']);
     }
 
     function it_normalizes_an_empty_table_to_null()

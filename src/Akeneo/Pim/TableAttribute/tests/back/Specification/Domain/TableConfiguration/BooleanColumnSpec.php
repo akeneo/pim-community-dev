@@ -18,6 +18,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use PhpSpec\ObjectBehavior;
 
 class BooleanColumnSpec extends ObjectBehavior
@@ -28,6 +29,7 @@ class BooleanColumnSpec extends ObjectBehavior
             'fromNormalized',
             [
                 [
+                    'id' => 'is_allergenic_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                     'code' => 'is_allergenic',
                     'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
                 ],
@@ -52,6 +54,12 @@ class BooleanColumnSpec extends ObjectBehavior
         $this->code()->asString()->shouldBe('is_allergenic');
     }
 
+    function it_has_an_id()
+    {
+        $this->id()->shouldHaveType(ColumnId::class);
+        $this->id()->asString()->shouldBe('is_allergenic_cf30d88f-38c9-4c01-9821-4b39a5e3c224');
+    }
+
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
@@ -64,6 +72,7 @@ class BooleanColumnSpec extends ObjectBehavior
             'fromNormalized',
             [
                 [
+                    'id' => 'is_allergenic_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                     'code' => 'is_allergenic',
                     'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
                     'validations' => [],
@@ -78,6 +87,7 @@ class BooleanColumnSpec extends ObjectBehavior
     {
         $this->normalize()->shouldBeLike(
             [
+                'id' => 'is_allergenic_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                 'data_type' => 'boolean',
                 'code' => 'is_allergenic',
                 'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],

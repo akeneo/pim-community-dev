@@ -15,6 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
@@ -34,6 +36,12 @@ class LruCachedTableConfigurationRepository implements TableConfigurationReposit
     public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
         $this->tableConfigurationRepository->save($attributeCode, $tableConfiguration);
+        $this->clearCache();
+    }
+
+    public function getNextIdentifier(ColumnCode $columnCode): ColumnId
+    {
+        return $this->tableConfigurationRepository->getNextIdentifier($columnCode);
     }
 
     public function getByAttributeCode(string $attributeCode): TableConfiguration

@@ -30,7 +30,6 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes'
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
         class: Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory\InMemorySelectOptionCollectionRepository

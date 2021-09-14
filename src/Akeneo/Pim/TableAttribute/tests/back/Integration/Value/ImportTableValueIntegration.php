@@ -28,10 +28,11 @@ final class ImportTableValueIntegration extends TestCase
     private const CSV_IMPORT_JOB_CODE = 'csv_product_import';
     private const XLSX_IMPORT_JOB_CODE = 'xlsx_product_import';
 
+    private array $columnIdsIndexedByCode = [];
     private JobLauncher $jobLauncher;
 
     /** @test */
-    public function it_imports_table_attribute_values_from_a_csv_file(): void
+    public function itImportsTableAttributeValuesFromACsvFile(): void
     {
         $csv = <<<CSV
 sku;nutrition
@@ -45,7 +46,12 @@ CSV;
         $nutritionValue = $test1->getValue('nutrition');
         Assert::assertNotNull($nutritionValue);
         Assert::assertEquals(
-            Table::fromNormalized([['ingredient' => 'salt', 'quantity' => 10]]),
+            Table::fromNormalized([
+                [
+                    $this->columnIdsIndexedByCode['ingredient'] => 'salt',
+                    $this->columnIdsIndexedByCode['quantity'] => 10,
+                ],
+            ]),
             $nutritionValue->getData()
         );
 
@@ -55,7 +61,7 @@ CSV;
     }
 
     /** @test */
-    public function it_imports_table_attribute_values_from_an_xlsx_file(): void
+    public function itImportsTableAttributeValuesFromAnXlsxFile(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
         $writer = WriterFactory::create('xlsx');
@@ -89,7 +95,12 @@ CSV;
         $nutritionValue = $test1->getValue('nutrition');
         Assert::assertNotNull($nutritionValue);
         Assert::assertEquals(
-            Table::fromNormalized([['ingredient' => 'salt', 'quantity' => 10]]),
+            Table::fromNormalized([
+                [
+                    $this->columnIdsIndexedByCode['ingredient'] => 'salt',
+                    $this->columnIdsIndexedByCode['quantity'] => 10,
+                ],
+            ]),
             $nutritionValue->getData()
         );
 
@@ -144,7 +155,7 @@ CSV;
                         'data_type' => 'select',
                         'options' => [
                             ['code' => 'salt'],
-                        ]
+                        ],
                     ],
                     [
                         'code' => 'quantity',
@@ -157,6 +168,13 @@ CSV;
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
 
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $res = $this->get('database_connection')->executeQuery(
+            'SELECT id, code FROM pim_catalog_table_column'
+        )->fetchAll();
+        foreach ($res as $row) {
+            $this->columnIdsIndexedByCode[$row['code']] = $row['id'];
+        }
     }
 
     protected function getConfiguration(): Configuration

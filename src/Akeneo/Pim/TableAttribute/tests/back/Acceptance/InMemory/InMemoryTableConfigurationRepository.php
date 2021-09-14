@@ -20,6 +20,9 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Ramsey\Uuid\Uuid;
 
 class InMemoryTableConfigurationRepository implements TableConfigurationRepository
 {
@@ -30,6 +33,11 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
     {
         $this->attributeRepository = $attributeRepository;
         $this->columnFactory = $columnFactory;
+    }
+
+    public function getNextIdentifier(ColumnCode $columnCode): ColumnId
+    {
+        return ColumnId::createFromColumnCode($columnCode, Uuid::uuid4()->toString());
     }
 
     public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
@@ -52,6 +60,7 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
             array_map(
                 fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
                     [
+                        'id' => $row['id'],
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
                         'labels' => $row['labels'] ?? [],

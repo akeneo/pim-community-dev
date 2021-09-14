@@ -36,10 +36,11 @@ final class FirstColumnShouldBeFilledValidator extends ConstraintValidator
         }
 
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($tableValue->getAttributeCode());
+        $firstColumnId = $tableConfiguration->getFirstColumnId();
         $firstColumnCode = $tableConfiguration->getFirstColumnCode();
 
         foreach ($tableValue->getData() as $rowIndex => $row) {
-            if (null === $row->cell($firstColumnCode)) {
+            if (null === $row->cell($firstColumnId)) {
                 $this->context
                     ->buildViolation($constraint->message, ['{{ columnCode }}' => $firstColumnCode->asString()])
                     ->atPath(sprintf('[%d]', $rowIndex))

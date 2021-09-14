@@ -23,6 +23,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\NotDecimal;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatch;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatchValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Length;
@@ -52,7 +53,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during(
                 'validate',
-                [TableValue::value('nutrition', Table::fromNormalized([['ingredient' => 'sugar']])), new NotBlank()]
+                [TableValue::value('nutrition', Table::fromNormalized([[ColumnIdGenerator::ingredient() => 'sugar']])), new NotBlank()]
             );
     }
 
@@ -80,20 +81,20 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         ContextualValidatorInterface $contextualValidator4
     ) {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'sugar', 'quantity' => 12, 'description' => 'a description'],
-            ['ingredient' => 'salt', 'quantity' => 4],
-            ['ingredient' => 'garlic'],
-            ['ingredient' => 'pepper', 'description' => 'another description'],
+            [ColumnIdGenerator::ingredient() => 'sugar', ColumnIdGenerator::quantity() => 12, ColumnIdGenerator::description() => 'a description'],
+            [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::quantity() => 4],
+            [ColumnIdGenerator::ingredient() => 'garlic'],
+            [ColumnIdGenerator::ingredient() => 'pepper', ColumnIdGenerator::description() => 'another description'],
         ]));
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity', 'validations' => ['min' => 5, 'max' => 50, 'decimals_allowed' => false]]),
-                TextColumn::fromNormalized(['code' => 'description', 'validations' => ['max_length' => 15]]),
-                TextColumn::fromNormalized(['code' => 'useless_description', 'validations' => ['max_length' => 1]]),
-                NumberColumn::fromNormalized(['code' => 'quantity_without_validation', 'validations' => ['decimals_allowed' => true]]),
-                TextColumn::fromNormalized(['code' => 'description_without_validation']),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'id' => ColumnIdGenerator::ingredient()]),
+                NumberColumn::fromNormalized(['code' => 'quantity', 'validations' => ['min' => 5, 'max' => 50, 'decimals_allowed' => false], 'id' => ColumnIdGenerator::quantity()]),
+                TextColumn::fromNormalized(['code' => 'description', 'validations' => ['max_length' => 15], 'id' => ColumnIdGenerator::description()]),
+                TextColumn::fromNormalized(['code' => 'useless_description', 'validations' => ['max_length' => 1], 'id' => ColumnIdGenerator::generateAsString('useless_description')]),
+                NumberColumn::fromNormalized(['code' => 'quantity_without_validation', 'validations' => ['decimals_allowed' => true], 'id' => ColumnIdGenerator::generateAsString('quantity_without_validation')]),
+                TextColumn::fromNormalized(['code' => 'description_without_validation', 'id' => ColumnIdGenerator::generateAsString('description_without_validation')]),
             ])
         );
 
@@ -134,16 +135,18 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         ContextualValidatorInterface $baseContextualValidator,
         ContextualValidatorInterface $contextualValidator
     ) {
+        $quantityWithValidationId = ColumnIdGenerator::generateAsString('quantity_without_validation');
+        $quantityWithoutDecimalAllowedId = ColumnIdGenerator::generateAsString('quantity_with_decimals_allowed');
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'sugar', 'quantity_without_validation' => 12],
-            ['ingredient' => 'garlic', 'quantity_with_decimals_allowed' => 12],
+            [ColumnIdGenerator::ingredient() => 'sugar', $quantityWithValidationId => 12],
+            [ColumnIdGenerator::ingredient() => 'garlic', $quantityWithoutDecimalAllowedId => 12],
         ]));
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                NumberColumn::fromNormalized(['code' => 'quantity_without_validation']),
-                NumberColumn::fromNormalized(['code' => 'quantity_with_decimals_allowed', 'validations' => ['decimals_allowed' => true]]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => $quantityWithValidationId, 'code' => 'quantity_without_validation']),
+                NumberColumn::fromNormalized(['id' => $quantityWithoutDecimalAllowedId, 'code' => 'quantity_with_decimals_allowed', 'validations' => ['decimals_allowed' => true]]),
             ])
         );
 
@@ -166,16 +169,18 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         ContextualValidatorInterface $contextualValidator1,
         ContextualValidatorInterface $contextualValidator2
     ) {
+        $textWithDefaultValidationId = ColumnIdGenerator::generateAsString('text_with_default_validation');
+        $textWithMaxLengthId = ColumnIdGenerator::generateAsString('text_with_max_length');
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 'sugar', 'text_with_default_validation' => 'a'],
-            ['ingredient' => 'garlic', 'text_with_max_length' => 'b'],
+            [ColumnIdGenerator::ingredient() => 'sugar', $textWithDefaultValidationId => 'a'],
+            [ColumnIdGenerator::ingredient() => 'garlic', $textWithMaxLengthId => 'b'],
         ]));
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient']),
-                TextColumn::fromNormalized(['code' => 'text_with_default_validation']),
-                TextColumn::fromNormalized(['code' => 'text_with_max_length', 'validations' => ['max_length' => 5]]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                TextColumn::fromNormalized(['id' => $textWithDefaultValidationId, 'code' => 'text_with_default_validation']),
+                TextColumn::fromNormalized(['id' => $textWithMaxLengthId, 'code' => 'text_with_max_length', 'validations' => ['max_length' => 5]]),
             ])
         );
 

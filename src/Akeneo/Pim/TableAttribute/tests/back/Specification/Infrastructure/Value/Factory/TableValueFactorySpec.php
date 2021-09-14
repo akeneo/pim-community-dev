@@ -11,6 +11,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Pim\TableAttribute\tests\back\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
@@ -21,8 +22,8 @@ class TableValueFactorySpec extends ObjectBehavior
         $this->beConstructedWith($tableConfigurationRepository);
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['code' => 'ingredient']),
-            NumberColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
         ]));
     }
 
@@ -45,6 +46,66 @@ class TableValueFactorySpec extends ObjectBehavior
         $value->getData()->shouldBeLike(Table::fromNormalized([['foo' => 'bar']]));
     }
 
+    function it_replaces_codes_by_ids()
+    {
+        $attribute = $this->buildTableAttribute(false, false);
+
+        $value = $this->createWithoutCheckingData(
+            $attribute,
+            null,
+            null,
+            [
+                ['quantity' => 5, 'ingrediENT' => 'salt'],
+                ['quantity' => 10, 'ingredient' => 'sugar'],
+            ]
+        );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([
+            [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+        ]));
+    }
+
+    function it_does_not_replace_when_column_is_unknown()
+    {
+        $attribute = $this->buildTableAttribute(false, false);
+
+        $value = $this->createWithoutCheckingData(
+            $attribute,
+            null,
+            null,
+            [
+                ['quantity' => 5, 'ingrediENT' => 'salt'],
+                ['quantity' => 10, 'ingredient' => 'sugar', 'unknown' => 12],
+            ]
+        );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([
+            [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar', 'unknown' => 12],
+        ]));
+    }
+
+    function it_does_not_replace_when_data_is_coming_from_storage()
+    {
+        $attribute = $this->buildTableAttribute(false, false);
+
+        $value = $this->createWithoutCheckingData(
+            $attribute,
+            null,
+            null,
+            [
+                [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+                [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+            ]
+        );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([
+            [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+        ]));
+    }
+
     function it_removes_duplicate_on_first_column()
     {
         $attribute = $this->buildTableAttribute(false, false);
@@ -62,8 +123,8 @@ class TableValueFactorySpec extends ObjectBehavior
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([
-            ['quantity' => 10, 'ingredient' => 'sugar'],
-            ['quantity' => 30, 'ingredient' => 'salt'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+            [ColumnIdGenerator::quantity() => 30, ColumnIdGenerator::ingredient() => 'salt'],
         ]));
     }
 

@@ -81,6 +81,25 @@ final class ProductValueIntegration extends TestCase
         )->fetchColumn();
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($product->getRawValues()), $rawValues);
+
+        $rawValues = \json_decode($rawValues, true);
+        $nutrition = $rawValues['nutrition']['<all_channels>']['<all_locales>'] ?? null;
+        self::assertNotNull($nutrition);
+        self::assertIsArray($nutrition);
+        self::assertCount(1, $nutrition);
+        self::assertCount(2, $nutrition[0]);
+        foreach ($nutrition[0] as $columnId => $value) {
+            self::assertDoesNotMatchRegularExpression(
+                '/^(quantity|ingredients)$/',
+                $columnId,
+                'The key should not be the code but the id'
+            );
+            self::assertMatchesRegularExpression(
+                '/^(quantity|ingredients)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                $columnId,
+                'The id is malformed'
+            );
+        }
     }
 
     private function assertProductIsInIndex(ProductInterface $product): void
@@ -93,9 +112,5 @@ final class ProductValueIntegration extends TestCase
 
         $productFromIndex = current(\iterator_to_array($cursor));
         self::assertSame('id1', $productFromIndex->getIdentifier());
-        self::assertJsonStringEqualsJsonString(
-            \json_encode($product->getRawValues()),
-            \json_encode($product->getRawValues())
-        );
     }
 }

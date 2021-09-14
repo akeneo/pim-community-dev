@@ -18,6 +18,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -70,6 +72,7 @@ class TableValueFactory implements ValueFactory
         ?string $localeCode,
         $data
     ): ValueInterface {
+        $data = $this->replaceColumnCodesByIds($attribute, $data);
         $data = $this->removeDuplicateOnFirstColumn($attribute, $data);
         $table = Table::fromNormalized($data);
         if ($attribute->isLocalizableAndScopable()) {
@@ -88,12 +91,12 @@ class TableValueFactory implements ValueFactory
     private function removeDuplicateOnFirstColumn(Attribute $attribute, array $data): array
     {
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->code());
-        $firstColumnCode = \strtolower($tableConfiguration->getFirstColumnCode()->asString());
+        $firstColumnId = \strtolower($tableConfiguration->getFirstColumnId()->asString());
 
         $foundOptionCodes = [];
         foreach ($data as $rowIndex => $row) {
-            foreach ($row as $columnCode => $value) {
-                if ($firstColumnCode === \strtolower((string) $columnCode)) {
+            foreach ($row as $columnId => $value) {
+                if ($firstColumnId === \strtolower((string) $columnId)) {
                     $optionCode = \strtolower((string) $value);
                     if (array_key_exists($optionCode, $foundOptionCodes)) {
                         unset($data[$foundOptionCodes[$optionCode]]);
@@ -109,5 +112,41 @@ class TableValueFactory implements ValueFactory
     public function supportedAttributeType(): string
     {
         return AttributeTypes::TABLE;
+    }
+
+    /**
+     * It removes values if the column is not found
+     */
+    private function replaceColumnCodesByIds(Attribute $attribute, $data): array
+    {
+        $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->code());
+        foreach ($data as $rowIndex => $row) {
+            foreach ($row as $columnIdentifier => $value) {
+                $id = $this->getColumnId((string) $columnIdentifier, $tableConfiguration);
+                unset($data[$rowIndex][$columnIdentifier]);
+                $data[$rowIndex][$id] = $value;
+            }
+        }
+
+        return $data;
+    }
+
+    private function getColumnId(string $columnIdentifier, TableConfiguration $tableConfiguration): string
+    {
+        if ($this->columnIdentifierIsAnId($columnIdentifier)) {
+            return $columnIdentifier;
+        }
+
+        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnIdentifier));
+        if (null === $column) {
+            return $columnIdentifier;
+        }
+
+        return $column->id()->asString();
+    }
+
+    private function columnIdentifierIsAnId(string $columnIdentifier): bool
+    {
+        return false !== strpos($columnIdentifier, '-');
     }
 }

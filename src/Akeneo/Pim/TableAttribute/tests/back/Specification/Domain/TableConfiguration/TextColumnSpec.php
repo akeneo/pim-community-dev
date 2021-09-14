@@ -7,6 +7,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use PhpSpec\ObjectBehavior;
 
 class TextColumnSpec extends ObjectBehavior
@@ -15,7 +16,13 @@ class TextColumnSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'fromNormalized',
-            [['code' => 'ingredients', 'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']]]
+            [
+                [
+                    'id' => 'ingredients_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
+                    'code' => 'ingredients',
+                    'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
+                ],
+            ]
         );
     }
 
@@ -36,6 +43,12 @@ class TextColumnSpec extends ObjectBehavior
         $this->code()->asString()->shouldBe('ingredients');
     }
 
+    function it_has_an_id()
+    {
+        $this->id()->shouldHaveType(ColumnId::class);
+        $this->id()->asString()->shouldBe('ingredients_cf30d88f-38c9-4c01-9821-4b39a5e3c224');
+    }
+
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
@@ -48,6 +61,7 @@ class TextColumnSpec extends ObjectBehavior
             'fromNormalized',
             [
                 [
+                    'id' => 'ingredients_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                     'code' => 'a_text',
                     'validations' => ['max_length' => 50],
                 ],
@@ -64,6 +78,7 @@ class TextColumnSpec extends ObjectBehavior
     {
         $this->normalize()->shouldBeLike(
             [
+                'id' => 'ingredients_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
                 'data_type' => 'text',
                 'code' => 'ingredients',
                 'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
