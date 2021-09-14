@@ -1,12 +1,12 @@
 image:
   es:
-    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    repository: docker.elastic.co/elasticsearch/elasticsearch
     tag: 7.4.1
     pullPolicy: Always
   init:
     repository: busybox
     tag: latest
-    pullPolicy: IfNotPresent  
+    pullPolicy: IfNotPresent
 
 global:
   # Be careful when setting global values
