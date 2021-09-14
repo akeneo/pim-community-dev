@@ -103,6 +103,7 @@
 - PIM-9990: Fix lost of keyup event when tab key is pressed too fast on input field
 - CXP-838: Fix (Not)LocalizableAnd(Not)ScopableAttributeException catches
 - PIM-10029: Added an explicit class named container to inject additional content into sub-navigation panel
+- PIM-10072: Fix missing migration cause difference on the migration Serenity > Flexibility
 
 ## New features
 
