@@ -25,7 +25,7 @@ class BooleanProductValueRenderer implements ProductValueRenderer
         return $this->translator->trans($value->getData() ? 'Yes' : 'No');
     }
 
-    public function supports($attributeType): bool
+    public function supportsAttributeType(string $attributeType): bool
     {
         return $attributeType === AttributeTypes::BOOLEAN;
     }

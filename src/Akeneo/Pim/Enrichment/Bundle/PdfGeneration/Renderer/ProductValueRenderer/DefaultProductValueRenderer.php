@@ -12,7 +12,7 @@ class DefaultProductValueRenderer implements ProductValueRenderer
         return twig_escape_filter($environment, $value);
     }
 
-    public function supports($attributeType): bool
+    public function supportsAttributeType(string $attributeType): bool
     {
         return true;
     }
