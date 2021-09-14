@@ -1,0 +1,88 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: elasticsearch-snapshotter
+  labels:
+    component: "elasticsearch-snapshotter"
+    app.kubernetes.io/component: "elasticsearch-snapshotter"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+spec:
+  schedule: "@daily"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            component: elasticsearch-snapshotter
+        spec:
+          containers:
+          - name: snapshotter
+            image: centos:7
+            env:
+              - name: APP_INDEX_HOSTS
+                valueFrom:
+                  configMapKeyRef:
+                    name: {{ template "pim.fullName" . }}-env
+                    key: APP_INDEX_HOSTS
+            command:
+            - /bin/bash
+            args:
+            - -c
+            - 'curl -s -i -XPUT "${APP_INDEX_HOSTS}/_snapshot/pim_gcs_repository/%3Csnapshot-%7Bnow%7Byyyy-MM-dd_HH-mm-ss%7CEurope%2FParis%7D%7D%3E" 2> >(tee -a /dev/stderr) | grep "200 OK"'
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: activate-es-snapshot-repository
+  labels:
+    component: "hook-activate-es-snapshot-repository"
+    app.kubernetes.io/component: "hook-activate-es-snapshot-repository"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  template:
+    metadata:
+      labels:
+        component: "hook-activate-es-snapshot-repository"
+        app.kubernetes.io/component: "hook-activate-es-snapshot-repository"
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: activate-es-snapshot-repository
+          image: centos:7
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_INDEX_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "pim.fullName" . }}-env
+                  key: APP_INDEX_HOSTS
+          command:
+          - sh
+          - -c
+          - |
+            #!/usr/bin/env bash
+            set -euo pipefail
+            curl -sf -X POST "${APP_INDEX_HOSTS}/_nodes/reload_secure_settings?pretty"
+
+            curl -sf -X PUT "${APP_INDEX_HOSTS}/_snapshot/pim_gcs_repository?pretty" -H 'Content-Type: application/json' -d'
+            {
+              "type": "gcs",
+                "settings": {
+                   "bucket": "{{ .Values.pim.storage.bucketName }}-es",
+                   "base_path": "elasticsearch-snapshots"
+                }
+            }
+            '
