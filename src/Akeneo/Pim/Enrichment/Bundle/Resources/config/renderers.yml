@@ -21,3 +21,8 @@ services:
 
     pim_pdf_generator.renderer.registry:
         class: '%pim_pdf_generator.renderer.registry.class%'
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRendererRegistry:
+        arguments:
+            - !tagged_iterator pim_pdf_generator.product_value_renderer
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer'
