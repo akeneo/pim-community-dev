@@ -28,7 +28,10 @@ final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractM
 
         /** @see Version_6_0_20210817135301_add_role_type_column */
         $this->addSql('ALTER TABLE oro_access_role ADD type VARCHAR(30) DEFAULT NULL');
+    }
 
+    public function postUp(Schema $schema): void
+    {
         /** @var AclManager $aclManager */
         $aclManager = $this->container->get('oro_security.acl.manager');
         /** @var RoleWithPermissionsRepository $roleWithPermissionsRepository */
