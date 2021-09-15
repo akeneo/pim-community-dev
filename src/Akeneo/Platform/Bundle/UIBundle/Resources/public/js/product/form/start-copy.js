@@ -6,13 +6,14 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/product/start-copy'], function (
-  $,
-  _,
-  __,
-  BaseForm,
-  template
-) {
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/form',
+  'pim/template/product/start-copy',
+  'pim/analytics',
+], function ($, _, __, BaseForm, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown-menuLink start-copying',
@@ -50,6 +51,8 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/prod
     startCopy() {
       this.isCopying = true;
       this.getRoot().trigger('pim_enrich:form:start_copy');
+
+      analytics.track('product:form:compare-clicked');
       this.render();
     },
 
