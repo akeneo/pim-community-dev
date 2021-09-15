@@ -99,6 +99,19 @@ final class ConnectedApp
         return $this->certified;
     }
 
+    /**
+     * @return array{
+     *  id: string,
+     *  name: string,
+     *  scopes: array<string>,
+     *  connection_code: string,
+     *  logo: string,
+     *  author: string,
+     *  categories: array<string>,
+     *  certified: bool,
+     *  partner: string|null
+     * }
+     */
     public function normalize(): array
     {
         return [
