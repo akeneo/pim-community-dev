@@ -86,3 +86,6 @@ pim_permissions:
             category:
                 label: Category trees
                 help: If you want your app to be able to modify your products without using PIM proposals, choose the Own level. Otherwise choose the Edit level.
+            not_granted_warning: You don’t have the “{{ permission }}” role permission. Please contact your administrator. These fields are editable once the App is connected.
+
+pimee_enrich.acl.category.edit_permissions: Manage category permissions
