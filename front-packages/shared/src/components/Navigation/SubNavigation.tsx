@@ -97,11 +97,11 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                   >
                     {subEntry.title}
                     {subEntry.disabled && freeTrialEnabled &&
-                      <Tag tint="blue">
+                      <Tag tint='blue' className='only-icon'>
                         <StyledLockIcon size={16} color={theme.color.blue100}/>
                       </Tag>
                     }
-                    {subEntry.new && <Tag tint="green">New</Tag>}
+                    {subEntry.new && <Tag tint='green'>New</Tag>}
                   </StyledSubNavigationItem>
                 ))}
             </Section>
@@ -139,6 +139,12 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean} & 
   ${Tag} {
     align-self: center;
     box-sizing: content-box;
+    
+    &.only-icon {
+      height: 24px;
+      padding: 0;
+      box-sizing: border-box;
+    }
   }
 
   ${({disabled}) => disabled && css`
