@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -16,18 +17,27 @@ class DefaultProductValueRendererSpec extends ObjectBehavior
         $this->supportsAttributeType(AttributeTypes::TEXTAREA)->shouldReturn(true);
     }
 
-    function it_renders_string_value()
+    function it_renders_string_value(ValueInterface $value)
     {
         $environment = new Environment();
         $attribute = new Attribute();
-        $this->render($environment, $attribute, 'a value')->shouldReturn('a value');
+
+        $value->__toString()
+            ->shouldBeCalled()
+            ->willReturn('a value');
+
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('a value');
     }
 
     function it_renders_metric_value(MetricValue $value)
     {
         $environment = new Environment();
         $attribute = new Attribute();
-        $value->__toString()->willReturn('100 GRAM');
-        $this->render($environment, $attribute, $value)->shouldReturn('100 GRAM');
+
+        $value->__toString()
+            ->shouldBeCalled()
+            ->willReturn('100 GRAM');
+
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('100 GRAM');
     }
 }
