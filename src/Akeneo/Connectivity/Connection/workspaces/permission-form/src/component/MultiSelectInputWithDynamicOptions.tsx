@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 
+export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context|null) => Params;
+
 type Select2Option = {
     id: string;
     text: string;
@@ -12,7 +14,7 @@ type Select2Configuration = {
     ajax: {
         url: string;
         dataType: string;
-        results: (data: any) => {results: Select2Option[]};
+        results: (data: any) => {results: Select2Option[], more: boolean, context?: any};
         cache?: boolean;
         quietMillis?: number;
     };
@@ -30,7 +32,10 @@ type Props = {
     fetchByIdentifiers: (identifiers: string[]) => Promise<Select2Option[]>;
     processResults: (data: any) => {
         results: Select2Option[];
+        more: boolean;
+        context?: any;
     };
+    buildQueryParams?: QueryParamsBuilder<any, any>;
     disabled: boolean;
     value: string[];
     onChange?: (value: string[]) => void;
@@ -38,10 +43,13 @@ type Props = {
     onRemove?: (value: string) => void;
 };
 
+const defaultBuildQueryParams = (term: string) => ({q: term});
+
 export const MultiSelectInputWithDynamicOptions = ({
     url,
     fetchByIdentifiers,
     processResults,
+    buildQueryParams,
     disabled,
     value,
     onChange,
@@ -76,6 +84,7 @@ export const MultiSelectInputWithDynamicOptions = ({
                 cache: true,
                 quietMillis: 250,
                 dataType: 'json',
+                data: buildQueryParams || defaultBuildQueryParams,
                 results: processResults,
             },
             initSelection: handleInitSelection,
