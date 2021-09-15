@@ -27,6 +27,18 @@ services:
         tags:
             - { name: pim_pdf_generator.product_value_renderer }
 
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\SimpleSelectProductValueRenderer:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\MultiSelectProductValueRenderer:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
     Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ImageProductValueRenderer:
         tags:
             - { name: pim_pdf_generator.product_value_renderer }

@@ -5,9 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\Prod
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class TextareaProductValueRendererSpec extends ObjectBehavior
@@ -18,19 +16,33 @@ class TextareaProductValueRendererSpec extends ObjectBehavior
         $this->supportsAttributeType(AttributeTypes::BOOLEAN)->shouldReturn(false);
     }
 
-    function it_does_not_escape_value() {
+    function it_does_not_escape_value(
+        ValueInterface $value
+    ) {
         $environment = new Environment();
         $attribute = new Attribute();
         $attribute->setWysiwygEnabled(true);
 
-        $this->render($environment, $attribute, '<div>a text</div>')->shouldReturn('<div>a text</div>');
+        $value
+            ->getData()
+            ->shouldBeCalled()
+            ->willReturn('<div>a text</div>');
+
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('<div>a text</div>');
     }
 
-    function it_escapes_value() {
+    function it_escapes_value(
+        ValueInterface $value
+    ) {
         $environment = new Environment();
         $attribute = new Attribute();
         $attribute->setWysiwygEnabled(false);
 
-        $this->render($environment, $attribute, '<div>a text</div>')->shouldReturn('&lt;div&gt;a text&lt;/div&gt;');
+        $value
+            ->__toString()
+            ->shouldBeCalled()
+            ->willReturn('<div>a text</div>');
+
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('&lt;div&gt;a text&lt;/div&gt;');
     }
 }

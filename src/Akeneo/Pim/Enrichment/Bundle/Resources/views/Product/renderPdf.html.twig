@@ -83,9 +83,11 @@
             }
 
             table {
+                table-layout: fixed;
                 border-spacing : 0;
                 border-collapse : collapse;
                 margin-left: -250px;
+                margin-top: 30px;
                 width: 450px;
             }
             table > thead > tr > th,
@@ -137,8 +139,6 @@
 
                                 {% if 'pim_catalog_image' == attribute.type and content.data is defined and content.data is not null %}
                                     {% set manualHeight = false %}
-                                {% elseif ('pim_catalog_simpleselect' == attribute.type or 'pim_catalog_multiselect' == attribute.type) and attribute.code in optionLabels|keys %}
-                                    {% set content = optionLabels[attribute.code] %}
                                 {% endif %}
 
                                 {% if content != null and manualHeight == true %}
@@ -151,7 +151,7 @@
                                         {{ attribute.label }}
                                     </div>
                                     <div class="right-column">
-                                        {{ render_attribute_value(attribute, content)|raw }}
+                                        {{ render_attribute_value(attribute, content, locale)|raw }}
                                     </div>
                                 </div>
                             {% endblock %}

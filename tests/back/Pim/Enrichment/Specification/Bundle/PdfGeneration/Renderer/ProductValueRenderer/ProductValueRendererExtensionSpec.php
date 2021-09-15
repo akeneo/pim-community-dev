@@ -27,15 +27,17 @@ class ProductValueRendererExtensionSpec extends ObjectBehavior
             ->getType()
             ->shouldBeCalled()
             ->willReturn('pim_catalog_metric');
+
         $productValueRendererRegistry
             ->getProductValueRenderer('pim_catalog_metric')
             ->shouldBeCalled()
             ->willReturn($productValueRenderer);
+
         $productValueRenderer
-            ->render($environment, $attribute, $value)
+            ->render($environment, $attribute, $value, 'en_US')
             ->shouldBeCalled()
             ->willReturn('100 GRAM');
 
-        $this->renderAttributeValue($environment, $attribute, $value)->shouldReturn('100 GRAM');
+        $this->renderAttributeValue($environment, $attribute, $value, 'en_US')->shouldReturn('100 GRAM');
     }
 }
