@@ -18,6 +18,7 @@ const props = {
     onAdd: jest.fn(),
     onRemove: jest.fn(),
     disabled: false,
+    readOnly: false,
     allByDefaultIsSelected: false,
     onSelectAllByDefault: jest.fn(),
     onDeselectAllByDefault: jest.fn(),
@@ -55,4 +56,17 @@ test('it can check and uncheck the checkbox', () => {
 
     fireEvent.click(checkbox);
     expect(props.onDeselectAllByDefault).toBeCalledTimes(1);
+});
+
+test('it can not check and uncheck the checkbox', () => {
+    const {rerender} = render(
+      <ThemeProvider theme={pimTheme}>
+          <PermissionFormWidget {...props} readOnly={true} />
+      </ThemeProvider>
+    );
+
+    const checkbox = screen.getByRole('checkbox');
+
+    fireEvent.click(checkbox);
+    expect(props.onSelectAllByDefault).not.toBeCalled();
 });
