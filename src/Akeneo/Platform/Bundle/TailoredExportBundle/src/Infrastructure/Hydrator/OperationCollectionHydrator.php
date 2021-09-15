@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
@@ -62,6 +63,8 @@ class OperationCollectionHydrator
                 return new ReplacementOperation($normalizedOperation['mapping']);
             case 'default_value':
                 return new DefaultValueOperation($normalizedOperation['value']);
+            case 'clean_html_tags':
+                return new CleanHTMLTagsOperation();
             default:
                 return null;
         }

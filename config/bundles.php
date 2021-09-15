@@ -74,6 +74,7 @@ return [
     Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle::class => ['all' => true],
     Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoPimEnterpriseAuthenticationBundle::class => ['all' => true],
     Akeneo\AssetManager\Infrastructure\Symfony\AkeneoAssetManagerBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],

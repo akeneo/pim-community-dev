@@ -407,21 +407,40 @@ delete_pr_environments_hourly:
 	@echo "Deprecated"
 	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
+.PHONY: hourly_cleanup
+hourly_cleanup: delete_environments_hourly delete_expired_uptime_check remove_unused_resources
+
 .PHONY: delete_environments_hourly
 delete_environments_hourly:
 	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
-	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
-	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
+	cd deployments/bin/uptime && docker-compose run --rm composer composer install
+	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
+
+.PHONY: remove_unused_resources
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+
+.PHONY: remove_unused_gcloud_dns
+remove_unused_gcloud_dns:
+	@echo "=========================================================="
+	@echo "=                 Remove unused dns                      ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_dns.sh
 
 .PHONY: remove_unused_gcloud_pubsub
 remove_unused_gcloud_pubsub:
+	@echo "=========================================================="
+	@echo "=                Remove unused pubsub                    ="
+	@echo "=========================================================="
 	bash $(PWD)/deployments/bin/remove_unused_gcloud_pubsub.sh
 
 .PHONY: remove_unused_gcloud_bucket
 remove_unused_gcloud_bucket:
+	@echo "=========================================================="
+	@echo "=                Remove unused bucket                    ="
+	@echo "=========================================================="
 	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
 
 .PHONY: remove_unused_disk
@@ -429,11 +448,17 @@ remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
 
 .PHONY: remove_unused_kube_disk
 remove_unused_kube_disk:
+	@echo "=========================================================="
+	@echo "=              Remove unused kube disk                   ="
+	@echo "=========================================================="
 	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
 
 .PHONY: remove_unused_gcloud_disk
 remove_unused_gcloud_disk:
-	bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+	@echo "=========================================================="
+	@echo "=             Remove unused gcloud disk                  ="
+	@echo "=========================================================="
+	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
 
 .PHONY: clone_serenity
 clone_serenity:

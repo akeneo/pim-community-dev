@@ -33,7 +33,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     public function it_batches_results()
     {
         $this->logAs('admin');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 0, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, null);
         $this->assertEquals(3, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'text_viewable_by_all',
@@ -41,7 +41,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
             'multi_select_viewable_by_admin',
         ], $viewableAttributesResult);
 
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 3, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 3, null);
         $this->assertEquals(6, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'file_viewable_by_admin',
@@ -49,13 +49,13 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
             'date_viewable_by_admin_and_manager',
         ], $viewableAttributesResult);
 
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 6, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 6, null);
         $this->assertEquals(7, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'sku',
         ], $viewableAttributesResult);
 
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 7, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 7, null);
         $this->assertEquals(7, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([], $viewableAttributesResult);
     }
@@ -66,7 +66,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     public function it_only_returns_viewable_attributes_for_the_current_user()
     {
         $this->logAs('admin');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 10, null, 0, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 10, 0, null);
         $this->assertEquals(7, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'text_viewable_by_all',
@@ -79,7 +79,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
         ], $viewableAttributesResult);
 
         $this->logAs('mary');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 10, null, 0, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 10, 0, null);
         $this->assertEquals(7, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'text_viewable_by_all',
@@ -96,7 +96,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     public function it_filter_not_viewable_attributes_and_return_the_real_offset()
     {
         $this->logAs('mary');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 0, null);
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, null);
         $this->assertEquals(5, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'text_viewable_by_all',
@@ -108,24 +108,10 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_filters_attributes_by_types()
-    {
-        $this->logAs('admin');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, [AttributeTypes::DATE, AttributeTypes::TEXT], 0, null);
-        $this->assertEquals(2, $viewableAttributesResult->getOffset());
-        $this->assertResultContainAttributeCodes([
-            'text_viewable_by_all',
-            'date_viewable_by_admin_and_manager',
-        ], $viewableAttributesResult);
-    }
-
-    /**
-     * @test
-     */
     public function it_only_returns_attribute_corresponding_to_search()
     {
         $this->logAs('admin');
-        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, null, 0, 'by_admin_and_manager');
+        $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, 'by_admin_and_manager');
         $this->assertEquals(2, $viewableAttributesResult->getOffset());
         $this->assertResultContainAttributeCodes([
             'simple_select_viewable_by_admin_and_manager',
@@ -247,7 +233,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     private function getQuery(): FindViewableAttributesInterface
     {
         return $this->get(
-            'Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface'
+            'akeneo.tailored_export.query.find_product_viewable_attributes'
         );
     }
 

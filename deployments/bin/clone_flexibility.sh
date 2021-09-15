@@ -152,7 +152,7 @@ create_data_disks() {
 
       yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.size" "$FLEX_SIZE"
       yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.name" "${ES_DISK_NAME}"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.image.es.tag" "7.10.1"
+      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.image.es.tag" "7.14.1"
       yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.common.service.name" "elasticsearch-client"
       yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
 

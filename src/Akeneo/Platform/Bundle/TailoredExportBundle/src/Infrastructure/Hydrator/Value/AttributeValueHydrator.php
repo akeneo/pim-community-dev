@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
@@ -38,8 +40,15 @@ class AttributeValueHydrator
     public function hydrate(
         ?ValueInterface $value,
         string $attributeType,
-        ProductInterface $product
+        EntityWithValuesInterface $productOrProductModel
     ): SourceValueInterface {
+        if (
+            !$productOrProductModel instanceof ProductInterface
+            && !$productOrProductModel instanceof ProductModelInterface
+        ) {
+            throw new \InvalidArgumentException('Cannot hydrate this entity');
+        }
+
         $data = null !== $value ? $value->getData() : null;
 
         if (null === $data) {
@@ -50,14 +59,14 @@ class AttributeValueHydrator
             case 'pim_catalog_asset_collection':
                 return new AssetCollectionValue(
                     array_map('strval', $data),
-                    $product->getIdentifier(),
+                    $productOrProductModel->getIdentifier(),
                     $value->getScopeCode(),
                     $value->getLocaleCode()
                 );
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 return new FileValue(
-                    $product->getIdentifier(),
+                    $productOrProductModel->getIdentifier(),
                     $data->getStorage(),
                     $data->getKey(),
                     $data->getOriginalFilename(),
@@ -69,6 +78,11 @@ class AttributeValueHydrator
             case 'pim_catalog_date':
                 return new DateValue($data);
             case 'pim_catalog_identifier':
+                if (!$productOrProductModel instanceof ProductInterface) {
+                    throw new \InvalidArgumentException('pim_catalog_identifier can only be hydrated on ProductInterface');
+                }
+
+                return new StringValue($data);
             case 'pim_catalog_textarea':
             case 'pim_catalog_text':
                 return new StringValue($data);

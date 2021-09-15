@@ -19,6 +19,7 @@ class PropertyAccessibleAssetSpec extends ObjectBehavior
     {
         $this->beConstructedWith('iphone', ['description-ecommerce-en_US' => 'The iPhone']);
         $this->hasValue('description-ecommerce-en_US')->shouldReturn(true);
+        $this->hasValue('DESCRIPtion-ecommerce-en_US')->shouldReturn(true);
         $this->hasValue('description-ecommerce')->shouldReturn(false);
     }
 
@@ -29,6 +30,7 @@ class PropertyAccessibleAssetSpec extends ObjectBehavior
             'tags-ecommerce-en_US' => ['tech', 'phone', 'apple'],
         ]);
         $this->getValue('name-ecommerce-en_US')->shouldReturn('iPhone');
+        $this->getValue('NAme-ecommerce-en_US')->shouldReturn('iPhone');
         $this->getValue('tags-ecommerce-en_US')->shouldReturn(['tech', 'phone', 'apple']);
     }
 
@@ -36,6 +38,7 @@ class PropertyAccessibleAssetSpec extends ObjectBehavior
     {
         $this->beConstructedWith('iphone', ['description-ecommerce-en_US' => 'The iPhone']);
         $this->hasValue('code')->shouldReturn(true);
+        $this->hasValue('COde')->shouldReturn(true);
     }
 
     public function it_gets_a_code()
@@ -45,5 +48,6 @@ class PropertyAccessibleAssetSpec extends ObjectBehavior
             'tags-ecommerce-en_US' => ['tech', 'phone', 'apple'],
         ]);
         $this->getValue('code')->shouldReturn('iphone');
+        $this->getValue('coDE')->shouldReturn('iphone');
     }
 }

@@ -32,9 +32,6 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
-orbs:
-  infracost: infracost/infracost@0.8.1
-
 jobs:
   checkout:
     docker:
@@ -265,6 +262,10 @@ jobs:
               root: ~/
               paths:
                 - project/persisted_env_vars
+
+  ##################
+  # Build          #
+  ##################
 
   build_grth:
     environment:
@@ -1968,16 +1969,10 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    mkdir -p ~/.ssh
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
                 name: Delete environments
                 no_output_timeout: 30m
-                command: |
-                    make delete_environments_hourly
+                command:
+                    PIM_CONTEXT=deployment make delete_environments_hourly
 
   delete_expired_uptime_check:
       environment:
@@ -1989,13 +1984,22 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+                name: Delete expired uptime checks
+                command:
+                    PIM_CONTEXT=deployment make delete_expired_uptime_check
+
+  remove_unused_resources:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
           - run:
-                name: Delete expired uptime-check
-                command: |
-                    make delete_expired_uptime_check
+                name: Remove unused resources
+                command:
+                    PIM_CONTEXT=deployment make remove_unused_resources
 
   zdd_compliancy_diff:
       parameters:
@@ -2035,75 +2039,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
-
-  remove_unused_gcloud_bucket:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud bucket
-                command: |
-                    make remove_unused_gcloud_bucket
-
-  remove_unused_kube_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused kube disk(s)
-                command: |
-                    make remove_unused_kube_disk
-
-  remove_unused_gcloud_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused gcloud disk(s)
-                command: |
-                    make remove_unused_gcloud_disk
-
-  remove_unused_gcloud_pubsub:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud pubsub
-                command: |
-                    make remove_unused_gcloud_pubsub
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
 
 workflows:
   pull_request:
@@ -2129,16 +2065,6 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
-          - infracost/infracost:
-                name: infracost_srnt
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/
-                path: ~/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_srnt
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
@@ -2164,16 +2090,6 @@ workflows:
           - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
-          - infracost/infracost:
-                name: infracost_grth
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/grth
-                path: ~/grth/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_grth
           - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
@@ -2199,16 +2115,6 @@ workflows:
           - test_deploy_tria:
                 requires:
                     - test_cronjobs_existence_tria
-          - infracost/infracost:
-                name: infracost_tria
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/tria
-                path: ~/tria/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_tria
           - deploy_pr_tria_environment?:
                 type: approval
                 requires:
@@ -2596,19 +2502,10 @@ workflows:
          - delete_environments_hourly:
                requires:
                    - checkout
+         - remove_unused_resources:
+               requires:
+                   - checkout
          - delete_expired_uptime_check:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_bucket:
-               requires:
-                   - checkout
-         - remove_unused_kube_disk:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_disk:
-               requires:
-                   - remove_unused_kube_disk
-         - remove_unused_gcloud_pubsub:
                requires:
                    - checkout
 

@@ -7,10 +7,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InMemoryFindSystemSources implements FindSystemSourcesInterface
 {
+    private array $fields;
     private TranslatorInterface $translator;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(array $fields, TranslatorInterface $translator)
     {
+        $this->fields = $fields;
         $this->translator = $translator;
     }
 
@@ -19,16 +21,7 @@ class InMemoryFindSystemSources implements FindSystemSourcesInterface
      */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
-        $fields = [
-            'categories',
-            'enabled',
-            'family',
-            'parent',
-            'groups',
-            'family_variant',
-        ];
-
-        $filteredFields = $this->filterSystemFieldByText($localeCode, $fields, $search);
+        $filteredFields = $this->filterSystemFieldByText($localeCode, $this->fields, $search);
 
         return array_slice($filteredFields, $offset, $limit);
     }

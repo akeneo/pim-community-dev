@@ -28,13 +28,11 @@ class DateSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new Collection(
-            [
-                'fields' => [
-                    'format' => new Choice(['choices' => DateFormat::getAvailableFormats()])
-                ],
-            ]
-        );
+        $sourceConstraintFields['selection'] = new Collection([
+            'fields' => [
+                'format' => new Choice(['choices' => DateFormat::getAvailableFormats()])
+            ],
+        ]);
 
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),

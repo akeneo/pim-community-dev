@@ -1,6 +1,9 @@
 parameters:
     akeneo.tailored_export.connector.name: Akeneo Tailored Export
-    akeneo.tailored_export.connector.xlsx.code: 'xlsx_tailored_product_export'
+    akeneo.tailored_export.connector.xlsx_product.code: 'xlsx_tailored_product_export'
+    akeneo.tailored_export.connector.csv_product.code: 'csv_tailored_product_export'
+    akeneo.tailored_export.connector.xlsx_product_model.code: 'xlsx_tailored_product_model_export'
+    akeneo.tailored_export.connector.csv_product_model.code: 'csv_tailored_product_model_export'
 
 services:
     _defaults:
@@ -11,6 +14,9 @@ services:
         arguments:
             -
                 xlsx_tailored_product_export: pim-job-instance-xlsx-tailored-product-export
+                csv_tailored_product_export: pim-job-instance-csv-tailored-product-export
+                xlsx_tailored_product_model_export: pim-job-instance-xlsx-tailored-product-model-export
+                csv_tailored_product_model_export: pim-job-instance-csv-tailored-product-model-export
         tags:
             - { name: pim_enrich.provider.form }
 
@@ -35,7 +41,10 @@ services:
             - '@akeneo.tailored_export.voter.job_profile.inner'
             - '@Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport'
             -
-                - '%akeneo.tailored_export.connector.xlsx.code%'
+                - '%akeneo.tailored_export.connector.xlsx_product.code%'
+                - '%akeneo.tailored_export.connector.csv_product.code%'
+                - '%akeneo.tailored_export.connector.xlsx_product_model.code%'
+                - '%akeneo.tailored_export.connector.csv_product_model.code%'
 
     Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport:
         arguments:

@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
@@ -17,19 +18,17 @@ use Box\Spout\Writer\WriterInterface;
 
 class FileWriterFactory
 {
-    private array $options;
     private string $type;
 
-    public function __construct(string $type, array $options = [])
+    public function __construct(string $type)
     {
         $this->type = $type;
-        $this->options = $options;
     }
 
-    public function build(): WriterInterface
+    public function build(array $options): WriterInterface
     {
         $writer = WriterFactory::create($this->type);
-        foreach ($this->options as $name => $option) {
+        foreach ($options as $name => $option) {
             $setter = 'set' . ucfirst($name);
             if (!method_exists($writer, $setter)) {
                 throw new \InvalidArgumentException(

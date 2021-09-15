@@ -2,9 +2,11 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+import {CleanHTMLTagsOperation, isCleanHTMLTagsOperation, CLEAN_HTML_TAGS_OPERATION} from './CleanHTMLTags';
 
 type TextOperations = {
   default_value?: DefaultValueOperation;
+  clean_html_tags?: CleanHTMLTagsOperation;
 };
 
 type TextSource = {
@@ -36,6 +38,8 @@ const isTextOperations = (operations: Object): operations is TextOperations => {
     switch (type) {
       case 'default_value':
         return isDefaultValueOperation(operation);
+      case CLEAN_HTML_TAGS_OPERATION:
+        return isCleanHTMLTagsOperation(operation);
       default:
         return false;
     }
