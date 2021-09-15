@@ -34,7 +34,6 @@ services:
             - '@database_connection'
             - '@pim_installer.fixture_loader.job_loader'
             - '@event_dispatcher'
-            - '%kernel.environment%'
         tags:
             - { name: console.command }
 

@@ -108,7 +108,7 @@ extensions:
         position: 100
 
     pim-job-instance-csv-product-import-show-edit:
-        module: pim/common/redirect
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-product-import-show
         targetZone: buttons
         position: 100

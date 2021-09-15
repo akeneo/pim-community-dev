@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -27,6 +28,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(MissingRequiredAttributesCalculator::class);
+        $this->shouldImplement(MissingRequiredAttributesCalculatorInterface::class);
     }
 
     function it_calculates_the_completeness_of_an_entity_with_family(
