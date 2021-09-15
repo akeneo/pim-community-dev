@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 
-export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context|null) => Params;
+export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context | null) => Params;
 
 type Select2Option = {
     id: string;
@@ -14,7 +14,7 @@ type Select2Configuration = {
     ajax: {
         url: string;
         dataType: string;
-        results: (data: any) => {results: Select2Option[], more: boolean, context?: any};
+        results: (data: any) => {results: Select2Option[]; more: boolean; context?: any};
         cache?: boolean;
         quietMillis?: number;
     };

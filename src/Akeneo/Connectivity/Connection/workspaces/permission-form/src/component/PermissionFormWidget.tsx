@@ -30,7 +30,7 @@ type Props = {
         more: boolean;
         context: any;
     };
-    buildQueryParams?: QueryParamsBuilder<any, any>,
+    buildQueryParams?: QueryParamsBuilder<any, any>;
     fetchByIdentifiers: (identifiers: string[]) => Promise<Option[]>;
 };
 
