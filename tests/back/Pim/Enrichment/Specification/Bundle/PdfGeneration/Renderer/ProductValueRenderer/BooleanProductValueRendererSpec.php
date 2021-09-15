@@ -27,7 +27,7 @@ class BooleanProductValueRendererSpec extends ObjectBehavior
         Environment $environment,
         AttributeInterface $attribute
     ) {
-        $this->render($environment, $attribute, null)->shouldReturn(null);
+        $this->render($environment, $attribute, null, 'en_US')->shouldReturn(null);
     }
 
     function it_renders_boolean_value(
@@ -38,6 +38,6 @@ class BooleanProductValueRendererSpec extends ObjectBehavior
     ) {
         $translator->trans('Yes')->shouldBeCalled()->willReturn('Vrai');
         $value->getData()->shouldBeCalled()->willReturn(true);
-        $this->render($environment, $attribute, $value)->shouldReturn('Vrai');
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('Vrai');
     }
 }
