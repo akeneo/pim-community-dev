@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\Renderer\ProductValueRenderer;
 
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRenderer;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
@@ -26,7 +27,7 @@ class TableProductValueRenderer implements ProductValueRenderer
         $this->translator = $translator;
     }
 
-    public function render(Environment $environment, AttributeInterface $attribute, $value): ?string
+    public function render(Environment $environment, AttributeInterface $attribute, ?ValueInterface $value, string $localeCode): ?string
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             array_map(
