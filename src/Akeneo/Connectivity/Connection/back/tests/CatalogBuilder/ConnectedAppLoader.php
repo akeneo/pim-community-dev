@@ -36,7 +36,7 @@ class ConnectedAppLoader
         ?string $partner
     ): int {
         $query = <<<SQL
-INSERT INTO akeneo_connectivity_app(id, name, logo, author, partner, categories, certified, connection_code, scopes)
+INSERT INTO akeneo_connectivity_connected_app(id, name, logo, author, partner, categories, certified, connection_code, scopes)
 VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes)
 SQL;
 
