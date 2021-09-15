@@ -1613,8 +1613,8 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
@@ -1633,8 +1633,8 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition/${RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition-dev/${RELEASE_NAME}
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition/${RELEASE_NAME}
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
