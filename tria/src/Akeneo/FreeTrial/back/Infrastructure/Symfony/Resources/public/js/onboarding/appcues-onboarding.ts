@@ -155,6 +155,9 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
           }
           break;
+        case 'settings:attributes:clicked':
+          appcues.track('Settings: "Attributes" clicked');
+          break;
       }
     });
   },
