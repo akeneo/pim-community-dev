@@ -15,7 +15,7 @@ class ProductValueRendererExtension extends \Twig_Extension
         $this->productValueRendererRegistry = $productValueRendererRegistry;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('render_attribute_value', [$this, 'renderAttributeValue'], ['needs_environment' => true]),
@@ -24,11 +24,8 @@ class ProductValueRendererExtension extends \Twig_Extension
 
     public function renderAttributeValue(Environment $environment, AttributeInterface $attribute, $attributeValue)
     {
-        $renderer = $this->productValueRendererRegistry->getProductValueRenderer($attribute->getType());
-        if (null === $renderer) {
-            return null;
-        }
-
-        return $renderer->render($environment, $attribute, $attributeValue);
+        return $this->productValueRendererRegistry
+            ->getProductValueRenderer($attribute->getType())
+            ->render($environment, $attribute, $attributeValue);
     }
 }
