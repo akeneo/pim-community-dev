@@ -1,6 +1,0 @@
-pimee_permissions_get_categories_by_access_level:
-  path: /category/{level}
-  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesByAccessLevelAction }
-  requirements:
-    level: view|edit|own
-  methods: [GET]

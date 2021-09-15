@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql\Category;
 
-use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodeAndLabelByAccessLevel;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -194,9 +194,9 @@ SQL;
         return $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
-    private function getQuery(): GetRootCategoryCodeAndLabelByAccessLevel
+    private function getQuery(): GetRootCategoryCodesAndLabels
     {
-        return $this->get(GetRootCategoryCodeAndLabelByAccessLevel::class);
+        return $this->get(GetRootCategoryCodesAndLabels::class);
     }
 
     /**
