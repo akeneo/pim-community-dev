@@ -92,7 +92,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
-            - '@monolog.logger.event_api'
+            - '@monolog.logger.pim_api_product_acl'
             - '@oro_security.security_facade'
 
     pim_api.controller.product_model:
@@ -123,7 +123,7 @@ services:
             - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '@logger'
             - '%pim_api.configuration%'
-            - '@monolog.logger.event_api'
+            - '@monolog.logger.pim_api_product_acl'
             - '@oro_security.security_facade'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
