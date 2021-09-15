@@ -972,7 +972,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.event_api');
+        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
         assert($logger instanceof TestLogger);
 
         $this->assertTrue(
