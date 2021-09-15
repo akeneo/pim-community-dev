@@ -110,7 +110,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 <Name>{item.name}</Name>
                 <Author>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.card.developed_by')}
-                    {' '}
+                    &nbsp;
                     {item.author}
                 </Author>
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
