@@ -133,6 +133,9 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Attribute added in a bulk action');
           break;
+        case 'product:form:compare-clicked':
+          appcues.track('Compare button clicked');
+          break;
       }
     });
   },
