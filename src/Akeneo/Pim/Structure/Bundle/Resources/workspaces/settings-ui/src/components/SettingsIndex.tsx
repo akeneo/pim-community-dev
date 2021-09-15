@@ -31,7 +31,7 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
-import {useAnalytics} from "@akeneo-pim-community/shared/lib/hooks/useAnalytics";
+import {useAnalytics} from '@akeneo-pim-community/shared/lib/hooks/useAnalytics';
 
 const featureFlags = require('pim/feature-flags');
 
@@ -133,17 +133,17 @@ const SettingsIndex = () => {
                       countEntities.hasOwnProperty('count_category_trees') &&
                       countEntities.hasOwnProperty('count_categories')
                         ? getPluralizedTranslation(
-                          translate,
-                          'pim_settings.count.category_trees',
-                          countEntities,
-                          'count_category_trees'
-                        ).concat(
-                          translate(
-                            'pim_settings.count.categories',
-                            {count: countEntities['count_categories'] - countEntities['count_category_trees']},
-                            countEntities['count_categories'] - countEntities['count_category_trees']
+                            translate,
+                            'pim_settings.count.category_trees',
+                            countEntities,
+                            'count_category_trees'
+                          ).concat(
+                            translate(
+                              'pim_settings.count.categories',
+                              {count: countEntities['count_categories'] - countEntities['count_category_trees']},
+                              countEntities['count_categories'] - countEntities['count_category_trees']
+                            )
                           )
-                        )
                         : ''
                     }
                   />
