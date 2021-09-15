@@ -32,14 +32,14 @@ const Label = styled.label`
 const categoriesAjaxUrl = routing.generate('pimee_permissions_entities_get_categories');
 
 type Response = {
-    results: {
-        code: string,
-        label: string|null,
-    }[];
-    next: {
-        url: string|null,
-        params: PaginationParams,
-    };
+  results: {
+    code: string;
+    label: string | null;
+  }[];
+  next: {
+    url: string | null;
+    params: PaginationParams;
+  };
 };
 
 const processCategories = (data: Response) => ({
@@ -49,45 +49,51 @@ const processCategories = (data: Response) => ({
   })),
   more: data.next.url !== null,
   context: {
-      next: data.next,
-  }
+    next: data.next,
+  },
 });
 
 const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
   return FetcherRegistry.getFetcher('category')
     .fetchByIdentifiers(identifiers)
-    .then((results: any) => results.map((category: any) => ({
+    .then((results: any) =>
+      results.map((category: any) => ({
         id: category.code,
         text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
-    })));
+      }))
+    );
 };
 
 type PaginationContext = {
-    next: {
-        url: string|null,
-        params: PaginationParams,
-    };
+  next: {
+    url: string | null;
+    params: PaginationParams;
+  };
 };
 
 type PaginationParams = {
-    search?: string;
-    limit?: number;
-    offset?: number;
-}
+  search?: string;
+  limit?: number;
+  offset?: number;
+};
 
-const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> = (search: string, _page: number, context: PaginationContext|null) => {
-    const params = {
-        search: search,
+const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> = (
+  search: string,
+  _page: number,
+  context: PaginationContext | null
+) => {
+  const params = {
+    search: search,
+  };
+
+  if (null !== context) {
+    return {
+      ...context.next.params,
+      ...params,
     };
+  }
 
-    if (null !== context) {
-        return {
-            ...context.next.params,
-            ...params,
-        };
-    }
-
-    return params;
+  return params;
 };
 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
