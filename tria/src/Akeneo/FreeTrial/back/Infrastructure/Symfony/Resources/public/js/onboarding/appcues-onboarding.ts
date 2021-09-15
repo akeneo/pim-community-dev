@@ -104,6 +104,10 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Product "Elka Peacock Armchair" saved');
           }
 
+          if (eventOptions && eventOptions.name === 'PLG513725') {
+            appcues.track('Product "Faux leather tote" saved');
+          }
+
           appcues.track('Product saved');
           break;
         case 'product-grid:product:all-selected':
