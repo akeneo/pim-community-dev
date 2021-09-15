@@ -43,8 +43,6 @@ type Props = {
     onRemove?: (value: string) => void;
 };
 
-const defaultBuildQueryParams = (term: string) => ({q: term});
-
 export const MultiSelectInputWithDynamicOptions = ({
     url,
     fetchByIdentifiers,
@@ -57,6 +55,8 @@ export const MultiSelectInputWithDynamicOptions = ({
     onRemove,
 }: Props) => {
     const ref = useRef<HTMLInputElement>(null);
+
+    /* istanbul ignore next */
     const handleInitSelection = useCallback(
         (element, callback) => {
             const val = element.val().trim();
@@ -84,7 +84,7 @@ export const MultiSelectInputWithDynamicOptions = ({
                 cache: true,
                 quietMillis: 250,
                 dataType: 'json',
-                data: buildQueryParams || defaultBuildQueryParams,
+                data: buildQueryParams || undefined,
                 results: processResults,
             },
             initSelection: handleInitSelection,
@@ -93,6 +93,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     );
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
@@ -124,6 +125,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     }, [configuration]);
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
@@ -137,6 +139,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     }, [value]);
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
