@@ -12,6 +12,8 @@ interface EventOptions {
   identifier?: string,
   value?: string,
   column?: string,
+  localeCode?: string,
+  context?: string
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -135,6 +137,15 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'product:form:compare-clicked':
           appcues.track('Compare button clicked');
+          break;
+        case 'product:form:locale-switched':
+          if (eventOptions && eventOptions.context && eventOptions.context === 'base_product' && eventOptions.localeCode) {
+            appcues.track('Product\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
+
+          if (eventOptions && eventOptions.context && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
+            appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
           break;
       }
     });
