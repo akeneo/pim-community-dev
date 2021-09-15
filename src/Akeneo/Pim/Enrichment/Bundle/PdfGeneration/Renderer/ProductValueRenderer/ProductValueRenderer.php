@@ -5,7 +5,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRender
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Twig\Environment;
 
-interface ProductValueRenderer {
+interface ProductValueRenderer
+{
     public function render(Environment $environment, AttributeInterface $attribute, $value): ?string;
     public function supportsAttributeType(string $attributeType): bool;
 }
