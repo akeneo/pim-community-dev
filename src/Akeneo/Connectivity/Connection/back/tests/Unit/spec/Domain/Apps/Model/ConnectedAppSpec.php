@@ -24,14 +24,58 @@ class ConnectedAppSpec extends ObjectBehavior
             'Akeneo',
             ['E-commerce', 'print'],
             true,
-            'Akeneo partner',
-            'https:\/\/www.example.com\/some\/app\/url'
+            'Akeneo partner'
         );
     }
 
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(ConnectedApp::class);
+    }
+
+    public function it_returns_the_id(): void
+    {
+        $this->getId()->shouldBe('4028c158-d620-4903-9859-958b66a059e2');
+    }
+
+    public function it_returns_the_name(): void
+    {
+        $this->getName()->shouldBe('Example App');
+    }
+
+    public function it_returns_the_scopes(): void
+    {
+        $this->getScopes()->shouldBe(['Scope1', 'Scope2']);
+    }
+
+    public function it_returns_the_connection_code(): void
+    {
+        $this->getConnectionCode()->shouldBe('someConnectionCode');
+    }
+
+    public function it_returns_the_logo(): void
+    {
+        $this->getLogo()->shouldBe('https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC');
+    }
+
+    public function it_returns_the_author(): void
+    {
+        $this->getAuthor()->shouldBe('Akeneo');
+    }
+
+    public function it_returns_the_categories(): void
+    {
+        $this->getCategories()->shouldBe(['E-commerce', 'print']);
+    }
+
+    public function it_returns_the_certified_status(): void
+    {
+        $this->isCertified()->shouldBe(true);
+    }
+
+    public function it_returns_the_partner(): void
+    {
+        $this->getPartner()->shouldBe('Akeneo partner');
     }
 
     public function it_is_normalizable()
