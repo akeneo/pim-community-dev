@@ -62,7 +62,7 @@ export const ConnectedAppsContainerIsLoading: FC = () => {
             <SkeletonHelper />
             <SectionTitle>
                 <SectionTitle.Title>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.apps.title')}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')}
                 </SectionTitle.Title>
                 <SectionTitle.Spacer />
                 <SectionTitle.Information></SectionTitle.Information>

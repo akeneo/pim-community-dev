@@ -13,7 +13,7 @@ const ConnectedAppsContainerHelper: FC<Props> = ({count}) => {
         <div
             dangerouslySetInnerHTML={{
                 __html: translate(
-                    'akeneo_connectivity.connection.connect.connected_apps.helper.title',
+                    'akeneo_connectivity.connection.connect.connected_apps.list.helper.title',
                     {count: `<span class='AknConnectivityConnection-helper--highlight'>${count}</span>`},
                     count
                 ),
@@ -23,11 +23,11 @@ const ConnectedAppsContainerHelper: FC<Props> = ({count}) => {
 
     return (
         <Information illustration={<AppIllustration />} title={title}>
-            <p>{translate('akeneo_connectivity.connection.connect.connected_apps.helper.description_1')}</p>
+            <p>{translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')}</p>
             <p>
-                {translate('akeneo_connectivity.connection.connect.connected_apps.helper.description_2')}{' '}
+                {translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')}{' '}
                 <Link href='https://help.akeneo.com/pim/serenity/articles/manage-your-apps.html' target='_blank'>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.helper.link')}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')}
                 </Link>
             </p>
         </Information>

@@ -60,31 +60,31 @@ test('The connected apps list renders with 2 connected apps card', async () => {
     await waitForElement(() => screen.getByText('App A'));
 
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.title', {exact: false})
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
     ).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.description_1')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
     ).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.description_2')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.link')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.title')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.total', {exact: false})
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.getAllByText('akeneo_connectivity.connection.connect.connected_apps.card.manage_app')).toHaveLength(
+    expect(screen.getAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
         2
     );
     expect(screen.getByText('App A')).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.card.developed_by' + ' author A')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
     ).toBeInTheDocument();
     expect(screen.getByText('category A1')).toBeInTheDocument();
     expect(screen.queryByText('category A2')).toBeNull();
     expect(screen.getByText('App B')).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.card.developed_by' + ' author B')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author B')
     ).toBeInTheDocument();
     expect(screen.getByText('category B1')).toBeInTheDocument();
 });
@@ -101,27 +101,27 @@ test('The connected apps list renders without connected apps', async () => {
     });
 
     renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.empty'));
+    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
 
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.title', {exact: false})
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
     ).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.description_1')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
     ).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.description_2')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.helper.link')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.title')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.total', {exact: false})
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.empty')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')).toBeInTheDocument();
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.apps.check_marketplace', {exact: false})
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.card.manage_app')).toHaveLength(
+    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
         0
     );
 });

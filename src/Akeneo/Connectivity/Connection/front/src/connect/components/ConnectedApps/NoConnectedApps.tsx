@@ -34,12 +34,12 @@ export const NoConnectedApps: FC = () => {
             <EmptyContainer>
                 <AppIllustration size={242} />
                 <EmptyMessage>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.apps.empty')}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')}
                 </EmptyMessage>
                 <HelpMessage
                     dangerouslySetInnerHTML={{
                         __html: translate(
-                            'akeneo_connectivity.connection.connect.connected_apps.apps.check_marketplace',
+                            'akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace',
                             {href: marketplaceUrl}
                         ),
                     }}
