@@ -21,7 +21,7 @@ class ImageProductValueRendererSpec extends ObjectBehavior
         Environment $environment,
         AttributeInterface $attribute
     ) {
-        $this->render($environment, $attribute, null)->shouldReturn(null);
+        $this->render($environment, $attribute, null, 'en_US')->shouldReturn(null);
     }
 
     function it_renders_null_data(
@@ -34,7 +34,7 @@ class ImageProductValueRendererSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->render($environment, $attribute, $value)->shouldReturn(null);
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn(null);
     }
 
     function it_renders_original_filename(
@@ -53,6 +53,6 @@ class ImageProductValueRendererSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn('sunglasses.png');
 
-        $this->render($environment, $attribute, $value)->shouldReturn('sunglasses.png');
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('sunglasses.png');
     }
 }

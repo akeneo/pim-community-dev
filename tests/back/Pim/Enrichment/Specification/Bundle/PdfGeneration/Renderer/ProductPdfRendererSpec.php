@@ -36,8 +36,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $templating,
@@ -47,7 +46,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $filterManager,
             $attributeRepository,
             self::TEMPLATE_NAME,
-            $attributeOptionRepository,
             null
         );
     }
@@ -92,7 +90,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths'        => [],
             'customFont'        => null,
-            'optionLabels'      => [],
             'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
@@ -148,7 +145,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imagePaths'        => ['fookey'],
                 'customFont'        => null,
-                'optionLabels'      => [],
                 'filter'            => 'pdf_thumbnail',
                 'renderingDate'     => $renderingDate,
             ]
@@ -156,76 +152,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $this->render(
             $blender,
-            'pdf',
-            ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
-        );
-    }
-
-    function it_renders_options_labels(
-        Environment $templating,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
-    ) {
-        $colors = new Attribute();
-        $colors->setCode('colors');
-        $colors->setType(AttributeTypes::OPTION_MULTI_SELECT);
-        $colors->setLocale('en_US');
-        $colors->setLabel('Colors');
-        $group = new AttributeGroup();
-        $group->setLocale('en_US');
-        $group->setLabel('Marketing');
-        $colors->setGroup($group);
-        $colors->setLocalizable(true);
-        $colors->setScopable(true);
-        $attributeRepository->findOneByIdentifier('colors')->willReturn($colors);
-
-        $blue = new AttributeOption();
-        $blue->setCode('blue');
-        $blueValue = new AttributeOptionValue();
-        $blueValue->setLocale('en_US');
-        $blueValue->setLabel('Blue');
-        $blue->addOptionValue($blueValue);
-        $attributeOptionRepository->findOneByIdentifier('colors.blue')->willReturn($blue);
-
-        $red = new AttributeOption();
-        $red->setCode('red');
-        $redValue = new AttributeOptionValue();
-        $redValue->setLocale('en_US');
-        $redValue->setLabel('Red');
-        $red->addOptionValue($redValue);
-        $attributeOptionRepository->findOneByIdentifier('colors.red')->willReturn($red);
-
-        $family = new Family();
-        $family->addAttribute($colors);
-        $product = new Product();
-        $product->setFamily($family);
-        $product->setValues(
-            new WriteValueCollection(
-                [
-                    OptionsValue::scopableLocalizableValue('colors', ['blue', 'red'], 'ecommerce', 'en_US'),
-                    OptionsValue::scopableLocalizableValue('colors', ['red'], 'ecommerce', 'fr_FR'),
-                ]
-            )
-        );
-
-        $renderingDate = new \DateTime();
-        $templating->render(
-            self::TEMPLATE_NAME,
-            [
-                'product' => $product,
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-                'groupedAttributes' => ['Marketing' => ['colors' => $colors]],
-                'imagePaths' => [],
-                'customFont' => null,
-                'optionLabels' => ['colors' => 'Blue, Red'],
-                'filter' => 'pdf_thumbnail',
-                'renderingDate' => $renderingDate,
-            ]
-        )->shouldBeCalled();
-
-        $this->render(
-            $product,
             'pdf',
             ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
         );
@@ -270,7 +196,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Marketing' => ['colors' => $colors]],
                 'imagePaths' => [],
                 'customFont' => null,
-                'optionLabels' => [],
                 'filter' => 'pdf_thumbnail',
                 'renderingDate' => $renderingDate,
             ]
