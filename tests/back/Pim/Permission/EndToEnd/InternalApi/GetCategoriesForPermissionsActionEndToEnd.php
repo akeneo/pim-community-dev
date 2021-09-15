@@ -30,7 +30,15 @@ class GetCategoriesForPermissionsActionEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $result = json_decode($this->client->getResponse()->getContent(), true);
         Assert::assertEquals([
-            'next' => 'http://localhost/rest/permissions/category?ui_locale=en_US&search=&offset=1&limit=1',
+            'next' => [
+                'url' => 'http://localhost/rest/permissions/category?ui_locale=en_US&search=&offset=1&limit=1',
+                'params' => [
+                    'ui_locale' => 'en_US',
+                    'search' => '',
+                    'offset' => 1,
+                    'limit' => 1,
+                ],
+            ],
             'results' => [
                 [
                     'code' => 'master',

@@ -5,6 +5,7 @@ import {getLabel} from 'pimui/js/i18n';
 import {
   PermissionFormProvider,
   PermissionFormWidget,
+  QueryParamsBuilder,
   PermissionFormReducer,
   PermissionSectionSummary,
   LevelSummaryField,
@@ -28,20 +29,65 @@ const Label = styled.label`
   display: block;
 `;
 
-const categoriesAjaxUrl = routing.generate('pim_enrich_category_rest_list');
+const categoriesAjaxUrl = routing.generate('pimee_permissions_entities_get_categories');
 
-const processCategories = (data: any) => ({
-  results: data.map((category: any) => ({
+type Response = {
+    results: {
+        code: string,
+        label: string|null,
+    }[];
+    next: {
+        url: string|null,
+        params: PaginationParams,
+    };
+};
+
+const processCategories = (data: Response) => ({
+  results: data.results.map(category => ({
     id: category.code,
-    text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
+    text: category.label || `[${category.code}]`,
   })),
-  more: false,
+  more: data.next.url !== null,
+  context: {
+      next: data.next,
+  }
 });
 
 const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
   return FetcherRegistry.getFetcher('category')
     .fetchByIdentifiers(identifiers)
-    .then((results: any) => processCategories(results).results);
+    .then((results: any) => results.map((category: any) => ({
+        id: category.code,
+        text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
+    })));
+};
+
+type PaginationContext = {
+    next: {
+        url: string|null,
+        params: PaginationParams,
+    };
+};
+
+type PaginationParams = {
+    search?: string;
+    limit?: number;
+    offset?: number;
+}
+
+const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> = (search: string, _page: number, context: PaginationContext|null) => {
+    const params = {
+        search: search,
+    };
+
+    if (null !== context) {
+        return {
+            ...context.next.params,
+            ...params,
+        };
+    }
+
+    return params;
 };
 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
@@ -75,6 +121,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
         <PermissionFormWidget
@@ -89,6 +136,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
@@ -103,6 +151,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
       </>
     );

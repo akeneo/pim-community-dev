@@ -50,7 +50,15 @@ class GetCategoriesForPermissionsAction
             ], RouterInterface::ABSOLUTE_URL);
 
         return new JsonResponse([
-            'next' => $next,
+            'next' => [
+                'url' => $next,
+                'params' => [
+                    'ui_locale' => $locale,
+                    'search' => $search,
+                    'offset' => $offset + $limit,
+                    'limit' => $limit,
+                ],
+            ],
             'results' => $results,
         ]);
     }
