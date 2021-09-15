@@ -28,6 +28,7 @@ akeneo.tailored_export:
   column_list:
     title: Colonnes
     header:
+      column_name: Nom de la colonne
       source_data: Contenu de la colonne
     column_row:
       target_placeholder: Définissez votre en-tête de colonne ici
@@ -119,6 +120,10 @@ akeneo.tailored_export:
           title: Utiliser une valeur par défaut si vide
           label: Valeur par défaut
           placeholder: Définir la valeur
+    concatenation:
+      title: Concaténer
+      preview: Aperçu
+      add_text: Ajouter du texte
   column:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
   validation:
