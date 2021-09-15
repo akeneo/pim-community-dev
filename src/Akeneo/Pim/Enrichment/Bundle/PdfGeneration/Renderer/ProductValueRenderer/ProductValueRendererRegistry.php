@@ -18,7 +18,8 @@ class ProductValueRendererRegistry
         $this->defaultRenderer = $defaultRenderer;
     }
 
-    public function getProductValueRenderer($attributeType): ProductValueRenderer {
+    public function getProductValueRenderer($attributeType): ProductValueRenderer
+    {
         foreach ($this->renderers as $renderer) {
             if ($renderer->supportsAttributeType($attributeType)) {
                 return $renderer;
