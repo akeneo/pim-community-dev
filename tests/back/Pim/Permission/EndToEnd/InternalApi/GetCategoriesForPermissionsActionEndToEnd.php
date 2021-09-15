@@ -8,7 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetCategoriesByAccessLevelActionEndToEnd extends WebTestCase
+class GetCategoriesForPermissionsActionEndToEnd extends WebTestCase
 {
     protected function setUp(): void
     {
@@ -20,16 +20,24 @@ class GetCategoriesByAccessLevelActionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'GET',
-            '/rest/permissions/category/edit?offset=10&limit=10',
+            '/rest/permissions/category?offset=0&limit=1',
             [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
-
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+        Assert::assertEquals([
+            'next' => 'http://localhost/rest/permissions/category?ui_locale=en_US&search=&offset=1&limit=1',
+            'results' => [
+                [
+                    'code' => 'master',
+                    'label' => 'Master catalog',
+                ],
+            ],
+        ], $result);
     }
 
     protected function getConfiguration(): Configuration

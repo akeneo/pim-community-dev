@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql\Category;
 
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoaderWithPermission;
 
-class GetRootCategoryCodeAndLabelByAccessLevelIntegration extends TestCase
+class GetRootCategoryCodesAndLabelsIntegration extends TestCase
 {
     private CategoryTreeFixturesLoaderWithPermission $fixturesLoader;
 
@@ -33,7 +32,7 @@ class GetRootCategoryCodeAndLabelByAccessLevelIntegration extends TestCase
                 'tree_1_child_2_level_1' => [],
             ],
             'tree_2' => [
-                'tree_2_child_1_level_1' => []
+                'tree_2_child_1_level_1' => [],
             ],
             'tree_3' => [],
             'tree_4' => [],
@@ -41,29 +40,21 @@ class GetRootCategoryCodeAndLabelByAccessLevelIntegration extends TestCase
         $this->removeLabelFromCategory('tree_3');
     }
 
-    public function test_it_gets_paginated_viewable_root_categories(): void
+    public function test_it_gets_paginated_root_categories(): void
     {
-        $this->fixturesLoader->givenTheViewableCategories([
-            'tree_2',
-            'tree_1_child_1_level_1',
-            'tree_2_child_1_level_1',
-        ]);
-        $this->fixturesLoader->givenTheEditableCategories(['tree_3']);
-
         $expectedFirstPage = [
             [
                 'code' => 'master',
                 'label' => 'Master catalog',
             ],
             [
-                'code' => 'tree_2',
-                'label' => 'Tree_2',
-            ]
+                'code' => 'tree_1',
+                'label' => 'Tree_1',
+            ],
         ];
         $firstPage = $this->getQuery()->execute(
-            Attributes::VIEW,
-            $this->getAdminUser()->getGroupsIds(),
             $this->getAdminUser()->getUiLocale()->getCode(),
+            '',
             0,
             2
         );
@@ -72,14 +63,17 @@ class GetRootCategoryCodeAndLabelByAccessLevelIntegration extends TestCase
 
         $expectedSecondPage = [
             [
+                'code' => 'tree_2',
+                'label' => 'Tree_2',
+            ],
+            [
                 'code' => 'tree_3',
                 'label' => null,
             ],
         ];
         $secondPage = $this->getQuery()->execute(
-            Attributes::VIEW,
-            $this->getAdminUser()->getGroupsIds(),
             $this->getAdminUser()->getUiLocale()->getCode(),
+            '',
             2,
             2
         );
@@ -87,95 +81,23 @@ class GetRootCategoryCodeAndLabelByAccessLevelIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedSecondPage, $secondPage);
     }
 
-    public function test_it_gets_paginated_editable_root_categories(): void
+    public function test_it_filter_root_categories(): void
     {
-        $this->fixturesLoader->givenTheEditableCategories([
-            'tree_2',
-            'tree_3',
-            'tree_2_child_1_level_1',
-        ]);
-        $expectedFirstPage = [
-            [
-                'code' => 'master',
-                'label' => 'Master catalog',
-            ],
+        $search = 'Tree_2';
+        $expectedResults = [
             [
                 'code' => 'tree_2',
                 'label' => 'Tree_2',
             ],
         ];
-        $firstPage = $this->getQuery()->execute(
-            Attributes::EDIT,
-            $this->getAdminUser()->getGroupsIds(),
+        $results = $this->getQuery()->execute(
             $this->getAdminUser()->getUiLocale()->getCode(),
+            $search,
             0,
-            2
+            10
         );
 
-        $this->assertEqualsCanonicalizing($expectedFirstPage, $firstPage);
-
-        $expectedSecondPage = [
-            [
-                'code' => 'tree_3',
-                'label' => null,
-            ],
-        ];
-        $secondPage = $this->getQuery()->execute(
-            Attributes::EDIT,
-            $this->getAdminUser()->getGroupsIds(),
-            $this->getAdminUser()->getUiLocale()->getCode(),
-            2,
-            2
-        );
-
-        $this->assertEqualsCanonicalizing($expectedSecondPage, $secondPage);
-    }
-
-    public function test_it_gets_paginated_root_categories_i_own(): void
-    {
-        $this->fixturesLoader->givenTheOwnableCategories([
-            'tree_2',
-            'tree_3',
-            'tree_2_child_1_level_1',
-        ]);
-        $this->fixturesLoader->givenTheEditableCategories(['tree_4']);
-        $this->fixturesLoader->givenTheViewableCategories(['tree_1']);
-
-        $expectedFirstPage = [
-            [
-                'code' => 'master',
-                'label' => 'Master catalog',
-            ],
-            [
-                'code' => 'tree_2',
-                'label' => 'Tree_2',
-            ],
-        ];
-        $firstPage = $this->getQuery()->execute(
-            Attributes::OWN,
-            $this->getAdminUser()->getGroupsIds(),
-            $this->getAdminUser()->getUiLocale()->getCode(),
-            0,
-            2
-        );
-
-        $this->assertEqualsCanonicalizing($expectedFirstPage, $firstPage);
-
-        $expectedSecondPage = [
-            [
-                'code' => 'tree_3',
-                'label' => null,
-            ],
-        ];
-        $secondPage = $this->getQuery()->execute(
-            Attributes::OWN,
-            $this->getAdminUser()->getGroupsIds(),
-            $this->getAdminUser()->getUiLocale()->getCode(),
-            2,
-            2
-        );
-
-        $this->assertEqualsCanonicalizing($expectedSecondPage, $secondPage);
+        $this->assertEqualsCanonicalizing($expectedResults, $results);
     }
 
     private function removeLabelFromCategory(string $label): void

@@ -31,6 +31,7 @@ LEFT JOIN pim_catalog_category_translation category_label
     ON category.id = category_label.foreign_key AND category_label.locale = :locale
 WHERE category.parent_id IS NULL
 AND COALESCE(category_label.label, category.code) LIKE :search
+ORDER BY COALESCE(category_label.label, category.code)
 LIMIT :limit OFFSET :offset;
 SQL;
 
