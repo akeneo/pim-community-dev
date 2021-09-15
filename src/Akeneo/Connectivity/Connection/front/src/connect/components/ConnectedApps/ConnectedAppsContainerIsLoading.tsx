@@ -57,6 +57,7 @@ const SkeletonRightColumnContainer = styled.div`
 
 export const ConnectedAppsContainerIsLoading: FC = () => {
     const translate = useTranslate();
+
     return (
         <>
             <SkeletonHelper />
