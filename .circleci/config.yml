@@ -1360,8 +1360,8 @@ jobs:
           - run:
                 name: Pull Terraform modules from last release
                 command: |
-                    rm -r ~/project/deployments
-                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition/${LATEST_RELEASE}/deployments/ ~/project/
+                    rm -r ./deployments
+                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${LATEST_RELEASE}/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1424,7 +1424,7 @@ jobs:
               name: Pull Terraform modules from last release
               command: |
                   rm -r ./deployments
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/deployments/ .
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${LATEST_RELEASE}/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
