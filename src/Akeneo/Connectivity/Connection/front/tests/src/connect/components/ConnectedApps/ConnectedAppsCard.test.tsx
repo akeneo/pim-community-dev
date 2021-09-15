@@ -16,7 +16,7 @@ test('The connected app card renders', async () => {
         name: 'App A',
         scopes: ['scope A1'],
         connection_code: 'connectionCodeA',
-        logo: 'http://www.example.com/path/to/logo/a',
+        logo: 'http://www.example.test/path/to/logo/a',
         author: 'author A',
         categories: ['category A1', 'category A2'],
         certified: false,
