@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
@@ -186,5 +187,24 @@ JSON;
 JSON;
 
         $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testAccessDeniedWhenRetrievingProductModelsWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/product-models');
+        $response = $client->getResponse();
+
+        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }
