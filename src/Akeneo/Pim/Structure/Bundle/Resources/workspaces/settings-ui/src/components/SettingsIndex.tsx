@@ -31,6 +31,7 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
+import {useAnalytics} from "@akeneo-pim-community/shared/lib/hooks/useAnalytics";
 
 const featureFlags = require('pim/feature-flags');
 
@@ -55,6 +56,7 @@ const SettingsIndex = () => {
   const {isGranted} = useSecurity();
   const router = useRouter();
   const theme = useTheme();
+  const analytics = useAnalytics();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -131,17 +133,17 @@ const SettingsIndex = () => {
                       countEntities.hasOwnProperty('count_category_trees') &&
                       countEntities.hasOwnProperty('count_categories')
                         ? getPluralizedTranslation(
-                            translate,
-                            'pim_settings.count.category_trees',
-                            countEntities,
-                            'count_category_trees'
-                          ).concat(
-                            translate(
-                              'pim_settings.count.categories',
-                              {count: countEntities['count_categories'] - countEntities['count_category_trees']},
-                              countEntities['count_categories'] - countEntities['count_category_trees']
-                            )
+                          translate,
+                          'pim_settings.count.category_trees',
+                          countEntities,
+                          'count_category_trees'
+                        ).concat(
+                          translate(
+                            'pim_settings.count.categories',
+                            {count: countEntities['count_categories'] - countEntities['count_category_trees']},
+                            countEntities['count_categories'] - countEntities['count_category_trees']
                           )
+                        )
                         : ''
                     }
                   />
@@ -213,7 +215,10 @@ const SettingsIndex = () => {
                   <IconCard
                     icon={<ValueIcon />}
                     label={translate('pim_enrich.entity.attribute.plural_label')}
-                    onClick={() => redirectToRoute('pim_enrich_attribute_index')}
+                    onClick={() => {
+                      analytics.track('settings:attributes:clicked');
+                      redirectToRoute('pim_enrich_attribute_index');
+                    }}
                     content={getPluralizedTranslation(
                       translate,
                       'pim_settings.count.attributes',
