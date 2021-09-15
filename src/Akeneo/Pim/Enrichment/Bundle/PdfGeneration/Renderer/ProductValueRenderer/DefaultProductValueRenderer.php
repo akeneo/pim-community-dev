@@ -9,7 +9,7 @@ class DefaultProductValueRenderer implements ProductValueRenderer
 {
     public function render(Environment $environment, AttributeInterface $attribute, $value): ?string
     {
-        return twig_escape_filter($environment, $value);
+        return \twig_escape_filter($environment, $value);
     }
 
     public function supportsAttributeType(string $attributeType): bool
