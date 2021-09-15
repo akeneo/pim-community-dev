@@ -44,7 +44,6 @@
 
     init: function (element, options) {
       var icon;
-      this._unset=true;
       if (!(options.pickTime || options.pickDate)) throw new Error('Must choose at least one picker');
       this.options = options;
       this.$element = $(element);
@@ -163,7 +162,6 @@
       this.widget.hide();
       this.viewMode = this.startViewMode;
       this.showMode();
-      this.set();
       this.$element.trigger({
         type: 'hide',
         date: this._date,
