@@ -26,7 +26,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     private array $esQuery;
     private int $pageSize;
     private array $searchAfter;
-    private ?ResultInterface $result;
+    private ?ResultInterface $result = null;
 
     /**
      * @param Client                        $esClient
