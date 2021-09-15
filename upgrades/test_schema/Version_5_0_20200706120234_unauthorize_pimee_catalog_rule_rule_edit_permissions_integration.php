@@ -126,7 +126,7 @@ final class Version_5_0_20200706120234_unauthorize_pimee_catalog_rule_rule_edit_
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }
