@@ -32,5 +32,7 @@ test('The connected app card renders', async () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('category A1')).toBeInTheDocument();
     expect(screen.queryByText('category A2')).toBeNull();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toBeInTheDocument();
 });

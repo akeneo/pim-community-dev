@@ -57,7 +57,7 @@ test('The connected apps list page renders with 2 connected apps card', async ()
 
     mockFetchResponses({
         ...fetchMarketplaceUrlResponses,
-        ...fetchConnectedAppsResponses
+        ...fetchConnectedAppsResponses,
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
@@ -74,14 +74,18 @@ test('The connected apps list page renders with 2 connected apps card', async ()
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
+    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
-        2
-    );
+    expect(
+        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toHaveLength(2);
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
@@ -109,11 +113,13 @@ test('The connected apps list page renders without connected apps', async () => 
 
     mockFetchResponses({
         ...fetchMarketplaceUrlResponses,
-        ...fetchConnectedAppsResponses
+        ...fetchConnectedAppsResponses,
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
+    await waitForElement(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
+    );
 
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryAllByText('pim_menu.item.connected_apps')).toHaveLength(2);
@@ -126,18 +132,26 @@ test('The connected apps list page renders without connected apps', async () => 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
+    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
     ).toBeInTheDocument();
-    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
-        0
-    );
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {
+            exact: false,
+        })
+    ).toBeInTheDocument();
+    expect(
+        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toHaveLength(0);
 });
 
 test('The connected apps list page renders with internal api errors', async () => {
@@ -149,13 +163,13 @@ test('The connected apps list page renders with internal api errors', async () =
     const fetchConnectedAppsResponses: MockFetchResponses = {
         akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
             reject: true,
-            json: {}
+            json: {},
         },
     };
 
     mockFetchResponses({
         ...fetchMarketplaceUrlResponses,
-        ...fetchConnectedAppsResponses
+        ...fetchConnectedAppsResponses,
     });
 
     renderWithProviders(<ConnectedAppsListPage />);

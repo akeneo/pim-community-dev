@@ -12,7 +12,9 @@ beforeEach(() => {
 
 test('The connected apps list helper renders', async () => {
     renderWithProviders(<ConnectedAppsContainerHelper count={2} />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false}));
+    await waitForElement(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
+    );
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
@@ -23,5 +25,7 @@ test('The connected apps list helper renders', async () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
+    ).toBeInTheDocument();
 });

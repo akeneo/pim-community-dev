@@ -66,14 +66,18 @@ test('The connected apps list renders with 2 connected apps card', async () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
+    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
-        2
-    );
+    expect(
+        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toHaveLength(2);
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
@@ -99,7 +103,9 @@ test('The connected apps list renders without connected apps', async () => {
     });
 
     renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
+    await waitForElement(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
+    );
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
@@ -110,16 +116,24 @@ test('The connected apps list renders without connected apps', async () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
+    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
     ).toBeInTheDocument();
-    expect(screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')).toHaveLength(
-        0
-    );
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {
+            exact: false,
+        })
+    ).toBeInTheDocument();
+    expect(
+        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toHaveLength(0);
 });
