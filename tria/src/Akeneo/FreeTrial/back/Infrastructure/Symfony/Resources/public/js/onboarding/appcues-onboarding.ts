@@ -169,6 +169,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('On attribute form, the value of field "' + eventOptions.name +'" changed');
           }
           break;
+        case 'translation:form:value-changed':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.localeCode) {
+            appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode +'" changed');
+          }
+          break;
       }
     });
   },
