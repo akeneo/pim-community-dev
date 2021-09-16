@@ -6,6 +6,7 @@ const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
 
 interface EventOptions {
+  code?: string,
   name?: string,
   attribute?: string,
   gridName?: string,
@@ -161,6 +162,12 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'attribute:create:type-selected':
           if (eventOptions && eventOptions.name) {
             appcues.track('Attribute of type "' + eventOptions.name +'" created');
+          }
+          break;
+        case 'common:form:value-changed':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create-form') && eventOptions.name) {
+            console.log(eventOptions.name);
+            appcues.track('On creating attribute, the value of field "' + eventOptions.name +'" changed');
           }
           break;
       }
