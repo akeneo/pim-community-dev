@@ -53,6 +53,7 @@ class TableProductValueRenderer implements ProductValueRenderer
                     if ($tableConfiguration->getColumnDataType($columnCode)->asString() === BooleanColumn::DATATYPE) {
                         $normalizedCell = $this->translator->trans($normalizedCell ? 'Yes' : 'No');
                     }
+                    /** @phpstan-ignore-next-line */
                     $line .= sprintf('<td>%s</td>', \twig_escape_filter($environment, $normalizedCell));
                 }
             }
