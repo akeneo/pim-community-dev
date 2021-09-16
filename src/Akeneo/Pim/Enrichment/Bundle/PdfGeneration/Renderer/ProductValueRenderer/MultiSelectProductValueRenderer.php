@@ -25,7 +25,8 @@ class MultiSelectProductValueRenderer implements ProductValueRenderer
         }
 
         $optionCodes = $value->getData();
-        return join(', ', array_map(fn ($optionCode) => $this->getOptionLabel($attribute, $optionCode, $localeCode), $optionCodes));
+
+        return join(', ', array_map(fn ($optionCode): string => $this->getOptionLabel($attribute, $optionCode, $localeCode), $optionCodes));
     }
 
     public function supportsAttributeType(string $attributeType): bool
@@ -33,7 +34,7 @@ class MultiSelectProductValueRenderer implements ProductValueRenderer
         return $attributeType === AttributeTypes::OPTION_MULTI_SELECT;
     }
 
-    private function getOptionLabel(AttributeInterface $attribute, string $optionCode, string $localeCode)
+    private function getOptionLabel(AttributeInterface $attribute, string $optionCode, string $localeCode): string
     {
         $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode() . '.' . $optionCode);
 
