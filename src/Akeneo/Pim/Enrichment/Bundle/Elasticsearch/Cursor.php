@@ -121,7 +121,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     public function getResult(): ResultInterface
     {
         if (null === $this->result) {
-            $this->getNextIdentifiers([]);
+            $this->getNextIdentifiers($this->esQuery);
         }
 
         return $this->result;
