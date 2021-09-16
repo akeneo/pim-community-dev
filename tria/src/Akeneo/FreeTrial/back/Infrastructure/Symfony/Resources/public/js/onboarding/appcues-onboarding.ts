@@ -186,7 +186,6 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'family-grid:product:item-selected':
           if (eventOptions && eventOptions.count && eventOptions.count === 3) {
-            console.log('test');
             appcues.track('3 families selected in the grid');
           }
           break;
