@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\Renderer\ProductValueRenderer;
 
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
@@ -26,10 +27,10 @@ class TableProductValueRendererSpec extends ObjectBehavior
     function it_renders_a_table(
         ColumnFactory $columnFactory,
         TranslatorInterface $translator,
-        Environment $environment,
         AttributeInterface $attribute,
         TableValue $value
     ) {
+        $environment = new Environment();
         $attribute
             ->getRawTableConfiguration()
             ->shouldBeCalled()
@@ -65,7 +66,7 @@ class TableProductValueRendererSpec extends ObjectBehavior
             ->getData()
             ->shouldBeCalled()
             ->willReturn(Table::fromNormalized([
-                ['ingredient' => 'sugar', 'quantity' => 42, 'is_allergenic' => true, 'description' => 'a description', 'aqr' => 'A'],
+                ['ingredient' => 'sugar', 'quantity' => 42, 'is_allergenic' => true, 'description' => 'a <description>', 'aqr' => 'A'],
                 ['ingredient' => 'salt', 'is_allergenic' => false],
                 ['ingredient' => 'eggs'],
             ]));
@@ -73,9 +74,9 @@ class TableProductValueRendererSpec extends ObjectBehavior
         $translator->trans('Yes')->shouldBeCalled()->willReturn('Vrai');
         $translator->trans('No')->shouldBeCalled()->willReturn('Faux');
 
-        $this->render($environment, $attribute, $value)->shouldReturn('<table>
+        $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('<table>
 <thead><tr><th>ingredient</th><th>quantity</th><th>is_allergenic</th><th>description</th><th>aqr</th></tr></thead>
-<tbody><tr><td>sugar</td><td>42</td><td>Vrai</td><td>a description</td><td>A</td></tr>
+<tbody><tr><td>sugar</td><td>42</td><td>Vrai</td><td>a &lt;description&gt;</td><td>A</td></tr>
 <tr><td>salt</td><td></td><td>Faux</td><td></td><td></td></tr>
 <tr><td>eggs</td><td></td><td></td><td></td><td></td></tr>
 </tbody>
