@@ -176,9 +176,12 @@ test('The connected apps list page renders with internal api errors', async () =
         ...fetchConnectedAppsResponses,
     });
 
-
-    renderWithProviders(<NotifyContext.Provider value={notify}><ConnectedAppsListPage /></NotifyContext.Provider>);
-    await wait(() => expect(notify).toHaveBeenCalledTimes(1))
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <ConnectedAppsListPage />
+        </NotifyContext.Provider>
+    );
+    await wait(() => expect(notify).toHaveBeenCalledTimes(1));
 
     expect(notify).toBeCalledWith(
         NotificationLevel.ERROR,
