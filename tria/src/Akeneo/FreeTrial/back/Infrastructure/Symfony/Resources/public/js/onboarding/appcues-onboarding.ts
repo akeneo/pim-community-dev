@@ -16,6 +16,7 @@ interface EventOptions {
   localeCode?: string,
   context?: string,
   count?: number,
+  checked?: boolean,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -191,6 +192,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'family-grid:product:item-selected':
           if (eventOptions && eventOptions.count && eventOptions.count === 3) {
             appcues.track('3 families selected in the grid');
+          }
+          break;
+        case 'grid:mass-edit:requirements-checked':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'marketplaces' && eventOptions.checked) {
+            appcues.track('The information is required for Marketplaces channel');
           }
           break;
       }
