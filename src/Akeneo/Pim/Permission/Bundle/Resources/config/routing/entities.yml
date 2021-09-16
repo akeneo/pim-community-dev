@@ -1,0 +1,4 @@
+pimee_permissions_entities_get_categories:
+  path: /rest/permissions/category
+  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction }
+  methods: [ GET ]

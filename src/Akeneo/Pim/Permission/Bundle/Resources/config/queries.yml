@@ -147,3 +147,7 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\SqlGetRawValues
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels:
+        arguments:
+            - '@database_connection'

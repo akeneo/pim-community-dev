@@ -143,3 +143,9 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels'
+            - '@router'
