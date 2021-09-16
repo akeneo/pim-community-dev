@@ -20,7 +20,20 @@ define([
   'pim/router',
   'pim/common/property',
   'pim/analytics',
-], function ($, _, __, BaseSave, messenger, EntitySaver, FieldManager, i18n, UserContext, router, propertyAccessor, analytics) {
+], function (
+  $,
+  _,
+  __,
+  BaseSave,
+  messenger,
+  EntitySaver,
+  FieldManager,
+  i18n,
+  UserContext,
+  router,
+  propertyAccessor,
+  analytics
+) {
   return BaseSave.extend({
     /**
      * Sets message labels for updates
@@ -103,7 +116,7 @@ define([
             }
 
             analytics.track('common:form:saved', {
-              code: this.code
+              code: this.code,
             });
           }.bind(this)
         )
