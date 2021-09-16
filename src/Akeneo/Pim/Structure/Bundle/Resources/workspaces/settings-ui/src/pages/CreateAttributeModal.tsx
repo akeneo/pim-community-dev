@@ -56,12 +56,14 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
 
   const handleBack = () => {
     onBack?.();
-  }
+  };
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
       <Modal.TopRightButtons>
-        <Button level={'tertiary'} onClick={handleBack}>{translate('pim_common.previous')}</Button>
+        <Button level={'tertiary'} onClick={handleBack}>
+          {translate('pim_common.previous')}
+        </Button>
       </Modal.TopRightButtons>
       <Modal.SectionTitle color="brand">
         {translate('pim_enrich.entity.attribute.module.create.button')}
