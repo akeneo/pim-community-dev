@@ -128,6 +128,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'add_attribute_value') {
             appcues.track('Bulk action "Add attribute values" selected');
           }
+
+          if (eventOptions && eventOptions.name === 'set_requirements') {
+            appcues.track('Bulk action "Set attributes requirements" selected');
+          }
           break;
         case 'grid:mass-edit:action-step':
           if (eventOptions && eventOptions.name === 'configure') {
