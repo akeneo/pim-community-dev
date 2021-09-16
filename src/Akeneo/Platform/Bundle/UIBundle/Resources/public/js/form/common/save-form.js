@@ -19,7 +19,8 @@ define([
   'pim/user-context',
   'pim/router',
   'pim/common/property',
-], function ($, _, __, BaseSave, messenger, EntitySaver, FieldManager, i18n, UserContext, router, propertyAccessor) {
+  'pim/analytics',
+], function ($, _, __, BaseSave, messenger, EntitySaver, FieldManager, i18n, UserContext, router, propertyAccessor, analytics) {
   return BaseSave.extend({
     /**
      * Sets message labels for updates
@@ -100,6 +101,10 @@ define([
 
               router.redirectToRoute(this.config.redirectAfter, params);
             }
+
+            analytics.track('common:form:saved', {
+              code: this.code
+            });
           }.bind(this)
         )
         .fail(this.fail.bind(this))
