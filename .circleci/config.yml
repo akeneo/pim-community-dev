@@ -2016,7 +2016,12 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+                    VERSIONS_FILE=/tmp/zdd_versions.env
+                    touch ${VERSIONS_FILE}
+                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+          - store_artifacts:
+              path: /tmp/zdd_versions.env
+              destination: versions
           - persist_to_workspace:
               root: ~/
               paths:
@@ -2524,7 +2529,7 @@ workflows:
             requires:
                 - ready_to_build?
         - zdd_compliancy_checker:
-            name: "[<< matrix.TYPE >>] Check ZDD << matrix.CONTEXT >> compliancy"
+            name: "[<< matrix.TYPE >>] [<< matrix.CONTEXT >>] Check ZDD compliancy"
             matrix:
                 parameters:
                     TYPE: ["grth", "srnt"]
