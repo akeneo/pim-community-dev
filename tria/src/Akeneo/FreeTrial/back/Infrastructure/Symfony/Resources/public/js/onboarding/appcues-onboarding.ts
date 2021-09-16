@@ -14,7 +14,8 @@ interface EventOptions {
   value?: string,
   column?: string,
   localeCode?: string,
-  context?: string
+  context?: string,
+  count?: number,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -177,6 +178,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'common:form:saved':
           if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create')) {
             appcues.track('Create attribute form saved');
+          }
+          break;
+        case 'family-grid:product:item-selected':
+          if (eventOptions && eventOptions.count && eventOptions.count === 3) {
+            appcues.track('3 families selected in the grid');
           }
           break;
       }
