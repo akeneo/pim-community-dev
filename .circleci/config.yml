@@ -1005,13 +1005,14 @@ jobs:
                 command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
           - run:
                 name: Setup tests results folder and log folder
-                command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+                command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: |
                     sudo chown -R 1000:1000 ../project
                     sudo chown -R 1000:1000 ~/.composer
                     sudo chown -R 1000:1000 ~/.cache/yarn
+                    sudo chown -R 1000:1000 ~/.cache/Cypress
           - run:
                 name: Build the latest Docker images
                 command: |
