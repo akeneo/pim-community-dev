@@ -13,10 +13,6 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
      * {@inheritdoc}
      */
     initialize() {
-      if (null !== this.tabRedirects) {
-        this.useDirectLauncherLink = false;
-      }
-
       return NavigateAction.prototype.initialize.apply(this, arguments);
     },
 
