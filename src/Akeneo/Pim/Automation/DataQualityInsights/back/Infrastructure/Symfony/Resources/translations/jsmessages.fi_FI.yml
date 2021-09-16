@@ -134,14 +134,19 @@ akeneo_data_quality_insights:
       all_missing_attributes: Kaikki puuttuvat attribuutit
     back_to_products: Takaisin tuotteisiin
   attribute_group:
+    helper_dqi_info: Laatupisteiden laskennassa otetaan huomioon vain ne attribuutit, jotka kuuluvat laadun analysointiin aktivoituihin attribuuttiryhmiin.
     helper_dqi_link: Lisätietoa Help Centerissämme.
+    activation: Käytössä
     dqi_status: Tuotetiedon laadun analytiikan tilanne
-    disabled: Poistettu käytöstä
+    activated: Käytössä
+    disabled: Ei käytössä
     used_groups_helper: "Seuraavat attribuuttiryhmät huomioidaan tuotetiedon laadun arvioinnissa:"
+    all_groups_evaluated: Kaikki tämän tuotteen attribuuttiryhmät on otettu huomioon laskettaessa laatupisteytystä. Saadaksesi osuvimman laatupisteytyksen, <a href="{{ link }}" target="_blank">lue ohjekeskuksestamme, miten attribuuttiryhmiä on mahdollista deaktivoida.</a>
   product_grid:
     filter_label:
       quality_score: Laatupisteytys
       enrichment_quality: Rikastamisen laatu
+      images_quality: Tuotekuva
     filter_value:
       good: Hyvä
       to_improve: Kehitettävä

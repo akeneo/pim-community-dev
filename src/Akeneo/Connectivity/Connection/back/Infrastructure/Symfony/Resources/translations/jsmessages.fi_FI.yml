@@ -38,6 +38,7 @@ akeneo_connectivity.connection:
     marketplace:
       title: Haluatko yhdistää PIMin toiseen sovellukseen? 🤟
       sub_title: Tarkista Marketplace-sivustolta, mitkä sovellukset voidaan yhdistää Akeneo PIMiin.
+      link: Yhteys kauppapaikkaan
       card:
         more_info: Lisätietoa
         connect: Yhdistä
@@ -45,8 +46,17 @@ akeneo_connectivity.connection:
         title: Konnektorit
     apps:
       wizard:
+        title: Yhdistä
+        action:
+          confirm: Vahvista
+          cancel: Peruuta
+          previous: Edellinen
+          next: Seuraava
+          allow_and_next: Salli ja seuraava
         progress:
           permissions: Käyttöoikeudet
+          well_done: Hyvin tehty!
+      title: Yhdistä
   connections: Yhteydet
   secondary_actions:
     title: Muut toiminnot

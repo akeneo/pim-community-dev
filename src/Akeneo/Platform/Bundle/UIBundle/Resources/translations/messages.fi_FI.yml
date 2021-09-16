@@ -67,7 +67,7 @@ pim_common:
   product_models: Tuotemallit
   categories: Kategoriat
   family_variant: Varianttiperhe
-  enabled: Otettu käyttöön
+  enabled: Käytössä
   family: Perhe
   parent: Ylätaso
   groups: Ryhmät
@@ -250,9 +250,9 @@ info:
     keep attributes: Mitään attribuutteja ei poisteta.
     number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
     enable: Ota käyttöön
-    enabled: Otettu käyttöön
+    enabled: Käytössä
     disable: Poista käytöstä
-    disabled: Poistettu käytöstä
+    disabled: Ei käytössä
   group:
     axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
@@ -417,7 +417,7 @@ pane.accordion:
   general_parameters: Yleiset parametrit
   validation_parameters: Validaatioparametrit
   label_translations: Nimikkeiden käännökset
-  options: Vaihtoehdot
+  options: Valintalistan arvot
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
@@ -432,8 +432,8 @@ Is associated: Liittyy
 Complete: Valmis
 Created At: Luontiaika
 Updated At: Päivitysaika
-Enabled: Otettu käyttöön
-Disabled: Poistettu käytöstä
+Enabled: Käytössä
+Disabled: Ei käytössä
 Status: Status
 pim_datagrid:
   filters:

@@ -1,1 +1,18 @@
+pim_analytics:
+  new_patch_available: Uusi päivitys saatavilla
+  system_info:
+    title: Järjestelmätiedot
+    download: Lataa
+  info_header:
+    property: Ominaisuus
+  info_type:
+    pim_version: Versio
+    nb_locales: Lokaalien lukumäärä
+    nb_families: Perheiden määrä
+    nb_category_trees: Kategoriapuiden määrä
+    nb_product_values: Tuotearvojen määrä
+    avg_product_values_by_product: Keskimääräinen tuotearvojen määrä tuotteella
+    avg_product_values_by_family: Potentiaalisia tuotearvoja keskimäärin attribuuttiperhettä kohden
+    max_product_values_by_family: Potentiaalisia tuotearvoja maksimissaan attribuuttiperhettä kohden
+    nb_media_images_in_products: Tuotteilla olevien kuvien määrä
 

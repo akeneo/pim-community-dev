@@ -87,6 +87,10 @@ pim_enrich.entity.attribute_option:
       add_option: Cliccare qui per crearne uno
       delete_confirmation_title_msg: Eliminare "{{ optionCode }}" dalle tue opzioni?
       delete_confirmation_subtitle_msg: Sei sicuro di che voler eliminare questa integrazione? Non è possibile annullare questa azione.
+      search:
+        placeholder: Cerca su etichetta o codice
+        no_result:
+          title: Non ci sono risultati per la tua ricerca
 pim_enrich.entity.association_type:
   label: Tipo associazione
   property:

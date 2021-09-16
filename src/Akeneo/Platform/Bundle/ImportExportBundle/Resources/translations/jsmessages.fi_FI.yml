@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
 pim_import_export:
+  validation:
+    max_length_reached: Arvo on liian pitkä. Siinä saa olla enintään {{ limit }} merkkiä tai vähemmän.
   entity:
     job_instance:
       label: työprofiili
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Työprofiilia ei voitu päivittää.
         delete:
           success: Tehtävä poistaminen onnistui
+      duplicate:
+        title: Monista profiili {{ job_code }}
+        success: Työprofiili on onnistuneesti kopioitu.
+        fail: Työprofiilia ei voitu kopioida.
     import_profile:
       uppercase_label: Tuontiprofiili
       flash:
@@ -48,6 +54,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Suorittamisen yksityiskohdat
+      refreshing: Suorituksen tiedot päivittyvät
       refreshBtn.title: Päivitä
       button:
         show_profile.title: Näytä profiili
@@ -146,6 +153,7 @@ pim_import_export:
       file_path: Tiedostopolku
   widget:
     last_operations:
+      empty: Ei ole näytettävää toimintoa toistaiseksi.
       date: Päivämäärä
       profile_name: Profiilinimi
       details: Lisätiedot
