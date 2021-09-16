@@ -19,6 +19,7 @@ class TextareaProductValueRenderer implements ProductValueRenderer
             return $value->getData();
         }
 
+        /** @phpstan-ignore-next-line */
         return \twig_escape_filter($environment, $value);
     }
 
