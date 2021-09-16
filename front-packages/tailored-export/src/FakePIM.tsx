@@ -22,6 +22,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
 import {QualityScoreFilter, QualityScoreFilterType} from './feature/components/QualityScoreFilter/QualityScoreFilter';
+import {EntityTypeValue} from './feature/contexts/EntityTypeContext';
 
 const JOB_CODE = 'mmm';
 
@@ -86,6 +87,7 @@ type JobConfiguration = {
 
 const FakePIM = () => {
   const [jobConfiguration, setJobConfiguration] = useState<JobConfiguration | null>(null);
+  const [entityType, setEntityType] = useState<EntityTypeValue>('product');
   const [initialColumnConfiguration, setInitialColumnConfiguration] = useState<ColumnConfiguration[] | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [isCurrent, switchTo] = useTabBar('columns');
@@ -177,6 +179,11 @@ const FakePIM = () => {
       const jobConfiguration = await response.json();
 
       setJobConfiguration(jobConfiguration);
+      setEntityType(
+        ['xlsx_tailored_product_export', 'csv_tailored_product_export'].includes(jobConfiguration.job_name)
+          ? 'product'
+          : 'product_model'
+      );
       setInitialColumnConfiguration(jobConfiguration.configuration.columns);
     };
 
@@ -231,6 +238,7 @@ const FakePIM = () => {
           <ColumnsTab
             validationErrors={validationErrors}
             columnsConfiguration={initialColumnConfiguration}
+            entityType={entityType}
             onColumnsConfigurationChange={handleColumnConfigurationChange}
           />
         )}

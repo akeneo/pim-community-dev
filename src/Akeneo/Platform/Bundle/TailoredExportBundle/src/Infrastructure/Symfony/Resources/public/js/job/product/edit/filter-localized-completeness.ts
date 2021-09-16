@@ -160,6 +160,10 @@ class FilterLocalizedCompleteness extends BaseFilter {
       this.$('.completeness-filter-container')[0]
     );
   }
+
+  isEmpty() {
+    return this.config.neverEmpty ? false : 'ALL' === this.getOperator();
+  }
 }
 
 export = FilterLocalizedCompleteness;

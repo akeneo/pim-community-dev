@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
+$logLevel = getenv('LOG_LEVEL') ?: 'WARNING';
+$logger = new Logger('deployment');
+$logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Logger::toMonologLevel($logLevel)));
+
+$app = new Symfony\Component\Console\Application('Akeneo deployer', '1.0.0');
+$app->add(new App\Command\Uptime\Clear($logger));
+$app->add(new App\Command\Uptime\Get($logger));
+$app->run();

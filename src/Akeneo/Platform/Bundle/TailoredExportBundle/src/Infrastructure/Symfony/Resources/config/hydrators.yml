@@ -1,8 +1,15 @@
 services:
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator:
+    public: true
+
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ElementCollectionHydrator:
+    public: true
+
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\OperationCollectionHydrator:
+    public: true
+
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\FormatHydrator:
+    public: true
     arguments:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ElementCollectionHydrator'
 

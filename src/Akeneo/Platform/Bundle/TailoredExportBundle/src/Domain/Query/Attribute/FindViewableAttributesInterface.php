@@ -22,7 +22,6 @@ interface FindViewableAttributesInterface
     public function execute(
         string $localeCode,
         int $limit,
-        array $attributeTypes = null,
         int $offset = 0,
         string $search = null
     ): ViewableAttributesResult;

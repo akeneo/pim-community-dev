@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
-
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -23,7 +18,9 @@ use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ClearThumbnailCacheCommand extends Command
 {
@@ -51,10 +48,16 @@ class ClearThumbnailCacheCommand extends Command
         $this
             ->addArgument(
                 'preview_type',
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 'Preview type of thumbnail'
             )
-            ->setDescription('Remove cache entries for given preview type.');
+            ->addOption(
+                'all',
+                null,
+                InputOption::VALUE_NONE,
+                'Remove the thumbnails for all preview types of the asset manager'
+            )
+            ->setDescription('Remove cache entries for preview types of the asset manager.');
     }
 
     /**
@@ -62,27 +65,68 @@ class ClearThumbnailCacheCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $previewType = $input->getArgument('preview_type');
-        $supportedPreviewTypes = $this->getSupportedPreviewTypes();
-        if (! in_array($previewType, $supportedPreviewTypes)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'The preview type "%s" is not supported.\n Supported formats are: %s',
-                    $previewType,
-                    implode(', ', $supportedPreviewTypes)
-                )
+        $shouldClearAllPreviewTypes = $input->getOption('all');
+
+        if ($shouldClearAllPreviewTypes && $previewType) {
+            $output->writeln('<error>Preview type cannot be cleared with the --all option.</error>');
+
+            return;
+        }
+        if (empty($previewType) && !$shouldClearAllPreviewTypes) {
+            $output->writeln(
+                '<error>Provide a preview type to clear its cache or use the --all option to clear all preview type caches at once.</error>'
             );
+
+            return;
         }
 
-        $output->writeln(sprintf('<info>Clear thumbnail cache for "%s".</info>', $previewType));
+        if ($shouldClearAllPreviewTypes) {
+            $output->writeln('<info>Clearing all the thumbnail caches will cause the PIM to recreate the thumbnail caches the next time they are needed in the PIM which can cause performance issues.</info>');
+            if (!$io->confirm('Are you sure you want to clear all the caches ?', true)) {
+                return;
+            }
+        }
+        $previewTypesToClear = $this->getSupportedPreviewTypes();
+        if (!$shouldClearAllPreviewTypes) {
+            if (!$this->checkPreviewTypeIsValid($io, $previewType, $previewTypesToClear)) {
+                return;
+            }
+            $previewTypesToClear = [$previewType];
+        }
 
-        $this->cacheManager->remove(null, [$previewType]);
+        $output->writeln('<info>Clear thumbnail cache preview types:</info>');
+        $io->listing($previewTypesToClear);
+        $this->cacheManager->remove(null, $previewTypesToClear);
+
+        $output->writeln('');
+        $output->writeln('<info>Thumbnail cache successfully cleared</info>');
 
         return 0;
     }
 
     private function getSupportedPreviewTypes(): array
     {
-        return array_keys(array_filter($this->filterConfiguration->all(), fn ($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER));
+        return array_keys(
+            array_filter($this->filterConfiguration->all(), function ($filterConfiguration) {
+                return isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER;
+            })
+        );
+    }
+
+    private function checkPreviewTypeIsValid(
+        SymfonyStyle $io,
+        string $previewType,
+        array $previewTypesToClear
+    ): bool {
+        if (!in_array($previewType, $previewTypesToClear)) {
+            $io->writeln(sprintf('<error>The preview type "%s" is not supported, Supported formats are:</error>', $previewType));
+            $io->listing($previewTypesToClear);
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -43,7 +43,7 @@ final class Version_4_0_20191119142157_add_asset_transformations_column_Integrat
 	{
 		$migration = (new \ReflectionClass($this))->getShortName();
 		$migration = str_replace('_Integration', '', $migration);
-		$migration = str_replace('Version', '', $migration);
+		$migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
 		return $migration;
 	}

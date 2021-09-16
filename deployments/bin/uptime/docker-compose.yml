@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  composer:
+    image: 'composer:2'
+    working_dir: '/app'
+    volumes:
+      - ./:/app
+  php:
+    image: eu.gcr.io/akeneo-ci/php-deployment:latest
+    environment:
+      PROJECT: '${PROJECT:-akecld-saas-dev}'
+      LOG_LEVEL: '${LOG_LEVEL:-info}'
+      GOOGLE_APPLICATION_CREDENTIALS: '/tmp/.config/gcloud/gcloud-service-key.json'
+    working_dir: '/app'
+    volumes:
+      - ./:/app
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-~/.config/gcloud/application_default_credentials.json}:/tmp/.config/gcloud/gcloud-service-key.json

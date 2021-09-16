@@ -41,7 +41,7 @@ extensions:
         position: 100
 
     pim-job-instance-csv-asset-export-show-edit:
-        module: pim/common/redirect
+        module: pim/job/common/edit-button
         parent: pim-job-instance-csv-asset-export-show
         targetZone: buttons
         position: 100

@@ -6,6 +6,7 @@
 TYPE=${TYPE:-srnt}
 RELEASE_BUCKET="serenity-edition"
 ZCC_CONTEXT=${ZCC_CONTEXT:-artifact}
+VERSIONS_FILE=${VERSIONS_FILE:-"./zdd_versions.env"}
 
 function downloadArtifacts() {
     # Get the oldest release to use as a starting point
@@ -23,6 +24,9 @@ function downloadArtifacts() {
         TARGET_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="growth-" --sort-by="~tags" --format="value(tags)" | head -n1)
         RELEASE_BUCKET="growth-edition"
     fi
+
+    echo "oldest_release=${OLDEST_RELEASE}" > ${VERSIONS_FILE}
+    echo "target_release=${TARGET_RELEASE}" >> ${VERSIONS_FILE}
 
     # Download the oldest release Docker image and Terraform modules
     rm -rf ~/zdd_compliancy_checker/
@@ -125,6 +129,7 @@ function getDiff() {
 case $ZCC_CONTEXT in
     "artifact")
         downloadArtifacts
+        cat ${VERSIONS_FILE}
         ;;
 
     "diff_infra")

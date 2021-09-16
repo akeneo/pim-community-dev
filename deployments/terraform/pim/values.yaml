@@ -334,10 +334,10 @@ memcached:
   pdbMinAvailable: 0
 
 elasticsearch:
-  appVersion: 7.10.1
+  appVersion: 7.14.1
   image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
-    tag: 7.10.1
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 7.14.1
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false
@@ -353,16 +353,18 @@ elasticsearch:
       RECOVER_AFTER_DATA_NODES: null
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
+    plugins:
+      - repository-gcs
   client:
     replicas: 1
-    heapSize: "256m"
+    heapSize: "512m"
     resources:
       limits:
         cpu: "1"
-        memory: "512Mi"
+        memory: "1024Mi"
       requests:
         cpu: "25m"
-        memory: "512Mi"
+        memory: "1024Mi"
   master:
     replicas: 2
     persistence:
@@ -396,3 +398,8 @@ elasticsearch:
     hooks:
       drain:
         enabled: false
+  keystore:
+    - secretName: pim-secrets
+      items:
+      - key: srntPimStorageKey
+        path: gcs.client.default.credentials_file

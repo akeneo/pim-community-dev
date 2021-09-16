@@ -29,7 +29,7 @@ class ProposalIndexController extends BaseController {
 
       this.filterForm = FormBuilder.build('pim-proposal-index-grid-filters').then((filterForm: any) => {
         filterForm.render();
-        filterForm.$el.insertAfter($('.AknColumn-innerTop[data-drop-zone=navigation] .AknColumn-block'));
+        filterForm.$el.appendTo($('.subnavigation-additional-container'));
 
         return filterForm;
       });

@@ -17,6 +17,7 @@ const attribute = {
 };
 
 jest.mock('../common/DefaultValue');
+jest.mock('./CleanHTMLTags');
 
 test('it can update default value operation', () => {
   const onSourceChange = jest.fn();
@@ -41,6 +42,38 @@ test('it can update default value operation', () => {
       default_value: {
         type: 'default_value',
         value: 'foo',
+      },
+    },
+    selection: {
+      type: 'code',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update clean html tags operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <TextConfigurator
+      attribute={attribute}
+      source={{
+        ...getDefaultTextSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Clean HTML tags'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultTextSource(attribute, null, null),
+    operations: {
+      clean_html_tags: {
+        type: 'clean_html_tags',
+        value: true,
       },
     },
     selection: {

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CodeValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantValue;
@@ -25,15 +27,32 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 class PropertyValueHydrator
 {
-    public function hydrate(string $propertyName, ProductInterface $product): SourceValueInterface
+    public function hydrate(string $propertyName, $productOrProductModel): SourceValueInterface
     {
+        if (
+            !$productOrProductModel instanceof ProductInterface
+            && !$productOrProductModel instanceof ProductModelInterface
+        ) {
+            throw new \InvalidArgumentException('Cannot hydrate this entity');
+        }
+
         switch ($propertyName) {
+            case 'code':
+                if (!$productOrProductModel instanceof ProductModelInterface) {
+                    throw new \InvalidArgumentException('Cannot hydrate enabled value on Product entity');
+                }
+
+                return new CodeValue($productOrProductModel->getCode());
             case 'categories':
-                return new CategoriesValue($product->getCategoryCodes());
+                return new CategoriesValue($productOrProductModel->getCategoryCodes());
             case 'enabled':
-                return new EnabledValue($product->isEnabled());
+                if (!$productOrProductModel instanceof ProductInterface) {
+                    throw new \InvalidArgumentException('Cannot hydrate enabled value on ProductModel entity');
+                }
+
+                return new EnabledValue($productOrProductModel->isEnabled());
             case 'family':
-                $family = $product->getFamily();
+                $family = $productOrProductModel->getFamily();
 
                 if (null === $family) {
                     return new NullValue();
@@ -41,7 +60,7 @@ class PropertyValueHydrator
 
                 return new FamilyValue($family->getCode());
             case 'family_variant':
-                $familyVariant = $product->getFamilyVariant();
+                $familyVariant = $productOrProductModel->getFamilyVariant();
 
                 if (null === $familyVariant) {
                     return new NullValue();
@@ -49,7 +68,11 @@ class PropertyValueHydrator
 
                 return new FamilyVariantValue($familyVariant->getCode());
             case 'groups':
-                $groupCodes = $product->getGroupCodes();
+                if (!$productOrProductModel instanceof ProductInterface) {
+                    throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
+                }
+
+                $groupCodes = $productOrProductModel->getGroupCodes();
 
                 if (empty($groupCodes)) {
                     return new NullValue();
@@ -57,7 +80,7 @@ class PropertyValueHydrator
 
                 return new GroupsValue($groupCodes);
             case 'parent':
-                $parent = $product->getParent();
+                $parent = $productOrProductModel->getParent();
 
                 if (null === $parent) {
                     return new NullValue();

@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_tailored_export_get_grouped_sources_action';
+    private const ROUTE = 'pimee_tailored_export_get_product_grouped_sources_action';
     private WebClientHelper $webClientHelper;
 
     public function setUp(): void
@@ -93,7 +93,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     public function test_it_can_search_by_text(): void
     {
-        $response = $this->assertCallSuccess(6, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'am');
+        $response = $this->assertCallSuccess(6, ['attribute' => 0, 'system' => 0, 'association_type' => 0], 'am');
         $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
@@ -103,7 +103,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         $this->assertSourceGroupContainSource('marketing', 'name', $sourceGroups);
         $this->assertSourceGroupContainSource('marketing', 'variation_name', $sourceGroups);
 
-        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'X_SELL');
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], 'X_SELL');
         $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
         $this->assertSourceGroupDoNotContainSource('system', 'categories', $sourceGroups);
@@ -111,7 +111,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         $this->assertSourceGroupDoNotContainSource('association_types', 'UPSELL', $sourceGroups);
         $this->assertSourceGroupDoNotContainSource('marketing', 'name', $sourceGroups);
 
-        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], null, 'erp name');
+        $response = $this->assertCallSuccess(4, ['attribute' => 0, 'system' => 0, 'association_type' => 0], 'erp name');
         $sourceGroups = \json_decode($response->getContent(), true)['results'];
         $this->assertNotEmpty($sourceGroups);
 
@@ -139,35 +139,12 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         }
     }
 
-    public function test_it_filters_by_attribute_types(): void
-    {
-        $response = $this->assertCallSuccess(1000, ['attribute' => 0, 'system' => 0, 'association_type' => 0], ['pim_catalog_text']);
-        $sourceGroups = \json_decode($response->getContent(), true)['results'];
-        $this->assertNotEmpty($sourceGroups);
-
-        foreach ($sourceGroups as $group) {
-            foreach ($group['children'] as $filter) {
-                if ($filter['type'] !== 'attribute') {
-                    continue;
-                }
-
-                $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($filter['code']);
-                $this->assertNotNull($attribute);
-                $this->assertSame('pim_catalog_text', $attribute->getType());
-            }
-        }
-    }
-
-    private function assertCallSuccess(int $limit, array $offset, ?array $attributeTypes = null, string $search = null): Response
+    private function assertCallSuccess(int $limit, array $offset, string $search = null): Response
     {
         $options = [
             'limit' => $limit,
             'offset' => $offset,
         ];
-
-        if (null !== $attributeTypes) {
-            $options['attributeTypes'] = implode(',', $attributeTypes);
-        }
 
         $this->webClientHelper->callApiRoute(
             $this->client,

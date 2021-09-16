@@ -84,6 +84,13 @@
 - PIM-10054: Check records are not used as variant axes before mass delete
 - PIM-10038: Optimize Rule logger to be executed only depending of the log level
 - PIM-10033: Implement LRU cache for Asset Families to optimize performance
+- PIM-10055: Optimize publication of incoming published asssocication upon product publication
+- PIM-10063: Fix product link rule execution to make the property case insensitive
+- PIM-10059: Fix completeness display when user does not have permission on attribute group(s)
+- PIM-10066: Product export in XLSX: option for "Export media" is missing
+- PIM-10065: Asset textarea is not updated when the locale is changed
+- PIM-10029: Fix missing filters on proposal grid page
+- PIM-10068: Fix the Permissions tab disappeared for XLSX and CSV Published Products export profiles
 
 ## Improvements
 

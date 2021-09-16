@@ -20,3 +20,7 @@ services:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface'
     tags:
       - { name: akeneo.tailored_export.operation_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\CleanHTMLTagsOperationApplier:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier, priority: 101 }
