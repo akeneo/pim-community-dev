@@ -39,7 +39,7 @@ class TableProductValueRenderer implements ProductValueRenderer
         $table = $value->getData();
         Assert::isInstanceOf($table, Table::class);
 
-        $header = sprintf('<tr>%s</tr>', join('', array_map(fn (ColumnCode $columnCode) => sprintf('<th>%s</th>', $columnCode->asString()), $tableConfiguration->columnCodes())));
+        $header = sprintf('<tr>%s</tr>', join('', array_map(fn (ColumnCode $columnCode): string => sprintf('<th>%s</th>', $columnCode->asString()), $tableConfiguration->columnCodes())));
 
         $body = '';
         foreach ($table as $row) {
