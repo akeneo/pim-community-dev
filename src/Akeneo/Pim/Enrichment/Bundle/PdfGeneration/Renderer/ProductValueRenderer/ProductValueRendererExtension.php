@@ -23,7 +23,7 @@ class ProductValueRendererExtension extends \Twig_Extension
         ];
     }
 
-    public function renderAttributeValue(Environment $environment, AttributeInterface $attribute, ?ValueInterface $productValue, string $localeCode)
+    public function renderAttributeValue(Environment $environment, AttributeInterface $attribute, ?ValueInterface $productValue, string $localeCode): ?string
     {
         return $this->productValueRendererRegistry
             ->getProductValueRenderer($attribute->getType())
