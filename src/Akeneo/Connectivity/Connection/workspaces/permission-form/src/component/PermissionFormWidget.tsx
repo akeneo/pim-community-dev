@@ -20,6 +20,7 @@ type Props = {
     onAdd: (identifier: string) => void;
     onRemove: (identifier: string) => void;
     disabled: boolean;
+    readOnly: boolean;
     allByDefaultIsSelected: boolean;
     onSelectAllByDefault: () => void;
     onDeselectAllByDefault: () => void;
@@ -37,6 +38,7 @@ export const PermissionFormWidget: FC<Props> = ({
     onAdd,
     onRemove,
     disabled,
+    readOnly,
     allByDefaultIsSelected,
     onSelectAllByDefault,
     onDeselectAllByDefault,
@@ -51,13 +53,14 @@ export const PermissionFormWidget: FC<Props> = ({
                 value={selection}
                 onAdd={onAdd}
                 onRemove={onRemove}
-                disabled={disabled}
+                disabled={disabled || readOnly}
                 url={ajaxUrl}
                 processResults={processAjaxResponse}
                 fetchByIdentifiers={fetchByIdentifiers}
             />
             <Checkbox
                 checked={allByDefaultIsSelected}
+                readOnly={readOnly}
                 onChange={checked => {
                     checked ? onSelectAllByDefault() : onDeselectAllByDefault();
                 }}

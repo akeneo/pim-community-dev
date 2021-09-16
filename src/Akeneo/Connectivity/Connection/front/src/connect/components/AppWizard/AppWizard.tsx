@@ -83,7 +83,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 );
                 history.push('/connect/marketplace');
             })
-            .catch(e => {
+            .catch(() => {
                 notify(
                     NotificationLevel.ERROR,
                     translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
