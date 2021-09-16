@@ -174,6 +174,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode +'" changed');
           }
           break;
+        case 'common:form:saved':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create')) {
+            appcues.track('Create attribute form saved');
+          }
+          break;
       }
     });
   },
