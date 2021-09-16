@@ -1,9 +1,10 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, waitForElement} from '@testing-library/react';
+import {screen, wait, waitForElement} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
 import {ConnectedAppsListPage} from '@src/connect/pages/ConnectedAppsListPage';
+import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 
 jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
     useFeatureFlags: () => {
@@ -13,9 +14,12 @@ jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
     },
 }));
 
+const notify = jest.fn();
+
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
+    notify.mockClear();
 });
 
 test('The connected apps list page renders with 2 connected apps card', async () => {
@@ -172,8 +176,12 @@ test('The connected apps list page renders with internal api errors', async () =
         ...fetchConnectedAppsResponses,
     });
 
-    renderWithProviders(<ConnectedAppsListPage />);
-    await waitForElement(() => screen.getByText('Something went wrong'));
 
-    expect(screen.queryByText('Something went wrong')).toBeInTheDocument();
+    renderWithProviders(<NotifyContext.Provider value={notify}><ConnectedAppsListPage /></NotifyContext.Provider>);
+    await wait(() => expect(notify).toHaveBeenCalledTimes(1))
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.ERROR,
+        'akeneo_connectivity.connection.connect.connected_apps.list.flash.error'
+    );
 });

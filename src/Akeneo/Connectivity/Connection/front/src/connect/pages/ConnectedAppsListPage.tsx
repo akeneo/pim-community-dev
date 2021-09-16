@@ -9,6 +9,7 @@ import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsC
 import {ConnectedApp} from '../../model/connected-app';
 import {useFetchConnectedApps} from '../hooks/use-fetch-connected-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import {NotificationLevel, useNotify} from '../../shared/notify';
 
 export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();
@@ -16,6 +17,7 @@ export const ConnectedAppsListPage: FC = () => {
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const featureFlag = useFeatureFlags();
     const fetchConnectedApps = useFetchConnectedApps();
+    const notify = useNotify();
     const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 
     useEffect(() => {
@@ -26,7 +28,13 @@ export const ConnectedAppsListPage: FC = () => {
 
         fetchConnectedApps()
             .then(setConnectedApps)
-            .catch(() => setConnectedApps(false));
+            .catch(() => {
+                setConnectedApps(false);
+                notify(
+                    NotificationLevel.ERROR,
+                    translate('akeneo_connectivity.connection.connect.connected_apps.list.flash.error')
+                );
+            });
     }, [fetchConnectedApps]);
 
     const breadcrumb = (
@@ -44,7 +52,6 @@ export const ConnectedAppsListPage: FC = () => {
 
             <PageContent>
                 {null === connectedApps && <ConnectedAppsContainerIsLoading />}
-                {false === connectedApps && <>Something went wrong</>}
                 {false !== connectedApps && null !== connectedApps && (
                     <ConnectedAppsContainer connectedApps={connectedApps} />
                 )}

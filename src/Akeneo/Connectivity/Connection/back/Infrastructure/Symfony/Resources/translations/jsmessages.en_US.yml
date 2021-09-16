@@ -79,6 +79,8 @@ akeneo_connectivity.connection:
                 card:
                     developed_by: Developed by
                     manage_app: Manage app
+                flash:
+                    error: Sorry, an error occured while fetching the connected apps list.
         apps:
             wizard:
                 title: Connect
