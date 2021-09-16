@@ -61,12 +61,42 @@ akeneo_connectivity.connection:
       scroll_to_top: Przewiń do początku
     apps:
       wizard:
+        title: Połącz
+        action:
+          confirm: Potwierdź
+          cancel: Anuluj
+          previous: Poprzednie
+          next: Następne
+          allow_and_next: Zezwól i przejdź dalej
         progress:
+          authorizations: Autoryzacje
           permissions: Uprawnienia
+          well_done: Świetnie!
+        authorize:
+          title: 'Aplikacja {{ app_name }} musi'
+          no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
+          no_scope: Nie zażądano żadnych określonych autoryzacji.
+          helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
+          helper_link: zajrzyj do naszego Centrum Pomocy.
       title: Połącz
       activate:
         flash:
           error: Przepraszamy, wystąpił błąd podczas łączenia z aplikacją.
+      scope:
+        type:
+          view: 'Zobacz {{ entities }}'
+          edit: 'Zobacz i edytuj {{ entities }}'
+          delete: 'Zobacz, edytuj i usuń {{ entities }}'
+        entities:
+          catalog_structure: atrybuty, grupy atrybutów, rodziny i warianty rodziny
+          attribute_options: opcje atrybutów
+          categories: kategorie
+          channel_localization: wersje językowe i waluty
+          channel_settings: kanały
+          association_types: typy powiązań
+          products: produkty i modele produktów
+      error:
+        sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
       constraint:
         client_id:
           not_blank: Atrybut client_id jest wymagany.

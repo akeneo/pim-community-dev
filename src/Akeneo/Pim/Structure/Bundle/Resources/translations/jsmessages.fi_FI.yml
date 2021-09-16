@@ -85,6 +85,10 @@ pim_enrich.entity.attribute_option:
       add_option: Klikkaa tästä luodaksesi sellainen
       delete_confirmation_title_msg: Poista "{{ optionCode }}" valintalistan arvoista?
       delete_confirmation_subtitle_msg: Haluatko varmasti poistaa tämän valintalistan arvon? Et voi peruuttaa tätä toimenpidettä.
+      search:
+        placeholder: Etsi otsikolla tai koodilla
+        no_result:
+          title: Haullasi ei löytynyt tuloksia.
 pim_enrich.entity.association_type:
   label: assosiaatiotyyppi
   property:
@@ -113,6 +117,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Oletko varma, että haluat poistaa tämän liitostyypin?
   hint: <a href="{{link}}" target="_blank">Tästä artikkelissa</a>löydät kaiken mitä tarvitset luodaksesi oman assosiaatiotyypin.
+  no_association_types:
+    title: Sinulla ei ole assosiaatiotyyppejä
+    hint: Luo ensimmäinen
 pim_enrich.entity.group_type:
   label: ryhmän tyyppi
   flash:
@@ -140,6 +147,7 @@ pim_enrich.entity.attribute:
       success: Attribuutin päivittäminen onnistui.
       fail: Attribuuttia ei voitu päivittää.
       fields_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      cant_remove_attributes_used_as_label: Attribuutteja, joita käytetään perheen otsikkona, ei voi poistaa.
     delete:
       success: Attribuutin poistaminen onnistui
       fail: Attribuuttia ei voi poistaa
@@ -147,7 +155,7 @@ pim_enrich.entity.attribute:
     index: "]-Inf, 1] {{ count }} attribuutti|]1, Inf [{{ count }} attribuuttia"
   property:
     allowed_extensions: Sallitut laajennukset
-    auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
+    auto_option_sorting: Järjestä arvot automaattisesti aakkosjärjestykseen
     available_locales: Saatavilla olevat alueet
     date_max: Max päivämäärä
     date_min: Min päivämäärä
@@ -155,6 +163,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Oletusarvoinen mittausyksikkö
       choose: Valitse yksikkö
+    guidelines: Attribuutin ohjeteksti
     group:
       label: Attribuuttiryhmä
       choose: Valitse attribuuttiryhmä
@@ -210,6 +219,7 @@ pim_enrich.entity.attribute:
       common: Yleiset parametrit
       type_specific: Tyyppikohtaiset parametrit
       validation: Validaatioparametrit
+      select_locale: Valitse lokaali
     delete:
       confirm: Oletko varma, että haluat poistaa tämän attribuutin?
       product_count: '{0}0 tuotetta|{1}1 tuote|]1, Inf[{{ count }} tuotetta'
@@ -257,6 +267,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Valitse tuoteperheet
     choose:
+      title: Perheiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Muuta asetuksia
