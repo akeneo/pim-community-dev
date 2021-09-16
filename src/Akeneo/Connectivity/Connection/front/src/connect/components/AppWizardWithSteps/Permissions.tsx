@@ -39,9 +39,10 @@ const Helper = styled.div`
 type RowProps = {
     provider: PermissionFormProvider<any>;
     setPermissions: (state: any) => void;
+    permissions: PermissionsType | undefined;
 };
 
-const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions}) => {
+const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions, permissions}) => {
     const handleChange = useCallback(
         (state: any) => {
             setPermissions((permissions: PermissionsType) => ({...permissions, [provider.key]: state}));
@@ -49,16 +50,17 @@ const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions}) => {
         [setPermissions]
     );
 
-    return <div>{provider.renderForm(handleChange)}</div>;
+    return <div>{provider.renderForm(handleChange, permissions)}</div>;
 });
 
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: any) => void;
+    setPermissions: (state: PermissionsType) => void;
+    permissions: PermissionsType;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setPermissions}) => {
+export const Permissions: FC<Props> = ({appName, providers, setPermissions, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -72,7 +74,12 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions}) => 
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow key={provider.key} provider={provider} setPermissions={setPermissions} />
+                <PermissionRow
+                    key={provider.key}
+                    provider={provider}
+                    setPermissions={setPermissions}
+                    permissions={permissions[provider.key]}
+                />
             ))}
         </InfoContainer>
     );

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Checkbox, EraseIcon, IconButton} from 'akeneo-design-system';
-import {MultiSelectInputWithDynamicOptions} from './MultiSelectInputWithDynamicOptions';
+import {MultiSelectInputWithDynamicOptions, QueryParamsBuilder} from './MultiSelectInputWithDynamicOptions';
 import translate from '../dependencies/translate';
 
 const Field = styled.div`
@@ -20,6 +20,7 @@ type Props = {
     onAdd: (identifier: string) => void;
     onRemove: (identifier: string) => void;
     disabled: boolean;
+    readOnly: boolean;
     allByDefaultIsSelected: boolean;
     onSelectAllByDefault: () => void;
     onDeselectAllByDefault: () => void;
@@ -28,7 +29,9 @@ type Props = {
     processAjaxResponse: (response: any) => {
         results: Option[];
         more: boolean;
+        context: any;
     };
+    buildQueryParams?: QueryParamsBuilder<any, any>;
     fetchByIdentifiers: (identifiers: string[]) => Promise<Option[]>;
 };
 
@@ -37,12 +40,14 @@ export const PermissionFormWidget: FC<Props> = ({
     onAdd,
     onRemove,
     disabled,
+    readOnly,
     allByDefaultIsSelected,
     onSelectAllByDefault,
     onDeselectAllByDefault,
     onClear,
     ajaxUrl,
     processAjaxResponse,
+    buildQueryParams,
     fetchByIdentifiers,
 }: Props) => {
     return (
@@ -51,13 +56,15 @@ export const PermissionFormWidget: FC<Props> = ({
                 value={selection}
                 onAdd={onAdd}
                 onRemove={onRemove}
-                disabled={disabled}
+                disabled={disabled || readOnly}
                 url={ajaxUrl}
                 processResults={processAjaxResponse}
                 fetchByIdentifiers={fetchByIdentifiers}
+                buildQueryParams={buildQueryParams}
             />
             <Checkbox
                 checked={allByDefaultIsSelected}
+                readOnly={readOnly}
                 onChange={checked => {
                     checked ? onSelectAllByDefault() : onDeselectAllByDefault();
                 }}

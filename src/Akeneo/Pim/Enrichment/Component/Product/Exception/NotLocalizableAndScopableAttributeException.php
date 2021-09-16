@@ -7,14 +7,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotLocalizableAndScopableAttributeException extends PropertyException implements
+class NotLocalizableAndScopableAttributeException extends InvalidAttributeException implements
     DomainErrorInterface,
     TemplatedErrorMessageInterface
 {
@@ -23,7 +22,7 @@ class NotLocalizableAndScopableAttributeException extends PropertyException impl
 
     private function __construct(TemplatedErrorMessage $templatedMessage, string $attributeCode)
     {
-        parent::__construct((string) $templatedMessage);
+        parent::__construct($attributeCode, null, null, (string) $templatedMessage);
         $this->templatedMessage = $templatedMessage;
         $this->attributeCode = $attributeCode;
         $this->propertyName = 'attribute';
