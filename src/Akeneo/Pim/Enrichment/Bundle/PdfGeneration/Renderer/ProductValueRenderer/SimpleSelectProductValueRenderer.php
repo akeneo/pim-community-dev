@@ -34,7 +34,7 @@ class SimpleSelectProductValueRenderer implements ProductValueRenderer
         return $attributeType === AttributeTypes::OPTION_SIMPLE_SELECT;
     }
 
-    private function getOptionLabel(AttributeInterface $attribute, string $optionCode, string $localeCode)
+    private function getOptionLabel(AttributeInterface $attribute, string $optionCode, string $localeCode): string
     {
         $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode() . '.' . $optionCode);
 
