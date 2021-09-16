@@ -1,0 +1,7 @@
+free_trial:
+  menu:
+    proposals: Propositions
+    feature_ee_only: Cette fonctionnalité est uniquement disponible sur l'Enterprise Edition
+  activity:
+    dashboard:
+      projects: Projets

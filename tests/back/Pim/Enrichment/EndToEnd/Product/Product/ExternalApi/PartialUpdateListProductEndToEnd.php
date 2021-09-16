@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
@@ -309,6 +310,29 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testAccessDeniedWhenPartialUpdateOnProductsWithoutTheAcl()
+    {
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+{"identifier": "foo"}
+JSON;
+
+        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $result['http_response'];
+
+        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     protected function getBufferSize()

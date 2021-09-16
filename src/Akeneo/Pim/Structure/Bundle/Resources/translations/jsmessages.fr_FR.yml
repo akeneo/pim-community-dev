@@ -87,6 +87,10 @@ pim_enrich.entity.attribute_option:
       add_option: Cliquez ici pour en ajouter une
       delete_confirmation_title_msg: Supprimer "{{ optionCode }}" de vos options ?
       delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
+      search:
+        placeholder: Chercher en utilisant le nom ou le code
+        no_result:
+          title: Il n'y a aucun résultat pour votre recherche.
 pim_enrich.entity.association_type:
   label: type d'association
   property:
@@ -265,6 +269,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Choisir des familles
     choose:
+      title: Actions de masse sur les familles
       label_count: "]0, Inf[Sélectionnez votre action"
     configure:
       label: Configurez l'opération à effectuer

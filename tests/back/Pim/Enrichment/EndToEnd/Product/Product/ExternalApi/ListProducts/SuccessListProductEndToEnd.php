@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
+use Psr\Log\Test\TestLogger;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group ce
@@ -915,6 +917,25 @@ JSON;
 JSON;
 
         $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testAccessDeniedWhenRetrievingProductsWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/products');
+        $response = $client->getResponse();
+
+        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**
