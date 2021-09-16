@@ -158,6 +158,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'settings:attributes:clicked':
           appcues.track('Settings: "Attributes" clicked');
           break;
+        case 'attribute:create:type-selected':
+          if (eventOptions && eventOptions.name) {
+            appcues.track('Attribute of type "' + eventOptions.name +'" created');
+          }
+          break;
       }
     });
   },
