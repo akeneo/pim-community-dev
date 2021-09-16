@@ -10,6 +10,7 @@ class DefaultProductValueRenderer implements ProductValueRenderer
 {
     public function render(Environment $environment, AttributeInterface $attribute, ?ValueInterface $value, string $localeCode): ?string
     {
+        /** @phpstan-ignore-next-line */
         return \twig_escape_filter($environment, $value);
     }
 
