@@ -19,7 +19,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer: {}
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer: ~
 
     Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\BooleanProductValueRenderer:
         arguments:
