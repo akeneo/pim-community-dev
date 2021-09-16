@@ -119,6 +119,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'product-edit') {
             appcues.track('Button "Bulk actions" in product grid clicked');
           }
+
+          if (eventOptions && eventOptions.name === 'family-edit') {
+            appcues.track('Button "Bulk actions" in family grid clicked');
+          }
           break;
         case 'grid:mass-edit:item-chosen':
           if (eventOptions && eventOptions.name === 'add_attribute_value') {
@@ -182,6 +186,7 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'family-grid:product:item-selected':
           if (eventOptions && eventOptions.count && eventOptions.count === 3) {
+            console.log('test');
             appcues.track('3 families selected in the grid');
           }
           break;
