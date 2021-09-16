@@ -81,6 +81,9 @@ akeneo_connectivity.connection:
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about app authorization,
                     helper_link: check out our Help Center article.
+                flash:
+                    success: App successfully configured.
+                    error: Sorry, an error occurred while connecting the App.
                 permission:
                     helper: If you need help please check our article
                     helper_link: How to set-up app permissions?
@@ -107,6 +110,7 @@ akeneo_connectivity.connection:
                 client_id:
                     not_blank: The client_id is required.
                     must_be_valid: The client_id does not match any known client.
+                    must_have_ongoing_authorization: The client_id do not have any ongoing authorization process at the moment
                 response_type:
                     not_blank: The response_type is required.
                     must_be_code: The response_type must be "code".

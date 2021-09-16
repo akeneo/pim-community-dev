@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -32,70 +32,28 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected $supportedFormat = ['internal_api'];
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var NormalizerInterface */
-    protected $versionNormalizer;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var ImageNormalizer */
-    protected $imageNormalizer;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var StructureVersionProviderInterface */
-    protected $structureVersionProvider;
-
-    /** @var FormProviderInterface */
-    protected $formProvider;
-
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
-    /** @var ConverterInterface */
-    protected $productValueConverter;
-
-    /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
-    protected $completenessCollectionNormalizer;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var FillMissingValuesInterface */
-    protected $fillMissingProductValues;
-
-    /** @var EntityWithFamilyVariantAttributesProvider */
-    protected $attributesProvider;
-
-    /** @var VariantNavigationNormalizer */
-    protected $navigationNormalizer;
-
-    /** @var AscendantCategoriesInterface */
-    protected $ascendantCategoriesQuery;
-
-    /** @var NormalizerInterface */
-    private $parentAssociationsNormalizer;
-
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
-
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /** @var MissingRequiredAttributesNormalizerInterface */
-    private $missingRequiredAttributesNormalizer;
-
-    /** @var QuantifiedAssociationsNormalizer */
-    private $quantifiedAssociationsNormalizer;
-
-    /** @var MissingRequiredAttributesCalculator */
-    private $missingRequiredAttributesCalculator;
+    protected array $supportedFormat = ['internal_api'];
+    protected NormalizerInterface $normalizer;
+    protected NormalizerInterface $versionNormalizer;
+    protected VersionManager $versionManager;
+    protected ImageNormalizer $imageNormalizer;
+    protected LocaleRepositoryInterface $localeRepository;
+    protected StructureVersionProviderInterface $structureVersionProvider;
+    protected FormProviderInterface $formProvider;
+    protected AttributeConverterInterface $localizedConverter;
+    protected ConverterInterface $productValueConverter;
+    protected ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer;
+    protected UserContext $userContext;
+    protected FillMissingValuesInterface $fillMissingProductValues;
+    protected EntityWithFamilyVariantAttributesProvider $attributesProvider;
+    protected VariantNavigationNormalizer $navigationNormalizer;
+    protected AscendantCategoriesInterface $ascendantCategoriesQuery;
+    private NormalizerInterface $parentAssociationsNormalizer;
+    private MissingAssociationAdder $missingAssociationAdder;
+    protected CatalogContext $catalogContext;
+    private MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
+    private QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer;
+    private MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -118,7 +76,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         CatalogContext $catalogContext,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;

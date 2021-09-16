@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Prophecy\Argument;
 
 class ProductAndProductModelQueryBuilderFactorySpec extends ObjectBehavior
 {
@@ -20,6 +21,7 @@ class ProductAndProductModelQueryBuilderFactorySpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
+        $optionsResolver->resolve(Argument::any())->willReturn([]);
         $this->beConstructedWith(
             ProductAndProductModelQueryBuilder::class,
             $attributeRepository,

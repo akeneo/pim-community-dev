@@ -119,6 +119,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
     ) {
         $repository->findOneByIdentifier('sku')->willReturn($attribute);
         $attribute->getCode()->willReturn('sku');
+        $filterRegistry->getFieldFilter('sku', '=')->willReturn(null);
         $filterRegistry->getAttributeFilter($attribute, '=')->willReturn($filter);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -148,6 +149,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $name->setLocalizable(false);
 
         $repository->findOneByIdentifier('name')->willReturn($name);
+        $filterRegistry->getFieldFilter('name', 'EMPTY')->willReturn(null);
         $filterRegistry->getAttributeFilter($name, 'EMPTY')->willReturn($textFilter);
         $repository->findOneByIdentifier('family')->willReturn(null);
         $filterRegistry->getFieldFilter('family', 'NOT EMPTY')->willReturn($familyFilter);
@@ -313,6 +315,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $repository->findOneByIdentifier('bar')->willReturn($attribute);
+        $filterRegistry->getFieldFilter('bar', 'IN LIST')->willReturn(null);
         $filterRegistry->getAttributeFilter($attribute, 'IN LIST')->willReturn($filterAttribute);
 
         $this->addFilter('id', '=', '42', []);

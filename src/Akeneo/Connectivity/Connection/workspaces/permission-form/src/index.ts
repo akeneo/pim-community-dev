@@ -3,6 +3,7 @@ import PermissionFormRegistry, {PermissionFormProvider} from './registry/Permiss
 import {PermissionFormWidget} from './component/PermissionFormWidget';
 import {PermissionSectionSummary, LevelSummaryField} from './component/PermissionSectionSummary';
 import * as PermissionFormReducer from './reducer/PermissionFormReducer';
+import {QueryParamsBuilder} from './component/MultiSelectInputWithDynamicOptions';
 
 export {
     PermissionFormRegistry,
@@ -11,4 +12,5 @@ export {
     PermissionFormReducer,
     PermissionSectionSummary,
     LevelSummaryField,
+    QueryParamsBuilder,
 };

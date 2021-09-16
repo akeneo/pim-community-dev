@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 
+export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context | null) => Params;
+
 type Select2Option = {
     id: string;
     text: string;
@@ -12,7 +14,7 @@ type Select2Configuration = {
     ajax: {
         url: string;
         dataType: string;
-        results: (data: any) => {results: Select2Option[]};
+        results: (data: any) => {results: Select2Option[]; more: boolean; context?: any};
         cache?: boolean;
         quietMillis?: number;
     };
@@ -30,7 +32,10 @@ type Props = {
     fetchByIdentifiers: (identifiers: string[]) => Promise<Select2Option[]>;
     processResults: (data: any) => {
         results: Select2Option[];
+        more: boolean;
+        context?: any;
     };
+    buildQueryParams?: QueryParamsBuilder<any, any>;
     disabled: boolean;
     value: string[];
     onChange?: (value: string[]) => void;
@@ -42,6 +47,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     url,
     fetchByIdentifiers,
     processResults,
+    buildQueryParams,
     disabled,
     value,
     onChange,
@@ -49,6 +55,8 @@ export const MultiSelectInputWithDynamicOptions = ({
     onRemove,
 }: Props) => {
     const ref = useRef<HTMLInputElement>(null);
+
+    /* istanbul ignore next */
     const handleInitSelection = useCallback(
         (element, callback) => {
             const val = element.val().trim();
@@ -76,6 +84,7 @@ export const MultiSelectInputWithDynamicOptions = ({
                 cache: true,
                 quietMillis: 250,
                 dataType: 'json',
+                data: buildQueryParams || undefined,
                 results: processResults,
             },
             initSelection: handleInitSelection,
@@ -84,6 +93,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     );
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
@@ -115,6 +125,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     }, [configuration]);
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
@@ -128,6 +139,7 @@ export const MultiSelectInputWithDynamicOptions = ({
     }, [value]);
 
     useEffect(() => {
+        /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }

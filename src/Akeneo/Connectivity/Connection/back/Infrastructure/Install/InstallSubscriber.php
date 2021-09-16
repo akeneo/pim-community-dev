@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateAppTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
@@ -46,6 +47,7 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditErrorTableQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateAppTableQuery::QUERY);
     }
 
     public function loadFixtures(InstallerEvent $installerEvent): void

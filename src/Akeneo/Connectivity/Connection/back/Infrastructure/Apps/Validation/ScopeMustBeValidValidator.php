@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
+use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapperInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,9 +15,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ScopeMustBeValidValidator extends ConstraintValidator
 {
-    private ScopeMapper $scopeMapper;
+    private ScopeMapperInterface $scopeMapper;
 
-    public function __construct(ScopeMapper $scopeMapper)
+    public function __construct(ScopeMapperInterface $scopeMapper)
     {
         $this->scopeMapper = $scopeMapper;
     }

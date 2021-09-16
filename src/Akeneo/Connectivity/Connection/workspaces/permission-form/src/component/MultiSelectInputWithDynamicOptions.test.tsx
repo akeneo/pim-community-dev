@@ -22,6 +22,7 @@ test('it renders with the expected configuration', () => {
     expect(select2).toBeCalledWith({
         ajax: {
             cache: true,
+            data: undefined,
             dataType: 'json',
             quietMillis: 250,
             results: props.processResults,
