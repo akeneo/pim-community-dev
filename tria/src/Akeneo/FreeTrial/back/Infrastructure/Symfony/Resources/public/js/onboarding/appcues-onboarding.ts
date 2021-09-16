@@ -165,8 +165,8 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'common:form:value-changed':
-          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create-form') && eventOptions.name) {
-            appcues.track('On creating attribute, the value of field "' + eventOptions.name +'" changed');
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.name) {
+            appcues.track('On attribute form, the value of field "' + eventOptions.name +'" changed');
           }
           break;
       }
