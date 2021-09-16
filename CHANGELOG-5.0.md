@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10060: Impossible to edit products in a new tab/window from a right click on the product grid
+
 # 5.0.46 (2021-09-03)
 
 # 5.0.45 (2021-08-27)
