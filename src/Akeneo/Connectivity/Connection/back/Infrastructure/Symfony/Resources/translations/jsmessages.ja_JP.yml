@@ -61,12 +61,42 @@ akeneo_connectivity.connection:
       scroll_to_top: 上までスクロール
     apps:
       wizard:
+        title: 接続
+        action:
+          confirm: 確認
+          cancel: キャンセル
+          previous: 前へ
+          next: 次へ
+          allow_and_next: 許可して次へ
         progress:
+          authorizations: 承認
           permissions: 許可
+          well_done: よくできました！
+        authorize:
+          title: '{{ app_name }}アプリには以下が必要です：'
+          no_scope_title: '{{ app_name }}アプリがPIMにアクセスしようとしています。'
+          no_scope: 特定の承認は要求されていません。
+          helper: アプリの承認について詳しくは、
+          helper_link: ヘルプセンターをご確認ください。
       title: 接続
       activate:
         flash:
           error: 申し訳ございません、アプリを接続中にエラーが発生しました。
+      scope:
+        type:
+          view: '{{ entities }}の表示'
+          edit: '{{ entities }}の表示と編集'
+          delete: '{{ entities }}の表示、編集、削除'
+        entities:
+          catalog_structure: 属性、属性グループ、ファミリーとファミリーバリアント
+          attribute_options: 属性オプション
+          categories: カテゴリ
+          channel_localization: ロケールと通貨
+          channel_settings: チャンネル
+          association_types: 関連タイプ
+          products: 商品と商品モデル
+      error:
+        sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
       constraint:
         client_id:
           not_blank: client_idは必須です。
