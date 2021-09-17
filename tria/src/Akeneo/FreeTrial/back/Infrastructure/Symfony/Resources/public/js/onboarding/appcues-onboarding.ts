@@ -233,6 +233,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Photo printing" added in the content of the export profile');
           }
           break;
+        case 'job-instance:form-edit:saved':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'furniture_amazon') {
+            appcues.track('Edit export profile "Furniture products for Amazon (weekly)" saved');
+          }
+          break;
       }
     });
   },
