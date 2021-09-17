@@ -1,6 +1,6 @@
 import React, {useEffect, useReducer} from 'react';
 import styled from 'styled-components';
-import {getColor, Helper, KeyIcon, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
+import {getColor, Helper, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
 import {
   PermissionFormProvider,
@@ -30,7 +30,7 @@ const Label = styled.label`
   display: block;
 `;
 
-const categoriesAjaxUrl = routing.generate('pimee_permissions_entities_get_categories');
+const attributeGroupsAjaxUrl = routing.generate('pimee_permissions_entities_get_attribute_groups');
 
 type Response = {
   results: {
@@ -43,10 +43,10 @@ type Response = {
   };
 };
 
-const processCategories = (data: Response) => ({
-  results: data.results.map(category => ({
-    id: category.code,
-    text: category.label || `[${category.code}]`,
+const processAttributeGroups = (data: Response) => ({
+  results: data.results.map(attributeGroup => ({
+    id: attributeGroup.code,
+    text: attributeGroup.label || `[${attributeGroup.code}]`,
   })),
   more: data.next.url !== null,
   context: {
@@ -55,12 +55,12 @@ const processCategories = (data: Response) => ({
 });
 
 const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
-  return FetcherRegistry.getFetcher('category')
+  return FetcherRegistry.getFetcher('attribute-group')
     .fetchByIdentifiers(identifiers)
     .then((results: any) =>
-      results.map((category: any) => ({
-        id: category.code,
-        text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
+      results.map((attributeGroup: any) => ({
+        id: attributeGroup.code,
+        text: getLabel(attributeGroup.labels, UserContext.get('uiLocale'), `[${attributeGroup.code}]`),
       }))
     );
 };
@@ -97,8 +97,8 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
   return params;
 };
 
-const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
-  key: 'categories',
+const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
+  key: 'attribute-groups',
   renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
@@ -112,46 +112,30 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
     return (
       <>
         <SectionTitle>
-          <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
+          <H3>{translate('pim_permissions.widget.entity.attribute_group.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+        {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
+          <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
         ) : (
           <Helper level="warning">
             {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.category.edit_permissions'),
+              permission: translate('pimee_enrich.acl.attribute_group.edit_permissions'),
             })}
           </Helper>
         )}
-        <Label>{translate('pim_permissions.widget.level.own')}</Label>
-        <PermissionFormWidget
-          selection={state.own.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
-          disabled={state.own.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
-          allByDefaultIsSelected={state.own.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
-        />
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
         <PermissionFormWidget
           selection={state.edit.identifiers}
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
           disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')}
           allByDefaultIsSelected={state.edit.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
+          ajaxUrl={attributeGroupsAjaxUrl}
+          processAjaxResponse={processAttributeGroups}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
           buildQueryParams={buildQueryParams}
         />
@@ -161,13 +145,13 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
+          ajaxUrl={attributeGroupsAjaxUrl}
+          processAjaxResponse={processAttributeGroups}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
           buildQueryParams={buildQueryParams}
         />
@@ -175,10 +159,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
     );
   },
   renderSummary: (state: PermissionFormReducer.State) => (
-    <PermissionSectionSummary label={'pim_permissions.widget.entity.category.label'}>
-      <LevelSummaryField levelLabel={'pim_permissions.widget.level.own'} icon={<KeyIcon size={20} />}>
-        {state.own.all ? translate('pim_permissions.widget.all') : state.own.identifiers.join(', ')}
-      </LevelSummaryField>
+    <PermissionSectionSummary label={'pim_permissions.widget.entity.attribute_group.label'}>
       <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
         {state.edit.all ? translate('pim_permissions.widget.all') : state.edit.identifiers.join(', ')}
       </LevelSummaryField>
@@ -193,4 +174,4 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
   },
 };
 
-export default CategoryPermissionFormProvider;
+export default AttributeGroupPermissionFormProvider;

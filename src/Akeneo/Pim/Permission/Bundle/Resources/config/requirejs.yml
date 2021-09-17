@@ -4,3 +4,5 @@ config:
             providers:
                 categories:
                     module: akeneopimpermission/js/provider/CategoryPermissionFormProvider
+                attribute-groups:
+                    module: akeneopimpermission/js/provider/AttributeGroupPermissionFormProvider

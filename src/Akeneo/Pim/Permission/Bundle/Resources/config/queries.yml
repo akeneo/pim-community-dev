@@ -151,3 +151,7 @@ services:
     Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels:
+        arguments:
+            - '@database_connection'
