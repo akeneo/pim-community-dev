@@ -84,6 +84,8 @@ akeneo_connectivity.connection:
                 flash:
                     success: App successfully configured.
                     error: Sorry, an error occurred while connecting the App.
+                    permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
+                    permissions_error.description: Please check the App permission settings.
                 permission:
                     helper: If you need help please check our article
                     helper_link: How to set-up app permissions?

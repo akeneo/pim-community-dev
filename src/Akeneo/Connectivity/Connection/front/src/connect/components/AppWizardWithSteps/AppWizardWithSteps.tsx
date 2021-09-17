@@ -9,6 +9,8 @@ import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
+import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
 
 const Content = styled.div`
     display: grid;
@@ -52,6 +54,7 @@ interface Props {
 export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
+    const notify = useNotify();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
     const steps: string[] = ['authorizations', 'permissions', 'summary'];
@@ -60,6 +63,8 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
     const [permissions, setPermissions] = useState<PermissionsType>({});
+
+    const confirmAuthorization = useConfirmAuthorization(clientId);
 
     useEffect(() => {
         permissionFormRegistry.all().then(providers => setProviders(providers));
@@ -71,6 +76,43 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
 
     const redirectToMarketplace = () => {
         history.push('/connect/marketplace');
+    };
+
+    const handleConfirm = async () => {
+        try {
+            const {userGroup} = await confirmAuthorization();
+
+            for (const provider of providers) {
+                const success = await provider.save(userGroup, permissions[provider.key]);
+                if (false === success) {
+                    notify(
+                        NotificationLevel.ERROR,
+                        translate(
+                            'akeneo_connectivity.connection.connect.apps.wizard.flash.permissions_error.description'
+                        ),
+                        {
+                            titleMessage: translate(
+                                'akeneo_connectivity.connection.connect.apps.wizard.flash.permissions_error.title',
+                                {entity: provider.label}
+                            ),
+                        }
+                    );
+                }
+            }
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+            return;
+        }
+
+        notify(
+            NotificationLevel.SUCCESS,
+            translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+        );
+
+        redirectToMarketplace();
     };
 
     if (wizardData === null) {
@@ -99,7 +141,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 </StyledActionButton>
             )}
             {isCurrent('summary') && (
-                <StyledActionButton>
+                <StyledActionButton onClick={handleConfirm}>
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                 </StyledActionButton>
             )}
