@@ -52,13 +52,6 @@ for BUCKET_URL in $(echo $BUCKET_LIST_JSON | jq -r '.[].url'); do
             continue;
         fi
 
-        # /!\ Temporarly
-        # Skip if disk has data
-        if [[ $(echo "${SIZE_NUMBER} > 0" |bc -l) -gt 0 ]]; then
-            echo "  Disk has data : DELETION SKIPPED"
-            continue;
-        fi
-
         echo "  Command debug"
         echo "      gsutil rb ${BUCKET_URL}"
 

@@ -43,7 +43,7 @@ final class Version_5_0_20200720083247_drop_title_formatting_tables_Integration 
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }

@@ -24,14 +24,12 @@ class EnterpriseDatabaseCommand extends DatabaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function launchCommands()
+    protected function launchCommands(): void
     {
         parent::launchCommands();
 
         $this->commandExecutor->runCommand('pimee:installer:clean-category-accesses');
         $this->commandExecutor->runCommand('pimee:installer:clean-attribute-group-accesses');
-
-        return $this;
     }
 
     /**

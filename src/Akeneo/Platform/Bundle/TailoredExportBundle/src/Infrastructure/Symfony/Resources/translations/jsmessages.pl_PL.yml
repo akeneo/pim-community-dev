@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: Dostosowany eksport produktów w formacie XLSX
+batch_jobs.xlsx_tailored_product_model_export.label: Dostosowany eksport modelu produktu w formacie XLSX
+batch_jobs.csv_tailored_product_export.label: Dostosowany eksport produktów w formacie CSV
+batch_jobs.csv_tailored_product_model_export.label: Dostosowany eksport modelu produktu w formacie CSV
 akeneo.tailored_export:
   filters:
     completeness:
@@ -125,6 +128,9 @@ akeneo.tailored_export:
           title: Użyj wartości domyślnej przy braku zadanej
           label: Wartość domyślna
           placeholder: Zdefiniuj wartość
+        clean_html_tags:
+          title: Wyczyść znaczniki HTML
+          label: Automatycznie wyczyść znaczniki HTML
     concatenation:
       title: Konkatenacja
       preview: Podgląd

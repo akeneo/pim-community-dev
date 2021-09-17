@@ -1,6 +1,6 @@
 parameters:
     # Maximum number of reference entities
-    reference_entity_limit: 100
+    reference_entity_limit: 200
     # Maximum number of attributes per reference entities
     reference_entity_maximum_attribute: 100
     # Maximum number of records for single reference entity
