@@ -17,6 +17,11 @@ interface EventOptions {
   context?: string,
   count?: number,
   checked?: boolean,
+  entityHint?: string,
+  attributes?: {
+    identifier?: string,
+    code?: string
+  },
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -70,12 +75,22 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Column added in the product grid');
           break;
-        case 'product-grid:product:selected':
-          if (eventOptions && eventOptions.identifier === 'PLGCHAELK001') {
-            appcues.track('Product "Elka Peacock Armchair" selected');
+        case 'grid:item:selected':
+          if (eventOptions && eventOptions.name === 'product-grid' && eventOptions.entityHint && eventOptions.entityHint === 'product') {
+            if (eventOptions.attributes && eventOptions.attributes.identifier === 'PLGCHAELK001') {
+              appcues.track('Product "Elka Peacock Armchair" selected');
+            }
+
+            appcues.track('Product selected');
           }
 
-          appcues.track('Product selected');
+          if (eventOptions && eventOptions.name === 'export-profile-grid' && eventOptions.entityHint && eventOptions.entityHint === 'export profile') {
+            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
+              appcues.track('Export profile "Furniture products for Amazon (weekly)" selected');
+            }
+
+            appcues.track('Export profile selected');
+          }
           break;
         case 'product-grid:completeness:opened':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
