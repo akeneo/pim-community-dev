@@ -214,6 +214,15 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('The information is required for Marketplaces channel');
           }
           break;
+        case 'form:edit:opened':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit') {
+            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
+              appcues.track('Edit export profile "Furniture products for Amazon (weekly)"');
+            }
+
+            appcues.track('Edit export profile');
+          }
+          break;
       }
     });
   },
