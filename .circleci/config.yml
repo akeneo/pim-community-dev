@@ -1478,6 +1478,10 @@ jobs:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
+          - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
@@ -1519,6 +1523,10 @@ jobs:
           - run:
                 name: Check that upgrader pod ran
                 command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
           - run:
                 name: Prepare infrastructure artifacts
                 command: make prepare-infrastructure-artifacts
