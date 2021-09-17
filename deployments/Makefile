@@ -197,6 +197,8 @@ ifeq ($(TYPE),grth)
 endif
 ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+	# @todo[trial_catalog] activate free trial catalog
+	#yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
