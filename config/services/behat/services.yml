@@ -3,7 +3,6 @@ parameters:
 
 imports:
     # Akeneo/Connectivity/Connection
-    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/repositories.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
 
 services:
