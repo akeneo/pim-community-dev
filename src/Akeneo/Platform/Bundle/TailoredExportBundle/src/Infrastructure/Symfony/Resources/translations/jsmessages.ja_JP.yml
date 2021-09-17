@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: カスタム商品を XLSX 形式でエクスポート
+batch_jobs.xlsx_tailored_product_model_export.label: カスタム商品モデルをXLSX形式でエクスポート
+batch_jobs.csv_tailored_product_export.label: カスタム商品をCSVでエクスポート
+batch_jobs.csv_tailored_product_model_export.label: カスタム商品モデルをCSVでエクスポート
 akeneo.tailored_export:
   filters:
     completeness:
@@ -125,6 +128,9 @@ akeneo.tailored_export:
           title: 空のときに既定値を使用
           label: 既定値
           placeholder: 値を定義
+        clean_html_tags:
+          title: HTMLタグを消去
+          label: HTMLタグを自動的に消去
     concatenation:
       title: 連結
       preview: プレビュー
