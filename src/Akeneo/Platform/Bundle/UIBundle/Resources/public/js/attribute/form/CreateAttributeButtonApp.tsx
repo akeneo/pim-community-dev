@@ -65,13 +65,13 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
 
   const handleBack = () => {
     setCurrentStepIndex(currentStepIndex - 1);
-  }
+  };
 
   return (
     <>
       {isOpen && (
         <>
-          <Modal closeTitle={''} onClose={() => {}}/>
+          <Modal closeTitle={''} onClose={() => {}} />
           {currentStepIndex === -1 && (
             <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm} />
           )}
