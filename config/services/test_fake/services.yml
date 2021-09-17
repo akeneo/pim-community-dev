@@ -14,6 +14,7 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/services.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:
@@ -33,3 +34,16 @@ services:
         decorates: event_dispatcher
         arguments:
             - '@akeneo_integration_tests.event_dispatcher.inner'
+
+    Akeneo\Connectivity\Connection\Tests\Acceptance\Context\ConnectionContext:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@akeneo_connectivity.connection.application.handler.delete_connection'
+            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
+            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository'
