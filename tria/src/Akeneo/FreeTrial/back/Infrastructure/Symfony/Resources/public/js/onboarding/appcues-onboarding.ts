@@ -22,6 +22,7 @@ interface EventOptions {
     identifier?: string,
     code?: string
   },
+  url?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -236,6 +237,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'job-instance:form-edit:saved':
           if (eventOptions && eventOptions.code && eventOptions.code === 'furniture_amazon') {
             appcues.track('Edit export profile "Furniture products for Amazon (weekly)" saved');
+          }
+          break;
+        case 'job-instance:export:launched':
+          if (eventOptions && eventOptions.url && eventOptions.url.includes('furniture_amazon')) {
+            appcues.track('Export profile "Furniture products for Amazon (weekly)" launched');
           }
           break;
       }
