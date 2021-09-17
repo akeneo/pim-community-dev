@@ -181,16 +181,16 @@ jobs:
           command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages front-packages/
       - restore_cache:
             name: Restore front package DSM cache
-            key: front-package-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
       - restore_cache:
             name: Restore front package measurement cache
-            key: front-package-measurement-{{ checksum "~/measurement.hash" }}
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
       - restore_cache:
             name: Restore front package Shared cache
-            key: front-package-shared-{{ checksum "~/shared.hash" }}
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
       - restore_cache:
             name: Restore front package Tailored Export cache
-            key: front-package-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
       - run:
           name: Set front packages directories owner to docker
           command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
@@ -215,22 +215,22 @@ jobs:
             key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - save_cache:
             name: Save front package DSM cache
-            key: front-package-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/
       - save_cache:
             name: Save front package measurement cache
-            key: front-package-measurement-{{ checksum "~/measurement.hash" }}
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/measurement/
       - save_cache:
             name: Save front package Shared cache
-            key: front-package-shared-{{ checksum "~/shared.hash" }}
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/shared/
       - save_cache:
             name: Save front package Tailored Export cache
-            key: front-package-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
             paths:
                 - front-packages/tailored-export/
       - persist_to_workspace:
