@@ -115,9 +115,9 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
         </SectionTitle>
         {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
-          <Helper level='info'>{translate('pim_permissions.widget.entity.category.help')}</Helper>
+          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
         ) : (
-          <Helper level='warning'>
+          <Helper level="warning">
             {translate('pim_permissions.widget.entity.not_granted_warning', {
               permission: translate('pimee_enrich.acl.category.edit_permissions'),
             })}
