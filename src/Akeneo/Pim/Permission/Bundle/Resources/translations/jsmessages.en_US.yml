@@ -83,9 +83,13 @@ category.permissions:
 pim_permissions:
     widget:
         entity:
+            attribute_group:
+                label: Attribute groups
+                help: If you want your app to be able to modify all your product data, choose the all option in the Edit level. Otherwise, select only the attribute groups that your app will be able to see or modify according to the level.
             category:
                 label: Category trees
                 help: If you want your app to be able to modify your products without using PIM proposals, choose the Own level. Otherwise choose the Edit level.
-            not_granted_warning: You don’t have the “{{ permission }}” role permission. Please contact your administrator. These fields are editable once the App is connected.
+            not_granted_warning: This section is only accessible to users with the {{ permission }}. Please contact your administrator. With the right permission, you will be able to come back to the App settings and edit them.
 
 pimee_enrich.acl.category.edit_permissions: Manage category permissions
+pimee_enrich.acl.attribute_group.edit_permissions: Manage attribute group permissions
