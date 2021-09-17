@@ -90,7 +90,6 @@ legacy:
             base_url: 'http://httpd/'
             files_path: 'tests/legacy/features/Context/fixtures/'
             javascript_session: selenium2
-            show_cmd: chromium-browser %s
             sessions:
                 symfony:
                     symfony: ~
@@ -100,6 +99,11 @@ legacy:
                         capabilities:
                             browser: "chrome"
                             browserName: "chrome"
+                            chrome:
+                                switches:
+                                    - "--headless"
+                                    - "--no-sandbox"
+                                    - "--start-maximized"
         FriendsOfBehat\SymfonyExtension:
             bootstrap: config/bootstrap.php
             kernel:
