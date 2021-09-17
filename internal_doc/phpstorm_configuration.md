@@ -14,7 +14,7 @@ When compiling the PIM front-end, you might see PHPStorm reindexing the project 
 To fix this issue, you can check the following things in your PHPStorm editor:
 1. Exclude all _"node_modules"_ directories as shown in the screenshot below. Go in _"Preferences > Directories"_.
 ![Exclude "node_modules" directories in the PHPStorm configuration](phpstorm_configuration/exclude_node_modules.png)
-2. Exclude the _"grth"_ folder (as well as _"vendor/akeneo/pim-growth-edition"_ if it's not already done)
+2. Exclude the _"grth"_ folder (as well as _"vendor/akeneo/pim-growth-edition/vendor"_ if it's not already done)
 3. Disable the javascript libraries by unselecting all of them in _"Preferences > Languages & Frameworks > Javascript > Libraries"_
 ![Unselect Javascript libraries](phpstorm_configuration/unselect_libraries.png)
 4. **Restart PHPStorm** so those changes take effect immediately
