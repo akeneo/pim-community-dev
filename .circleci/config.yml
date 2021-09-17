@@ -117,10 +117,24 @@ jobs:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
+            name: Creating cache key for PHP Docker image
+            command: |
+                find Dockerfile docker/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/php-docker-image.hash
+                date +%F >> ~/php-docker-image.hash
+      - restore_cache:
+            name: Restore PHP docker image cache
+            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+      - run:
           name: Build the latest Docker images
           command: |
-              make php-image-dev
-              docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+              ls php-pim-image.tar && docker load -i php-pim-image.tar
+              ls php-pim-image.tar || make php-image-dev
+              ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+      - save_cache:
+            name: Save PHP docker image cache
+            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+            paths:
+                - php-pim-image.tar
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
@@ -155,27 +169,31 @@ jobs:
           name: Build css
           command: make css
       - run:
-          name: Create hash for DSM front packages
+          name: Create hash for front packages
           command: |
-            find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-            date +%F >> ~/akeneo-design-system.hash
+              find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+              find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+              find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+              find front-packages/tailored-export -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
+              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash
       - run:
-          name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
+          name: Set front package directories owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages front-packages/
       - restore_cache:
-          name: Restore DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+            name: Restore front package DSM cache
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+      - restore_cache:
+            name: Restore front package measurement cache
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+      - restore_cache:
+            name: Restore front package Shared cache
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+      - restore_cache:
+            name: Restore front package Tailored Export cache
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
       - run:
-          name: Set DSM directory owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
-      - run:
-          name: Build DSM
-          command: ls vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib 1> /dev/null 2>&1 || make dsm
-      - save_cache:
-          name: Save DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
-          paths:
-            - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+          name: Set front packages directories owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
       - run:
           name: Build front-packages
           command: make front-packages
@@ -184,7 +202,7 @@ jobs:
           command: make javascript-dev
       - run:
             name: Change owner on project dir to have the right to cache the data
-            command: sudo chmod -R 777 ../project ~/.cache ~/.composer
+            command: sudo chmod -R 777 ../project ~/.cache ~/.composer vendor/akeneo/pim-community-dev/front-packages/ front-packages/
       - save_cache:
             name: Save fontend dependency cache
             paths:
@@ -195,6 +213,26 @@ jobs:
             paths:
                 - ~/.composer
             key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+      - save_cache:
+            name: Save front package DSM cache
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/
+      - save_cache:
+            name: Save front package measurement cache
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/measurement/
+      - save_cache:
+            name: Save front package Shared cache
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/shared/
+      - save_cache:
+            name: Save front package Tailored Export cache
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            paths:
+                - front-packages/tailored-export/
       - persist_to_workspace:
           root: ~/
           paths:
@@ -1478,6 +1516,10 @@ jobs:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
+          - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
@@ -1519,6 +1561,10 @@ jobs:
           - run:
                 name: Check that upgrader pod ran
                 command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
           - run:
                 name: Prepare infrastructure artifacts
                 command: make prepare-infrastructure-artifacts

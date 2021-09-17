@@ -26,15 +26,20 @@ teamwork_assistant:
   create_project_modal:
     saved: Projekti on tallennettu, sinulle ilmoitetaan, kun muodostaminen on valmis.
     title: Projekti
+    label_already_used: Tämä arvo on jo käytössä.
   widget:
     no_project: Sinulla ei ole projektia
     no_project_create: luo uusi projekti
     description: Kuvaus
     due_date: Määräpäivä
+    todo: Todo
+    in_progress: Työn alla
+    done: Valmis
     all_contributors: Kaikki osallistujat
     you: Sinä
     display_products: Näytä tuotteet
     projects: Projektit
+    contributors: Osallistujat
     placeholder:
       contributor_selector: Etsi osallistujia
       project_selector: Etsi projektia
@@ -42,6 +47,8 @@ teamwork_assistant:
       to_start: TUOTTEET TYÖJONOSSA
       in_progress: TUOTTEET TYÖNALLA
       done: VALMIIT TUOTTEET
+    searching: etsitään...
+    no_search_results: Valitettavasti tuloksia ei löytynyt.
 pim_datagrid:
   view_selector:
     project: Projektit
@@ -65,3 +72,6 @@ pim_notification:
     project_finished: Projekti valmis
     project_calculation: Projektin muodostaminen
     project_due_date: Projektin määräpäivä
+pim_analytics:
+  info_type:
+    nb_projects: Projektien lukumäärä
