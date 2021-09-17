@@ -256,8 +256,8 @@ SQL;
         string $referenceLocalizableCode
     ): bool {
         return count(
-                $this->getReferenceAttributeIdentifiers($assetFamilyCode, $referenceCode, $referenceLocalizableCode)
-            ) >= 1;
+            $this->getReferenceAttributeIdentifiers($assetFamilyCode, $referenceCode, $referenceLocalizableCode)
+        ) >= 1;
     }
 
     /**

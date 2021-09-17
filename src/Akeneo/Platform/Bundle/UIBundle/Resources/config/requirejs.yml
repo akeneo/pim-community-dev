@@ -88,13 +88,12 @@ config:
         pimee/product-edit-form/duplicate/modal:                      pimenterpriseui/js/product/form/duplicate/modal.ts
         pimee/product-edit-form/main-image:                           pimenterpriseui/js/product/form/main-image.ts
 
+        pim/attribute-edit-form/tab/choices: pimenterpriseui/js/attribute/form/choices.tsx
+
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
         # Common
         pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission
         pimee/job/common/edit/launch:      pimenterpriseui/js/job/common/edit/launch
-
-        #Job
-        pimee/job/export/edit/edit-button: pimenterpriseui/js/job/export/edit/edit-button
 
         # Templates
         pimee/template/product/meta/owner-groups:             pimenterpriseui/templates/product/meta/owner-groups.html

@@ -27,21 +27,27 @@ class FindViewableAttributes implements FindViewableAttributesInterface
     private TokenStorageInterface $tokenStorage;
     private FindFlattenAttributesInterface $findFlattenAttributes;
     private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
+    /** @var array<string>  */
+    private array $attributeTypes;
 
+    /**
+     * @param array<string> $attributeTypes
+     */
     public function __construct(
         FindFlattenAttributesInterface $findFlattenAttributes,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        array $attributeTypes
     ) {
         $this->findFlattenAttributes = $findFlattenAttributes;
         $this->getViewableAttributeCodesForUser = $getViewableAttributeCodesForUser;
         $this->tokenStorage = $tokenStorage;
+        $this->attributeTypes = $attributeTypes;
     }
 
     public function execute(
         string $localeCode,
         int $limit,
-        array $attributeTypes = null,
         int $offset = 0,
         string $search = null
     ): ViewableAttributesResult {
@@ -49,7 +55,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         $currentOffset = max($offset, 0);
 
         do {
-            $attributes = $this->findAttributes($localeCode, $limit, $attributeTypes, $currentOffset, $search);
+            $attributes = $this->findAttributes($localeCode, $limit, $this->attributeTypes, $currentOffset, $search);
 
             if (empty($attributes)) {
                 return new ViewableAttributesResult($currentOffset, $viewableAttributes);
@@ -67,7 +73,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
     private function findAttributes(
         string $localeCode,
         int $limit,
-        ?array $attributeTypes,
+        array $attributeTypes,
         $currentOffset,
         ?string $search
     ): array {

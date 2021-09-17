@@ -107,3 +107,7 @@ services:
             - '@database_connection'
             - '@oro_datagrid.configuration.provider.chain'
             - 'published-product-grid'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\FindProductAssociationToPublishByProductQuery:
+        arguments:
+            - '@database_connection'

@@ -118,9 +118,9 @@ class ProposalWidget implements WidgetInterface
                 'authorFullName'   => $proposal->getAuthorLabel(),
                 'productEditUrl'   => $this->getProductEditUrl($proposal),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
-                        $proposal->getAuthor(),
-                        $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()
-                    ),
+                    $proposal->getAuthor(),
+                    $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()
+                ),
                 'createdAt' => $this->presenter->present(
                     $proposal->getCreatedAt(),
                     [

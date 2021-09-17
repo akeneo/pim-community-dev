@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: カスタム商品を XLSX 形式でエクスポート
+batch_jobs.xlsx_tailored_product_model_export.label: カスタム商品モデルをXLSX形式でエクスポート
+batch_jobs.csv_tailored_product_export.label: カスタム商品をCSVでエクスポート
+batch_jobs.csv_tailored_product_model_export.label: カスタム商品モデルをCSVでエクスポート
 akeneo.tailored_export:
   filters:
     completeness:
@@ -28,10 +31,11 @@ akeneo.tailored_export:
   column_list:
     title: 列
     header:
-      column_name: 列ヘッダ
+      column_name: 列名
       source_data: 列コンテンツ
     column_row:
       target_placeholder: ここに新しい列名を定義する
+      placeholder_helper: スプレッドシートからすべての列名をコピーして、列を自動的に作成できます。
       remove: 列を削除
       no_source: コンテンツソースを定義する
     no_column_selection:
@@ -43,6 +47,7 @@ akeneo.tailored_export:
     sources:
       title: ソース
       add: ソースを追加
+      no_result: 結果はありません。
       locale_specific: この属性はロケール固有です。
       remove:
         title: ソース
@@ -107,6 +112,11 @@ akeneo.tailored_export:
             locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
             channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
       operation:
+        header: 操作
+        measurement_conversion:
+          title: 変換
+          placeholder: 変換なし
+          target_unit_code.label: 変換先
         replacement:
           title: 値を置き換える
           placeholder: 置換値を定義する
@@ -114,6 +124,19 @@ akeneo.tailored_export:
           disabled: 無効な置換値
           yes: Yesの置換値
           no: Noの置換値
+        default_value:
+          title: 空のときに既定値を使用
+          label: 既定値
+          placeholder: 値を定義
+        clean_html_tags:
+          title: HTMLタグを消去
+          label: HTMLタグを自動的に消去
+    concatenation:
+      title: 連結
+      preview: プレビュー
+      space_between: ソース間にスペースを追加
+      add_text: テキストを追加
+      text_placeholder: テキストを定義
   column:
     delete_message: この列を本当に削除しますか？
   validation:
@@ -126,7 +149,10 @@ akeneo.tailored_export:
         max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
         should_be_unique: この列名はすでに存在します。新しい列名を入力してください。
     sources:
+      max_source_count_reached: '{{ limit }}ソースの上限に達しました。この列にこれ以上ソースを追加できません。'
       association_type_should_exist: 関連タイプ {{ association_type_code }} は存在しません。作成するか、別のソースを選択してください。
+    concatenation:
+      max_text_count_reached: '{{ limit }}テキスト要素の上限に達しました。これ以上テキストを追加できません。'
     locale:
       should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
       should_be_bound_to_channel: チャンネル {{ channel_code }} のロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
@@ -139,3 +165,8 @@ akeneo.tailored_export:
       locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。作成するか、別のソースを選択してください。
       channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。作成するか、別のソースを選択してください。
       invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
+    measurement:
+      family:
+        does_not_exist: '{{ measurement_family_code }}測定ファミリーは存在しません。'
+      unit:
+        does_not_exist: '{{ unit_code }}ユニットは、{{ measurement_family_code }}測定ファミリーに存在しません。'

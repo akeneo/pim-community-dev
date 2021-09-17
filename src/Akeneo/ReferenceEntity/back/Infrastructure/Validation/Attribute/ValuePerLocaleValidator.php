@@ -32,7 +32,9 @@ class ValuePerLocaleValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($valuePerLocale, [
+        $violations = $validator->validate(
+            $valuePerLocale,
+            [
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'boolean'])
             ]

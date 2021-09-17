@@ -32,8 +32,11 @@ class EditCommandsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, self::class);
         }
         if (!$editCommand instanceof EditAttributeCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                EditAttributeCommand::class, get_class($editCommand)));
+            throw new \InvalidArgumentException(sprintf(
+                'Expected argument to be of class "%s", "%s" given',
+                EditAttributeCommand::class,
+                get_class($editCommand)
+            ));
         }
 
         if (empty($editCommand->editCommands)) {

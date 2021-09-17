@@ -11,6 +11,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Code\CodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Date\DateSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyCodeSelection;
@@ -54,6 +55,8 @@ class SelectionHydrator
     public function createPropertySelection(array $selectionConfiguration, string $propertyName): SelectionInterface
     {
         switch ($propertyName) {
+            case 'code':
+                return new CodeSelection();
             case 'categories':
                 return $this->createCategoriesSelection($selectionConfiguration);
             case 'enabled':

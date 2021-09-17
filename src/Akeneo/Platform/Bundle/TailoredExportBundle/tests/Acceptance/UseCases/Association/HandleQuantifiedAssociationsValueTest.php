@@ -21,7 +21,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAsso
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;

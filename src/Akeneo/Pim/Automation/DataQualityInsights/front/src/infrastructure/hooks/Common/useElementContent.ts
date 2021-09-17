@@ -13,6 +13,7 @@ const useElementContent = (element: HTMLElement): ElementContentState => {
   const [analyzableContent, setAnalyzableContent] = useState<string>('');
 
   const handleRefresh = useCallback(() => {
+    setContent('');
     setContent(getEditorContent(element as EditorElement));
   }, [element]);
 

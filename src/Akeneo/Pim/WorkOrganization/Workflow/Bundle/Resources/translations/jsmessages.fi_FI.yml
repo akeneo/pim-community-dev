@@ -8,9 +8,29 @@ pim_datagrid:
   no_entities:
     proposal: Ehdotuksia ei ole tarkistettavaksi.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi.
+  no_entities.published product: Julkaistuja tuotteita ei löytynyt
   no_results:
     proposal: Ehdotuksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
+  no_results.published product: Valitettavasti haullasi ei löytynyt julkaistuja tuotteita.
+  workflow:
+    partial_approve: Hyväksy attribuutin {{ attribute }} muutokset tuotteelle {{ product }}
+    partial_reject: Hylkää attribuutin {{ attribute }} muutokset tuotteelle {{ product }}
+    by: tehnyt
+    status:
+      in_progress: Työn alla
+      ready: Odottaa hyväksyntää
+      can_be_partially_reviewed: Voidaan tarkistaa osittain
+      can_not_be_approved: Ei voi tarkistaa
+      can_not_be_deleted: Ei voi poistaa
+    status_message:
+      ready: Odottaa hyväksyntää
+    new_value: 'Uusi arvo:'
+    old_value: 'Vanha arvo:'
+    see_more: Katso lisää
+    actions:
+      approve_all: Hyväksy kaikki
+      refuse_all: Hylkää kaikki
 pimee_datagrid:
   cells:
     expand:
@@ -25,23 +45,26 @@ pimee_workflow:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
+    selected: "]-Inf, 1]{{ count }} muutosehdotus valittu|]1, Inf[{{ count }} muutosehdotusta valittu"
     mass_action_group:
       review:
         label: Massatoiminnot
-    partial_accept:
-      modal.title: Hyväksy osittaisia tietoja
-      modal.label: Jätä kommentti (valinnainen)
-      modal.success: Ehdotus on osittain vahvistettu onnistuneesti
+    approve:
+      title: Hyväksy ehdotus
+      success: Ehdotus on otettu käyttöön onnistuneesti.
+      error: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
+    reject:
+      title: Hylkää ehdotus
+      success: Ehdotus on hylätty
+    remove:
+      title: Poista ehdotus
+      success: Ehdotus on poistettu
     partial_approve:
-      modal:
-        title: Hyväksy muutokset osittain
-        label: Jätä kommentti (valinnainen)
-        success: Muutokset hyväksytty onnistuneesti
+      title: Hyväksy osittaisia tietoja
+      success: Ehdotus on osittain vahvistettu onnistuneesti
     partial_reject:
-      modal:
-        title: Hylkää muutokset osittain
-        label: Jätä kommentti (valinnainen)
-        success: Muutokset hylätty onnistuneesti
+      title: Hylkää muutokset osittain
+      success: Muutokset hylätty onnistuneesti
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa
@@ -81,6 +104,11 @@ batch_jobs:
     perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   publish_product:
     perform.label: Julkaise tuotteet
+  unpublish_product:
+    perform.label: Poista tuotteiden julkaisu
+  default_steps:
+    clean_attribute:
+      clean_draft: Muutosehdotusten puhdistaminen
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Uusi muutosehdotus
@@ -100,6 +128,8 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei ehdotuksia tarkastettavaksi
+      title: Tarkastettavat ehdotukset
+      view_all: Näytä kaikki ehdotukset
     header.view_all: Näytä kaikki
 pimee_enrich.entity.product:
   module:
@@ -154,13 +184,6 @@ pimee_enrich.entity.published_product:
       label: Peruuta julkaisu
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: Ehdotus on otettu käyttöön onnistuneesti.
-      fail: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
-    reject:
-      success: Ehdotus on hylätty.
-    remove:
-      success: Ehdotus on poistettu.
     update:
       success: Tuotteen luonnos tallennettu onnistuneesti
       fail: Tuotteen luonnosta ei voitu päivittää
@@ -170,14 +193,10 @@ pimee_enrich.entity.product_draft:
       skip: Ehdotusta ei lähetetty hyväksyttäväksi, koska attribuutteja ei muokattu
   module:
     proposal:
-      accept: Hyväksy ehdotus
-      accept_selected: Hyväksy valittu ehdotus / ehdotukset
-      reject: Hylkää ehdotus
-      reject_selected: Hylkää valittu ehdotus / ehdotukset
-      remove: Poista ehdotus
-      comment_title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
       comment_chars: merkkiä
       confirm: Lähetä
+      accept_selected: Hyväksy valittu ehdotus / ehdotukset
+      reject_selected: Hylkää valittu ehdotus / ehdotukset
     edit:
       discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
       discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
@@ -203,3 +222,7 @@ pim_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistu tuote
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä
+pim_analytics:
+  info_type:
+    nb_published_products: Julkaistujen tuotteiden lukumäärä
+    nb_product_drafts: Tuotteiden luonnosten lukumäärä

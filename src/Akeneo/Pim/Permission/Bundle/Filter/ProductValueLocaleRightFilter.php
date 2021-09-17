@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -88,10 +89,11 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
             return true;
         }
 
+        /** @var AttributeInterface $attribute */
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
         if (null !== $attribute && $attribute->isLocaleSpecific()) {
-            $localeCodes = $attribute->getLocaleSpecificCodes();
+            $localeCodes = $attribute->getAvailableLocaleCodes();
 
             $authorizedLocaleCodes = array_filter(
                 $localeCodes,

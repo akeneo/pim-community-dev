@@ -1,46 +1,56 @@
 import {isTextSource} from './model';
 
-test('it validates a text source', () => {
-  expect(
-    isTextSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
-      operations: {},
-      selection: {type: 'code'},
-    })
-  ).toEqual(true);
+describe('it validates a text source', () => {
+  const textSourceWithoutOperation = {
+    uuid: '123',
+    code: 'a code',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: {},
+    selection: {type: 'code'},
+  };
 
-  expect(
-    isTextSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
+  test('it validates a text source without operation', () => {
+    expect(isTextSource(textSourceWithoutOperation)).toBe(true);
+  });
+
+  test('it validates a text source with default value operation', () => {
+    const textSourceWithDefaultValueOperation = {
+      ...textSourceWithoutOperation,
       operations: {
         default_value: {
           type: 'default_value',
           value: 'a default value',
         },
       },
-      selection: {type: 'code'},
-    })
-  ).toEqual(true);
+    };
 
-  expect(
-    isTextSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
+    expect(isTextSource(textSourceWithDefaultValueOperation)).toBe(true);
+  });
+
+  test('it validates a text source with clean HTML tags operation', () => {
+    const textSourceWithCleanHTMLTagsOperation = {
+      ...textSourceWithoutOperation,
+      operations: {
+        clean_html_tags: {
+          type: 'clean_html_tags',
+          value: true,
+        },
+      },
+    };
+
+    expect(isTextSource(textSourceWithCleanHTMLTagsOperation)).toBe(true);
+  });
+
+  test('it invalidates a text source with not valid operation', () => {
+    const textSourceWithInvalidOperation = {
+      ...textSourceWithoutOperation,
       operations: {
         foo: 'bar',
       },
-      selection: {type: 'code'},
-    })
-  ).toEqual(false);
+    };
+
+    expect(isTextSource(textSourceWithInvalidOperation)).toBe(false);
+  });
 });

@@ -53,7 +53,8 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     {
         $identifier = $this->loadAttribute('designer', 'name');
         $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
         Assert::assertEquals($identifier, $attributeIdentifier);
     }
@@ -65,7 +66,8 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     {
         $this->expectException(\LogicException::class);
         $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
     }
 

@@ -69,9 +69,7 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
                 'value' => new NullValue(),
@@ -79,9 +77,7 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),

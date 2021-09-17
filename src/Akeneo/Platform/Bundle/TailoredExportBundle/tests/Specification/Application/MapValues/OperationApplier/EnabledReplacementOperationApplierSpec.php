@@ -23,11 +23,9 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 {
     public function it_supports_replacement_operation_and_enabled_value()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [
-                'true' => 'activé',
-                'false' => 'désactivé',
-            ]
+        $operation = new ReplacementOperation([
+            'true' => 'activé',
+            'false' => 'désactivé',
         ]);
 
         $value = new EnabledValue(true);
@@ -37,7 +35,7 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_does_not_support_other_selections_and_values()
     {
-        $notSupportedSelection = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
 
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
@@ -45,11 +43,9 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_applies_enabled_replacement_operation()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [
-                'true' => 'activé',
-                'false' => 'désactivé',
-            ]
+        $operation = new ReplacementOperation([
+            'true' => 'activé',
+            'false' => 'désactivé',
         ]);
 
         $enabledValue = new EnabledValue(true);
@@ -61,9 +57,7 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_does_nothing_when_value_is_not_mapped()
     {
-        $operation = ReplacementOperation::createFromNormalized([
-            'mapping' => [],
-        ]);
+        $operation = new ReplacementOperation([]);
 
         $enabledValue = new EnabledValue(true);
         $disabledValue = new EnabledValue(false);
@@ -74,7 +68,7 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_when_operation_or_value_is_invalid()
     {
-        $notSupportedSelection = DefaultValueOperation::createFromNormalized(['value' => 'n/a']);
+        $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
 
         $this->shouldThrow(\InvalidArgumentException::class)

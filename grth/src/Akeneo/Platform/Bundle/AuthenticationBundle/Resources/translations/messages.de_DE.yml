@@ -1,0 +1,3 @@
+akeneo_authentication:
+  sso:
+    unknown_user_error: Sie sind nicht berechtigt, auf diese Anwendung zuzugreifen. Bitte kontaktieren Sie Ihren Administrator.

@@ -62,7 +62,6 @@ final class GetGroupedSourcesAction
         $attributeOffset = (int) $options['offset']['attribute'];
 
         $localeCode = $options['locale'] ?? self::DEFAULT_LOCALE;
-        $attributeTypes = isset($options['attributeTypes']) ? explode(',', $options['attributeTypes']) : null;
 
         $paginatedFields = $this->getSystemSources->execute($localeCode, $limit, $systemOffset, $search);
         $limit -= count($paginatedFields);
@@ -73,7 +72,6 @@ final class GetGroupedSourcesAction
         $attributesResult = $this->findViewableAttributes->execute(
             $localeCode,
             $limit,
-            $attributeTypes,
             $attributeOffset,
             $search
         );

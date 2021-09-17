@@ -11,7 +11,9 @@ final class UnableToRetrieveDictionaryException extends \Exception
     {
         parent::__construct(
             sprintf(
-                'Unable to retrieve the dictionary for the language "%s". %s', $languageCode, $extraMessage
+                'Unable to retrieve the dictionary for the language "%s". %s',
+                $languageCode,
+                $extraMessage
             )
         );
     }

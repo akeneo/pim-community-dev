@@ -8,6 +8,7 @@ import {
   Attribute,
   AssociationType,
   ColumnConfiguration,
+  MeasurementFamily,
 } from '@akeneo-pim-enterprise/tailored-export';
 import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
@@ -73,6 +74,9 @@ class ColumnView extends BaseView {
       columnsConfiguration: formData.configuration.columns,
       onColumnsConfigurationChange: this.setColumnConfigurationData.bind(this),
       validationErrors: this.validationErrors,
+      entityType: ['xlsx_tailored_product_export', 'csv_tailored_product_export'].includes(formData.job_name)
+        ? 'product'
+        : 'product_model',
     };
 
     ReactDOM.render(
@@ -112,6 +116,16 @@ class ColumnView extends BaseView {
                       fetcherRegistry
                         .getFetcher('association-type')
                         .fetchByIdentifiers(codes)
+                        .then(resolve)
+                    );
+                  },
+                },
+                measurementFamily: {
+                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('measure')
+                        .fetch(code)
                         .then(resolve)
                     );
                   },

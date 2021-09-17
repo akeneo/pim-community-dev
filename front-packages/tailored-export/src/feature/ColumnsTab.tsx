@@ -13,6 +13,7 @@ import {
   MAX_COLUMN_COUNT,
   ColumnsState,
 } from './models/ColumnConfiguration';
+import {EntityTypeProvider, EntityTypeValue} from './contexts/EntityTypeContext';
 
 const Container = styled.div`
   padding-top: 10px;
@@ -24,12 +25,14 @@ const Container = styled.div`
 type ColumnsTabProps = {
   columnsConfiguration: ColumnConfiguration[];
   validationErrors: ValidationError[];
+  entityType: EntityTypeValue;
   onColumnsConfigurationChange: (columnsConfiguration: ColumnConfiguration[]) => void;
 };
 
 const ColumnsTab = ({
   columnsConfiguration: initial,
   validationErrors,
+  entityType,
   onColumnsConfigurationChange,
 }: ColumnsTabProps) => {
   const [columnsState, setColumnsState] = useState<ColumnsState>({
@@ -94,23 +97,25 @@ const ColumnsTab = ({
 
   return (
     <ValidationErrorsContext.Provider value={validationErrors}>
-      <Container>
-        <ColumnList
-          columnsState={columnsState}
-          setColumnsState={setColumnsState}
-          onColumnCreated={handleCreateColumn}
-          onColumnsCreated={handleCreateColumns}
-          onColumnChange={handleChangeColumn}
-          onColumnSelected={handleSelectColumn}
-          onColumnRemoved={handleRemoveColumn}
-          onColumnReorder={handleReorderColumns}
-        />
-        {null === selectedColumn ? (
-          <ColumnDetailsPlaceholder />
-        ) : (
-          <ColumnDetails columnConfiguration={selectedColumn} onColumnChange={handleChangeColumn} />
-        )}
-      </Container>
+      <EntityTypeProvider entityType={entityType}>
+        <Container>
+          <ColumnList
+            columnsState={columnsState}
+            setColumnsState={setColumnsState}
+            onColumnCreated={handleCreateColumn}
+            onColumnsCreated={handleCreateColumns}
+            onColumnChange={handleChangeColumn}
+            onColumnSelected={handleSelectColumn}
+            onColumnRemoved={handleRemoveColumn}
+            onColumnReorder={handleReorderColumns}
+          />
+          {null === selectedColumn ? (
+            <ColumnDetailsPlaceholder />
+          ) : (
+            <ColumnDetails columnConfiguration={selectedColumn} onColumnChange={handleChangeColumn} />
+          )}
+        </Container>
+      </EntityTypeProvider>
     </ValidationErrorsContext.Provider>
   );
 };

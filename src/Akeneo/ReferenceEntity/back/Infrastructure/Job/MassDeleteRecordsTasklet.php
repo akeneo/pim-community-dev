@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Job;
 
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindRecordsUsedAsProductVariantAxisInterface;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsHandler;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
@@ -29,6 +30,8 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -40,9 +43,11 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
     private Client $recordClient;
     private DeleteRecordsHandler $deleteRecordsHandler;
     private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
     private RecordIndexerInterface $recordIndexer;
     private JobStopper $jobStopper;
+    private ValidatorInterface $validator;
+    private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis;
+    private int $batchSize;
 
     public function __construct(
         DeleteRecordsHandler $deleteRecordsHandler,
@@ -51,6 +56,8 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
         JobRepositoryInterface $jobRepository,
         RecordIndexerInterface $recordIndexer,
         JobStopper $jobStopper,
+        ValidatorInterface $validator,
+        FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis,
         int $batchSize
     ) {
         $this->deleteRecordsHandler = $deleteRecordsHandler;
@@ -58,8 +65,10 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
         $this->recordClient = $recordClient;
         $this->jobRepository = $jobRepository;
         $this->recordIndexer = $recordIndexer;
-        $this->batchSize = $batchSize;
         $this->jobStopper = $jobStopper;
+        $this->validator = $validator;
+        $this->findRecordsUsedAsProductVariantAxis = $findRecordsUsedAsProductVariantAxis;
+        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -74,16 +83,14 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
 
     public function execute(): void
     {
-        $normalizedReferenceEntityIdentifier = $this->stepExecution->getJobParameters()->get('reference_entity_identifier');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
-
+        $referenceEntityIdentifier = $this->stepExecution->getJobParameters()->get('reference_entity_identifier');
         $normalizedQuery = $this->stepExecution->getJobParameters()->get('query');
         $channel = ChannelReference::createFromNormalized($normalizedQuery['channel']);
         $locale = LocaleReference::createFromNormalized($normalizedQuery['locale']);
         $filters = $normalizedQuery['filters'];
 
         $recordQuery = RecordQuery::createWithSearchAfter(
-            $referenceEntityIdentifier,
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             $channel,
             $locale,
             $this->batchSize,
@@ -125,10 +132,18 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
         $this->recordIndexer->refresh();
     }
 
-    private function deleteRecords(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodesToDelete)
+    private function deleteRecords(string $referenceEntityIdentifier, array $recordCodesToDelete)
     {
         try {
-            $deleteRecordsCommand = new DeleteRecordsCommand((string) $referenceEntityIdentifier, $recordCodesToDelete);
+            $recordCodesToDelete = $this->getValidRecordCodesToDelete($referenceEntityIdentifier, $recordCodesToDelete);
+
+            $deleteRecordsCommand = new DeleteRecordsCommand($referenceEntityIdentifier, $recordCodesToDelete);
+            $violations = $this->validator->validate($deleteRecordsCommand);
+
+            if (0 < $violations->count()) {
+                throw new \LogicException($this->buildErrorMessage($violations));
+            }
+
             ($this->deleteRecordsHandler)($deleteRecordsCommand);
             $this->stepExecution->incrementSummaryInfo('records', count($recordCodesToDelete));
             $this->stepExecution->incrementProcessedItems(count($recordCodesToDelete));
@@ -138,12 +153,44 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
                 'akeneo_referenceentity.jobs.reference_entity_mass_delete.error',
                 [
                     '{{ records }}' => (string) implode(', ', $recordCodesToDelete),
-                    '{{ error }}' => $exception->getMessage()
+                    '{{ error }}' => $exception->getMessage(),
                 ],
                 new DataInvalidItem([
-                    'reference_entity_identifier' => (string) implode(', ', $recordCodesToDelete), 'error' => $exception->getMessage()
-                ])
+                    'record_codes' => (string) implode(', ', $recordCodesToDelete),
+                    'error' => $exception->getMessage(),
+                ]),
             );
         }
+    }
+
+    private function getValidRecordCodesToDelete(
+        string $referenceEntityIdentifier,
+        array $recordCodes
+    ): array {
+        $recordCodesUsedAsAxis = $this->findRecordsUsedAsProductVariantAxis->getUsedCodes(
+            $recordCodes,
+            $referenceEntityIdentifier
+        );
+
+        if (!empty($recordCodesUsedAsAxis)) {
+            $this->stepExecution->addWarning(
+                'akeneo_referenceentity.jobs.reference_entity_mass_delete.used_as_product_variant_axis',
+                [],
+                new DataInvalidItem(['record_codes' => (string) implode(', ', $recordCodesUsedAsAxis)]),
+            );
+        }
+
+        return array_values(array_diff($recordCodes, $recordCodesUsedAsAxis));
+    }
+
+    private function buildErrorMessage(
+        ConstraintViolationListInterface $constraintViolationList
+    ): string {
+        $errorMessage = '';
+        foreach ($constraintViolationList as $violation) {
+            $errorMessage .= sprintf("\n  - %s", $violation->getMessage());
+        }
+
+        return $errorMessage;
     }
 }

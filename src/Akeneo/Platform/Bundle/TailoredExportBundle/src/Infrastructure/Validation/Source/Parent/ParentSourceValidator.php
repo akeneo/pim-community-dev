@@ -26,10 +26,7 @@ class ParentSourceValidator extends ConstraintValidator
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = new ParentSelectionConstraint();
-
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => []]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

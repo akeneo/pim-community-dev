@@ -7,3 +7,11 @@ pimee_enrich.entity.product:
     flash:
       success: Tuote {{ product_identifier }} on kopioitu onnistuneesti.
       success_with_attribute_codes: Tuote {{ product_identifier }} on kopioitu onnistuneesti. Sinun täytyy rikastaa {{ unique_attribute_codes }} yksilöllisillä arvoilla
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projektit
+      helper: Saadaksesi lisätietoja projekteista ja kuinka voit parantaa valmiusastetta, tutustu <a href="{{ link }}" target="_blank">ohjeisiimme</a>.
+      no_project:
+        title: Projektit auttavat sinua seuraamaan rikastuksen edistymistä.
+        subtitle: Luo ensimmäinen projektisi.

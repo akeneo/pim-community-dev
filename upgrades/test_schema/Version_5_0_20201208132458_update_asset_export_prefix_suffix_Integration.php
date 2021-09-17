@@ -79,7 +79,7 @@ SQL
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }

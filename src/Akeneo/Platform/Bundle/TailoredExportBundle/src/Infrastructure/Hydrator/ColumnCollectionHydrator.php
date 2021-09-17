@@ -7,7 +7,6 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
@@ -17,13 +16,16 @@ class ColumnCollectionHydrator
 {
     private SelectionHydrator $selectionHydrator;
     private FormatHydrator $formatHydrator;
+    private OperationCollectionHydrator $operationCollectionHydrator;
 
     public function __construct(
         SelectionHydrator $selectionHydrator,
-        FormatHydrator $formatHydrator
+        FormatHydrator $formatHydrator,
+        OperationCollectionHydrator $operationCollectionHydrator
     ) {
         $this->selectionHydrator = $selectionHydrator;
         $this->formatHydrator = $formatHydrator;
+        $this->operationCollectionHydrator = $operationCollectionHydrator;
     }
 
     public function hydrate(array $columns, array $indexedAttributes, array $indexedAssociationTypes): ColumnCollection
@@ -50,8 +52,6 @@ class ColumnCollectionHydrator
         array $indexedAssociationTypes
     ): SourceCollection {
         $sourceCollection = array_map(function ($source) use ($indexedAttributes, $indexedAssociationTypes) {
-            $operations = OperationCollection::createFromNormalized($source['operations']);
-
             if (AttributeSource::TYPE === $source['type']) {
                 $attribute = $indexedAttributes[$source['code']] ?? null;
 
@@ -60,6 +60,7 @@ class ColumnCollectionHydrator
                 }
 
                 $selection = $this->selectionHydrator->createAttributeSelection($source['selection'], $attribute);
+                $operations = $this->operationCollectionHydrator->createAttributeOperationCollection($source['operations'], $attribute);
 
                 return new AttributeSource(
                     $source['uuid'],
@@ -72,6 +73,7 @@ class ColumnCollectionHydrator
                 );
             } elseif (PropertySource::TYPE === $source['type']) {
                 $selection = $this->selectionHydrator->createPropertySelection($source['selection'], $source['code']);
+                $operations = $this->operationCollectionHydrator->createPropertyOperationCollection($source['operations']);
 
                 return new PropertySource(
                     $source['uuid'],
@@ -86,6 +88,7 @@ class ColumnCollectionHydrator
                 }
 
                 $selection = $this->selectionHydrator->createAssociationSelection($source['selection'], $associationType);
+                $operations = $this->operationCollectionHydrator->createAssociationTypeOperationCollection($source['operations']);
 
                 return new AssociationTypeSource(
                     $source['uuid'],

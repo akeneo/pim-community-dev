@@ -2,9 +2,9 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Doctrine\Migrations\Exception\IrreversibleMigration;
 
 final class Version_5_0_20200623071353_rule_translation_label_length extends AbstractMigration
 {
@@ -17,6 +17,6 @@ final class Version_5_0_20200623071353_rule_translation_label_length extends Abs
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

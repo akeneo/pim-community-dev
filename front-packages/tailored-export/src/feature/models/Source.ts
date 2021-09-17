@@ -40,6 +40,7 @@ import {
   getDefaultQuantifiedAssociationTypeSource,
   QuantifiedAssociationTypeSource,
 } from '../components/SourceDetails/QuantifiedAssociationType/model';
+import {CodeSource, getDefaultCodeSource} from '../components/SourceDetails/Code/model';
 
 const MAX_SOURCE_COUNT = 4;
 
@@ -47,6 +48,7 @@ type Source =
   | AssetCollectionSource
   | BooleanSource
   | CategoriesSource
+  | CodeSource
   | DateSource
   | EnabledSource
   | FamilySource
@@ -68,6 +70,8 @@ type Source =
 
 const getDefaultPropertySource = (sourceCode: string): Source => {
   switch (sourceCode) {
+    case 'code':
+      return getDefaultCodeSource();
     case 'enabled':
       return getDefaultEnabledSource();
     case 'parent':

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
@@ -61,8 +63,8 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                             'type' => new Choice(
                                 [
                                     'choices' => [
-                                        'code',
-                                        'label',
+                                        SimpleAssociationsCodeSelection::TYPE,
+                                        SimpleAssociationsLabelSelection::TYPE,
                                     ],
                                 ]
                             ),

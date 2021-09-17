@@ -150,8 +150,10 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
-                LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -174,8 +176,10 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
-                LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -215,7 +219,8 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
         $this->currentAssetIdentifier = AssetIdentifier::fromString('a_asset');
         $optionCodes = array_map(
-            fn (string $optionCode) => OptionCode::fromString($optionCode), $optionCodes
+            fn (string $optionCode) => OptionCode::fromString($optionCode),
+            $optionCodes
         );
         $assetRepository->create(
             Asset::create(
@@ -277,6 +282,6 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
     private function clearCache(): void
     {
         $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_value_key_collection')->clearCache();
-        $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier')->clearCache();
+        $this->get('akeneo_assetmanager.infrastructure.persistence.sql.find_attributes_indexed_by_identifier')->clearCache();
     }
 }

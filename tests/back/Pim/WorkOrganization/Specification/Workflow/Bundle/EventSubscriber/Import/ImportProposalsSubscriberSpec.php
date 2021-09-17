@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;

@@ -34,7 +34,9 @@ class IsRequiredValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($isRequired, [
+        $violations = $validator->validate(
+            $isRequired,
+            [
                 new NotNull(),
                 new Type(['type' => 'boolean'])
             ]

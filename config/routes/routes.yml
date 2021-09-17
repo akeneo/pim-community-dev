@@ -31,7 +31,7 @@ pimee_enrichment:
 
 # SSO
 akeneo_authentication:
-    resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimEnterpriseAuthenticationBundle/Resources/config/routing.yml"
 
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

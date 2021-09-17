@@ -12,7 +12,11 @@ const AppcuesOnboarding: PimOnboarding = {
         return;
       }
 
-      appcues.identify(UserContext.get('username'));
+      appcues.identify(UserContext.get('username'), {
+        'email': UserContext.get('email'),
+        'first_name': UserContext.get('first_name'),
+        'last_name': UserContext.get('last_name'),
+      });
     });
   },
   page: () => {

@@ -22,7 +22,7 @@ class FindViewableAttributesSpec extends ObjectBehavior
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
         TokenStorageInterface $tokenStorage
     ): void {
-        $this->beConstructedWith($findFlattenAttributes, $getViewableAttributeCodesForUser, $tokenStorage);
+        $this->beConstructedWith($findFlattenAttributes, $getViewableAttributeCodesForUser, $tokenStorage, ['string', 'number']);
     }
 
     public function it_is_initializable(): void
@@ -62,7 +62,10 @@ class FindViewableAttributesSpec extends ObjectBehavior
                 $attributeGroupLabel
             ),
             new FlattenAttribute(
-                $unviewableAttributeCode, $attributeLabel, $attributeGroupCode, $attributeGroupLabel
+                $unviewableAttributeCode,
+                $attributeLabel,
+                $attributeGroupCode,
+                $attributeGroupLabel
             ),
         ];
         $findFlattenAttributes->execute($localeCode, $limit, $attributeTypes, $offset, $search)
@@ -77,7 +80,7 @@ class FindViewableAttributesSpec extends ObjectBehavior
             $userId
         )->willReturn([$viewableAttributeCode]);
 
-        $this->execute($localeCode, $limit, $attributeTypes, $offset, $search)->shouldBeLike(
+        $this->execute($localeCode, $limit, $offset, $search)->shouldBeLike(
             new ViewableAttributesResult(
                 $updatedOffset,
                 [new Attribute($viewableAttributeCode, $attributeLabel, $attributeGroupCode, $attributeGroupLabel)]

@@ -3,7 +3,9 @@ global:
     type: tria
 
 pim:
-  defaultCatalog: vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+  defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+  # @todo[trial_catalog] activate free trial catalog
+  #defaultCatalog: src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
   jobs:
     versioning-purge:
       enabled: true
@@ -63,3 +65,14 @@ pim:
 # Free Trial
 free_trial:
   enabled: true
+  akeneo_connect_saml_entity_id: null
+  akeneo_connect_saml_certificate: null
+  akeneo_connect_api_client_secret: null
+  akeneo_connect_api_client_password: null
+  ft_catalog_api_client_id: null
+  ft_catalog_api_password: null
+  ft_catalog_api_secret: null
+  akeneo_connect_saml_signin_url: "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+  akeneo_connect_saml_logout_url: "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+  akeneo_connect_api_client_id: "portal"
+  akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"

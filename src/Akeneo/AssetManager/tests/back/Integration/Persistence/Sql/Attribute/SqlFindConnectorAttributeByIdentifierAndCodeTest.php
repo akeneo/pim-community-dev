@@ -109,19 +109,19 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
         $this->attributeRepository->create($mediaFileAttribute);
 
         return new ConnectorAttribute(
-                $mediaFileAttribute->getCode(),
-                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'media_file',
-                AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
-                AttributeIsRequired::fromBoolean(true),
-                AttributeIsReadOnly::fromBoolean(false),
-                [
+            $mediaFileAttribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            'media_file',
+            AttributeValuePerLocale::fromBoolean($mediaFileAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($mediaFileAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            [
                     'max_file_size' => '10',
                     'allowed_extensions' => ['jpg'],
                     'media_type' => MediaType::IMAGE
                 ]
-            );
+        );
     }
 
     private function createAssetFamily(string $rawIdentifier): AssetFamily

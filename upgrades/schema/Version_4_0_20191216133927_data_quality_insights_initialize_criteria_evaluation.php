@@ -9,10 +9,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria_evaluation extends AbstractMigration implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Schedule the evaluation of all the criterion of all the products to be able to compute the data quality insights grades.';
     }

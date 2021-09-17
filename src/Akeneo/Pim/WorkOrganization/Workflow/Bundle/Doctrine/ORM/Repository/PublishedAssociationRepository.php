@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedAssociationRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
@@ -26,12 +26,12 @@ class PublishedAssociationRepository extends EntityRepository implements Publish
     /**
      * {@inheritdoc}
      */
-    public function findOneByTypeAndOwner(AssociationTypeInterface $type, $ownerId)
+    public function findOneByTypeAndOwner(int $associationTypeId, $ownerId): ?PublishedProductAssociation
     {
         return $this->findOneBy(
             [
                 'owner'           => $ownerId,
-                'associationType' => $type,
+                'associationType' => ['id' => $associationTypeId],
             ]
         );
     }

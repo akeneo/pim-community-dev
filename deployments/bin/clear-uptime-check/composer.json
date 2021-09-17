@@ -1,6 +1,0 @@
-{
-    "require": {
-        "google/cloud-monitoring": "^1.0.0",
-        "monolog/monolog": "^2.3"
-    }
-}
