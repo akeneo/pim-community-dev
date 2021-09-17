@@ -228,6 +228,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Content tab opened on edit export profile product');
           }
           break;
+        case 'export-profile:product:attribute-added':
+          if (eventOptions && eventOptions.column && eventOptions.column.includes('photo_printing')) {
+            appcues.track('Attribute "Photo printing" added in the content of the export profile');
+          }
+          break;
       }
     });
   },
