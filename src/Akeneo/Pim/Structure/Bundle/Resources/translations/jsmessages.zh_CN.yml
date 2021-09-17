@@ -87,6 +87,10 @@ pim_enrich.entity.attribute_option:
       add_option: 点击此处进行添加
       delete_confirmation_title_msg: 从您的选项中删除"{{ optionCode }}" ？
       delete_confirmation_subtitle_msg: 确定要删除此选项？此操作无法撤消。
+      search:
+        placeholder: 搜索标签或代码
+        no_result:
+          title: 找不到与搜索相符的结果。
 pim_enrich.entity.association_type:
   label: 关联类型
   property:

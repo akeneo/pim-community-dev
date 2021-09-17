@@ -169,6 +169,7 @@ pim_common:
   created: Luotu
   delete: Poista
   done: Valmis
+  duplicate: Kopioi
   edit: Muokkaa
   entity_updated: Tallentamattomia muutoksia löytyy.
   export: Vienti
@@ -183,6 +184,7 @@ pim_common:
   less_than: Vähemmän kuin
   loading: Lataa...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+  more_actions: Lisää toimintoja
   more_than: Enemmän kuin
   next: Seuraava
   "no": "Ei"
@@ -190,6 +192,9 @@ pim_common:
   not_available: Ei mitään
   now: Nyt
   ok: OK
+  open: Avaa
+  no_result: Tuloksia ei löytynyt
+  no_search_result: Valitettavasti haullesi ei löytynyt tuloksia.
   other_actions: Muut toiminnot
   permissions: Käyttöoikeudet
   previous: Edellinen
@@ -224,9 +229,20 @@ pim_common:
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
   read_more: Lue lisää
+  channel: Kanava
+  locale: Lokaali
+  categories: Kategoriat
+  family_variant: Varianttiperhe
+  enabled: Käytössä
+  family: Perhe
+  parent: Ylätaso
   groups: Ryhmät
   products: Tuotteet
+  product_models: Tuotemallit
+  more: Lisää
+  public_view: Julkinen näkymä
 error:
+  exception: Tapahtui {{ status_code }} virhe...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
@@ -273,6 +289,7 @@ pim_title:
   pim_enrich_catalog_volume_index: Katalogin koon seuranta
   pim_enrich_categorytree_index: Kategoriahierarkia
   pim_enrich_categorytree_create: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_edit: Kategoria {{ category.label }} | Muokkaa
   pim_enrich_categorytree_create_tree: Kategoriahierarkia | Luo
   pim_enrich_categorytree_tree: Kategoriahierarkia {{ category.label }} | Muokkaa
   pim_enrich_attribute_index: Attribuutit
@@ -318,6 +335,7 @@ pim_menu:
     attribute_group: Attribuuttiryhmät
     channel: Kanavat
     currency: Valuutat
+    dashboard: Aktiviteettien yhteenveto
     family: Perheet
     group: Ryhmät
     group_type: Ryhmätyypit
@@ -339,6 +357,8 @@ pim_menu:
     system: Järjestelmänavigaatio
     user: Käyttäjähallinnan navigaatio
     settings:
+      product: Tuotteiden asetukset
+      catalog: Katalogin asetukset
       collapsed_label: Asetuksien navigaatio
     product: Tuotenavigaatio
     product_infos: Tuoteinformaatio
@@ -351,6 +371,34 @@ pim_notification:
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
+pim_settings:
+  settings_menu: Asetusten valikko
+  catalog_settings: Katalogin asetukset
+  product_settings: Tuotteiden asetukset
+  count:
+    category_trees: '{0}Teillä on 0 kategoriapuuta|{1}Teillä on 1 kategoriapuu |]1, Inf[Teillä on {{ count }} kategoriapuuta '
+    categories: '{0}ja 0 kategoriaa|{1}ja 1 kategoria|]1, Inf[ja {{ count }} kategoriaa'
+    channels: '{0}Teillä on 0 kanavaa|{1}Teillä on 1 kanava|]1, Inf[Teillä on {{ count }} kanavaa'
+    locales: '{0}Teillä on 0 lokaalia käytössä|{1}Teillä on 1 lokaali käytössä|]1, Inf[Teillä on {{ count }} lokaalia käytössä'
+    currencies: '{0}Teillä on 0 valuuttaa käytössä|{1}Teillä on 1 valuutta käytössä|]1, Inf[Teillä on {{ count }} valuuttaa käytössä'
+    attribute_groups: '{0}Teillä on 0 attribuuttiryhmää|{1}Teillä on 1 attribuuttiryhmä|]1, Inf[Teillä on {{ count }} attriibuuttiryhmää'
+    attributes: '{0}Teillä on 0 attribuuttia|{1}Teillä on 1 attribuutti|]1, Inf[Teillä on {{ count }} attribuuttia'
+    families: '{0}Teillä on 0 perhettä|{1}Teillä on 1 perhe|]1, Inf[Teillä on {{ count }} perhettä'
+    measurements: '{0}Teillä on 0 mittaa|{1}Teillä on 1 mitta|]1, Inf[Teillä on {{ count }} mittaa'
+    association_types: '{0}Teillä on 0 assosiaatiotyyppiä|{1}Teillä on 1 assosiaatiotyyppi|]1, Inf[Teillä on {{ count }} assosiaatiotyyppi'
+    group_types: '{0}Teillä on 0 ryhmätyyppiä|{1}Teillä on 1 ryhmätyyppi|]1, Inf[Teillä on {{ count }} ryhmätyyppiä'
+    groups: '{0}Teillä on 0 ryhmää|{1}Teillä on 1 ryhmä|]1, Inf[Teillä on {{ count }} ryhmää'
+    rules: '{0}Teillä on 0 sääntöä käytössä|{1}Teillä on 1 sääntö käytössä|]1, Inf[Teillä on {{ count }} sääntöä käytössä'
 pim_system:
+  system_menu: Järjestelmävalikko
   system_navigation: Järjestelmänavigaatio
   users_management_navigation: Käyttäjähallinnan navigaatio
+  count:
+    product_values: '{0}Teillä on 0 tuotearvoa|{1}Teillä on 1 tuotearvo|]1, Inf[Teillä on {{ count }} tuotearvoa'
+    users: '{0}Teillä on 0 käyttäjää|{1}Teillä on  1 käyttäjä|]1, Inf[Teillä on  {{ count }} käyttäjää'
+    user_groups: '{0}Teillä on 0 käyttäjäryhmää|{1}Teillä on 1 käyttäjäryhmä|]1, Inf[Teillä on {{ count }} käyttäjäryhmää'
+    roles: '{0}Teillä on 0 roolia|{1}Teillä on 1 rooli|]1, Inf[Teillä on {{ count }} roolia'
+  sso:
+    enabled: SSO käytössä
+    disabled: SSO pois käytöstä
+    title: SAML-pohjainen kertakirjautuminen
