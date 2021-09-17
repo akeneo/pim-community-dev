@@ -70,8 +70,8 @@ for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grt
             kubectl delete ns ${NAMESPACE} || true
             continue
         else
-            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} ${POD} -o json | jq '.status.initContainerStatuses[].image')
-            IMAGE_TAG=$(echo ${IMAGE::-1} | awk -F: '{print $2}')
+            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
+            IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
         ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance || true
     fi

@@ -10,6 +10,10 @@ if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
         exit 9
 fi
+if [[ ${IMAGE_TAG} == "" ]]; then
+        echo "ERR : You must define your instance image tag"
+        exit 10
+fi
 if [[ ${TYPE} == "" ]]; then
         echo "WARN : set default value srnt for instance type to delete"
         TYPE="srnt"
