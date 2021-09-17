@@ -80,6 +80,7 @@ define([
           previousLabel: __('pim_common.previous'),
           nextLabel: __('pim_common.next'),
           confirmLabel: __('pim_common.confirm'),
+          selectActionLabel: __('pim_datagrid.mass_action.default.select_action'),
           illustrationClass: step.getIllustrationClass(),
           __: __,
         })
