@@ -170,6 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'varianttiulottuvuus'
       create: Luo uusi
+      title_create_label: "]-Inf, 1]Lisää uusi {{ axes }}|]1, Inf[Lisää uusi {{ axes }}"
       required_label: '(varianttiulottuvuus)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} tuotevariantti|]1, Inf[{{ complete }} / {{ total }} tuotevarianttia"
