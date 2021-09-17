@@ -105,6 +105,7 @@
 - PIM-10029: Added an explicit class named container to inject additional content into sub-navigation panel
 - PIM-10067: Date value in calendar not set when none is selected
 - PIM-10071: Fix fatal error in case of Cursor::getResults is called without been initialized
+- PIM-10077: Fix the "product image" filter display (untranslatable values on languages other than english)
 
 ## New features
 
