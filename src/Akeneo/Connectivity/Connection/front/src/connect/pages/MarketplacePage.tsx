@@ -73,7 +73,7 @@ export const MarketplacePage: FC = () => {
 
             <PageContent>
                 {null === extensions || (null === apps && <MarketplaceIsLoading />)}
-                {(false === extensions || false === apps) && <UnreachableMarketplace />}
+                {false === extensions && false === apps && <UnreachableMarketplace />}
                 {false !== extensions && null !== extensions && false !== apps && null !== apps && (
                     <Marketplace extensions={extensions} apps={apps} />
                 )}
