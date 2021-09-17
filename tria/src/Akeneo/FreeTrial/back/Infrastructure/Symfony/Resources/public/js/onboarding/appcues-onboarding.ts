@@ -223,6 +223,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Edit export profile');
           }
           break;
+        case 'export-profile:product:content-tab-opened':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit-content') {
+            appcues.track('Content tab opened on edit export profile product');
+          }
+          break;
       }
     });
   },
