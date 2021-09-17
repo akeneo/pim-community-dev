@@ -189,7 +189,8 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'), ReferenceEntityIdentifier::fromString('another_reference_entity'),
+                AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'),
+                ReferenceEntityIdentifier::fromString('another_reference_entity'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(2),
@@ -228,7 +229,8 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                         AttributeIdentifier::create('designer', 'image', 'fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromNormalize([
+                        FileData::createFromNormalize(
+                            [
                                 'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
                                 'originalFilename' => 'file.gif',
                                 'size'             => 1024,
@@ -263,7 +265,8 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                         AttributeIdentifier::fromString('image'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromNormalize([
+                        FileData::createFromNormalize(
+                            [
                                 'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
                                 'originalFilename' => 'coco.gif',
                                 'size'             => 1024,

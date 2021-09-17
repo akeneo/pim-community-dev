@@ -85,7 +85,7 @@ class InMemoryFindSystemSourcesIntegrationTest extends ControllerIntegrationTest
 
     private function getQuery(): InMemoryFindSystemSources
     {
-        return $this->get('Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface');
+        return $this->get('akeneo.tailored_export.query.find_product_system_sources');
     }
 
     protected function getConfiguration(): Configuration

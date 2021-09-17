@@ -58,17 +58,19 @@ class ChannelAndLocaleValidator
 
         return $validator->validate(
             $isChannelExisting,
-            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
-                $channelCode
-            ) {
-                if (!$attributeExists) {
-                    $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXIST,
+            new Callback(
+                function ($attributeExists, ExecutionContextInterface $context) use (
+                    $channelCode
+                ) {
+                    if (!$attributeExists) {
+                        $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXIST,
                             ['%channel_code%' => $channelCode]
                         )
                         ->addViolation();
+                    }
                 }
-            }
             )
         );
     }
@@ -82,17 +84,19 @@ class ChannelAndLocaleValidator
 
         return $validator->validate(
             $isLocaleExisting,
-            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
-                $localeCode
-            ) {
-                if (!$attributeExists) {
-                    $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::LOCALE_SHOULD_EXIST,
+            new Callback(
+                function ($attributeExists, ExecutionContextInterface $context) use (
+                    $localeCode
+                ) {
+                    if (!$attributeExists) {
+                        $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::LOCALE_SHOULD_EXIST,
                             ['%locale_code%' => $localeCode]
                         )
                         ->addViolation();
+                    }
                 }
-            }
             )
         );
     }

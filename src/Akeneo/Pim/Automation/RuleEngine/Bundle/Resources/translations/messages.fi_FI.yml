@@ -4,15 +4,45 @@ pimee_catalog_rule:
       actions:
         execute: Suorita
       title: Säännöt
+      column:
+        label: Otsikko
+        impacted_product_count:
+          label: Sääntöjä koskevat tuotteet
+          count: '{0,1}%count% tuote, joita säännöt koskevat|]1,Inf[%count% tuotetta, joita säännöt koskevat'
+          no_yet_calculated: Ei vielä laskettu
+        tags:
+          label: Toimenpiteet
+        priority: Prioriteetti
+        status: Status
       mass_edit_action:
+        impacted_product_count: Laske tuotteet, joita sääntö koskee
         execute: Suorita
         delete: Poista
+  condition:
+    fields:
+      family: Perhe
+      family_variant: Varianttiperhe
+      associations: Assosiaatiot
+      groups: Ryhmät
+      categories: Kategoriat
+      completeness: Valmistumisaste
+      identifier: Tunniste
+      parent: Ylätaso
+      enabled: Status
+      entity_type: Entiteettityyppi
+      created: Luotu
+      updated: Päivitetty
+    field_groups:
+      system: Järjestelmä
   acl_group:
     rule: Säännöt
   acl:
     rule:
+      edit_permissions: Muokkaa sääntöjä
       view_permissions: Näytä säännöt
       delete_permissions: Poista säännöt
+      impacted_product_count_permissions: Lasketaan niiden tuotteiden määrä, joita säännöt koskevat.
+      create_permissions: Luo säännöt
       execute_permissions: Suorita säännöt
   attribute:
     tab:
@@ -24,12 +54,41 @@ pimee_catalog_rule:
   product:
     history: Otettu käyttöön sääntö "%rule%"
   steps:
+    product_rule_definition_reader.title: Tuotteen sääntöjen tuonnin lukija
+    rule_definition_processor.title: Tuotteen sääntöjen tuonnin käsittelijä
+    product_rule_definition_writer.title: Tuotteen sääntöjen tuonnin kirjoittaja
     rules_execution.title: Sääntöjen suorittaminen
+  notification:
+    execute_rules:
+      success: Sääntöjen suorittaminen valmis
+      warning: Sääntöjen suorittaminen valmis virheitä sisältäen
+      error: Sääntöjen suorituksessa tapahtui virhe.
+    mass_edit_rule:
+      success: Sääntöä koskevien tuotteiden laskenta päättynyt
+      error: Tapahtui virhe laskettaessa sääntöä koskevien tuotteiden lukumäärää
+  datetime:
+    now: nyt
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% minuuttia sitten{-1}1 minuutti sitten{1}1 minuutissa]1, +Inf[ %absolute_count% minuutissa'
+      hour: ']-Inf, -1[%absolute_count% tuntia sitten{-1}1 tunti sitten{1}1 tunnissa]1, +Inf[ %absolute_count% tunnissa'
+      day: ']-Inf, -1[%absolute_count% päivää sitten{-1}1 päivä sitten{1}1 päivässä]1, +Inf[ %absolute_count% päivässä'
+      week: ']-Inf, -1[%absolute_count% viikkoa sitten{-1}1 viikko sitten{1}1 viikossa]1, +Inf[ %absolute_count% viikossa'
+      month: ']-Inf, -1[%absolute_count% kuukautta sitten{-1}1 kuukausi sitten{1}1 kuukaudessa]1, +Inf[ %absolute_count% kuukaudessa'
+      year: ']-Inf, -1[%absolute_count% vuotta sitten{-1}1 vuosi sitten{1}1 vuodessa]1, +Inf[ %absolute_count% vuodessa'
+  status:
+    enabled: Käytössä
+    disabled: Ei käytössä
 btn:
   Execute rules: Suorita säännöt
 job_execution:
   summary:
     rule_calculated: Sääntöjen lukumäärä
+    read_rules: lue säännöt
+    selected_entities: valitut tuotteet / tuotemallit
+    skipped_invalid: ohitetut tuotteet / tuotemallit (virheellinen)
+    updated_entities: päivitetyt tuotteet / tuotemallit
+    executed_rules: onnistuneesti suoritetut säännöt
+    errored_rules: ohitetut säännöt (virheellinen)
 pim_datagrid:
   cells:
     type:

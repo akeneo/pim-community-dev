@@ -1,0 +1,16 @@
+{
+    "description": "Deployment command",
+    "require": {
+        "google/cloud-monitoring": "^1.0.0",
+        "monolog/monolog": "^2.3",
+        "symfony/console": "^5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    },
+    "bin": [
+        "deployment"
+    ]
+}

@@ -19,12 +19,12 @@ class MeasurementUnitLabelSelectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('weight', 'en_US');
+        $this->beConstructedWith('Weight', 'en_US');
     }
 
-    public function it_returns_the_measurement_family()
+    public function it_returns_the_measurement_family_code()
     {
-        $this->getMeasurementFamily()->shouldReturn('weight');
+        $this->getMeasurementFamilyCode()->shouldReturn('Weight');
     }
 
     public function it_returns_the_locale()

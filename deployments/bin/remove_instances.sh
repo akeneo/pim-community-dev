@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth-pimup|tria-pimci' | awk '{print $1}'); do
+for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth-pimup|tria-pimci' | awk '{print $1}'); do
     NS_INFO=($(kubectl get ns | grep ${NAMESPACE}))
     NAMESPACE=$(echo ${NS_INFO[0]})
     NS_STATUS=$(echo ${NS_INFO[1]})
@@ -64,15 +64,15 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth
         echo "---[TODELETE] namespace ${NAMESPACE} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
         gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${NAMESPACE}/default.tflock || true
         # retrive the image tag with the image from a pod
-        POD=$(kubectl get pods --no-headers --namespace=${NAMESPACE} -l 'component in (pim-web,pim-daemon-job-consumer-process)' | awk 'NR==1{print $1}')
+        POD=$(kubectl get pods --no-headers --namespace=${NAMESPACE} -l 'component in (pim-web,pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' | awk 'NR==1{print $1}')
         if [[ -z "$POD" ]]
         then
             kubectl delete ns ${NAMESPACE} || true
             continue
         else
-            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} ${POD} -o json | jq '.status.initContainerStatuses[].image')
-            IMAGE_TAG=$(echo ${IMAGE::-1} | awk -F: '{print $2}')
+            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
+            IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
-        ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance
+        ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance || true
     fi
 done

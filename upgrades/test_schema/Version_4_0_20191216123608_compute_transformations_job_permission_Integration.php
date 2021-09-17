@@ -60,7 +60,7 @@ class Version_4_0_20191216123608_compute_transformations_job_permission_Integrat
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }

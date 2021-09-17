@@ -56,4 +56,6 @@ return [
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoFreeTrialBundle::class =>  ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],
+    Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],
 ];

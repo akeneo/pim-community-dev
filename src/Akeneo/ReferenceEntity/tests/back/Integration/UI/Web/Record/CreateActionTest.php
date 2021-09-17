@@ -149,14 +149,27 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         ];
         $method = 'POST';
-        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
-            $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
-            $content);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_RECORD_ROUTE,
+            $urlParameters,
+            $method,
+            $headers,
+            $content
+        );
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_RECORD_ROUTE,
+            $urlParameters,
+            $method,
+            $headers,
+            $content
+        );
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+        );
     }
 
     /** @test */
@@ -256,7 +269,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 sprintf(
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier
+                    $longIdentifier,
+                    $longIdentifier,
+                    $longIdentifier
                 ),
             ],
         ];

@@ -73,7 +73,8 @@ final class HealthCheckCommand extends Command
     private function outputCatalogInfo(SymfonyStyle $io)
     {
         $io->section('General information');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_products
 FROM pim_catalog_product
 WHERE product_model_id IS NULL
@@ -81,7 +82,8 @@ SQL
         );
         $products = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_variant_products
 FROM pim_catalog_product
 WHERE product_model_id IS NOT NULL
@@ -89,14 +91,16 @@ SQL
         );
         $variant_products = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_product_models
 FROM pim_catalog_product_model
 SQL
         );
         $product_models = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT JSON_ARRAYAGG(code) as codes
 FROM pim_catalog_locale
 WHERE is_activated = 1
@@ -104,28 +108,32 @@ SQL
         );
         $locales = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT JSON_ARRAYAGG(code) AS codes
 FROM pim_catalog_channel
 SQL
         );
         $channels = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_families
 FROM pim_catalog_family
 SQL
         );
         $families = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_categories
 FROM pim_catalog_category
 SQL
         );
         $categories = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_attributes
 FROM pim_catalog_attribute
 WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea');
@@ -133,7 +141,8 @@ SQL
         );
         $attributesTextAndTextarea = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_attributes
 FROM pim_catalog_attribute
 WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
@@ -143,7 +152,8 @@ SQL
         );
         $attributesTextAndTextareaScopable = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_attributes
 FROM pim_catalog_attribute
 WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
@@ -153,7 +163,8 @@ SQL
         );
         $attributesTextAndTextareaLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) AS number_of_attributes
 FROM pim_catalog_attribute
 WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea')
@@ -163,7 +174,8 @@ SQL
         );
         $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*)
 FROM pim_catalog_attribute
 WHERE attribute_type = 'pim_catalog_simpleselect'
@@ -171,7 +183,8 @@ SQL
         );
         $attributesSimpleSelect = $stmt->fetchColumn();
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*)
 FROM pim_catalog_attribute
 WHERE attribute_type = 'pim_catalog_multiselect'
@@ -179,7 +192,8 @@ SQL
         );
         $attributesMultiSelect = $stmt->fetchColumn();
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT count(*) FROM pim_catalog_attribute_option;
 SQL
         );
@@ -243,7 +257,8 @@ SQL;
         $io->section('Evaluation info');
 
         $io->comment('Number of products with criteria evaluated');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT COUNT(DISTINCT product_id)
 FROM pim_data_quality_insights_product_criteria_evaluation
 SQL
@@ -251,7 +266,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Number of product models with criteria evaluated');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT COUNT(DISTINCT product_id)
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 SQL
@@ -259,7 +275,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Status of product criteria evaluations - total');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT status, COUNT(status), MAX(evaluated_at)
 FROM pim_data_quality_insights_product_criteria_evaluation
 GROUP BY status
@@ -269,7 +286,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Status of product model criteria evaluations - total');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT status, COUNT(status), MAX(evaluated_at)
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 GROUP BY status
@@ -279,7 +297,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Product criteria on error with last error date');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status='error'
@@ -290,7 +309,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Product models criteria on error with last error date');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE status='error'
@@ -337,7 +357,8 @@ SQL
     private function outputIgnoredWordInfo(SymfonyStyle $io)
     {
         $io->section('Words ignored by users');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT locale_code, JSON_ARRAYAGG(word) AS words
 FROM pimee_data_quality_insights_text_checker_dictionary
 GROUP BY locale_code
@@ -353,9 +374,10 @@ SQL
     {
         $io->section('Last evaluation result per products');
 
-        $productIds = array_map(function ($productId) {
-            return intval($productId);
-        },
+        $productIds = array_map(
+            function ($productId) {
+                return intval($productId);
+            },
             $productIds
         );
 
@@ -391,9 +413,10 @@ SQL;
     {
         $io->section('Last evaluation result per product models');
 
-        $productIds = array_map(function ($productId) {
-            return intval($productId);
-        },
+        $productIds = array_map(
+            function ($productId) {
+                return intval($productId);
+            },
             $productIds
         );
 
@@ -502,7 +525,8 @@ SQL;
             $meanTimeOfEvaluationPerProductInSeconds = $result['average_execution_time_in_second'] / $result['average_number_of_product_per_job'];
         }
 
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT COUNT(DISTINCT product_id) as number_of_product_to_evaluate
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status = 'pending'
@@ -532,14 +556,16 @@ SQL
         $io->section('Spellcheck on structure entities');
 
         $io->comment('Attributes spellcheck');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT COUNT(*) AS total, SUM(to_improve) FROM pimee_dqi_attribute_spellcheck
 SQL
         );
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Attributes quality');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT quality, COUNT(*) AS number_of_attributes
 FROM pimee_dqi_attribute_quality GROUP BY quality;
 SQL
@@ -547,7 +573,8 @@ SQL
         $this->outputAsTable($io, $stmt->fetchAll());
 
         $io->comment('Attribute options spellcheck');
-        $stmt = $this->db->executeQuery(<<<SQL
+        $stmt = $this->db->executeQuery(
+            <<<SQL
 SELECT COUNT(*) AS total, SUM(to_improve)  FROM pimee_dqi_attribute_option_spellcheck
 SQL
         );

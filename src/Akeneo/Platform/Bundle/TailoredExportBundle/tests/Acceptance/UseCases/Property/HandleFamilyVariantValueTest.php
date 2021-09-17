@@ -51,43 +51,39 @@ final class HandleFamilyVariantValueTest extends PropertyTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the family variant code' => [
                 'operations' => [],
                 'selection' => new FamilyVariantCodeSelection(),
                 'value' => new FamilyVariantValue('pants_size'),
-                'expected' => [static::TARGET_NAME => 'pants_size']
+                'expected' => [static::TARGET_NAME => 'pants_size'],
             ],
-            [
+            'it fallbacks on the family variant code when the label is not found' => [
                 'operations' => [],
                 'selection' => new FamilyVariantLabelSelection('en_US'),
                 'value' => new FamilyVariantValue('pants_size'),
-                'expected' => [static::TARGET_NAME => '[pants_size]']
+                'expected' => [static::TARGET_NAME => '[pants_size]'],
             ],
-            [
+            'it selects the family variant label' => [
                 'operations' => [],
                 'selection' => new FamilyVariantLabelSelection('fr_FR'),
                 'value' => new FamilyVariantValue('pants_size'),
-                'expected' => [static::TARGET_NAME => 'Pantalons']
+                'expected' => [static::TARGET_NAME => 'Pantalons'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FamilyVariantLabelSelection('fr_FR'),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new FamilyVariantCodeSelection(),
                 'value' => new FamilyVariantValue('pants_size'),
-                'expected' => [static::TARGET_NAME => 'pants_size']
+                'expected' => [static::TARGET_NAME => 'pants_size'],
             ],
         ];
     }

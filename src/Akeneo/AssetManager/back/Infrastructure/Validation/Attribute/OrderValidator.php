@@ -35,7 +35,9 @@ class OrderValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($order, [
+        $violations = $validator->validate(
+            $order,
+            [
                 new NotBlank(),
                 new Type(['type' => 'integer']),
                 new GreaterThanOrEqual(0)

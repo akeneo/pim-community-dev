@@ -151,7 +151,21 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         $filename = $this->createCacheFilename($url, $type);
         $previewType = $this->getPreviewType($type);
 
-        $this->cacheManager->remove($filename, $previewType);
+        try {
+            $this->cacheManager->remove($filename, $previewType);
+        } catch (\Exception $exception) {
+            $this->logger->notice(
+                'Exception when trying to remove a thumbnail',
+                [
+                    'data'        => $data,
+                    'attribute'   => $attribute->normalize(),
+                    'exception'   => [
+                        'type'    => get_class($exception),
+                        'message' => $exception->getMessage(),
+                    ],
+                ]
+            );
+        }
     }
 
     /**

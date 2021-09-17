@@ -42,3 +42,4 @@ authentication:
         acs_url:
           label: ACS -osoite
           tooltip_label: Kopioi URL
+        copy: Kopioi

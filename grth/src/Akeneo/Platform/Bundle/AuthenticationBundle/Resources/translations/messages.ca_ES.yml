@@ -1,0 +1,3 @@
+akeneo_authentication:
+  sso:
+    unknown_user_error: No podeu accedir a aquesta aplicació. Contacteu amb l'administrador, si us plau.

@@ -63,7 +63,8 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
         );
 
         $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
         Assert::assertEquals($identifier, $attributeIdentifier);
     }
@@ -75,7 +76,8 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('designer'), AttributeCode::fromString('name')
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
         );
     }
 

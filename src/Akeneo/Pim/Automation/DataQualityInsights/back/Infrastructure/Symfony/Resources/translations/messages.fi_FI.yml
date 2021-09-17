@@ -1,4 +1,13 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Yhtenäisyys
+  attribute_grid:
+    quality_column_label: Laatu
+    to_improve_locale: Parannettavaa {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Oikeinkirjoituksen laatu
+  dictionary:
+    title: Sanasto
 Consistency: Yhtenäisyys
+akeneo_data_quality_insights_dictionary: Sanasto

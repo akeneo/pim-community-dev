@@ -190,7 +190,8 @@ final class ImportRecordContext implements Context
             }
         }
 
-        throw new \Exception(0 === count($errorReasons)
+        throw new \Exception(
+            0 === count($errorReasons)
             ? 'No warning has been thrown'
             : sprintf('The message is not found. Got %s', implode(', ', $errorReasons))
         );

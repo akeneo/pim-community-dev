@@ -52,22 +52,34 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
     public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_reference_entity(
     ) {
         $referenceEntityIdentifier = $this->createReferenceEntity();
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity($referenceEntityIdentifier,
-            4);
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity(
+            $referenceEntityIdentifier,
+            4
+        );
         $this->createAttributesHelper->loadScopableOnlyAttributesForReferenceEntity($referenceEntityIdentifier, 10);
         $this->createAttributesHelper->loadLocalizableOnlyAttributesForReferenceEntity($referenceEntityIdentifier, 10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity($referenceEntityIdentifier,
-            10);
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity(
+            $referenceEntityIdentifier,
+            10
+        );
 
         $anotherReferenceEntityIdentifier = $this->createReferenceEntity();
-        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
-            2);
-        $this->createAttributesHelper->loadScopableOnlyAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
-            10);
-        $this->createAttributesHelper->loadLocalizableOnlyAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
-            10);
-        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity($anotherReferenceEntityIdentifier,
-            10);
+        $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity(
+            $anotherReferenceEntityIdentifier,
+            2
+        );
+        $this->createAttributesHelper->loadScopableOnlyAttributesForReferenceEntity(
+            $anotherReferenceEntityIdentifier,
+            10
+        );
+        $this->createAttributesHelper->loadLocalizableOnlyAttributesForReferenceEntity(
+            $anotherReferenceEntityIdentifier,
+            10
+        );
+        $this->createAttributesHelper->loadNotLocalizableNotScopableAttributesForReferenceEntity(
+            $anotherReferenceEntityIdentifier,
+            10
+        );
 
         $volume = $this->averageMaxPercentageOfScopableOnlyAttributessPerReferenceEntity->fetch();
 

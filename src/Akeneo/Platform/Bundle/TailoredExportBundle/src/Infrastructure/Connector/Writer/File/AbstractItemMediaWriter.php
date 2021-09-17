@@ -74,7 +74,7 @@ abstract class AbstractItemMediaWriter implements
     {
         $this->openedPath = $this->getPath();
         if (!empty($items) && $this->numberOfWrittenLines === 0) {
-            $this->writer = $this->fileWriterFactory->build();
+            $this->writer = $this->fileWriterFactory->build($this->getWriterOptions());
             $this->writer->openToFile($this->openedPath);
             $this->addHeadersIfNeeded(current($items)->getItems());
         }
@@ -84,7 +84,7 @@ abstract class AbstractItemMediaWriter implements
                 $this->writer->close();
                 $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
 
-                $this->writer = $this->fileWriterFactory->build();
+                $this->writer = $this->fileWriterFactory->build($this->getWriterOptions());
                 $this->openedPath = $this->getPath();
                 $this->writer->openToFile($this->openedPath);
                 $this->addHeadersIfNeeded($processedTailoredExport->getItems());
@@ -186,13 +186,18 @@ abstract class AbstractItemMediaWriter implements
         return $parameters->has('linesPerFile') ? (int) $parameters->get('linesPerFile') : -1;
     }
 
-    private function getStepExecution(): StepExecution
+    protected function getStepExecution(): StepExecution
     {
         if (!$this->stepExecution instanceof StepExecution) {
             throw new \Exception('Reader have not been properly initialized');
         }
 
         return $this->stepExecution;
+    }
+
+    protected function getWriterOptions(): array
+    {
+        return [];
     }
 
     private function addHeadersIfNeeded(array $item): void

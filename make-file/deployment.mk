@@ -177,17 +177,23 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+ifeq ($(TYPE),srnt)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+	# @todo[trial_catalog] activate free trial catalog
+	#yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
 endif
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
+
 ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
@@ -202,9 +208,22 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
+
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
 	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
+ifeq ($(TYPE),srnt)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
+ifeq ($(TYPE),grth)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+ifeq ($(TYPE),tria)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+	# @todo[trial_catalog] activate free trial catalog
+	#yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+endif
+endif
+
 ifeq ($(INSTANCE_NAME_PREFIX),beta)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
@@ -276,6 +295,13 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
+	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
+	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
+	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
+	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
+	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
+	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
@@ -288,9 +314,9 @@ ifeq ($(ACTIVATE_MONITORING),true)
 endif
 endif
 ifeq ($(TYPE),grth)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)/terraform"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)/terraform/monitoring"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
 endif
 endif
 ifeq ($(TYPE),tria)
@@ -345,7 +371,7 @@ upgrade-instance:
 	-a "productTypePrefixFilter=$(TYPE)" \
 	-a "googleProjectIdFilter=akecld-saas-dev" \
 	-a "googleCloudZoneFilter=*" \
-	-a "forceUpdate=false"
+	-a "forceUpdate=true"
 
 .PHONY: test-prod
 test-prod:
@@ -385,14 +411,58 @@ delete_pr_environments_hourly:
 	@echo "Deprecated"
 	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
+.PHONY: hourly_cleanup
+hourly_cleanup: delete_environments_hourly delete_expired_uptime_check remove_unused_resources
+
 .PHONY: delete_environments_hourly
 delete_environments_hourly:
 	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
-	cd deployments/bin/clear-uptime-check && docker-compose run --rm composer composer install
-	cd deployments/bin/clear-uptime-check && LOG_LEVEL=info docker-compose run --rm php php ./clean-uptime-check.php
+	cd deployments/bin/uptime && docker-compose run --rm composer composer install
+	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
+
+.PHONY: remove_unused_resources
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+
+.PHONY: remove_unused_gcloud_dns
+remove_unused_gcloud_dns:
+	@echo "=========================================================="
+	@echo "=                 Remove unused dns                      ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_dns.sh
+
+.PHONY: remove_unused_gcloud_pubsub
+remove_unused_gcloud_pubsub:
+	@echo "=========================================================="
+	@echo "=                Remove unused pubsub                    ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_pubsub.sh
+
+.PHONY: remove_unused_gcloud_bucket
+remove_unused_gcloud_bucket:
+	@echo "=========================================================="
+	@echo "=                Remove unused bucket                    ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_bucket.sh
+
+.PHONY: remove_unused_disk
+remove_unused_disk: remove_unused_kube_disk remove_unused_gcloud_disk
+
+.PHONY: remove_unused_kube_disk
+remove_unused_kube_disk:
+	@echo "=========================================================="
+	@echo "=              Remove unused kube disk                   ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_kube_disk.sh
+
+.PHONY: remove_unused_gcloud_disk
+remove_unused_gcloud_disk:
+	@echo "=========================================================="
+	@echo "=             Remove unused gcloud disk                  ="
+	@echo "=========================================================="
+	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
 
 .PHONY: clone_serenity
 clone_serenity:

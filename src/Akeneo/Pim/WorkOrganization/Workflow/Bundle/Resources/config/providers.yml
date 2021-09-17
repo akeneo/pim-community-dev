@@ -34,8 +34,8 @@ services:
             -
                 csv_product_proposal_import: pim-job-instance-csv-product-import
                 csv_product_model_proposal_import: pim-job-instance-csv-product-model-import
-                csv_published_product_export: pim-job-instance-csv-product-export
-                xlsx_published_product_export: pim-job-instance-xlsx-product-export
+                csv_published_product_export: pim-job-instance-csv-published-product-export
+                xlsx_published_product_export: pim-job-instance-xlsx-published-product-export
                 xlsx_product_proposal_import: pim-job-instance-xlsx-product-import
                 xlsx_product_model_proposal_import: pim-job-instance-xlsx-product-model-import
         tags:

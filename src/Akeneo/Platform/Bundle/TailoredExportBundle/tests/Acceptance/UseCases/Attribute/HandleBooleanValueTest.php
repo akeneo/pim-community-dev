@@ -52,78 +52,58 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
-                'expected' => [self::TARGET_NAME => '1']
+                'expected' => [self::TARGET_NAME => '1'],
             ],
             'it selects false value' => [
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
-                'expected' => [self::TARGET_NAME => '0']
+                'expected' => [self::TARGET_NAME => '0'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'oui',
-                                'false' => 'non'
-                            ]
-                        ]
-                    ),
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new ReplacementOperation([
+                        'true' => 'oui',
+                        'false' => 'non',
+                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
-                'expected' => [self::TARGET_NAME => 'oui']
+                'expected' => [self::TARGET_NAME => 'oui'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'oui',
-                                'false' => 'non'
-                            ]
-                        ]
-                    ),
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new ReplacementOperation([
+                        'true' => 'oui',
+                        'false' => 'non',
+                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it applies replacement operation when value is found in the mapping' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'oui',
-                                'false' => 'non'
-                            ]
-                        ]
-                    )
+                    new ReplacementOperation([
+                        'true' => 'oui',
+                        'false' => 'non',
+                    ]),
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
-                'expected' => [self::TARGET_NAME => 'non']
+                'expected' => [self::TARGET_NAME => 'non'],
             ],
             'it does not apply replacement operation when value is not found in the mapping' => [
                 'operations' => [
-                    ReplacementOperation::createFromNormalized(
-                        [
-                            'mapping' => [
-                                'true' => 'oui',
-                            ]
-                        ]
-                    )
+                    new ReplacementOperation([
+                        'true' => 'oui',
+                    ]),
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
-                'expected' => [self::TARGET_NAME => '0']
+                'expected' => [self::TARGET_NAME => '0'],
             ],
         ];
     }

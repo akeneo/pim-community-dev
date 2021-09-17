@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

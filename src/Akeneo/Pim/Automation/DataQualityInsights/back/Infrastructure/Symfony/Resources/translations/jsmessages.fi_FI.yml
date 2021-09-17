@@ -1,13 +1,23 @@
 akeneo_data_quality_insights:
   product_evaluation:
     criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: Attribuutit, joissa virheitä isojen kirjaimien kanssa
+      consistency_textarea_lowercase_words:
+        recommendation: Attribuutit, joissa virheitä pienien kirjaimien kanssa
       consistency_spelling:
         recommendation: Attribuutit, joissa kirjoitusvirheitä
+      consistency_attribute_spelling:
+        recommendation: Attribuuttien nimet, joiden oikeinkirjoituksessa virheitä
+      consistency_attribute_option_spelling:
+        recommendation: Attribuuttien valintalistojen arvot, joissa kirjoitusvirheitä
     axis:
       consistency:
         title: Yhtenäisyys
         attributes_link: Näytä kaikki parannettavissa olevat attribuutit
         success: Tuotetietosi ovat täysin yhtenäiset. Onneksi olkoon!
+    messages:
+      add_image_attribute_recommendation: Kuva kertoo enemmän kuin tuhat sanaa. Lisää medialiite- tai kuva-attribuutti parantaaksesi tämän tuotteen tuotetiedon laatua.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Kaikki parannettavissa olevat attribuutit
@@ -20,3 +30,89 @@ akeneo_data_quality_insights:
     quality:
       to_improve: Parannettavaa
       good: Hyvä
+      in_progress: Käsittelyssä
+      n_a: Ei saatavilla
+  attribute_edit_form:
+    quality_summary: Parantamalla tätä attribuuttia parannat {{ count }} tuotteen yleistä laatua.
+  spellcheck:
+    popover:
+      default_aria_label: Oikeinkirjoituksen ehdotukset
+      aria_label: "Oikeinkirjoituksen ehdotukset: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}Sinulla on <button>1 tuote</button> työstettäväksi. |]1, 200[Sinulla on <button>{{ count }} tuotetta</button> työstettäväksi. |[200, Inf[Sinulla on <button>enemmän kuin {{ count }} tuotetta</button> työstettäväksi.'
+      list:
+        has_image:
+          no_data: Medialiite- ja kuva-attribuuttisi näyttäisivät olevan tyhjillään. Sinun tulisi lisätä tuotekuvia korostaaksesi tuotteidesi laatua.
+        attributes_perfect_spelling:
+          title: Asianmukaisesti nimetyt attribuutit
+          no_data: Attribuutin ja sen valintalistan arvojen otsikot näyttävät puutteellisilta. Sinun kannattaisi rikastaa ne korostaaksesi attribuuttiesi laatua.
+          messages:
+            first_step:
+              message1: Onko sinulla ongelmia attribuuttien ja valintalistan arvojen otsikoiden kanssa? Miten olisi paluu perusteisiin <a href="{{ link }}" target="_blank">täällä</a>?
+              message2: Tarvitsetko apua attribuuteissasi ja valintalistojen arvoissa? Katso <a href="{{ link }}" target="_blank">ohje</a>!
+            second_step:
+              message1: Tutustu tarkemmin attribuuttien ja valintalistojen otsikoihin. Tuotteesi näyttävät entistäkin paremmilta sen jälkeen.
+              message2: Näyttää siltä, että eksyit jossain vaiheessa! Osa otsikoistasi kaipaa yhä hieman työtä.
+            third_step:
+              message1: Olet jo lähellä! Vielä muutama pikkujuttu ja olet valmis.
+              message2: Osa attribuuteista ja niiden otsikoista kaipaa vielä hieman työtä, mutta olet oikealla tiellä!
+            perfect_score_step:
+              message1: Tuotekatalogisi on valmiimpi kuin koskaan ennen! Teit hienoa työtä!
+              message2: Hienoa työtä attribuuttien ja niiden valintalistan arvojen otsikoiden kanssa!
+        values_perfect_spelling:
+          title: Tuotteet, joiden tekstimuotoisilla arvoilla on täydellinen oikeinkirjoitus
+          no_data: Tekstiattribuutit näyttävät hieman tyhjiltä. Sinun kannattaisi rikastaa niitä, jotta voit korostaa tuotteidesi laatua tuotetietojen avulla.
+          messages:
+            first_step:
+              message1: Tuotteesi ansaitsevat tulla kunnollisesti kuvailluksi. Tarkista oikeinkirjoitus!
+              message2: Olet tuotteidesi paras puolestapuhuja. Tarkastele oikeinkirjoitusta hieman tarkemmin.
+              message3: Tuotekuvauksesi ovat yrityksesi julkisivu, joten hankkiudutaan eroon noista kirjoitusvirheistä! Ensivaikutelmalla on merkitystä.
+              message4: Mitä enemmän virheitä tuotetietosi sisältävät, sitä huonomman vaikutelman annat. Huomioi oikeinkirjoitus erityisen tarkasti!
+            second_step:
+              message1: Sinulla on jo täydelliset tuotteet. Nyt tarvitset vain täydellistä oikeinkirjoitusta!
+              message2: Kirjoitusvirhe saattaa karkoittaa asiakkaasi, ole huolellinen!
+              message3: Osa tuotteistasi kaipaa hieman huolenpitoa tullakseen täydellisiksi. Varo kirjoitusvirheitä!
+            third_step:
+              message1: Oikeinkirjoituksella on väliä, et ole kaukana!
+              message2: Melkein perillä! Olet todella lähellä täydellistä oikeinkirjoitusta.
+              message3: Olet vain muutaman pienen oikeinkirjoitusvirheen päässä täydellisistä tuotearvoista.
+              message4: Vain muutama pieni askel täydellisten tuotekuvausten saavuttamiseksi!
+            perfect_score_step:
+              message1: Täydellistä oikeinkirjoitusta koko katalogin laajuudelta. Hienosti tehty!
+              message2: "Vaikuttavaa! Tuotteesi ovat täydellisiä."
+              message3: Teit uskomatonta työtä päästäksesi eroon kaikista oikeinkirjoitusvirheistä. Onneksi olkoon!
+  product_grid:
+    filter_label:
+      spelling_quality: Oikeinkirjoituksen laatu
+  dictionary:
+    helper:
+      content: Sanakirja sallii sinun rekisteröidä sanoja, jotka jätetään huomiotta tuotetiedon laadun analytiikassa.
+      link_label: Lisätietoa ohjeistamme.
+    words: Sanat
+    searchPlaceholder: Hae sanoja
+    add_words: Lisää sanoja tähän
+    no_search_results:
+      title: Haullasi ei löytynyt tuloksia
+      subtitle: Yritä uudelleen uusilla hakuehdoilla.
+    no_data:
+      title: Ei vielä sanoja
+      subtitle: Kirjoita ensimmäinen yläpuolelle, valitse "Lisää" tai paina enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Sanojen lukumäärä
+        label: "]-Inf, 1]{{ count }} sana]1, Inf[{{ count }} sanaa"
+        not_available: Ei saatavilla
+    add_words: Lisää sana
+    items_selected: "{1}1 lokaali valittu|[2, Inf[{{ count }} lokaalia valittu"
+    modal:
+      title: Lisää sanoja {{ count }} lokaaliin
+      subtitle: Kirjoita sanat alle. Ne lisätään kaikkiin valittuihin lokaaleihin.
+      locales_added_notification:
+        title: Sanat lisätty {{ count }} lokaaliin
+        content: Uudet sanat on lisätty valittujen lokaalien sanakirjoihin.
+      no_supported_locales:
+        title: Valitutuille lokaaleille ei voida tarkistaa oikeinkirjoitusta.
+        content: Jos haluat tietää tuettujen lokaalien luettelon, ole hyvä ja tarkista <a href="{{ link }}" target="_blank">ohjeemme</a>

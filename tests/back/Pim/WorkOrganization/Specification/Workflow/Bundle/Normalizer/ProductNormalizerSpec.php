@@ -2,8 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -11,22 +10,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequir
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
@@ -39,7 +34,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         NormalizerInterface $chainedNormalizer,
         TokenInterface $token
@@ -142,7 +137,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         NormalizerInterface $chainedNormalizer,
         TokenInterface $token,

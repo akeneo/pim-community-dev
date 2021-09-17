@@ -65,7 +65,7 @@
 - PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
 - PIM-9984: Fix image preview in asset manager in media link attributes
 - PIM-9981: Fix permission to download logs of clean removed attribute values job
-- PIM-9980: Prevent root category selection in Rule Engine set categories action 
+- PIM-9980: Prevent root category selection in Rule Engine set categories action
 - PIM-9942: Fix message on DQI dashboard in French UI locale
 - PIM-9983: Fix optimization of query to get info about projects
 - PIM-10009: Fix error being printed in the response of partial update of product models API
@@ -75,6 +75,23 @@
 - PIM-10021: Product link rule too long to be completed
 - PIM-10026: Avoid session persistance for API
 - PIM-10028: Fix the ETA time displayed when executing a rule with several actions
+- PIM-10042: Fix infinite loop when using get all reference entity records API endpoint
+- PIM-10043: Fix search not filtering family list on the asset export settings
+- PIM-10052: Fix completeness display in Linked products
+- PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
+- PIM-10035: Add LRU cached AssetFamilyExists query
+- PIM-10034: Implement LRU cache for Asset Attributes to optimize performance
+- PIM-10054: Check records are not used as variant axes before mass delete
+- PIM-10038: Optimize Rule logger to be executed only depending of the log level
+- PIM-10033: Implement LRU cache for Asset Families to optimize performance
+- PIM-10055: Optimize publication of incoming published asssocication upon product publication
+- PIM-10063: Fix product link rule execution to make the property case insensitive
+- PIM-10059: Fix completeness display when user does not have permission on attribute group(s)
+- PIM-10066: Product export in XLSX: option for "Export media" is missing
+- PIM-10065: Asset textarea is not updated when the locale is changed
+- PIM-10029: Fix missing filters on proposal grid page
+- PIM-10068: Fix the Permissions tab disappeared for XLSX and CSV Published Products export profiles
+- PIM-10072: Fix difference on the migration Serenity > Flexibility
 
 ## Improvements
 

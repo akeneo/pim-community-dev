@@ -81,8 +81,10 @@ class EditAction
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'),
-                Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(
+                $this->serializer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         ($this->editReferenceEntityHandler)($command);

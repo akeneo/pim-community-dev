@@ -7,4 +7,4 @@ config:
                     aclResourceId: pimee_sso_configuration
 
     paths:
-        pim/authentication/sso/configuration/sso-controller: akeneoauthentication/js/sso/configuration/SSOConfigurationController.tsx
+        pim/authentication/sso/configuration/sso-controller: akeneopimenterpriseauthentication/js/sso/configuration/SSOConfigurationController.tsx

@@ -5,6 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {MeasurementConfigurator} from './MeasurementConfigurator';
 import {MeasurementSelection, getDefaultMeasurementSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
+import {MeasurementConversionOperation} from 'feature/components/SourceDetails/Measurement/MeasurementConversion';
 
 const attribute = {
   code: 'measurement',
@@ -14,6 +15,7 @@ const attribute = {
   localizable: false,
   is_locale_specific: false,
   available_locales: [],
+  metric_family: 'Length',
 };
 
 jest.mock('./MeasurementSelector', () => ({
@@ -26,6 +28,25 @@ jest.mock('./MeasurementSelector', () => ({
       }
     >
       Update selection
+    </button>
+  ),
+}));
+
+jest.mock('./MeasurementConversion', () => ({
+  MeasurementConversion: ({
+    onOperationChange,
+  }: {
+    onOperationChange: (updatedOperation: MeasurementConversionOperation) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onOperationChange({
+          type: 'measurement_conversion',
+          target_unit_code: 'meter',
+        })
+      }
+    >
+      Measurement conversion
     </button>
   ),
 }));
@@ -81,6 +102,35 @@ test('it can update default value operation', () => {
       default_value: {
         type: 'default_value',
         value: 'foo',
+      },
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update measurement conversion operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <MeasurementConfigurator
+      source={{
+        ...getDefaultMeasurementSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Measurement conversion'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultMeasurementSource(attribute, null, null),
+    operations: {
+      measurement_conversion: {
+        type: 'measurement_conversion',
+        target_unit_code: 'meter',
       },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',

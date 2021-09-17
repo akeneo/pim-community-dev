@@ -27,10 +27,7 @@ class CategoriesSourceValidator extends ConstraintValidator
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = new CodeLabelCollectionSelectionConstraint();
-
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => []]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

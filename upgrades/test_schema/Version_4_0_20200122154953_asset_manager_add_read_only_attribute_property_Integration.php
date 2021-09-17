@@ -40,7 +40,7 @@ class Version_4_0_20200122154953_asset_manager_add_read_only_attribute_property_
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }

@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;

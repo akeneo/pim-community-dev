@@ -3,7 +3,7 @@ set -eo pipefail
 set -x
 BINDIR=$(dirname $(readlink -f $0))
 PED_DIR="${BINDIR}/.."
-kubeval=kubeval
+kubeval="kubeval --skip-kinds Middleware"
 
 K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION:-}
 WITH_ONBOARDER=${WITH_ONBOARDER:-0}

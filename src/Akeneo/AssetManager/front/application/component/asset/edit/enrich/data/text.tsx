@@ -24,6 +24,7 @@ const View = ({id, value, invalid, onChange, onSubmit, canEditData}: ViewGenerat
     <>
       {value.attribute.is_textarea ? (
         <TextAreaInput
+          key={`${value.locale ?? '<all_locales>'}-${value.channel ?? '<all_channels>'}`}
           id={id}
           value={textDataStringValue(value.data)}
           onChange={onValueChange}

@@ -20,8 +20,8 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
-    akeneo_referenceentity.infrastructure.persistence.query.enrich.record_is_used_as_product_variant_axis:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordIsUsedAsProductVariantAxis
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_used_as_product_variant_axis:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordsUsedAsProductVariantAxis
         arguments:
             - '@akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes'
             - '@pim_catalog.repository.attribute'

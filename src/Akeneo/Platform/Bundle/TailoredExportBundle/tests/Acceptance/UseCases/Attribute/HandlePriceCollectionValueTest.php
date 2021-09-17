@@ -53,39 +53,35 @@ final class HandlePriceCollectionValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new PriceCollectionCurrencyCodeSelection(','),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
-                'expected' => [self::TARGET_NAME => 'EUR,USD']
+                'expected' => [self::TARGET_NAME => 'EUR,USD'],
             ],
             'it selects the currency labels' => [
                 'operations' => [],
                 'selection' => new PriceCollectionCurrencyLabelSelection(',', 'fr_FR'),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
-                'expected' => [self::TARGET_NAME => 'euro,dollar des États-Unis']
+                'expected' => [self::TARGET_NAME => 'euro,dollar des États-Unis'],
             ],
             'it selects the amount' => [
                 'operations' => [],
                 'selection' => new PriceCollectionAmountSelection(','),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
-                'expected' => [self::TARGET_NAME => '199,100']
+                'expected' => [self::TARGET_NAME => '199,100'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new PriceCollectionCurrencyCodeSelection(','),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new PriceCollectionCurrencyCodeSelection(','),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
-                'expected' => [self::TARGET_NAME => 'EUR,USD']
+                'expected' => [self::TARGET_NAME => 'EUR,USD'],
             ],
         ];
     }

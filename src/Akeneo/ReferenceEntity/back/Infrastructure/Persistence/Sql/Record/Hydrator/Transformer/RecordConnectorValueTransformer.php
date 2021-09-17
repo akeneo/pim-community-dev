@@ -15,7 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Webmozart\Assert\Assert;
@@ -26,8 +25,7 @@ use Webmozart\Assert\Assert;
  */
 class RecordConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    /** @var FindCodesByIdentifiersInterface */
-    private $findCodesByIdentifiers;
+    private FindCodesByIdentifiersInterface $findCodesByIdentifiers;
 
     public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
@@ -43,17 +41,21 @@ class RecordConnectorValueTransformer implements ConnectorValueTransformerInterf
     {
         Assert::true($this->supports($attribute));
 
-        $recordIdentifier = RecordIdentifier::fromString($normalizedValue['data']);
-        $recordCodes = $this->findCodesByIdentifiers->find([$recordIdentifier]);
+        try {
+            $recordIdentifier = RecordIdentifier::fromString($normalizedValue['data']);
+            $recordCodes = $this->findCodesByIdentifiers->find([$recordIdentifier]);
 
-        if (empty($recordCodes)) {
+            if (empty($recordCodes)) {
+                return null;
+            }
+
+            return [
+                'locale'  => $normalizedValue['locale'],
+                'channel' => $normalizedValue['channel'],
+                'data'    => (string) current($recordCodes),
+            ];
+        } catch (\InvalidArgumentException $exception) {
             return null;
         }
-
-        return [
-            'locale'  => $normalizedValue['locale'],
-            'channel' => $normalizedValue['channel'],
-            'data'    => (string) current($recordCodes),
-        ];
     }
 }

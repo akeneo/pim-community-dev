@@ -45,9 +45,9 @@ class LabelNormalizer implements NormalizerInterface
         $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
 
         return  null !== $attribute && AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType() && (
-                $format === ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX ||
+            $format === ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX ||
                 $format === ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX
-            );
+        );
     }
 
     /**

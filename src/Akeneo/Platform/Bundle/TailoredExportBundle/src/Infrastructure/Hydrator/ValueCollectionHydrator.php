@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
@@ -31,22 +32,34 @@ class ValueCollectionHydrator
     }
 
     public function hydrate(
-        ProductInterface $product,
+        $productOrProductModel,
         ColumnCollection $columnConfiguration
     ): ValueCollection {
+        if (
+            !$productOrProductModel instanceof ProductInterface
+            && !$productOrProductModel instanceof ProductModelInterface
+        ) {
+            throw new \InvalidArgumentException('Cannot hydrate this entity');
+        }
+
         $allSources = $columnConfiguration->getAllSources();
         $valueCollection = new ValueCollection();
 
         foreach ($allSources as $source) {
-            $value = $this->valueHydrator->hydrate($product, $source);
-            if ($source instanceof AttributeSource) {
-                $valueCollection->add($value, $source->getCode(), $source->getChannel(), $source->getLocale());
-            } elseif ($source instanceof PropertySource) {
-                $valueCollection->add($value, $source->getName(), null, null);
-            } elseif ($source instanceof AssociationTypeSource) {
-                $valueCollection->add($value, $source->getCode(), null, null);
-            } else {
-                throw new \InvalidArgumentException('Unsupported source');
+            $value = $this->valueHydrator->hydrate($productOrProductModel, $source);
+
+            switch (true) {
+                case $source instanceof AttributeSource:
+                    $valueCollection->add($value, $source->getCode(), $source->getChannel(), $source->getLocale());
+                    break;
+                case $source instanceof PropertySource:
+                    $valueCollection->add($value, $source->getName(), null, null);
+                    break;
+                case $source instanceof AssociationTypeSource:
+                    $valueCollection->add($value, $source->getCode(), null, null);
+                    break;
+                default:
+                    throw new \InvalidArgumentException('Unsupported source');
             }
         }
 

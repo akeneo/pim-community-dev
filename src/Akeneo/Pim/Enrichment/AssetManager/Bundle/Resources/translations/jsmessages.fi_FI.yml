@@ -5,4 +5,28 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: Assettien vienti XLSX-muodossa
     export.label: Assettien vienti
+  asset_manager_csv_asset_import:
+    label: Assettien tuonti CSV-muodossa
+    import.label: Assettien tuonti
+  asset_manager_xlsx_asset_import:
+    label: Assettien tuonti XLSX-muodossa
+    import.label: Assettien tuonti
 akeneo_assetmanager.export.assets.filter.asset_family: Assettiperhe
+pim_analytics:
+  info_type:
+    api_connection: API-yhteyksien määrä
+    nb_asset_families: Assettiperheiden lukumäärä
+    max_number_of_assets_per_asset_family: Assettien enimmäismäärä kutakin assettiperhettä kohden
+    max_number_of_attributes_per_asset_family: Attribuuttien enimmäismäärä kutakin assettiperhettä kohden
+    average_number_of_assets_per_asset_family: Assettien keskimääräinen määrä kutakin assettiperhettä kohden
+    average_number_of_values_per_assets: Arvojen määrä kutakin assettia kohden
+    average_number_of_attributes_per_asset_family: Attribuuttien keskimääräinen määrä attribuuttiperhettä kohden
+    data_source:
+      tracked: Seurattava tiedon kohde
+      untracked: Ei-seurattava tiedon kohde
+    data_destination:
+      tracked: Seurattava tiedon lähde
+      untracked: Ei-seurattava tiedon lähde
+    other:
+      tracked: Muut seurattavat
+      untracked: Muut ei-seurattavat

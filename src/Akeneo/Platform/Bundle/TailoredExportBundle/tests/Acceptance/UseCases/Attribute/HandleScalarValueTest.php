@@ -46,31 +46,27 @@ final class HandleScalarValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the scalar value' => [
                 'operations' => [],
                 'selection' => new ScalarSelection(),
                 'value' => new StringValue('Sunglasses'),
-                'expected' => [self::TARGET_NAME => 'Sunglasses']
+                'expected' => [self::TARGET_NAME => 'Sunglasses'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new ScalarSelection(),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ])
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new ScalarSelection(),
                 'value' => new StringValue('Sunglasses'),
-                'expected' => [self::TARGET_NAME => 'Sunglasses']
+                'expected' => [self::TARGET_NAME => 'Sunglasses'],
             ],
         ];
     }

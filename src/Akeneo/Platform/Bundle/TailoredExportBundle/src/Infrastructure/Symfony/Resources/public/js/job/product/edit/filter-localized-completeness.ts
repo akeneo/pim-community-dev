@@ -4,7 +4,13 @@ import {ThemeProvider} from 'styled-components';
 import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AssociationType, Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
+import {
+  AssociationType,
+  Attribute,
+  CompletenessFilter,
+  FetcherContext,
+  MeasurementFamily,
+} from '@akeneo-pim-enterprise/tailored-export';
 const _ = require('underscore');
 const __ = require('oro/translator');
 const mediator = require('oro/mediator');
@@ -125,6 +131,16 @@ class FilterLocalizedCompleteness extends BaseFilter {
                     );
                   },
                 },
+                measurementFamily: {
+                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('measure')
+                        .fetch(code)
+                        .then(resolve)
+                    );
+                  },
+                },
               },
             },
             React.createElement(CompletenessFilter, {
@@ -143,6 +159,10 @@ class FilterLocalizedCompleteness extends BaseFilter {
       ),
       this.$('.completeness-filter-container')[0]
     );
+  }
+
+  isEmpty() {
+    return this.config.neverEmpty ? false : 'ALL' === this.getOperator();
   }
 }
 

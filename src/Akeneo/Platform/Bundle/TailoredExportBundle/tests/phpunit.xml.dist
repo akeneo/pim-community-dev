@@ -26,6 +26,7 @@
         </testsuite>
         <testsuite name="TailoredExport_Acceptance_Test">
             <directory>Acceptance/UseCases</directory>
+            <directory>Acceptance/Hydrator</directory>
         </testsuite>
     </testsuites>
 </phpunit>

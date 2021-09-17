@@ -46,7 +46,7 @@ final class Version_4_0_20191223153556_add_asset_naming_convention_column_Integr
 	{
 		$migration = (new \ReflectionClass($this))->getShortName();
 		$migration = str_replace('_Integration', '', $migration);
-		$migration = str_replace('Version', '', $migration);
+		$migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
 		return $migration;
 	}

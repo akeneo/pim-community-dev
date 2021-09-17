@@ -11,6 +11,7 @@ pim_dashboard:
   widget:
     teamwork_assistant:
       title: プロジェクト
+      helper: プロジェクトの詳細と完全性を改善する方法については、<a href="{{ link }}" target="_blank">ヘルプセンターをご覧ください</a>。
       no_project:
         title: プロジェクトは、商品選択の充実化の進捗を追跡するのに役立ちます。
         subtitle: 最初のプロジェクトを作成します。

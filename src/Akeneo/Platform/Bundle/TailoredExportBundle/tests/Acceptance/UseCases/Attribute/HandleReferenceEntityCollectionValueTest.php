@@ -64,9 +64,7 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new ReferenceEntityCollectionCodeSelection(','),
                 'value' => new NullValue(),
@@ -74,9 +72,7 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
-                    DefaultValueOperation::createFromNormalized([
-                        'value' => 'n/a'
-                    ]),
+                    new DefaultValueOperation('n/a'),
                 ],
                 'selection' => new ReferenceEntityCollectionCodeSelection(','),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
