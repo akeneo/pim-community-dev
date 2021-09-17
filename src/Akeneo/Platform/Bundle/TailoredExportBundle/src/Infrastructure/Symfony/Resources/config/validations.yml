@@ -1,4 +1,5 @@
 services:
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\AssetCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
@@ -63,6 +64,13 @@ services:
     public: true
 
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\AssetCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']
     tags:

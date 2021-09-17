@@ -37,8 +37,8 @@ class FindMediaFileInfoCollectionSpec extends ObjectBehavior
         $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes)
             ->willReturn(
                 [
-                    new AssetManagerMediaFileInfo('fileKey1', 'originalFilename1', 'storage1'),
-                    new AssetManagerMediaFileInfo('fileKey2', 'originalFilename2', 'storage2'),
+                    new AssetManagerMediaFileInfo('fileKey1', 'originalFilename1', 'storage1', null, null),
+                    new AssetManagerMediaFileInfo('fileKey2', 'originalFilename2', 'storage2', null, null),
                 ]
             );
 
@@ -46,6 +46,69 @@ class FindMediaFileInfoCollectionSpec extends ObjectBehavior
             [
                 new MediaFileInfo('fileKey1', 'originalFilename1', 'storage1'),
                 new MediaFileInfo('fileKey2', 'originalFilename2', 'storage2'),
+            ]
+        );
+    }
+
+    public function it_finds_scoped_media_file_info_collection(
+        GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection
+    ): void {
+        $assetFamilyCode = 'images';
+        $assetCodes = ['atmosphere1', 'atmosphere2', 'unknown'];
+
+        $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes)
+            ->willReturn(
+                [
+                    new AssetManagerMediaFileInfo('fileKey1', 'originalFilename1', 'storage1', 'ecommerce', null),
+                    new AssetManagerMediaFileInfo('fileKey2', 'originalFilename2', 'storage2', 'print', 'fr_Fr'),
+                ]
+            );
+
+        $this->forScopedAndLocalizedAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes, 'ecommerce', null)->shouldBeLike(
+            [
+                new MediaFileInfo('fileKey1', 'originalFilename1', 'storage1'),
+            ]
+        );
+    }
+
+    public function it_finds_localized_media_file_info_collection(
+        GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection
+    ): void {
+        $assetFamilyCode = 'images';
+        $assetCodes = ['atmosphere1', 'atmosphere2', 'unknown'];
+
+        $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes)
+            ->willReturn(
+                [
+                    new AssetManagerMediaFileInfo('fileKey1', 'originalFilename1', 'storage1', null, 'fr_FR'),
+                    new AssetManagerMediaFileInfo('fileKey2', 'originalFilename2', 'storage2', 'print', 'fr_Fr'),
+                ]
+            );
+
+        $this->forScopedAndLocalizedAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes, null, 'fr_FR')->shouldBeLike(
+            [
+                new MediaFileInfo('fileKey1', 'originalFilename1', 'storage1')
+            ]
+        );
+    }
+
+    public function it_finds_scoped_and_localized_media_file_info_collection(
+        GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection
+    ): void {
+        $assetFamilyCode = 'images';
+        $assetCodes = ['atmosphere1', 'atmosphere2', 'unknown'];
+
+        $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes)
+            ->willReturn(
+                [
+                    new AssetManagerMediaFileInfo('fileKey1', 'originalFilename1', 'storage1', 'ecommerce', 'fr_FR'),
+                    new AssetManagerMediaFileInfo('fileKey2', 'originalFilename2', 'storage2', 'print', 'fr_Fr'),
+                ]
+            );
+
+        $this->forScopedAndLocalizedAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes, 'ecommerce', 'fr_FR')->shouldBeLike(
+            [
+                new MediaFileInfo('fileKey1', 'originalFilename1', 'storage1')
             ]
         );
     }

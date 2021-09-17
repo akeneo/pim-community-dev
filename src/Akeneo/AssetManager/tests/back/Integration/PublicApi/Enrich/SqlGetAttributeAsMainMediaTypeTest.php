@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,89 +25,37 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetMainMediaFileInfoCollection;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetAttributeAsMainMediaType;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-/**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- */
-final class SqlGetMainMediaFileInfoCollectionTest extends SqlIntegrationTestCase
+final class SqlGetAttributeAsMainMediaTypeTest extends SqlIntegrationTestCase
 {
-    private SqlGetMainMediaFileInfoCollection $sqlGetMainMediaFileInfo;
+    private SqlGetAttributeAsMainMediaType $sqlGetAttributeAsMainMediaType;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->sqlGetMainMediaFileInfo = $this->get('akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api');
+        $this->sqlGetAttributeAsMainMediaType = $this->get('akeneo_assetmanager.infrastructure.persistence.query.enrich.get_attribute_as_main_media_type_public_api');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
         $this->loadDataset();
     }
 
     /** @test */
-    public function it_returns_a_list_of_main_media_values(): void
+    public function it_says_if_an_asset_family_main_media_attribute_is_a_media_file(): void
     {
-        $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
-            'asset_family_packshot',
-            ['asset_family_packshot_asset_1', 'asset_family_packshot_asset_2']
-        );
-
-        $expectedFileInfo1 = new MediaFileInfo(
-            'test/main_image_asset_1_fr_FR.jpg',
-            'main_image_asset_1_fr_FR.jpg',
-            'assetStorage',
-            null,
-            'fr_FR'
-        );
-
-        $expectedFileInfo2 = new MediaFileInfo(
-            'test/main_image_asset_2_fr_FR.jpg',
-            'main_image_asset_2_fr_FR.jpg',
-            'assetStorage',
-            null,
-            'fr_FR'
-        );
-
-        $expectedFileInfo3 = new MediaFileInfo(
-            'test/main_image_asset_1_en_US.jpg',
-            'main_image_asset_1_en_US.jpg',
-            'assetStorage',
-            null,
-            'en_US'
-        );
-
-        $expectedFileInfo4 = new MediaFileInfo(
-            'test/main_image_asset_2_en_US.jpg',
-            'main_image_asset_2_en_US.jpg',
-            'assetStorage',
-            null,
-            'en_US'
-        );
-
-        self::assertEqualsCanonicalizing([
-            $expectedFileInfo1,
-            $expectedFileInfo2,
-            $expectedFileInfo3,
-            $expectedFileInfo4,
-        ], $results);
+        $isMediaFile = $this->sqlGetAttributeAsMainMediaType->isMediaFile('asset_family_packshot');
+        self::assertTrue($isMediaFile);
     }
 
     /** @test */
-    public function it_returns_an_empty_array_for_unknown_asset_family_or_asset_codes(): void
+    public function it_returns_false_for_unknown_asset_family(): void
     {
-        $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
-            'asset_family_1',
-            ['asset_2_a']
-        );
-        self::assertEmpty($results);
+        $isMediaFile = $this->sqlGetAttributeAsMainMediaType->isMediaLink('unknown');
+        self::assertFalse($isMediaFile);
 
-        $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
-            'unknown',
-            ['asset_1_a', 'asset_2_a']
-        );
-        self::assertEmpty($results);
+        $isMediaLink = $this->sqlGetAttributeAsMainMediaType->isMediaLink('unknown');
+        self::assertFalse($isMediaLink);
     }
 
     private function loadDataset(): void

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseView = require('pimui/js/view/base');
 import {
+  AssetFamily,
   ColumnsTab,
   ColumnsTabProps,
   FetcherContext,
@@ -14,7 +15,7 @@ import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shar
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -128,6 +129,21 @@ class ColumnView extends BaseView {
                         .fetch(code)
                         .then(resolve)
                     );
+                  },
+                },
+                assetFamily: {
+                  fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
+                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier)
+                    return {
+                      identifier: assetFamily.identifier,
+                      attribute_as_main_media: assetFamily.attributeAsMainMedia,
+                      attributes: assetFamily.attributes.map(({identifier, type, value_per_locale, value_per_channel}) => ({
+                        identifier,
+                        type,
+                        value_per_locale,
+                        value_per_channel,
+                      }))
+                    }
                   },
                 },
               },

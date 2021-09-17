@@ -79,6 +79,7 @@ akeneo.tailored_export:
         type:
           amount: Amount
           currency: Currency
+          main_media: Main media
           key: Filekey
           path: Path
           name: Filename

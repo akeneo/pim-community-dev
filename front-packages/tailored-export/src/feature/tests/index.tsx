@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {act} from '@testing-library/react';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
-import {AssociationType, Attribute, MeasurementFamily} from '../models';
+import {AssetFamily, AssociationType, Attribute, MeasurementFamily} from '../models';
 import {FetcherContext} from '../contexts';
 import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
 
@@ -166,6 +166,45 @@ const measurementFamilies: MeasurementFamily[] = [
   },
 ];
 
+const assetFamilies: AssetFamily[] = [
+  {
+    identifier: 'wallpapers',
+    attribute_as_main_media: 'media_blablabla',
+    attributes: [
+      {
+        identifier: 'media_blablabla',
+        type: 'media_file',
+        value_per_locale: false,
+        value_per_channel: false,
+      },
+    ],
+  },
+  {
+    identifier: 'pokemons',
+    attribute_as_main_media: 'link_blablabla',
+    attributes: [
+      {
+        identifier: 'link_blablabla',
+        type: 'media_link',
+        value_per_locale: false,
+        value_per_channel: false,
+      },
+    ],
+  },
+  {
+    identifier: 'raccoons',
+    attribute_as_main_media: 'link_blablabla',
+    attributes: [
+      {
+        identifier: 'link_blablabla',
+        type: 'media_link',
+        value_per_locale: true,
+        value_per_channel: true,
+      },
+    ],
+  },
+];
+
 const fetchers = {
   attribute: {
     fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
@@ -179,6 +218,10 @@ const fetchers = {
   measurementFamily: {
     fetchByCode: (measurementFamilyCode: string): Promise<MeasurementFamily | undefined> =>
       Promise.resolve(measurementFamilies.find(({code}) => code === measurementFamilyCode)),
+  },
+  assetFamily: {
+    fetchByIdentifier: (assetFamilyIdentifier: string): Promise<AssetFamily | undefined> =>
+      Promise.resolve(assetFamilies.find(({identifier}) => identifier === assetFamilyIdentifier)),
   },
 };
 

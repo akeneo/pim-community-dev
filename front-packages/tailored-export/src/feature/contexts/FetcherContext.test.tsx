@@ -32,3 +32,11 @@ test('Fetch measurement family needs to be implemented', async () => {
     result.current.measurementFamily.fetchByCode('Weight');
   }).toThrowError('Fetch measurement family by code needs to be implemented');
 });
+
+test('Fetch asset family needs to be implemented', async () => {
+  const {result} = renderHookWithProviders(() => useFetchers());
+
+  expect(() => {
+    result.current.assetFamily.fetchByIdentifier('wallpapers');
+  }).toThrowError('Fetch asset family by identifier needs to be implemented');
+});
