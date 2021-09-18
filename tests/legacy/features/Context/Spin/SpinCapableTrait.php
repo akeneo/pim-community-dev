@@ -19,7 +19,7 @@ trait SpinCapableTrait
      *
      * @throws TimeoutException
      *
-     * @return null|bool|array
+     * @return null|bool|array|object
      */
     public function spin(callable $callable, ?string $message)
     {
