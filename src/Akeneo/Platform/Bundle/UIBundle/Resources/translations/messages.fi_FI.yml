@@ -401,7 +401,7 @@ pane.accordion:
   general_parameters: Yleiset parametrit
   validation_parameters: Validaatioparametrit
   label_translations: Nimikkeiden käännökset
-  options: Vaihtoehdot
+  options: Valintalistan arvot
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
