@@ -6,7 +6,7 @@ pim_api:
       list: Listaa attribuutit
     attribute_option:
       edit: Luo ja päivitä attribuuttien vaihtoehtoja
-      list: Lisää attribuuttien vaihtoehdot
+      list: Lisää valintalistan arvoja
     attribute_group:
       edit: Luo ja päivitä attribuuttiryhmiä
       list: Listaa attribuuttiryhmät
@@ -30,7 +30,7 @@ pim_api:
   acl_group:
     overall_access: Yleiset Web API-käyttöoikeudet
     attribute: Attribuutit
-    attribute_option: Attribuuttien vaihtoehdot
+    attribute_option: Attribuutin valintalistan arvot
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
     family: Tuoteperheet
