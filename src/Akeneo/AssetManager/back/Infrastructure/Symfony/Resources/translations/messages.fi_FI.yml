@@ -22,6 +22,11 @@ akeneo_assetmanager:
     option:
       edit: Muokkaa valintoja
       delete: Poista valinta
+  jobs:
+    asset_manager_mass_delete:
+      error: 'Massapoisto epäonnistui asseteilla "{{ assets }}" seuraavan virheen vuoksi: {{ error }}'
+    asset_manager_mass_edit:
+      error: 'Massamuokkaus epäonnistui asseteilla "{{ assets }}" seuraavan virheen vuoksi: {{ error }}'
 pim_import_export:
   widget:
     last_operations:

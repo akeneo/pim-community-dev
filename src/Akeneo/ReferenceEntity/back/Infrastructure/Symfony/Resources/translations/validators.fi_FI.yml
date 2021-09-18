@@ -13,6 +13,12 @@ pim_reference_entity:
         should_not_be_used_as_product_variant_axis: 'Et voi poistaa tätä tietuetta, koska sitä käytetään varianttiulottuvuutena yhdessä tuotevariantissa'
       record_collection:
         should_not_be_used_as_product_variant_axis: 'Et voi poistaa näitä tietueita, koska niitä käytetään varianttiulottuvuutena yhdessä tai useammassa tuotevariantissa'
+      channel:
+        is_expected: 'Viittaustiedon  "%reference_entity_identifier%" attribuutti "%attribute_code%" edellyttää yhtä arvoa kanavaa kohden.'
+      locale:
+        is_expected: 'Viittaustiedon  "%reference_entity_identifier%" attribuutti "%attribute_code%" edellyttää yhtä arvoa lokaalia kohden.'
+      channel_and_locale:
+        are_expected: 'Viittaustiedon  "%reference_entity_identifier%" attribuutti "%attribute_code%" edellyttää yhtä arvoa kanavaa ja lokaalia kohden.'
       number:
         should_be_string: 'Arvon on oltava merkkijono'
         should_be_integer: 'Arvon on oltava kokonaisluku'
