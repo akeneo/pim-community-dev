@@ -103,8 +103,8 @@ pimee_catalog_rule:
         label: Prioriteetti
       status:
         label: Status
-        enabled: Otettu käyttöön
-        disabled: Poistettu käytöstä
+        enabled: Käytössä
+        disabled: Ei käytössä
       add_to_category: Lisää kategoriaan
       add_conditions: Lisää ehtoja
       products_count:

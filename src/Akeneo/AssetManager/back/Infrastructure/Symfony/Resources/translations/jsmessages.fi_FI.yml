@@ -40,6 +40,7 @@ pim_asset_manager:
     previous: Edellinen assetti
     next: Seuraava assetti
     empty_main_media: Tällä assetilla ei ole medialiitettä.
+    other_main_media: Emme voi luoda esikatselukuvaa tälle assetille
     edit_asset: Muokkaa assettia
     download: Lataa
     copy_url: Kopioi URL-osoite
@@ -231,12 +232,14 @@ pim_asset_manager:
       no_product:
         title: Tätä assettia ei ole linkitetty mihinkään tuotteeseen "{{ entityLabel }}" -attribuutin kautta
         subtitle: 'Aloita tuotteiden linkittäminen tähän attribuuttiin nähdäksesi ne täällä'
+    no_linked_products: Tätä assettia ei ole linkitetty tuotteisiin
     enrich:
       title: Assetin attribuutit
       code: Koodi
       label: Nimike
       edit_subsection: Muokkaa assettia
       product_subsection: Linkitetyt tuotteet
+      main_media_preview: Päämedian esikatselu
     title: Assetit
     create:
       header:
