@@ -133,7 +133,7 @@
         "dvdoug/behat-code-coverage": "^5.2.1",
         "friends-of-behat/mink": "^1.9.0",
         "friends-of-behat/mink-browserkit-driver": "^1.5.0",
-        "friends-of-behat/mink-extension": "^2.4.0",
+        "friends-of-behat/mink-extension": "2.4.*",
         "friends-of-behat/symfony-extension": "^2.2.0",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0",
         "friendsofphp/php-cs-fixer": "^3.0",
