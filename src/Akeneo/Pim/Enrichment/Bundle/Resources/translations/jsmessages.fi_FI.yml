@@ -43,8 +43,8 @@ pim_enrich.entity.product:
     variant_navigation:
       common: Yleinen
     status:
-      enabled: Otettu käyttöön
-      disabled: Poistettu käytöstä
+      enabled: Käytössä
+      disabled: Ei käytössä
     download_pdf:
       label: PDF
     copy:
@@ -251,8 +251,8 @@ pim_enrich.export.product:
       title: Status
       help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
       value:
-        enabled: Otettu käyttöön
-        disabled: Poistettu käytöstä
+        enabled: Käytössä
+        disabled: Ei käytössä
     completeness:
       title: Valmistumisaste
       help: Valitse vietävät tuotteet valmiusasteen perusteella.

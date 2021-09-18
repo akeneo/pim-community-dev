@@ -139,7 +139,7 @@ akeneo_data_quality_insights:
     activation: Aktivointi
     dqi_status: Tuotetiedon laadun analytiikan tilanne
     activated: Aktivoitu
-    disabled: Poistettu käytöstä
+    disabled: Ei käytössä
     used_groups_helper: "Seuraavat attribuuttiryhmät huomioidaan tuotetiedon laadun arvioinnissa:"
     all_groups_evaluated: Kaikki tämän tuotteen attribuuttiryhmät on otettu huomioon laskettaessa laatupisteytystä. Saadaksesi osuvimman laatupisteytyksen, <a href="{{ link }}" target="_blank">lue ohjekeskuksestamme, miten attribuuttiryhmiä on mahdollista deaktivoida.</a>
   product_grid:
