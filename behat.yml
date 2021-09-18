@@ -101,9 +101,10 @@ legacy:
                             browserName: "chrome"
                             chrome:
                                 switches:
-                                    - "--headless"
-                                    - "--no-sandbox"
+                                    - "---window-size=1280,1024"
                                     - "--start-maximized"
+                                    - "--no-sandbox"
+                                    - "--headless"
         FriendsOfBehat\SymfonyExtension:
             bootstrap: config/bootstrap.php
             kernel:
