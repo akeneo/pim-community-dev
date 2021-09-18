@@ -129,7 +129,7 @@ pim_enrich.entity.attribute:
     index: "]-Inf, 1] {{ count }} attribuutti|]1, Inf [{{ count }} attribuuttia"
   property:
     allowed_extensions: Sallitut laajennukset
-    auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
+    auto_option_sorting: Järjestä arvot automaattisesti aakkosjärjestykseen
     available_locales: Saatavilla olevat alueet
     date_max: Max päivämäärä
     date_min: Min päivämäärä
