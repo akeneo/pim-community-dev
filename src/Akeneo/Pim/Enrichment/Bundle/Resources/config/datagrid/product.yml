@@ -103,6 +103,7 @@ datagrid:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate-product-and-product-model
                 label:     pim_datagrid.actions.edit_product_attributes
+                useDirectLauncherLink: true
                 tabRedirects:
                     product: pim-product-edit-form-attributes
                     product_model: pim-product-model-edit-form-attributes
@@ -110,6 +111,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
                 type:  navigate-product-and-product-model
+                useDirectLauncherLink: false
                 label: pim_datagrid.actions.classify_product
                 tabRedirects:
                     product: pim-product-edit-form-categories
