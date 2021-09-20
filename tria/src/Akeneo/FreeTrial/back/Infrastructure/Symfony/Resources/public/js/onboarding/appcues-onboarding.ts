@@ -109,6 +109,10 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute group "Content / Copy" selected');
           }
 
+          if (eventOptions && eventOptions.name === 'specifications') {
+            appcues.track('Attribute group "Specifications / Product Team" selected');
+          }
+
           appcues.track('Attribute group selected in the product grid');
           break;
         case 'product:attribute-value:updated':
