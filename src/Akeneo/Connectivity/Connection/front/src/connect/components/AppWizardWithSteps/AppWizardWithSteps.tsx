@@ -78,33 +78,37 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         history.push('/connect/marketplace');
     };
 
-    const handleConfirm = async () => {
-        try {
-            const {userGroup} = await confirmAuthorization();
-
-            for (const provider of providers) {
-                const success = await provider.save(userGroup, permissions[provider.key]);
-                if (false === success) {
-                    notify(
-                        NotificationLevel.ERROR,
-                        translate(
-                            'akeneo_connectivity.connection.connect.apps.wizard.flash.permissions_error.description'
-                        ),
-                        {
-                            titleMessage: translate(
-                                'akeneo_connectivity.connection.connect.apps.wizard.flash.permissions_error.title',
-                                {entity: provider.label}
-                            ),
-                        }
-                    );
-                }
+    const notifyPermissionProviderError = (entity: string): void => {
+        notify(
+            NotificationLevel.ERROR,
+            translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
+            {
+                titleMessage: translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.title', {
+                    entity: entity,
+                }),
             }
+        );
+    };
+
+    const handleConfirm = async () => {
+        let userGroup = null;
+        try {
+            const confirmResult = await confirmAuthorization();
+            userGroup = confirmResult.userGroup;
         } catch (e) {
             notify(
                 NotificationLevel.ERROR,
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
             );
             return;
+        }
+
+        for (const provider of providers) {
+            try {
+                await provider.save(userGroup, permissions[provider.key]);
+            } catch {
+                notifyPermissionProviderError(provider.label);
+            }
         }
 
         notify(

@@ -5,7 +5,7 @@ export interface PermissionFormProvider<T> {
     label: string;
     renderForm: (onChange: (state: T) => void, initialState: T | undefined) => ReactNode;
     renderSummary: (state: T) => ReactNode;
-    save: (userGroup: string, state: T) => Promise<boolean>;
+    save: (userGroup: string, state: T) => Promise<void>;
 }
 
 export interface PermissionFormRegistry {

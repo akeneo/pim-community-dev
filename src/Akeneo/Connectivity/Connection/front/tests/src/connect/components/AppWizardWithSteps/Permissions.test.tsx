@@ -19,9 +19,10 @@ test('The permissions step renders with the providers from the registry', done =
     const providers = [
         {
             key: 'test',
+            label: 'testLabel',
             renderForm: (_onChange: any, initialState: any) => <div>test form {initialState.print}</div>,
             renderSummary: () => null,
-            save: () => true,
+            save: () => Promise.resolve(),
         },
     ];
 
