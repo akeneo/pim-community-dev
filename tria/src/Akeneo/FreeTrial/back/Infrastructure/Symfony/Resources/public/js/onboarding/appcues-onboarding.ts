@@ -264,7 +264,6 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'product-model:form:variant-selected':
-          console.log('test');
           appcues.track('Variant selected from product model');
           break;
       }
