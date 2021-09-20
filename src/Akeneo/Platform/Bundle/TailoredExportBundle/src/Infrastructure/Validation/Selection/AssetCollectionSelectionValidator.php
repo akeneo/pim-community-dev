@@ -21,6 +21,7 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiv
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Composite;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
@@ -103,7 +104,10 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             $assetFamilyCode = $attribute->properties()['reference_data_name'];
             $validator->inContext($this->context)->validate(
                 $selection,
-                new IsValidAssetAttribute(['assetFamilyCode' => $assetFamilyCode]),
+                [
+                    new Collection(['fields' => ['locale' => new Required(), 'channel' => new Required()], 'allowExtraFields' => true]),
+                    new IsValidAssetAttribute(['assetFamilyCode' => $assetFamilyCode]),
+                ]
             );
 
             $attributeAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyCode($assetFamilyCode);
