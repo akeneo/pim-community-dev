@@ -7,9 +7,10 @@ import useProduct from './ProductEditForm/useProduct';
 import {useFetchProductQualityScore} from './ProductEditForm/useFetchProductQualityScore';
 import usePageContext from './ProductEditForm/usePageContext';
 import useProductEvaluation from './ProductEditForm/useProductEvaluation';
-import {useProductEvaluatedAttributeGroups} from './AttributeGroup/useProductEvaluatedAttributeGroups';
 import {useFetchKeyIndicators} from './Dashboard/useFetchKeyIndicators';
-import {useFetchQualityScoreEvolution, RawScoreEvolutionData} from './Dashboard/useFetchQualityScoreEvolution';
+import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from './Dashboard/useFetchQualityScoreEvolution';
+
+export * from './AttributeGroup';
 
 export {
   useFetchDqiDashboardData,
@@ -21,7 +22,6 @@ export {
   useFetchProductQualityScore,
   usePageContext,
   useProductEvaluation,
-  useProductEvaluatedAttributeGroups,
   useFetchKeyIndicators,
   useFetchQualityScoreEvolution,
   RawScoreEvolutionData,
