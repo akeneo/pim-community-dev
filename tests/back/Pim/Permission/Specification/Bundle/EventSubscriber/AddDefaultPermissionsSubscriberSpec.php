@@ -8,6 +8,7 @@ use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\UserGroup\GetUserGroupsWithDefaultPermission;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
@@ -26,14 +27,16 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        LocaleAccessManager $localeAccessManager
+        LocaleAccessManager $localeAccessManager,
+        GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission
     ) {
         $this->beConstructedWith(
             $groupRepository,
             $attributeGroupAccessManager,
             $jobInstanceAccessManager,
             $productCategoryAccessManager,
-            $localeAccessManager
+            $localeAccessManager,
+            $getUserGroupsWithDefaultPermission
         );
     }
 
@@ -49,10 +52,13 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     function it_set_default_permissions_on_new_attribute_groups(
         $groupRepository,
         $attributeGroupAccessManager,
+        GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission,
         Group $defaultGroup
     ) {
         $attributeGroup = new AttributeGroup();
         $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+        $getUserGroupsWithDefaultPermission->execute('attribute_group_view')->willReturn([]);
+        $getUserGroupsWithDefaultPermission->execute('attribute_group_edit')->willReturn([]);
         $attributeGroupAccessManager->setAccess($attributeGroup, [$defaultGroup], [$defaultGroup])->shouldBeCalled();
 
         $this->setDefaultPermissions(new GenericEvent($attributeGroup, ['is_new' => true]));
@@ -95,6 +101,7 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     function it_set_default_permissions_on_root_product_category(
         $groupRepository,
         $productCategoryAccessManager,
+        GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission,
         Group $defaultGroup,
         CategoryInterface $category,
         GenericEvent $event
@@ -109,10 +116,15 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
 
         $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
 
-        $productCategoryAccessManager->grantAccess(
+        $getUserGroupsWithDefaultPermission->execute('category_view')->willReturn([]);
+        $getUserGroupsWithDefaultPermission->execute('category_edit')->willReturn([]);
+        $getUserGroupsWithDefaultPermission->execute('category_own')->willReturn([]);
+
+        $productCategoryAccessManager->setAccess(
             $category,
-            $defaultGroup,
-            Attributes::OWN_PRODUCTS
+            [],
+            [],
+            [$defaultGroup]
         )->shouldBeCalled();
 
         $this->setDefaultPermissions($event);
@@ -146,10 +158,13 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     function it_sets_default_permissions_on_new_locale(
         $groupRepository,
         $localeAccessManager,
+        GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission,
         Group $defaultGroup
     ) {
         $locale = new Locale();
         $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+        $getUserGroupsWithDefaultPermission->execute('locale_view')->willReturn([]);
+        $getUserGroupsWithDefaultPermission->execute('locale_edit')->willReturn([]);
         $localeAccessManager->setAccess($locale, [$defaultGroup], [$defaultGroup])->shouldBeCalled();
 
         $this->setDefaultPermissions(new GenericEvent($locale, ['is_new' => true]));
