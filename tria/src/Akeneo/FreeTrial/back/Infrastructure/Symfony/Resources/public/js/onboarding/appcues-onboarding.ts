@@ -263,6 +263,10 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Export profile "Furniture products for Amazon (weekly)" launched');
           }
           break;
+        case 'product-model:form:variant-selected':
+          console.log('test');
+          appcues.track('Variant selected from product model');
+          break;
       }
     });
   },
