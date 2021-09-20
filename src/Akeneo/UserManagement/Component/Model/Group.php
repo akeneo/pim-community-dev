@@ -21,6 +21,8 @@ class Group implements GroupInterface
     /** @var ArrayCollection */
     protected $roles;
 
+    protected ?array $defaultPermissions = null;
+
     /**
      * @param string $name [optional] Group name
      */
@@ -156,6 +158,16 @@ class Group implements GroupInterface
                 '$roles must be an instance of Doctrine\Common\Collections\Collection or an array'
             );
         }
+    }
+
+    public function getDefaultPermissions(): ?array
+    {
+        return $this->defaultPermissions;
+    }
+
+    public function setDefaultPermissions(array $defaultPermissions): void
+    {
+        $this->defaultPermissions = $defaultPermissions;
     }
 
     /**

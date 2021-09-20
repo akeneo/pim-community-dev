@@ -80,4 +80,8 @@ interface GroupInterface
      * @throws \InvalidArgumentException
      */
     public function setRoles($roles): void;
+
+    public function getDefaultPermissions(): ?array;
+
+    public function setDefaultPermissions(array $defaultPermissions): void;
 }
