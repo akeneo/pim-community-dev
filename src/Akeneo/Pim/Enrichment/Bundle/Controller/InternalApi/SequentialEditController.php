@@ -32,18 +32,18 @@ class SequentialEditController
     protected $pqbFactory;
 
     /**
-     * @param MassActionParametersParser          $parameterParser
-     * @param GridFilterAdapterInterface          $filterAdapter
+     * @param MassActionParametersParser $parameterParser
+     * @param GridFilterAdapterInterface $filterAdapter
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
     public function __construct(
-        MassActionParametersParser $parameterParser,
-        GridFilterAdapterInterface $filterAdapter,
+        MassActionParametersParser          $parameterParser,
+        GridFilterAdapterInterface          $filterAdapter,
         ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
-        $this->parameterParser      = $parameterParser;
-        $this->filterAdapter        = $filterAdapter;
-        $this->pqbFactory           = $pqbFactory;
+        $this->parameterParser = $parameterParser;
+        $this->filterAdapter = $filterAdapter;
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**
@@ -62,8 +62,10 @@ class SequentialEditController
 
         $cursor = $this->getProductsCursor($filters, [
             'locale' => $parameters['dataLocale'],
-            'scope'  => $parameters['dataScope']['value'],
-            'sort'   => $parameters['sort']
+            'scope' => isset($parameters['dataScope'])
+                ? $parameters['dataScope']['value']
+                : null,
+            'sort' => $parameters['sort']
         ]);
 
         while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
