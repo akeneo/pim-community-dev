@@ -278,6 +278,11 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'product-model:form:variant-selected':
           appcues.track('Variant selected from product model');
           break;
+        case 'family:edit:variant-selected':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-family-edit-form-variant') {
+            appcues.track('Tab "Variants" selected in family edit form');
+          }
+          break;
       }
     });
   },
