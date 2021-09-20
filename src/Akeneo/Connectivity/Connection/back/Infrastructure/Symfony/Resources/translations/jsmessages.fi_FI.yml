@@ -38,15 +38,56 @@ akeneo_connectivity.connection:
     marketplace:
       title: Haluatko yhdistää PIMin toiseen sovellukseen? 🤟
       sub_title: Tarkista Marketplace-sivustolta, mitkä sovellukset voidaan yhdistää Akeneo PIMiin.
+      link: Yhteys kauppapaikkaan
+      helper:
+        title: '{0} PIM-versiosi kanssa yhteensopivia sovelluksia tai konnektoreita ei ole.{1} PIM-versiosi kanssa on yhteensopiva {{ count }} sovellus tai konnektori. [2,Inf] PIM-versiosi kanssa yhteensopivia sovelluksia ja konnektoreita on {{ count }}.'
+        title_without_apps: '{0} PIM-versiosi kanssa yhteensopivia konnektoreita ei ole.{1} {{ count }} PIM-versiosi kanssa yhteensopiva konnektori. [2,Inf] {{ count }} PIM-versiosi kanssa yhteensopivia konnektoria.'
+        description: Tämä on vain yleiskatsaus. Katso lisätietoja kauppapaikaltamme.
+        link: Siirry kauppapaikkaan
       card:
+        developed_by: Kehittänyt
+        read_more: lue lisää
         more_info: Lisätietoa
         connect: Yhdistä
       extensions:
         title: Konnektorit
+        total: '{0} Ei konnektoreita|{1} 1 konnektori|[2,Inf] {{ total }} konnektoria'
+        empty: Ei versiosi kanssa yhteensopivia konnektoreita
+      apps:
+        title: Sovellukset
+        total: '{0} Ei sovelluksia|{1} 1 sovellus|[2,Inf] {{ total }} sovellusta'
+        empty: Ei versiosi kanssa yhteensopivia sovelluksia
+      unreachable: Emme pääse nyt kauppapaikkaan. Ole hyvä ja yritä myöhemmin uudelleen.
+      scroll_to_top: Siirry ylös
     apps:
       wizard:
+        title: Yhdistä
+        action:
+          confirm: Vahvista
+          cancel: Peruuta
+          previous: Edellinen
+          next: Seuraava
+          allow_and_next: Salli ja seuraava
         progress:
+          authorizations: Tunnistautumiset
           permissions: Käyttöoikeudet
+          well_done: Hyvin tehty!
+      title: Yhdistä
+      scope:
+        type:
+          view: 'Näytä {{ entities }}'
+          edit: 'Näytä ja muokkaa {{ entities }}'
+          delete: 'Näytä, muokkaa ja poista {{ entities }}'
+        entities:
+          catalog_structure: attribuutit, attribuuttiryhmät, perheet ja varianttiperheet
+          attribute_options: valintalistan arvot
+          categories: kategoriat
+          channel_localization: lokaalit ja valuutat
+          channel_settings: kanavat
+          association_types: assosiaatiotyypit
+          products: tuotteet ja tuotemallit
+      error:
+        sub_text: Ota yhteyttä sovelluksen kehittäjään tai Akeneo-tukeen
   connections: Yhteydet
   secondary_actions:
     title: Muut toiminnot
@@ -253,6 +294,8 @@ akeneo_connectivity.connection:
           from: Alkaen
           to: Päättyen
           all: Kaikki
+        headers:
+          datetime: Aika
   error_management:
     connection_monitoring:
       title: Monitorointi

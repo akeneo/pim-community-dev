@@ -7,8 +7,10 @@ import {PermissionsType} from './AppWizardWithSteps';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
-    padding: 20px 0 20px 40px;
+    padding: 20px 40px;
     border-left: 1px solid ${getColor('brand', 100)};
+    height: 500px;
+    overflow-y: scroll;
 `;
 
 const Connect = styled.h3`
@@ -41,6 +43,9 @@ type RowProps = {
     setPermissions: (state: any) => void;
     permissions: PermissionsType | undefined;
 };
+const FormContainer = styled.div`
+    padding-bottom: 10px;
+`;
 
 const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions, permissions}) => {
     const handleChange = useCallback(
@@ -50,7 +55,7 @@ const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions, permi
         [setPermissions]
     );
 
-    return <div>{provider.renderForm(handleChange, permissions)}</div>;
+    return <FormContainer>{provider.renderForm(handleChange, permissions)}</FormContainer>;
 });
 
 type Props = {
