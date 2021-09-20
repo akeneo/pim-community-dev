@@ -1,4 +1,4 @@
-import {AssetCollectionMainMediaNotFoundError} from "../components/SourceDetails/error";
+import {AssetCollectionMainMediaNotFoundError} from '../components/SourceDetails/error';
 
 type Attribute = {
   identifier: string;

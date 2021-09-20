@@ -27,7 +27,9 @@ class AssetCollectionSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] =  new AssetCollectionSelectionConstraint();
+        $sourceConstraintFields['selection'] =  new AssetCollectionSelectionConstraint([
+            'attributeCode' => $source['code'] ?? ''
+        ]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);

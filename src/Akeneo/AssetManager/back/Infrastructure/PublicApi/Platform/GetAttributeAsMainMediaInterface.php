@@ -15,5 +15,5 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
 interface GetAttributeAsMainMediaInterface
 {
-    public function forAssetFamilyIdentifier(string $assetFamilyIdentifier): AttributeAsMainMedia;
+    public function forAssetFamilyCode(string $assetFamilyCode): AttributeAsMainMedia;
 }

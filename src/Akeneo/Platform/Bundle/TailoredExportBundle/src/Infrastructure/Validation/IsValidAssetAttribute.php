@@ -20,11 +20,18 @@ use Symfony\Component\Validator\Constraint;
  */
 final class IsValidAssetAttribute extends Constraint
 {
+    public string $assetFamilyCode;
+
     /**
      * {@inheritdoc}
      */
     public function validatedBy(): string
     {
         return IsValidAssetAttributeValidator::class;
+    }
+
+    public function getRequiredOptions(): array
+    {
+        return ['assetFamilyCode'];
     }
 }

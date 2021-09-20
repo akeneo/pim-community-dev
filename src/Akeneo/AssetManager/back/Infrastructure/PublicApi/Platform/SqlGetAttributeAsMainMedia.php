@@ -26,10 +26,10 @@ class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
         $this->connection = $connection;
     }
 
-    public function forAssetFamilyIdentifier(string $assetFamilyIdentifier): AttributeAsMainMedia
+    public function forAssetFamilyCode(string $assetFamilyCode): AttributeAsMainMedia
     {
-        if (array_key_exists($assetFamilyIdentifier, $this->attributeAsMainMediaTypes)) {
-            return $this->attributeAsMainMediaTypes[$assetFamilyIdentifier];
+        if (array_key_exists($assetFamilyCode, $this->attributeAsMainMediaTypes)) {
+            return $this->attributeAsMainMediaTypes[$assetFamilyCode];
         }
 
         $sql = <<<SQL
@@ -42,19 +42,19 @@ SQL;
 
         $result = $this->connection->executeQuery(
             $sql,
-            ['assetFamilyIdentifier' => $assetFamilyIdentifier]
+            ['assetFamilyIdentifier' => $assetFamilyCode]
         )->fetch();
 
         if (empty($result)) {
-            throw new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyIdentifier));
+            throw new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyCode));
         }
 
-        $this->attributeAsMainMediaTypes[$assetFamilyIdentifier] = new AttributeAsMainMedia(
+        $this->attributeAsMainMediaTypes[$assetFamilyCode] = new AttributeAsMainMedia(
             $result['attribute_type'],
-            $result['value_per_channel'],
-            $result['value_per_locale']
+            (bool) $result['value_per_channel'],
+            (bool) $result['value_per_locale']
         );
 
-        return $this->attributeAsMainMediaTypes[$assetFamilyIdentifier];
+        return $this->attributeAsMainMediaTypes[$assetFamilyCode];
     }
 }

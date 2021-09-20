@@ -17,8 +17,15 @@ use Symfony\Component\Validator\Constraint;
 
 class AssetCollectionSelectionConstraint extends Constraint
 {
+    public string $attributeCode;
+
     public function validatedBy(): string
     {
         return AssetCollectionSelectionValidator::class;
+    }
+
+    public function getRequiredOptions(): array
+    {
+        return ['attributeCode'];
     }
 }

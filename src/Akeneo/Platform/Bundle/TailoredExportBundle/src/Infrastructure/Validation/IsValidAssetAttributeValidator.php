@@ -45,18 +45,17 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
             return;
         }
 
-        Assert::isInstanceOf($constraint, IsValidAttribute::class);
-        $assetFamilyIdentifier = $value['asset_family_identifier'] ?? null;
-        if (null === $assetFamilyIdentifier || !is_string($assetFamilyIdentifier)) {
-            return;
+        if (!$constraint instanceof IsValidAssetAttribute) {
+            throw new \InvalidArgumentException('Invalid constraint');
         }
 
-        $attributeAsMainMediaAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyIdentifier($assetFamilyIdentifier);
+        $assetFamilyCode = $constraint->assetFamilyCode;
+        $attributeAsMainMediaAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyCode($assetFamilyCode);
         $localeCode = $value['locale'] ?? null;
         $channelCode = $value['channel'] ?? null;
 
-        $this->validateChannel($attributeAsMainMediaAsMainMedia, $assetFamilyIdentifier, $channelCode);
-        $this->validateLocale($attributeAsMainMediaAsMainMedia, $assetFamilyIdentifier, $channelCode, $localeCode);
+        $this->validateChannel($attributeAsMainMediaAsMainMedia, $assetFamilyCode, $channelCode);
+        $this->validateLocale($attributeAsMainMediaAsMainMedia, $assetFamilyCode, $channelCode, $localeCode);
     }
 
     /**
@@ -64,20 +63,20 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
      */
     private function validateChannel(
         AttributeAsMainMedia $attributeAsMainMedia,
-        string $assetFamilyIdentifier,
+        string $assetFamilyCode,
         ?string $channel
     ): void {
         if ($attributeAsMainMedia->isScopable()) {
-            $this->validateScopableAttribute($assetFamilyIdentifier, $channel);
+            $this->validateScopableAttribute($assetFamilyCode, $channel);
 
             return;
         }
 
         if (null !== $channel) {
             $this->context->buildViolation(
-                'akeneo.tailored_export.validation.attribute.channel_should_be_blank',
+                'akeneo.tailored_export.validation.asset_collection.channel_should_be_blank',
                 [
-                    '{{ attribute_code }}' => $assetFamilyIdentifier,
+                    '{{ asset_family_code }}' => $assetFamilyCode,
                 ],
             )->atPath('[channel]')->addViolation();
         }
@@ -88,29 +87,29 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
      */
     private function validateLocale(
         AttributeAsMainMedia $attributeAsMainMedia,
-        string $assetFamilyIdentifier,
+        string $assetFamilyCode,
         ?string $channel,
         ?string $localeCode
     ): void {
         if (!$attributeAsMainMedia->isLocalizable() && null !== $localeCode) {
             $this->context->buildViolation(
-                'akeneo.tailored_export.validation.attribute.locale_should_be_blank',
+                'akeneo.tailored_export.validation.asset_collection.locale_should_be_blank',
                 [
-                    '{{ attribute_code }}' => $assetFamilyIdentifier,
+                    '{{ asset_family_code }}' => $assetFamilyCode,
                 ],
             )->atPath('[locale]')->addViolation();
         } elseif ($attributeAsMainMedia->isLocalizable()) {
-            $this->validateLocalizableAttribute($attributeAsMainMedia, $assetFamilyIdentifier, $channel, $localeCode);
+            $this->validateLocalizableAttribute($attributeAsMainMedia, $assetFamilyCode, $channel, $localeCode);
         }
     }
 
-    private function validateScopableAttribute(string $assetFamilyIdentifier, ?string $channelCode): void
+    private function validateScopableAttribute(string $assetFamilyCode, ?string $channelCode): void
     {
         if (null === $channelCode) {
             $this->context->buildViolation(
-                'akeneo.tailored_export.validation.attribute.channel_should_not_be_blank',
+                'akeneo.tailored_export.validation.asset_collection.channel_should_not_be_blank',
                 [
-                    '{{ attribute_code }}' => $assetFamilyIdentifier,
+                    '{{ asset_family_code }}' => $assetFamilyCode,
                 ],
             )->addViolation();
 
@@ -127,13 +126,13 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
         }
     }
 
-    private function validateLocalizableAttribute(AttributeAsMainMedia $attributeAsMainMedia, string $assetFamilyIdentifier, ?string $channelCode, ?string $localeCode)
+    private function validateLocalizableAttribute(AttributeAsMainMedia $attributeAsMainMedia, string $assetFamilyCode, ?string $channelCode, ?string $localeCode)
     {
         if (null === $localeCode) {
             $this->context->buildViolation(
-                'akeneo.tailored_export.validation.attribute.locale_should_not_be_blank',
+                'akeneo.tailored_export.validation.asset_collection.locale_should_not_be_blank',
                 [
-                    '{{ attribute_code }}' => $assetFamilyIdentifier,
+                    '{{ asset_family_code }}' => $assetFamilyCode,
                 ],
             )->addViolation();
 
