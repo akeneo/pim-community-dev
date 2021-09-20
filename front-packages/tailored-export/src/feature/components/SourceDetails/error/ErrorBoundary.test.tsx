@@ -2,7 +2,12 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ErrorBoundary} from './ErrorBoundary';
-import {InvalidAssociationTypeSourceError, InvalidAttributeSourceError, InvalidPropertySourceError} from '../error';
+import {
+  AssetCollectionMainMediaNotFoundError,
+  InvalidAssociationTypeSourceError,
+  InvalidAttributeSourceError,
+  InvalidPropertySourceError
+} from '../error';
 
 const ThrowingChild = ({error}: {error: Error}) => {
   throw error;
@@ -61,5 +66,18 @@ test('it displays an invalid association type placeholder the error is an Invali
   expect(
     screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.association_type')
   ).toBeInTheDocument();
+  mockedConsole.mockRestore();
+});
+
+test('it displays an invalid asset collection main media placeholder the error is an AssetCollectionMainMediaNotFoundError', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  renderWithProviders(
+    <ErrorBoundary>
+      <ThrowingChild error={new AssetCollectionMainMediaNotFoundError('Invalid main media asset collection')} />
+    </ErrorBoundary>
+  );
+
+  expect(screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.asset_collection_main_media')).toBeInTheDocument();
   mockedConsole.mockRestore();
 });

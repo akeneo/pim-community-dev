@@ -58,6 +58,7 @@ akeneo.tailored_export:
         attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
         association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
         property: This property is invalid, please remove this source and add it again.
+        asset_collection_main_media: The main media of asset collection used by the attribute is not found, please check the asset family setting.
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
       deleted_attribute:

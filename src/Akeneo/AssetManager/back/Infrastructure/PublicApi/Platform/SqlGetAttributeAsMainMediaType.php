@@ -26,6 +26,16 @@ class SqlGetAttributeAsMainMediaType implements GetAttributeAsMainMediaTypeInter
         $this->connection = $connection;
     }
 
+    public function isMediaFile(string $assetFamilyIdentifier): bool
+    {
+        return $this->isType($assetFamilyIdentifier, 'media_file');
+    }
+
+    public function isMediaLink(string $assetFamilyIdentifier): bool
+    {
+        return $this->isType($assetFamilyIdentifier, 'media_link');
+    }
+
     private function forAssetFamilyIdentifier(string $assetFamilyIdentifier): ?string
     {
         if (array_key_exists($assetFamilyIdentifier, $this->attributeAsMainMediaTypes)) {
@@ -60,15 +70,5 @@ SQL;
     {
         $attributeType = $this->forAssetFamilyIdentifier($assetFamilyIdentifier);
         return $expectedType === $attributeType;
-    }
-
-    public function isMediaFile(string $assetFamilyIdentifier): bool
-    {
-        return $this->isType($assetFamilyIdentifier, 'media_file');
-    }
-
-    public function isMediaLink(string $assetFamilyIdentifier): bool
-    {
-        return $this->isType($assetFamilyIdentifier, 'media_link');
     }
 }

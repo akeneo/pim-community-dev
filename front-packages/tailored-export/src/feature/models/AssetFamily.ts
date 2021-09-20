@@ -1,3 +1,5 @@
+import {AssetCollectionMainMediaNotFoundError} from "../components/SourceDetails/error";
+
 type Attribute = {
   identifier: string;
   type: string;
@@ -17,7 +19,7 @@ const getAttributeAsMainMedia = (assetFamily: AssetFamily): Attribute => {
   );
 
   if (!attributeAsMainMedia) {
-    throw new Error(
+    throw new AssetCollectionMainMediaNotFoundError(
       `"${assetFamily.attribute_as_main_media}" attribute as main media does not exist in the family "${assetFamily.identifier}"`
     );
   }
