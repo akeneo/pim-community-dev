@@ -10,6 +10,10 @@ if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
         exit 9
 fi
+if [[ ${IMAGE_TAG} == "" ]]; then
+        echo "ERR : You must define your instance image tag"
+        exit 10
+fi
 if [[ ${TYPE} == "" ]]; then
         echo "WARN : set default value srnt for instance type to delete"
         TYPE="srnt"
@@ -83,11 +87,11 @@ kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
 
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
-echo "Remove JOB_CONSOMER"
+echo "Remove PODS"
 # Quick fix and to remove after actual fix
-LIST_JOB_CONSUMER=$(kubectl get pods --no-headers --namespace=${PFID} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' | awk '{print $1}')
-if [[ ! -z "${LIST_JOB_CONSUMER}" ]]; then
-  kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_JOB_CONSUMER}
+LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} | awk '{print $1}')
+if [[ ! -z "${LIST_PODS}" ]]; then
+  kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_PODS}
 fi
 
 echo "3 - Removing shared state files"
@@ -96,7 +100,7 @@ sleep 30
 
 gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
-echo "4 - Delete PD and PV"
+echo "4 - Delete PD, PVC and PV"
 # Check disk still exist
 if [[ -n "${LIST_PD_NAME}" ]]; then
   for PD_NAME in ${LIST_PD_NAME}; do
@@ -110,14 +114,27 @@ if [[ -n "${LIST_PD_NAME}" ]]; then
   done
 fi
 
+# Remove PVC
 # Empty list is not an error
-LIST_PV_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]') || echo "")
+LIST_PVC_NAME=$(kubectl get pvc -o json -n ${PFID} | jq -r '.items[].metadata.name' || echo "")
+echo "PVC list : "
+echo "${LIST_PVC_NAME}"
+if [[ -n "${LIST_PVC_NAME}" ]]; then
+  for PVC_NAME in ${LIST_PVC_NAME}; do
+    echo "Delete pvc ${PVC_NAME}"
+    kubectl delete pvc ${PVC_NAME} -n ${PFID}
+  done
+fi
+
+# Remove PV
+# Empty list is not an error
+LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]' || echo "")
+echo "PV list : "
+echo "${LIST_PV_NAME}"
 if [[ -n "${LIST_PV_NAME}" ]]; then
   for PV_NAME in ${LIST_PV_NAME}; do
     echo "Delete pv ${PV_NAME}"
-    kubectl delete pv ${PV_NAME} &
-    sleep 1 && kubectl patch pv ${PV_NAME} -p '{"metadata":{"finalizers":null}}' || true
-    kubectl wait pv ${PV_NAME} --for=delete || true
+    kubectl delete pv ${PV_NAME}
   done
 fi
 

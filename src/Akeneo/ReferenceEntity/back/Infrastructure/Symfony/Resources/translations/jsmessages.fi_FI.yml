@@ -86,7 +86,11 @@ pim_reference_entity:
       link: Klikkaa tästä luodaksesi ensimmäisen käyttäjäryhmän
   record:
     mass_delete:
+      confirm: '[0,1]Oletko varma, että haluat poistaa {{ count }} valittun tietueen?|]1,Inf]Oletko varma, että haluat poistaa {{ count }} valittua tietuetta?'
+      extra_information: Jos linkkejä tuotteisiin on, ne poistataan.
+      confirm_label: Kirjoita "{{ referenceEntityIdentifier }}"
       title: Tietueet
+    record_selected: '{0} {{ count }} tietue valittu|{1} {{ count }} tietue valittu|]1,Inf] {{ count }} tietuetta valittu'
     validation:
       limit_reached: 'Et voi lisätä tietuetta "{{ %record_label% }}", koska tietueiden enimmäismäärä {{ %limit% }} on saavutettu tälle viitetiedolle'
       code:
@@ -105,7 +109,10 @@ pim_reference_entity:
     button:
       save: Tallenna
       create: Luo uusi
+      delete: Poista tietue
       back: Takaisin listaan
+      edit: Muokkaa tietuetta
+      view: Näytä tietue
     product:
       attribute: Tuotteen attribuutti
       counter: '{{ totalCount }} tulos|{{ totalCount }} tulosta'
@@ -180,6 +187,9 @@ pim_reference_entity:
         success: Tietue luotu onnistuneesti.
       delete:
         success: Tietue ”{{ code }}” poistettu.
+      mass_delete:
+        success: Massatoiminto "Massapoisto" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+        fail: "Massapoiston aikana tapahtui virhe: {{ error }}"
     completeness:
       label: Valmis
   attribute:
@@ -291,6 +301,8 @@ pim_catalog_volume:
     average_max_records_per_reference_entity: Tietuetta viittaustietoa kohden
     average_max_attributes_per_reference_entity: Attribuuttia viittaustietoa kohden
 batch_jobs:
+  default_steps:
+    mass_delete_records: Suorita tietueiden massapoisto
   reference_entity_label: Viitetieto
   csv_reference_entity_record_export:
     label: Viitetiedon tietueiden vienti CSV-muodossa
@@ -304,6 +316,24 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Viitetiedon tietueiden tuonti XLSX-muodossa
     import.label: Tietueiden tuonti
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Suorita tietueiden massapoisto
 job_execution:
   summary:
     records: Tietueet
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Massapoisto tietueet
+pim_analytics:
+  info_type:
+    nb_reference_entities: Viittaustietojen lukumäärä
+    max_number_of_records_per_reference_entity: Tietueiden enimmäismäärä viittaustietoa kohden
+    average_number_of_values_per_records: Keskimääräinen arvojen lukumäärä tietueella kaikki viittaustiedot mukaan lukien
+    average_number_of_records_per_reference_entity: Keskimääräinen tietueiden määrä viittaustietoa kohden
+    max_number_of_attributes_per_reference_entity: ' Attribuuttien enimmäismäärä viittaustietoa kohden'
+    average_number_of_attributes_per_reference_entity: Keskimääräinen attribuuttien määrä viittaustietoa kohden
+    average_percentage_localizable_only_attributes: Lokalistoitavia attribuutteja viittaustietoa kohden keskimäärin (%)
+    average_percentage_scopable_only_attributes: Kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
+    average_percentage_scopable_and_localizable_attributes: Lokalistoitavia ja kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)

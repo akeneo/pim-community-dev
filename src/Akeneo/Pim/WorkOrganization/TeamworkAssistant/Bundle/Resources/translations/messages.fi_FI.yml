@@ -30,6 +30,9 @@ teamwork_assistant:
   user:
     deletion:
       user_is_project_owner: Tämä käyttäjä on yhä yhden tai useamman projektin omistaja. Poista kaikki tämän käyttäjän projektit.
+  user_group:
+    deletion:
+      group_linked_to_project: Tätä käyttäjäryhmää käytetään Teamwork Assistant -projektissa, joten sitä ei voi poistaa
 job_execution:
   summary:
     processed_products: Käsitellyt tuotteet

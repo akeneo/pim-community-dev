@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Onko sinulla ongelmia attribuuttien ja valintalistan arvojen otsikoiden kanssa? Miten olisi paluu perusteisiin <a href="{{ link }}" target="_blank">täällä</a>?
+              message2: Tarvitsetko apua attribuuteissasi ja valintalistojen arvoissa? Katso <a href="{{ link }}" target="_blank">ohje</a>!
             second_step:
               message1: Tutustu tarkemmin attribuuttien ja valintalistojen otsikoihin. Tuotteesi näyttävät entistäkin paremmilta sen jälkeen.
               message2: Näyttää siltä, että eksyit jossain vaiheessa! Osa otsikoistasi kaipaa yhä hieman työtä.
@@ -84,3 +85,34 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       spelling_quality: Oikeinkirjoituksen laatu
+  dictionary:
+    helper:
+      content: Sanakirja sallii sinun rekisteröidä sanoja, jotka jätetään huomiotta tuotetiedon laadun analytiikassa.
+      link_label: Lisätietoa ohjeistamme.
+    words: Sanat
+    searchPlaceholder: Hae sanoja
+    add_words: Lisää sanoja tähän
+    no_search_results:
+      title: Haullasi ei löytynyt tuloksia
+      subtitle: Yritä uudelleen uusilla hakuehdoilla.
+    no_data:
+      title: Ei vielä sanoja
+      subtitle: Kirjoita ensimmäinen yläpuolelle, valitse "Lisää" tai paina enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Sanojen lukumäärä
+        label: "]-Inf, 1]{{ count }} sana]1, Inf[{{ count }} sanaa"
+        not_available: Ei saatavilla
+    add_words: Lisää sana
+    items_selected: "{1}1 lokaali valittu|[2, Inf[{{ count }} lokaalia valittu"
+    modal:
+      title: Lisää sanoja {{ count }} lokaaliin
+      subtitle: Kirjoita sanat alle. Ne lisätään kaikkiin valittuihin lokaaleihin.
+      locales_added_notification:
+        title: Sanat lisätty {{ count }} lokaaliin
+        content: Uudet sanat on lisätty valittujen lokaalien sanakirjoihin.
+      no_supported_locales:
+        title: Valitutuille lokaaleille ei voida tarkistaa oikeinkirjoitusta.
+        content: Jos haluat tietää tuettujen lokaalien luettelon, ole hyvä ja tarkista <a href="{{ link }}" target="_blank">ohjeemme</a>

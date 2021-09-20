@@ -1,11 +1,20 @@
 #!/bin/bash
 
 # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth-pimup|tria-pimci' | awk '{print $1}'); do
+NS_LIST=$(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth-pimup|tria-pimci' | awk '{print $1}')
+
+echo "Namespaces list :"
+echo "${NS_LIST}"
+for NAMESPACE in ${NS_LIST}; do
     NS_INFO=($(kubectl get ns | grep ${NAMESPACE}))
     NAMESPACE=$(echo ${NS_INFO[0]})
     NS_STATUS=$(echo ${NS_INFO[1]})
     NS_AGE=$(echo ${NS_INFO[2]})
+
+    echo "-------------------------------------------"
+    echo "Namespace : ${NAMESPACE}"
+    echo "  Status :                ${NS_STATUS}"
+    echo "  Age :                   ${NS_AGE}"
     INSTANCE_NAME_PREFIX=pimci
     if [[ ${NAMESPACE} == srnt* ]] ; then
         TYPE="srnt"
@@ -34,6 +43,8 @@ for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grt
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimup
+        else
+            echo "  NS younger than 2 hours"
         fi
     fi
     # Theses environments are test deploy duplicate serenity / growth edition (pimci-duplic) and aged of 1 hour
@@ -41,6 +52,8 @@ for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grt
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-duplic
+        else
+            echo "  NS younger than 2 hours"
         fi
     fi
     # Theses environments are test deploy serenity / growth edition (pimci) and aged of 1 hour
@@ -48,17 +61,22 @@ for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grt
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
+        else
+            echo "  NS younger than 2 hours"
         fi
     fi
     # Theses environments are deploy PR serenity / growth edition (pimci-pr) and aged of 1 day after the last deployment
     if [[ ${NAMESPACE} == srnt-pimci-pr* ]] || [[ ${NAMESPACE} == grth-pimci-pr* ]] || [[ ${NAMESPACE} == tria-pimci-pr* ]] ; then
         DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
         DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
-        if [[ ${DAY_DIFF} -ge 1 ]]; then
+        echo "  Day diff :              ${DAY_DIFF}"
+        if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 1 ]]; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-pr
         fi
     fi
+
+    echo "  Marked for deletion :   ${DELETE_INSTANCE}"
 
     if [ $DELETE_INSTANCE = true ]; then
         echo "---[TODELETE] namespace ${NAMESPACE} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
@@ -70,8 +88,8 @@ for NAMESPACE in $(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grt
             kubectl delete ns ${NAMESPACE} || true
             continue
         else
-            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} ${POD} -o json | jq '.status.initContainerStatuses[].image')
-            IMAGE_TAG=$(echo ${IMAGE::-1} | awk -F: '{print $2}')
+            IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
+            IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
         ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance || true
     fi

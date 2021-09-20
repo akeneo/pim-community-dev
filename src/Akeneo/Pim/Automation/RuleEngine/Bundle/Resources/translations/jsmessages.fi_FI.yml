@@ -53,7 +53,13 @@ pimee_catalog_rule:
           error: Sääntöjen poistamisessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
       tags:
+        set: Aseta/korvaa
         add: Lisää
+        calculate: Laske
+        clear: Tyhjennä
+        concatenate: Yhdistä
+        copy: Kopioi
+        remove: Poista
   form:
     category:
       catalog: Katalogi
@@ -105,8 +111,8 @@ pimee_catalog_rule:
         label: Prioriteetti
       status:
         label: Status
-        enabled: Otettu käyttöön
-        disabled: Poistettu käytöstä
+        enabled: Käytössä
+        disabled: Ei käytössä
       add_to_category: Lisää kategoriaan
       add_conditions: Lisää ehtoja
       products_count:
@@ -446,6 +452,9 @@ pim_notification:
     mass_edit_rule: Massamuokkaa sääntöä
     execute_rules: Sääntöjen suorittaminen
 pim_menu:
+  navigation:
+    settings:
+      automation: Automaatio
   item:
     rule: Säännöt
 pim_title:

@@ -357,14 +357,14 @@ elasticsearch:
       - repository-gcs
   client:
     replicas: 1
-    heapSize: "256m"
+    heapSize: "512m"
     resources:
       limits:
         cpu: "1"
-        memory: "512Mi"
+        memory: "1024Mi"
       requests:
         cpu: "25m"
-        memory: "512Mi"
+        memory: "1024Mi"
   master:
     replicas: 2
     persistence:
