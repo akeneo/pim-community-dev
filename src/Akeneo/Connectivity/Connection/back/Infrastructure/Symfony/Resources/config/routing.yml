@@ -115,3 +115,8 @@ akeneo_connectivity_connection_settings_any:
 ## Connected Apps
 akeneo_connectivity_connection_connect_connected_apps:
     path: '/connect/connected-apps'
+
+akeneo_connectivity_connection_connect_connected_apps_any:
+    path: '/connect/connected-apps/{any}'
+    requirements:
+        any: .*

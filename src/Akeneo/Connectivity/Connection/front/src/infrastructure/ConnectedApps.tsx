@@ -3,12 +3,20 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {AkeneoThemeProvider} from './akeneo-theme-provider';
 import {withDependencies} from './dependencies-provider';
 import {ConnectedAppsListPage} from '../connect/pages/ConnectedAppsListPage';
+import {ConnectedAppPage} from '../connect/pages/ConnectedAppPage';
 
 export const ConnectedApps = withDependencies(() => (
     <StrictMode>
         <AkeneoThemeProvider>
             <Router>
-                <ConnectedAppsListPage />
+                <Switch>
+                    <Route path='/connect/connected-apps/:connectionCode'>
+                        <ConnectedAppPage />
+                    </Route>
+                    <Route path='/connect/connected-apps'>
+                        <ConnectedAppsListPage />
+                    </Route>
+                </Switch>
             </Router>
         </AkeneoThemeProvider>
     </StrictMode>

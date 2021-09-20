@@ -40,6 +40,9 @@ config:
                 akeneo_connectivity_connection_connect_connected_apps:
                     module: pim/controller/connectivity/connection/connect/connected-apps
                     aclResourceId: akeneo_connectivity_connection_manage_apps
+                akeneo_connectivity_connection_connect_connected_apps_any:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_apps
 
     paths:
         pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
