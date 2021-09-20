@@ -6,7 +6,7 @@ import {
   AssetCollectionMainMediaNotFoundError,
   InvalidAssociationTypeSourceError,
   InvalidAttributeSourceError,
-  InvalidPropertySourceError
+  InvalidPropertySourceError,
 } from '../error';
 
 const ThrowingChild = ({error}: {error: Error}) => {
@@ -78,6 +78,8 @@ test('it displays an invalid asset collection main media placeholder the error i
     </ErrorBoundary>
   );
 
-  expect(screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.asset_collection_main_media')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.asset_collection_main_media')
+  ).toBeInTheDocument();
   mockedConsole.mockRestore();
 });
