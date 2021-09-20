@@ -237,6 +237,7 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
+	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: prepare-chart-default-values
 prepare-chart-default-values:
