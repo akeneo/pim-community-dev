@@ -141,6 +141,13 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Product saved');
           break;
+        case 'product-model:form:saved':
+          if (eventOptions && eventOptions.code === 'BFGoodrich - Advantage T/A Sport') {
+            appcues.track('Product model "BFGoodrich - Advantage T/A Sport" saved');
+          }
+
+          appcues.track('Product model saved');
+          break;
         case 'product-grid:product:all-selected':
           appcues.track('All products are selected');
           break;
