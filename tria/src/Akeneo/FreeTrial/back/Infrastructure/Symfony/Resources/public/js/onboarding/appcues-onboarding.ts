@@ -283,6 +283,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Tab "Variants" selected in family edit form');
           }
           break;
+        case 'family:variant:attribute-set':
+          if (eventOptions && eventOptions.name && eventOptions.name.includes('meta_title')) {
+            appcues.track('Attribute "Meta title" added as family variant');
+          }
+          break;
       }
     });
   },
