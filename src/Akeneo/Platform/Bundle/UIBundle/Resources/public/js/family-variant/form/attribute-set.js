@@ -18,7 +18,20 @@ define([
   'pim/dialog',
   'pim/template/family-variant/attribute-set',
   'pim/template/family-variant/attribute-group',
-], function ($, _, __, BaseForm, i18n, UserContext, fetcherRegistry, Dialog, template, attributeGroupTemplate) {
+  'pim/analytics',
+], function (
+  $,
+  _,
+  __,
+  BaseForm,
+  i18n,
+  UserContext,
+  fetcherRegistry,
+  Dialog,
+  template,
+  attributeGroupTemplate,
+  analytics
+) {
   const sortOrdered = (first, second) => first.sort_order - second.sort_order;
 
   /**
@@ -75,6 +88,10 @@ define([
           const attributeCodes = axesAttributeCodes
             .concat(family.attributes.map(attribute => attribute.code))
             .filter((code, index, codes) => codes.indexOf(code) === index);
+
+          analytics.track('family:variant:attribute-set', {
+            name: axesAttributeCodes.join(','),
+          });
 
           return $.when(
             fetcherRegistry.getFetcher('attribute-group').fetchAll(),
