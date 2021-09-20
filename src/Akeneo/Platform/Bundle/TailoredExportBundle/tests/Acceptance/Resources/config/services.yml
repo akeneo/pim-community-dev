@@ -2,6 +2,9 @@ services:
     Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels
 
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetMainMediaData
+
     Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryMeasurementConverter
 

@@ -2,14 +2,15 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {CodeLabelCollectionSelector, getDefaultCodeLabelCollectionSelection} from './CodeLabelCollectionSelector';
+import {AssetCollectionSelector} from './AssetCollectionSelector';
 import {renderWithProviders} from 'feature/tests';
 
 test('it displays a type dropdown and a separator dropdown when the selection type is code', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={[]}
       selection={{type: 'code', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -28,7 +29,8 @@ test('it displays a locale dropdown when the selection type is label', async () 
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -48,7 +50,8 @@ test('it can select a label selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={[]}
       selection={{type: 'code', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -65,7 +68,8 @@ test('it can select a code selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -78,11 +82,108 @@ test('it can select a code selection type', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'code', separator: ','});
 });
 
+test('it can select a media file selection type', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
+      validationErrors={[]}
+      selection={{type: 'label', locale: 'en_US', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.main_media'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'media_file',
+    locale: null,
+    channel: null,
+    property: 'file_key',
+    separator: ',',
+  });
+});
+
+test('it can select a media link selection type', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="pokemons"
+      validationErrors={[]}
+      selection={{type: 'label', locale: 'en_US', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.main_media'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'media_link',
+    locale: null,
+    channel: null,
+    with_prefix_and_suffix: false,
+    separator: ',',
+  });
+});
+
+test('it can select a channel when it have selected scopable main media selection type', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="raccoons"
+      validationErrors={[]}
+      selection={{
+        type: 'media_link',
+        locale: 'en_US',
+        channel: 'ecommerce',
+        with_prefix_and_suffix: false,
+        separator: ',',
+      }}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.channel'));
+  userEvent.click(screen.getByText('[print]'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'media_link',
+    locale: 'en_US',
+    channel: 'print',
+    with_prefix_and_suffix: false,
+    separator: ',',
+  });
+});
+
+test('onSelectionChange callback should not be called if assetFamily is null', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="unkown_family"
+      validationErrors={[]}
+      selection={{type: 'label', locale: 'en_US', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.main_media'));
+
+  expect(onSelectionChange).not.toBeCalled();
+});
+
 test('it can select a collection separator', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -122,12 +223,20 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[type]',
     },
+    {
+      messageTemplate: 'error.key.channel',
+      invalidValue: '',
+      message: 'this is a channel error',
+      parameters: {},
+      propertyPath: '[channel]',
+    },
   ];
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
       validationErrors={validationErrors}
-      selection={{type: 'label', locale: 'en_US', separator: ','}}
+      selection={{type: 'media_file', channel: 'ecommerce', locale: 'en_US', property: 'file_key', separator: ','}}
       onSelectionChange={jest.fn()}
     />
   );
@@ -135,12 +244,6 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('error.key.separator')).toBeInTheDocument();
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByText('error.key.channel')).toBeInTheDocument();
   expect(screen.getByRole('alert')).toBeInTheDocument();
-});
-
-test('it returns a default code label collection selection', () => {
-  expect(getDefaultCodeLabelCollectionSelection()).toStrictEqual({
-    type: 'code',
-    separator: ',',
-  });
 });

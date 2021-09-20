@@ -1,13 +1,122 @@
 import {uuid} from 'akeneo-design-system';
-import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Source} from '../../../models';
 import {
-  CodeLabelCollectionSelection,
-  getDefaultCodeLabelCollectionSelection,
-  isCodeLabelCollectionSelection,
-  DefaultValueOperation,
-  isDefaultValueOperation,
-} from '../common';
+  Channel,
+  ChannelReference,
+  LocaleReference,
+  LocaleCode,
+  getLocalesFromChannel,
+} from '@akeneo-pim-community/shared';
+import {AssetFamily, Attribute, Source, getAttributeAsMainMedia} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+
+const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
+
+type CollectionSeparator = keyof typeof availableSeparators;
+
+const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
+  typeof separator === 'string' && separator in availableSeparators;
+
+const propertyTypes = ['file_key', 'file_path', 'original_file_name'] as const;
+
+type AssetCollectionCodeSelection = {
+  type: 'code';
+  separator: CollectionSeparator;
+};
+
+type AssetCollectionLabelSelection = {
+  type: 'label';
+  locale: LocaleCode;
+  separator: CollectionSeparator;
+};
+
+type AssetCollectionMediaFileSelection = {
+  type: 'media_file';
+  locale: LocaleReference;
+  channel: ChannelReference;
+  property: typeof propertyTypes[number];
+  separator: CollectionSeparator;
+};
+
+type AssetCollectionMediaLinkSelection = {
+  type: 'media_link';
+  locale: LocaleReference;
+  channel: ChannelReference;
+  with_prefix_and_suffix: boolean;
+  separator: CollectionSeparator;
+};
+
+type AssetCollectionSelection =
+  | AssetCollectionCodeSelection
+  | AssetCollectionLabelSelection
+  | AssetCollectionMediaFileSelection
+  | AssetCollectionMediaLinkSelection;
+
+const isAssetCollectionSelection = (selection: any): selection is AssetCollectionSelection => {
+  if (
+    !('type' in selection) ||
+    !('separator' in selection) ||
+    !Object.keys(availableSeparators).includes(selection.separator)
+  ) {
+    return false;
+  }
+
+  switch (selection.type) {
+    case 'code':
+      return true;
+    case 'label':
+      return 'locale' in selection && 'string' === typeof selection.locale;
+    case 'media_file':
+      return 'property' in selection && propertyTypes.includes(selection.property);
+    case 'media_link':
+      return 'with_prefix_and_suffix' in selection && 'boolean' === typeof selection.with_prefix_and_suffix;
+    default:
+      return false;
+  }
+};
+
+const isAssetCollectionMediaSelection = (
+  selection: any
+): selection is AssetCollectionMediaFileSelection | AssetCollectionMediaLinkSelection =>
+  isAssetCollectionSelection(selection) && ('media_link' === selection.type || 'media_file' === selection.type);
+
+const getDefaultAssetCollectionSelection = (): AssetCollectionSelection => ({
+  type: 'code',
+  separator: ',',
+});
+
+const isDefaultAssetCollectionSelection = (selection?: AssetCollectionSelection): boolean =>
+  'code' === selection?.type && ',' === selection?.separator;
+
+const getDefaultAssetCollectionMediaSelection = (
+  assetFamily: AssetFamily,
+  channels: Channel[]
+): AssetCollectionSelection => {
+  const attribute = getAttributeAsMainMedia(assetFamily);
+  const channelReference = attribute.value_per_channel ? channels[0].code : null;
+  const locales = getLocalesFromChannel(channels, channelReference);
+  const localeReference = attribute.value_per_locale ? locales[0].code : null;
+
+  switch (attribute.type) {
+    case 'media_file':
+      return {
+        type: 'media_file',
+        locale: localeReference,
+        channel: channelReference,
+        property: 'file_key',
+        separator: ',',
+      };
+    case 'media_link':
+      return {
+        type: 'media_link',
+        locale: localeReference,
+        channel: channelReference,
+        with_prefix_and_suffix: false,
+        separator: ',',
+      };
+    default:
+      throw new Error(`Unknown attribute type : "${attribute.type}"`);
+  }
+};
 
 type AssetCollectionOperations = {
   default_value?: DefaultValueOperation;
@@ -20,7 +129,7 @@ type AssetCollectionSource = {
   locale: LocaleReference;
   channel: ChannelReference;
   operations: AssetCollectionOperations;
-  selection: CodeLabelCollectionSelection;
+  selection: AssetCollectionSelection;
 };
 
 const getDefaultAssetCollectionSource = (
@@ -34,7 +143,7 @@ const getDefaultAssetCollectionSource = (
   locale,
   channel,
   operations: {},
-  selection: getDefaultCodeLabelCollectionSelection(),
+  selection: getDefaultAssetCollectionSelection(),
 });
 
 const isAssetCollectionOperations = (operations: Object): operations is AssetCollectionOperations =>
@@ -48,7 +157,17 @@ const isAssetCollectionOperations = (operations: Object): operations is AssetCol
   });
 
 const isAssetCollectionSource = (source: Source): source is AssetCollectionSource =>
-  isCodeLabelCollectionSelection(source.selection) && isAssetCollectionOperations(source.operations);
+  isAssetCollectionSelection(source.selection) && isAssetCollectionOperations(source.operations);
 
-export type {AssetCollectionSource};
-export {getDefaultAssetCollectionSource, isAssetCollectionSource};
+export type {AssetCollectionSelection, AssetCollectionSource};
+export {
+  getDefaultAssetCollectionSource,
+  isAssetCollectionSource,
+  isAssetCollectionSelection,
+  isAssetCollectionMediaSelection,
+  isDefaultAssetCollectionSelection,
+  getDefaultAssetCollectionSelection,
+  getDefaultAssetCollectionMediaSelection,
+  isCollectionSeparator,
+  availableSeparators,
+};

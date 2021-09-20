@@ -166,6 +166,20 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaFileSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaLinkSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementValueSelectionApplier:
     public: true
     tags:
