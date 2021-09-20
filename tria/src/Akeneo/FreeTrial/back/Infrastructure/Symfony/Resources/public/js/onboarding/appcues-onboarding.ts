@@ -67,11 +67,6 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('View "Food - To enrich" selected');
           }
 
-          if (eventOptions && eventOptions.name === 'Automotive - To enrich') {
-            console.log('test');
-            appcues.track('View "Automotive - To enrich" selected');
-          }
-
           appcues.track('View selected');
           break;
         case 'product-grid:column:selected':
@@ -85,6 +80,10 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'product-grid' && eventOptions.entityHint && eventOptions.entityHint === 'product') {
             if (eventOptions.attributes && eventOptions.attributes.identifier === 'PLGCHAELK001') {
               appcues.track('Product "Elka Peacock Armchair" selected');
+            }
+
+            if (eventOptions.attributes && eventOptions.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
+              appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
             }
 
             appcues.track('Product selected');
