@@ -155,3 +155,8 @@ services:
     Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\UserGroup\GetUserGroupsWithDefaultPermission:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'

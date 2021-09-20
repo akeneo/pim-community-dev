@@ -34,6 +34,7 @@ services:
             - '@pimee_security.manager.job_profile_access'
             - '@pimee_security.manager.category_access'
             - '@pimee_security.manager.locale_access'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\UserGroup\GetUserGroupsWithDefaultPermission'
         tags:
             - { name: kernel.event_subscriber }
 
