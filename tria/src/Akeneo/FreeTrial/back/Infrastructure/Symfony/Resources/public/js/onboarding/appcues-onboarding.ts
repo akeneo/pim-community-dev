@@ -67,6 +67,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('View "Food - To enrich" selected');
           }
 
+          if (eventOptions && eventOptions.name === 'Automotive - To enrich') {
+            console.log('test');
+            appcues.track('View "Automotive - To enrich" selected');
+          }
+
           appcues.track('View selected');
           break;
         case 'product-grid:column:selected':
