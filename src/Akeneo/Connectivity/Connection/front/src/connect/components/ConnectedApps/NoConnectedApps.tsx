@@ -1,8 +1,8 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {AppIllustration, getColor, getFontSize} from 'akeneo-design-system';
-import {useFetchMarketplaceUrl} from '../../hooks/use-fetch-marketplace-url';
 import {useTranslate} from '../../../shared/translate';
 import styled from '../../../common/styled-with-theme';
+import {useRouter} from '../../../shared/router/use-router';
 
 const EmptyContainer = styled.section`
     text-align: center;
@@ -22,12 +22,11 @@ const HelpMessage = styled.p`
 
 export const NoConnectedApps: FC = () => {
     const translate = useTranslate();
-    const fetchMarketplaceUrl = useFetchMarketplaceUrl();
-    const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
-
-    useEffect(() => {
-        fetchMarketplaceUrl().then(setMarketplaceUrl);
-    }, [fetchMarketplaceUrl]);
+    const generateUrl = useRouter();
+    const marketplaceUrl = `#${generateUrl('akeneo_connectivity_connection_connect_marketplace')}`;
+    const marketplaceLinkAnchor = translate(
+        'akeneo_connectivity.connection.connect.connected_apps.list.apps.marketplace_link_anchor'
+    );
 
     return (
         <>
@@ -40,7 +39,7 @@ export const NoConnectedApps: FC = () => {
                     dangerouslySetInnerHTML={{
                         __html: translate(
                             'akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace',
-                            {href: marketplaceUrl}
+                            {marketplaceLink: `<a href=${marketplaceUrl}>${marketplaceLinkAnchor}</a>`}
                         ),
                     }}
                 />

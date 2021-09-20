@@ -10,7 +10,7 @@ export const useFetchConnectedApps = () => {
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
         if (false === response.ok) {
-            throw new Error(`${response.status} ${response.statusText}`);
+            return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
         return response.json();

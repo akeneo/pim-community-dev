@@ -44,16 +44,6 @@ test('The connected apps list renders with 2 connected apps card', async () => {
         },
     ];
 
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
-    });
-
     renderWithProviders(<ConnectedAppsContainer connectedApps={connectedApps} />);
     await waitForElement(() => screen.getByText('App A'));
 
@@ -92,16 +82,6 @@ test('The connected apps list renders with 2 connected apps card', async () => {
 });
 
 test('The connected apps list renders without connected apps', async () => {
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
-    });
-
     renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
     await waitForElement(() =>
         screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')

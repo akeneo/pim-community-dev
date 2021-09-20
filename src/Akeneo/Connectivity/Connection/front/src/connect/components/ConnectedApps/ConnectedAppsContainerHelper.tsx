@@ -25,7 +25,7 @@ const ConnectedAppsContainerHelper: FC<Props> = ({count}) => {
         <Information illustration={<AppIllustration />} title={title}>
             <p>{translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')}</p>
             <p>
-                {translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')}{' '}
+                {translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')}&nbsp;
                 <Link href='https://help.akeneo.com/pim/serenity/articles/manage-your-apps.html' target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')}
                 </Link>

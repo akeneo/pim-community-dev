@@ -70,7 +70,8 @@ akeneo_connectivity.connection:
                     title: Connected apps
                     total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                     empty: No apps connected yet.
-                    check_marketplace: "Check the <a href='{{ href }}' target='_blank'>Marketplace</a> to browse all the available content and install your first app."
+                    check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
+                    marketplace_link_anchor: Marketplace
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
                     description_1: New apps are developed regularly, so stay tuned and check our Marketplace page regularly to discover how to connect your PIM.

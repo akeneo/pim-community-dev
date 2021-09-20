@@ -11,16 +11,6 @@ beforeEach(() => {
 });
 
 test('No connected apps section renders', async () => {
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
-    });
-
     renderWithProviders(<NoConnectedApps />);
     await waitForElement(() =>
         screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')

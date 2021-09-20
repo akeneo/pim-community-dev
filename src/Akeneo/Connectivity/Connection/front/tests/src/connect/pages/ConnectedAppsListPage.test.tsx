@@ -48,11 +48,6 @@ test('The connected apps list page renders with 2 connected apps card', async ()
         },
     ];
 
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
     const fetchConnectedAppsResponses: MockFetchResponses = {
         akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
             json: connectedApps,
@@ -60,7 +55,6 @@ test('The connected apps list page renders with 2 connected apps card', async ()
     };
 
     mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
         ...fetchConnectedAppsResponses,
     });
 
@@ -104,11 +98,6 @@ test('The connected apps list page renders with 2 connected apps card', async ()
 });
 
 test('The connected apps list page renders without connected apps', async () => {
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
     const fetchConnectedAppsResponses: MockFetchResponses = {
         akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
             json: [],
@@ -116,7 +105,6 @@ test('The connected apps list page renders without connected apps', async () => 
     };
 
     mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
         ...fetchConnectedAppsResponses,
     });
 
@@ -159,11 +147,6 @@ test('The connected apps list page renders without connected apps', async () => 
 });
 
 test('The connected apps list page renders with internal api errors', async () => {
-    const fetchMarketplaceUrlResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
-            json: 'https://fake.marketplace.akeneo.com',
-        },
-    };
     const fetchConnectedAppsResponses: MockFetchResponses = {
         akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
             reject: true,
@@ -172,7 +155,6 @@ test('The connected apps list page renders with internal api errors', async () =
     };
 
     mockFetchResponses({
-        ...fetchMarketplaceUrlResponses,
         ...fetchConnectedAppsResponses,
     });
 
