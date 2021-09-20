@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
 use Doctrine\DBAL\Connection;
 
-class SqlGetAttributeAsMainMediaType implements GetAttributeAsMainMediaTypeInterface
+class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
 {
     private array $attributeAsMainMediaTypes;
     private Connection $connection;
@@ -26,17 +26,7 @@ class SqlGetAttributeAsMainMediaType implements GetAttributeAsMainMediaTypeInter
         $this->connection = $connection;
     }
 
-    public function isMediaFile(string $assetFamilyIdentifier): bool
-    {
-        return $this->isType($assetFamilyIdentifier, 'media_file');
-    }
-
-    public function isMediaLink(string $assetFamilyIdentifier): bool
-    {
-        return $this->isType($assetFamilyIdentifier, 'media_link');
-    }
-
-    private function forAssetFamilyIdentifier(string $assetFamilyIdentifier): ?string
+    public function forAssetFamilyIdentifier(string $assetFamilyIdentifier): AttributeAsMainMedia
     {
         if (array_key_exists($assetFamilyIdentifier, $this->attributeAsMainMediaTypes)) {
             return $this->attributeAsMainMediaTypes[$assetFamilyIdentifier];
@@ -44,7 +34,7 @@ class SqlGetAttributeAsMainMediaType implements GetAttributeAsMainMediaTypeInter
 
         $sql = <<<SQL
 SELECT
-    attribute.attribute_type
+    attribute.attribute_type, attribute.value_per_channel, attribute.value_per_locale
 FROM akeneo_asset_manager_asset_family family
     JOIN akeneo_asset_manager_attribute attribute ON family.attribute_as_main_media = attribute.identifier
 WHERE family.identifier = :assetFamilyIdentifier
@@ -59,16 +49,12 @@ SQL;
             throw new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyIdentifier));
         }
 
-        $attributeType = $result['attribute_type'];
+        $this->attributeAsMainMediaTypes[$assetFamilyIdentifier] = new AttributeAsMainMedia(
+            $result['attribute_type'],
+            $result['value_per_channel'],
+            $result['value_per_locale']
+        );
 
-        $this->attributeAsMainMediaTypes[$assetFamilyIdentifier] = $attributeType;
-
-        return $attributeType;
-    }
-
-    private function isType(string $assetFamilyIdentifier, string $expectedType): bool
-    {
-        $attributeType = $this->forAssetFamilyIdentifier($assetFamilyIdentifier);
-        return $expectedType === $attributeType;
+        return $this->attributeAsMainMediaTypes[$assetFamilyIdentifier];
     }
 }

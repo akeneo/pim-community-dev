@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -81,20 +82,11 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             ]);
             $this->buildViolations($violations, '[locale]');
         } elseif ('media_file' === $selection['type'] || 'media_link' === $selection['type']) {
-            $localeIsRequiredViolations = $validator->validate($selection, new Collection(['fields' => ['locale' => new Required()], 'allowExtraFields' => true]));
-            if (0 < $localeIsRequiredViolations->count()) {
-                $this->buildViolations($localeIsRequiredViolations);
-            } elseif (null !== $selection['locale']) {
-                $localeShouldBeActiveViolations = $validator->validate($selection['locale'], [new LocaleShouldBeActive()]);
-                $this->buildViolations($localeShouldBeActiveViolations, '[locale]');
-            }
-            $channelIsRequiredViolations = $validator->validate($selection, new Collection(['fields' => ['channel' => new Required()], 'allowExtraFields' => true]));
-            if (0 < $channelIsRequiredViolations->count()) {
-                $this->buildViolations($channelIsRequiredViolations);
-            } elseif (null !== $selection['channel']) {
-                $channelShouldExistViolations = $validator->validate($selection['channel'], [new ChannelShouldExist()]);
-                $this->buildViolations($channelShouldExistViolations, '[channel]');
-            }
+            $this->context->getValidator()->inContext($this->context)->validate(
+                $selection,
+                new IsValidAssetAttribute(['asset_family_identifier' => '']),
+            );
+
             if ('media_file' === $selection['type']) {
                 $propertyViolations = $validator->validate($selection, new Collection(['fields' => ['property' => new Required([new EqualTo('file_key')])], 'allowExtraFields' => true]));
                 $this->buildViolations($propertyViolations);
