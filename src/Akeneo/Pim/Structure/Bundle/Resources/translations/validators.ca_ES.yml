@@ -1,0 +1,4 @@
+pim_structure:
+  validation:
+    association_type:
+      cannot_be_quantified_and_two_way: El tipus d'associació pot ser quantificat o de dos vies
