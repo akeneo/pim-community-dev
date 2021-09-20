@@ -129,7 +129,11 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           body: JSON.stringify(state),
       });
 
-      return Promise.resolve(response.ok);
+      if (false === response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      return Promise.resolve();
   },
 };
 
