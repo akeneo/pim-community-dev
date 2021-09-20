@@ -39,27 +39,4 @@ class FindMediaFileInfoCollection implements FindMediaFileInfoCollectionInterfac
             $mediaFileInfoCollection
         );
     }
-
-    public function forScopedAndLocalizedAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes, ?string $channel, ?string $locale): array
-    {
-        $mediaFileInfoCollection = $this->getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
-            $assetFamilyIdentifier,
-            $assetCodes
-        );
-
-        $filteredMediaFileInfoCollection = array_filter(
-            $mediaFileInfoCollection,
-            static fn (AssetManagerMediaFileInfo $assetManagerMediaFileInfo) =>
-                $channel === $assetManagerMediaFileInfo->getChannel() && $locale === $assetManagerMediaFileInfo->getLocale()
-        );
-
-        return array_map(
-            static fn (AssetManagerMediaFileInfo $assetManagerMediaFileInfo) => new MediaFileInfo(
-                $assetManagerMediaFileInfo->getFileKey(),
-                $assetManagerMediaFileInfo->getOriginalFilename(),
-                $assetManagerMediaFileInfo->getStorage()
-            ),
-            $filteredMediaFileInfoCollection
-        );
-    }
 }

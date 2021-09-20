@@ -17,18 +17,17 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\FindMediaFileInfoCollectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionMediaFileSelectionApplierSpec extends ObjectBehavior
 {
-    public function let(FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection)
+    public function let(FindAssetMainMediaDataInterface $findAssetMainMediatData)
     {
-        $this->beConstructedWith($findMediaFileInfoCollection);
+        $this->beConstructedWith($findAssetMainMediatData);
     }
 
-    public function it_applies_the_selection(FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection)
+    public function it_applies_the_selection(FindAssetMainMediaDataInterface $findAssetMainMediatData)
     {
         $selection = new AssetCollectionMediaFileSelection(
             ';',
@@ -44,14 +43,14 @@ class AssetCollectionMediaFileSelectionApplierSpec extends ObjectBehavior
             null
         );
 
-        $findMediaFileInfoCollection->forScopedAndLocalizedAssetFamilyAndAssetCodes(
+        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',
             'fr_FR',
         )->willReturn([
-            new MediaFileInfo("filekey1", "filename1", "storage1"),
-            new MediaFileInfo("filekey2", "filename2", "storage2"),
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
         ]);
 
         $this->applySelection($selection, $value)

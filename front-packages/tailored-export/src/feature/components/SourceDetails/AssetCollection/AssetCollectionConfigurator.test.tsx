@@ -114,7 +114,7 @@ test('it tells when the attribute is invalid', () => {
         onSourceChange={jest.fn()}
       />
     );
-  }).toThrow('Asset collection attribute "asset" may have a reference_data_name');
+  }).toThrow('Asset collection attribute "asset" should have a reference_data_name');
 
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();

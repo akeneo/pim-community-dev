@@ -18,16 +18,15 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\FindMediaFileInfoCollectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterface
 {
-    private FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection;
+    private FindAssetMainMediaDataInterface $findAssetMainMediaData;
 
-    public function __construct(FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection)
+    public function __construct(FindAssetMainMediaDataInterface $findAssetMainMediaData)
     {
-        $this->findMediaFileInfoCollection = $findMediaFileInfoCollection;
+        $this->findAssetMainMediaData = $findAssetMainMediaData;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -39,18 +38,14 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
             throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');
         }
 
-        $assetCodes = $value->getAssetCodes();
-        $assetFamilyCode = $selection->getAssetFamilyCode();
-        $mediaFileChannel = $selection->getChannel();
-        $mediaFileLocale = $selection->getLocale();
-        $mediaFileInfoCollection = $this->findMediaFileInfoCollection->forScopedAndLocalizedAssetFamilyAndAssetCodes(
-            $assetFamilyCode,
-            $assetCodes,
-            $mediaFileChannel,
-            $mediaFileLocale
+        $assetMainMediaFileData = $this->findAssetMainMediaData->forAssetFamilyAndAssetCodes(
+            $selection->getAssetFamilyCode(),
+            $value->getAssetCodes(),
+            $selection->getChannel(),
+            $selection->getLocale()
         );
 
-        $selectedData = array_map(static fn (MediaFileInfo $mediaFileInfo) => $mediaFileInfo->getFileKey(), $mediaFileInfoCollection);
+        $selectedData = array_map(static fn (array $data) => $data['fileKey'], $assetMainMediaFileData);
 
         return implode($selection->getSeparator(), $selectedData);
     }

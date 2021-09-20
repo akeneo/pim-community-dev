@@ -17,17 +17,17 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindMediaLinksInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionMediaLinkSelectionApplierSpec extends ObjectBehavior
 {
-    public function let(FindMediaLinksInterface $findAssetMediaLinks)
+    public function let(FindAssetMainMediaDataInterface $findAssetMediaLinks)
     {
         $this->beConstructedWith($findAssetMediaLinks);
     }
 
-    public function it_applies_the_selection(FindMediaLinksInterface $findAssetMediaLinks)
+    public function it_applies_the_selection(FindAssetMainMediaDataInterface $findAssetMediaLinks)
     {
         $selection = new AssetCollectionMediaLinkSelection(
             ';',
@@ -43,7 +43,7 @@ class AssetCollectionMediaLinkSelectionApplierSpec extends ObjectBehavior
             null
         );
 
-        $findAssetMediaLinks->forScopedAndLocalizedAssetFamilyAndAssetCodes(
+        $findAssetMediaLinks->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',

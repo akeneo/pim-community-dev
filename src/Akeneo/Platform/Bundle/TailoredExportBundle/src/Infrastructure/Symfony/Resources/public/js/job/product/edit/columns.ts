@@ -137,12 +137,7 @@ class ColumnView extends BaseView {
                     return {
                       identifier: assetFamily.identifier,
                       attribute_as_main_media: assetFamily.attributeAsMainMedia,
-                      attributes: assetFamily.attributes.map(({identifier, type, value_per_locale, value_per_channel}) => ({
-                        identifier,
-                        type,
-                        value_per_locale,
-                        value_per_channel,
-                      }))
+                      attributes: assetFamily.attributes
                     }
                   },
                 },

@@ -11,11 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
+namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
-interface GetAttributeAsMainMediaTypeInterface
+interface FindAssetMainMediaDataInterface
 {
-    public function isMediaFile(string $assetFamilyIdentifier): bool;
-
-    public function isMediaLink(string $assetFamilyIdentifier): bool;
+    /**
+     * @return string[]|array[]
+     */
+    public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes, ?string $channel, ?string $locale): array;
 }

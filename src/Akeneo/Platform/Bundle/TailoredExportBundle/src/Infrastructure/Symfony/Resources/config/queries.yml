@@ -132,6 +132,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
 
-    Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindMediaLinks:
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindAssetMainMediaData
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_asset_main_media_data_public_api'

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
+namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
 use Doctrine\DBAL\Connection;
 
@@ -46,7 +46,7 @@ SQL;
         )->fetch();
 
         if (empty($result)) {
-            return null;
+            throw new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyIdentifier));
         }
 
         $attributeType = $result['attribute_type'];
@@ -59,9 +59,6 @@ SQL;
     private function isType(string $assetFamilyIdentifier, string $expectedType): bool
     {
         $attributeType = $this->forAssetFamilyIdentifier($assetFamilyIdentifier);
-        if (null === $attributeType) {
-            return false;
-        }
         return $expectedType === $attributeType;
     }
 

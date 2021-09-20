@@ -24,11 +24,6 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.enrich.get_attribute_as_main_media_type_public_api:
-        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetAttributeAsMainMediaType'
-        arguments:
-            - '@database_connection'
-
     # Enrichment > Reference entities
     pimee.asset_manager.enrichment.product.get_products_linked_to_an_asset_action:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAnAssetAction

@@ -58,32 +58,24 @@ final class SqlGetMainMediaFileInfoCollectionTest extends SqlIntegrationTestCase
             'test/main_image_asset_1_fr_FR.jpg',
             'main_image_asset_1_fr_FR.jpg',
             'assetStorage',
-            null,
-            'fr_FR'
         );
 
         $expectedFileInfo2 = new MediaFileInfo(
             'test/main_image_asset_2_fr_FR.jpg',
             'main_image_asset_2_fr_FR.jpg',
             'assetStorage',
-            null,
-            'fr_FR'
         );
 
         $expectedFileInfo3 = new MediaFileInfo(
             'test/main_image_asset_1_en_US.jpg',
             'main_image_asset_1_en_US.jpg',
             'assetStorage',
-            null,
-            'en_US'
         );
 
         $expectedFileInfo4 = new MediaFileInfo(
             'test/main_image_asset_2_en_US.jpg',
             'main_image_asset_2_en_US.jpg',
             'assetStorage',
-            null,
-            'en_US'
         );
 
         self::assertEqualsCanonicalizing([

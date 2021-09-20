@@ -18,15 +18,15 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindMediaLinksInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterface
 {
-    private FindMediaLinksInterface $findMediaLinks;
+    private FindAssetMainMediaDataInterface $findAssetMainMediaData;
 
-    public function __construct(FindMediaLinksInterface $findMediaFileInfoCollection)
+    public function __construct(FindAssetMainMediaDataInterface $findAssetMainMediaData)
     {
-        $this->findMediaLinks = $findMediaFileInfoCollection;
+        $this->findAssetMainMediaData = $findAssetMainMediaData;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -38,18 +38,14 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
             throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');
         }
 
-        $assetCodes = $value->getAssetCodes();
-        $assetFamilyCode = $selection->getAssetFamilyCode();
-        $mediaLinkChannel = $selection->getChannel();
-        $mediaLinkLocale = $selection->getLocale();
-        $mediaLinks = $this->findMediaLinks->forScopedAndLocalizedAssetFamilyAndAssetCodes(
-            $assetFamilyCode,
-            $assetCodes,
-            $mediaLinkChannel,
-            $mediaLinkLocale
+        $assetMainMediaLinkData = $this->findAssetMainMediaData->forAssetFamilyAndAssetCodes(
+            $selection->getAssetFamilyCode(),
+            $value->getAssetCodes(),
+            $selection->getChannel(),
+            $selection->getLocale()
         );
 
-        return implode($selection->getSeparator(), $mediaLinks);
+        return implode($selection->getSeparator(), $assetMainMediaLinkData);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

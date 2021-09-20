@@ -4,7 +4,7 @@ import {useAssetFamily} from 'feature/hooks/useAssetFamily';
 
 const flushPromises = () => new Promise(setImmediate);
 
-test('It fetches a assetFamily', async () => {
+test('It fetches an assetFamily', async () => {
   const {result} = renderHookWithProviders(() => useAssetFamily('wallpapers'));
   await act(async () => {
     await flushPromises();

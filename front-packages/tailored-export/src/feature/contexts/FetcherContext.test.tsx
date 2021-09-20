@@ -1,7 +1,7 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useFetchers} from '../contexts/FetcherContext';
 
-test('Fetch attributes by identifiers needs to be implemented', async () => {
+test('Fetch attributes by identifiers needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {
@@ -9,7 +9,7 @@ test('Fetch attributes by identifiers needs to be implemented', async () => {
   }).toThrowError('Fetch attributes by identifiers needs to be implemented');
 });
 
-test('Fetch all channels needs to be implemented', async () => {
+test('Fetch all channels needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {
@@ -17,7 +17,7 @@ test('Fetch all channels needs to be implemented', async () => {
   }).toThrowError('Fetch all channels needs to be implemented');
 });
 
-test('Fetch association type needs to be implemented', async () => {
+test('Fetch association type needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {
@@ -25,7 +25,7 @@ test('Fetch association type needs to be implemented', async () => {
   }).toThrowError('Fetch association types by codes needs to be implemented');
 });
 
-test('Fetch measurement family needs to be implemented', async () => {
+test('Fetch measurement family needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {
@@ -33,7 +33,7 @@ test('Fetch measurement family needs to be implemented', async () => {
   }).toThrowError('Fetch measurement family by code needs to be implemented');
 });
 
-test('Fetch asset family needs to be implemented', async () => {
+test('Fetch asset family needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {

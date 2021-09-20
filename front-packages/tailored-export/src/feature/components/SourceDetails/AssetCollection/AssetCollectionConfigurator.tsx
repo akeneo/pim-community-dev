@@ -17,7 +17,7 @@ const AssetCollectionConfigurator = ({
   }
 
   if (undefined === attribute.reference_data_name) {
-    throw new Error(`Asset collection attribute "${attribute.code}" may have a reference_data_name`);
+    throw new Error(`Asset collection attribute "${attribute.code}" should have a reference_data_name`);
   }
 
   return (

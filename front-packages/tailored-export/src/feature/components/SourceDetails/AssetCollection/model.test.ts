@@ -11,11 +11,11 @@ import {
 import {AssetFamily} from '../../../models';
 import {Channel} from '@akeneo-pim-community/shared';
 
-test('it validates that something is an collection separator', function () {
+test('it validates that something is a collection separator', function () {
   expect(isCollectionSeparator(',')).toBe(true);
 });
 
-test('it invalidates something when it is not an collection separator', function () {
+test('it invalidates something when it is not a collection separator', function () {
   expect(isCollectionSeparator('blblb')).toBe(false);
 });
 

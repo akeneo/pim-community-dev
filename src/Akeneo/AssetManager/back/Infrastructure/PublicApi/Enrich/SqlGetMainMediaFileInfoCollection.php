@@ -65,8 +65,6 @@ SQL;
                 $mainMediaValue['data']['filePath'],
                 $mainMediaValue['data']['originalFilename'],
                 Storage::FILE_STORAGE_ALIAS,
-                $mainMediaValue['channel'],
-                $mainMediaValue['locale'],
             ), $mainMediaValues));
         }
 

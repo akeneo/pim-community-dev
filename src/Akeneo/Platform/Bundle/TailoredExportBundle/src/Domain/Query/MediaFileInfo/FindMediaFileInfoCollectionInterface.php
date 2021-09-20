@@ -18,14 +18,4 @@ interface FindMediaFileInfoCollectionInterface
         string $assetFamilyIdentifier,
         array $assetCodes
     ): array;
-
-    /**
-     * @return MediaFileInfo[]
-     */
-    public function forScopedAndLocalizedAssetFamilyAndAssetCodes(
-        string $assetFamilyIdentifier,
-        array $assetCodes,
-        ?string $channel,
-        ?string $locale
-    ): array;
 }

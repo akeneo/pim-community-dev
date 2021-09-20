@@ -18,16 +18,12 @@ class MediaFileInfo
     private string $fileKey;
     private string $originalFilename;
     private string $storage;
-    private ?string $channel;
-    private ?string $locale;
 
-    public function __construct(string $fileKey, string $originalFilename, string $storage, ?string $channel, ?string $locale)
+    public function __construct(string $fileKey, string $originalFilename, string $storage)
     {
         $this->fileKey = $fileKey;
         $this->originalFilename = $originalFilename;
         $this->storage = $storage;
-        $this->channel = $channel;
-        $this->locale = $locale;
     }
 
     public function getFileKey(): string
@@ -43,15 +39,5 @@ class MediaFileInfo
     public function getStorage(): string
     {
         return $this->storage;
-    }
-
-    public function getChannel(): ?string
-    {
-        return $this->channel;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
     }
 }
