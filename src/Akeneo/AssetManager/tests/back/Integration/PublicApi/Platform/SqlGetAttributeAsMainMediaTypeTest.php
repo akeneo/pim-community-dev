@@ -111,7 +111,8 @@ final class SqlGetAttributeAsMainMediaTypeTest extends SqlIntegrationTestCase
             MediaType::fromString(MediaType::PDF)
         );
 
-        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');;
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+
         $attributeRepository->create($mediaLinkAttribute);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
         $assetFamily->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::fromAttributeIdentifier($mediaLinkIdentifier));

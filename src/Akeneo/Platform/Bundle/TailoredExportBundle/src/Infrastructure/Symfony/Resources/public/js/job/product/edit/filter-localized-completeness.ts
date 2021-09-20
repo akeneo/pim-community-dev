@@ -5,6 +5,7 @@ import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shar
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {
+  AssetFamily,
   AssociationType,
   Attribute,
   CompletenessFilter,
@@ -16,6 +17,7 @@ const __ = require('oro/translator');
 const mediator = require('oro/mediator');
 const BaseFilter = require('pim/filter/filter');
 const fetcherRegistry = require('pim/fetcher-registry');
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 
 class FilterLocalizedCompleteness extends BaseFilter {
   private validationErrors: ValidationError[] = [];
@@ -139,6 +141,16 @@ class FilterLocalizedCompleteness extends BaseFilter {
                         .fetch(code)
                         .then(resolve)
                     );
+                  },
+                },
+                assetFamily: {
+                  fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
+                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier)
+                    return {
+                      identifier: assetFamily.identifier,
+                      attribute_as_main_media: assetFamily.attributeAsMainMedia,
+                      attributes: assetFamily.attributes
+                    }
                   },
                 },
               },
