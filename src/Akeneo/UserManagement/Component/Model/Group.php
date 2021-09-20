@@ -160,11 +160,17 @@ class Group implements GroupInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultPermissions(): ?array
     {
         return $this->defaultPermissions;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultPermissions(array $defaultPermissions): void
     {
         $this->defaultPermissions = $defaultPermissions;
