@@ -137,6 +137,10 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Winter designed Tire" changed to Yes value');
           }
 
+          if (eventOptions && eventOptions.attribute === 'meta_title') {
+            appcues.track('Attribute "Meta title" filled in product edit form');
+          }
+
           appcues.track('Attribute filled in product edit form');
           break;
         case 'product:form:saved':
