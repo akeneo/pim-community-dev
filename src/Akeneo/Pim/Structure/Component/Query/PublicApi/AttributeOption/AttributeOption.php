@@ -29,4 +29,12 @@ class AttributeOption
     {
         return $this->labels;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->code,
+            'labels' => $this->labels,
+        ];
+    }
 }

@@ -14,5 +14,5 @@ interface SearchAttributeOptionsInterface
     /**
      * @return AttributeOption[]
      */
-    public function search(SearchAttributeOptionsParameters $searchParameters): array;
+    public function search(string $attributeCode, SearchAttributeOptionsParameters $searchParameters): array;
 }

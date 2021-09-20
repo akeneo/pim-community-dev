@@ -27,22 +27,34 @@ class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
     /**
      * @return AttributeOption[]
      */
-    public function search(SearchAttributeOptionsParameters $searchParameters): array
+    public function search(string $attributeCode, SearchAttributeOptionsParameters $searchParameters): array
     {
         $options = [
-            'identifier' => $searchParameters->getAttributeCode(),
-            'identifiers' => $searchParameters->getAttributeOptionCodes(),
+            'identifier' => $attributeCode,
+            'identifiers' => $searchParameters->getIncludeCodes(),
+            'excludeCodes' => $searchParameters->getExcludeCodes(),
             'locale' => $searchParameters->getLocale(),
-            'catalogLocale' => $searchParameters->getCatalogLocale(),
+            'catalogLocale' => $searchParameters->getLocale(),
             'limit' => $searchParameters->getLimit(),
             'page' => $searchParameters->getPage(),
         ];
 
-        return array_map(function($attributeOption) {
-            return new AttributeOption($attributeOption->getCode(), $attributeOption->getOptionValues());
-        }, $this->attributeOptionSearchableRepository->findBySearch(
+        $attributeOptions = $this->attributeOptionSearchableRepository->findBySearch(
             $searchParameters->getSearch(),
             $options
-        ));
+        );
+
+        return array_map(
+            static function ($attributeOption) {
+                $labels = [];
+
+                foreach ($attributeOption->getOptionValues() as $optionValue) {
+                    $labels[$optionValue->getLocale()] = $optionValue->getValue();
+                }
+
+                return new AttributeOption($attributeOption->getCode(), $labels);
+            },
+            $attributeOptions,
+        );
     }
 }

@@ -11,32 +11,35 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  */
 class SearchAttributeOptionsParameters
 {
-    private ?string $attributeCode;
-    private ?array $attributeOptionCodes;
+    /** @var string[] */
+    private array $includeCodes = [];
+
+    /** @var string[] */
+    private array $excludeCodes = [];
+
     private ?string $search;
     private ?string $locale;
-    private ?string $catalogLocale;
     private ?int $limit;
     private ?int $page;
 
-    public function getAttributeCode(): ?string
+    public function getIncludeCodes(): array
     {
-        return $this->attributeCode;
+        return $this->includeCodes;
     }
 
-    public function setAttributeCode(?string $attributeCode): void
+    public function getExcludeCodes(): array
     {
-        $this->attributeCode = $attributeCode;
+        return $this->excludeCodes;
     }
 
-    public function getAttributeOptionCodes(): ?array
+    public function setIncludeCodes(array $includeCodes): void
     {
-        return $this->attributeOptionCodes;
+        $this->includeCodes = $includeCodes;
     }
 
-    public function setAttributeOptionCodes(?array $attributeOptionCodes): void
+    public function setExcludeCodes(array $excludeCodes): void
     {
-        $this->attributeOptionCodes = $attributeOptionCodes;
+        $this->excludeCodes = $excludeCodes;
     }
 
     public function getSearch(): ?string
@@ -57,16 +60,6 @@ class SearchAttributeOptionsParameters
     public function setLocale(?string $locale): void
     {
         $this->locale = $locale;
-    }
-
-    public function getCatalogLocale(): ?string
-    {
-        return $this->catalogLocale;
-    }
-
-    public function setCatalogLocale(?string $catalogLocale): void
-    {
-        $this->catalogLocale = $catalogLocale;
     }
 
     public function getLimit(): ?int

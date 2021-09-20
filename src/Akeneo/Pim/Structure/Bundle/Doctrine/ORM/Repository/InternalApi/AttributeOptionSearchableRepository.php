@@ -94,6 +94,11 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             $qb->setParameter('codes', $options['identifiers']);
         }
 
+        if (isset($options['excludeCodes']) && is_array($options['excludeCodes']) && !empty($options['excludeCodes'])) {
+            $qb->andWhere('o.code not in (:codes)');
+            $qb->setParameter('codes', $options['excludeCodes']);
+        }
+
         if (isset($options['locale']) && null !== $options['locale']) {
             $qb->andWhere('v.locale = :locale');
             $qb->setParameter('locale', $options['locale']);
