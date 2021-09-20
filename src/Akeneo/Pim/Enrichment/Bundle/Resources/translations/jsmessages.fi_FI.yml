@@ -44,8 +44,8 @@ pim_enrich.entity.product:
     variant_navigation:
       common: Yleinen
     status:
-      enabled: Otettu käyttöön
-      disabled: Poistettu käytöstä
+      enabled: Käytössä
+      disabled: Ei käytössä
     download_pdf:
       label: PDF
     copy:
@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Versio
       author: Tekijä
+      logged_at: Päivämäärä/aika
       from: Alkaen
       modified: Muutettu
       old_value: Vanha arvo
@@ -169,6 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'varianttiulottuvuus'
       create: Luo uusi
+      title_create_label: "]-Inf, 1]Lisää uusi {{ axes }}|]1, Inf[Lisää uusi {{ axes }}"
       required_label: '(varianttiulottuvuus)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} tuotevariantti|]1, Inf[{{ complete }} / {{ total }} tuotevarianttia"
@@ -206,6 +208,45 @@ pim_enrich.entity.category:
   label: kategoria
   uppercase_label: Kategoria
   plural_label: Kategoriat
+  page_title:
+    index: "]-Inf, 1]{{ count }} kategoriapuu|]1, Inf[{{ count }} kategoriapuuta"
+  content:
+    empty_tree_list:
+      title: Sinulla ei ole yhtään kategoriapuuta
+      hint: Luo ensimmäinen
+    tree_list:
+      columns:
+        label: Nimi
+        number_of_categories: Kategorioiden lukumäärä
+        count_categories: ']-Inf, 1]{{ count }} kategoria|]1, Inf[{{ count }} kategoriaa'
+    tree:
+      not_found: Kategoriapuuta ei löytynyt.
+    edit:
+      not_found: Kategoriaa ei löytynyt.
+      default_tree_label: Kategoriapuu
+      success: Kategoria päivitetty onnistuneesti
+      fail: Kategoriaa ei voitu päivittää
+  new_category: Uusi kategoria
+  new_category_tree: Uusi kategoriapuu
+  category_created: Kategoria "{{ code }}" luotiin onnistuneesti
+  category_creation_error: Kategoriaa "{{ code }}" ei voitu luoda
+  category_tree_creation:
+    success: Kategoriapuu "{{ code }}" luotiin onnistuneesti
+    error: Kategoriapuuta "{{ code }}" ei voitu luoda
+  category_tree_deletion:
+    success: Kategoriapuu "{{ tree }}" poistettiin onnistuneesti
+    error: Kategoriapuuta "{{ tree }}" ei voitu poistaa
+    confirmation: Oletko varma, että haluat poistaa kategoriapuun {{ name }}? Kaikki kyseisen kategoriapuun kategoriat poistetaan ja tuotteiden kytkennät niihin kategorioihin poistetaan.
+    products_limit_exceeded:
+      title: Tätä kategoriapuuta ei voi poistaa
+      message: Kategoriapuussa {{ tree }}" on enemmän kuin {{ limit }} tuotetta eikä sitä siksi voida poistaa.
+  category_deletion:
+    success: Kategoria "{{ name }}" poistettiin onnistuneesti
+    error: Kategoriaa "{{ name }}" ei voitu poistaa
+    confirmation: Oletko varma, että haluat poistaa kategorian {{ name }}? Tämän kategorian tuotteita ei poisteta.
+    products_limit_exceeded:
+      title: Tätä kategoriaa ei voi poistaa
+      message: Kategoria "{{ name }}" sisältää enemmän kuin {{ limit }} tuotetta eikä sitä siksi voida poistaa.
 pim_enrich.export.product:
   data:
     title: Suodata tuotteet
@@ -249,8 +290,8 @@ pim_enrich.export.product:
       title: Status
       help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
       value:
-        enabled: Otettu käyttöön
-        disabled: Poistettu käytöstä
+        enabled: Käytössä
+        disabled: Ei käytössä
     completeness:
       title: Valmistumisaste
       help: Valitse vietävät tuotteet valmiusasteen perusteella.
@@ -279,14 +320,23 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Välillä
         NOT BETWEEN: Ei välillä
+    quality-score:
+      title: Laatupisteytys
+      operator_choice_title: Laatupisteytys
+      empty_selection: Ei ehtoa laatupisteytykselle
+      operators:
+        IN AT LEAST ONE LOCALE: Vähintään yksi lokaali
+        IN ALL LOCALES: Kaikki valitut lokaalit
   global_settings:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
+  title: Tuotteiden massamuokkaus
   confirm: "{0}Olet päivittämässä joitakin tuotteita seuraavilla tiedoilla. Ole hyvä ja vahvista.{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. ]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
     choose:
+      title: Tuotteiden massamuokkaus
       label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Muuta asetuksia
@@ -305,8 +355,14 @@ pim_enrich.mass_edit.product:
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       field: Ottaa käyttöön
     edit_common:
+      label: Muokkaa attribuuttien arvoja
+      label_count: "{0}Muokkaa<span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen attribuuttien arvoja</span>|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen attribuuttien arvoja</span>"
       description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
       no_update: Valitse ainakin yksi attribuutti muokattavaksi
+    add_attribute_value:
+      label: Lisää attribuutin arvoja
+      label_count: "{0}Lisää <span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Lisää attribuuttien arvoja <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span>|]1, Inf[Lisää attribuuttien arvoja <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle</span>"
+      description: Vain tuotteen perheeseen kuuluvat monivalintalistat päivitetään seuraavilla arvoilla lokaalille {{ locale }} ja kanavalle {{ scope }}. Uudet arvot lisätään ja nykyiset arvot säilytetään.
     change_family:
       label: Muuta perhe
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
@@ -333,6 +389,7 @@ pim_enrich.mass_edit.product:
       label: Muunna yksittäistuotteeksi
       description: Kaikki aikaisemmat arvot, kategoriat ja assosiaatiot säilytetään.
     associate_to_product_and_product_model:
+      label: Liitä tuotteita
       label_count: "{0}Liitä <span class=\"AknFullPage-title--highlight\">tuotteita</span> tuotteisiin tai tuotemalleihin|{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|]1, Inf[Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
       description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
       validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
@@ -340,6 +397,9 @@ pim_enrich.mass_edit.product:
       label: Vaihda ylätason tuotemalli
       description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_datagrid:
+  no_entities.product: "Tuotteita ei löytynyt" #Custom translation for product grid
+  no_results: "Pahoittelut, haullasi ei löytynyt {{ entityHint }}."
+  no_results.product: "Valitettavasti haullasi ei löytynyt tuotteita." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Massatoimenpiteet
@@ -376,6 +436,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} tulos valittu|]1, Inf[{{ count }} tulosta valittu"
   view_selector:
     view: Näkymät
+    choose_type: Haluan luoda yksityisen näkymän
   actions:
     edit_product_attributes: Muokkaa tuotteen attribuutteja
     classify_product: Luokittele tuote
@@ -416,6 +477,7 @@ pim_datagrid:
       label: Ylätaso
     identifier:
       label: Tunniste
+  search: Etsi arvolla {{ label }}
 batch_jobs:
   add_association:
     label: Liitä

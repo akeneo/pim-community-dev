@@ -150,7 +150,5 @@ akeneo_data_quality_insights:
     filter_value:
       good: 우수
       to_improve: 개선 필요
-      yes: true
-      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: 데이터 품질 인사이트
