@@ -20,7 +20,8 @@ interface EventOptions {
   entityHint?: string,
   attributes?: {
     identifier?: string,
-    code?: string
+    code?: string,
+    label?: string,
   },
   url?: string,
 }
@@ -95,6 +96,14 @@ const AppcuesOnboarding: PimOnboarding = {
             }
 
             appcues.track('Export profile selected');
+          }
+
+          if (eventOptions && eventOptions.name === 'family-grid' && eventOptions.entityHint && eventOptions.entityHint === 'family') {
+            if (eventOptions.attributes && eventOptions.attributes.label === 'Tires') {
+              appcues.track('Family "Tires" selected');
+            }
+
+            appcues.track('Family selected');
           }
           break;
         case 'product-grid:completeness:opened':
