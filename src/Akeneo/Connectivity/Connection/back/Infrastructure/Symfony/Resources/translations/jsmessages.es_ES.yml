@@ -61,12 +61,42 @@ akeneo_connectivity.connection:
       scroll_to_top: Desplazar hasta la parte superior
     apps:
       wizard:
+        title: Conectar
+        action:
+          confirm: Confirmar
+          cancel: Cancelar
+          previous: Anterior
+          next: Siguiente
+          allow_and_next: Permitir y siguiente
         progress:
+          authorizations: Autorizaciones
           permissions: Permisos
+          well_done: '¡Bien hecho!'
+        authorize:
+          title: 'La aplicación {{ app_name }} necesita'
+          no_scope_title: 'La aplicación {{ app_name }} desea acceder a su PIM.'
+          no_scope: No se han solicitado autorizaciones específicas.
+          helper: Para saber más sobre la autorización de aplicaciones,
+          helper_link: consulte nuestro Centro de Ayuda para obtener más información.
       title: Conectar
       activate:
         flash:
           error: Lo sentimos, se ha producido un error al conectar la aplicación.
+      scope:
+        type:
+          view: 'Ver {{ entities }}'
+          edit: 'Ver y editar {{ entities }}'
+          delete: 'Ver, editar y eliminar {{ entities }}'
+        entities:
+          catalog_structure: atributos, grupos de atributos, familias y variantes de familias
+          attribute_options: opciones de atributo
+          categories: categorías
+          channel_localization: configuraciones regionales y monedas
+          channel_settings: canales
+          association_types: tipos de asociación
+          products: productos y modelos de productos
+      error:
+        sub_text: Póngase en contacto con el desarrollador de la aplicación o con el servicio de asistencia de Akeneo
       constraint:
         client_id:
           not_blank: El client_id es obligatorio.

@@ -26,7 +26,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     private array $esQuery;
     private int $pageSize;
     private array $searchAfter;
-    private ?ResultInterface $result;
+    private ?ResultInterface $result = null;
 
     /**
      * @param Client                        $esClient
@@ -121,7 +121,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     public function getResult(): ResultInterface
     {
         if (null === $this->result) {
-            $this->getNextIdentifiers([]);
+            $this->getNextIdentifiers($this->esQuery);
         }
 
         return $this->result;

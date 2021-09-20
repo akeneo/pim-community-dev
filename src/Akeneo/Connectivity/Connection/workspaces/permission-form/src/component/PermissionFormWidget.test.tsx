@@ -18,6 +18,7 @@ const props = {
     onAdd: jest.fn(),
     onRemove: jest.fn(),
     disabled: false,
+    readOnly: false,
     allByDefaultIsSelected: false,
     onSelectAllByDefault: jest.fn(),
     onDeselectAllByDefault: jest.fn(),

@@ -22,8 +22,9 @@ const LogoContainer = styled.div`
     padding-right: 40px;
 `;
 const Logo = styled.img`
-    width: 220px;
-    height: 220px;
+    margin: auto;
+    max-height: 220px;
+    max-width: 220px;
 `;
 
 const StyledActionButton = styled(Button)`
