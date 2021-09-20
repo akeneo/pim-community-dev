@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: 以 XLSX 格式定制导出产品
+batch_jobs.xlsx_tailored_product_model_export.label: 以 XLSX 格式定制导出产品模型
+batch_jobs.csv_tailored_product_export.label: 以 CSV 格式定制导出产品
+batch_jobs.csv_tailored_product_model_export.label: 以 CSV 格式定制导出产品模型
 akeneo.tailored_export:
   filters:
     completeness:
@@ -125,6 +128,9 @@ akeneo.tailored_export:
           title: 空时使用默认值
           label: 默认值
           placeholder: 定义值
+        clean_html_tags:
+          title: 清理 HTML 标签
+          label: 自动清理 HTML 标签
     concatenation:
       title: 连接
       preview: 预览

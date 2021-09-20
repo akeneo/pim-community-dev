@@ -37,6 +37,8 @@ pim_asset_manager:
         not_main_media_attribute_code: 'Ominaisuuden on vastattava päämediaksi määritellyn attribuutin koodia.'
   asset:
     validation:
+      mass_edit:
+        updater_must_be_unique: 'Varmista, että tätä attribuuttia ja sen kanavaa ja lokaalia ei ole valittu.'
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Assetti koodilla "%code%" on jo olemassa'

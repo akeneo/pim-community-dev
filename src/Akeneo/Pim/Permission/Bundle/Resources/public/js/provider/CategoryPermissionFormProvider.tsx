@@ -5,6 +5,7 @@ import {getLabel} from 'pimui/js/i18n';
 import {
   PermissionFormProvider,
   PermissionFormWidget,
+  QueryParamsBuilder,
   PermissionFormReducer,
   PermissionSectionSummary,
   LevelSummaryField,
@@ -14,6 +15,7 @@ const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
+const securityContext = require('pim/security-context');
 
 const H3 = styled.h3`
   color: ${getColor('grey', 140)};
@@ -28,20 +30,71 @@ const Label = styled.label`
   display: block;
 `;
 
-const categoriesAjaxUrl = routing.generate('pim_enrich_category_rest_list');
+const categoriesAjaxUrl = routing.generate('pimee_permissions_entities_get_categories');
 
-const processCategories = (data: any) => ({
-  results: data.map((category: any) => ({
+type Response = {
+  results: {
+    code: string;
+    label: string | null;
+  }[];
+  next: {
+    url: string | null;
+    params: PaginationParams;
+  };
+};
+
+const processCategories = (data: Response) => ({
+  results: data.results.map(category => ({
     id: category.code,
-    text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
+    text: category.label || `[${category.code}]`,
   })),
-  more: false,
+  more: data.next.url !== null,
+  context: {
+    next: data.next,
+  },
 });
 
 const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
   return FetcherRegistry.getFetcher('category')
     .fetchByIdentifiers(identifiers)
-    .then((results: any) => processCategories(results).results);
+    .then((results: any) =>
+      results.map((category: any) => ({
+        id: category.code,
+        text: getLabel(category.labels, UserContext.get('uiLocale'), `[${category.code}]`),
+      }))
+    );
+};
+
+type PaginationContext = {
+  next: {
+    url: string | null;
+    params: PaginationParams;
+  };
+};
+
+type PaginationParams = {
+  search?: string;
+  limit?: number;
+  offset?: number;
+};
+
+const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> = (
+  search: string,
+  _page: number,
+  context: PaginationContext | null
+) => {
+  const params = {
+    search: search,
+  };
+
+  if (null !== context) {
+    return {
+      ...context.next.params,
+      ...params,
+    };
+  }
+
+  return params;
 };
 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
@@ -62,13 +115,22 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
         </SectionTitle>
-        <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+        {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
+          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+        ) : (
+          <Helper level="warning">
+            {translate('pim_permissions.widget.entity.not_granted_warning', {
+              permission: translate('pimee_enrich.acl.category.edit_permissions'),
+            })}
+          </Helper>
+        )}
         <Label>{translate('pim_permissions.widget.level.own')}</Label>
         <PermissionFormWidget
           selection={state.own.identifiers}
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
           disabled={state.own.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
           allByDefaultIsSelected={state.own.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
@@ -76,6 +138,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
         <PermissionFormWidget
@@ -83,6 +146,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
           disabled={state.edit.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
           allByDefaultIsSelected={state.edit.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -90,6 +154,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
@@ -97,6 +162,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
@@ -104,6 +170,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           ajaxUrl={categoriesAjaxUrl}
           processAjaxResponse={processCategories}
           fetchByIdentifiers={fetchCategoriesByIdentifiers}
+          buildQueryParams={buildQueryParams}
         />
       </>
     );

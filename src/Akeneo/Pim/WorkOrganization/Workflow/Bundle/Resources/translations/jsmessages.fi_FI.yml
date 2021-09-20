@@ -8,15 +8,36 @@ pim_datagrid:
   no_entities:
     proposal: Ehdotuksia ei ole tarkistettavaksi.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi.
+  no_entities.published product: Julkaistuja tuotteita ei löytynyt
   no_results:
     proposal: Ehdotuksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
+  no_results.published product: Valitettavasti haullasi ei löytynyt julkaistuja tuotteita.
   workflow:
+    partial_approve: Hyväksy attribuutin {{ attribute }} muutokset tuotteelle {{ product }}
+    partial_reject: Hylkää attribuutin {{ attribute }} muutokset tuotteelle {{ product }}
+    by: tehnyt
     status:
       in_progress: Työn alla
       ready: Odottaa hyväksyntää
+      can_be_partially_reviewed: Voidaan tarkistaa osittain
+      can_not_be_approved: Ei voi tarkistaa
+      can_not_be_deleted: Ei voi poistaa
     status_message:
       ready: Odottaa hyväksyntää
+      in_progress: Ehdotus on juuri nyt työnalla, eikä sitä ole vielä lähetetty.
+      can_be_partially_reviewed: Voit tarkistaa ehdotuksen vain osittain, koska osa muutoksista koskee arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_approved: Et voi tarkistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_deleted: Et voi poistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+    draft_in_progress: Tämän tuotteen luonnos on työnalla käyttäjällä {{ author }}.
+    no_diff: Arvo "{{ value }}" on sama ehdotuksen ja työkopion välillä.
+    new_value: 'Uusi arvo:'
+    old_value: 'Vanha arvo:'
+    see_more: Katso lisää
+    actions:
+      approve_all: Hyväksy kaikki
+      refuse_all: Hylkää kaikki
+    characters_left: ']-Inf, 1]{{ count }} merkki jäljellä|]1, Inf[{{ count }} merkkiä jäljellä'
 pimee_datagrid:
   cells:
     expand:
@@ -41,14 +62,20 @@ pimee_workflow:
       error: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
     reject:
       title: Hylkää ehdotus
+      success: Ehdotus on hylätty
+      error: "Ehdotusta ei voida hylätä seuraavan virheen vuoksi: {{ error }}"
     remove:
       title: Poista ehdotus
+      success: Ehdotus on poistettu
+      error: "Ehdotusta ei voi poistaa seuraavan virheen vuoksi: {{ error }}"
     partial_approve:
       title: Hyväksy osittaisia tietoja
       success: Ehdotus on osittain vahvistettu onnistuneesti
+      error: "Ehdotusta ei voida hyväksyä osittain seuraavan virheen vuoksi: {{ error }}"
     partial_reject:
       title: Hylkää muutokset osittain
       success: Muutokset hylätty onnistuneesti
+      error: "Ehdotusta ei voida hylätä osittain seuraavan virheen vuoksi: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa
@@ -88,6 +115,8 @@ batch_jobs:
     perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   publish_product:
     perform.label: Julkaise tuotteet
+  unpublish_product:
+    perform.label: Poista tuotteiden julkaisu
   default_steps:
     clean_attribute:
       clean_draft: Muutosehdotusten puhdistaminen
@@ -110,6 +139,8 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei ehdotuksia tarkastettavaksi
+      title: Tarkastettavat ehdotukset
+      view_all: Näytä kaikki ehdotukset
     header.view_all: Näytä kaikki
 pimee_enrich.entity.product:
   module:
@@ -117,6 +148,8 @@ pimee_enrich.entity.product:
       published: Julkaistu
       revert: Palauta
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Tämä attribuutti voidaan päivittää <span>säännöllä</span>|]1, +Inf[Tämä attribuutti voidaan päivittää <span>{{ count }} säännöllä</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Tämä attribuutti voidaan päivittää sääntöllä|]1, +Inf[Tämä attribuutti voidaan päivittää {{ count }} säännöllä"
       value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio
@@ -202,3 +235,7 @@ pim_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistu tuote
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä
+pim_analytics:
+  info_type:
+    nb_published_products: Julkaistujen tuotteiden lukumäärä
+    nb_product_drafts: Tuotteiden luonnosten lukumäärä

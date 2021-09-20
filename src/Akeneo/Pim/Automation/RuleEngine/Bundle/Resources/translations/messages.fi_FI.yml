@@ -76,8 +76,8 @@ pimee_catalog_rule:
       month: ']-Inf, -1[%absolute_count% kuukautta sitten{-1}1 kuukausi sitten{1}1 kuukaudessa]1, +Inf[ %absolute_count% kuukaudessa'
       year: ']-Inf, -1[%absolute_count% vuotta sitten{-1}1 vuosi sitten{1}1 vuodessa]1, +Inf[ %absolute_count% vuodessa'
   status:
-    enabled: Otettu käyttöön
-    disabled: Poistettu käytöstä
+    enabled: Käytössä
+    disabled: Ei käytössä
 btn:
   Execute rules: Suorita säännöt
 job_execution:
