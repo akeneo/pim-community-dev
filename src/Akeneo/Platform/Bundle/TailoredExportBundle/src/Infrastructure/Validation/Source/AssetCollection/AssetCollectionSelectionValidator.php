@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
@@ -22,8 +22,6 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiv
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Composite;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Required;
