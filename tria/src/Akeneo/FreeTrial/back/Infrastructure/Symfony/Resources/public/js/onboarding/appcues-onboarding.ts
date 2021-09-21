@@ -17,6 +17,12 @@ interface EventOptions {
   context?: string,
   count?: number,
   checked?: boolean,
+  entityHint?: string,
+  attributes?: {
+    identifier?: string,
+    code?: string
+  },
+  url?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -70,12 +76,22 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Column added in the product grid');
           break;
-        case 'product-grid:product:selected':
-          if (eventOptions && eventOptions.identifier === 'PLGCHAELK001') {
-            appcues.track('Product "Elka Peacock Armchair" selected');
+        case 'grid:item:selected':
+          if (eventOptions && eventOptions.name === 'product-grid' && eventOptions.entityHint && eventOptions.entityHint === 'product') {
+            if (eventOptions.attributes && eventOptions.attributes.identifier === 'PLGCHAELK001') {
+              appcues.track('Product "Elka Peacock Armchair" selected');
+            }
+
+            appcues.track('Product selected');
           }
 
-          appcues.track('Product selected');
+          if (eventOptions && eventOptions.name === 'export-profile-grid' && eventOptions.entityHint && eventOptions.entityHint === 'export profile') {
+            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
+              appcues.track('Export profile "Furniture products for Amazon (weekly)" selected');
+            }
+
+            appcues.track('Export profile selected');
+          }
           break;
         case 'product-grid:completeness:opened':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
@@ -197,6 +213,35 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'grid:mass-edit:requirements-checked':
           if (eventOptions && eventOptions.code && eventOptions.code === 'marketplaces' && eventOptions.checked) {
             appcues.track('The information is required for Marketplaces channel');
+          }
+          break;
+        case 'form:edit:opened':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit') {
+            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
+              appcues.track('Edit export profile "Furniture products for Amazon (weekly)"');
+            }
+
+            appcues.track('Edit export profile');
+          }
+          break;
+        case 'export-profile:product:content-tab-opened':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit-content') {
+            appcues.track('Content tab opened on edit export profile product');
+          }
+          break;
+        case 'export-profile:product:attribute-added':
+          if (eventOptions && eventOptions.column && eventOptions.column.includes('photo_printing')) {
+            appcues.track('Attribute "Photo printing" added in the content of the export profile');
+          }
+          break;
+        case 'job-instance:form-edit:saved':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'furniture_amazon') {
+            appcues.track('Edit export profile "Furniture products for Amazon (weekly)" saved');
+          }
+          break;
+        case 'job-instance:export:launched':
+          if (eventOptions && eventOptions.url && eventOptions.url.includes('furniture_amazon')) {
+            appcues.track('Export profile "Furniture products for Amazon (weekly)" launched');
           }
           break;
       }
