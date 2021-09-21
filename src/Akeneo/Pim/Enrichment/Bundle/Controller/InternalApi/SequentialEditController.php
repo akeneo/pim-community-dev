@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
@@ -31,6 +32,8 @@ class SequentialEditController
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
+    protected UserContext $userContext;
+
     /**
      * @param MassActionParametersParser $parameterParser
      * @param GridFilterAdapterInterface $filterAdapter
@@ -39,11 +42,13 @@ class SequentialEditController
     public function __construct(
         MassActionParametersParser          $parameterParser,
         GridFilterAdapterInterface          $filterAdapter,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        UserContext                         $userContext
     ) {
         $this->parameterParser = $parameterParser;
         $this->filterAdapter = $filterAdapter;
         $this->pqbFactory = $pqbFactory;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -60,13 +65,10 @@ class SequentialEditController
 
         $products = [];
 
-        $cursor = $this->getProductsCursor($filters, [
-            'locale' => $parameters['dataLocale'],
-            'scope' => isset($parameters['dataScope'])
-                ? $parameters['dataScope']['value']
-                : null,
-            'sort' => $parameters['sort']
-        ]);
+        $cursor = $this->getProductsCursor(
+            $filters,
+            $this->initEmptyParameterWithDefault($parameters)
+        );
 
         while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
             $products[] = IdEncoder::decode($cursor->current());
@@ -91,5 +93,17 @@ class SequentialEditController
         }
 
         return $productQueryBuilder->execute();
+    }
+
+    protected function initEmptyParameterWithDefault(array $parameters): array
+    {
+        return [
+            'locale' => $parameters['dataLocale']
+                ?: $this->userContext->getCurrentLocaleCode(),
+            'scope' => isset($parameters['dataScope']) ?
+                $parameters['dataScope']['value']
+                : $this->userContext->getUserChannelCode(),
+            'sort' => $parameters['sort']
+        ];
     }
 }
