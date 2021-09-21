@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\Source\AssetCollection;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -36,7 +36,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\AssetCollectionSelectionConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
