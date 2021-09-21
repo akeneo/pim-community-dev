@@ -12,6 +12,8 @@ interface EventOptions {
   identifier?: string,
   value?: string,
   column?: string,
+  localeCode?: string,
+  context?: string
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -91,11 +93,19 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Designer" filled with "Studio Plumen"');
           }
 
+          if (eventOptions && eventOptions.attribute === 'description') {
+            appcues.track('Attribute "Description" filled in product edit form');
+          }
+
           appcues.track('Attribute filled in product edit form');
           break;
         case 'product:form:saved':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
             appcues.track('Product "Elka Peacock Armchair" saved');
+          }
+
+          if (eventOptions && eventOptions.name === 'PLG513725') {
+            appcues.track('Product "Faux leather tote" saved');
           }
 
           appcues.track('Product saved');
@@ -132,6 +142,18 @@ const AppcuesOnboarding: PimOnboarding = {
           }
 
           appcues.track('Attribute added in a bulk action');
+          break;
+        case 'product:form:compare-clicked':
+          appcues.track('Compare button clicked');
+          break;
+        case 'product:form:locale-switched':
+          if (eventOptions && eventOptions.context && eventOptions.context === 'base_product' && eventOptions.localeCode) {
+            appcues.track('Product\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
+
+          if (eventOptions && eventOptions.context && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
+            appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
           break;
       }
     });
