@@ -3,9 +3,7 @@ global:
     type: tria
 
 pim:
-  defaultCatalog: vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-  # @todo[trial_catalog] activate free trial catalog
-  #defaultCatalog: src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+  defaultCatalog: src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
   jobs:
     versioning-purge:
       enabled: true

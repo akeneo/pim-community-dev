@@ -188,9 +188,7 @@ ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-	# @todo[trial_catalog] activate free trial catalog
-	#yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
 endif
 endif
 
@@ -218,9 +216,7 @@ ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-	# @todo[trial_catalog] activate free trial catalog
-	#yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
 endif
 endif
 
