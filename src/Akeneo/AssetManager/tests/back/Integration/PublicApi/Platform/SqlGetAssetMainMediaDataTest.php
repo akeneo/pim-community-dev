@@ -63,7 +63,8 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_for_unknown_asset_family_or_asset_codes() {
+    public function it_returns_an_empty_array_for_unknown_asset_family_or_asset_codes()
+    {
         $mainMediaDataForUnknownFamily = $this->sqlGetAssetMainMediaData->forAssetFamilyAndAssetCodes('unknown', ['simple_packshot_asset_1', 'simple_packshot_asset_2'], null, null);
         self::assertEmpty($mainMediaDataForUnknownFamily);
         $mainMediaDataForUnknownAssetCodes = $this->sqlGetAssetMainMediaData->forAssetFamilyAndAssetCodes('simple_packshot', ['unknown'], null, null);
@@ -73,7 +74,8 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_when_any_asset_exist_for_channel_or_locale() {
+    public function it_returns_an_empty_array_when_any_asset_exist_for_channel_or_locale()
+    {
         $mainMediaData = $this->sqlGetAssetMainMediaData->forAssetFamilyAndAssetCodes('simple_packshot', ['simple_packshot_asset_1'], 'ecommerce', null);
         self:self::assertEmpty($mainMediaData);
     }
@@ -81,7 +83,8 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_asset_main_media_data_for_family_with_a_media_file_as_main_media() {
+    public function it_returns_asset_main_media_data_for_family_with_a_media_file_as_main_media()
+    {
         $mainMediaData = $this->sqlGetAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'simple_packshot',
             ['simple_packshot_asset_1', 'simple_packshot_asset_2'],
@@ -162,7 +165,8 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_asset_main_media_data_for_family_with_a_media_link_as_main_media() {
+    public function it_returns_asset_main_media_data_for_family_with_a_media_link_as_main_media()
+    {
         $mainMediaData = $this->sqlGetAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'simple_notice',
             ['simple_notice_asset_1', 'simple_notice_asset_2'],
@@ -208,7 +212,8 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
         ], $scopedAndLocalizedMainMediaData);
     }
 
-    private function loadDataset() {
+    private function loadDataset()
+    {
         $families = [];
         foreach (['packshot', 'notice'] as $baseFamilyName) {
             foreach (['simple', 'scoped', 'localized', 'scoped_and_localized'] as $variantFamilyName) {
@@ -329,15 +334,17 @@ class SqlGetAssetMainMediaDataTest extends SqlIntegrationTestCase
             MediaType::fromString(MediaType::PDF)
         );
 
-        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');;
+        $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
+
         $attributeRepository->create($mediaLinkAttribute);
         $assetFamily->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::fromAttributeIdentifier($mediaLinkIdentifier));
         $this->assetFamilyRepository->update($assetFamily);
         return $assetFamily;
     }
 
-    private function createAsset(AssetFamily $assetFamily, string $assetCode, array $values) {
-        $assetValues = array_map(function($value) use ($assetFamily) {
+    private function createAsset(AssetFamily $assetFamily, string $assetCode, array $values)
+    {
+        $assetValues = array_map(function ($value) use ($assetFamily) {
             return Value::create(
                 $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
                 $value['channel'] ? ChannelReference::createFromNormalized($value['channel']) : ChannelReference::noReference(),
