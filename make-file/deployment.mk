@@ -187,9 +187,6 @@ endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
-endif
 endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
@@ -215,9 +212,6 @@ endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
-endif
 endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),beta)
@@ -239,7 +233,6 @@ endif
 prepare-chart-default-values:
 	yq d -i $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml 'pim.jobs'
 	yq m -i -x $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml $(PIM_SRC_DIR)/deployments/terraform/pim/values-$(TYPE).yaml
-	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: get_mysql_parameters_disk
 get_mysql_parameters_disk:
