@@ -11,21 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
-class AssetCollectionSelectionConstraint extends Constraint
+/**
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ */
+final class IsValidAssetAttribute extends Constraint
 {
-    public string $attributeCode;
+    public string $assetFamilyCode;
 
+    /**
+     * {@inheritdoc}
+     */
     public function validatedBy(): string
     {
-        return AssetCollectionSelectionValidator::class;
+        return IsValidAssetAttributeValidator::class;
     }
 
     public function getRequiredOptions(): array
     {
-        return ['attributeCode'];
+        return ['assetFamilyCode'];
     }
 }

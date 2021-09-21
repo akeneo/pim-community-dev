@@ -8,6 +8,8 @@ import {
   Section,
   useTranslate,
   ValidationError,
+  getErrorsForPath,
+  getLocalesFromChannel,
 } from '@akeneo-pim-community/shared';
 import {useChannels, useAssetFamily} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
@@ -39,6 +41,7 @@ const AssetCollectionSelector = ({
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
+  const globalErrors = getErrorsForPath(validationErrors, '');
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
   const typeErrors = filterErrors(validationErrors, '[type]');
@@ -90,6 +93,11 @@ const AssetCollectionSelector = ({
       onCollapse={toggleSelectorCollapse}
     >
       <Section>
+        {globalErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
         <Field label={translate('pim_common.type')}>
           <SelectInput
             clearable={false}
@@ -129,7 +137,15 @@ const AssetCollectionSelector = ({
             }}
           />
         )}
-        {('label' === selection.type || isAssetCollectionMediaSelection(selection)) && selection.locale !== null && (
+        {isAssetCollectionMediaSelection(selection) && selection.locale !== null && (
+          <LocaleDropdown
+            value={selection.locale}
+            validationErrors={localeErrors}
+            locales={getLocalesFromChannel(channels, selection.channel)}
+            onChange={localeCode => onSelectionChange({...selection, locale: localeCode})}
+          />
+        )}
+        {'label' === selection.type && selection.locale !== null && (
           <LocaleDropdown
             value={selection.locale}
             validationErrors={localeErrors}

@@ -13,32 +13,47 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Composite;
 use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AssetCollectionSelectionValidator extends ConstraintValidator
 {
+    private GetAttributes $getAttributes;
+    private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia;
     /** @var string[] */
     private array $availableCollectionSeparator;
 
-    public function __construct(array $availableCollectionSeparator)
-    {
+    public function __construct(
+        GetAttributes $getAttributes,
+        GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
+        array $availableCollectionSeparator
+    ) {
+        $this->getAttributes = $getAttributes;
+        $this->getAttributeAsMainMedia = $getAttributeAsMainMedia;
         $this->availableCollectionSeparator = $availableCollectionSeparator;
     }
 
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
+        if (!$constraint instanceof AssetCollectionSelectionConstraint) {
+            throw new \InvalidArgumentException('Invalid constraint');
+        }
+
         $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, [
             new Collection(
@@ -81,31 +96,30 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             ]);
             $this->buildViolations($violations, '[locale]');
         } elseif ('media_file' === $selection['type'] || 'media_link' === $selection['type']) {
-            $localeIsRequiredViolations = $validator->validate($selection, new Collection(['fields' => ['locale' => new Required()], 'allowExtraFields' => true]));
-            if (0 < $localeIsRequiredViolations->count()) {
-                $this->buildViolations($localeIsRequiredViolations);
-            } elseif (null !== $selection['locale']) {
-                $localeShouldBeActiveViolations = $validator->validate($selection['locale'], [new LocaleShouldBeActive()]);
-                $this->buildViolations($localeShouldBeActiveViolations, '[locale]');
+            $attribute = $this->getAttributes->forCode($constraint->attributeCode);
+            if (null === $attribute) {
+                return;
             }
-            $channelIsRequiredViolations = $validator->validate($selection, new Collection(['fields' => ['channel' => new Required()], 'allowExtraFields' => true]));
-            if (0 < $channelIsRequiredViolations->count()) {
-                $this->buildViolations($channelIsRequiredViolations);
-            } elseif (null !== $selection['channel']) {
-                $channelShouldExistViolations = $validator->validate($selection['channel'], [new ChannelShouldExist()]);
-                $this->buildViolations($channelShouldExistViolations, '[channel]');
-            }
+
+            $assetFamilyCode = $attribute->properties()['reference_data_name'];
+            $validator->inContext($this->context)->validate(
+                $selection,
+                [
+                    new Collection(['fields' => ['locale' => new Required(), 'channel' => new Required()], 'allowExtraFields' => true]),
+                    new IsValidAssetAttribute(['assetFamilyCode' => $assetFamilyCode]),
+                ]
+            );
+
+            $attributeAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyCode($assetFamilyCode);
             if ('media_file' === $selection['type']) {
-                $propertyViolations = $validator->validate($selection, new Collection(['fields' => ['property' => new Required([new EqualTo('file_key')])], 'allowExtraFields' => true]));
-                $this->buildViolations($propertyViolations);
+                $this->validateMediaFileSelection($selection, $assetFamilyCode, $attributeAsMainMedia, $validator);
             } elseif ('media_link' === $selection['type']) {
-                $withSuffixAndPrefixViolations = $validator->validate($selection, new Collection(['fields' => ['with_prefix_and_suffix' => new Required()], 'allowExtraFields' => true]));
-                $this->buildViolations($withSuffixAndPrefixViolations);
+                $this->validateMediaLinkSelection($selection, $assetFamilyCode, $attributeAsMainMedia, $validator);
             }
         }
     }
 
-    private function buildViolations(ConstraintViolationListInterface $violations, ?string $path = null)
+    private function buildViolations(ConstraintViolationListInterface $violations, ?string $path = null): void
     {
         foreach ($violations as $violation) {
             $this->context->buildViolation(
@@ -115,5 +129,59 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                 ->atPath($path ?? $violation->getPropertyPath())
                 ->addViolation();
         }
+    }
+
+    private function validateMediaFileSelection(
+        $selection,
+        string $assetFamilyCode,
+        AttributeAsMainMedia $attributeAsMainMedia,
+        ValidatorInterface $validator
+    ): void {
+        if (!$attributeAsMainMedia->isMediaFile()) {
+            $this->context
+                ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
+                    'asset_family_code' => $assetFamilyCode
+                ])
+                ->atPath('[type]')
+                ->addViolation();
+
+            return;
+        }
+
+        $propertyViolations = $validator->validate($selection, new Collection([
+            'fields' => [
+                'property' => new Required([new EqualTo('file_key')])
+            ],
+            'allowExtraFields' => true
+        ]));
+
+        $this->buildViolations($propertyViolations);
+    }
+
+    private function validateMediaLinkSelection(
+        $selection,
+        string $assetFamilyCode,
+        AttributeAsMainMedia $attributeAsMainMedia,
+        ValidatorInterface $validator
+    ): void {
+        if (!$attributeAsMainMedia->isMediaLink()) {
+            $this->context
+                ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
+                    'asset_family_code' => $assetFamilyCode
+                ])
+                ->atPath('[type]')
+                ->addViolation();
+
+            return;
+        }
+
+        $withSuffixAndPrefixViolations = $validator->validate($selection, new Collection([
+            'fields' => [
+                'with_prefix_and_suffix' => new Required()
+            ],
+            'allowExtraFields' => true
+        ]));
+
+        $this->buildViolations($withSuffixAndPrefixViolations);
     }
 }

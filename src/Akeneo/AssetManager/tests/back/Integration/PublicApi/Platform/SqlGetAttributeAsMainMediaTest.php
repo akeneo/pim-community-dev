@@ -31,52 +31,53 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAttributeAsMainMediaType;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAttributeAsMainMedia;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-final class SqlGetAttributeAsMainMediaTypeTest extends SqlIntegrationTestCase
+final class SqlGetAttributeAsMainMediaTest extends SqlIntegrationTestCase
 {
-    private SqlGetAttributeAsMainMediaType $sqlGetAttributeAsMainMediaType;
+    private SqlGetAttributeAsMainMedia $sqlGetAttributeAsMainMedia;
     private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->sqlGetAttributeAsMainMediaType = $this->get('akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_type_public_api');
+        $this->sqlGetAttributeAsMainMedia = $this->get('akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api');
         $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /** @test */
-    public function it_says_if_an_asset_family_main_media_attribute_is_a_media_file(): void
+    public function it_returns_the_main_media_of_an_asset_family(): void
     {
-        $assetFamilyIdentifier = 'packshot';
-        $this->createAssetFamilyWithMediaFileAsMainMediaAttribute($assetFamilyIdentifier);
+        $this->createAssetFamilyWithMediaFileAsMainMediaAttribute('media_file_as_main_media');
+        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_file_as_main_media');
+        self::assertTrue($mainMedia->isMediaFile());
+        self::assertFalse($mainMedia->isMediaLink());
 
-        $isMediaFile = $this->sqlGetAttributeAsMainMediaType->isMediaFile($assetFamilyIdentifier);
-        self::assertTrue($isMediaFile);
+        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('media_link_as_main_media', false, false);
+        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_link_as_main_media');
+        self::assertTrue($mainMedia->isMediaLink());
+        self::assertFalse($mainMedia->isMediaFile());
+        self::assertFalse($mainMedia->isScopable());
+        self::assertFalse($mainMedia->isLocalizable());
+
+        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('scopable_and_localizable_media_link_as_main_media', true, true);
+        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('scopable_and_localizable_media_link_as_main_media');
+        self::assertTrue($mainMedia->isMediaLink());
+        self::assertFalse($mainMedia->isMediaFile());
+        self::assertTrue($mainMedia->isScopable());
+        self::assertTrue($mainMedia->isLocalizable());
     }
 
     /** @test */
-    public function it_says_if_an_asset_family_main_media_attribute_is_a_media_link(): void
-    {
-        $assetFamilyIdentifier = 'notice';
-        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute($assetFamilyIdentifier);
-
-        $isMediaLink = $this->sqlGetAttributeAsMainMediaType->isMediaLink($assetFamilyIdentifier);
-        self::assertTrue($isMediaLink);
-    }
-
-    /** @test */
-    public function it_throws_runtine_exception_for_unknown_asset_family(): void
+    public function it_throws_a_runtime_exception_for_unknown_asset_family(): void
     {
         $assetFamilyIdentifier = 'unknown';
         $expectedRuntimeException = new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyIdentifier));
 
         self::expectExceptionObject($expectedRuntimeException);
-        $this->sqlGetAttributeAsMainMediaType->isMediaFile($assetFamilyIdentifier);
-        self::expectExceptionCode($expectedRuntimeException);
-        $this->sqlGetAttributeAsMainMediaType->isMediaLink($assetFamilyIdentifier);
+        $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode($assetFamilyIdentifier);
     }
 
     private function createAssetFamilyWithMediaFileAsMainMediaAttribute(string $assetFamilyIdentifier)
@@ -91,8 +92,11 @@ final class SqlGetAttributeAsMainMediaTypeTest extends SqlIntegrationTestCase
         );
     }
 
-    private function createAssetFamilyWithMediaLinkAsMainMediaAttribute(string $assetFamilyIdentifier)
-    {
+    private function createAssetFamilyWithMediaLinkAsMainMediaAttribute(
+        string $assetFamilyIdentifier,
+        bool $valuePerChannel,
+        bool $valuePerLocale
+    ): void {
         $this->createAssetFamilyWithMediaFileAsMainMediaAttribute($assetFamilyIdentifier);
 
         $mediaLinkIdentifier = AttributeIdentifier::fromString(sprintf('%s_url', $assetFamilyIdentifier));
@@ -104,8 +108,8 @@ final class SqlGetAttributeAsMainMediaTypeTest extends SqlIntegrationTestCase
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeIsReadOnly::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
             Prefix::createEmpty(),
             Suffix::createEmpty(),
             MediaType::fromString(MediaType::PDF)
