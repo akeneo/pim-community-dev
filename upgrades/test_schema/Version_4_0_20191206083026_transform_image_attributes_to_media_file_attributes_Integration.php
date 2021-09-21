@@ -64,9 +64,9 @@ final class Version_4_0_20191206083026_transform_image_attributes_to_media_file_
     {
         $assetFamily = self::ASSET_FAMILY;
         $this->get('database_connection')->executeQuery(<<<SQL
-INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_main_media`, `rule_templates`, `transformations`)
+INSERT INTO `akeneo_asset_manager_asset_family` (`identifier`, `labels`, `image`, `attribute_as_label`, `attribute_as_main_media`, `rule_templates`, `transformations`, `naming_convention`)
 VALUES
-	('$assetFamily', '{\"en_US\": \"azeaze\"}', NULL, NULL, NULL, '[]', '[]');
+	('$assetFamily', '{\"en_US\": \"azeaze\"}', NULL, NULL, NULL, '[]', '[]', '[]');
 SQL
         );
     }
