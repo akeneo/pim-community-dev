@@ -74,7 +74,7 @@ final class SqlGetAttributeAsMainMediaTest extends SqlIntegrationTestCase
     public function it_throws_a_runtime_exception_for_unknown_asset_family(): void
     {
         $assetFamilyIdentifier = 'unknown';
-        $expectedRuntimeException = new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyIdentifier));
+        $expectedRuntimeException = new \RuntimeException(sprintf('Asset family "%s" does not exist', $assetFamilyIdentifier));
 
         self::expectExceptionObject($expectedRuntimeException);
         $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode($assetFamilyIdentifier);

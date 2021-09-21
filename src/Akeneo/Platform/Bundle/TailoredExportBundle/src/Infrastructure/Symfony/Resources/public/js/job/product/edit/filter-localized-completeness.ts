@@ -145,12 +145,12 @@ class FilterLocalizedCompleteness extends BaseFilter {
                 },
                 assetFamily: {
                   fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
-                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier)
+                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier);
                     return {
                       identifier: assetFamily.identifier,
                       attribute_as_main_media: assetFamily.attributeAsMainMedia,
-                      attributes: assetFamily.attributes
-                    }
+                      attributes: assetFamily.attributes,
+                    };
                   },
                 },
               },

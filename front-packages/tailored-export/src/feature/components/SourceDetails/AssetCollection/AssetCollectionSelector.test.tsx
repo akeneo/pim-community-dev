@@ -160,6 +160,36 @@ test('it can select a channel when it have selected scopable main media selectio
   });
 });
 
+test('it can select a locale when main media is localizable', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="raccoons"
+      validationErrors={[]}
+      selection={{
+        type: 'media_link',
+        locale: 'en_US',
+        channel: 'ecommerce',
+        with_prefix_and_suffix: false,
+        separator: ',',
+      }}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.locale'));
+  userEvent.click(screen.getByText('Français'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'media_link',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    with_prefix_and_suffix: false,
+    separator: ',',
+  });
+});
+
 test('onSelectionChange callback should not be called if assetFamily is null', async () => {
   const onSelectionChange = jest.fn();
 
@@ -203,6 +233,13 @@ test('it can select a collection separator', async () => {
 test('it displays validation errors', async () => {
   const validationErrors: ValidationError[] = [
     {
+      messageTemplate: 'error.key.global',
+      invalidValue: '',
+      message: 'this is a global error',
+      parameters: {},
+      propertyPath: '',
+    },
+    {
       messageTemplate: 'error.key.separator',
       invalidValue: '',
       message: 'this is a separator error',
@@ -241,6 +278,7 @@ test('it displays validation errors', async () => {
     />
   );
 
+  expect(screen.getByText('error.key.global')).toBeInTheDocument();
   expect(screen.getByText('error.key.separator')).toBeInTheDocument();
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
