@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: XSLX로 맞춤화된 제품 내보내기
+batch_jobs.xlsx_tailored_product_model_export.label: XSLX로 맞춤화된 제품 모델 내보내기
+batch_jobs.csv_tailored_product_export.label: CSV로 맞춤화된 제품 내보내기
+batch_jobs.csv_tailored_product_model_export.label: CSV로 맞춤화된 제품 모델 내보내기
 akeneo.tailored_export:
   filters:
     completeness:
@@ -125,6 +128,9 @@ akeneo.tailored_export:
           title: 비어 있을 경우 기본값 사용
           label: 기본값
           placeholder: 값 정의
+        clean_html_tags:
+          title: HTML 태그 지우기
+          label: HTML 태그 자동으로 지우기
     concatenation:
       title: 연결
       preview: 미리보기

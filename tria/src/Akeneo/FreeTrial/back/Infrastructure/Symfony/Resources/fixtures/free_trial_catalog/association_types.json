@@ -1,5 +1,0 @@
-{"code":"kit","labels":{"en_US":"Kit Contents"},"is_two_way":false,"is_quantified":true}
-{"code":"PACK","labels":{"en_US":"Pack"},"is_two_way":false,"is_quantified":false}
-{"code":"SUBSTITUTION","labels":{"en_US":"Substitution","es_ES":"Sustituci\u00f3n","zh_CN":"\u4ee3\u6362"},"is_two_way":false,"is_quantified":false}
-{"code":"UPSELL","labels":{"en_US":"Upsell"},"is_two_way":false,"is_quantified":false}
-{"code":"X_SELL","labels":{"en_US":"Cross sell"},"is_two_way":false,"is_quantified":false}

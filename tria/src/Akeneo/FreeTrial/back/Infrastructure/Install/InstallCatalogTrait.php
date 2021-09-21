@@ -29,6 +29,11 @@ trait InstallCatalogTrait
         return __DIR__ . '/../Symfony/Resources/fixtures/free_trial_catalog';
     }
 
+    private function getExtractedFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/extracted';
+    }
+
     private function getJobsFixturesPath(): string
     {
         return $this->getFixturesPath() . '/jobs.yml';
@@ -36,27 +41,27 @@ trait InstallCatalogTrait
 
     private function getMediaFileFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/media_files.json';
+        return $this->getExtractedFixturesPath() . '/media_files.json';
     }
 
     private function getProductFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/products.json';
+        return $this->getExtractedFixturesPath() . '/products.json';
     }
 
     private function getProductModelFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/product_models.json';
+        return $this->getExtractedFixturesPath() . '/product_models.json';
     }
 
     private function getProductAssociationFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/product_associations.json';
+        return $this->getExtractedFixturesPath() . '/product_associations.json';
     }
 
     private function getProductModelAssociationFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/product_model_associations.json';
+        return $this->getExtractedFixturesPath() . '/product_model_associations.json';
     }
 
     private function getViewsFixturesPath(): string
@@ -71,57 +76,57 @@ trait InstallCatalogTrait
 
     private function getCategoryFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/categories.json';
+        return $this->getExtractedFixturesPath() . '/categories.json';
     }
 
     private function getAttributeFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/attributes.json';
+        return $this->getExtractedFixturesPath() . '/attributes.json';
     }
 
     private function getAttributeGroupFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/attribute_groups.json';
+        return $this->getExtractedFixturesPath() . '/attribute_groups.json';
     }
 
     private function getAttributeOptionFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/attribute_options.json';
+        return $this->getExtractedFixturesPath() . '/attribute_options.json';
     }
 
     private function getAssociationTypeFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/association_types.json';
+        return $this->getExtractedFixturesPath() . '/association_types.json';
     }
 
     private function getChannelFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/channels.json';
+        return $this->getExtractedFixturesPath() . '/channels.json';
     }
 
     private function getLocaleFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/locales.json';
+        return $this->getExtractedFixturesPath() . '/locales.json';
     }
 
     private function getCurrencyFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/currencies.json';
+        return $this->getExtractedFixturesPath() . '/currencies.json';
     }
 
     private function getFamilyFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/families.json';
+        return $this->getExtractedFixturesPath() . '/families.json';
     }
 
     private function getFamilyVariantFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/family_variants.json';
+        return $this->getExtractedFixturesPath() . '/family_variants.json';
     }
 
     private function getMeasurementFamilyFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/measurement_families.json';
+        return $this->getExtractedFixturesPath() . '/measurement_families.json';
     }
 
     private function getConnectionFixturesPath(): string
