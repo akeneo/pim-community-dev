@@ -1,5 +1,14 @@
 # 5.0.x
 
+# 5.0.48 (2021-09-21)
+
+# 5.0.47 (2021-09-20)
+
+## Bug fixes
+
+- PIM-10060: Impossible to edit products in a new tab/window from a right click on the product grid
+- PIM-10073: [Backport PIM-9671] DQI de-activation on attribute group is not fully taken into account
+
 # 5.0.46 (2021-09-03)
 
 # 5.0.45 (2021-08-26)
