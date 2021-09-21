@@ -130,7 +130,7 @@ const AssetCollectionSelector = ({
           ))}
         </Field>
         {isAssetCollectionMediaSelection(selection) && ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE === selection.type && (
-          <Field label={translate('akeneo.tailored_export.column_details.sources.selection.main_media.property')}>
+          <Field label={translate('akeneo.tailored_export.column_details.sources.selection.asset_collection.property')}>
             <SelectInput
               clearable={false}
               invalid={0 < propertyErrors.length}

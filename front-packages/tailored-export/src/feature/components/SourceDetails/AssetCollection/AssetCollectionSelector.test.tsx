@@ -124,7 +124,9 @@ test('it can select the property of a media file selection type', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.main_media.property'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.asset_collection.property')
+  );
   userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.name'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({
