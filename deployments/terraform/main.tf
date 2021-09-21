@@ -41,10 +41,25 @@ resource "null_resource" "mailgun_credential" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
-curl -s --user 'api:${self.triggers.mailgun_api_key}' \
-		https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials \
-		-F login='${self.triggers.mailgun_login_email}' \
-		-F password='${random_string.mailgun_password.result}'
+      http_response=$(curl -s https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials \
+        -o curl_mailgun_creation_response.txt \
+        -w "%%{http_code}" \
+        --user 'api:${self.triggers.mailgun_api_key}' \
+        -F login='${self.triggers.mailgun_login_email}' \
+        -F password='${self.triggers.mailgun_password}' \
+        --retry 5 \
+        --retry-delay 5 \
+        --retry-max-time 40 )
+      if [ "$${http_response}" != "200" ]; then
+          echo "!!! ERROR - Mailgun credentials creation failed - http_response: $${http_response} !!!"
+          cat curl_mailgun_creation_response.txt
+          rm curl_mailgun_creation_response.txt
+          exit 22
+      else
+          echo "Mailgun credentials creation is OK - http_response: $${http_response}"
+          cat curl_mailgun_creation_response.txt
+          rm curl_mailgun_creation_response.txt
+      fi
 EOF
 
   }
@@ -54,12 +69,26 @@ EOF
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
-# If you've changed mailgun_email, this command will fail
-# Thereby, you should first do a terraform destroy of this resource with the previous mailgun_email value
-curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
-		https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email}
+      # If you've changed mailgun_email, this command will fail
+      # Thereby, you should first do a terraform destroy of this resource with the previous mailgun_email value
+      http_response=$(curl -s -X DELETE https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email} \
+        -o curl_mailgun_deletion_response.txt \
+        -w "%%{http_code}" \
+        --user 'api:${var.mailgun_api_key}' \
+        --retry 5 \
+        --retry-delay 5 \
+        --retry-max-time 40 )
+      if [ "$${http_response}" != "200" ]; then
+          echo "!!! ERROR - Mailgun credentials destroy failed - http_response: $${http_response} !!!"
+          cat curl_mailgun_deletion_response.txt
+          rm curl_mailgun_deletion_response.txt
+          exit 22
+      else
+          echo "Mailgun credentials creation is OK - http_response: $${http_response} "
+          cat curl_mailgun_deletion_response.txt
+          rm curl_mailgun_deletion_response.txt
+      fi
 EOF
-
   }
 }
 
