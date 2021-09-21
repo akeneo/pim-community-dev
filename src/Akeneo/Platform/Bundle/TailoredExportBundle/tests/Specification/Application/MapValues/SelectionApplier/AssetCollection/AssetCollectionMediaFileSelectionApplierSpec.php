@@ -84,6 +84,26 @@ class AssetCollectionMediaFileSelectionApplierSpec extends ObjectBehavior
             ->shouldReturn('filename1;filename2');
     }
 
+    public function it_throws_invalid_argument_expection_when_selection_have_an_invalid_property(FindAssetMainMediaDataInterface $findAssetMainMediatData)
+    {
+        $invalidSelection = $this->createAssetCollectionMediaFileSelection('invalid_type');
+        $value = $this->createAssetCollectionValue();
+
+        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
+            'an_asset_family_code',
+            ['asset_code1', 'asset_code2'],
+            'ecommerce',
+            'fr_FR',
+        )->willReturn([
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
+        ]);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity'))
+            ->during('applySelection', [$invalidSelection, $value]);
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

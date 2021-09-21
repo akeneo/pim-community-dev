@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
@@ -154,9 +155,9 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                     new Choice(
                         [
                             'choices' => [
-                                'file_key',
-                                'file_path',
-                                'original_file_name',
+                                AssetCollectionMediaFileSelection::FILE_KEY_PROPERTY,
+                                AssetCollectionMediaFileSelection::FILE_PATH_PROPERTY,
+                                AssetCollectionMediaFileSelection::ORIGINAL_FILE_NAME_PROPERTY,
                             ],
                         ]
                     )

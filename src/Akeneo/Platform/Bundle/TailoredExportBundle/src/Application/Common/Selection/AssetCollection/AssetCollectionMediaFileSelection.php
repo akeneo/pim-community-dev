@@ -16,6 +16,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetColle
 final class AssetCollectionMediaFileSelection implements AssetCollectionSelectionInterface
 {
     public const TYPE = 'media_file';
+    public const FILE_KEY_PROPERTY = 'file_key';
+    public const FILE_PATH_PROPERTY = 'file_path';
+    public const ORIGINAL_FILE_NAME_PROPERTY = 'original_file_name';
+
 
     private string $separator;
     private ?string $locale;

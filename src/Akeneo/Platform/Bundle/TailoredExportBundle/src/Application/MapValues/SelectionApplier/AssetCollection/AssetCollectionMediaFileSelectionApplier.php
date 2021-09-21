@@ -45,19 +45,17 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
             $selection->getLocale()
         );
 
-
-
         $selectedData = array_map(
-            function (array $data) use ($selection) {
+            static function (array $data) use ($selection) {
                 switch ($selection->getProperty()) {
-                    case 'file_key':
+                    case AssetCollectionMediaFileSelection::FILE_KEY_PROPERTY:
                         return $data['fileKey'];
-                    case 'file_path':
+                    case AssetCollectionMediaFileSelection::FILE_PATH_PROPERTY:
                         return $data['filePath'];
-                    case 'original_file_name':
+                    case AssetCollectionMediaFileSelection::ORIGINAL_FILE_NAME_PROPERTY:
                         return $data['originalFilename'];
                     default:
-                        return null;
+                        throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');
                 }
             },
             $assetMainMediaFileData
