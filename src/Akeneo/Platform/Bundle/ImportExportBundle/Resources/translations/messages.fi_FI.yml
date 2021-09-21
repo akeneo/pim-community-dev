@@ -27,6 +27,9 @@ pim_import_export:
       error: Vienti <strong>%label%</strong> epäonnistui
       warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla
       success: Vienti <strong>%label%</strong> valmis
+      warnings:
+        xlsx_cell_conversion_error: "Ongelmia muunnettaessa saraketta \"{0}\" kohdeattribuutin tyyppiseksi (ole hyvä ja tarkista excel solun muoto)\n"
+        xlsx_cell_date_to_text_conversion_error: Solua {0} ei voida muuntaa päivämäärästä tekstiksi
     import:
       error: Vienti <strong>%label%</strong> epäonnistui
       warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla

@@ -29,6 +29,7 @@ const Content = styled.div<{$height: number; $overflow: string; shouldAnimate: b
 
 const LabelContainer = styled.div`
   height: 44px;
+  padding-right: 2px; // To manage the outline of the collapse icon being cropped in case of overflow hidden
   display: flex;
   align-items: center;
   cursor: pointer;

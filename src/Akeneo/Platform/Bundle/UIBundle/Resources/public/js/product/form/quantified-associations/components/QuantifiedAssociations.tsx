@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button, Search, useAutoFocus} from 'akeneo-design-system';
 import {
-  SearchBar,
   NoDataSection,
   NoDataTitle,
   ValidationError,
@@ -96,6 +95,9 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
@@ -152,12 +154,20 @@ const QuantifiedAssociations = ({
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
         </Helper>
       )}
-      <SearchBar
+      <Search
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
-        count={filteredCollectionWithProducts.length || 0}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-      />
+        inputRef={inputRef}
+      >
+        <Search.ResultCount>
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredCollectionWithProducts.length || 0},
+            filteredCollectionWithProducts.length || 0
+          )}
+        </Search.ResultCount>
+      </Search>
       {!isCompact && (
         <Buttons>
           <Button level="secondary" onClick={handleAdd}>

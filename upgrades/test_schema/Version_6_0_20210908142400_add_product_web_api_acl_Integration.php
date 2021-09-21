@@ -12,6 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Doctrine\Common\Cache\CacheProvider;
+use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -21,7 +23,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends TestCase
+class Version_6_0_20210908142400_add_product_web_api_acl_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -44,20 +46,20 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
         $this->createRoleWithAcls('ROLE_WITHOUT_PERMS', []);
 
         // The administrator has the ACLs by default, due to its mask on (root)
-        $this->assertRoleAcls('ROLE_ADMINISTRATOR', [
+        $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
             'pim_api_product_list' => true,
             'pim_api_product_edit' => true,
             'pim_api_product_remove' => true,
         ]);
         // This role has only its initial ACLs
-        $this->assertRoleAcls('ROLE_WITH_PERMS', [
+        $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
             'pim_api_overall_access' => true,
             'pim_api_product_list' => true,
             'pim_api_product_edit' => false,
             'pim_api_product_remove' => false,
         ]);
         // This role has no ACLs
-        $this->assertRoleAcls('ROLE_WITHOUT_PERMS', [
+        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
             'pim_api_overall_access' => false,
             'pim_api_product_list' => false,
             'pim_api_product_edit' => false,
@@ -70,21 +72,34 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
         // from symfony/security-acl.
         $this->testKernel = static::bootKernel(['debug' => false]);
 
-        // After the migration, the administrator still has all the ACLs
-        $this->assertRoleAcls('ROLE_ADMINISTRATOR', [
+        // After the migration, the new ACLs can be found in the database
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_PERMS', [
             'pim_api_product_list' => true,
             'pim_api_product_edit' => true,
             'pim_api_product_remove' => true,
         ]);
+        $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITHOUT_PERMS', [
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+
+        // After the migration, the administrator still has all the ACLs
+        $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+
         // After the migration, this role has the new ACLs while keeping the initial ones
-        $this->assertRoleAcls('ROLE_WITH_PERMS', [
+        $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
             'pim_api_overall_access' => true,
             'pim_api_product_list' => true,
             'pim_api_product_edit' => true,
             'pim_api_product_remove' => true,
         ]);
         // After the migration, this role has only the new ACLs
-        $this->assertRoleAcls('ROLE_WITHOUT_PERMS', [
+        $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
             'pim_api_overall_access' => false,
             'pim_api_product_list' => true,
             'pim_api_product_edit' => true,
@@ -129,7 +144,7 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
         $cacheClearer->clear();
     }
 
-    private function assertRoleAcls(string $role, array $acls): void
+    private function assertRoleAclsAreGranted(string $role, array $acls): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
@@ -139,6 +154,30 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
             assert(is_bool($expectedValue));
 
             $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
+            $this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
+        }
+    }
+
+    private function assertRoleAclsAreStoredInTheDatabase(string $role, array $acls): void
+    {
+        $query = <<<SQL
+SELECT acl_entries.granting
+FROM acl_entries
+LEFT JOIN acl_security_identities ON acl_security_identities.id = acl_entries.security_identity_id
+LEFT JOIN acl_classes ON acl_entries.class_id = acl_classes.id
+WHERE acl_security_identities.identifier = :role
+AND acl_classes.class_type = :acl
+SQL;
+
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        foreach ($acls as $acl => $expectedValue) {
+            assert(is_bool($expectedValue));
+
+            $isAllowed = (boolean) $connection->fetchColumn($query, [
+                'role' => $role,
+                'acl' => $acl,
+            ]);
             $this->assertEquals($expectedValue, $isAllowed);
         }
     }

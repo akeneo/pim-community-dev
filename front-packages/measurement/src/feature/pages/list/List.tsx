@@ -1,8 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {
-  SearchBar,
+  MeasurementIllustration,
+  Link,
+  Button,
+  Information,
+  Breadcrumb,
+  useBooleanState,
+} from 'akeneo-design-system';
+import {
   NoDataSection,
   NoDataTitle,
   NoDataText,
@@ -21,6 +27,7 @@ import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
 import {TablePlaceholder} from '../common/Table';
 import {Direction} from '../../model/direction';
+import {MeasurementFamilySearchBar} from "./MeasurementFamilySearchBar";
 
 const useSorting = (
   defaultColumn: string
@@ -132,11 +139,10 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
-            <SearchBar
-              placeholder={translate('measurements.search.placeholder')}
-              count={filteredMeasurementFamiliesCount}
+            <MeasurementFamilySearchBar
               searchValue={searchValue}
               onSearchChange={setSearchValue}
+              resultNumber={filteredMeasurementFamiliesCount}
             />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>

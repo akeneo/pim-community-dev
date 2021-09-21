@@ -1,11 +1,11 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {SearchBar, useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, SectionTitle, Table} from 'akeneo-design-system';
+import {Button, Search, SectionTitle, Table, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
@@ -43,6 +43,9 @@ const AttributeOptionTable = ({
   const [searchString, setSearchString] = useState('');
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
   const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const onSelectItem = useCallback(
     (optionId: number) => {
@@ -157,14 +160,21 @@ const AttributeOptionTable = ({
           {translate('pim_enrich.entity.product.module.attribute.add_option')}
         </Button>
       </SectionTitleStyled>
-
-      <SearchBar
+      <Search
+        title={translate('pim_common.search')}
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
-        count={filteredAttributeOptionsCount}
         searchValue={searchString}
         onSearchChange={onSearch}
-      />
-
+        inputRef={inputRef}
+      >
+        <Search.ResultCount>
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredAttributeOptionsCount},
+            filteredAttributeOptionsCount
+          )}
+        </Search.ResultCount>
+      </Search>
       <div data-testid="attribute-options-list" data-attribute-option-role="list">
         {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
