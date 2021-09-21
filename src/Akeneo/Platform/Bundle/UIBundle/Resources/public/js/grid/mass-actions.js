@@ -87,6 +87,14 @@ define([
         this.count = Math.max(this.count - 1, 0);
       }
 
+      switch (this.collection.inputName) {
+        case 'family-grid':
+          analytics.track('family-grid:product:item-selected', {
+            count: this.count,
+          });
+          break;
+      }
+
       this.updateView();
     },
 
@@ -97,7 +105,11 @@ define([
       this.count = this.collection.state.totalRecords;
       this.collection.trigger('backgrid:selectAll');
 
-      analytics.track('product-grid:product:all-selected');
+      switch (this.collection.inputName) {
+        case 'product-grid':
+          analytics.track('product-grid:product:all-selected');
+          break;
+      }
 
       this.updateView();
     },

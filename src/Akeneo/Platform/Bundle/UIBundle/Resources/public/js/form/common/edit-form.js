@@ -19,6 +19,7 @@ define([
   'pim/form-builder',
   'require-context',
   'oro/messenger',
+  'pim/analytics',
 ], function (
   _,
   __,
@@ -30,7 +31,8 @@ define([
   FieldManager,
   formBuilder,
   RequireContext,
-  messenger
+  messenger,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -104,6 +106,11 @@ define([
 
       this.getRoot().trigger('pim_enrich:form:render:after');
       this.getRoot().trigger('pim_enrich:form:extension:render:after');
+
+      analytics.track('form:edit:opened', {
+        code: this.code,
+        attributes: this.model.attributes,
+      });
     },
 
     /**
