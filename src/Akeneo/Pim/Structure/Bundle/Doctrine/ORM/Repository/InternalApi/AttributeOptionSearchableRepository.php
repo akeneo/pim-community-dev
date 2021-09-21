@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -18,23 +20,13 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeOptionSearchableRepository implements SearchableRepositoryInterface
 {
-    /** @var EntityManagerInterface */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
+    protected string $entityName;
+    protected AttributeRepositoryInterface $attributeRepository;
 
-    /** @var string */
-    protected $entityName;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /**
-     * @param EntityManagerInterface       $entityManager
-     * @param string                       $entityName
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
-        $entityName,
+        string $entityName,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->entityManager       = $entityManager;
@@ -81,13 +73,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param QueryBuilder $qb
-     * @param array        $options
-     *
-     * @return QueryBuilder
-     */
-    protected function applyQueryOptions(QueryBuilder $qb, array $options)
+    protected function applyQueryOptions(QueryBuilder $qb, array $options): QueryBuilder
     {
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('o.code in (:codes)');
@@ -114,12 +100,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         return $qb;
     }
 
-    /**
-     * @param string $attributeIdentifier
-     *
-     * @return bool
-     */
-    protected function isAttributeAutoSorted($attributeIdentifier)
+    protected function isAttributeAutoSorted(string $attributeIdentifier): bool
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
 
