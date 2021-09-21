@@ -231,7 +231,10 @@ const SettingsIndex = () => {
                   <IconCard
                     icon={<AttributeFileIcon />}
                     label={translate('pim_menu.item.family')}
-                    onClick={() => redirectToRoute('pim_enrich_family_index')}
+                    onClick={() => {
+                      analytics.track('settings:families:clicked');
+                      redirectToRoute('pim_enrich_family_index');
+                    }}
                     content={getPluralizedTranslation(
                       translate,
                       'pim_settings.count.families',
