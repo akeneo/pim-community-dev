@@ -3,6 +3,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(svg|css)$': '<rootDir>/tests/fileMock.ts',
   },
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/tests/setupTests.ts'],
   testMatch: ['<rootDir>/src/**/?(*.)+(unit).ts?(x)'],
   collectCoverage: true,
