@@ -1993,9 +1993,6 @@ jobs:
               name: Deploy PR environment
               command: make deploy-instance
           - run:
-              name: Create PIM default admin user
-              command: APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create --admin -n -- admin admin admin@example.com John Doe en_US
-          - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
