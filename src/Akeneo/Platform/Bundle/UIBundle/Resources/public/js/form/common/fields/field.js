@@ -15,7 +15,8 @@ define([
   'pim/common/property',
   'pim/common/tab',
   'pim/template/form/common/fields/field',
-], function ($, _, __, BaseForm, propertyAccessor, Tab, template) {
+  'pim/analytics',
+], function ($, _, __, BaseForm, propertyAccessor, Tab, template, analytics) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     containerTemplate: _.template(template),
@@ -225,6 +226,11 @@ define([
     updateModel(value) {
       const data = this.getFormData();
       propertyAccessor.updateProperty(data, this.fieldName, value);
+
+      analytics.track('common:form:value-changed', {
+        code: this.code,
+        name: this.fieldName,
+      });
 
       this.setData(data);
     },
