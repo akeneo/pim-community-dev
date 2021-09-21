@@ -1,5 +1,6 @@
 module.exports = {
   clearMocks: true,
+  testEnvironment: 'jsdom',
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
