@@ -288,11 +288,13 @@ define([
         if (!actionConfiguration || actionConfiguration[action.name] !== false) {
           action.run();
 
-          analytics.track('grid:item:selected', {
-            name: this.name,
-            entityHint: action.datagrid.entityHint,
-            attributes: action.model.attributes,
-          });
+          if (action.datagrid && action.datagrid.entityHint && action.model && action.model.attributes) {
+            analytics.track('grid:item:selected', {
+              name: this.name,
+              entityHint: action.datagrid.entityHint,
+              attributes: action.model.attributes,
+            });
+          }
         }
       }
     },
