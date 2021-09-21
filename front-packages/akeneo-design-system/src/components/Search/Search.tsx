@@ -11,7 +11,6 @@ const Container = styled.div<{sticky?: number} & AkeneoThemedProps>`
   border-bottom: 1px solid ${getColor('grey', 100)};
   background: ${getColor('white')};
   height: 44px;
-  flex: 1;
   box-sizing: border-box;
 
   :focus-within {

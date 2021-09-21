@@ -1,0 +1,11 @@
+free_trial:
+  menu:
+    assets: Assetit
+    entities: Viitetiedot
+    proposals: Ehdotukset
+    sso: SAML-pohjainen kertakirjautuminen
+    rules: Säännöt
+    feature_ee_only: Tämä ominaisuus on vain Enterprise Edition versiossa
+  activity:
+    dashboard:
+      projects: Projektit

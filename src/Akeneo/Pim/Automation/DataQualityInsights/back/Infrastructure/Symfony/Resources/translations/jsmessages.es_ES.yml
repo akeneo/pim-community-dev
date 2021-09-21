@@ -150,7 +150,5 @@ akeneo_data_quality_insights:
     filter_value:
       good: Buena
       to_improve: Para mejorar
-      yes: true
-      no: false
 pim_title:
   akeneo_data_quality_insights_dashboard: Información sobre la calidad de los datos

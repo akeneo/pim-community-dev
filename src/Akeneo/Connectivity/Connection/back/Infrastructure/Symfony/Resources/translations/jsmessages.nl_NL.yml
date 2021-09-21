@@ -61,12 +61,42 @@ akeneo_connectivity.connection:
       scroll_to_top: Naar boven scrollen
     apps:
       wizard:
+        title: Verbinden
+        action:
+          confirm: Bevestigen
+          cancel: Annuleren
+          previous: Vorige
+          next: Volgende
+          allow_and_next: Toestaan en volgende
         progress:
+          authorizations: Autorisaties
           permissions: Machtigingen
+          well_done: Goed gedaan!
+        authorize:
+          title: 'App {{ app_name }} moet'
+          no_scope_title: 'De app {{ app_name }} wil toegang tot uw PIM.'
+          no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          helper: Voor meer informatie over het autoriseren van apps,
+          helper_link: kunt u in de sectie Hulp kijken.
       title: Verbinden
       activate:
         flash:
           error: Sorry, er is een fout opgetreden tijdens het verbinden van de app.
+      scope:
+        type:
+          view: '{{ entities }} bekijken'
+          edit: '{{ entities }} bekijken en bewerken'
+          delete: '{{ entities }} bekijken, bewerken en verwijderen'
+        entities:
+          catalog_structure: attributen, attribuutgroepen, families en familievariaties
+          attribute_options: Attribuutopties
+          categories: categorieën
+          channel_localization: talen en valuta's
+          channel_settings: kanalen
+          association_types: associatietypes
+          products: producten en productmodellen
+      error:
+        sub_text: Neem contact op met de ontwikkelaar of met de helpdesk van Akeneo
       constraint:
         client_id:
           not_blank: De klant_id is vereist

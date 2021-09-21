@@ -44,9 +44,11 @@ const mergeAttributeOptionsEvaluation = (attributeOptions: AttributeOption[], ev
     const optionIndex = attributeOptions.findIndex(
       (attributeOption: AttributeOption) => attributeOption.code === optionCode
     );
-    const attributeOptionToUpdate: AttributeOption = attributeOptions[optionIndex];
-    attributeOptionToUpdate.toImprove = optionEvaluation.toImprove > 0;
-    attributeOptions[optionIndex] = attributeOptionToUpdate;
+    const attributeOptionToUpdate: AttributeOption | null = attributeOptions[optionIndex] ?? null;
+    if (attributeOptionToUpdate) {
+      attributeOptionToUpdate.toImprove = optionEvaluation.toImprove > 0;
+      attributeOptions[optionIndex] = attributeOptionToUpdate;
+    }
   });
 
   return attributeOptions;
