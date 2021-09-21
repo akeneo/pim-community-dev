@@ -3,7 +3,6 @@ import {Breadcrumb, getFontSize, Pagination} from 'akeneo-design-system';
 import {
   PageContent,
   PageHeader,
-  SearchBar,
   useDebounceCallback,
   NotificationLevel,
   useNotify,
@@ -15,6 +14,7 @@ import styled from 'styled-components';
 import {removeAssociationType} from '@akeneo-pim-community/settings-ui/src/infrastructure/removers/associationTypeRemover';
 import {
   AssociationTypesDataGrid,
+  AssociationTypesSearchBar,
   useAssociationTypes,
   NoAssociationTypes,
   AssociationType,
@@ -22,10 +22,6 @@ import {
 } from '@akeneo-pim-community/settings-ui';
 
 const DatagridState = require('pim/datagrid/state');
-
-const AssociationTypesSearchBar = styled(SearchBar)`
-  margin: 10px 0 20px;
-`;
 
 const CreatePimView = styled(PimView)`
   .AknButton {
@@ -145,11 +141,9 @@ const AssociationTypesIndex = () => {
           ) : (
             <>
               <AssociationTypesSearchBar
-                count={associationTypes.total}
                 searchValue={searchString}
-                placeholder={translate('pim_common.search')}
                 onSearchChange={onSearch}
-                className={'association-type-grid-search'}
+                resultNumber={associationTypes.total}
               />
               {associationTypes.total > 0 && (
                 <Pagination currentPage={currentPage} totalItems={associationTypes.total} followPage={followPage} />
