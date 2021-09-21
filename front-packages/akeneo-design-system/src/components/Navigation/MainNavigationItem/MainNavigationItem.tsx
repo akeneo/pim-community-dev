@@ -94,11 +94,16 @@ type MainNavigationItemProps = Override<
      * Url to go to if the button is clicked.
      */
     href?: string;
+
+    /**
+     * Item code
+     */
+    code?: string;
   }
 >;
 
 const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
-  ({children, href, icon, active = false, disabled = false, onClick, ...rest}, forwardedRef) => {
+  ({children, href, icon, code, active = false, disabled = false, onClick, ...rest}, forwardedRef) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (disabled) {
         event.preventDefault();
@@ -125,6 +130,7 @@ const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationIte
 
     return (
       <Link
+        id={code}
         ref={forwardedRef}
         href={disabled ? undefined : href}
         active={active}

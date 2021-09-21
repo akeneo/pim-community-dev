@@ -79,11 +79,12 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
         <MenuContainer>
           {entries.map(entry => (
             <MainNavigationItem
+              id={entry.code}
               key={entry.code}
               active={entry.code === activeEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
-              onClick={(event) => handleFollowEntry(event, entry)}
+              onClick={event => handleFollowEntry(event, entry)}
               href={`#${router.generate(entry.route)}`}
               role="menuitem"
               data-testid="pim-main-menu-item"
@@ -94,7 +95,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               {entry.disabled && freeTrialEnabled && (
                 <LockIconContainer data-testid="locked-entry">
                   <StyledTag tint="blue">
-                    <StyledLockIcon size={16} color={theme.color.blue100}/>
+                    <StyledLockIcon size={16} color={theme.color.blue100} />
                   </StyledTag>
                 </LockIconContainer>
               )}
