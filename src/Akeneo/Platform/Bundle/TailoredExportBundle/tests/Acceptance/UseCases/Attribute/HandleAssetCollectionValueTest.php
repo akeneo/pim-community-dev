@@ -71,11 +71,23 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'Packshot 0|[packshot_1]']
             ],
-            'it selects the asset main media when main media is a media file' => [
+            'it selects the asset main media when main media is a media file with property equals to file_key' => [
                 'operations' => [],
-                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection'),
+                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'file_key'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'test/packshot_0.jpg']
+            ],
+            'it selects the asset main media when main media is a media file with property equals to file_path' => [
+                'operations' => [],
+                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'file_path'),
+                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
+                'expected' => [self::TARGET_NAME => 'test/packshot_0.jpg']
+            ],
+            'it selects the asset main media when main media is a media file with property equals to original_file_name' => [
+                'operations' => [],
+                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'original_file_name'),
+                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
+                'expected' => [self::TARGET_NAME => 'packshot_0.jpg']
             ],
             'it selects the asset main media when main media is a media link' => [
                 'operations' => [],

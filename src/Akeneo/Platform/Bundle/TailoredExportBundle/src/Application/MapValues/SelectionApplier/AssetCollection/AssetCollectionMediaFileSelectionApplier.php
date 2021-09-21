@@ -45,7 +45,23 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
             $selection->getLocale()
         );
 
-        $selectedData = array_map(static fn (array $data) => $data['fileKey'], $assetMainMediaFileData);
+
+
+        $selectedData = array_map(
+            function (array $data) use ($selection) {
+                switch ($selection->getProperty()) {
+                    case 'file_key':
+                        return $data['fileKey'];
+                    case 'file_path':
+                        return $data['filePath'];
+                    case 'original_file_name':
+                        return $data['originalFilename'];
+                    default:
+                        return null;
+                }
+            },
+            $assetMainMediaFileData
+        );
 
         return implode($selection->getSeparator(), $selectedData);
     }

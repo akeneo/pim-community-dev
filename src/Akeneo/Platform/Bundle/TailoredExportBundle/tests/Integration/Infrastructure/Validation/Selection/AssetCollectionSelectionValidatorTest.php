@@ -90,13 +90,33 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
                 ],
                 'my_media_file_asset_collection',
             ],
-            'a media file selection' => [
+            'a media file selection with property equals to file_key' => [
                 [
                     'type' => 'media_file',
                     'separator' => '|',
                     'locale' => null,
                     'channel' => null,
                     'property' => 'file_key'
+                ],
+                'my_media_file_asset_collection',
+            ],
+            'a media file selection with property equals to file_path' => [
+                [
+                    'type' => 'media_file',
+                    'separator' => '|',
+                    'locale' => null,
+                    'channel' => null,
+                    'property' => 'file_path'
+                ],
+                'my_media_file_asset_collection',
+            ],
+            'a media file selection with property equals to original_file_name' => [
+                [
+                    'type' => 'media_file',
+                    'separator' => '|',
+                    'locale' => null,
+                    'channel' => null,
+                    'property' => 'original_file_name'
                 ],
                 'my_media_file_asset_collection',
             ],
@@ -166,7 +186,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
                 'my_media_file_asset_collection',
             ],
             'media file with invalid property' => [
-                'This value should be equal to "file_key".',
+                'The value you selected is not a valid choice.',
                 '[property]',
                 [
                     'type' => 'media_file',

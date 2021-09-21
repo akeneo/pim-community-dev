@@ -142,7 +142,8 @@ class SelectionHydrator
                     $selectionConfiguration['channel'],
                     $selectionConfiguration['locale'],
                     $attribute->properties()['reference_data_name'],
-                    $attribute->code()
+                    $attribute->code(),
+                    $selectionConfiguration['property']
                 );
             case AssetCollectionMediaLinkSelection::TYPE:
                 return new AssetCollectionMediaLinkSelection(

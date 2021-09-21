@@ -150,7 +150,17 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
 
         $propertyViolations = $validator->validate($selection, new Collection([
             'fields' => [
-                'property' => new Required([new EqualTo('file_key')])
+                'property' => new Required([
+                    new Choice(
+                        [
+                            'choices' => [
+                                'file_key',
+                                'file_path',
+                                'original_file_name',
+                            ],
+                        ]
+                    )
+                ])
             ],
             'allowExtraFields' => true
         ]));

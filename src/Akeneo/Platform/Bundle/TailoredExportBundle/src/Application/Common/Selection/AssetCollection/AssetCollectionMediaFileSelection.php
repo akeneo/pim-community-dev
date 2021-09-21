@@ -22,19 +22,22 @@ final class AssetCollectionMediaFileSelection implements AssetCollectionSelectio
     private ?string $channel;
     private string $assetFamilyCode;
     private string $attributeCode;
+    private string $property;
 
     public function __construct(
         string $separator,
         ?string $channel,
         ?string $locale,
         string $assetFamilyCode,
-        string $attributeCode
+        string $attributeCode,
+        string $property
     ) {
         $this->separator = $separator;
         $this->channel = $channel;
         $this->locale = $locale;
         $this->assetFamilyCode = $assetFamilyCode;
         $this->attributeCode = $attributeCode;
+        $this->property = $property;
     }
 
     public function getSeparator(): string
@@ -60,5 +63,10 @@ final class AssetCollectionMediaFileSelection implements AssetCollectionSelectio
     public function getAttributeCode(): string
     {
         return $this->attributeCode;
+    }
+
+    public function getProperty(): string
+    {
+        return $this->property;
     }
 }
