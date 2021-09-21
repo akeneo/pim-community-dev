@@ -32,15 +32,8 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
-orbs:
-  infracost: infracost/infracost@0.8.1
-
 jobs:
   checkout:
-    parameters:
-        is_pull_request:
-            type: boolean
-            default: false
     docker:
       - image: alpine/git
     steps:
@@ -49,11 +42,13 @@ jobs:
          name: Install cUrl
          command: apk --no-cache add curl
       - run:
-          name: Install yq
-          command: |
-            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-            mv yq_linux_386 /usr/local/bin/yq
-            chmod +x /usr/local/bin/yq
+            name: Install yq
+            command: |
+                wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+                mv yq_linux_386 /usr/local/bin/yq
+                echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+                sha1sum -c /tmp/checksum
+                chmod +x /usr/local/bin/yq
       - run:
           name: Remove MySQL port translation for EE (see BH-664)
           command: yq delete --inplace docker-compose.yml services.mysql.ports
@@ -64,7 +59,9 @@ jobs:
           name: Remove MySQL port translation for TRIA
           command: yq delete --inplace tria/docker-compose.yml services.mysql.ports
       - when:
-            condition: << parameters.is_pull_request >>
+            condition:
+                not:
+                    equal: [master, << pipeline.git.branch >>]
             steps:
                 - run:
                       name: Update composer.json if same branch exists in CE for EE
@@ -83,7 +80,7 @@ jobs:
                       command: |
                           curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
                               sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" tria/composer.json || \
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Tria file."
       - persist_to_workspace:
           root: ~/
           paths:
@@ -120,19 +117,46 @@ jobs:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
+            name: Creating cache key for PHP Docker image
+            command: |
+                find Dockerfile docker/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/php-docker-image.hash
+                date +%F >> ~/php-docker-image.hash
+      - restore_cache:
+            name: Restore PHP docker image cache
+            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+      - run:
           name: Build the latest Docker images
           command: |
-              make php-image-dev
-              docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+              ls php-pim-image.tar && docker load -i php-pim-image.tar
+              ls php-pim-image.tar || make php-image-dev
+              ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+      - save_cache:
+            name: Save PHP docker image cache
+            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+            paths:
+                - php-pim-image.tar
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
+      - run:
+            name: Creating cache key for JS and PHP dependencies
+            command: |
+                cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+      - restore_cache:
+            name: Restore cache - yarn and Cypress dependency cache
+            keys:
+                - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - restore_cache:
+            name: Restore cache - composer dependency cache
+            keys:
+                - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
-              sudo chown -R 1000:1000 ~/.cache/yarn
+              sudo chown -R 1000:1000 ~/.cache/
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -147,25 +171,29 @@ jobs:
       - run:
           name: Create hash for front packages
           command: |
-            find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-            date +%F >> ~/akeneo-design-system.hash
+              find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+              find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+              find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+              find front-packages/tailored-export -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
+              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash
       - run:
-          name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
+          name: Set front package directories owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages front-packages/
       - restore_cache:
-          name: Restore DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+            name: Restore front package DSM cache
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+      - restore_cache:
+            name: Restore front package measurement cache
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+      - restore_cache:
+            name: Restore front package Shared cache
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+      - restore_cache:
+            name: Restore front package Tailored Export cache
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
       - run:
-          name: Set DSM directory owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
-      - run:
-          name: Build DSM
-          command: ls vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib 1> /dev/null 2>&1 || make dsm
-      - save_cache:
-          name: Save DSM cache
-          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
-          paths:
-            - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+          name: Set front packages directories owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
       - run:
           name: Build front-packages
           command: make front-packages
@@ -173,18 +201,44 @@ jobs:
           name: Build Javascript
           command: make javascript-dev
       - run:
-            name: Change owner on project dir after installing when there is no cache
-            command: sudo chmod -R 777 ../project
+            name: Change owner on project dir to have the right to cache the data
+            command: sudo chmod -R 777 ../project ~/.cache ~/.composer vendor/akeneo/pim-community-dev/front-packages/ front-packages/
+      - save_cache:
+            name: Save fontend dependency cache
+            paths:
+                - ~/.cache
+            key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+      - save_cache:
+            name: Save backend dependency cache
+            paths:
+                - ~/.composer
+            key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+      - save_cache:
+            name: Save front package DSM cache
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/
+      - save_cache:
+            name: Save front package measurement cache
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/measurement/
+      - save_cache:
+            name: Save front package Shared cache
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/front-packages/shared/
+      - save_cache:
+            name: Save front package Tailored Export cache
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            paths:
+                - front-packages/tailored-export/
       - persist_to_workspace:
           root: ~/
           paths:
             - project
 
   build_srnt_prod:
-      parameters:
-          is_pull_request:
-              type: boolean
-              default: false
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -196,8 +250,7 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - connector_bigcommerce_checkout_steps:
-                is_pull_request: << parameters.is_pull_request >>
+          - connector_bigcommerce_checkout_steps
           - set_gcloud_config_dev
           - run:
               name: Define value for next steps
@@ -229,6 +282,10 @@ jobs:
               name: Push the Serenity Edition prod image on docker registry
               command: make push-php-image-prod
           - run:
+              name: Push Terraform modules to GCS
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}/
+          - run:
               name: Persist env vars for next jobs
               command: |
                 echo export TYPE=${TYPE} > persisted_env_vars
@@ -244,25 +301,29 @@ jobs:
               paths:
                 - project/persisted_env_vars
 
+  ##################
+  # Build          #
+  ##################
+
   build_grth:
-    parameters:
-      is_pull_request:
-        type: boolean
-        default: false
     environment:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    working_directory: ~/project
     steps:
     - attach_workspace:
         at: ~/
     - add_ssh_keys:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - connector_bigcommerce_checkout_steps
     - set_gcloud_config_dev
     - install_yq
     - when:
-        condition: << parameters.is_pull_request >>
+        condition:
+            not:
+                equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on PR
@@ -279,7 +340,7 @@ jobs:
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
     - when:
         condition:
-          not: << parameters.is_pull_request >>
+            equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on master
@@ -322,8 +383,6 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps:
-        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Growth Edition prod image
         command: make php-image-prod
@@ -334,25 +393,6 @@ jobs:
         name: Push Terraform modules to GCS
         command: |
           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
-    # ===================================
-    # TO BE REMOVED AFTER COMMIT IN PROD
-    # ===================================
-    - run:
-        name: Prepare the Terraform module with the upgrade script
-        command: |
-          mkdir -p deployments/terraform/deployments
-          cp -r deployments/automation deployments/terraform/deployments
-          cp -r deployments/bin deployments/terraform/deployments
-          cp -r deployments/config deployments/terraform/deployments
-          cp -r deployments/share deployments/terraform/deployments
-    - run:
-        name: Push Terraform modules to GCS
-        command: |
-          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
-          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
-    # ===================================
-    # TO BE REMOVED AFTER COMMIT IN PROD
-    # ===================================
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -370,24 +410,24 @@ jobs:
             - project
 
   build_tria:
-    parameters:
-      is_pull_request:
-        type: boolean
-        default: false
     environment:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    working_directory: ~/project
     steps:
     - attach_workspace:
         at: ~/
     - add_ssh_keys:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - connector_bigcommerce_checkout_steps
     - set_gcloud_config_dev
     - install_yq
     - when:
-        condition: << parameters.is_pull_request >>
+        condition:
+            not:
+                equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on PR
@@ -404,7 +444,7 @@ jobs:
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
     - when:
         condition:
-          not: << parameters.is_pull_request >>
+            equal: [master, << pipeline.git.branch >>]
         steps:
           - run:
               name: Get last good CE build revision on master
@@ -447,8 +487,6 @@ jobs:
     - run:
         name: Prepare chart values
         command: make prepare-chart-default-values
-    - connector_bigcommerce_checkout_steps:
-        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Free Trial Edition prod image
         command: make php-image-prod
@@ -990,9 +1028,6 @@ jobs:
   ##################
   ui_sanity_checks:
       parameters:
-          is_pull_request:
-              type: boolean
-              default: false
           SOURCE_PFID:
                 type: string
                 default: ""
@@ -1008,19 +1043,22 @@ jobs:
                 command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
           - run:
                 name: Setup tests results folder and log folder
-                command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+                command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: |
                     sudo chown -R 1000:1000 ../project
                     sudo chown -R 1000:1000 ~/.composer
                     sudo chown -R 1000:1000 ~/.cache/yarn
+                    sudo chown -R 1000:1000 ~/.cache/Cypress
           - run:
                 name: Build the latest Docker images
                 command: |
                     make php-image-dev
           - when:
-                condition: << parameters.is_pull_request >>
+                condition:
+                    not:
+                        equal: [master, << pipeline.git.branch >>]
                 steps:
                     - run:
                           name: Update composer.json if same branch exists in CE
@@ -1361,8 +1399,8 @@ jobs:
           - run:
                 name: Pull Terraform modules from last release
                 command: |
-                    rm -r ~/project/deployments
-                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition/${LATEST_RELEASE}/terraform/deployments/ ~/project/
+                    rm -r ./deployments
+                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${LATEST_RELEASE}/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1425,7 +1463,7 @@ jobs:
               name: Pull Terraform modules from last release
               command: |
                   rm -r ./deployments
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ .
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${LATEST_RELEASE}/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1478,6 +1516,10 @@ jobs:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
+          - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
@@ -1519,6 +1561,10 @@ jobs:
           - run:
                 name: Check that upgrader pod ran
                 command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Check if upgrader failed
+              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              when: on_fail
           - run:
                 name: Prepare infrastructure artifacts
                 command: make prepare-infrastructure-artifacts
@@ -1614,10 +1660,10 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}
           - run:
-              name: PIM_CONTEXT=deployment make release
+              name: Tag the Docker image with the definitive tag
               command: |
                 OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
@@ -1634,28 +1680,12 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition-dev/${RELEASE_NAME}
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition/${RELEASE_NAME}
           - run:
-              name: Make the release
-              command: OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
-          # ===================================
-          # TO BE REMOVED AFTER COMMIT IN PROD
-          # ===================================
-          - run:
-              name: Prepare the Terraform module with the upgrade script
+              name: Tag the Docker image with the definitive tag
               command: |
-                mkdir -p deployments/terraform/deployments
-                cp -r deployments/automation deployments/terraform/deployments
-          - run:
-              name: Push Terraform modules to GCS
-              command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/terraform/deployments/terraform
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME
-          # ===================================
-          # TO BE REMOVED AFTER COMMIT IN PROD
-          # ===================================
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   release_tria:
       environment:
@@ -1986,16 +2016,10 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    mkdir -p ~/.ssh
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
                 name: Delete environments
                 no_output_timeout: 30m
-                command: |
-                    make delete_environments_hourly
+                command:
+                    PIM_CONTEXT=deployment make delete_environments_hourly
 
   delete_expired_uptime_check:
       environment:
@@ -2007,13 +2031,22 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
+                name: Delete expired uptime checks
+                command:
+                    PIM_CONTEXT=deployment make delete_expired_uptime_check
+
+  remove_unused_resources:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
           - run:
-                name: Delete expired uptime-check
-                command: |
-                    make delete_expired_uptime_check
+                name: Remove unused resources
+                command:
+                    PIM_CONTEXT=deployment make remove_unused_resources
 
   zdd_compliancy_diff:
       parameters:
@@ -2030,7 +2063,12 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+                    VERSIONS_FILE=/tmp/zdd_versions.env
+                    touch ${VERSIONS_FILE}
+                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+          - store_artifacts:
+              path: /tmp/zdd_versions.env
+              destination: versions
           - persist_to_workspace:
               root: ~/
               paths:
@@ -2053,75 +2091,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
-
-  remove_unused_gcloud_bucket:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud bucket
-                command: |
-                    make remove_unused_gcloud_bucket
-
-  remove_unused_kube_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused kube disk(s)
-                command: |
-                    make remove_unused_kube_disk
-
-  remove_unused_gcloud_disk:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Remove unused gcloud disk(s)
-                command: |
-                    make remove_unused_gcloud_disk
-
-  remove_unused_gcloud_pubsub:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: Prepare the environment
-                command: |
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-          - run:
-                name: Delete expired gcloud pubsub
-                command: |
-                    make remove_unused_gcloud_pubsub
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
 
 workflows:
   pull_request:
@@ -2133,7 +2103,6 @@ workflows:
                         ignore:
                             - "master"
           - checkout:
-                is_pull_request: true
                 requires:
                     - ready_to_build?
           - test_helm_generated_k8s_files_srnt:
@@ -2148,16 +2117,6 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
-          - infracost/infracost:
-                name: infracost_srnt
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/
-                path: ~/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_srnt
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
@@ -2175,7 +2134,6 @@ workflows:
                 requires:
                     - checkout
           - build_grth:
-                is_pull_request: true
                 requires:
                     - test_helm_generated_k8s_files_grth
           - test_cronjobs_existence_grth:
@@ -2184,16 +2142,6 @@ workflows:
           - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
-          - infracost/infracost:
-                name: infracost_grth
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/grth
-                path: ~/grth/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_grth
           - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
@@ -2211,7 +2159,6 @@ workflows:
                 requires:
                     - checkout
           - build_tria:
-                is_pull_request: true
                 requires:
                     - test_helm_generated_k8s_files_tria
           - test_cronjobs_existence_tria:
@@ -2220,16 +2167,6 @@ workflows:
           - test_deploy_tria:
                 requires:
                     - test_cronjobs_existence_tria
-          - infracost/infracost:
-                name: infracost_tria
-                pre-steps:
-                    - attach_workspace:
-                        at: ~/tria
-                path: ~/tria/upgrades.tfplan.json
-                show_skipped: "true"
-                usage_file: ~/project/.circleci/infracost-usage.yaml
-                requires:
-                    - test_deploy_tria
           - deploy_pr_tria_environment?:
                 type: approval
                 requires:
@@ -2598,7 +2535,6 @@ workflows:
                     - build_srnt_prod
           - ui_sanity_checks:
                 name: sanity_checks-<< matrix.SOURCE_PFID >>
-                is_pull_request: true
                 matrix:
                     parameters:
                         SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
@@ -2618,19 +2554,10 @@ workflows:
          - delete_environments_hourly:
                requires:
                    - checkout
+         - remove_unused_resources:
+               requires:
+                   - checkout
          - delete_expired_uptime_check:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_bucket:
-               requires:
-                   - checkout
-         - remove_unused_kube_disk:
-               requires:
-                   - checkout
-         - remove_unused_gcloud_disk:
-               requires:
-                   - remove_unused_kube_disk
-         - remove_unused_gcloud_pubsub:
                requires:
                    - checkout
 
@@ -2649,7 +2576,7 @@ workflows:
             requires:
                 - ready_to_build?
         - zdd_compliancy_checker:
-            name: "[<< matrix.TYPE >>] Check ZDD << matrix.CONTEXT >> compliancy"
+            name: "[<< matrix.TYPE >>] [<< matrix.CONTEXT >>] Check ZDD compliancy"
             matrix:
                 parameters:
                     TYPE: ["grth", "srnt"]
@@ -2708,14 +2635,12 @@ commands:
           command: |
             wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
+            echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+            sha1sum -c /tmp/checksum
             sudo chmod +x /usr/local/bin/yq
 
   connector_bigcommerce_checkout_steps:
       description: "Checkout big commerce connector repository"
-      parameters:
-          is_pull_request:
-              type: boolean
-              default: true
       steps:
           - run:
                 name: BIG COMMERCE CONNECTOR - Ensure to use the ssh key of akeneo-circle-ci account
@@ -2723,7 +2648,9 @@ commands:
                     ssh-add -D
                     ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
           - when:
-              condition: << parameters.is_pull_request >>
+              condition:
+                  not:
+                      equal: [master, << pipeline.git.branch >>]
               steps:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
@@ -2737,7 +2664,7 @@ commands:
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - when:
               condition:
-                  not: << parameters.is_pull_request >>
+                  equal: [master, << pipeline.git.branch >>]
               steps:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production

@@ -52,3 +52,11 @@ batch_jobs:
     send_for_approval: Lähetä hyväksyttäväksi
 pim_title:
   pimee_enrich_locale_edit: Lokaatio | Muokkaa
+category.permissions:
+  view.label: Tuotteiden katselu sallittu
+  edit.label: Tuotteiden muokkaaminen sallittu
+  own.label: Tuotteiden omistaminen sallittu
+  own.help: Tarkasta, julkaise, poista julkaisu, kategorisoi ja liitä tuotteita
+  no_access_to_products: Sinulle ei ole käyttöoikeuksia tuotteisiin yhdessäkään kategoriapuussa. Ota yhteyttä pääkäyttäjään
+  apply_on_children.label: Tee muutokset myös alatasolle
+  apply_on_children.help: Alatasojen nykyiset käyttöoikeudet säilytetään

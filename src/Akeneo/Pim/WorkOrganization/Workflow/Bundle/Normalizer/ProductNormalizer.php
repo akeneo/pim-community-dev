@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -44,7 +44,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     protected AuthorizationCheckerInterface $authorizationChecker;
     protected NormalizerInterface $chainedNormalizer;
     protected ProductRepositoryInterface $productRepository;
-    protected MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator;
+    protected MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator;
     protected MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
 
     public function __construct(
@@ -56,7 +56,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer = $normalizer;

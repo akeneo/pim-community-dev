@@ -7,9 +7,11 @@ import {ParentConfigurator} from './Parent/ParentConfigurator';
 import {FamilyVariantConfigurator} from './FamilyVariant/FamilyVariantConfigurator';
 import {FamilyConfigurator} from './Family/FamilyConfigurator';
 import {CategoriesConfigurator} from './Categories/CategoriesConfigurator';
+import {CodeConfigurator} from './Code/CodeConfigurator';
 import {ErrorBoundary} from './error';
 
 const configurators: {[propertyName: string]: FunctionComponent<PropertyConfiguratorProps>} = {
+  code: CodeConfigurator,
   enabled: EnabledConfigurator,
   parent: ParentConfigurator,
   groups: GroupsConfigurator,

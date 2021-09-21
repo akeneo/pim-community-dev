@@ -142,3 +142,8 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetEditableCategoryCodes'
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Component\Query\GetRawValues:
+        class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\SqlGetRawValues
+        arguments:
+            - '@database_connection'

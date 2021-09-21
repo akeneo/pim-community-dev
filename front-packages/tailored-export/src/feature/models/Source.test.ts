@@ -21,6 +21,7 @@ import {getDefaultSimpleSelectSource} from '../components/SourceDetails/SimpleSe
 import {getDefaultTextSource} from '../components/SourceDetails/Text/model';
 import {getDefaultSimpleAssociationTypeSource} from '../components/SourceDetails/SimpleAssociationType/model';
 import {getDefaultQuantifiedAssociationTypeSource} from '../components/SourceDetails/QuantifiedAssociationType/model';
+import {getDefaultCodeSource} from '../components/SourceDetails/Code/model';
 
 const getAttribute = (type: string): Attribute => ({
   code: 'nice_attribute',
@@ -40,6 +41,7 @@ test('it can get the default property source by property name', () => {
   expect(getDefaultPropertySource('enabled')).toEqual(getDefaultEnabledSource());
   expect(getDefaultPropertySource('parent')).toEqual(getDefaultParentSource());
   expect(getDefaultPropertySource('groups')).toEqual(getDefaultGroupsSource());
+  expect(getDefaultPropertySource('code')).toEqual(getDefaultCodeSource());
   expect(getDefaultPropertySource('categories')).toEqual(getDefaultCategoriesSource());
   expect(getDefaultPropertySource('family')).toEqual(getDefaultFamilySource());
   expect(getDefaultPropertySource('family_variant')).toEqual(getDefaultFamilyVariantSource());

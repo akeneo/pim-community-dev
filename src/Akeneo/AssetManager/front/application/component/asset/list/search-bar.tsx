@@ -1,11 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import {getColor} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import React, {useEffect, useRef, useState} from 'react';
+import {Search, useAutoFocus} from 'akeneo-design-system';
+import {useDebounce, useTranslate} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import SearchField from 'akeneoassetmanager/application/component/asset/list/search-bar/search-field';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
@@ -26,25 +24,6 @@ type SearchProps = {
   onCompletenessChange?: (value: CompletenessValue) => void;
 };
 
-const Container = styled.div`
-  display: flex;
-  padding: 10px 0;
-  border-bottom: 1px solid ${getColor('grey', 100)};
-  align-items: center;
-`;
-
-const Separator = styled.div`
-  border-left: 1px solid ${getColor('grey', 100)};
-  margin: 0 10px;
-  margin-right: 5px;
-  height: 20px;
-
-  &:first-child,
-  &:last-child {
-    margin: 0;
-  }
-`;
-
 const setLocaleIfNotExists = (
   onContextChange: (context: Context) => void,
   channels: Channel[],
@@ -57,15 +36,6 @@ const setLocaleIfNotExists = (
   }
 };
 
-const ResultCounter = styled.div`
-  white-space: nowrap;
-  color: ${getColor('brand', 100)};
-  margin-left: 10px;
-  line-height: 16px;
-  text-transform: none;
-`;
-
-//TODO Use DSM Search
 const SearchBar = ({
   searchValue,
   onSearchChange,
@@ -79,19 +49,27 @@ const SearchBar = ({
   const translate = useTranslate();
   const channels = useChannels(dataProvider.channelFetcher);
   setLocaleIfNotExists(onContextChange, channels, context.channel, context.locale);
+  const [userSearch, setUserSearch] = useState<string>(searchValue);
+  const debouncedUserSearch = useDebounce(userSearch, 250);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
+
+  useEffect(() => {
+    onSearchChange(debouncedUserSearch);
+  }, [debouncedUserSearch]);
 
   return (
-    <Container data-container="search-bar">
-      <SearchField
-        value={searchValue}
-        onChange={(newSearchValue: string) => {
-          onSearchChange(newSearchValue);
-        }}
-      />
-      <ResultCounter>
+    <Search
+      searchValue={userSearch}
+      onSearchChange={setUserSearch}
+      placeholder={translate('pim_asset_manager.asset.grid.search')}
+      inputRef={inputRef}
+    >
+      <Search.ResultCount>
         {translate('pim_asset_manager.result_counter', {count: resultCount ?? 0}, resultCount ?? 0)}
-      </ResultCounter>
-      <Separator />
+      </Search.ResultCount>
+      <Search.Separator />
       {onCompletenessChange !== undefined && completenessValue !== undefined && (
         <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
       )}
@@ -110,7 +88,7 @@ const SearchBar = ({
           onContextChange({...context, locale: code});
         }}
       />
-    </Container>
+    </Search>
   );
 };
 

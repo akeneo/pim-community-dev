@@ -4,6 +4,11 @@ services:
     arguments:
       - !tagged_iterator akeneo.tailored_export.selection_applier
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Code\CodeSelectionApplier:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Categories\CategoriesCodeSelectionApplier:
     public: true
     tags:

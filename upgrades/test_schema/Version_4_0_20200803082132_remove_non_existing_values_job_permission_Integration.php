@@ -57,7 +57,7 @@ final class Version_4_0_20200803082132_remove_non_existing_values_job_permission
     {
         $migration = (new \ReflectionClass($this))->getShortName();
         $migration = str_replace('_Integration', '', $migration);
-        $migration = str_replace('Version', '', $migration);
+        $migration = str_replace('Version', 'Pim\Upgrade\Schema\Version', $migration);
 
         return $migration;
     }

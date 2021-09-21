@@ -66,6 +66,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
+                    ->atPath($violation->getPropertyPath())
                     ->addViolation();
             }
 

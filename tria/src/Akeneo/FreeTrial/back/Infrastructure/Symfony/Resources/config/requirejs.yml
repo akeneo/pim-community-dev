@@ -16,3 +16,4 @@ config:
     pim/free-trial/user/create-button: akeneofreetrial/js/user/empty-create-user-button.ts
     pim/free-trial/menu/usergroups: akeneofreetrial/js/menu/user-groups-menu-item.ts
     pim/free-trial/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
+    pim/free-trial/messaging: akeneofreetrial/js/messaging/crisp-messaging.ts

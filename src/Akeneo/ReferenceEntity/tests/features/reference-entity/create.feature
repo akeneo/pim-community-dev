@@ -31,11 +31,11 @@ Feature: Create a reference entity
 
   @acceptance-back
   Scenario: Cannot create more reference entities than the limit
-    Given 100 random reference entities
+    Given 200 random reference entities
     When the user creates a reference entity "color" with:
       | labels                                 | image |
       | {"en_US": "Color", "fr_FR": "Couleur"} | null  |
-    Then there should be a validation error with message 'You cannot create the reference entity "Color" because you have reached the limit of 100 reference entities'
+    Then there should be a validation error with message 'You cannot create the reference entity "Color" because you have reached the limit of 200 reference entities'
 
   @acceptance-back
   Scenario: An attribute as label is created alongside the reference entity

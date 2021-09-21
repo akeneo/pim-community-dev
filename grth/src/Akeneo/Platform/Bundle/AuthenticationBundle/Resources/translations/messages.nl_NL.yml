@@ -1,0 +1,3 @@
+akeneo_authentication:
+  sso:
+    unknown_user_error: U hebt geen toegangsrechten voor deze applicatie. Neem contact op met uw beheerder.

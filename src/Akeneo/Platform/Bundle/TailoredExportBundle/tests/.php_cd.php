@@ -49,6 +49,7 @@ $rules = [
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',

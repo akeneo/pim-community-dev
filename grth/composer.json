@@ -38,7 +38,9 @@
     "require": {
         "ext-json": "*",
         "akeneo/pim-community-dev": "dev-master",
+        "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
+        "phpseclib/phpseclib": "2.0.31",
         "superbalist/flysystem-google-storage": "7.2.2",
         "grpc/grpc": "1.30.0"
     },
