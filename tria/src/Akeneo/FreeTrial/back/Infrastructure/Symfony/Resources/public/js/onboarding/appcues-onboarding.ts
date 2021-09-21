@@ -20,7 +20,8 @@ interface EventOptions {
   entityHint?: string,
   attributes?: {
     identifier?: string,
-    code?: string
+    code?: string,
+    label?: string,
   },
   url?: string,
 }
@@ -82,6 +83,10 @@ const AppcuesOnboarding: PimOnboarding = {
               appcues.track('Product "Elka Peacock Armchair" selected');
             }
 
+            if (eventOptions.attributes && eventOptions.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
+              appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
+            }
+
             appcues.track('Product selected');
           }
 
@@ -91,6 +96,14 @@ const AppcuesOnboarding: PimOnboarding = {
             }
 
             appcues.track('Export profile selected');
+          }
+
+          if (eventOptions && eventOptions.name === 'family-grid' && eventOptions.entityHint && eventOptions.entityHint === 'family') {
+            if (eventOptions.attributes && eventOptions.attributes.label === 'Tires') {
+              appcues.track('Family "Tires" selected');
+            }
+
+            appcues.track('Family selected');
           }
           break;
         case 'product-grid:completeness:opened':
@@ -105,6 +118,10 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute group "Content / Copy" selected');
           }
 
+          if (eventOptions && eventOptions.name === 'specifications') {
+            appcues.track('Attribute group "Specifications / Product Team" selected');
+          }
+
           appcues.track('Attribute group selected in the product grid');
           break;
         case 'product:attribute-value:updated':
@@ -114,6 +131,14 @@ const AppcuesOnboarding: PimOnboarding = {
 
           if (eventOptions && eventOptions.attribute === 'description') {
             appcues.track('Attribute "Description" filled in product edit form');
+          }
+
+          if (eventOptions && eventOptions.attribute === 'winter_designed_tire' && eventOptions.value) {
+            appcues.track('Attribute "Winter designed Tire" changed to Yes value');
+          }
+
+          if (eventOptions && eventOptions.attribute === 'meta_title') {
+            appcues.track('Attribute "Meta title" filled in product edit form');
           }
 
           appcues.track('Attribute filled in product edit form');
@@ -128,6 +153,13 @@ const AppcuesOnboarding: PimOnboarding = {
           }
 
           appcues.track('Product saved');
+          break;
+        case 'product-model:form:saved':
+          if (eventOptions && eventOptions.code === 'BFGoodrich - Advantage T/A Sport') {
+            appcues.track('Product model "BFGoodrich - Advantage T/A Sport" saved');
+          }
+
+          appcues.track('Product model saved');
           break;
         case 'product-grid:product:all-selected':
           appcues.track('All products are selected');
@@ -184,6 +216,9 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'settings:attributes:clicked':
           appcues.track('Settings: "Attributes" clicked');
+          break;
+        case 'settings:families:clicked':
+          appcues.track('Settings: "Families" clicked');
           break;
         case 'attribute:create:type-selected':
           if (eventOptions && eventOptions.name) {
@@ -242,6 +277,19 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'job-instance:export:launched':
           if (eventOptions && eventOptions.url && eventOptions.url.includes('furniture_amazon')) {
             appcues.track('Export profile "Furniture products for Amazon (weekly)" launched');
+          }
+          break;
+        case 'product-model:form:variant-selected':
+          appcues.track('Variant selected from product model');
+          break;
+        case 'family:edit:variant-selected':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-family-edit-form-variant') {
+            appcues.track('Tab "Variants" selected in family edit form');
+          }
+          break;
+        case 'family:variant:attribute-set':
+          if (eventOptions && eventOptions.name && eventOptions.name.includes('meta_title')) {
+            appcues.track('Attribute "Meta title" added as family variant');
           }
           break;
       }
