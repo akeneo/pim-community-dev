@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
@@ -34,6 +35,17 @@ final class AttributeOptionSpec extends ObjectBehavior
         $this->getLabels()->shouldReturn([
             'en_US' => 'An attribute option',
             'fr_FR' => 'Une option',
+        ]);
+    }
+
+    public function it_normalizes_itself(): void
+    {
+        $this->normalize()->shouldReturn([
+            'code' => 'an_attribute_option_code',
+            'labels' => [
+                'en_US' => 'An attribute option',
+                'fr_FR' => 'Une option',
+            ]
         ]);
     }
 }
