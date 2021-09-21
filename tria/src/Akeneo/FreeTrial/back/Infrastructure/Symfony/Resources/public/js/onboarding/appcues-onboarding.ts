@@ -6,6 +6,7 @@ const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
 
 interface EventOptions {
+  code?: string,
   name?: string,
   attribute?: string,
   gridName?: string,
@@ -13,7 +14,9 @@ interface EventOptions {
   value?: string,
   column?: string,
   localeCode?: string,
-  context?: string
+  context?: string,
+  count?: number,
+  checked?: boolean,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -117,10 +120,18 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.name === 'product-edit') {
             appcues.track('Button "Bulk actions" in product grid clicked');
           }
+
+          if (eventOptions && eventOptions.name === 'family-edit') {
+            appcues.track('Button "Bulk actions" in family grid clicked');
+          }
           break;
         case 'grid:mass-edit:item-chosen':
           if (eventOptions && eventOptions.name === 'add_attribute_value') {
             appcues.track('Bulk action "Add attribute values" selected');
+          }
+
+          if (eventOptions && eventOptions.name === 'set_requirements') {
+            appcues.track('Bulk action "Set attributes requirements" selected');
           }
           break;
         case 'grid:mass-edit:action-step':
@@ -153,6 +164,39 @@ const AppcuesOnboarding: PimOnboarding = {
 
           if (eventOptions && eventOptions.context && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
             appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
+          break;
+        case 'settings:attributes:clicked':
+          appcues.track('Settings: "Attributes" clicked');
+          break;
+        case 'attribute:create:type-selected':
+          if (eventOptions && eventOptions.name) {
+            appcues.track('Attribute of type "' + eventOptions.name +'" created');
+          }
+          break;
+        case 'common:form:value-changed':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.name) {
+            appcues.track('On attribute form, the value of field "' + eventOptions.name +'" changed');
+          }
+          break;
+        case 'translation:form:value-changed':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.localeCode) {
+            appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode +'" changed');
+          }
+          break;
+        case 'common:form:saved':
+          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create')) {
+            appcues.track('Create attribute form saved');
+          }
+          break;
+        case 'family-grid:product:item-selected':
+          if (eventOptions && eventOptions.count && eventOptions.count === 3) {
+            appcues.track('3 families selected in the grid');
+          }
+          break;
+        case 'grid:mass-edit:requirements-checked':
+          if (eventOptions && eventOptions.code && eventOptions.code === 'marketplaces' && eventOptions.checked) {
+            appcues.track('The information is required for Marketplaces channel');
           }
           break;
       }
