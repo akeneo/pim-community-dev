@@ -3,6 +3,11 @@ pimee_permissions_entities_get_categories:
   defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction }
   methods: [ GET ]
 
+pimee_permissions_entities_set_categories:
+  path: /rest/permissions/category
+  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostCategoriesPermissionsAction }
+  methods: [ POST ]
+
 pimee_permissions_entities_get_attribute_groups:
   path: /rest/permissions/attribute-group
   defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction }

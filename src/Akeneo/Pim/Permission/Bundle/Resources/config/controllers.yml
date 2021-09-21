@@ -150,6 +150,12 @@ services:
             - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels'
             - '@router'
 
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostCategoriesPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction:
         public: true
         arguments:
