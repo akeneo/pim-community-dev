@@ -110,13 +110,13 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
                 ],
                 'my_media_file_asset_collection',
             ],
-            'a media file selection with property equals to original_file_name' => [
+            'a media file selection with property equals to original_filename' => [
                 [
                     'type' => 'media_file',
                     'separator' => '|',
                     'locale' => null,
                     'channel' => null,
-                    'property' => 'original_file_name'
+                    'property' => 'original_filename'
                 ],
                 'my_media_file_asset_collection',
             ],

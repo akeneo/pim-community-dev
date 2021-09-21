@@ -106,6 +106,36 @@ test('it can select a media file selection type', async () => {
   });
 });
 
+test('it can select the property of a media file selection type', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <AssetCollectionSelector
+      assetFamilyCode="wallpapers"
+      validationErrors={[]}
+      selection={{
+        type: 'media_file',
+        locale: null,
+        channel: null,
+        property: 'file_key',
+        separator: ',',
+      }}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.main_media.property'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.name'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'media_file',
+    locale: null,
+    channel: null,
+    property: 'original_filename',
+    separator: ',',
+  });
+});
+
 test('it can select a media link selection type', async () => {
   const onSelectionChange = jest.fn();
 
@@ -267,6 +297,13 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[channel]',
     },
+    {
+      messageTemplate: 'error.key.property',
+      invalidValue: '',
+      message: 'this is a property error',
+      parameters: {},
+      propertyPath: '[property]',
+    },
   ];
 
   await renderWithProviders(
@@ -283,5 +320,6 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
   expect(screen.getByText('error.key.channel')).toBeInTheDocument();
+  expect(screen.getByText('error.key.property')).toBeInTheDocument();
   expect(screen.getByRole('alert')).toBeInTheDocument();
 });

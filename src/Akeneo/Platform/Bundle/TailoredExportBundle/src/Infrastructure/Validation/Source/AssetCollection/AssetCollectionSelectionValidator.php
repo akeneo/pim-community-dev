@@ -155,7 +155,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                             'choices' => [
                                 AssetCollectionMediaFileSelection::FILE_KEY_PROPERTY,
                                 AssetCollectionMediaFileSelection::FILE_PATH_PROPERTY,
-                                AssetCollectionMediaFileSelection::ORIGINAL_FILE_NAME_PROPERTY,
+                                AssetCollectionMediaFileSelection::ORIGINAL_FILENAME_PROPERTY,
                             ],
                         ]
                     )

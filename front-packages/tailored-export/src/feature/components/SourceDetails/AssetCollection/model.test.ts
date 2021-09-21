@@ -7,6 +7,7 @@ import {
   getDefaultAssetCollectionSelection,
   isDefaultAssetCollectionSelection,
   getDefaultAssetCollectionMediaSelection,
+  isValidAssetCollectionMediaFileSelectionPropertyType,
 } from './model';
 import {AssetFamily} from '../../../models';
 import {Channel} from '@akeneo-pim-community/shared';
@@ -17,6 +18,16 @@ test('it validates that something is a collection separator', function () {
 
 test('it invalidates something when it is not a collection separator', function () {
   expect(isCollectionSeparator('blblb')).toBe(false);
+});
+
+test('it validates that something is a asset collection media file selection property type', function () {
+  expect(isValidAssetCollectionMediaFileSelectionPropertyType('file_key')).toBe(true);
+  expect(isValidAssetCollectionMediaFileSelectionPropertyType('file_path')).toBe(true);
+  expect(isValidAssetCollectionMediaFileSelectionPropertyType('original_filename')).toBe(true);
+});
+
+test('it invalidates something when it is not a asset collection media file selection property type', function () {
+  expect(isCollectionSeparator('fille_passe')).toBe(false);
 });
 
 describe('it validates that something is an asset collection selection', () => {

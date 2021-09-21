@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection;
 
+use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
@@ -23,10 +24,14 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterface
 {
     private FindAssetMainMediaDataInterface $findAssetMainMediaData;
+    private MediaPathGeneratorInterface $mediaPathGenerator;
 
-    public function __construct(FindAssetMainMediaDataInterface $findAssetMainMediaData)
-    {
+    public function __construct(
+        FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        MediaPathGeneratorInterface $mediaPathGenerator
+    ) {
         $this->findAssetMainMediaData = $findAssetMainMediaData;
+        $this->mediaPathGenerator = $mediaPathGenerator;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -46,13 +51,19 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
         );
 
         $selectedData = array_map(
-            static function (array $data) use ($selection) {
+            function (array $data) use ($selection, $value) {
                 switch ($selection->getProperty()) {
                     case AssetCollectionMediaFileSelection::FILE_KEY_PROPERTY:
                         return $data['fileKey'];
                     case AssetCollectionMediaFileSelection::FILE_PATH_PROPERTY:
-                        return $data['filePath'];
-                    case AssetCollectionMediaFileSelection::ORIGINAL_FILE_NAME_PROPERTY:
+                        $exportDirectory = $this->mediaPathGenerator->generate(
+                            $value->getEntityIdentifier(),
+                            $selection->getAttributeCode(),
+                            $value->getChannelReference(),
+                            $value->getLocaleReference()
+                        );
+                        return sprintf('%s%s', $exportDirectory, $data['originalFilename']);
+                    case AssetCollectionMediaFileSelection::ORIGINAL_FILENAME_PROPERTY:
                         return $data['originalFilename'];
                     default:
                         throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');

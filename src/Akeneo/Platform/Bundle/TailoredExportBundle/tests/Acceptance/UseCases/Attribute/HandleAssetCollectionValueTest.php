@@ -81,11 +81,11 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'file_path'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
-                'expected' => [self::TARGET_NAME => 'test/packshot_0.jpg']
+                'expected' => [self::TARGET_NAME => 'files/my_desk/my_asset_collection/ecommerce/packshot_0.jpg']
             ],
-            'it selects the original file name of asset main media file' => [
+            'it selects the original filename of asset main media file' => [
                 'operations' => [],
-                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'original_file_name'),
+                'selection' => new AssetCollectionMediaFileSelection(';', 'ecommerce', 'en_US', 'packshot', 'my_asset_collection', 'original_filename'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'packshot_0.jpg']
             ],

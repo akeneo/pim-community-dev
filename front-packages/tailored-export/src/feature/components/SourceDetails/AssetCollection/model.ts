@@ -16,7 +16,17 @@ type CollectionSeparator = keyof typeof availableSeparators;
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && separator in availableSeparators;
 
-const propertyTypes = ['file_key', 'file_path', 'original_file_name'] as const;
+const ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE = 'media_file' as const;
+const ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE = 'media_link' as const;
+
+const propertyTypes = ['file_key', 'file_path', 'original_filename'];
+type AssetCollectionMediaFileSelectionPropertyType = typeof propertyTypes[number];
+
+const isValidAssetCollectionMediaFileSelectionPropertyType = (
+  type: unknown
+): type is AssetCollectionMediaFileSelectionPropertyType => {
+  return 'string' === typeof type && propertyTypes.includes(type);
+};
 
 type AssetCollectionCodeSelection = {
   type: 'code';
@@ -30,15 +40,15 @@ type AssetCollectionLabelSelection = {
 };
 
 type AssetCollectionMediaFileSelection = {
-  type: 'media_file';
+  type: typeof ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE;
   locale: LocaleReference;
   channel: ChannelReference;
-  property: typeof propertyTypes[number];
+  property: AssetCollectionMediaFileSelectionPropertyType;
   separator: CollectionSeparator;
 };
 
 type AssetCollectionMediaLinkSelection = {
-  type: 'media_link';
+  type: typeof ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE;
   locale: LocaleReference;
   channel: ChannelReference;
   with_prefix_and_suffix: boolean;
@@ -170,4 +180,7 @@ export {
   getDefaultAssetCollectionMediaSelection,
   isCollectionSeparator,
   availableSeparators,
+  ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE,
+  ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE,
+  isValidAssetCollectionMediaFileSelectionPropertyType,
 };

@@ -18,7 +18,7 @@ final class AssetCollectionMediaFileSelection implements AssetCollectionSelectio
     public const TYPE = 'media_file';
     public const FILE_KEY_PROPERTY = 'file_key';
     public const FILE_PATH_PROPERTY = 'file_path';
-    public const ORIGINAL_FILE_NAME_PROPERTY = 'original_file_name';
+    public const ORIGINAL_FILENAME_PROPERTY = 'original_filename';
 
 
     private string $separator;
