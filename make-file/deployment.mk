@@ -233,6 +233,7 @@ endif
 prepare-chart-default-values:
 	yq d -i $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml 'pim.jobs'
 	yq m -i -x $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml $(PIM_SRC_DIR)/deployments/terraform/pim/values-$(TYPE).yaml
+	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: get_mysql_parameters_disk
 get_mysql_parameters_disk:
