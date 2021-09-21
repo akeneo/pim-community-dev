@@ -24,7 +24,9 @@ class AttributeTypeRegistry
      */
     public function register($alias, AttributeTypeInterface $type)
     {
-        $this->types[$alias] = $type;
+        if ($type->getName() !== '') {
+            $this->types[$alias] = $type;
+        }
 
         return $this;
     }
