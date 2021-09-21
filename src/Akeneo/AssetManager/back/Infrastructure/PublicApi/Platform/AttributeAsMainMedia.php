@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+
 class AttributeAsMainMedia
 {
     private string $type;
@@ -28,12 +31,12 @@ class AttributeAsMainMedia
 
     public function isMediaFile(): bool
     {
-        return $this->type === 'media_file';
+        return $this->type === MediaFileAttribute::ATTRIBUTE_TYPE;
     }
 
     public function isMediaLink(): bool
     {
-        return $this->type === 'media_link';
+        return $this->type === MediaLinkAttribute::ATTRIBUTE_TYPE;
     }
 
     public function isScopable(): bool

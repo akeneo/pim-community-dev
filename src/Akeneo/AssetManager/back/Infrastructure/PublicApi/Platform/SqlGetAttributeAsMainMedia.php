@@ -46,7 +46,7 @@ SQL;
         )->fetch();
 
         if (empty($result)) {
-            throw new \RuntimeException(sprintf('Asset family "%s" does not exists', $assetFamilyCode));
+            throw new \RuntimeException(sprintf('Asset family "%s" does not exist', $assetFamilyCode));
         }
 
         $this->attributeAsMainMediaTypes[$assetFamilyCode] = new AttributeAsMainMedia(

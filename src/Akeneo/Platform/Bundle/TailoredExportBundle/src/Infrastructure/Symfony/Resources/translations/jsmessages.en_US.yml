@@ -173,7 +173,7 @@ akeneo.tailored_export:
       channel_should_not_be_blank: The main media attribute of asset family {{ asset_family_code }} now has a value per channel. Please either create it or choose a different source.
       locale_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per locale anymore. Please either create it or choose a different source.
       channel_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per channel anymore. Please either create it or choose a different source.
-      invalid_type: The main media attribute type of asset family {{ asset_family_code }} have changed. Please either create it or choose a different source.
+      invalid_type: The main media attribute type of asset family {{ asset_family_code }} has changed. Please either create it or choose a different source.
     measurement:
       family:
         does_not_exist: The measurement family {{ measurement_family_code }} does not exist.
