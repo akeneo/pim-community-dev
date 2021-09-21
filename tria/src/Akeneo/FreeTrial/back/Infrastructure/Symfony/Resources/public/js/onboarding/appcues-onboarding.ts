@@ -95,8 +95,8 @@ const AppcuesOnboarding: PimOnboarding = {
           }
 
           if (eventOptions && eventOptions.name === 'export-profile-grid' && eventOptions.entityHint && eventOptions.entityHint === 'export profile') {
-            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
-              appcues.track('Export profile "Furniture products for Amazon (weekly)" selected');
+            if (eventOptions.attributes && eventOptions.attributes.code === 'printers_amazon') {
+              appcues.track('Export profile "Printers for Amazon (weekly)" selected');
             }
 
             appcues.track('Export profile selected');
@@ -129,23 +129,13 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Attribute group selected in the product grid');
           break;
         case 'product:attribute-value:updated':
-          if (eventOptions && eventOptions.attribute === 'designer' && eventOptions.value === 'studio_plumen') {
-            appcues.track('Attribute "Designer" filled with "Studio Plumen"');
-          }
-
-          if (eventOptions && eventOptions.attribute === 'description') {
-            appcues.track('Attribute "Description" filled in product edit form');
-          }
-
           if (eventOptions && eventOptions.attribute === 'winter_designed_tire' && eventOptions.value) {
             appcues.track('Attribute "Winter designed Tire" changed to Yes value');
           }
 
-          if (eventOptions && eventOptions.attribute === 'meta_title') {
-            appcues.track('Attribute "Meta title" filled in product edit form');
+          if (eventOptions && eventOptions.attribute) {
+            appcues.track('Attribute "' + eventOptions.attribute + '" filled in product edit form');
           }
-
-          appcues.track('Attribute filled in product edit form');
           break;
         case 'product:form:saved':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
@@ -256,8 +246,8 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'form:edit:opened':
           if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit') {
-            if (eventOptions.attributes && eventOptions.attributes.code === 'furniture_amazon') {
-              appcues.track('Edit export profile "Furniture products for Amazon (weekly)"');
+            if (eventOptions.attributes && eventOptions.attributes.code === 'printers_amazon') {
+              appcues.track('Edit export profile "Printers for Amazon (weekly)"');
             }
 
             appcues.track('Edit export profile');
@@ -274,13 +264,13 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'job-instance:form-edit:saved':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'furniture_amazon') {
-            appcues.track('Edit export profile "Furniture products for Amazon (weekly)" saved');
+          if (eventOptions && eventOptions.code && eventOptions.code === 'printers_amazon') {
+            appcues.track('Edit export profile "Printers for Amazon (weekly)" saved');
           }
           break;
         case 'job-instance:export:launched':
-          if (eventOptions && eventOptions.url && eventOptions.url.includes('furniture_amazon')) {
-            appcues.track('Export profile "Furniture products for Amazon (weekly)" launched');
+          if (eventOptions && eventOptions.url && eventOptions.url.includes('printers_amazon')) {
+            appcues.track('Export profile "Printers for Amazon (weekly)" launched');
           }
           break;
         case 'product-model:form:variant-selected':
