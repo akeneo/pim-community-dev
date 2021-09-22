@@ -4,11 +4,12 @@ namespace Pim\Behat\Decorator;
 
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Simple abstract class to ease the decorator pattern on Mink elements
  */
-abstract class ElementDecorator
+abstract class ElementDecorator implements PageObject
 {
     /** @var mixed The decorated element */
     protected $element;
@@ -48,7 +49,7 @@ abstract class ElementDecorator
 
         return $element;
     }
-    
+
     /**
      * Get the <body> NodeElement
      *

@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -86,7 +87,7 @@ class CommandContext extends PimContext
     /**
      * @return FixturesContext
      */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

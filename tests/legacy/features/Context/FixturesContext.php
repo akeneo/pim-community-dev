@@ -14,9 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -44,11 +42,13 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A context for creating entities
@@ -59,7 +59,7 @@ use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
  */
 class FixturesContext extends BaseFixturesContext
 {
-    protected $locales = [
+    protected array $locales = [
         'english'    => 'en_US',
         'french'     => 'fr_FR',
         'german'     => 'de_DE',
@@ -2055,14 +2055,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return array
-     */
-    public function getEntities()
-    {
-        return $this->entities;
-    }
-
-    /**
      * We cannot use the product saver to update the product as it automatically updates the product updatedAt date.
      *
      * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
@@ -2579,10 +2571,7 @@ class FixturesContext extends BaseFixturesContext
         return $this->getContainer()->get('pim_reference_data.registry');
     }
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->getMainContext()->getContainer();
     }
@@ -2602,7 +2591,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): ObjectManager
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
