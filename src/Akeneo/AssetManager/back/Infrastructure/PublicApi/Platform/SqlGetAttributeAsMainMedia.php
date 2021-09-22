@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Doctrine\DBAL\Connection;
 
 class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
@@ -34,7 +36,7 @@ class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
 
         $sql = <<<SQL
 SELECT
-    attribute.attribute_type, attribute.value_per_channel, attribute.value_per_locale
+    attribute.attribute_type, attribute.value_per_channel, attribute.value_per_locale, attribute.additional_properties
 FROM akeneo_asset_manager_asset_family family
     JOIN akeneo_asset_manager_attribute attribute ON family.attribute_as_main_media = attribute.identifier
 WHERE family.identifier = :assetFamilyIdentifier
@@ -49,11 +51,25 @@ SQL;
             throw new \RuntimeException(sprintf('Asset family "%s" does not exist', $assetFamilyCode));
         }
 
-        $this->attributeAsMainMediaTypes[$assetFamilyCode] = new AttributeAsMainMedia(
-            $result['attribute_type'],
-            (bool) $result['value_per_channel'],
-            (bool) $result['value_per_locale']
-        );
+        switch ($result['attribute_type']) {
+            case MediaFileAttribute::ATTRIBUTE_TYPE:
+                $this->attributeAsMainMediaTypes[$assetFamilyCode] = new MediaFileAsMainMedia(
+                    (bool) $result['value_per_channel'],
+                    (bool) $result['value_per_locale'],
+                );
+            break;
+            case MediaLinkAttribute::ATTRIBUTE_TYPE:
+                $additionalProperties = json_decode($result['additional_properties'], true);
+                $this->attributeAsMainMediaTypes[$assetFamilyCode] = new MediaLinkAsMainMedia(
+                    (bool) $result['value_per_channel'],
+                    (bool) $result['value_per_locale'],
+                    $additionalProperties['prefix'] ?? '',
+                    $additionalProperties['suffix'] ?? '',
+                );
+            break;
+            default:
+                throw new \InvalidArgumentException('Unsupported attribute type as main media');
+        }
 
         return $this->attributeAsMainMediaTypes[$assetFamilyCode];
     }

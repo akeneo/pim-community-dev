@@ -18,15 +18,21 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\MediaLinkAsMainMedia;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterface
 {
     private FindAssetMainMediaDataInterface $findAssetMainMediaData;
+    private FindAssetMainMediaAttributeInterface $findAssetMainMediaAttribute;
 
-    public function __construct(FindAssetMainMediaDataInterface $findAssetMainMediaData)
-    {
+    public function __construct(
+        FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        FindAssetMainMediaAttributeInterface $findAssetMainMediaAttribute
+    ) {
         $this->findAssetMainMediaData = $findAssetMainMediaData;
+        $this->findAssetMainMediaAttribute = $findAssetMainMediaAttribute;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -46,12 +52,7 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
         );
 
         if ($selection->withPrefixAndSuffix()) {
-            $prefix = '';
-            $suffix = '';
-            $assetMainMediaLinkData = array_map(
-                static fn (string $mediaLinkData) => sprintf('%s%s%s', $prefix, $mediaLinkData, $suffix),
-                $assetMainMediaLinkData
-            );
+            $assetMainMediaLinkData = $this->applyPrefixAndSuffix($selection, $assetMainMediaLinkData);
         }
 
         return implode($selection->getSeparator(), $assetMainMediaLinkData);
@@ -61,5 +62,18 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
     {
         return $selection instanceof AssetCollectionMediaLinkSelection
             && $value instanceof AssetCollectionValue;
+    }
+
+    private function applyPrefixAndSuffix(AssetCollectionMediaLinkSelection $selection, array $assetMainMediaLinkData): array
+    {
+        $attributeAsMainMedia = $this->findAssetMainMediaAttribute->forAssetFamily($selection->getAssetFamilyCode());
+        if (!$attributeAsMainMedia instanceof MediaLinkAsMainMedia) {
+            throw new \InvalidArgumentException('Asset main media is not a media link');
+        }
+
+        return array_map(
+            static fn (string $mediaLinkData) => sprintf('%s%s%s', $attributeAsMainMedia->getPrefix(), $mediaLinkData, $attributeAsMainMedia->getSuffix()),
+            $assetMainMediaLinkData
+        );
     }
 }
