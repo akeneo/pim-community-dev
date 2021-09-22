@@ -29,6 +29,8 @@ final class ViewInstaller implements FixtureInstaller
 
     public function install(): void
     {
+        $this->ensureFirstUserExists();
+
         $query = <<<SQL
 INSERT INTO pim_datagrid_view (owner_id, label, type, datagrid_alias, columns, filters) 
 VALUES (1, :label, 'public', :datagrid_alias, :columns, :filters)
@@ -111,5 +113,18 @@ SQL;
         }
 
         return $realCategoryId;
+    }
+
+    private function ensureFirstUserExists(): void
+    {
+        $query = <<<SQL
+SELECT 1 FROM oro_user WHERE id = 1
+SQL;
+
+        $userExists = $this->dbConnection->executeQuery($query)->fetchColumn();
+
+        if (false === boolval($userExists)) {
+            throw new \Exception('Installing views needs at least one user');
+        }
     }
 }

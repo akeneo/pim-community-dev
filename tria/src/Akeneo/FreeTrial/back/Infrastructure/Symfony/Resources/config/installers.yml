@@ -176,12 +176,6 @@ services:
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'connection' }
 
-    Akeneo\FreeTrial\Infrastructure\Install\Installer\UserInstaller:
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: 'free_trial.fixture_installer', alias: 'user' }
-
     Akeneo\FreeTrial\Infrastructure\Install\Installer\ViewInstaller:
         arguments:
             - '@database_connection'

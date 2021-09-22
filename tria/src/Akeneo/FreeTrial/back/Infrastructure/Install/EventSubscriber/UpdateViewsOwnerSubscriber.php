@@ -47,7 +47,6 @@ final class UpdateViewsOwnerSubscriber implements EventSubscriberInterface
         }
 
         $this->isUserCreation = $user->getId() === null;
-        $this->log('isUserCreation: '.($this->isUserCreation ? 'true' : 'false'));
     }
 
     public function updateViewsOwner(GenericEvent $event): void
