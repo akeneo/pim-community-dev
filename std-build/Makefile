@@ -105,7 +105,7 @@ endif
 
 .PHONY: up
 up:
-	docker-compose up -d --remove-orphan
+	docker-compose up -d --remove-orphans
 
 .PHONY: down
 down:

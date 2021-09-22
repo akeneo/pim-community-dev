@@ -1,0 +1,72 @@
+services:
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\AssociationContext:
+        - '@pim_catalog.repository.product_without_permission'
+        - '@pim_catalog.updater.product'
+        - '@pim_catalog.saver.product_without_permission'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\CatalogConfigurationContext:
+        - '@akeneo_integration_tests.catalogs_enterprise'
+        - '@akeneo_integration_tests.loader.fixtures_loader'
+        - '%kernel.project_dir%'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\DataFixturesContext:
+        - '@test.service_container'
+        - '@messenger.transport.business_event'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExecuteRuleContext:
+        - '@doctrine.dbal.default_connection'
+        - '@pim_catalog.repository.product_without_permission'
+        - '@pim_catalog.repository.product_model_without_permission'
+        - '@akeneo_rule_engine.runner.chained'
+        - '@akeneo_rule_engine.repository.rule_definition'
+        - '@pimee_catalog_rule.builder.product'
+        - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+        - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+        - '@pim_catalog.repository.family_variant'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExportRuleContext:
+        - '@akeneo_rule_engine.repository.rule_definition'
+        - '@pimee_catalog_rule.processor.normalization.rule_definition'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ImportRuleContext:
+        - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+        - '@akeneo_rule_engine.repository.rule_definition'
+        - '@akeneo_rule_engine.saver.rule_definition'
+        - '@pimee_catalog_rule.processor.normalization.rule_definition'
+        - '@pim_connector.doctrine.cache_clearer'
+        - '%kernel.project_dir%'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\VersionContext:
+        - '@pim_catalog.repository.product_without_permission'
+        - '@pim_versioning.repository.version'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\MassActionContext:
+        - '@akeneo_integration_tests.launcher.job_launcher'
+        - '@akeneo_batch.launcher.simple_job_launcher'
+        - '@akeneo_batch.job.job_instance_repository'
+        - '@pim_user.provider.user'
+        - '@pim_catalog.repository.product'
+        - '@pim_catalog.repository.product_model'
+        - '@pim_connector.doctrine.cache_clearer'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ImportProfilesContext:
+        - '@akeneo_batch.job.job_registry'
+        - '@akeneo_batch.job_parameters_factory'
+        - '@akeneo_batch.job.job_parameters_validator'
+        - '@akeneo_batch.saver.job_instance'
+        - '@akeneo_integration_tests.launcher.job_launcher'
+        - '@akeneo_batch.launcher.simple_job_launcher'
+        - '@akeneo_batch.job.job_instance_repository'
+        - '@pim_user.provider.user'
+        - '@pim_connector.doctrine.cache_clearer'
+        - '%kernel.project_dir%'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\JobContext:
+        - '@akeneo_integration_tests.launcher.job_launcher'
+        - '@akeneo_batch.launcher.simple_job_launcher'
+        - '@akeneo_batch.job.job_instance_repository'
+        - '@pim_user.provider.user'
+        - '@pim_connector.doctrine.cache_clearer'
+
+    Context\ConnectivityContext:
+        - '@messenger.transport.business_event'
