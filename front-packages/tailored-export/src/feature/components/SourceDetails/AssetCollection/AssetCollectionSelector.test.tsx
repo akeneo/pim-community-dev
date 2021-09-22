@@ -106,7 +106,7 @@ test('it can select a media file selection type', async () => {
   });
 });
 
-test('it can select the property of a media file selection type', async () => {
+test('it can select the property of a media file selection', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
