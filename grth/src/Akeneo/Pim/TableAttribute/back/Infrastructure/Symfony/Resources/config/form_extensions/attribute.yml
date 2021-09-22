@@ -9,6 +9,50 @@ extensions:
             label: pim_table_attribute.form.attribute.tab.table_structure
             activeForTypes: [ 'pim_catalog_table' ]
 
+    pim-attribute-form-table:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-attribute-edit-form-table-type-specific-params:
+        module: pim/common/simple-view
+        parent: pim-attribute-form-table
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
+                dropZone: content
+
+    pim-attribute-table-form-properties-common-usable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-edit-form-table-type-specific-params
+        targetZone: content
+        position: 70
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
+
+    pim-attribute-edit-form-table-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-edit-form-table-type-specific-params
+        targetZone: content
+        position: 80
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
+
+    pim-attribute-edit-form-table-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-edit-form-table-type-specific-params
+        targetZone: content
+        position: 90
+        config:
+            fieldName: available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
+            isMultiple: true
+
     # Create attribute
     pim-attribute-create-form-table-structure-tab:
         module: pim/table-attribute/attribute/tab
