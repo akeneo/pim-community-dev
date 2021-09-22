@@ -86,6 +86,7 @@ akeneo.tailored_export:
           name: Filename
         asset_collection:
           property: Property
+          with_prefix_and_suffix: Add prefix & suffix
         format: Format
         parent:
           information:
