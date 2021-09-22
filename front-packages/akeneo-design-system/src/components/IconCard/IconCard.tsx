@@ -83,6 +83,11 @@ const IconCardGrid = styled.div`
 
 type IconCardProps = {
   /**
+   * Element id
+   */
+  id?: string;
+
+  /**
    * Define the icon showed at left of the component.
    */
   icon: ReactElement<IconProps>;
@@ -109,11 +114,14 @@ type IconCardProps = {
 };
 
 const IconCard = React.forwardRef<HTMLDivElement, IconCardProps>(
-  ({icon, label, content, onClick, disabled = false, ...rest}: IconCardProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {id, icon, label, content, onClick, disabled = false, ...rest}: IconCardProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const validIcon = isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: 30});
 
     return (
-      <Container ref={forwardedRef} disabled={disabled} onClick={onClick} {...rest}>
+      <Container id={id} ref={forwardedRef} disabled={disabled} onClick={onClick} {...rest}>
         <IconContainer>{validIcon}</IconContainer>
         <ContentContainer>
           <Label>{label}</Label>
