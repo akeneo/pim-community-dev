@@ -91,5 +91,5 @@ interface GroupInterface
      */
     public function setDefaultPermissions(array $defaultPermissions): void;
 
-    public function setDefaultPermission(string $permission, bool $value): void;
+    public function setDefaultPermission(string $permission, bool $granted): void;
 }
