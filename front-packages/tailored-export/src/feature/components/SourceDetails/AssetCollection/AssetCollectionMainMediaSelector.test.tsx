@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {AssetCollectionMainMediaSelector} from './AssetCollectionMainMediaSelector';
 import {renderWithProviders} from 'feature/tests';
 
-test('it can select the original file name of a main media of type media file', async () => {
+test('it can select the original file name of a media file main media ', async () => {
   const onSelectionChange = jest.fn();
   await renderWithProviders(
     <AssetCollectionMainMediaSelector
@@ -34,7 +34,7 @@ test('it can select the original file name of a main media of type media file', 
   });
 });
 
-test('it can select the original file name of a main media of type media file', async () => {
+test('it can select the path of a media file main media', async () => {
   const onSelectionChange = jest.fn();
   await renderWithProviders(
     <AssetCollectionMainMediaSelector
