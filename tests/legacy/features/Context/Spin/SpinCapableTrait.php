@@ -4,6 +4,11 @@ namespace Context\Spin;
 
 use Context\FeatureContext;
 
+/**
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 trait SpinCapableTrait
 {
     /**
@@ -12,14 +17,11 @@ trait SpinCapableTrait
      * If the return value is falsy, the spinning continues until the loop limit is reached,
      * In that case a TimeoutException is thrown.
      *
-     * @param callable $callable
-     * @param string   $message
-     *
      * @throws TimeoutException
      *
-     * @return mixed
+     * @return null|bool|array|object
      */
-    public function spin($callable, $message)
+    public function spin(callable $callable, ?string $message)
     {
         $start   = microtime(true);
         $timeout = FeatureContext::getTimeout() / 1000.0;

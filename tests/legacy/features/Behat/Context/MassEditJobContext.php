@@ -9,22 +9,25 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class MassEditJobContext extends PimContext implements SnippetAcceptingContext
 {
     use SpinCapableTrait;
 
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
-
     private const MASS_CHANGE_PARENT_JOB_NAME = 'change_parent_product';
 
-    private $productRepository;
+    private IdentifiableObjectRepositoryInterface $productRepository;
+    private IdentifiableObjectRepositoryInterface $productModelRepository;
 
-    private $productModelRepository;
-
-    public function __construct(string $mainContextClass, IdentifiableObjectRepositoryInterface $productRepository, IdentifiableObjectRepositoryInterface $productModelRepository)
-    {
-        parent::__construct($mainContextClass);
+    public function __construct(
+        string $mainContextClass,
+        KernelInterface $kernel,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository
+    ) {
+        parent::__construct($mainContextClass, $kernel);
 
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
@@ -62,7 +65,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
      * Launch the given mass edit job for all the products
      *
      * @param string $jobName
-     * @param array $productIds
+     * @param array  $productIds
      * @param string $fieldName
      * @param string $newFieldValue
      *
@@ -70,7 +73,10 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
      */
     private function launchJob(string $jobName, array $productIds, string $fieldName, string $newFieldValue): void
     {
-        $jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration($jobName, new TableNode([]));
+        $jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration(
+            $jobName,
+            new TableNode([])
+        );
 
         $user = $this->getFixturesContext()->getUser(self::USERNAME_FOR_JOB_LAUNCH);
 
@@ -85,7 +91,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
     /**
      * Build the job execution configuration array
      *
-     * @param array $productIds
+     * @param array  $productIds
      * @param string $fieldName
      * @param string $newFieldValue
      *

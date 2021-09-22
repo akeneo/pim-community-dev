@@ -4,13 +4,12 @@ namespace Pim\Behat\Context;
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Behat\Tester\Result\StepResult;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -23,26 +22,13 @@ class HookContext extends PimContext
     private const MESSENGER_JOB_RECEIVERS = ['ui_job', 'import_export_job', 'data_maintenance_job'];
 
     protected static array $errorMessages = [];
-    protected int $windowWidth;
-    protected int $windowHeight;
     protected ?Process $jobConsumerProcess;
-
-    /**
-     * @param string $mainContextClass
-     * @param int    $windowWidth
-     * @param int    $windowHeight
-     */
-    public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
-    {
-        parent::__construct($mainContextClass);
-        $this->windowWidth = $windowWidth;
-        $this->windowHeight = $windowHeight;
-    }
+    protected ?string $currentPage;
 
     /**
      * @BeforeScenario
      */
-    public function launchJobConsumer()
+    public function launchJobConsumer(): void
     {
         $process = new Process(
             array_merge(
@@ -72,7 +58,7 @@ class HookContext extends PimContext
     /**
      * @AfterScenario
      */
-    public function stopJobConsumer()
+    public function stopJobConsumer(): void
     {
         $this->jobConsumerProcess->stop();
     }
@@ -80,7 +66,7 @@ class HookContext extends PimContext
     /**
      * @AfterScenario
      */
-    public function closeConnection()
+    public function closeConnection(): void
     {
         foreach ($this->getDoctrine()->getConnections() as $connection) {
             $connection->close();
@@ -88,13 +74,9 @@ class HookContext extends PimContext
     }
 
     /**
-     * Take a screenshot when a step fails
-     *
-     * @param AfterStepScope $event
-     *
      * @AfterStep
      */
-    public function takeScreenshotAfterFailedStep(AfterStepScope $event)
+    public function takeScreenshotAfterFailedStep(AfterStepScope $event): void
     {
         if ($event->getTestResult()->getResultCode() === TestResult::FAILED) {
             $driver = $this->getSession()->getDriver();
@@ -107,7 +89,7 @@ class HookContext extends PimContext
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path = sprintf('%s/%s', $dir, $filename);
 
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs = new Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
                 $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
@@ -116,11 +98,9 @@ class HookContext extends PimContext
     }
 
     /**
-     * Print error messages
-     *
      * @AfterFeature
      */
-    public static function printErrorMessages()
+    public static function printErrorMessages(): void
     {
         $messages = FeatureContext::getErrorMessages();
         if (!empty($messages)) {
@@ -135,13 +115,15 @@ class HookContext extends PimContext
     }
 
     /**
-     * Listen to JS errors
-     *
      * @BeforeStep
      */
-    public function listenToErrors()
+    public function listenToErrors(): void
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            if (!$this->getSession()->isStarted()) {
+                $this->getSession()->start();
+            }
+
             try {
                 $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
 
@@ -157,7 +139,7 @@ class HookContext extends PimContext
      *
      * @AfterStep
      */
-    public function collectErrors()
+    public function collectErrors(): void
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
@@ -180,27 +162,7 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function maximize()
-    {
-        try {
-            $this->getSession()->resizeWindow($this->windowWidth, $this->windowHeight);
-        } catch (UnsupportedDriverActionException $e) {
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearRecordedMails()
-    {
-        //TODO
-//        $this->getMainContext()->getMailRecorder()->clear();
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public static function resetPlaceholderValues()
+    public static function resetPlaceholderValues(): void
     {
         parent::resetPlaceholderValues();
     }
@@ -208,16 +170,16 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function removeTmpDir()
+    public function removeTmpDir(): void
     {
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs = new Filesystem();
         $fs->remove(self::$placeholderValues['%tmp%']);
     }
 
     /**
      * @BeforeScenario
      */
-    public function clearUOW()
+    public function clearUOW(): void
     {
         foreach ($this->getDoctrine()->getManagers() as $manager) {
             $manager->clear();
@@ -225,38 +187,28 @@ class HookContext extends PimContext
     }
 
     /**
-     * @param AfterScenarioScope $event
-     *
      * @AfterScenario
      */
-    public function resetCurrentPage(AfterScenarioScope $event)
+    public function resetCurrentPage(AfterScenarioScope $event): void
     {
-        if ($event->getTestResult() !== StepResult::UNDEFINED) {
-            if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-                try {
-                    $script = 'sessionStorage.clear(); localStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-                    $this->getMainContext()->executeScript($script);
-                } catch (\Exception $e) {
-                    //
-                }
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            try {
+                $script = 'sessionStorage.clear(); localStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+                $this->getMainContext()->executeScript($script);
+            } catch (\Exception $e) {
+                //
             }
         }
 
         $this->currentPage = null;
     }
 
-    /**
-     * @return ManagerRegistry
-     */
-    private function getDoctrine()
+    private function getDoctrine(): ManagerRegistry
     {
         return $this->getService('doctrine');
     }
 
-    /**
-     * Resets the elasticsearch index
-     */
-    private function resetElasticsearchIndex()
+    private function resetElasticsearchIndex(): void
     {
         $clientRegistry = $this->getService('akeneo_elasticsearch.registry.clients');
         $clients = $clientRegistry->getClients();
