@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 use Akeneo\Tool\Component\Classification\Model\Category;
@@ -22,15 +23,25 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
         CategoryRepositoryInterface $categoryRepository,
-        GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes
+        GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
+        GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
+        Category $categoryA,
+        CategoryAccessInterface $categoryAccessA
     )
     {
+        $categoryA->getCode()->willReturn('category_a');
+        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryAccessA->getCategory()->willReturn($categoryA);
+
+        $getRootCategoryReferenceFromCode->execute('category_a')->willReturn($categoryA);
+
         $this->beConstructedWith(
             $categoryAccessManager,
             $groupRepository,
             $groupSaver,
             $categoryRepository,
-            $getRootCategoriesReferencesFromCodes
+            $getRootCategoriesReferencesFromCodes,
+            $getRootCategoryReferenceFromCode
         );
     }
 
@@ -66,6 +77,56 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryC, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'own' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+            'edit' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+        ]);
+    }
+
+
+    /**
+     * FROM {"own":{"all":true,"identifiers":[]},"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     * TO {"own":{"all":false,"identifiers":[]},"edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     */
+    public function it_CorrectsGrantedPermissionsOnExistingCategoriesWhenTheDefaultOptionIsReducedToViewOnly(
+        CategoryAccessManager $categoryAccessManager,
+        GroupRepository $groupRepository,
+        SaverInterface $groupSaver,
+        CategoryRepositoryInterface $categoryRepository,
+        GroupInterface $group,
+        Category $categoryA,
+        Category $categoryB,
+        Category $categoryC
+    ) {
+        $groupRepository->findOneByIdentifier('Redactor')->willReturn($group);
+        $group->getDefaultPermissions()->willReturn([]);
+        $group->setDefaultPermission('category_own', false)->shouldBeCalled();
+        $group->setDefaultPermission('category_edit', false)->shouldBeCalled();
+        $group->setDefaultPermission('category_view', true)->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
+
+        $categoryAccessManager->getAccessesByGroup($group)->willReturn([]);
+
+        $categoryRepository->findAll()->willReturn([
+            $categoryA,
+            $categoryB,
+            $categoryC,
+        ]);
+
+        $categoryAccessManager->grantAccess($categoryA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->grantAccess($categoryB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->grantAccess($categoryC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -190,7 +251,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         SaverInterface $groupSaver,
         GroupInterface $group,
         Category $categoryA,
-        CategoryAccessInterface $categoryAccessA
+        CategoryAccessInterface $categoryAccessA,
+        GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes
     ) {
         $groupRepository->findOneByIdentifier('Redactor')->willReturn($group);
         $group->getDefaultPermissions()->willReturn([]);
@@ -199,6 +261,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([$categoryAccessA]);
 
         $categoryAccessManager->revokeGroupAccess($categoryA, $group)->shouldBeCalled();
+
+        $getRootCategoriesReferencesFromCodes->execute(['category_a'])->willReturn([$categoryA]);
 
         $this->save('Redactor', [
             'own' => [
