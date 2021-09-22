@@ -21,3 +21,9 @@ services:
   Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\ExtractCatalogSubscriber:
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\UpdateViewsOwnerSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_subscriber' }
