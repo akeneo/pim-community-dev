@@ -3,7 +3,7 @@ global:
     type: tria
 
 pim:
-  defaultCatalog: vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+  defaultCatalog: src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
   jobs:
     versioning-purge:
       enabled: true

@@ -1,0 +1,6 @@
+parameters:
+    env(FT_CATALOG_API_BASE_URI): ''
+    env(FT_CATALOG_API_CLIENT_ID): ''
+    env(FT_CATALOG_API_SECRET): ''
+    env(FT_CATALOG_API_USERNAME): ''
+    env(FT_CATALOG_API_PASSWORD): ''
