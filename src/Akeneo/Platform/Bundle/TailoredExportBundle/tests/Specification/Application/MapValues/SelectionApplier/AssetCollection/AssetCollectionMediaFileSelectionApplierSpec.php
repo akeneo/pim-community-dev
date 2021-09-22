@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection;
 
+use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
@@ -22,81 +23,92 @@ use PhpSpec\ObjectBehavior;
 
 class AssetCollectionMediaFileSelectionApplierSpec extends ObjectBehavior
 {
-    public function let(FindAssetMainMediaDataInterface $findAssetMainMediatData)
-    {
-        $this->beConstructedWith($findAssetMainMediatData);
+    public function let(
+        FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        MediaPathGeneratorInterface $mediaPathGenerator
+    ) {
+        $this->beConstructedWith($findAssetMainMediaData, $mediaPathGenerator);
     }
 
-    public function it_applies_the_selection_with_property_equals_to_file_key(FindAssetMainMediaDataInterface $findAssetMainMediatData)
+    public function it_applies_the_selection_with_property_equals_to_file_key(FindAssetMainMediaDataInterface $findAssetMainMediaData)
     {
         $selection = $this->createAssetCollectionMediaFileSelection('file_key');
         $value = $this->createAssetCollectionValue();
 
-        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
+        $findAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',
             'fr_FR',
         )->willReturn([
-            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
-            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1.jpg'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2.jpg'],
         ]);
 
         $this->applySelection($selection, $value)
             ->shouldReturn('filekey1;filekey2');
     }
 
-    public function it_applies_the_selection_with_property_equals_to_file_path(FindAssetMainMediaDataInterface $findAssetMainMediatData)
-    {
+    public function it_applies_the_selection_with_property_equals_to_file_path(
+        FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        MediaPathGeneratorInterface $mediaPathGenerator
+    ) {
         $selection = $this->createAssetCollectionMediaFileSelection('file_path');
         $value = $this->createAssetCollectionValue();
 
-        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
+        $findAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',
             'fr_FR',
         )->willReturn([
-            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
-            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1.jpg'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2.jpg'],
         ]);
 
+        $mediaPathGenerator->generate(
+            'the_identifier',
+            'foo_attribute_code',
+            null,
+            null
+        )->willReturn('directory/');
+
         $this->applySelection($selection, $value)
-            ->shouldReturn('filepath1;filepath2');
+            ->shouldReturn('directory/filename1.jpg;directory/filename2.jpg');
     }
 
-    public function it_applies_the_selection_with_property_equals_to_original_file_name(FindAssetMainMediaDataInterface $findAssetMainMediatData)
+    public function it_applies_the_selection_with_property_equals_to_original_filename(FindAssetMainMediaDataInterface $findAssetMainMediaData)
     {
-        $selection = $this->createAssetCollectionMediaFileSelection('original_file_name');
+        $selection = $this->createAssetCollectionMediaFileSelection('original_filename');
         $value = $this->createAssetCollectionValue();
 
-        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
+        $findAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',
             'fr_FR',
         )->willReturn([
-            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
-            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1.jpg'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2.jpg'],
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('filename1;filename2');
+            ->shouldReturn('filename1.jpg;filename2.jpg');
     }
 
-    public function it_throws_invalid_argument_expection_when_selection_have_an_invalid_property(FindAssetMainMediaDataInterface $findAssetMainMediatData)
+    public function it_throws_invalid_argument_expection_when_selection_have_an_invalid_property(FindAssetMainMediaDataInterface $findAssetMainMediaData)
     {
         $invalidSelection = $this->createAssetCollectionMediaFileSelection('invalid_type');
         $value = $this->createAssetCollectionValue();
 
-        $findAssetMainMediatData->forAssetFamilyAndAssetCodes(
+        $findAssetMainMediaData->forAssetFamilyAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2'],
             'ecommerce',
             'fr_FR',
         )->willReturn([
-            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1'],
-            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2'],
+            ['fileKey' => 'filekey1',  'filePath' => 'filepath1', 'originalFilename' => 'filename1.jpg'],
+            ['fileKey' => 'filekey2',  'filePath' => 'filepath2', 'originalFilename' => 'filename2.jpg'],
         ]);
 
         $this

@@ -20,6 +20,8 @@ import {
   isDefaultAssetCollectionSelection,
   getDefaultAssetCollectionSelection,
   getDefaultAssetCollectionMediaSelection,
+  ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE,
+  isValidAssetCollectionMediaFileSelectionProperty,
 } from './model';
 import {ChannelDropdown} from '../../ChannelDropdown';
 import {availableSeparators, isCollectionSeparator} from './model';
@@ -46,6 +48,7 @@ const AssetCollectionSelector = ({
   const channelErrors = filterErrors(validationErrors, '[channel]');
   const typeErrors = filterErrors(validationErrors, '[type]');
   const separatorErrors = filterErrors(validationErrors, '[separator]');
+  const propertyErrors = filterErrors(validationErrors, '[property]');
   const assetFamily = useAssetFamily(assetFamilyCode);
   const handleSelectionTypeChange = useCallback(
     (type: string) => {
@@ -126,6 +129,46 @@ const AssetCollectionSelector = ({
             </Helper>
           ))}
         </Field>
+        {isAssetCollectionMediaSelection(selection) && ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE === selection.type && (
+          <Field label={translate('akeneo.tailored_export.column_details.sources.selection.asset_collection.property')}>
+            <SelectInput
+              clearable={false}
+              invalid={0 < propertyErrors.length}
+              emptyResultLabel={translate('pim_common.no_result')}
+              openLabel={translate('pim_common.open')}
+              value={selection.property}
+              onChange={newProperty => {
+                if (isValidAssetCollectionMediaFileSelectionProperty(newProperty)) {
+                  onSelectionChange({...selection, property: newProperty});
+                }
+              }}
+            >
+              <SelectInput.Option
+                title={translate('akeneo.tailored_export.column_details.sources.selection.type.key')}
+                value="file_key"
+              >
+                {translate('akeneo.tailored_export.column_details.sources.selection.type.key')}
+              </SelectInput.Option>
+              <SelectInput.Option
+                title={translate('akeneo.tailored_export.column_details.sources.selection.type.path')}
+                value="file_path"
+              >
+                {translate('akeneo.tailored_export.column_details.sources.selection.type.path')}
+              </SelectInput.Option>
+              <SelectInput.Option
+                title={translate('akeneo.tailored_export.column_details.sources.selection.type.name')}
+                value="original_filename"
+              >
+                {translate('akeneo.tailored_export.column_details.sources.selection.type.name')}
+              </SelectInput.Option>
+            </SelectInput>
+            {propertyErrors.map((error, index) => (
+              <Helper key={index} inline={true} level="error">
+                {translate(error.messageTemplate, error.parameters)}
+              </Helper>
+            ))}
+          </Field>
+        )}
         {isAssetCollectionMediaSelection(selection) && null !== selection.channel && (
           <ChannelDropdown
             value={selection.channel}

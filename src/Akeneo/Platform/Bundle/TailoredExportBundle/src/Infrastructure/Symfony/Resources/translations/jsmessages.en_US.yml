@@ -84,6 +84,8 @@ akeneo.tailored_export:
           key: Filekey
           path: Path
           name: Filename
+        asset_collection:
+          property: Property
         format: Format
         parent:
           information:
