@@ -64,7 +64,7 @@ trial-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & i
 	$(MAKE) javascript-dev
 	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog $(DATABASE_CATALOG_FREE_TRIAL)" $(MAKE) database
-
+	APP_ENV=dev $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin admin@example.com John Doe en_US
 
 .PHONY: free-trial-lint-back
 free-trial-lint-back: #Doc: launch PHPStan and php-cs-fixer for the free trial

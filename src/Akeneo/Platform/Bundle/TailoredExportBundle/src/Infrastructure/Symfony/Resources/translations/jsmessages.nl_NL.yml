@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: Op maat gemaakte export van producten in XLSX
+batch_jobs.xlsx_tailored_product_model_export.label: Op maat gemaakte export van productmodellen in XLSX
+batch_jobs.csv_tailored_product_export.label: Op maat gemaakte export van producten in CSV
+batch_jobs.csv_tailored_product_model_export.label: Op maat gemaakte export van productmodellen in CSV
 akeneo.tailored_export:
   filters:
     completeness:
@@ -125,6 +128,9 @@ akeneo.tailored_export:
           title: Standaardwaarde gebruiken indien leeg
           label: Standaardwaarde
           placeholder: Waarde definiëren
+        clean_html_tags:
+          title: HTML-tags weghalen
+          label: HTML-tags automatisch weghalen
     concatenation:
       title: Samenvoeging
       preview: Voorbeeld

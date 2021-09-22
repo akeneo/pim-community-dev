@@ -25,12 +25,19 @@ pim_datagrid:
       can_not_be_deleted: Ei voi poistaa
     status_message:
       ready: Odottaa hyväksyntää
+      in_progress: Ehdotus on juuri nyt työnalla, eikä sitä ole vielä lähetetty.
+      can_be_partially_reviewed: Voit tarkistaa ehdotuksen vain osittain, koska osa muutoksista koskee arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_approved: Et voi tarkistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_deleted: Et voi poistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+    draft_in_progress: Tämän tuotteen luonnos on työnalla käyttäjällä {{ author }}.
+    no_diff: Arvo "{{ value }}" on sama ehdotuksen ja työkopion välillä.
     new_value: 'Uusi arvo:'
     old_value: 'Vanha arvo:'
     see_more: Katso lisää
     actions:
       approve_all: Hyväksy kaikki
       refuse_all: Hylkää kaikki
+    characters_left: ']-Inf, 1]{{ count }} merkki jäljellä|]1, Inf[{{ count }} merkkiä jäljellä'
 pimee_datagrid:
   cells:
     expand:
@@ -56,15 +63,19 @@ pimee_workflow:
     reject:
       title: Hylkää ehdotus
       success: Ehdotus on hylätty
+      error: "Ehdotusta ei voida hylätä seuraavan virheen vuoksi: {{ error }}"
     remove:
       title: Poista ehdotus
       success: Ehdotus on poistettu
+      error: "Ehdotusta ei voi poistaa seuraavan virheen vuoksi: {{ error }}"
     partial_approve:
       title: Hyväksy osittaisia tietoja
       success: Ehdotus on osittain vahvistettu onnistuneesti
+      error: "Ehdotusta ei voida hyväksyä osittain seuraavan virheen vuoksi: {{ error }}"
     partial_reject:
       title: Hylkää muutokset osittain
       success: Muutokset hylätty onnistuneesti
+      error: "Ehdotusta ei voida hylätä osittain seuraavan virheen vuoksi: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa
@@ -137,6 +148,8 @@ pimee_enrich.entity.product:
       published: Julkaistu
       revert: Palauta
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Tämä attribuutti voidaan päivittää <span>säännöllä</span>|]1, +Inf[Tämä attribuutti voidaan päivittää <span>{{ count }} säännöllä</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Tämä attribuutti voidaan päivittää sääntöllä|]1, +Inf[Tämä attribuutti voidaan päivittää {{ count }} säännöllä"
       value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio

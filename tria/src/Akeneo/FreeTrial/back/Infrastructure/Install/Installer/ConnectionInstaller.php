@@ -18,7 +18,6 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -59,21 +58,24 @@ final class ConnectionInstaller implements FixtureInstaller
         $this->defaultUserRoleId = $this->retrieveDefaultUserRoleId();
         $this->defaultUserGroupId = $this->retrieveDefaultUserGroupId();
 
-        $this->installSAP();
+        $connections = $this->loadConnectionFixtures();
+        foreach ($connections as $connection) {
+            $this->installConnection($connection);
+        }
     }
 
-    private function installSAP(): void
+    private function installConnection(array $connectionData): void
     {
         $createCommand = new CreateConnectionCommand(
-            'sap',
-            'SAP',
-            FlowType::DATA_SOURCE,
-            true,
+            $connectionData['code'],
+            $connectionData['label'],
+            $connectionData['flow_type'],
+            $connectionData['auditable'],
         );
 
         $connection = $this->createConnectionHandler->handle($createCommand);
 
-        $this->updateConnectionImage($connection, 'sap.png');
+        $this->updateConnectionImage($connection, $connectionData['image']);
     }
 
     private function updateConnectionImage(ConnectionWithCredentials $connection, string $imageName): void
@@ -114,5 +116,12 @@ SQL;
 SELECT id FROM oro_access_group WHERE name = 'IT support';
 SQL;
         return strval($this->dbConnection->executeQuery($query)->fetchColumn());
+    }
+
+    private function loadConnectionFixtures(): array
+    {
+        $connections = file_get_contents($this->getConnectionFixturesPath());
+
+        return json_decode($connections, true, 512, JSON_THROW_ON_ERROR);
     }
 }
