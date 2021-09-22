@@ -1020,23 +1020,47 @@ jobs:
               name: Install dependencies
               command: make dependencies
           - run:
-              name: Build the DSM
-              command: make dsm
-          - run:
               name: Launch Grth in test mode
               command: make pim-test
           - run:
               name: Lint Back
               command: PIM_CONTEXT=test make lint-back
           - run:
+              name: Static tests
+              command: PIM_CONTEXT=test make static-back
+          - run:
               name: Unit Back
               command: PIM_CONTEXT=test make unit-back
+          - run:
+              name: Code Coupling Detection
+              command: PIM_CONTEXT=test make coupling-back
+          - run:
+              name: Acceptance tests
+              command: PIM_CONTEXT=test make acceptance-back
           - run:
               name: Integration Back
               command: PIM_CONTEXT=test make pim-integration-back
           - run:
               name: End to End Back
               command: PIM_CONTEXT=test make end-to-end-back
+          - run:
+                name: Install assets & css
+                command: make assets css
+          - run:
+                name: Build the DSM
+                command: make dsm
+          - run:
+                name: Build front-packages
+                command: make front-packages
+          - run:
+                name: Build Javascript
+                command: make javascript-test
+          - run:
+              name: Front linter
+              command: PIM_CONTEXT=test make lint-front
+          - run:
+              name: Front unit tests
+              command: PIM_CONTEXT=test make unit-front
           - store_test_results:
                 path: ${TYPE}/var/tests
           - store_artifacts:

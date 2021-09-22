@@ -1,3 +1,2 @@
 vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/**/*
 src/Akeneo/Pim/Automation/RuleEngine/front
-src/Akeneo/Pim/TableAttribute/front

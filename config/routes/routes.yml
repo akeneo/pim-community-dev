@@ -29,9 +29,6 @@ pim_data_quality_insights:
 pimee_enrichment:
     resource: "@AkeneoPimEnterpriseProductEnrichmentBundle/Resources/config/routing.yml"
 
-pimee_table_attribute:
-    resource: "@AkeneoPimTableAttributeBundle/Resources/config/routing.yml"
-
 # SSO
 akeneo_authentication:
     resource: "@AkeneoPimEnterpriseAuthenticationBundle/Resources/config/routing.yml"

@@ -17,12 +17,10 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-coupling-back
 
 ### Static tests
 static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-static-back
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-static-back
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -58,16 +56,14 @@ lint-back: #Doc: launch all PHP linter tests
 lint-front: #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-lint-front rule-engine-types-check-front rule-engine-prettier-check-front
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-lint-front table-attribute-prettier-check-front
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
+unit-back: var/tests/phpspec community-unit-back growth-unit-back #Doc: launch all PHPSec unit tests
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 	PIM_CONTEXT=tailored-export $(MAKE) unit-back
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -83,23 +79,33 @@ else
 	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
 endif
 
+.PHONY: growth-unit-back
+growth-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM grth
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-growth-edition && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
+else
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-growth-edition && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
+endif
+
 .PHONY: unit-front
 unit-front: #Doc: launch all JS unit tests
 	$(YARN_RUN) unit
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-unit-front
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests
+acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat acceptance tests
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-acceptance-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-acceptance-back
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-acceptance-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-acceptance-back
 	PIM_CONTEXT=tailored-export $(MAKE) acceptance-back
-	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
+
+.PHONY: growth-acceptance-back
+growth-acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests for growth
+	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features #Doc: launch YARN acceptance

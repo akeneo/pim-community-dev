@@ -1,0 +1,3 @@
+imports:
+    # Table Attribute
+    - { resource: ../../../src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
