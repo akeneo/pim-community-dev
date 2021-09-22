@@ -46,12 +46,6 @@
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.10.4",
-    "@testing-library/cypress": "^7.0.4",
-    "@testing-library/dom": "^6.3.0",
-    "@testing-library/jest-dom": "^5.11.3",
-    "@testing-library/react": "^10.4.8",
-    "@testing-library/react-hooks": "^3.4.2",
-    "@testing-library/user-event": "^7.1.2",
     "@types/backbone": "1.4.8",
     "@types/diff": "^5.0.0",
     "@types/jest": "^26.0.14",
@@ -114,10 +108,14 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
-    "@akeneo-pim-community/measurement": "link:front-packages/measurement",
-    "@akeneo-pim-community/shared": "link:front-packages/shared",
+    "@testing-library/cypress": "^7.0.4",
+    "@testing-library/dom": "^6.3.0",
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
+    "@testing-library/react-hooks": "^3.4.2",
+    "@testing-library/user-event": "^7.1.2",
+
     "ajv": "^6.10.2",
-    "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
@@ -155,6 +153,9 @@
     "src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
-    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
+    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
+    "front-packages/akeneo-design-system",
+    "front-packages/measurement",
+    "front-packages/shared"
   ]
 }
