@@ -107,13 +107,14 @@ connectivity-connection-coverage:
 		--coverage-php coverage/Connectivity/Back/EndToEnd/coverage.php \
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
+
 	# run the backend application acceptance tests on scope connectivity
+	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p var/tests/behat/connectivity/connection
 	XDEBUG_MODE=coverage $(PHP_RUN) -d memory_limit=-1 vendor/bin/behat \
 			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
 			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 	# download phpcov binary
-	$(DOCKER_COMPOSE) run -u www-data --rm php test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && \
-		php phpcov.phar --version
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
 	# create a coverage global folder
 	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "\
 		if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi && \

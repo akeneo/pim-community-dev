@@ -344,6 +344,30 @@ jobs:
       - store_artifacts:
           path: var/tests/screenshots
 
+  test_octopus_code_coverage:
+    machine:
+      image: ubuntu-2004:202101-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=test make database
+      - run:
+          name: Static tests
+          command: PIM_CONTEXT=test make connectivity-connection-coverage
+      - store_artifacts:
+          path: coverage/Connectivity/Back/Global/
+
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202101-01
@@ -850,6 +874,14 @@ workflows:
                 name: marketplace_activate_e2e_ce
                 requires:
                   - marketplace_activate_e2e?
+          - test_octopus_code_coverage?:
+              type: approval
+              requires:
+                - build_dev_ce
+          - test_octopus_code_coverage:
+              name: test_octopus_code_coverage
+              requires:
+                - test_octopus_code_coverage?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
@@ -913,6 +945,24 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
+
+  weekly_octopus_code_quality:
+    triggers:
+        - schedule:
+            cron: "0 0 * * 0"
+            filters:
+              branches:
+                only:
+                    - master
+    jobs:
+      - checkout_ce
+      - build_dev:
+          is_ee_built: false
+          requires:
+            - checkout_ce
+      - test_octopus_code_coverage:
+          requires:
+            - build_dev
 
   on_demand:
         jobs:
