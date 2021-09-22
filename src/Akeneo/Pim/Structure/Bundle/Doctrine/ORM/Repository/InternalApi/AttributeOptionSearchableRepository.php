@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -20,13 +18,23 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeOptionSearchableRepository implements SearchableRepositoryInterface
 {
-    protected EntityManagerInterface $entityManager;
-    protected string $entityName;
-    protected AttributeRepositoryInterface $attributeRepository;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
+    /** @var string */
+    protected $entityName;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param EntityManagerInterface       $entityManager
+     * @param string                       $entityName
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
-        string $entityName,
+        $entityName,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->entityManager       = $entityManager;
@@ -49,9 +57,9 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->andWhere('a.code = :attributeCode')
             ->setParameter('attributeCode', $options['identifier']);
 
-        if (isset($options['identifier']) && $this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
+        if ($this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
             $qb
-                ->addSelect('v.value AS HIDDEN value')
+                ->addSelect('v.value AS HIDDEN')
                 ->leftJoin('o.optionValues', 'v', Expr\Join::WITH, 'v.locale = :localeCode')
                 ->setParameter('localeCode', $options['catalogLocale'])
                 ->orderBy('v.value')
@@ -59,12 +67,11 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         } else {
             $qb
                 ->leftJoin('o.optionValues', 'v')
-                ->orderBy('o.sortOrder')
-                ->addOrderBy('o.code');
+                ->orderBy('o.sortOrder, o.code');
         }
 
-        if (!empty($search)) {
-            $qb->andWhere('v.value LIKE :search OR o.code LIKE :search')
+        if ($search) {
+            $qb->andWhere('v.value like :search OR o.code LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
@@ -73,16 +80,17 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         return $qb->getQuery()->getResult();
     }
 
-    protected function applyQueryOptions(QueryBuilder $qb, array $options): QueryBuilder
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $options
+     *
+     * @return QueryBuilder
+     */
+    protected function applyQueryOptions(QueryBuilder $qb, array $options)
     {
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('o.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
-        }
-
-        if (isset($options['excludeCodes']) && is_array($options['excludeCodes']) && !empty($options['excludeCodes'])) {
-            $qb->andWhere('o.code not in (:codes)');
-            $qb->setParameter('codes', $options['excludeCodes']);
         }
 
         if (isset($options['locale']) && null !== $options['locale']) {
@@ -100,7 +108,12 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         return $qb;
     }
 
-    protected function isAttributeAutoSorted(string $attributeIdentifier): bool
+    /**
+     * @param string $attributeIdentifier
+     *
+     * @return bool
+     */
+    protected function isAttributeAutoSorted($attributeIdentifier)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
 

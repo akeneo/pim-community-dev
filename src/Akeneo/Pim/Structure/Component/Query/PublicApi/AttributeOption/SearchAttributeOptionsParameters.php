@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
 
 /**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SearchAttributeOptionsParameters
@@ -19,8 +18,8 @@ class SearchAttributeOptionsParameters
 
     private ?string $search;
     private ?string $locale;
-    private ?int $limit;
-    private ?int $page;
+    private int $limit;
+    private int $page;
 
     public function getIncludeCodes(): array
     {
@@ -62,23 +61,28 @@ class SearchAttributeOptionsParameters
         $this->locale = $locale;
     }
 
-    public function getLimit(): ?int
+    public function getLimit(): int
     {
         return $this->limit;
     }
 
-    public function setLimit(?int $limit): void
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
 
-    public function getPage(): ?int
+    public function getPage(): int
     {
         return $this->page;
     }
 
-    public function setPage(?int $page): void
+    public function setPage(int $page): void
     {
         $this->page = $page;
+    }
+
+    public function getOffset(): int
+    {
+        return ($this->page - 1) * $this->limit;
     }
 }
