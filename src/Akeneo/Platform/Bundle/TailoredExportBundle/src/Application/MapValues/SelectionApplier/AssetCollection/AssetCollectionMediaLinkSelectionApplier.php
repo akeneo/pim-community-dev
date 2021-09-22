@@ -45,6 +45,15 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
             $selection->getLocale()
         );
 
+        if ($selection->withPrefixAndSuffix()) {
+            $prefix = '';
+            $suffix = '';
+            $assetMainMediaLinkData = array_map(
+                static fn (string $mediaLinkData) => sprintf('%s%s%s', $prefix, $mediaLinkData, $suffix),
+                $assetMainMediaLinkData
+            );
+        }
+
         return implode($selection->getSeparator(), $assetMainMediaLinkData);
     }
 
