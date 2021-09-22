@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import {SearchBar, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 import {
@@ -11,6 +11,7 @@ import {
   Helper,
   NoResultsIllustration,
   pimTheme,
+  Search,
   SurveyIllustration,
   Key,
   useAutoFocus,
@@ -284,7 +285,16 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
           )}
         </InputContainer>
       </Form>
-      <SearchBar count={filteredRecipients.length} searchValue={searchValue} onSearchChange={setSearchValue} />
+      <Search
+        title={translate('pim_common.search')}
+        placeholder={translate('pim_common.search')}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+      >
+        <Search.ResultCount>
+          {translate('pim_common.result_count', {itemsCount: filteredRecipients.length}, filteredRecipients.length)}
+        </Search.ResultCount>
+      </Search>
       <Table title="recipients">
         <thead>
           <Row>
