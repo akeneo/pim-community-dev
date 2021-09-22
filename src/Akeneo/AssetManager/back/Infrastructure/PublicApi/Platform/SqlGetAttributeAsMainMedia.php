@@ -19,19 +19,19 @@ use Doctrine\DBAL\Connection;
 
 class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
 {
-    private array $attributeAsMainMediaTypes;
+    private array $attributesAsMainMedia;
     private Connection $connection;
 
     public function __construct(Connection $connection)
     {
-        $this->attributeAsMainMediaTypes = [];
+        $this->attributesAsMainMedia = [];
         $this->connection = $connection;
     }
 
     public function forAssetFamilyCode(string $assetFamilyCode): AttributeAsMainMedia
     {
-        if (array_key_exists($assetFamilyCode, $this->attributeAsMainMediaTypes)) {
-            return $this->attributeAsMainMediaTypes[$assetFamilyCode];
+        if (array_key_exists($assetFamilyCode, $this->attributesAsMainMedia)) {
+            return $this->attributesAsMainMedia[$assetFamilyCode];
         }
 
         $sql = <<<SQL
@@ -53,14 +53,14 @@ SQL;
 
         switch ($result['attribute_type']) {
             case MediaFileAttribute::ATTRIBUTE_TYPE:
-                $this->attributeAsMainMediaTypes[$assetFamilyCode] = new MediaFileAsMainMedia(
+                $this->attributesAsMainMedia[$assetFamilyCode] = new MediaFileAsMainMedia(
                     (bool) $result['value_per_channel'],
                     (bool) $result['value_per_locale'],
                 );
             break;
             case MediaLinkAttribute::ATTRIBUTE_TYPE:
                 $additionalProperties = json_decode($result['additional_properties'], true);
-                $this->attributeAsMainMediaTypes[$assetFamilyCode] = new MediaLinkAsMainMedia(
+                $this->attributesAsMainMedia[$assetFamilyCode] = new MediaLinkAsMainMedia(
                     (bool) $result['value_per_channel'],
                     (bool) $result['value_per_locale'],
                     $additionalProperties['prefix'] ?? '',
@@ -71,6 +71,6 @@ SQL;
                 throw new \InvalidArgumentException('Unsupported attribute type as main media');
         }
 
-        return $this->attributeAsMainMediaTypes[$assetFamilyCode];
+        return $this->attributesAsMainMedia[$assetFamilyCode];
     }
 }
