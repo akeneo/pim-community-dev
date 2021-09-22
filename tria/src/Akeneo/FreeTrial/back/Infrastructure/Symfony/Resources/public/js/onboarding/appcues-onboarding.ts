@@ -286,6 +286,11 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Meta title" added as family variant');
           }
           break;
+        case 'navigation:entry:clicked':
+          if (eventOptions && eventOptions.code) {
+            appcues.track('Navigation entry "' + eventOptions.code +'" clicked');
+          }
+          break;
       }
     });
   },
