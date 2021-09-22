@@ -259,8 +259,8 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'export-profile:product:attribute-added':
-          if (eventOptions && eventOptions.column && eventOptions.column.includes('photo_printing')) {
-            appcues.track('Attribute "Photo printing" added in the content of the export profile');
+          if (eventOptions && eventOptions.column && eventOptions.column.includes('automatic_two_sided_printing')) {
+            appcues.track('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
           }
           break;
         case 'job-instance:form-edit:saved':
