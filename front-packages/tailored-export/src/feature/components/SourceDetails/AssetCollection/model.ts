@@ -16,15 +16,15 @@ type CollectionSeparator = keyof typeof availableSeparators;
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && separator in availableSeparators;
 
-const ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE = 'media_file' as const;
-const ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE = 'media_link' as const;
+const ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE = 'media_file';
+const ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE = 'media_link';
 
 const propertyTypes = ['file_key', 'file_path', 'original_filename'];
-type AssetCollectionMediaFileSelectionPropertyType = typeof propertyTypes[number];
+type AssetCollectionMediaFileSelectionProperty = typeof propertyTypes[number];
 
-const isValidAssetCollectionMediaFileSelectionPropertyType = (
+const isValidAssetCollectionMediaFileSelectionProperty = (
   type: unknown
-): type is AssetCollectionMediaFileSelectionPropertyType => {
+): type is AssetCollectionMediaFileSelectionProperty => {
   return 'string' === typeof type && propertyTypes.includes(type);
 };
 
@@ -43,7 +43,7 @@ type AssetCollectionMediaFileSelection = {
   type: typeof ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE;
   locale: LocaleReference;
   channel: ChannelReference;
-  property: AssetCollectionMediaFileSelectionPropertyType;
+  property: AssetCollectionMediaFileSelectionProperty;
   separator: CollectionSeparator;
 };
 
@@ -182,5 +182,5 @@ export {
   availableSeparators,
   ASSET_COLLECTION_MEDIA_LINK_SELECTION_TYPE,
   ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE,
-  isValidAssetCollectionMediaFileSelectionPropertyType,
+  isValidAssetCollectionMediaFileSelectionProperty,
 };

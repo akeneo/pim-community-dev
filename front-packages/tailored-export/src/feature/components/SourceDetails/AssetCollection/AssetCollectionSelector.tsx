@@ -21,7 +21,7 @@ import {
   getDefaultAssetCollectionSelection,
   getDefaultAssetCollectionMediaSelection,
   ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE,
-  isValidAssetCollectionMediaFileSelectionPropertyType,
+  isValidAssetCollectionMediaFileSelectionProperty,
 } from './model';
 import {ChannelDropdown} from '../../ChannelDropdown';
 import {availableSeparators, isCollectionSeparator} from './model';
@@ -138,7 +138,7 @@ const AssetCollectionSelector = ({
               openLabel={translate('pim_common.open')}
               value={selection.property}
               onChange={newProperty => {
-                if (isValidAssetCollectionMediaFileSelectionPropertyType(newProperty)) {
+                if (isValidAssetCollectionMediaFileSelectionProperty(newProperty)) {
                   onSelectionChange({...selection, property: newProperty});
                 }
               }}
