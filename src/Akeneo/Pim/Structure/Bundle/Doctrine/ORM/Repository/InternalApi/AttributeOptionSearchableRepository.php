@@ -57,9 +57,9 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->andWhere('a.code = :attributeCode')
             ->setParameter('attributeCode', $options['identifier']);
 
-        if ($this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
+        if (isset($options['identifier']) && $this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
             $qb
-                ->addSelect('v.value AS HIDDEN')
+                ->addSelect('v.value AS HIDDEN value')
                 ->leftJoin('o.optionValues', 'v', Expr\Join::WITH, 'v.locale = :localeCode')
                 ->setParameter('localeCode', $options['catalogLocale'])
                 ->orderBy('v.value')
@@ -67,11 +67,12 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         } else {
             $qb
                 ->leftJoin('o.optionValues', 'v')
-                ->orderBy('o.sortOrder, o.code');
+                ->orderBy('o.sortOrder')
+                ->addOrderBy('o.code');
         }
 
-        if ($search) {
-            $qb->andWhere('v.value like :search OR o.code LIKE :search')
+        if (!empty($search)) {
+            $qb->andWhere('v.value LIKE :search OR o.code LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
