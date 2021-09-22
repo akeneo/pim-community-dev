@@ -22,6 +22,34 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
         $this->dbalConnection = $dbalConnection;
     }
 
+    public function findAll(): array
+    {
+        $selectSQL = <<<SQL
+        SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner
+        FROM akeneo_connectivity_connected_app
+        ORDER BY name ASC
+        SQL;
+
+        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
+
+        $connectedApps = [];
+        foreach ($dataRows as $dataRow) {
+            $connectedApps[] = new ConnectedApp(
+                $dataRow['id'],
+                $dataRow['name'],
+                \json_decode($dataRow['scopes'], true),
+                $dataRow['connection_code'],
+                $dataRow['logo'],
+                $dataRow['author'],
+                \json_decode($dataRow['categories'], true),
+                (bool) $dataRow['certified'],
+                $dataRow['partner']
+            );
+        }
+
+        return $connectedApps;
+    }
+
     public function create(ConnectedApp $app): void
     {
         $insertQuery = <<<SQL
@@ -64,11 +92,11 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
             new ConnectedApp(
                 $dataRow['id'],
                 $dataRow['name'],
-                json_decode($dataRow['scopes'], true),
+                \json_decode($dataRow['scopes'], true),
                 $dataRow['connection_code'],
                 $dataRow['logo'],
                 $dataRow['author'],
-                json_decode($dataRow['categories'], true),
+                \json_decode($dataRow['categories'], true),
                 (bool) $dataRow['certified'],
                 $dataRow['partner']
             ) : null;
