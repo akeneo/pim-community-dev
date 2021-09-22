@@ -1,0 +1,80 @@
+services:
+    akeneo.free_trial.reader.category:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getCategoryFixturesPath'
+
+    akeneo.free_trial.reader.channel:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getChannelFixturesPath'
+
+    akeneo.free_trial.reader.currency:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getCurrencyFixturesPath'
+
+    akeneo.free_trial.reader.locale:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getLocaleFixturesPath'
+
+    akeneo.free_trial.reader.measurement_family:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getMeasurementFamilyFixturesPath'
+
+    akeneo.free_trial.reader.attribute:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeFixturesPath'
+
+    akeneo.free_trial.reader.attribute_group:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeGroupFixturesPath'
+
+    akeneo.free_trial.reader.attribute_option:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAttributeOptionFixturesPath'
+
+    akeneo.free_trial.reader.family:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getFamilyFixturesPath'
+
+    akeneo.free_trial.reader.family_variant:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getFamilyVariantFixturesPath'
+
+    akeneo.free_trial.reader.association_type:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getAssociationTypeFixturesPath'
+
+    akeneo.free_trial.reader.product:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getProductFixturesPath'
+
+    akeneo.free_trial.reader.product_association:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getProductAssociationFixturesPath'
+
+    akeneo.free_trial.reader.product_model:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getProductModelFixturesPath'
+
+    akeneo.free_trial.reader.product_model_association:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getProductModelAssociationFixturesPath'
+
+    akeneo.free_trial.reader.media_file:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Reader\JsonFileReader
+        arguments:
+            - 'getMediaFileFixturesPath'

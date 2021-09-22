@@ -46,7 +46,10 @@
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "superbalist/flysystem-google-storage": "7.2.2",
-        "grpc/grpc": "1.30.0"
+        "grpc/grpc": "1.30.0",
+        "akeneo/api-php-client": "^6.0",
+        "php-http/guzzle6-adapter": "^2.0",
+        "http-interop/http-factory-guzzle": "^1.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

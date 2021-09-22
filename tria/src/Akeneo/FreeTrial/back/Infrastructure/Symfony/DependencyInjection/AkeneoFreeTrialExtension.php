@@ -21,5 +21,9 @@ final class AkeneoFreeTrialExtension extends Extension
         $loader->load('mysql.yml');
         $loader->load('services.yml');
         $loader->load('external_javascript_dependencies.yml');
+        $loader->load('commands.yml');
+        $loader->load('readers.yml');
+        $loader->load('installers.yml');
+        $loader->load('parameters.yml');
     }
 }
