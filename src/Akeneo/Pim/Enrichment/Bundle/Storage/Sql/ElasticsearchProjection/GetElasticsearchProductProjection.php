@@ -64,7 +64,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
         $additionalData = [];
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalData = \array_merge($additionalData, $additionalDataProvider->fromProductIdentifiers($productIdentifiers));
+            $additionalData = \array_replace_recursive($additionalData, $additionalDataProvider->fromProductIdentifiers($productIdentifiers));
         }
 
         foreach ($rows as $row) {
