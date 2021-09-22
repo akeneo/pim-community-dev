@@ -15,6 +15,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 
 final class ViewInstaller implements FixtureInstaller
 {
@@ -22,9 +23,12 @@ final class ViewInstaller implements FixtureInstaller
 
     private Connection $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    private LoggerInterface $logger;
+
+    public function __construct(Connection $dbConnection, LoggerInterface $logger)
     {
         $this->dbConnection = $dbConnection;
+        $this->logger = $logger;
     }
 
     public function install(): void
@@ -60,7 +64,16 @@ SQL;
 
         while ($row = fgetcsv($sourceFile, 0, "\t")) {
             $viewData = array_combine($header, $row);
-            $viewData = $this->replaceCategoriesIds($viewData, $categoriesCodes);
+            try {
+                $viewData = $this->replaceCategoriesIds($viewData, $categoriesCodes);
+            } catch (\Exception $exception) {
+                $this->logger->error(
+                    sprintf('Failed to install view "%s"', $viewData['label'] ?? ''),
+                    ['message' => $exception->getMessage()]
+                );
+                continue;
+            }
+
             yield $viewData;
         }
     }
