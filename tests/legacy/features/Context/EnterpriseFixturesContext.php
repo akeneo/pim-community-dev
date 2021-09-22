@@ -275,7 +275,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * {@inheritdoc}
      */
-    public function getEntities()
+    public function getEntities(): array
     {
         return array_merge($this->entities, $this->enterpriseEntities);
     }
