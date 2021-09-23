@@ -1,6 +1,7 @@
 # 4.0.x
 
 - RAC-868: Improve the thumbnail cache clear command to clear with an option to clear all caches.
+- RAC-894: Improve product link rule selection with scopable attributes.
 
 # 4.0.123 (2021-09-01)
 
