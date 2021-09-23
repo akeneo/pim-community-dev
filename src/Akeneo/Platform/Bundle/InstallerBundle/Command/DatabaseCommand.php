@@ -119,7 +119,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Prepare database schema</info>');
 
@@ -193,7 +193,7 @@ class DatabaseCommand extends Command
 
         $this->setLatestKnownMigration($input);
 
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**

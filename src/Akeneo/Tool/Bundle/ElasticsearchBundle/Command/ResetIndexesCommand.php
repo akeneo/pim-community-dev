@@ -55,20 +55,22 @@ class ResetIndexesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->userConfirmation($input, $output)) {
-            return;
+            return Command::FAILURE;
         }
 
         $esClients = $this->getFilteredEsClients($input);
         $this->resetIndexes($output, $esClients);
 
         if (!$this->areIndexesExisting($output, $esClients)) {
-            return;
+            return Command::FAILURE;
         }
 
         $this->showSuccessMessages($output);
+
+        return Command::SUCCESS;
     }
 
     /**
