@@ -19,6 +19,10 @@ services:
     tags:
       - { name: akeneo.tailored_export.operation_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\ReferenceEntityReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\MeasurementConversionOperationApplier:
     arguments:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface'
