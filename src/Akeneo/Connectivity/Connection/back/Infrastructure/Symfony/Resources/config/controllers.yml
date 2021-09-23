@@ -106,3 +106,11 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
             - '@oro_security.security_facade'
             - '@logger'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'

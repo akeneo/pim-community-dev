@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\Model;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConnectedApp
+final class ConnectedApp
 {
     private string $id;
     private string $name;
@@ -35,7 +35,7 @@ class ConnectedApp
         string $author,
         array $categories = [],
         bool $certified = false,
-        string $partner = null
+        ?string $partner = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -97,5 +97,33 @@ class ConnectedApp
     public function isCertified(): bool
     {
         return $this->certified;
+    }
+
+    /**
+     * @return array{
+     *  id: string,
+     *  name: string,
+     *  scopes: array<string>,
+     *  connection_code: string,
+     *  logo: string,
+     *  author: string,
+     *  categories: array<string>,
+     *  certified: bool,
+     *  partner: string|null
+     * }
+     */
+    public function normalize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'scopes' => $this->scopes,
+            'connection_code' => $this->connectionCode,
+            'logo' => $this->logo,
+            'author' => $this->author,
+            'categories' => $this->categories,
+            'certified' => $this->certified,
+            'partner' => $this->partner,
+        ];
     }
 }

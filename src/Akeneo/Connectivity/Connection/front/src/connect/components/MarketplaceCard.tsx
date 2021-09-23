@@ -6,13 +6,6 @@ import {useTranslate} from '../../shared/translate';
 import {Extension} from '../../model/extension';
 import {App} from '../../model/app';
 
-const Grid = styled.section`
-    margin: 20px 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(300px, 1fr));
-    gap: 20px;
-`;
-
 const CardContainer = styled.div`
     padding: 20px;
     border: 1px ${getColor('grey', 40)} solid;
@@ -127,7 +120,7 @@ type Props = {
     additionalActions?: ReactNode[];
 };
 
-const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
+export const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
     const translate = useTranslate();
 
     const normalizedDescription =
@@ -168,5 +161,3 @@ const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
         </CardContainer>
     );
 };
-
-export {MarketplaceCard, Grid};

@@ -14,6 +14,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterf
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
@@ -241,8 +242,17 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $createConnection->execute(Argument::any(), 'My App', 'other', 42, 43)->willReturn($connection);
         $connection->code()->willReturn('random_connection_code');
 
+        $connectedApp = new ConnectedApp(
+            'a_connected_app_id',
+            'a_connected_app_name',
+            ['a_scope'],
+            'random_connection_code',
+            'a/path/to/a/logo',
+            'an_author'
+        );
         $createApp
             ->execute($app, ['a_scope'], 'random_connection_code')
+            ->willReturn($connectedApp)
             ->shouldBeCalled();
 
         $this->handle($command);
