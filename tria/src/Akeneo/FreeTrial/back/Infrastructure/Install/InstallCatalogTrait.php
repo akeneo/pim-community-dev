@@ -64,12 +64,12 @@ trait InstallCatalogTrait
         return $this->getExtractedFixturesPath() . '/product_model_associations.json';
     }
 
-    private function getViewsFixturesPath(): string
+    private function getViewFixturesPath(): string
     {
         return $this->getFixturesPath() . '/views.csv';
     }
 
-    private function getCategoriesCodesFixturesPath(): string
+    private function getCategoryCodeFixturesPath(): string
     {
         return $this->getFixturesPath() . '/categories_codes.csv';
     }
@@ -127,5 +127,15 @@ trait InstallCatalogTrait
     private function getMeasurementFamilyFixturesPath(): string
     {
         return $this->getExtractedFixturesPath() . '/measurement_families.json';
+    }
+
+    private function getConnectionFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/connections.json';
+    }
+
+    private function getConnectionImageFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/images';
     }
 }
