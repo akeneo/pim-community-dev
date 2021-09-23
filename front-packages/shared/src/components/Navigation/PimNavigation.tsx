@@ -4,7 +4,7 @@ import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
-import {useAnalytics} from '@akeneo-pim-community/shared/lib/hooks/useAnalytics';
+import {useAnalytics} from '../../hooks';
 
 type NavigationEntry = {
   code: string;

@@ -13,7 +13,7 @@ import {
 import {useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useScrollToAttribute} from '../../hooks';
-import {useAnalytics} from '@akeneo-pim-community/shared/lib/hooks/useAnalytics';
+import {useAnalytics} from '@akeneo-pim-community/shared';
 
 type Props = {
   currentCompleteness: CurrentCompleteness | null;

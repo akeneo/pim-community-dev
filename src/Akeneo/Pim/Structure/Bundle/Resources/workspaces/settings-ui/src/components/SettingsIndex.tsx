@@ -8,6 +8,7 @@ import {
   useSecurity,
   useTranslate,
   Translate,
+  useAnalytics,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -31,7 +32,6 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
-import {useAnalytics} from '@akeneo-pim-community/shared/lib/hooks/useAnalytics';
 
 const featureFlags = require('pim/feature-flags');
 
