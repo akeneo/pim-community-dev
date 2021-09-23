@@ -1,6 +1,9 @@
 # 4.0.x
 
+# 4.0.124 (2021-09-23)
+
 - RAC-868: Improve the thumbnail cache clear command to clear with an option to clear all caches.
+- PIM-10080: Fix infinite loop when using get all assets API endpoint (backport PIM-9814)
 - RAC-894: Improve product link rule selection with scopable attributes.
 
 # 4.0.123 (2021-09-01)

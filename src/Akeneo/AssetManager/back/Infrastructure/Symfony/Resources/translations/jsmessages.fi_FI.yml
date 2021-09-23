@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_asset_manager_asset_family_index: Assettien hallinta
   akeneo_asset_manager_asset_family_edit: Muokkaa assettiperhettä
   akeneo_asset_manager_asset_edit: Muokkaa assettia
 pim_asset_manager:
@@ -6,9 +7,11 @@ pim_asset_manager:
   asset_counter: '{0} Ei assetteja|{1} {{ count }} assetti|]1,Inf] {{ count }} assettia'
   asset_collection:
     add_asset: 'Lisää assetti'
+    upload_asset: 'Lataa assetti'
     add_asset_title: 'Avaa assettivalitsin lisätäksesi assetteja kokoelmaan'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
     helper:
+      title: 'Tervetuloa täysin uuteen tuotteiden medialiitteiden hallintatilaan!'
       link: 'Miten assettikokoelma lisätään?'
     notification:
       product_rule: 'Tämä kokoelma voidaan päivittää säännöllä:'
@@ -37,6 +40,7 @@ pim_asset_manager:
     previous: Edellinen assetti
     next: Seuraava assetti
     empty_main_media: Tällä assetilla ei ole medialiitettä.
+    other_main_media: Emme voi luoda esikatselukuvaa tälle assetille
     edit_asset: Muokkaa assettia
     download: Lataa
     copy_url: Kopioi URL-osoite
@@ -85,6 +89,7 @@ pim_asset_manager:
       create: Luo assettiperhe
       edit: Muokkaa assettiperhettä
       view: Näytä assettiperhe
+      execute_product_link_rules: Suorita säännöt
     permission:
       title: Assettiperheen käyttöoikeudet
     title: Assetit
@@ -96,6 +101,7 @@ pim_asset_manager:
       properties: Ominaisuudet
       permission: Käyttöoikeudet
       transformations: Muunnokset
+      product_link_rules: Tuotteiden linkityssäännöt
     transformations:
       help:
         title: 'Tervetuloa uuteen assettien hallintaan!'
@@ -108,6 +114,8 @@ pim_asset_manager:
         description: 'Voit määritellä tässä jopa 2 tuotelinkityssääntöä assettiperheelle'
         link: 'Jos haluat tutustua Product Link Rules -ominaisuuteen, klikkaa tästä'
       execute_rules:
+        confirm_title: Vahvista suoritus
+        execute_rules: Suorita säännöt
         cancel: Peruuta
     properties:
       title: Assettiperheen ominaisuudet
@@ -160,6 +168,8 @@ pim_asset_manager:
       compute_transformations:
         success: Muunnokset on käynnistetty. Kun työ on valmis, näet uudet muunnokset päivitettynä assetillesi.
         fail: Tapahtui virhe, kun yritettiin tehdä muunnoksia
+      execute_product_link_rules:
+        success: Tuotteiden linkityssäännöt on käynnistetty
     helper:
       no_asset_family:
         link: Saadaksesi lisätietoja, tutustu tähän artikkeliin.
@@ -217,11 +227,14 @@ pim_asset_manager:
       no_product:
         title: Tätä assettia ei ole linkitetty mihinkään tuotteeseen "{{ entityLabel }}" -attribuutin kautta
         subtitle: 'Aloita tuotteiden linkittäminen tähän attribuuttiin nähdäksesi ne täällä'
+    no_linked_products: Tätä assettia ei ole linkitetty tuotteisiin
     enrich:
       title: Assetin attribuutit
       code: Koodi
       label: Nimike
       edit_subsection: Muokkaa assettia
+      product_subsection: Linkitetyt tuotteet
+      main_media_preview: Päämedian esikatselu
     title: Assetit
     create:
       header:
@@ -413,6 +426,8 @@ pim_asset_manager:
       reload: Päivitä medialinkin pikkukuva
     media_file:
       placeholder: Vedä ja pudota tuodaksesi tai klikkaa tästä
+      read_only: Tämä mediatiedosto on vain luku -tyyppinen
+      uploading: Lataa...
     used_as_transformation_target: Tämä kenttä ei ole muokattavissa, koska se on muunnoksen kohde.
   modal:
     delete:
