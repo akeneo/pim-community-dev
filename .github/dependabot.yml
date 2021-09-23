@@ -23,14 +23,14 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "composer"
-      directory: "/"
-      schedule:
-        interval: "daily"
+    directory: "/"
+    schedule:
+      interval: "daily"
 
   - package-ecosystem: "docker"
-      directory: "/"
-      schedule:
-        interval: "daily"
+    directory: "/"
+    schedule:
+      interval: "daily"
 
   #4.0
   - package-ecosystem: "npm"
@@ -46,16 +46,16 @@ updates:
     target-branch: "4.0"
 
   - package-ecosystem: "composer"
-      directory: "/"
-      schedule:
-        interval: "daily"
-      target-branch: "4.0"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
 
   - package-ecosystem: "docker"
-      directory: "/"
-      schedule:
-        interval: "daily"
-      target-branch: "4.0"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
 
   #5.0
   - package-ecosystem: "npm"
@@ -71,13 +71,13 @@ updates:
     target-branch: "5.0"
 
   - package-ecosystem: "composer"
-      directory: "/"
-      schedule:
-        interval: "daily"
-      target-branch: "5.0"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
 
   - package-ecosystem: "docker"
-      directory: "/"
-      schedule:
-        interval: "daily"
-      target-branch: "5.0"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
