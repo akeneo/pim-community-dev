@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Permission\Bundle\Saver;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
@@ -18,6 +19,10 @@ use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 class UserGroupCategoryPermissionsSaver
 {
+    private const DEFAULT_PERMISSION_OWN = 'category_own';
+    private const DEFAULT_PERMISSION_EDIT = 'category_edit';
+    private const DEFAULT_PERMISSION_VIEW = 'category_view';
+
     private CategoryAccessManager $categoryAccessManager;
     private GroupRepository $groupRepository;
     private SaverInterface $groupSaver;
@@ -25,6 +30,7 @@ class UserGroupCategoryPermissionsSaver
     private GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode;
     private GetRootCategoriesReferences $getRootCategoryReferences;
     private GetAllRootCategoriesCodes $getAllRootCategoriesCodes;
+    private GetCategoriesAccessesWithHighestLevel $getCategoriesAccessesWithHighestLevel;
 
     public function __construct(
         CategoryAccessManager $categoryAccessManager,
@@ -33,7 +39,8 @@ class UserGroupCategoryPermissionsSaver
         GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
         GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
         GetRootCategoriesReferences $getRootCategoryReferences,
-        GetAllRootCategoriesCodes $getAllRootCategoriesCodes
+        GetAllRootCategoriesCodes $getAllRootCategoriesCodes,
+        GetCategoriesAccessesWithHighestLevel $getCategoriesAccessesWithHighestLevel
     ) {
         $this->categoryAccessManager = $categoryAccessManager;
         $this->groupRepository = $groupRepository;
@@ -42,6 +49,7 @@ class UserGroupCategoryPermissionsSaver
         $this->getRootCategoryReferenceFromCode = $getRootCategoryReferenceFromCode;
         $this->getRootCategoryReferences = $getRootCategoryReferences;
         $this->getAllRootCategoriesCodes = $getAllRootCategoriesCodes;
+        $this->getCategoriesAccessesWithHighestLevel = $getCategoriesAccessesWithHighestLevel;
     }
 
     /**
@@ -63,30 +71,56 @@ class UserGroupCategoryPermissionsSaver
      */
     public function save(string $groupName, array $permissions): void
     {
-        $group = $this->groupRepository->findOneByIdentifier($groupName);
-
-        if (null === $group) {
-            throw new \LogicException('User group not found');
-        }
+        $group = $this->getGroup($groupName);
 
         $categoriesCodesForAnyAccessLevel = $this->getCategoriesCodesForAnyAccessLevel($permissions);
         $manuallySelectedCategoriesCodes = $this->getManuallySelectedCategoriesCodes($permissions);
 
         $this->updateDefaultPermissions($group, $permissions);
 
-        $existingCategoriesAccessesByAccessLevel = $this->getCategoriesByAccessLevel($group);
+        $existingCategoriesAccessesByAccessLevel = $this->getCategoriesAccessesWithHighestLevel->execute($group->getId());
+
         $removedCategoryCodes = array_diff(array_keys($existingCategoriesAccessesByAccessLevel), $categoriesCodesForAnyAccessLevel);
 
-        if (!empty($removedCategoryCodes)) {
-            $removedCategories = $this->getRootCategoriesReferencesFromCodes->execute($removedCategoryCodes);
+        $this->revokeCategoryAccessOnRemovedCodes($group, $removedCategoryCodes);
+
+        $this->updateCategoryAccessesForManuallySelectedCodes(
+            $group,
+            $permissions,
+            $manuallySelectedCategoriesCodes,
+            $existingCategoriesAccessesByAccessLevel,
+        );
+    }
+
+    private function getGroup(string $groupName)
+    {
+        $group = $this->groupRepository->findOneByIdentifier($groupName);
+
+        if (null === $group) {
+            throw new \LogicException('User group not found');
+        }
+        return $group;
+    }
+
+    private function revokeCategoryAccessOnRemovedCodes(GroupInterface $group, array $categoryCodesToRevoke): void
+    {
+        if (!empty($categoryCodesToRevoke)) {
+            $removedCategories = $this->getRootCategoriesReferencesFromCodes->execute($categoryCodesToRevoke);
 
             foreach ($removedCategories as $removedCategory) {
                 $this->categoryAccessManager->revokeGroupAccess($removedCategory, $group);
             }
         }
+    }
 
+    private function updateCategoryAccessesForManuallySelectedCodes(
+        GroupInterface $group,
+        array $permissions,
+        array $manuallySelectedCategoriesCodes,
+        array $existingCategoriesAccessesByAccessLevel
+    ): void {
         foreach ($manuallySelectedCategoriesCodes as $code) {
-            $newAccessLevel = $this->getSubmittedHighestAccessLevel($permissions, $code);
+            $newAccessLevel = $this->getHighestAccessLevelForSubmittedCode($permissions, $code);
             $currentAccessLevel = $existingCategoriesAccessesByAccessLevel[$code] ?? null;
 
             if ($currentAccessLevel !== $newAccessLevel) {
@@ -96,20 +130,7 @@ class UserGroupCategoryPermissionsSaver
         }
     }
 
-    private function getHighestAccessLevel(CategoryAccessInterface $access): ?string
-    {
-        if ($access->isOwnItems()) {
-            return Attributes::OWN_PRODUCTS;
-        } elseif ($access->isEditItems()) {
-            return Attributes::EDIT_ITEMS;
-        } elseif ($access->isViewItems()) {
-            return Attributes::VIEW_ITEMS;
-        }
-
-        return null;
-    }
-
-    private function getSubmittedHighestAccessLevel(array $permissions, string $categoryCode): string
+    private function getHighestAccessLevelForSubmittedCode(array $permissions, string $categoryCode): string
     {
         if (in_array($categoryCode, $permissions['own']['identifiers'])) {
             return Attributes::OWN_PRODUCTS;
@@ -120,35 +141,13 @@ class UserGroupCategoryPermissionsSaver
         }
     }
 
-
-    private function getCategoriesByAccessLevel(GroupInterface $group): array
-    {
-        $categoriesByAccessLevel = [];
-
-        // could be improved with a query
-        $categoriesAccesses = $this->categoryAccessManager->getAccessesByGroup($group);
-
-        foreach ($categoriesAccesses as $access) {
-            $highestAccessLevel = $this->getHighestAccessLevel($access);
-            if (null === $highestAccessLevel) {
-                continue;
-            }
-            $categoriesByAccessLevel[$access->getCategory()->getCode()] = $highestAccessLevel;
-        }
-        return $categoriesByAccessLevel;
-    }
-
     /**
      * @param $group
      * @param array $permissions
      */
     private function updateDefaultPermissions($group, array $permissions): void
     {
-        $manuallySelectedCategoriesCodes = array_values(array_unique(array_merge(
-            $permissions['own']['identifiers'],
-            $permissions['edit']['identifiers'],
-            $permissions['view']['identifiers'],
-        )));
+        $manuallySelectedCategoriesCodes = $this->getManuallySelectedCategoriesCodes($permissions);
 
         if (!empty($manuallySelectedCategoriesCodes)) {
             $manuallySelectedCategories = $this->getRootCategoriesReferencesFromCodes->execute($manuallySelectedCategoriesCodes);
@@ -166,9 +165,9 @@ class UserGroupCategoryPermissionsSaver
             return;
         }
 
-        $group->setDefaultPermission('category_view', in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS, Attributes::VIEW_ITEMS]));
-        $group->setDefaultPermission('category_edit', in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS]));
-        $group->setDefaultPermission('category_own', $submittedHighestAll === Attributes::OWN_PRODUCTS);
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS, Attributes::VIEW_ITEMS]));
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS]));
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_OWN, $submittedHighestAll === Attributes::OWN_PRODUCTS);
 
         $this->groupSaver->save($group);
 
@@ -184,11 +183,11 @@ class UserGroupCategoryPermissionsSaver
 
     private function getCurrentHighestAll($defaultPermission): ?string
     {
-        if (true === ($defaultPermission['category_own'] ?? null)) {
+        if (true === ($defaultPermission[self::DEFAULT_PERMISSION_OWN] ?? null)) {
             return Attributes::OWN_PRODUCTS;
-        } else if (true === ($defaultPermission['category_edit'] ?? null)) {
+        } else if (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return Attributes::EDIT_ITEMS;
-        } else if (true === ($defaultPermission['category_view'] ?? null)) {
+        } else if (true === ($defaultPermission[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
             return Attributes::VIEW_ITEMS;
         }
 
