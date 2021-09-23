@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Twig\Environment;
 
 class TwigTemplateProperty extends AbstractProperty
 {
@@ -12,15 +13,14 @@ class TwigTemplateProperty extends AbstractProperty
     /** @var array */
     protected $excludeParams = [self::CONTEXT_KEY, self::TEMPLATE_KEY];
 
-    /** @var \Twig_Environment */
+    /** @var Environment */
     protected $environment;
 
     /**  @var array */
     protected $reservedKeys = ['record', 'value'];
 
-    public function __construct(
-        \Twig_Environment $environment
-    ) {
+    public function __construct(Environment $environment)
+    {
         $this->environment = $environment;
     }
 
@@ -59,8 +59,6 @@ class TwigTemplateProperty extends AbstractProperty
 
     /**
      * Load twig template
-     *
-     * @return \Twig_TemplateInterface
      */
     protected function getTemplate()
     {

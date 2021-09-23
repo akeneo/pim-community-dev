@@ -2,8 +2,10 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Twig\Parser;
 
 use Akeneo\Platform\Bundle\UIBundle\Twig\Node\PlaceholderNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
 
-class PlaceholderTokenParser extends \Twig_TokenParser
+class PlaceholderTokenParser extends AbstractTokenParser
 {
     /**
      * @var array
@@ -25,20 +27,20 @@ class PlaceholderTokenParser extends \Twig_TokenParser
     /**
      * {@inheritDoc}
      */
-    public function parse(\Twig_Token $token)
+    public function parse(Token $token)
     {
         $parser = $this->parser;
         $stream = $parser->getStream();
 
-        $name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
+        $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
         $variables = null;
-        if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
+        if ($stream->test(Token::NAME_TYPE, 'with')) {
             $stream->next();
             $variables = $this->parser->getExpressionParser()->parseExpression();
         }
 
-        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         if (isset($this->placeholders[$name])) {
             return new PlaceholderNode(
