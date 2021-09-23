@@ -14,22 +14,19 @@ namespace Akeneo\Pim\Permission\Bundle\Twig;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to know if a user is granted the given role on the given attribute or locale code
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class IsGrantedExtension extends \Twig_Extension
+class IsGrantedExtension extends AbstractExtension
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected IdentifiableObjectRepositoryInterface $attributeRepository;
+    protected IdentifiableObjectRepositoryInterface $localeRepository;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -47,11 +44,11 @@ class IsGrantedExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'is_attribute_granted',
                 [$this, 'isAttributeGranted']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'is_locale_granted',
                 [$this, 'isLocaleGranted']
             ),

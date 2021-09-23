@@ -19,6 +19,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use PhpSpec\ObjectBehavior;
+use Twig\Environment;
 
 /**
  * Datagrid column formatter for a reference entity or a reference entity collection
@@ -28,7 +29,7 @@ use PhpSpec\ObjectBehavior;
 class ReferenceEntityCollectionPropertySpec extends ObjectBehavior
 {
     function let(
-        \Twig_Environment $environment,
+        Environment $environment,
         RequestParametersExtractorInterface $paramsExtractor,
         UserContext $userContext
     ) {
