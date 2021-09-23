@@ -1,4 +1,5 @@
 import React from 'react';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {AssetCollectionMainMediaSelector} from './AssetCollectionMainMediaSelector';
