@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Twig\TwigFunction;
 
 class AttributeExtensionSpec extends ObjectBehavior
 {
@@ -24,9 +25,9 @@ class AttributeExtensionSpec extends ObjectBehavior
         $functions->shouldHaveCount(2);
 
         $functions[0]->getName()->shouldBeEqualTo('get_attribute_label_from_code');
-        $functions[0]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
+        $functions[0]->shouldBeAnInstanceOf(TwigFunction::class);
         $functions[1]->getName()->shouldBeEqualTo('is_attribute_localizable');
-        $functions[1]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
+        $functions[1]->shouldBeAnInstanceOf(TwigFunction::class);
     }
 
     function it_returns_true_when_attribute_is_localizable($repository, AttributeInterface $attribute)

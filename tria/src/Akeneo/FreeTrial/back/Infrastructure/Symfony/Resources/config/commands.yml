@@ -1,5 +1,7 @@
 services:
     Akeneo\FreeTrial\Infrastructure\Install\Command\BuildJobsYamlCommand:
+        arguments:
+            - '%pim_install_minimal_jobs_fixtures_path%'
         tags:
             - { name: 'console.command' }
 

@@ -4,3 +4,4 @@ parameters:
     env(FT_CATALOG_API_SECRET): ''
     env(FT_CATALOG_API_USERNAME): ''
     env(FT_CATALOG_API_PASSWORD): ''
+    pim_install_minimal_jobs_fixtures_path: '%pim_ce_dev_src_folder_location%/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal/jobs.yml'

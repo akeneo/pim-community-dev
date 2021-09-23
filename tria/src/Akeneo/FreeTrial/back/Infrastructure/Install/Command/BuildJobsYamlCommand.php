@@ -24,6 +24,15 @@ final class BuildJobsYamlCommand extends Command
 {
     use InstallCatalogTrait;
 
+    private string $minimalJobsFixturesPath;
+
+    public function __construct(string $minimalJobsFixturesPath)
+    {
+        parent::__construct();
+
+        $this->minimalJobsFixturesPath = $minimalJobsFixturesPath;
+    }
+
     protected function configure()
     {
         $description = <<<EOL
@@ -67,12 +76,26 @@ EOL;
             ];
         }
 
-        $fileContent = Yaml::dump(['jobs' => $jobs], 10);
+        $minimalJobs = $this->loadMinimalJobs();
 
-        file_put_contents($this->getJobsFixturesPath(), $fileContent);
+        $fileContent = Yaml::dump(['jobs' => array_merge($minimalJobs, $jobs)], 10);
 
-        $output->writeln(sprintf('Import/export jobs have been extracted in %s', $this->getJobsFixturesPath()));
+        file_put_contents($this->getJobFixturesPath(), $fileContent);
+
+        $output->writeln(sprintf('Import/export jobs have been extracted in %s', $this->getJobFixturesPath()));
 
         return 0;
+    }
+
+    private function loadMinimalJobs(): array
+    {
+        $rawMinimalJobs = file_get_contents($this->minimalJobsFixturesPath);
+        $jobs = Yaml::parse($rawMinimalJobs);
+
+        if (empty($jobs) || !isset($jobs['jobs'])) {
+            throw new \Exception('Failed to load minimal jobs');
+        }
+
+        return $jobs['jobs'];
     }
 }
