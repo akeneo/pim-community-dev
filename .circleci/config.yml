@@ -344,7 +344,7 @@ jobs:
       - store_artifacts:
           path: var/tests/screenshots
 
-  test_octopus_code_coverage:
+  test_octopus_code_quality:
     machine:
       image: ubuntu-2004:202101-01
     steps:
@@ -353,6 +353,21 @@ jobs:
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Test PHP Insights /Domain
+          command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Domain'
+      - run:
+          name: Test PHP MD /Domain
+          command: make connectivity-connection-pmd O='src/Akeneo/Connectivity/Connection/back/Domain' || true
+      - run:
+          name: Test PHP Insights /Application
+          command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Application'
+      - run:
+          name: Test PHP MD /Application
+          command: make connectivity-connection-pmd O='src/Akeneo/Connectivity/Connection/back/Application' || true
+      - run:
+          name: Test PSALM
+          command: make connectivity-connection-psalm || true
       - run:
           name: Start containers
           command: |
@@ -874,14 +889,14 @@ workflows:
                 name: marketplace_activate_e2e_ce
                 requires:
                   - marketplace_activate_e2e?
-          - test_octopus_code_coverage?:
+          - test_octopus_code_quality?:
               type: approval
               requires:
                 - build_dev_ce
-          - test_octopus_code_coverage:
-              name: test_octopus_code_coverage
+          - test_octopus_code_quality:
+              name: test_octopus_code_quality
               requires:
-                - test_octopus_code_coverage?
+                - test_octopus_code_quality?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
@@ -960,7 +975,7 @@ workflows:
           is_ee_built: false
           requires:
             - checkout_ce
-      - test_octopus_code_coverage:
+      - test_octopus_code_quality:
           requires:
             - build_dev
 

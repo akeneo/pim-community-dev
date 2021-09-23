@@ -146,7 +146,7 @@
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
-        "squizlabs/php_codesniffer": "2.*",
+        "squizlabs/php_codesniffer": "3.*",
         "friends-of-behat/symfony-extension": "^2.2",
         "liuggio/fastest": "1.8.*",
         "phpstan/phpstan": "^0.12.97",
@@ -156,7 +156,10 @@
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "friends-of-phpspec/phpspec-code-coverage": "^6.0",
         "dvdoug/behat-code-coverage": "^5.2",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "nunomaduro/phpinsights": "^2.0",
+        "phpmd/phpmd" : "^2.10",
+        "vimeo/psalm": "^4.10"
     },
     "conflict": {
         "symfony/symfony": "*"

@@ -88,6 +88,36 @@ else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
 endif
 
+connectivity-connection-back:
+	$(MAKE) connectivity-connection-coupling-back
+	$(MAKE) connectivity-connection-lint-back
+	$(MAKE) connectivity-connection-unit-back
+	$(MAKE) connectivity-connection-acceptance-back
+	$(MAKE) connectivity-connection-integration-back
+	$(MAKE) connectivity-connection-e2e-back
+
+# Tests Front
+
+connectivity-connection-unit-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
+
+connectivity-connection-lint-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
+
+# Development
+
+connectivity-connection-unit-front_coverage:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --coverage
+
+connectivity-connection-unit-front_watch:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll
+
+connectivity-connection-lint-front_fix:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write
+
+# Analysis tools
 connectivity-connection-coverage:
 	# run the backend application unit tests on scope connectivity
 	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
@@ -129,31 +159,11 @@ connectivity-connection-coverage:
 		--html coverage/Connectivity/Back/Global/ \
 		coverage/Connectivity/Back/Global/
 
-connectivity-connection-back:
-	$(MAKE) connectivity-connection-coupling-back
-	$(MAKE) connectivity-connection-lint-back
-	$(MAKE) connectivity-connection-unit-back
-	$(MAKE) connectivity-connection-acceptance-back
-	$(MAKE) connectivity-connection-integration-back
-	$(MAKE) connectivity-connection-e2e-back
+connectivity-connection-insight:
+	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction ${O}
 
-# Tests Front
+connectivity-connection-pmd:
+	$(PHP_RUN) vendor/bin/phpmd ${O} text cleancode, codesize, controversial, design, naming, unusedcode
 
-connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-
-connectivity-connection-lint-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
-
-# Development
-
-connectivity-connection-unit-front_coverage:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --coverage
-
-connectivity-connection-unit-front_watch:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll
-
-connectivity-connection-lint-front_fix:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write
+connectivity-connection-psalm:
+	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
