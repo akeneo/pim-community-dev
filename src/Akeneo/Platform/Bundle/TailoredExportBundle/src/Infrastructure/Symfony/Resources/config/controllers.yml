@@ -16,3 +16,9 @@ services:
             - '@akeneo.tailored_export.query.find_product_model_system_sources'
             - '@akeneo.pim.structure.query.find_association_types'
             - '@akeneo.tailored_export.query.find_product_model_viewable_attributes'
+
+    akeneo.tailored_export.controller.get_attribute_options_action:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetAttributeOptionsAction'
+        public: true
+        arguments:
+            - '@akeneo.pim.structure.query.search_attribute_options'

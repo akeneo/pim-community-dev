@@ -130,6 +130,24 @@ akeneo.tailored_export:
           disabled: Disabled replacement value
           yes: Yes replacement value
           no: No replacement value
+          edit_mapping: Edit replacement values
+          modal:
+            title: Replacement
+            subtitle: Manage options
+            empty_result:
+              title: Sorry, there is no result for your search
+              sub_title: Try again with new search criteria
+            filters:
+              only_mapped:
+                label: Display
+                yes: Only non mapped
+                no: All
+            table:
+              header:
+                values: Values
+                replacement: Replacement values
+              field:
+                to_placeholder: Define the replacement value
         default_value:
           title: Use default value when empty
           label: Default value

@@ -30,6 +30,22 @@ test('it validates that something is a simple select source', () => {
     isSimpleSelectSource({
       ...source,
       operations: {
+        replacement: {
+          type: 'replacement',
+          mapping: {
+            black: 'rouge',
+            red: 'noir',
+          },
+        },
+      },
+    })
+  ).toEqual(true);
+
+  expect(
+    // @ts-expect-error invalid operation
+    isSimpleSelectSource({
+      ...source,
+      operations: {
         foo: 'bar',
       },
     })

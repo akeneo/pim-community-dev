@@ -4,8 +4,14 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelSelector, DefaultValue, Operations} from '../common';
 import {isSimpleSelectSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {SimpleSelectReplacement} from './SimpleSelectReplacement';
 
-const SimpleSelectConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
+const SimpleSelectConfigurator = ({
+  source,
+  attribute,
+  validationErrors,
+  onSourceChange,
+}: AttributeConfiguratorProps) => {
   if (!isSimpleSelectSource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for simple select configurator`);
   }
@@ -17,6 +23,14 @@ const SimpleSelectConfigurator = ({source, validationErrors, onSourceChange}: At
         validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <SimpleSelectReplacement
+        operation={source.operations.replacement}
+        attribute={attribute}
+        validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
       <CodeLabelSelector
