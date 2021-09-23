@@ -7,3 +7,4 @@ services:
           - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes'
           - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode'
           - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes'

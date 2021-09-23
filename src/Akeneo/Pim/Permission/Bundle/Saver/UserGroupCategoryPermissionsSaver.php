@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
@@ -23,6 +24,7 @@ class UserGroupCategoryPermissionsSaver
     private GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes;
     private GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode;
     private GetRootCategoriesReferences $getRootCategoryReferences;
+    private GetAllRootCategoriesCodes $getAllRootCategoriesCodes;
 
     public function __construct(
         CategoryAccessManager $categoryAccessManager,
@@ -30,7 +32,8 @@ class UserGroupCategoryPermissionsSaver
         SaverInterface $groupSaver,
         GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
         GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
-        GetRootCategoriesReferences $getRootCategoryReferences
+        GetRootCategoriesReferences $getRootCategoryReferences,
+        GetAllRootCategoriesCodes $getAllRootCategoriesCodes
     ) {
         $this->categoryAccessManager = $categoryAccessManager;
         $this->groupRepository = $groupRepository;
@@ -38,6 +41,7 @@ class UserGroupCategoryPermissionsSaver
         $this->getRootCategoriesReferencesFromCodes = $getRootCategoriesReferencesFromCodes;
         $this->getRootCategoryReferenceFromCode = $getRootCategoryReferenceFromCode;
         $this->getRootCategoryReferences = $getRootCategoryReferences;
+        $this->getAllRootCategoriesCodes = $getAllRootCategoriesCodes;
     }
 
     /**
@@ -65,16 +69,13 @@ class UserGroupCategoryPermissionsSaver
             throw new \LogicException('User group not found');
         }
 
+        $categoriesCodesForAnyAccessLevel = $this->getCategoriesCodesForAnyAccessLevel($permissions);
+        $manuallySelectedCategoriesCodes = $this->getManuallySelectedCategoriesCodes($permissions);
+
         $this->updateDefaultPermissions($group, $permissions);
 
-        $categoriesByAccessLevel = $this->getCategoriesByAccessLevel($group);
-
-        $manuallySelectedCategoriesCodes = array_unique(array_merge(
-            $permissions['own']['identifiers'],
-            $permissions['edit']['identifiers'],
-            $permissions['view']['identifiers'],
-        ));
-        $removedCategoryCodes = array_diff(array_keys($categoriesByAccessLevel), $manuallySelectedCategoriesCodes);
+        $existingCategoriesAccessesByAccessLevel = $this->getCategoriesByAccessLevel($group);
+        $removedCategoryCodes = array_diff(array_keys($existingCategoriesAccessesByAccessLevel), $categoriesCodesForAnyAccessLevel);
 
         if (!empty($removedCategoryCodes)) {
             $removedCategories = $this->getRootCategoriesReferencesFromCodes->execute($removedCategoryCodes);
@@ -86,7 +87,7 @@ class UserGroupCategoryPermissionsSaver
 
         foreach ($manuallySelectedCategoriesCodes as $code) {
             $newAccessLevel = $this->getSubmittedHighestAccessLevel($permissions, $code);
-            $currentAccessLevel = $categoriesByAccessLevel[$code] ?? null;
+            $currentAccessLevel = $existingCategoriesAccessesByAccessLevel[$code] ?? null;
 
             if ($currentAccessLevel !== $newAccessLevel) {
                 $category = $this->getRootCategoryReferenceFromCode->execute($code);
@@ -205,5 +206,35 @@ class UserGroupCategoryPermissionsSaver
         }
 
         return null;
+    }
+
+    /**
+     * @param array $permissions
+     * @return array
+     */
+    public function getCategoriesCodesForAnyAccessLevel(array $permissions): array
+    {
+        if ($permissions['own']['all'] || $permissions['edit']['all'] || $permissions['view']['all']) {
+            return $this->getAllRootCategoriesCodes->execute();
+        }
+
+        return array_values(array_unique(array_merge(
+            $permissions['own']['identifiers'],
+            $permissions['edit']['identifiers'],
+            $permissions['view']['identifiers'],
+        )));
+    }
+
+    /**
+     * @param array $permissions
+     * @return array
+     */
+    public function getManuallySelectedCategoriesCodes(array $permissions): array
+    {
+        return array_values(array_unique(array_merge(
+            $permissions['own']['identifiers'],
+            $permissions['edit']['identifiers'],
+            $permissions['view']['identifiers'],
+        )));
     }
 }

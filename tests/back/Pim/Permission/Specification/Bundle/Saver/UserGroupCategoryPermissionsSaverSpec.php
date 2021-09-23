@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
@@ -25,15 +26,24 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
         GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
         GetRootCategoriesReferences $getRootCategoriesReferences,
+        GetAllRootCategoriesCodes $getAllRootCategoriesCodes,
         GroupInterface $group,
         Category $categoryA,
         CategoryAccessInterface $categoryAccessA,
-        Category $categoryB
+        Category $categoryB,
+        CategoryAccessInterface $categoryAccessB,
+        Category $categoryC,
+        CategoryAccessInterface $categoryAccessC
     ) {
         $categoryA->getId()->willReturn(1);
         $categoryA->getCode()->willReturn('category_a');
-        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryB->getId()->willReturn(2);
+        $categoryB->getCode()->willReturn('category_b');
+        $categoryC->getId()->willReturn(3);
+        $categoryC->getCode()->willReturn('category_c');
         $categoryAccessA->getCategory()->willReturn($categoryA);
+        $categoryAccessB->getCategory()->willReturn($categoryB);
+        $categoryAccessC->getCategory()->willReturn($categoryC);
 
         $getRootCategoryReferenceFromCode->execute('category_a')->willReturn($categoryA);
         $getRootCategoryReferenceFromCode->execute('category_b')->willReturn($categoryB);
@@ -50,6 +60,26 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
             $categoryA,
             $categoryB,
         ]);
+        $getRootCategoriesReferencesFromCodes->execute([
+            'category_a',
+            'category_b',
+            'category_c',
+        ])->willReturn([
+            $categoryA,
+            $categoryB,
+            $categoryC,
+        ]);
+        $getRootCategoriesReferencesFromCodes->execute([
+            'category_c',
+        ])->willReturn([
+            $categoryC,
+        ]);
+
+        $getAllRootCategoriesCodes->execute()->willReturn([
+            'category_a',
+            'category_b',
+            'category_c',
+        ]);
 
         $groupRepository->findOneByIdentifier('Redactor')->willReturn($group);
 
@@ -59,7 +89,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
             $groupSaver,
             $getRootCategoriesReferencesFromCodes,
             $getRootCategoryReferenceFromCode,
-            $getRootCategoriesReferences
+            $getRootCategoriesReferences,
+            $getAllRootCategoriesCodes
         );
     }
 
@@ -301,7 +332,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
     ) {
         $group->getDefaultPermissions()->willReturn([]);
         $groupSaver->save($group)->shouldNotBeCalled();
-
+        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryAccessA->isEditItems()->willReturn(true);
+        $categoryAccessA->isViewItems()->willReturn(true);
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([$categoryAccessA]);
 
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldNotBeCalled();
@@ -342,7 +375,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
     ) {
         $group->getDefaultPermissions()->willReturn([]);
         $groupSaver->save($group)->shouldNotBeCalled();
-
+        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryAccessA->isEditItems()->willReturn(true);
+        $categoryAccessA->isViewItems()->willReturn(true);
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([$categoryAccessA]);
 
         $categoryAccessManager->revokeGroupAccess($categoryA, $group)->shouldBeCalled();
@@ -378,7 +413,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
     ) {
         $group->getDefaultPermissions()->willReturn([]);
         $groupSaver->save($group)->shouldNotBeCalled();
-
+        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryAccessA->isEditItems()->willReturn(true);
+        $categoryAccessA->isViewItems()->willReturn(true);
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([$categoryAccessA]);
 
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
@@ -397,6 +434,77 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
                 'identifiers' => [
                     'category_a',
                 ],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"own":{"all":false,"identifiers":["category_a", "category_b"]},"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     * TO {"own":{"all":false,"identifiers":["category_a"]},"edit":{"all":false,"identifiers":["category_a", "category_b"]},"view":{"all":true,"identifiers":[]}}
+     */
+    public function it_updatesPermissionsWhenSwitchingFromAllByDefaultToSpecificIdentifiers(
+        CategoryAccessManager $categoryAccessManager,
+        SaverInterface $groupSaver,
+        GroupInterface $group,
+        GetRootCategoriesReferences $getRootCategoriesReferences,
+        Category $categoryA,
+        Category $categoryB,
+        Category $categoryC,
+        CategoryAccessInterface $categoryAccessA,
+        CategoryAccessInterface $categoryAccessB,
+        CategoryAccessInterface $categoryAccessC
+    ) {
+        $group->getDefaultPermissions()->willReturn([
+            'category_edit' => true,
+            'category_view' => true,
+        ]);
+        $group->setDefaultPermission('category_own', false)->shouldBeCalled();
+        $group->setDefaultPermission('category_edit', false)->shouldBeCalled();
+        $group->setDefaultPermission('category_view', true)->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
+
+        $categoryAccessA->isOwnItems()->willReturn(true);
+        $categoryAccessA->isEditItems()->willReturn(true);
+        $categoryAccessA->isViewItems()->willReturn(true);
+        $categoryAccessB->isOwnItems()->willReturn(true);
+        $categoryAccessB->isEditItems()->willReturn(true);
+        $categoryAccessB->isViewItems()->willReturn(true);
+        $categoryAccessC->isOwnItems()->willReturn(false);
+        $categoryAccessC->isEditItems()->willReturn(true);
+        $categoryAccessC->isViewItems()->willReturn(true);
+
+        $categoryAccessManager->getAccessesByGroup($group)->willReturn([
+            $categoryAccessA,
+            $categoryAccessB,
+            $categoryAccessC
+        ]);
+
+        $getRootCategoriesReferences->execute()->willReturn([
+            $categoryA,
+            $categoryB,
+            $categoryC,
+        ]);
+
+        $categoryAccessManager->grantAccess($categoryB, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->grantAccess($categoryC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'own' => [
+                'all' => false,
+                'identifiers' => [
+                    'category_a',
+                ],
+            ],
+            'edit' => [
+                'all' => false,
+                'identifiers' => [
+                    'category_a',
+                    'category_b',
+                ],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
             ],
         ]);
     }

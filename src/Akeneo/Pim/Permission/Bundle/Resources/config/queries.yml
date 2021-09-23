@@ -175,3 +175,7 @@ services:
         arguments:
             - '@database_connection'
             - '@doctrine'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes:
+        arguments:
+            - '@database_connection'
