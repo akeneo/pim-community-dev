@@ -57,11 +57,16 @@ if [[ ${PFID} =~ "tria" ]]; then
   if [[ -z "${TRIA_VAR}" ]]; then
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
   fi
 fi
 terraform init
