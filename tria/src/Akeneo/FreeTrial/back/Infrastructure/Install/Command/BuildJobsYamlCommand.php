@@ -24,13 +24,13 @@ final class BuildJobsYamlCommand extends Command
 {
     use InstallCatalogTrait;
 
-    private string $pimCommunityDevPath;
+    private string $minimalJobsFixturesPath;
 
-    public function __construct(string $pimCommunityDevPath)
+    public function __construct(string $minimalJobsFixturesPath)
     {
         parent::__construct();
 
-        $this->pimCommunityDevPath = $pimCommunityDevPath;
+        $this->minimalJobsFixturesPath = $minimalJobsFixturesPath;
     }
 
     protected function configure()
@@ -89,9 +89,7 @@ EOL;
 
     private function loadMinimalJobs(): array
     {
-        $rawMinimalJobs = file_get_contents(
-            rtrim($this->pimCommunityDevPath, '/') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal/jobs.yml'
-        );
+        $rawMinimalJobs = file_get_contents($this->minimalJobsFixturesPath);
         $jobs = Yaml::parse($rawMinimalJobs);
 
         if (empty($jobs) || !isset($jobs['jobs'])) {
