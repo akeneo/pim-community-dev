@@ -35,12 +35,12 @@ const OnlyEmptyDropdown = ({value, onChange}: OnlyEmptyDropdownProps) => {
       {isDropdownOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.ItemCollection>
-            <Dropdown.Item onClick={() => handleChange(false)}>
+            <Dropdown.Item isActive={false === value} onClick={() => handleChange(false)}>
               {translate(
                 'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.only_mapped.no'
               )}
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => handleChange(true)}>
+            <Dropdown.Item isActive={true === value} onClick={() => handleChange(true)}>
               {translate(
                 'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.only_mapped.yes'
               )}
