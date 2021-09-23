@@ -41,7 +41,7 @@ trait InstallCatalogTrait
 
     private function getJobFixturesPath(): string
     {
-        return $this->getFixturesPath() . '/jobs_test.yml';
+        return $this->getFixturesPath() . '/jobs.yml';
     }
 
     private function getMediaFileFixturesPath(): string
