@@ -86,9 +86,7 @@ const isAssetCollectionSelection = (selection: any): selection is AssetCollectio
   }
 };
 
-const isAssetCollectionMediaSelection = (
-  selection: any
-): selection is AssetCollectionMainMediaSelection =>
+const isAssetCollectionMediaSelection = (selection: any): selection is AssetCollectionMainMediaSelection =>
   isAssetCollectionSelection(selection) && ('media_link' === selection.type || 'media_file' === selection.type);
 
 const getDefaultAssetCollectionSelection = (): AssetCollectionSelection => ({

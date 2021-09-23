@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {AssetCollectionMainMediaSelector} from './AssetCollectionMainMediaSelector';
 import {renderWithProviders} from 'feature/tests';
 
-test('it can select the original file name of a media file main media ', async () => {
+test("it can select the original file name of a media file's main media", async () => {
   const onSelectionChange = jest.fn();
   await renderWithProviders(
     <AssetCollectionMainMediaSelector
@@ -150,4 +150,42 @@ test('it can select a locale when main media is localizable', async () => {
     with_prefix_and_suffix: false,
     separator: ',',
   });
+});
+
+test('it displays validation errors', async () => {
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.locale',
+      invalidValue: '',
+      message: 'this is a locale error',
+      parameters: {},
+      propertyPath: '[locale]',
+    },
+    {
+      messageTemplate: 'error.key.channel',
+      invalidValue: '',
+      message: 'this is a channel error',
+      parameters: {},
+      propertyPath: '[channel]',
+    },
+    {
+      messageTemplate: 'error.key.property',
+      invalidValue: '',
+      message: 'this is a property error',
+      parameters: {},
+      propertyPath: '[property]',
+    },
+  ];
+
+  await renderWithProviders(
+    <AssetCollectionMainMediaSelector
+      validationErrors={validationErrors}
+      selection={{type: 'media_file', channel: 'ecommerce', locale: 'en_US', property: 'file_key', separator: ','}}
+      onSelectionChange={jest.fn()}
+    />
+  );
+
+  expect(screen.getByText('error.key.channel')).toBeInTheDocument();
+  expect(screen.getByText('error.key.locale')).toBeInTheDocument();
+  expect(screen.getByText('error.key.property')).toBeInTheDocument();
 });
