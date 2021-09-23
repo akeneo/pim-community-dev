@@ -17,7 +17,6 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSele
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 class SqlGetNonExistingSelectOptionCodes implements GetNonExistingSelectOptionCodes
 {
@@ -55,7 +54,7 @@ SQL;
             'selectOptionCodes' => array_unique($selectStringOptionCodes),
         ], [
             ':selectOptionCodes' => Connection::PARAM_STR_ARRAY
-        ])->fetchAll(FetchMode::COLUMN);
+        ])->fetchFirstColumn();
 
         return \array_udiff(
             $selectOptionCodes,

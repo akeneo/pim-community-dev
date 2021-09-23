@@ -34,11 +34,13 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('enrichment.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
+        $loader->load('filters.yml');
         $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
         $loader->load('persistence.yml');
         $loader->load('providers.yml');
         $loader->load('twig.yml');
         $loader->load('validators.yml');
+        $loader->load('value_filters.yml');
     }
 }

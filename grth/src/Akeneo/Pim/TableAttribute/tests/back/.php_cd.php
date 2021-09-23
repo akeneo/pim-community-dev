@@ -65,6 +65,12 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier',
             'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRenderer',
+            'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter',
+            'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
+            'Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter',
             'Akeneo\Tool\Component\Batch',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
