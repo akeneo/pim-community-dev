@@ -8,7 +8,17 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "npm"
-    directory: "/front-packages/shared/"
+    directory: "/front-packages/akeneo-design-system"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/shared"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/measurement"
     schedule:
       interval: "daily"
 
