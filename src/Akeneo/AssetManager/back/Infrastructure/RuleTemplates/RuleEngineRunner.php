@@ -42,9 +42,21 @@ class RuleEngineRunner implements CompiledRuleRunnerInterface
         return [
             'code'       => '',
             'priority'   => '',
-            'conditions' => $compiledRule->getConditions(),
+            'conditions' => $this->adaptConditionsToRuleEngine($compiledRule->getConditions()),
             'actions'    => $this->adaptActionsToRuleEngine($compiledRule->getActions())
         ];
+    }
+
+    private function adaptConditionsToRuleEngine(array $conditions): array
+    {
+        return array_map(
+            static function (array $condition) {
+                $condition['scope'] = $condition['channel'];
+
+                return $condition;
+            },
+            $conditions
+        );
     }
 
     /**
@@ -54,7 +66,7 @@ class RuleEngineRunner implements CompiledRuleRunnerInterface
     private function adaptActionsToRuleEngine(array $actions): array
     {
         return array_map(
-            function (array $action) {
+            static function (array $action) {
                 $action['value'] = $action['items'];
                 $action['scope'] = $action['channel'];
 

@@ -34,7 +34,7 @@ class RuleEngineRunnerSpec extends ObjectBehavior
         RunnerInterface $ruleEngineRunner,
         Rule $rule
     ) {
-        $conditions = ['conditions'];
+        $conditions = [['channel' => 'ecommerce']];
         $actions = [
             [
                 'items' => ['product_1', 'product_2'],
@@ -48,7 +48,12 @@ class RuleEngineRunnerSpec extends ObjectBehavior
             [
                 'code' => '',
                 'priority' => '',
-                'conditions' => ['conditions'],
+                'conditions' => [
+                    [
+                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
+                    ],
+                ],
                 'actions' => [
                     [
                         'items' => ['product_1', 'product_2'],
