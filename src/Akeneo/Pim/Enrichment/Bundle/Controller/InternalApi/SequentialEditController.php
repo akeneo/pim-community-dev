@@ -35,8 +35,6 @@ class SequentialEditController
     protected UserContext $userContext;
 
     /**
-     * @param MassActionParametersParser $parameterParser
-     * @param GridFilterAdapterInterface $filterAdapter
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
     public function __construct(
