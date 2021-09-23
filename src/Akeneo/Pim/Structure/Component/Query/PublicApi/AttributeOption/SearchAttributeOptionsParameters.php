@@ -16,10 +16,10 @@ class SearchAttributeOptionsParameters
     /** @var string[] */
     private array $excludeCodes = [];
 
-    private ?string $search;
-    private ?string $locale;
-    private int $limit;
-    private int $page;
+    private ?string $search = null;
+    private ?string $locale = null;
+    private ?int $limit = null;
+    private ?int $page = null;
 
     public function getIncludeCodes(): array
     {
@@ -61,28 +61,32 @@ class SearchAttributeOptionsParameters
         $this->locale = $locale;
     }
 
-    public function getLimit(): int
+    public function getLimit(): ?int
     {
         return $this->limit;
     }
 
-    public function setLimit(int $limit): void
+    public function setLimit(?int $limit): void
     {
         $this->limit = $limit;
     }
 
-    public function getPage(): int
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function setPage(int $page): void
+    public function setPage(?int $page): void
     {
         $this->page = $page;
     }
 
-    public function getOffset(): int
+    public function getOffset(): ?int
     {
+        if (null === $this->page || null === $this->limit) {
+            return null;
+        }
+
         return ($this->page - 1) * $this->limit;
     }
 }
