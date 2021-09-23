@@ -11,21 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
+namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\AuthenticationEvents;
-use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
-final class InstallViewsSubscriber implements EventSubscriberInterface
+final class ViewInstaller implements FixtureInstaller
 {
     use InstallCatalogTrait;
-
-    private const INSTALL_ERROR_LOG = 'An error occurred during Free-Trial views installation';
 
     private Connection $dbConnection;
 
@@ -37,32 +31,9 @@ final class InstallViewsSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
+    public function install(): void
     {
-        return [
-            AuthenticationEvents::AUTHENTICATION_SUCCESS => 'installViews',
-        ];
-    }
-
-    public function installViews(AuthenticationSuccessEvent $event): void
-    {
-        $this->logger->debug('AUTHENTICATION_SUCCESS');
-
-        $user = $event->getAuthenticationToken()->getUser();
-        if (!$user instanceof UserInterface) {
-            return;
-        }
-
-        if ($user->getId() !== 1 || $user->getLoginCount() > 1) {
-            return;
-        }
-
-        if ($this->viewsAlreadyInstalled()) {
-            $this->logger->debug('Free-Trial views already installed');
-            return;
-        }
-
-        $this->logger->debug('Install views');
+        $this->ensureFirstUserExists();
 
         $query = <<<SQL
 INSERT INTO pim_datagrid_view (owner_id, label, type, datagrid_alias, columns, filters) 
@@ -70,35 +41,20 @@ VALUES (1, :label, 'public', :datagrid_alias, :columns, :filters)
 SQL;
 
         foreach ($this->getViewsData() as $viewData) {
-            try {
-                $this->dbConnection->executeQuery($query, $viewData);
-            } catch (\Throwable $exception) {
-                $this->logger->error(self::INSTALL_ERROR_LOG, ['error_message' => $exception->getMessage()]);
-            }
+            $this->dbConnection->executeQuery($query, $viewData);
         }
-    }
-
-    private function viewsAlreadyInstalled(): bool
-    {
-        $query = <<<SQL
-SELECT EXISTS(SELECT 1 FROM pim_datagrid_view);
-SQL;
-
-        return boolval($this->dbConnection->executeQuery($query)->fetchColumn());
     }
 
     private function getViewsData(): \Iterator
     {
-        $sourceFile = @fopen($this->getViewsFixturesPath(), 'r');
+        $sourceFile = fopen($this->getViewFixturesPath(), 'r');
         if (false === $sourceFile) {
-            $this->logger->error(self::INSTALL_ERROR_LOG, ['message' => sprintf('Failed to open views fixtures file "%s"', $this->getViewsFixturesPath())]);
-            return;
+            throw new \Exception(sprintf('Failed to open views fixtures file "%s"', $this->getViewFixturesPath()));
         }
 
         $header = fgetcsv($sourceFile, 0, "\t");
         if ('label' !== $header[0]) {
-             $this->logger->error(self::INSTALL_ERROR_LOG, ['message' => 'Invalid CSV views header', 'header' => $header]);
-             return;
+            throw new \Exception('Invalid CSV views header');
         }
 
         $categoriesCodes = $this->retrieveCategoriesCodes();
@@ -108,17 +64,25 @@ SQL;
 
         while ($row = fgetcsv($sourceFile, 0, "\t")) {
             $viewData = array_combine($header, $row);
-            $viewData = $this->replaceCategoriesIds($viewData, $categoriesCodes);
+            try {
+                $viewData = $this->replaceCategoriesIds($viewData, $categoriesCodes);
+            } catch (\Exception $exception) {
+                $this->logger->error(
+                    sprintf('Failed to install view "%s"', $viewData['label'] ?? ''),
+                    ['message' => $exception->getMessage()]
+                );
+                continue;
+            }
+
             yield $viewData;
         }
     }
 
     private function retrieveCategoriesCodes(): array
     {
-        $sourceFile = @fopen($this->getCategoriesCodesFixturesPath(), 'r');
+        $sourceFile = @fopen($this->getCategoryCodeFixturesPath(), 'r');
         if (false === $sourceFile) {
-            $this->logger->error(self::INSTALL_ERROR_LOG, ['message' => sprintf('Failed to open categories codes file "%s"', $this->getCategoriesCodesFixturesPath())]);
-            return [];
+            throw new \Exception(sprintf('Failed to open categories codes file "%s"', $this->getCategoryCodeFixturesPath()));
         }
 
         $categoriesCodes = [];
@@ -149,8 +113,7 @@ SQL;
     private function retrieveRealCategoryId(string $filterCategoryId, array $categoriesCodes): string
     {
         if (!isset($categoriesCodes[$filterCategoryId])) {
-            $this->logger->error(self::INSTALL_ERROR_LOG, ['message' => sprintf('No code found for category "%s"', $filterCategoryId)]);
-            return $filterCategoryId;
+            throw new \Exception(sprintf('No code found for category "%s"', $filterCategoryId));
         }
 
         $query = <<<SQL
@@ -159,10 +122,22 @@ SQL;
 
         $realCategoryId = $this->dbConnection->executeQuery($query, ['code' => $categoriesCodes[$filterCategoryId]])->fetchColumn();
         if (!$realCategoryId) {
-            $this->logger->error(self::INSTALL_ERROR_LOG, ['message' => sprintf('No id found for category "%s"', $categoriesCodes[$filterCategoryId])]);
-            return $filterCategoryId;
+            throw new \Exception(sprintf('No id found for category "%s"', $categoriesCodes[$filterCategoryId]));
         }
 
         return $realCategoryId;
+    }
+
+    private function ensureFirstUserExists(): void
+    {
+        $query = <<<SQL
+SELECT 1 FROM oro_user WHERE id = 1
+SQL;
+
+        $userExists = $this->dbConnection->executeQuery($query)->fetchColumn();
+
+        if (false === boolval($userExists)) {
+            throw new \Exception('Installing views needs at least one user');
+        }
     }
 }

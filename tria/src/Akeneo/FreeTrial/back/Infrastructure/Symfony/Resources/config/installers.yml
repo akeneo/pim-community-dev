@@ -181,3 +181,10 @@ services:
             - '@database_connection'
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'connection_data_flows' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ViewInstaller:
+        arguments:
+            - '@database_connection'
+            - '@logger'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'view' }
