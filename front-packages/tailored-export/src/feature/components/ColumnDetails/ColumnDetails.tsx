@@ -44,10 +44,6 @@ const SourcesContent = styled.div`
   flex: 1;
 `;
 
-const SourcesSectionTitle = styled(SectionTitle)`
-  z-index: 10;
-`;
-
 type ColumnDetailsProps = {
   columnConfiguration: ColumnConfiguration;
   onColumnChange: (column: ColumnConfiguration) => void;
@@ -105,14 +101,14 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   return (
     <Container ref={scrollRef}>
       <SourcesContent>
-        <SourcesSectionTitle sticky={0}>
+        <SectionTitle sticky={0}>
           <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
           <SectionTitle.Spacer />
           <AddSourceDropdown
             canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
             onSourceSelected={handleSourceAdd}
           />
-        </SourcesSectionTitle>
+        </SectionTitle>
         {columnConfiguration.sources.length !== 0 && (
           <SourceTabBar
             validationErrors={validationErrors}
