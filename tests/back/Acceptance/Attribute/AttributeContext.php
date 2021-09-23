@@ -11,17 +11,10 @@ use Behat\Gherkin\Node\TableNode;
 
 class AttributeContext implements Context
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
-
-    /** @var EntityBuilder */
-    private $attributeBuilder;
-
-    /** @var InMemoryAttributeGroupRepository */
-    private $attributeGroupRepository;
-
-    /** @var EntityBuilder */
-    private $attributeGroupBuilder;
+    private InMemoryAttributeRepository $attributeRepository;
+    private EntityBuilder $attributeBuilder;
+    private InMemoryAttributeGroupRepository $attributeGroupRepository;
+    private EntityBuilder $attributeGroupBuilder;
 
     public function __construct(
         InMemoryAttributeRepository $attributeRepository,

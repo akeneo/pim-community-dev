@@ -28,6 +28,8 @@ use Doctrine\Common\Util\Debug;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -41,7 +43,7 @@ class FixturesContext extends PimContext
 {
     use SpinCapableTrait;
 
-    protected $entities = [
+    protected array $entities = [
         'Attribute'        => Attribute::class,
         'AttributeGroup'   => AttributeGroup::class,
         'AttributeOption'  => AttributeOption::class,
@@ -66,14 +68,9 @@ class FixturesContext extends PimContext
     /**
      * Magic methods for getting and creating entities
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if ('getOrCreate' === $getter = substr($method, 0, 11)) {
             $entityName = substr($method, 11);
@@ -97,15 +94,15 @@ class FixturesContext extends PimContext
         throw new \BadMethodCallException(sprintf('There is no method named %s in FixturesContext', $method));
     }
 
+    public function getEntities(): array
+    {
+        return $this->entities;
+    }
+
     /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
      * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
      */
-    public function getEntity($entityName, $data)
+    public function getEntity(string $entityName, $data): ?object
     {
         $getter = sprintf('get%s', $entityName);
 
@@ -116,26 +113,14 @@ class FixturesContext extends PimContext
         return $this->getEntityOrException($entityName, $data);
     }
 
-    /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
-     * @return object
-     */
-    public function createEntity($entityName, $data)
+    public function createEntity(string $entityName, $data): ?object
     {
         $method = sprintf('create%s', $entityName);
 
         return $this->$method($data);
     }
 
-    /**
-     * @param string $entityName
-     * @param string $data
-     *
-     * @return object
-     */
-    public function getOrCreateEntity($entityName, $data)
+    public function getOrCreateEntity(string $entityName, $data): ?object
     {
         try {
             return $this->getEntity($entityName, $data);
@@ -145,14 +130,9 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
      * @throws \Exception
-     *
-     * @return null|object
      */
-    public function findEntity($entityName, $criteria)
+    public function findEntity(string $entityName, $criteria): ?object
     {
         if (!array_key_exists($entityName, $this->getEntities())) {
             throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
@@ -172,14 +152,9 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
      * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
      */
-    public function getEntityOrException($entityName, $criteria)
+    public function getEntityOrException(string $entityName, $criteria): ?object
     {
         $entity = $this->findEntity($entityName, $criteria);
 
@@ -213,14 +188,12 @@ class FixturesContext extends PimContext
         return $stmt->fetch()['backend_type'];
     }
 
-    /**
-     * @param mixed $value
-     * @param ?ValueInterface $productValue
-     * @param string $attributeCode
-     * @param array $infos
-     */
-    protected function assertProductDataValueEquals($value, ?ValueInterface $productValue, string $attributeCode, $infos = [])
-    {
+    protected function assertProductDataValueEquals(
+        $value,
+        ?ValueInterface $productValue,
+        string $attributeCode,
+        array $infos = []
+    ) {
         $backendType = $this->getAttributeBackendType($attributeCode);
 
         $priceCurrency = $infos['price_currency'] ?? null;
@@ -282,11 +255,9 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param mixed $object
-     *
      * @throws \InvalidArgumentException
      */
-    protected function validate($object)
+    protected function validate(object $object)
     {
         if ($object instanceof ProductInterface) {
             $validator = $this->getContainer()->get('pim_catalog.validator.product');
@@ -323,27 +294,16 @@ class FixturesContext extends PimContext
         return $inflector->camelize(str_replace(' ', '_', strtolower($string)));
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
+    protected function getEntityManager(): ObjectManager
     {
         return $this->getMainContext()->getEntityManager();
     }
 
-    /**
-     * @param string $namespace
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($namespace)
+    protected function getRepository(string $namespace): ObjectRepository
     {
         return $this->getMainContext()->getEntityManager()->getRepository($namespace);
     }
 
-    /**
-     * @param object $object
-     */
     public function refresh($object)
     {
         if (is_object($object)) {

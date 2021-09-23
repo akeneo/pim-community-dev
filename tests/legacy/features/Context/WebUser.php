@@ -16,8 +16,10 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context of the website
@@ -34,13 +36,13 @@ class WebUser extends PimContext
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page): Page
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($page);
     }
 
     /**
@@ -2708,10 +2710,7 @@ class WebUser extends PimContext
         return $page;
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -2764,25 +2763,19 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
 
-    /**
-     * @return NavigationContext
-     */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }

@@ -43,14 +43,6 @@ class ProductContext implements Context
     /** @var VersionRepositoryInterface */
     private $versionRepository;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param SaverInterface                        $productSaver
-     * @param ValidatorInterface                    $validator
-     * @param EntityManagerInterface                $entityManager
-     * @param VersionRepositoryInterface            $versionRepository
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,

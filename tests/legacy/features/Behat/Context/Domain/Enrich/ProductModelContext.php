@@ -15,6 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -44,17 +45,9 @@ class ProductModelContext extends PimContext
     /** @var VersionRepositoryInterface */
     private $versionRepository;
 
-    /**
-     * @param string                          $mainContextClass
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param EntityManagerInterface          $entityManager
-     * @param ObjectUpdaterInterface          $productModelUpdater
-     * @param SaverInterface                  $productSaver
-     * @param ValidatorInterface              $validator
-     * @param VersionRepositoryInterface      $versionRepository
-     */
     public function __construct(
         string $mainContextClass,
+        KernelInterface $kernel,
         ProductModelRepositoryInterface $productModelRepository,
         EntityManagerInterface $entityManager,
         ObjectUpdaterInterface $productModelUpdater,
@@ -62,7 +55,7 @@ class ProductModelContext extends PimContext
         ValidatorInterface $validator,
         VersionRepositoryInterface $versionRepository
     ) {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
 
         $this->entityManager = $entityManager;
         $this->productModelRepository = $productModelRepository;
