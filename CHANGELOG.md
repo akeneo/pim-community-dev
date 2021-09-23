@@ -107,7 +107,6 @@
 - PIM-10071: Fix fatal error in case of Cursor::getResults is called without been initialized
 - PIM-10077: Fix the "product image" filter display (untranslatable values on languages other than english)
 - PIM-10078: Add sanity check on attribute options to avoid having an empty screen.
-<<<<<<< HEAD
 - PIM-10074: Add translation key for mass action selection
 - PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
 - PIM-10062: Suppress warning in datadog,  When missing 'dataScope' value.
