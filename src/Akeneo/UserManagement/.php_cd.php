@@ -56,6 +56,7 @@ $rules = [
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
         'Swift_Mailer',
+        'Twig\TwigFunction',
         'Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction',
 
         // TIP-1007: Clean VisibilityChecker system

@@ -4,6 +4,8 @@ namespace Oro\Bundle\FilterBundle\Twig;
 
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormView;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class RenderLayoutExtension extends AbstractExtension
 {
@@ -23,7 +25,7 @@ class RenderLayoutExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_filter_javascript',
                 [$this, 'renderFilterJavascript'],
                 $this->defaultFunctionOptions
@@ -69,7 +71,7 @@ class RenderLayoutExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'oro_filter_choices',
                 [$this, 'getChoices']
             )
