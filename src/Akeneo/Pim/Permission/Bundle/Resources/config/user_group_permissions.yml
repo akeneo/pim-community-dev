@@ -1,0 +1,9 @@
+services:
+    Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver:
+        arguments:
+          - '@pimee_security.manager.category_access'
+          - '@pim_user.repository.group'
+          - '@pim_user.saver.group'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences'

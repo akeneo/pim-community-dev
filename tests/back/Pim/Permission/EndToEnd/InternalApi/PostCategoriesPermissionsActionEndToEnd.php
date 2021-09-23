@@ -58,8 +58,8 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
         $defaultPermissions = $this->getUserGroupDefaultPermissions('Redactor');
         assert::assertEquals([
             'category_own' => false,
-            'edit_own' => true,
-            'view_own' => true,
+            'category_edit' => true,
+            'category_view' => true,
         ], $defaultPermissions);
     }
 
@@ -74,7 +74,7 @@ SQL;
             'name' => $name,
         ]);
 
-        return $result ?? [];
+        return json_decode($result, true) ?? [];
     }
 
     protected function getConfiguration(): Configuration

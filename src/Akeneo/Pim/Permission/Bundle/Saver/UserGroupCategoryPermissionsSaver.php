@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
@@ -19,24 +19,24 @@ class UserGroupCategoryPermissionsSaver
     private CategoryAccessManager $categoryAccessManager;
     private GroupRepository $groupRepository;
     private SaverInterface $groupSaver;
-    private CategoryRepositoryInterface $categoryRepository;
     private GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes;
     private GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode;
+    private GetRootCategoriesReferences $getRootCategoryReferences;
 
     public function __construct(
         CategoryAccessManager $categoryAccessManager,
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
-        CategoryRepositoryInterface $categoryRepository,
         GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
-        GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode
+        GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
+        GetRootCategoriesReferences $getRootCategoryReferences
     ) {
         $this->categoryAccessManager = $categoryAccessManager;
         $this->groupRepository = $groupRepository;
         $this->groupSaver = $groupSaver;
-        $this->categoryRepository = $categoryRepository;
         $this->getRootCategoriesReferencesFromCodes = $getRootCategoriesReferencesFromCodes;
         $this->getRootCategoryReferenceFromCode = $getRootCategoryReferenceFromCode;
+        $this->getRootCategoryReferences = $getRootCategoryReferences;
     }
 
     /**
@@ -143,37 +143,45 @@ class UserGroupCategoryPermissionsSaver
         $currentHighestAll = $this->getCurrentHighestAll($defaultPermissions);
         $submittedHighestAll = $this->getSubmittedHighestAll($permissions);
 
-        if (($defaultPermissions['category_own'] ?? false) !== $permissions['own']['all']) {
-            $group->setDefaultPermission('category_own', true);
+        if ($currentHighestAll === $submittedHighestAll) {
+            return;
+        }
 
-        }
-        if (($defaultPermissions['category_edit'] ?? false) !== $permissions['edit']['all']) {
-            $group->setDefaultPermission('category_edit', true);
-        }
-        if (($defaultPermissions['category_view'] ?? false) !== $permissions['view']['all']) {
-            $group->setDefaultPermission('category_view', true);
+        $group->setDefaultPermission('category_view', in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS, Attributes::VIEW_ITEMS]));
+        $group->setDefaultPermission('category_edit', in_array($submittedHighestAll, [Attributes::OWN_PRODUCTS, Attributes::EDIT_ITEMS]));
+        $group->setDefaultPermission('category_own', $submittedHighestAll === Attributes::OWN_PRODUCTS);
+
+        $this->groupSaver->save($group);
+
+        $categories = $this->getRootCategoryReferences->execute();
+        foreach ($categories as $category) {
+            $this->categoryAccessManager->grantAccess($category, $group, $submittedHighestAll);
         }
     }
 
-    private function getCurrentHighestAll($defaultPermission): string
+    private function getCurrentHighestAll($defaultPermission): ?string
     {
         if (true === ($defaultPermission['category_own'] ?? null)) {
             return  Attributes::OWN_PRODUCTS;
         } else if (true === ($defaultPermission['category_edit'] ?? null)) {
             return Attributes::EDIT_ITEMS;
-        } else {
+        } else if (true === ($defaultPermission['category_view'] ?? null)){
             return Attributes::VIEW_ITEMS;
         }
+
+        return null;
     }
 
-    private function getSubmittedHighestAll($permissions): string
+    private function getSubmittedHighestAll($permissions): ?string
     {
         if (true === $permissions['own']['all']) {
             return  Attributes::OWN_PRODUCTS;
         } else if (true === $permissions['edit']['all']) {
             return Attributes::EDIT_ITEMS;
-        } else {
+        } else if (true === $permissions['view']['all']) {
             return Attributes::VIEW_ITEMS;
         }
+
+        return null;
     }
 }

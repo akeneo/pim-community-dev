@@ -155,6 +155,7 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
 
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction:
         public: true

@@ -160,3 +160,18 @@ services:
         arguments:
             - '@database_connection'
             - '@doctrine'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'

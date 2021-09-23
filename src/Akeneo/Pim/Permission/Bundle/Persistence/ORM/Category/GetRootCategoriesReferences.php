@@ -10,7 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetRootCategoriesReferencesFromCodes
+class GetRootCategoriesReferences
 {
     private Connection $connection;
     private Registry $doctrine;
@@ -26,20 +26,15 @@ class GetRootCategoriesReferencesFromCodes
     /**
      * @return CategoryInterface[]
      */
-    public function execute(array $codes): array
+    public function execute(): array
     {
         $query = <<<SQL
 SELECT id
 FROM pim_catalog_category
-WHERE code IN (:codes)
-AND parent_id IS NULL
+WHERE parent_id IS NULL
 SQL;
 
-        $results = $this->connection->fetchAssoc($query, [
-            'codes' => $codes,
-        ], [
-            'codes' => Connection::PARAM_STR_ARRAY,
-        ]) ?: [];
+        $results = $this->connection->fetchAssoc($query) ?: [];
 
         $em = $this->doctrine->getManager();
         if (!$em instanceof EntityManagerInterface) {

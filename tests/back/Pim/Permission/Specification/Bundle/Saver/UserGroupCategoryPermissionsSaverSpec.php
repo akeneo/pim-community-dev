@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -25,6 +26,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         GetRootCategoriesReferencesFromCodes $getRootCategoriesReferencesFromCodes,
         GetRootCategoryReferenceFromCode $getRootCategoryReferenceFromCode,
+        GetRootCategoriesReferences $getRootCategoriesReferences,
         Category $categoryA,
         CategoryAccessInterface $categoryAccessA
     )
@@ -41,7 +43,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
             $groupSaver,
             $categoryRepository,
             $getRootCategoriesReferencesFromCodes,
-            $getRootCategoryReferenceFromCode
+            $getRootCategoryReferenceFromCode,
+            $getRootCategoriesReferences
+
         );
     }
 
@@ -54,6 +58,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
         CategoryRepositoryInterface $categoryRepository,
+        GetRootCategoriesReferences $getRootCategoriesReferences,
         GroupInterface $group,
         Category $categoryA,
         Category $categoryB,
@@ -68,7 +73,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([]);
 
-        $categoryRepository->findAll()->willReturn([
+        $getRootCategoriesReferences->execute()->willReturn([
             $categoryA,
             $categoryB,
             $categoryC,
@@ -104,6 +109,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
         CategoryRepositoryInterface $categoryRepository,
+        GetRootCategoriesReferences $getRootCategoriesReferences,
         GroupInterface $group,
         Category $categoryA,
         Category $categoryB,
@@ -118,7 +124,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 
         $categoryAccessManager->getAccessesByGroup($group)->willReturn([]);
 
-        $categoryRepository->findAll()->willReturn([
+        $getRootCategoriesReferences->execute()->willReturn([
             $categoryA,
             $categoryB,
             $categoryC,
@@ -130,11 +136,11 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 
         $this->save('Redactor', [
             'own' => [
-                'all' => true,
+                'all' => false,
                 'identifiers' => [],
             ],
             'edit' => [
-                'all' => true,
+                'all' => false,
                 'identifiers' => [],
             ],
             'view' => [
