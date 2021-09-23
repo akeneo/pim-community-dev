@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Twig\TwigFilter;
+
 /**
  * Twig extension to present locales
  *
@@ -9,7 +11,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleExtension extends \Twig_Extension
+class LocaleExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -17,7 +19,7 @@ class LocaleExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('pretty_locale_name', [$this, 'prettyLocaleName'], ['is_safe' => ['html']]),
+            new TwigFilter('pretty_locale_name', [$this, 'prettyLocaleName'], ['is_safe' => ['html']]),
         ];
     }
 

@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser;
 
-class UiExtension extends \Twig_Extension
+class UiExtension extends \Twig\Extension\AbstractExtension
 {
     protected $placeholders;
 
