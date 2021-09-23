@@ -8,15 +8,20 @@ const BooleanFilterValue: DatagridTableFilterValueRenderer = ({
   onChange,
 }) => {
   const translate = useTranslate();
+  const stringValue = typeof value === 'undefined' || value === null ? null : (value ? 'yes' : 'no');
+  const handleChange = (stringValue: string | null) => {
+    onChange(stringValue === null ? undefined : (stringValue === 'yes'));
+  }
 
   return <SelectInput
-    value={value}
+    value={stringValue}
     openLabel={translate('pim_common.open')}
     emptyResultLabel={translate('pim_common.no_result')}
-    onChange={onChange}
+    onChange={handleChange}
+    clearLabel={translate('pim_common.clear_value')}
   >
-    <SelectInput.Option title={translate('pim_common.yes')} value={true}>{translate('pim_common.yes')}</SelectInput.Option>
-    <SelectInput.Option title={translate('pim_common.no')} value={false}>{translate('pim_common.no')}</SelectInput.Option>
+    <SelectInput.Option title={translate('pim_common.yes')} value={'yes'}>{translate('pim_common.yes')}</SelectInput.Option>
+    <SelectInput.Option title={translate('pim_common.no')} value={'no'}>{translate('pim_common.no')}</SelectInput.Option>
   </SelectInput>
 };
 

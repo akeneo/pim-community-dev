@@ -22,12 +22,13 @@ const ValueSelector: React.FC<ValueSelectorProps> = ({
   filterValuesMapping,
 }) => {
   const Renderer = (filterValuesMapping[dataType || ''] || {})[operator || '']?.default;
-  return Renderer && <Renderer
+
+  return Renderer ? <Renderer
     value={value}
     onChange={onChange}
     attribute={attribute}
     columnCode={columnCode}
-  />
+  /> : <></>
 }
 
 export {ValueSelector};

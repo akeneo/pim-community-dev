@@ -22,12 +22,7 @@ const RowSelector: React.FC<RowSelectorProps> = ({
   const options = getOptionsFromColumnCode(attribute.table_configuration[0].code);
 
   const handleChange = (selectOptionCode: SelectOptionCode | null) => {
-    if (null === selectOptionCode) {
-      onChange(undefined);
-      return;
-    }
-    const option = (options || []).find(option => option.code === selectOptionCode);
-    option && onChange(option);
+    onChange((options || []).find(option => option.code === selectOptionCode));
   }
 
   // TODO Search & pagination

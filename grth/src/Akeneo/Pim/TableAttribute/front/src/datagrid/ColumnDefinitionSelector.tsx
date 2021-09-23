@@ -19,13 +19,7 @@ const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({
   const catalogLocale = userContext.get('catalogLocale');
 
   const handleChange = (columnDefinitionCode: ColumnCode | null) => {
-    if (null === columnDefinitionCode) {
-      onChange(undefined);
-      return;
-    }
-
-    const columnDefinition = attribute.table_configuration.find(columnDefinition => columnDefinition.code === columnDefinitionCode);
-    columnDefinition && onChange(columnDefinition);
+    onChange(attribute.table_configuration.find(columnDefinition => columnDefinition.code === columnDefinitionCode));
   }
 
   return <SelectInput
