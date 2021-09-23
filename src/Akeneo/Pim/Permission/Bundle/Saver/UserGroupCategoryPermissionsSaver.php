@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes;
@@ -68,8 +69,12 @@ class UserGroupCategoryPermissionsSaver
 
         $categoriesByAccessLevel = $this->getCategoriesByAccessLevel($group);
 
-        $preservedCategoryCodes = $permissions['view']['identifiers'];
-        $removedCategoryCodes = array_diff(array_keys($categoriesByAccessLevel), $preservedCategoryCodes);
+        $manuallySelectedCategoriesCodes = array_unique(array_merge(
+            $permissions['own']['identifiers'],
+            $permissions['edit']['identifiers'],
+            $permissions['view']['identifiers'],
+        ));
+        $removedCategoryCodes = array_diff(array_keys($categoriesByAccessLevel), $manuallySelectedCategoriesCodes);
 
         if (!empty($removedCategoryCodes)) {
             $removedCategories = $this->getRootCategoriesReferencesFromCodes->execute($removedCategoryCodes);
@@ -79,7 +84,7 @@ class UserGroupCategoryPermissionsSaver
             }
         }
 
-        foreach ($preservedCategoryCodes as $code) {
+        foreach ($manuallySelectedCategoriesCodes as $code) {
             $newAccessLevel = $this->getSubmittedHighestAccessLevel($permissions, $code);
             $currentAccessLevel = $categoriesByAccessLevel[$code] ?? null;
 
@@ -138,6 +143,19 @@ class UserGroupCategoryPermissionsSaver
      */
     private function updateDefaultPermissions($group, array $permissions): void
     {
+        $manuallySelectedCategoriesCodes = array_values(array_unique(array_merge(
+            $permissions['own']['identifiers'],
+            $permissions['edit']['identifiers'],
+            $permissions['view']['identifiers'],
+        )));
+
+        if (!empty($manuallySelectedCategoriesCodes)) {
+            $manuallySelectedCategories = $this->getRootCategoriesReferencesFromCodes->execute($manuallySelectedCategoriesCodes);
+            $manuallySelectedCategoriesIds = array_map(fn(CategoryInterface $category) => $category->getId(), $manuallySelectedCategories);
+        } else {
+            $manuallySelectedCategoriesIds = [];
+        }
+
         $defaultPermissions = $group->getDefaultPermissions();
 
         $currentHighestAll = $this->getCurrentHighestAll($defaultPermissions);
@@ -155,6 +173,10 @@ class UserGroupCategoryPermissionsSaver
 
         $categories = $this->getRootCategoryReferences->execute();
         foreach ($categories as $category) {
+            if (!empty($manuallySelectedCategoriesIds) && in_array($category->getId(), $manuallySelectedCategoriesIds)) {
+                continue;
+            }
+
             $this->categoryAccessManager->grantAccess($category, $group, $submittedHighestAll);
         }
     }
@@ -162,10 +184,10 @@ class UserGroupCategoryPermissionsSaver
     private function getCurrentHighestAll($defaultPermission): ?string
     {
         if (true === ($defaultPermission['category_own'] ?? null)) {
-            return  Attributes::OWN_PRODUCTS;
+            return Attributes::OWN_PRODUCTS;
         } else if (true === ($defaultPermission['category_edit'] ?? null)) {
             return Attributes::EDIT_ITEMS;
-        } else if (true === ($defaultPermission['category_view'] ?? null)){
+        } else if (true === ($defaultPermission['category_view'] ?? null)) {
             return Attributes::VIEW_ITEMS;
         }
 
@@ -175,7 +197,7 @@ class UserGroupCategoryPermissionsSaver
     private function getSubmittedHighestAll($permissions): ?string
     {
         if (true === $permissions['own']['all']) {
-            return  Attributes::OWN_PRODUCTS;
+            return Attributes::OWN_PRODUCTS;
         } else if (true === $permissions['edit']['all']) {
             return Attributes::EDIT_ITEMS;
         } else if (true === $permissions['view']['all']) {
