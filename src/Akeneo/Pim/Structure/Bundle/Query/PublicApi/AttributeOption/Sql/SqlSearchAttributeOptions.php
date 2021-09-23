@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\AttributeOption;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsResult;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsParameters;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsResult;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -28,6 +28,19 @@ class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
         string $attributeCode,
         SearchAttributeOptionsParameters $searchParameters
     ): SearchAttributeOptionsResult {
+        return new SearchAttributeOptionsResult(
+            $this->getAttributeOptions($attributeCode, $searchParameters),
+            $this->getMatchesCount($attributeCode, $searchParameters),
+        );
+    }
+
+    /**
+     * @return AttributeOption[]
+     */
+    private function getAttributeOptions(
+        string $attributeCode,
+        SearchAttributeOptionsParameters $searchParameters
+    ): array {
         $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
         $includeCondition = 0 < count($searchParameters->getIncludeCodes()) ? 'AND option.code IN (:include_codes)' : '';
         $excludeCondition = 0 < count($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
@@ -35,59 +48,33 @@ class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
         $limit = null !== $searchParameters->getLimit() ? 'LIMIT :limit' : '';
         $offset = null !== $searchParameters->getOffset() ? 'OFFSET :offset' : '';
 
-        $matchesCountSql = <<<SQL
-SELECT COUNT(DISTINCT option.id)
-FROM pim_catalog_attribute_option `option`
-INNER JOIN pim_catalog_attribute `attribute` ON option.attribute_id = attribute.id
-LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
-WHERE attribute.code = :attribute_code
-    AND (option.code LIKE :search OR option_value.value LIKE :search)
-    $localeCondition
-    $includeCondition
-    $excludeCondition
-SQL;
-
-        $matchesCount = $this->connection->executeQuery($matchesCountSql, [
-            'attribute_code' => $attributeCode,
-            'search' => sprintf('%%%s%%', $searchParameters->getSearch() ?? ''),
-            'locale_code' => $searchParameters->getLocale(),
-            'include_codes' => $searchParameters->getIncludeCodes(),
-            'exclude_codes' => $searchParameters->getExcludeCodes(),
-        ], [
-            'attribute_id' => \PDO::PARAM_STR,
-            'search' => \PDO::PARAM_STR,
-            'locale_code' => \PDO::PARAM_STR,
-            'include_codes' => Connection::PARAM_STR_ARRAY,
-            'exclude_codes' => Connection::PARAM_STR_ARRAY,
-        ])->fetchColumn();
-
-        $attributeOptionsSql = <<<SQL
+        $sql = <<<SQL
 WITH filtered_option_codes AS (
-	SELECT DISTINCT option.id, option.code, option.sort_order
-	FROM pim_catalog_attribute_option `option`
+    SELECT DISTINCT option.id, option.code, option.sort_order
+    FROM pim_catalog_attribute_option `option`
     INNER JOIN pim_catalog_attribute `attribute` ON option.attribute_id = attribute.id
-	LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
-	WHERE attribute.code = :attribute_code
-		AND (option.code LIKE :search OR option_value.value LIKE :search)
-	    $localeCondition
+    LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
+    WHERE attribute.code = :attribute_code
+        AND (option.code LIKE :search OR option_value.value LIKE :search)
+        $localeCondition
         $includeCondition
         $excludeCondition
-	ORDER BY $order
+    ORDER BY $order
     $limit
     $offset
 )
 SELECT filtered_option_codes.code, labels
 FROM filtered_option_codes
 LEFT JOIN (
-	SELECT option_value.option_id, JSON_OBJECTAGG(option_value.locale_code, option_value.value) AS labels
-	FROM pim_catalog_attribute_option_value `option_value`
-	GROUP BY option_value.option_id
+    SELECT option_value.option_id, JSON_OBJECTAGG(option_value.locale_code, option_value.value) AS labels
+    FROM pim_catalog_attribute_option_value `option_value`
+    GROUP BY option_value.option_id
 ) AS label
 ON filtered_option_codes.id = label.option_id
 ORDER BY $order
 SQL;
 
-        $attributeOptions = $this->connection->executeQuery($attributeOptionsSql, [
+        $attributeOptions = $this->connection->executeQuery($sql, [
             'attribute_code' => $attributeCode,
             'search' => sprintf('%%%s%%', $searchParameters->getSearch()),
             'locale_code' => $searchParameters->getLocale(),
@@ -105,16 +92,50 @@ SQL;
             'offset' => \PDO::PARAM_INT,
         ])->fetchAll(\PDO::FETCH_ASSOC);
 
-        return new SearchAttributeOptionsResult(
-            array_map(
-                static fn ($attributeOption) => new AttributeOption(
-                    $attributeOption['code'],
-                    json_decode($attributeOption['labels'], true),
-                ),
-                $attributeOptions,
+        return array_map(
+            static fn (array $attributeOption) => new AttributeOption(
+                $attributeOption['code'],
+                json_decode($attributeOption['labels'], true),
             ),
-            (int) $matchesCount,
+            $attributeOptions,
         );
+    }
+
+    private function getMatchesCount(
+        string $attributeCode,
+        SearchAttributeOptionsParameters $searchParameters
+    ): int {
+        $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
+        $includeCondition = 0 < count($searchParameters->getIncludeCodes()) ? 'AND option.code IN (:include_codes)' : '';
+        $excludeCondition = 0 < count($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
+
+        $sql = <<<SQL
+SELECT COUNT(DISTINCT option.id)
+FROM pim_catalog_attribute_option `option`
+INNER JOIN pim_catalog_attribute `attribute` ON option.attribute_id = attribute.id
+LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
+WHERE attribute.code = :attribute_code
+    AND (option.code LIKE :search OR option_value.value LIKE :search)
+    $localeCondition
+    $includeCondition
+    $excludeCondition
+SQL;
+
+        $matchesCount = $this->connection->executeQuery($sql, [
+            'attribute_code' => $attributeCode,
+            'search' => sprintf('%%%s%%', $searchParameters->getSearch() ?? ''),
+            'locale_code' => $searchParameters->getLocale(),
+            'include_codes' => $searchParameters->getIncludeCodes(),
+            'exclude_codes' => $searchParameters->getExcludeCodes(),
+        ], [
+            'attribute_id' => \PDO::PARAM_STR,
+            'search' => \PDO::PARAM_STR,
+            'locale_code' => \PDO::PARAM_STR,
+            'include_codes' => Connection::PARAM_STR_ARRAY,
+            'exclude_codes' => Connection::PARAM_STR_ARRAY,
+        ])->fetchColumn();
+
+        return (int) $matchesCount;
     }
 
     private function isAttributeAutoSorted(string $attributeCode): bool
