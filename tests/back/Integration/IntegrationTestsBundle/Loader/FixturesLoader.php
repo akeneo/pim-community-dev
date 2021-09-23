@@ -292,6 +292,7 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->eventDispatcher->dispatch(
                 new InstallerEvent(null, $jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),
+                    'catalog' => 'minimal',
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
