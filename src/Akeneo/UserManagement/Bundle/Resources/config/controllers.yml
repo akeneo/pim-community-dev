@@ -57,6 +57,8 @@ services:
             - '@pim_user.form.group'
             - '@event_dispatcher'
             - '@session'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]
 
     pim_user.controller.reset:
         public: true
@@ -69,6 +71,8 @@ services:
             - '@security.token_storage'
             - '@pim_user.form.reset'
             - '%mailer_url%'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]
 
     pim_user.controller.role:
         public: true
@@ -79,6 +83,8 @@ services:
             - '@oro_security.acl.sid_manager'
             - '@pim_user.form.handler.acl_role'
             - '@translator'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]
 
     pim_user.controller.security:
         public: true
