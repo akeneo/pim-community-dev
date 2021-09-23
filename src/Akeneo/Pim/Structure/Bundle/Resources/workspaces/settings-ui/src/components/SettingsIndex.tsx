@@ -124,7 +124,7 @@ const SettingsIndex = () => {
               <IconCardGrid>
                 {canAccessCategories && (
                   <IconCard
-                    id="pim-menu-settings-product-category"
+                    id="pim-settings-product-category"
                     icon={<CategoryIcon />}
                     label={translate('pim_enrich.entity.category.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
@@ -149,7 +149,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessChannels && (
                   <IconCard
-                    id="pim-menu-settings-channel"
+                    id="pim-settings-channel"
                     icon={<ShopIcon />}
                     label={translate('pim_menu.item.channel')}
                     onClick={() => redirectToRoute('pim_enrich_channel_index')}
@@ -163,7 +163,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessLocales && (
                   <IconCard
-                    id="pim-menu-settings-locale"
+                    id="pim-settings-locale"
                     icon={<LocaleIcon />}
                     label={translate('pim_enrich.entity.locale.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_locale_index')}
@@ -177,7 +177,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessCurrencies && (
                   <IconCard
-                    id="pim-menu-settings-currency"
+                    id="pim-settings-currency"
                     icon={<CreditsIcon />}
                     label={translate('pim_menu.item.currency')}
                     onClick={() => redirectToRoute('pim_enrich_currency_index')}
@@ -202,7 +202,7 @@ const SettingsIndex = () => {
               <IconCardGrid>
                 {canAccessAttributeGroups && (
                   <IconCard
-                    id="pim-menu-settings-attribute-group"
+                    id="pim-settings-attribute-group"
                     icon={<TagIcon />}
                     label={translate('pim_enrich.entity.attribute_group.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_attributegroup_index')}
@@ -216,7 +216,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessAttributes && (
                   <IconCard
-                    id="pim-menu-settings-attribute"
+                    id="pim-settings-attribute"
                     icon={<ValueIcon />}
                     label={translate('pim_enrich.entity.attribute.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_attribute_index')}
@@ -230,7 +230,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessFamilies && (
                   <IconCard
-                    id="pim-menu-settings-family"
+                    id="pim-settings-family"
                     icon={<AttributeFileIcon />}
                     label={translate('pim_menu.item.family')}
                     onClick={() => redirectToRoute('pim_enrich_family_index')}
@@ -244,7 +244,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessMeasurements && (
                   <IconCard
-                    id="pim-menu-measurements-settings"
+                    id="pim-measurements-settings"
                     icon={<MetricIcon />}
                     label={translate('pim_menu.item.measurements')}
                     onClick={() => redirectToRoute('akeneo_measurements_settings_index')}
@@ -258,7 +258,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessAssociationTypes && (
                   <IconCard
-                    id="pim-menu-settings-association-type"
+                    id="pim-settings-association-type"
                     icon={<AssociateIcon />}
                     label={translate('pim_menu.item.association_type')}
                     onClick={() => redirectToRoute('pim_enrich_associationtype_index')}
@@ -272,7 +272,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessGroupTypes && (
                   <IconCard
-                    id="pim-menu-settings-group-type"
+                    id="pim-settings-group-type"
                     icon={<ComponentIcon />}
                     label={translate('pim_menu.item.group_type')}
                     onClick={() => redirectToRoute('pim_enrich_grouptype_index')}
@@ -286,7 +286,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessGroups && (
                   <IconCard
-                    id="pim-menu-settings-group"
+                    id="pim-settings-group"
                     icon={<GroupsIcon />}
                     label={translate('pim_menu.item.group')}
                     onClick={() => redirectToRoute('pim_enrich_group_index')}
@@ -300,7 +300,7 @@ const SettingsIndex = () => {
                 )}
                 {canAccessRules && (
                   <IconCard
-                    id="pim-menu-enrich-rule"
+                    id="pim-enrich-rule"
                     icon={<AttributeLinkIcon />}
                     label={translate('pim_menu.item.rule')}
                     onClick={() => redirectToRoute('pimee_catalog_rule_rule_index')}
@@ -314,7 +314,7 @@ const SettingsIndex = () => {
                 )}
                 {featureFlags.isEnabled('free_trial') && (
                   <DisableIconCard
-                    id="pim-menu-enrich-rule"
+                    id="pim-enrich-rule"
                     icon={
                       <LockIconContainer>
                         <LockIcon size={16} color={theme.color.blue100} />
