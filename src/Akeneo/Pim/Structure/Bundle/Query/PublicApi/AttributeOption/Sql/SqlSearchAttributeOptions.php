@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
 {
@@ -128,7 +128,7 @@ SQL;
             'include_codes' => $searchParameters->getIncludeCodes(),
             'exclude_codes' => $searchParameters->getExcludeCodes(),
         ], [
-            'attribute_id' => \PDO::PARAM_STR,
+            'attribute_code' => \PDO::PARAM_STR,
             'search' => \PDO::PARAM_STR,
             'locale_code' => \PDO::PARAM_STR,
             'include_codes' => Connection::PARAM_STR_ARRAY,
