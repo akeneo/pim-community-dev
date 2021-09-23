@@ -30,9 +30,7 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
-        'Twig_SimpleFunction', // used by the category tree
-        'Twig\Extension\AbstractExtension',
-        'Twig\Environment', // used by Twig extensions
+        'Twig',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
