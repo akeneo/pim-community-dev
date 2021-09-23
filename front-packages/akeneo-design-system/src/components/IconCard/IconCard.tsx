@@ -2,7 +2,7 @@ import React, {HTMLAttributes, isValidElement, ReactElement, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IconProps} from '../../icons';
-import {Override} from '../../../lib';
+import {Override} from '../../shared';
 
 const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoThemedProps>`
   min-height: 80px;
