@@ -45,7 +45,7 @@ const AppcuesOnboarding: PimOnboarding = {
 
       appcues.loadLaunchpad(element, {
         position: "left",
-        header: "<p style='font-size: 18px;'>Checklists</p>",
+        header: "<p style='font-size: 18px;'>Tutorials</p>",
         icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
       });
     });
