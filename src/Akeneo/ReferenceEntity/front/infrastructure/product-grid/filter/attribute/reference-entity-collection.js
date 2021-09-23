@@ -194,7 +194,7 @@ define([
           const searchQuery = {
             channel: UserContext.get('catalogScope'),
             locale: UserContext.get('catalogLocale'),
-            size: this.resultsPerPage,
+            size: 100,
             page: 0,
             filters: [
               {
