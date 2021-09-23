@@ -34,6 +34,7 @@ define([
 
       return $.ajax({
         url: Routing.generate('pim_enrich_sequential_edit_rest_get_ids'),
+        method: "POST",
         data: params,
       })
         .then(response => {
