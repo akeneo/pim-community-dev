@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Channel\Bundle\Twig;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
+use Twig\Node\Node;
 
 class LocaleExtensionSpec extends ObjectBehavior
 {
@@ -65,7 +66,7 @@ class LocaleExtensionSpec extends ObjectBehavior
 
     function getMatchers(): array
     {
-        $filterArgs = new \Twig_Node();
+        $filterArgs = new Node();
 
         return [
             'haveTwigMethod' => function ($subject, $name, $method) {
