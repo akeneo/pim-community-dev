@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
 import {useIsMounted} from '../hooks';
 import {RouteParams, View} from '../DependenciesProvider.type';
 import {DependenciesContext} from '../DependenciesContext';
@@ -48,40 +48,43 @@ const MicroFrontendDependenciesProvider = ({
   const [notifications, notify, handleNotificationClose] = useNotifications();
   const isMounted = useIsMounted();
 
-  const generateUrl = (route: string, parameters?: RouteParams) => {
-    const routeConf = routes[route];
+  const generateUrl = useCallback(
+    (route: string, parameters?: RouteParams) => {
+      const routeConf = routes[route];
 
-    if (undefined === routeConf) {
-      throw new Error(`Route ${route} not found`);
-    }
+      if (undefined === routeConf) {
+        throw new Error(`Route ${route} not found`);
+      }
 
-    const queryString = parameters
-      ? '?' +
-        Object.entries(parameters)
-          .map(([key, val]) => `${key}=${val}`)
-          .join('&')
-      : '';
+      const queryString = parameters
+        ? '?' +
+          Object.entries(parameters)
+            .map(([key, val]) => `${key}=${val}`)
+            .join('&')
+        : '';
 
-    return (
-      routeConf.tokens
-        .map((token: string[]) => {
-          switch (token[0]) {
-            case 'text':
-              return token[1];
-            case 'variable':
-              if (parameters === undefined) {
-                throw new Error(`Missing parameter: ${token[3]}`);
-              }
+      return (
+        routeConf.tokens
+          .map((token: string[]) => {
+            switch (token[0]) {
+              case 'text':
+                return token[1];
+              case 'variable':
+                if (parameters === undefined) {
+                  throw new Error(`Missing parameter: ${token[3]}`);
+                }
 
-              return token[1] + parameters[token[3]];
-            default:
-              throw new Error(`Unexpected token type: ${token[0]}`);
-          }
-        })
-        .reverse()
-        .join('') + queryString
-    );
-  };
+                return token[1] + parameters[token[3]];
+              default:
+                throw new Error(`Unexpected token type: ${token[0]}`);
+            }
+          })
+          .reverse()
+          .join('') + queryString
+      );
+    },
+    [routes]
+  );
 
   const currentUserUrl = generateUrl('pim_user_user_rest_get_current');
   const securityContextUrl = generateUrl('pim_user_security_rest_get');
@@ -118,48 +121,51 @@ const MicroFrontendDependenciesProvider = ({
     fetchSecurityContext();
   }, [currentUserUrl, securityContextUrl, isMounted]);
 
-  return (
-    <DependenciesContext.Provider
-      value={{
-        notify,
-        user: {
-          get: (data: string) => userContext[data],
-          set: (key: string, value: string) => setUserContext(userContext => ({...userContext, [key]: value})),
-        },
-        security: {isGranted: (acl: string) => securityContext[acl] === true},
-        router: {
-          generate: generateUrl,
-          redirect: (_fragment: string, _options?: object) => alert('Not implemented'),
-          redirectToRoute: (_route: string, _parameters?: object) => alert('Not implemented'),
-        },
-        translate: (id: string, placeholders = {}) => {
-          const message = translations.messages[`jsmessages:${id}`] ?? id;
+  const dependencies = useMemo(
+    () => ({
+      notify,
+      user: {
+        get: (data: string) => userContext[data],
+        set: (key: string, value: string) => setUserContext(userContext => ({...userContext, [key]: value})),
+      },
+      security: {isGranted: (acl: string) => securityContext[acl] === true},
+      router: {
+        generate: generateUrl,
+        redirect: (_fragment: string, _options?: object) => console.info('Not implemented'),
+        redirectToRoute: (_route: string, _parameters?: object) => console.info('Not implemented'),
+      },
+      translate: (id: string, placeholders = {}) => {
+        const message = translations.messages[`jsmessages:${id}`] ?? id;
 
-          return Object.keys(placeholders).reduce(
-            (message, placeholderKey) =>
-              message
-                // replaceAll is only available in esnext.
-                // We don't want to activate it in the tsconfig file as shared package should be as compatible as possible
-                // @ts-ignore
-                .replaceAll(`{{ ${placeholderKey} }}`, String(placeholders[placeholderKey]))
-                // @ts-ignore
-                .replaceAll(placeholderKey, String(placeholders[placeholderKey])),
+        return Object.keys(placeholders).reduce(
+          (message, placeholderKey) =>
             message
-          );
-        },
-        viewBuilder: {
-          build: async (_viewName: string) => Promise.resolve(view),
-        },
-        mediator: {
-          trigger: (event: string, _options?: unknown) => console.log('Triggering', event),
-          on: (_event: string, _callback: () => void) => {},
-          off: (_event: string, _callback: () => void) => {},
-        },
-        featureFlags: {
-          isEnabled: () => false,
-        },
-      }}
-    >
+              // replaceAll is only available in esnext.
+              // We don't want to activate it in the tsconfig file as shared package should be as compatible as possible
+              // @ts-ignore
+              .replaceAll(`{{ ${placeholderKey} }}`, String(placeholders[placeholderKey]))
+              // @ts-ignore
+              .replaceAll(placeholderKey, String(placeholders[placeholderKey])),
+          message
+        );
+      },
+      viewBuilder: {
+        build: async (_viewName: string) => Promise.resolve(view),
+      },
+      mediator: {
+        trigger: (event: string, _options?: unknown) => console.log('Triggering', event),
+        on: (_event: string, _callback: () => void) => {},
+        off: (_event: string, _callback: () => void) => {},
+      },
+      featureFlags: {
+        isEnabled: () => false,
+      },
+    }),
+    [notify, userContext, securityContext, translations, generateUrl]
+  );
+
+  return (
+    <DependenciesContext.Provider value={dependencies}>
       <Notifications notifications={notifications} onNotificationClosed={handleNotificationClose} />
       {children}
     </DependenciesContext.Provider>
