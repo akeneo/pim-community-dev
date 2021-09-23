@@ -34,7 +34,7 @@ define([
 
       return $.ajax({
         url: Routing.generate('pim_enrich_sequential_edit_rest_get_ids'),
-        method: "POST",
+        method: 'POST',
         data: params,
       })
         .then(response => {
@@ -46,6 +46,7 @@ define([
               __('pim_enrich.entity.product.module.sequential_edit.item_limit', {count: response.total})
             );
           }
+          dev.mk;
 
           if (0 === response.total) {
             messenger.notify('error', __('pim_enrich.entity.product.module.sequential_edit.empty'));
