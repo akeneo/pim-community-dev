@@ -31,10 +31,7 @@ class IdentifiersForQueryResult
     public int $matchesCount;
     public ?array $lastSortValue;
 
-    /** @var int */
-    public $matchesCount;
-
-    public function __construct(array $identifiers, int $matchesCount)
+    public function __construct(array $identifiers, int $matchesCount, ?array $lastSortValue = null)
     {
         Assert::allString($identifiers);
         $this->identifiers = $identifiers;
