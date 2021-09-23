@@ -1,7 +1,7 @@
-export const useFetchConnectedApp = () => {
+export const useFetchConnectedApp = (connectionCode: string) => {
     // @todo fetch real connected app from backend
 
-    return new Promise((resolve, reject) => {
+    return () => new Promise((resolve, reject) => {
         setTimeout(function () {
             resolve({
                 id: '12345',

@@ -12,12 +12,15 @@ import {
     ProductIcon,
     ShopIcon,
     CheckRoundIcon,
+    AkeneoThemedProps,
+    FontSize,
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
-export const ScopeItem = styled.li`
+
+export const ScopeItem = styled('li')<{fontSize?: keyof FontSize} & AkeneoThemedProps>`
     color: ${getColor('grey', 140)};
-    font-size: ${props => (props.fontSize && getFontSize(props.fontSize)) || getFontSize('bigger')};
+    font-size: ${({fontSize}) => (fontSize && getFontSize(fontSize)) || getFontSize('bigger')};
     font-weight: normal;
     line-height: 21px;
     margin-bottom: 13px;

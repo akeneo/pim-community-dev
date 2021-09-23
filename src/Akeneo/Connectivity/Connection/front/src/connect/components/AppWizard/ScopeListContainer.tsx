@@ -52,10 +52,7 @@ export const ScopeListContainer: FC<Props> = ({appName, scopeMessages}) => {
             </Helper>
             {0 === scopeMessages.length ? (
                 <ScopeItem key='0'>
-                    <CheckRoundIcon
-                        size={24}
-                        title={translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')}
-                    />
+                    <CheckRoundIcon size={24} />
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')}
                 </ScopeItem>
             ) : (
