@@ -67,8 +67,8 @@ config:
                 select:
                     'EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
                     'NOT EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
-#                    'IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
-#                    'NOT IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
+                    'IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
+                    'NOT IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
 
         pim/form/common/attributes/create-button:
             attribute_icons:

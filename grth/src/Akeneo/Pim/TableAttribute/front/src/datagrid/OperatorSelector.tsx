@@ -1,6 +1,7 @@
 import React from 'react';
 import {SelectInput} from "akeneo-design-system";
 import {FilterValuesMapping} from "./FilterValues";
+import {useTranslate} from "@akeneo-pim-community/shared";
 
 type OperatorSelectorProps = {
   dataType?: string;
@@ -15,6 +16,7 @@ const OperatorSelector: React.FC<OperatorSelectorProps> = ({
   onChange,
   filterValuesMapping,
 }) => {
+  const translate = useTranslate();
   const operators = Object.keys(filterValuesMapping[dataType || ''] || {});
 
   const handleChange = (value: string | null) => {
@@ -22,18 +24,18 @@ const OperatorSelector: React.FC<OperatorSelectorProps> = ({
   }
 
   return <SelectInput
-    clearLabel=""
+    clearLabel={translate('pim_common.clear_value')}
     clearable
-    emptyResultLabel="No result found"
+    emptyResultLabel={translate('pim_common.no_result')}
     onChange={handleChange}
-    placeholder="Please enter a value in the Select input"
+    placeholder="TODO Fill Operator"
     value={value || null}
-    openLabel={'Open'}
+    openLabel={translate('pim_common.open')}
     readOnly={typeof dataType === 'undefined'}
   >
     {(operators || []).map(operator => {
-        return <SelectInput.Option title="label" value={operator} key={operator}>
-          {operator}
+        return <SelectInput.Option title={translate(`pim_common.operators.${operator}`)} value={operator} key={operator}>
+          {translate(`pim_common.operators.${operator}`)}
         </SelectInput.Option>
       }
     )}

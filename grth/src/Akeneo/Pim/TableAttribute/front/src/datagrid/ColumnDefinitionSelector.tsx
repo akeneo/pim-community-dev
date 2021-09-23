@@ -1,5 +1,5 @@
 import React from 'react';
-import {getLabel} from "@akeneo-pim-community/shared";
+import {getLabel, useUserContext, useTranslate} from "@akeneo-pim-community/shared";
 import {SelectInput} from "akeneo-design-system";
 import {ColumnCode, ColumnDefinition, TableAttribute} from "../models";
 
@@ -14,27 +14,32 @@ const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({
   onChange,
   value
 }) => {
+  const translate = useTranslate();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+
   const handleChange = (columnDefinitionCode: ColumnCode | null) => {
     if (null === columnDefinitionCode) {
       onChange(undefined);
       return;
     }
+
     const columnDefinition = attribute.table_configuration.find(columnDefinition => columnDefinition.code === columnDefinitionCode);
     columnDefinition && onChange(columnDefinition);
   }
 
   return <SelectInput
-    clearLabel=""
+    clearLabel={translate('pim_common.clear_value')}
     clearable
-    emptyResultLabel="No result found"
+    emptyResultLabel={translate('pim_common.no_result')}
     onChange={handleChange}
-    placeholder="Please enter a value in the Select input"
+    placeholder="TODO Select a column"
     value={value?.code || null}
-    openLabel={'Open'}
+    openLabel={translate('pim_common.open')}
   >
     {attribute.table_configuration.map(columnDefinition => {
-        const label = getLabel(columnDefinition.labels, 'en_US', columnDefinition.code);
-        return <SelectInput.Option title="label" value={columnDefinition.code} key={columnDefinition.code}>
+        const label = getLabel(columnDefinition.labels, catalogLocale, columnDefinition.code);
+        return <SelectInput.Option title={label} value={columnDefinition.code} key={columnDefinition.code}>
           {label}
         </SelectInput.Option>
       }

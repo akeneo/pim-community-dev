@@ -1,5 +1,5 @@
 import React from 'react';
-import {getLabel} from "@akeneo-pim-community/shared";
+import {getLabel, useUserContext, useTranslate} from "@akeneo-pim-community/shared";
 import {SelectInput} from "akeneo-design-system";
 import {SelectOption, SelectOptionCode, TableAttribute} from "../models";
 import {useFetchOptions} from "../product";
@@ -15,6 +15,9 @@ const RowSelector: React.FC<RowSelectorProps> = ({
   onChange,
   value,
 }) => {
+  const translate = useTranslate();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
   const options = getOptionsFromColumnCode(attribute.table_configuration[0].code);
 
@@ -30,17 +33,17 @@ const RowSelector: React.FC<RowSelectorProps> = ({
   // TODO Search & pagination
 
   return <SelectInput
-    clearLabel=""
+    clearLabel={translate('pim_common.clear_value')}
     clearable
-    emptyResultLabel="No result found"
+    emptyResultLabel={translate('pim_common.no_result')}
     onChange={handleChange}
-    placeholder="Please enter a value in the Select input"
+    placeholder="TODO Fill row (optional)"
     value={value?.code || null}
-    openLabel={'Open'}
+    openLabel={translate('pim_common.open')}
   >
     {(options || []).map(option => {
-        const label = getLabel(option.labels, 'en_US', option.code);
-        return <SelectInput.Option title="label" value={option.code} key={option.code}>
+        const label = getLabel(option.labels, catalogLocale, option.code);
+        return <SelectInput.Option title={label} value={option.code} key={option.code}>
           {label}
         </SelectInput.Option>
       }

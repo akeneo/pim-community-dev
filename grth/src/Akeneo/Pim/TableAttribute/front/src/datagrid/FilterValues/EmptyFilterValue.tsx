@@ -1,7 +1,7 @@
 import React from 'react';
 import {DatagridTableFilterValueRenderer} from "./index";
 
-const EmptyFilterValue: DatagridTableFilterValueRenderer = ({}) => {
+const EmptyFilterValue: DatagridTableFilterValueRenderer = () => {
   return <></>
 };
 
