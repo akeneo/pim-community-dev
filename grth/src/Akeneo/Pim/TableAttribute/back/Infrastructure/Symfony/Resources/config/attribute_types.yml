@@ -1,5 +1,8 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_table:
+        column:
+            type: string
+            frontend_type: string
         filter:
             type: product_value_table
             ftype: table

@@ -1,15 +1,46 @@
-import AbstractFilter = require('oro/datafilter/abstract-filter');
+const AbstractFilter = require('oro/datafilter/abstract-filter');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
+import {DatagridTableFilter, FilterValuesMapping} from "../datagrid";
+import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 
 class TableFilter extends AbstractFilter {
+  private show() {
+    this.render();
+  }
+
+  private hide() {
+    this.remove();
+  }
+
+  private _writeDOMValue() {
+    return this;
+  }
+
+  private _readDOMValue() {
+  }
+
   render(): any {
+    const onDisable = this.disable.bind(this);
+    const onChange = this.setValue.bind(this);
+    const filterValuesMapping = __moduleConfig.filter_values as FilterValuesMapping;
+
     ReactDOM.render(
-      <ThemeProvider theme={pimTheme}>
-        <div>TODO This is the table filter</div>
-      </ThemeProvider>,
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <DatagridTableFilter
+            showLabel={this.showLabel}
+            label={this.label}
+            canDisable={this.canDisable}
+            onDisable={onDisable}
+            attributeCode={this.name}
+            onChange={onChange}
+            filterValuesMapping={filterValuesMapping}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
       this.el
     );
     return this;
