@@ -39,12 +39,6 @@ updates:
       interval: "daily"
     target-branch: "4.0"
 
-  - package-ecosystem: "npm"
-    directory: "/front-packages/shared/"
-    schedule:
-      interval: "daily"
-    target-branch: "4.0"
-
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
@@ -60,12 +54,6 @@ updates:
   #5.0
   - package-ecosystem: "npm"
     directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "5.0"
-
-  - package-ecosystem: "npm"
-    directory: "/front-packages/shared/"
     schedule:
       interval: "daily"
     target-branch: "5.0"
