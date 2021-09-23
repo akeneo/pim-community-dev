@@ -50,4 +50,29 @@ final class SqlGetRawValues implements GetRawValues
             yield (string) $row['identifier'] => \json_decode($row['raw_values'], true);
         }
     }
+
+    public function fromProductModelCodes(array $productModelCodes): iterable
+    {
+        if ([] === $productModelCodes) {
+            return [];
+        }
+        $stmt = $this->connection->executeQuery(
+            <<<SQL
+            SELECT product_model.code, JSON_MERGE_PATCH(
+                    COALESCE(root.raw_values, '{}'),
+                    product_model.raw_values
+                ) AS raw_values
+            FROM pim_catalog_product_model product_model
+                LEFT JOIN pim_catalog_product_model root ON root.id = product_model.parent_id
+            WHERE product_model.code IN (:codes)
+            GROUP BY product_model.code;
+            SQL,
+            ['codes' => $productModelCodes],
+            ['codes' => Connection::PARAM_STR_ARRAY]
+        );
+
+        while ($row = $stmt->fetchAssociative()) {
+            yield (string) $row['code'] => \json_decode($row['raw_values'], true);
+        }
+    }
 }

@@ -21,9 +21,10 @@ class SqlGetRawValuesIntegration extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_product_identifiers_is_empty(): void
+    public function it_returns_empty_arrays_if_product_identifiers_or_product_model_codes_are_empty(): void
     {
-        Assert::assertSame([], $this->getRawValues([]));
+        Assert::assertSame([], $this->getProductRawValues([]));
+        Assert::assertSame([], $this->getProductModelRawValues([]));
     }
 
     /**
@@ -78,7 +79,41 @@ class SqlGetRawValuesIntegration extends TestCase
 
         Assert::assertEquals(
             $expected,
-            $this->getRawValues(['watch', 'unknown', '1111111179'])
+            $this->getProductRawValues(['watch', 'unknown', '1111111179'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_raw_values_of_product_models(): void
+    {
+        $expected = [
+            'caelus_blue' => [
+                'color' => ['<all_channels>' => ['<all_locales>' => 'blue']],
+                'variation_name' => ['<all_channels>' => ['en_US' => 'Caelus blue']],
+                'name' => ['<all_channels>' => ['en_US' => 'Tuxedo with animal print']],
+                'price' => ['<all_channels>' => ['<all_locales>' => [['amount' => '999.00', 'currency' => 'EUR']]]],
+                'erp_name' => ['<all_channels>' => ['en_US' => 'Caelus']],
+                'supplier' => ['<all_channels>' => ['<all_locales>' => 'mongo']],
+                'collection' => ['<all_channels>' => ['<all_locales>' => ['summer_2016']]],
+                'description' => ['ecommerce' => ['en_US' => "Get ready to party in this tuxedo with animal print grabbing composed of a single-breasted jacket with 2 buttons and matching pants. Our skinny suits offer a perfect contemporary snowstorm.\nThe model is 1.85 meters (6 feet 1 inch), wears a size 40 jacket and pants 32R.\nDry clean only."]],
+                'wash_temperature' => ['<all_channels>' => ['<all_locales>' => '600']],
+            ],
+            'caelus' => [
+                'name' => ['<all_channels>' => ['en_US' => 'Tuxedo with animal print']],
+                'price' => ['<all_channels>' => ['<all_locales>' => [['amount' => '999.00', 'currency' => 'EUR']]]],
+                'erp_name' => ['<all_channels>' => ['en_US' => 'Caelus']],
+                'supplier' => ['<all_channels>' => ['<all_locales>' => 'mongo']],
+                'collection' => ['<all_channels>' => ['<all_locales>' => ['summer_2016']]],
+                'description' => ['ecommerce' => ['en_US' => "Get ready to party in this tuxedo with animal print grabbing composed of a single-breasted jacket with 2 buttons and matching pants. Our skinny suits offer a perfect contemporary snowstorm.\nThe model is 1.85 meters (6 feet 1 inch), wears a size 40 jacket and pants 32R.\nDry clean only."]],
+                'wash_temperature' => ['<all_channels>' => ['<all_locales>' => '600']],
+            ],
+        ];
+
+        Assert::assertEquals(
+            $expected,
+            $this->getProductModelRawValues(['caelus_blue', 'unknown', 'caelus'])
         );
     }
 
@@ -93,9 +128,16 @@ class SqlGetRawValuesIntegration extends TestCase
         $this->sqlGetRawValues = $this->get(GetRawValues::class);
     }
 
-    private function getRawValues(array $identifiers): array
+    private function getProductRawValues(array $identifiers): array
     {
         $res = $this->sqlGetRawValues->fromProductIdentifiers($identifiers);
+
+        return \is_array($res) ? $res : \iterator_to_array($res);
+    }
+
+    private function getProductModelRawValues(array $codes): array
+    {
+        $res = $this->sqlGetRawValues->fromProductModelCodes($codes);
 
         return \is_array($res) ? $res : \iterator_to_array($res);
     }

@@ -16,4 +16,11 @@ interface GetRawValues
      * @return iterable<string, array>
      */
     public function fromProductIdentifiers(array $productIdentifiers): iterable;
+
+    /**
+     * @param string[] $productModelCodes
+     *
+     * @return iterable<string, array>
+     */
+    public function fromProductModelCodes(array $productModelCodes): iterable;
 }
