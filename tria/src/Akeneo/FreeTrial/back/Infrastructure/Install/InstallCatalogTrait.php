@@ -34,11 +34,6 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/extracted';
     }
 
-    private function getMinimalJobFixturesPath(): string
-    {
-        return __DIR__ . '/../../../../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal/jobs.yml';
-    }
-
     private function getJobFixturesPath(): string
     {
         return $this->getFixturesPath() . '/jobs.yml';
