@@ -46,7 +46,7 @@ final class EventDispatcherMock implements Context, EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($event)
+    public function dispatch(object $event, string $eventName = null): object
     {
         $eventName = null;
         if (1 < \func_num_args()) {
@@ -67,6 +67,8 @@ final class EventDispatcherMock implements Context, EventDispatcherInterface
         }
 
         $this->events[] = ['name' => $eventName, 'event' => $event];
+
+        return $event;
     }
 
     /**
