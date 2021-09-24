@@ -1,12 +1,14 @@
 import {getAppcuesAgent} from './appcues-agent';
 import {PimOnboarding} from './pim-onboarding';
 
+const _ = require('underscore');
 const FeatureFlags = require('pim/feature-flags');
 const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
 
 interface EventOptions {
   code?: string,
+  codes?: [],
   name?: string,
   attribute?: string,
   gridName?: string,
@@ -16,14 +18,29 @@ interface EventOptions {
   localeCode?: string,
   context?: string,
   count?: number,
-  checked?: boolean,
   entityHint?: string,
+  model?: {
+    attributes?: {
+      identifier?: string,
+      code?: string,
+      label?: string,
+    },
+  }
   attributes?: {
     identifier?: string,
     code?: string,
     label?: string,
   },
   url?: string,
+  type?: string,
+  inputName?: string,
+  actions?: [Action],
+}
+
+interface Action {
+  attribute_code?: string,
+  channel_code?: string,
+  is_required?: boolean
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -82,32 +99,34 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Column added in the product grid');
           break;
         case 'grid:item:selected':
-          if (eventOptions && eventOptions.name === 'product-grid' && eventOptions.entityHint && eventOptions.entityHint === 'product') {
-            if (eventOptions.attributes && eventOptions.attributes.identifier === 'PLGCHAELK001') {
-              appcues.track('Product "Elka Peacock Armchair" selected');
+          if (eventOptions && eventOptions.model && eventOptions.model.attributes) {
+            if (eventOptions.name === 'product-grid' && eventOptions.entityHint === 'product') {
+              if (eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'PLGCHAELK001') {
+                appcues.track('Product "Elka Peacock Armchair" selected');
+              }
+
+              if (eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
+                appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
+              }
+
+              appcues.track('Product selected');
             }
 
-            if (eventOptions.attributes && eventOptions.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
-              appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
+            if (eventOptions.name === 'export-profile-grid' && eventOptions.entityHint === 'export profile') {
+              if (eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
+                appcues.track('Export profile "Printers for Amazon (weekly)" selected');
+              }
+
+              appcues.track('Export profile selected');
             }
 
-            appcues.track('Product selected');
-          }
+            if (eventOptions.name === 'family-grid' && eventOptions.entityHint === 'family') {
+              if (eventOptions.model.attributes && eventOptions.model.attributes.label === 'Tires') {
+                appcues.track('Family "Tires" selected');
+              }
 
-          if (eventOptions && eventOptions.name === 'export-profile-grid' && eventOptions.entityHint && eventOptions.entityHint === 'export profile') {
-            if (eventOptions.attributes && eventOptions.attributes.code === 'printers_amazon') {
-              appcues.track('Export profile "Printers for Amazon (weekly)" selected');
+              appcues.track('Family selected');
             }
-
-            appcues.track('Export profile selected');
-          }
-
-          if (eventOptions && eventOptions.name === 'family-grid' && eventOptions.entityHint && eventOptions.entityHint === 'family') {
-            if (eventOptions.attributes && eventOptions.attributes.label === 'Tires') {
-              appcues.track('Family "Tires" selected');
-            }
-
-            appcues.track('Family selected');
           }
           break;
         case 'product-grid:completeness:opened':
@@ -118,11 +137,11 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Completeness badge opened in product edit form');
           break;
         case 'product-grid:attribute-group:selected':
-          if (eventOptions && eventOptions.name === 'contentcopy') {
+          if (eventOptions && eventOptions.code === 'contentcopy') {
             appcues.track('Attribute group "Content / Copy" selected');
           }
 
-          if (eventOptions && eventOptions.name === 'specifications') {
+          if (eventOptions && eventOptions.code === 'specifications') {
             appcues.track('Attribute group "Specifications / Product Team" selected');
           }
 
@@ -168,11 +187,11 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'grid:mass-edit:item-chosen':
-          if (eventOptions && eventOptions.name === 'add_attribute_value') {
+          if (eventOptions && eventOptions.code === 'add_attribute_value') {
             appcues.track('Bulk action "Add attribute values" selected');
           }
 
-          if (eventOptions && eventOptions.name === 'set_requirements') {
+          if (eventOptions && eventOptions.code === 'set_requirements') {
             appcues.track('Bulk action "Set attributes requirements" selected');
           }
           break;
@@ -200,11 +219,11 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Compare button clicked');
           break;
         case 'product:form:locale-switched':
-          if (eventOptions && eventOptions.context && eventOptions.context === 'base_product' && eventOptions.localeCode) {
+          if (eventOptions && eventOptions.context === 'base_product' && eventOptions.localeCode) {
             appcues.track('Product\'s locale switched to "' + eventOptions.localeCode + '"');
           }
 
-          if (eventOptions && eventOptions.context && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
+          if (eventOptions && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
             appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
           }
           break;
@@ -215,8 +234,8 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Settings: "Families" clicked');
           break;
         case 'attribute:create:type-selected':
-          if (eventOptions && eventOptions.name) {
-            appcues.track('Attribute of type "' + eventOptions.name +'" created');
+          if (eventOptions && eventOptions.type) {
+            appcues.track('Attribute of type "' + eventOptions.type +'" created');
           }
           break;
         case 'common:form:value-changed':
@@ -234,19 +253,25 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Create attribute form saved');
           }
           break;
-        case 'family-grid:product:item-selected':
-          if (eventOptions && eventOptions.count && eventOptions.count === 3) {
-            appcues.track('3 families selected in the grid');
+        case 'grid:item:number-selected':
+          if (eventOptions && eventOptions.inputName === 'family-grid') {
+            if (eventOptions.count && eventOptions.count === 3) {
+              appcues.track('3 families selected in the grid');
+            }
           }
           break;
         case 'grid:mass-edit:requirements-checked':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'marketplaces' && eventOptions.checked) {
-            appcues.track('The information is required for Marketplaces channel');
+          if (eventOptions && eventOptions.actions) {
+            _.each(eventOptions.actions, function (action: Action) {
+              if (action.channel_code === 'marketplaces' && action.is_required) {
+                appcues.track('The information is required for Marketplaces channel');
+              }
+            });
           }
           break;
         case 'form:edit:opened':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit') {
-            if (eventOptions.attributes && eventOptions.attributes.code === 'printers_amazon') {
+          if (eventOptions && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit') {
+            if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
               appcues.track('Edit export profile "Printers for Amazon (weekly)"');
             }
 
@@ -254,7 +279,7 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'export-profile:product:content-tab-opened':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit-content') {
+          if (eventOptions && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit-content') {
             appcues.track('Content tab opened on edit export profile product');
           }
           break;
@@ -264,7 +289,7 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'job-instance:form-edit:saved':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'printers_amazon') {
+          if (eventOptions && eventOptions.code === 'printers_amazon') {
             appcues.track('Edit export profile "Printers for Amazon (weekly)" saved');
           }
           break;
@@ -277,13 +302,17 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('Variant selected from product model');
           break;
         case 'family:edit:variant-selected':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-family-edit-form-variant') {
+          if (eventOptions && eventOptions.code === 'pim-family-edit-form-variant') {
             appcues.track('Tab "Variants" selected in family edit form');
           }
           break;
         case 'family:variant:attribute-set':
-          if (eventOptions && eventOptions.name && eventOptions.name.includes('meta_title')) {
-            appcues.track('Attribute "Meta title" added as family variant');
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
+
+            if (codes.includes('meta_title')) {
+              appcues.track('Attribute "Meta title" added as family variant');
+            }
           }
           break;
         case 'navigation:entry:clicked':
