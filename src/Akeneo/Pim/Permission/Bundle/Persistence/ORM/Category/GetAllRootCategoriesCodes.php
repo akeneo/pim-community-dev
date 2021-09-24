@@ -10,9 +10,8 @@ class GetAllRootCategoriesCodes
 {
     private Connection $connection;
 
-    public function __construct(
-        Connection $connection
-    ) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
     }
 
@@ -27,8 +26,8 @@ FROM pim_catalog_category
 WHERE parent_id IS NULL
 SQL;
 
-        $results = $this->connection->fetchAssoc($query) ?: [];
+        $results = $this->connection->fetchAll($query) ?: [];
 
-        return $results;
+        return array_map(fn($row) => $row['code'], $results);
     }
 }
