@@ -41,9 +41,8 @@ final class ValidateReplacementOperationAction
             return new RedirectResponse('/');
         }
 
-        $decodedRequest = $this->decodeRequest($request);
-
-        $violations = $this->validator->validate($decodedRequest, new ReplacementOperationConstraint());
+        $replacementOperations = $this->getReplacementOperations($request);
+        $violations = $this->validator->validate($replacementOperations, new ReplacementOperationConstraint());
         if ($violations->count() > 0) {
             return new JsonResponse($this->violationNormalizer->normalize(
                 $violations,
@@ -57,10 +56,9 @@ final class ValidateReplacementOperationAction
         return new Response(null, Response::HTTP_OK);
     }
 
-    private function decodeRequest(Request $request): array
+    private function getReplacementOperations(Request $request): array
     {
         $decodedRequest = json_decode($request->getContent(), true);
-
         if (null === $decodedRequest) {
             throw new BadRequestHttpException('Invalid json message received');
         }
