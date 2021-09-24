@@ -245,7 +245,7 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'form:edit:opened':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit') {
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit') {
             if (eventOptions.attributes && eventOptions.attributes.code === 'printers_amazon') {
               appcues.track('Edit export profile "Printers for Amazon (weekly)"');
             }
@@ -254,7 +254,7 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'export-profile:product:content-tab-opened':
-          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-csv-product-export-edit-content') {
+          if (eventOptions && eventOptions.code && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit-content') {
             appcues.track('Content tab opened on edit export profile product');
           }
           break;
