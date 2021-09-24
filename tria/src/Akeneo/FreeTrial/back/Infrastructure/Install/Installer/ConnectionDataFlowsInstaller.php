@@ -120,7 +120,7 @@ SQL;
         }
     }
 
-    private function createConnectionAuditProduct(string $code, \DateTimeImmutable $date, int $count , string $type): void
+    private function createConnectionAuditProduct(string $code, \DateTimeImmutable $date, int $count, string $type): void
     {
         $query = <<<SQL
 INSERT INTO akeneo_connectivity_connection_audit_product (connection_code, event_datetime, event_count, event_type, updated)
