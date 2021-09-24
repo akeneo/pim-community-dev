@@ -32,7 +32,7 @@ final class GetAllConnectedAppsAction
     ) {
         $this->featureFlag = $featureFlag;
         $this->security = $security;
-        $this->connectedAppRepository = $connectedAppRepository;;
+        $this->connectedAppRepository = $connectedAppRepository;
     }
 
     public function __invoke(Request $request): Response
