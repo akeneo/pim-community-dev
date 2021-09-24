@@ -65,17 +65,22 @@ free_trial:
   enabled: true
   akeneo_connect_saml_entity_id: null
   akeneo_connect_saml_certificate: null
-  akeneo_connect_saml_sp_client_id: null
+  akeneo_connect_saml_sp_client_id: "https://trial-pim.akeneo.com"
   akeneo_connect_saml_sp_certificate_base64: null
   akeneo_connect_saml_sp_private_key_base64: null
   akeneo_connect_api_client_secret: null
   akeneo_connect_api_client_password: null
-  ft_catalog_api_base_uri: null
+  ft_catalog_api_base_uri: "https://ft-catalog.cloud.akeneo.com/"
   ft_catalog_api_client_id: null
   ft_catalog_api_password: null
   ft_catalog_api_secret: null
-  ft_catalog_api_username: null
-  akeneo_connect_saml_signin_url: "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
-  akeneo_connect_saml_logout_url: "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+  ft_catalog_api_username: "freetrialintances_4083"
+  akeneo_connect_saml_signin_url: "https://connect.ip.akeneo.com/auth/realms/trial/protocol/saml"
+  akeneo_connect_saml_logout_url: "https://connect.ip.akeneo.com/auth/realms/trial/protocol/saml"
   akeneo_connect_api_client_id: "portal"
   akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"
+
+elasticsearch:
+  keystore: null
+  cluster:
+    plugins: null
