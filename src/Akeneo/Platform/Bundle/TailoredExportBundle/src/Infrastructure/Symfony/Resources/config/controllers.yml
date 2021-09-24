@@ -22,3 +22,10 @@ services:
         public: true
         arguments:
             - '@akeneo.pim.structure.query.search_attribute_options'
+
+    akeneo.tailored_export.controller.validate_replacement_operation_action:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\ValidateReplacementOperationAction'
+        public: true
+        arguments:
+            - '@validator'
+            - '@serializer'

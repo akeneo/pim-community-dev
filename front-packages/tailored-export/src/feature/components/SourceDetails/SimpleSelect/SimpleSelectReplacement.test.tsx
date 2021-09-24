@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {SimpleSelectReplacement} from './SimpleSelectReplacement';
@@ -17,6 +17,10 @@ const attribute = {
 
 test('it can open a replacement modal and calls the handler when confirming', async () => {
   const handleChange = jest.fn();
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: true,
+    json: async () => {},
+  }));
 
   await renderWithProviders(
     <SimpleSelectReplacement attribute={attribute} validationErrors={[]} onOperationChange={handleChange} />
@@ -28,7 +32,9 @@ test('it can open a replacement modal and calls the handler when confirming', as
     screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.title')
   ).toBeInTheDocument();
 
-  userEvent.click(screen.getByText('pim_common.confirm'));
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_common.confirm'));
+  });
 
   expect(handleChange).toHaveBeenCalledWith(undefined);
 });

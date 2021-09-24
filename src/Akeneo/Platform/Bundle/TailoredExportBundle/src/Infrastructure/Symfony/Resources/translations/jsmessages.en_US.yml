@@ -151,6 +151,7 @@ akeneo.tailored_export:
                 replacement: Replacement values
               field:
                 to_placeholder: Define the replacement value
+            validation_error: Invalid mapping
         default_value:
           title: Use default value when empty
           label: Default value

@@ -52,8 +52,14 @@ jest.mock('../../../hooks/useAttributeOptions', () => ({
   ],
 }));
 
+const validResponse = {
+  ok: true,
+  json: async () => {},
+};
+
 test('it can update a replacement mapping', async () => {
   const handleConfirm = jest.fn();
+  global.fetch = jest.fn().mockImplementation(async () => validResponse);
 
   await renderWithProviders(
     <ReplacementModal
@@ -70,11 +76,45 @@ test('it can update a replacement mapping', async () => {
   );
 
   userEvent.type(blackInput, 'Noir');
-  userEvent.click(screen.getByText('pim_common.confirm'));
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_common.confirm'));
+  });
 
   expect(handleConfirm).toHaveBeenCalledWith({
     black: 'Noir',
   });
+});
+
+test('it validate replacement mapping before confirm mapping', async () => {
+  const handleConfirm = jest.fn();
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: false,
+    json: async () => [
+      {propertyPath: '[mapping][black]', messageTemplate: 'error.invalid_value.message', parameters: {}},
+    ],
+  }));
+
+  await renderWithProviders(
+    <ReplacementModal
+      initialMapping={{}}
+      attribute={attribute}
+      validationErrors={[]}
+      onConfirm={jest.fn()}
+      onCancel={jest.fn()}
+    />
+  );
+
+  const [blackInput] = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.field.to_placeholder'
+  );
+
+  userEvent.type(blackInput, 'invalid_mapping');
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_common.confirm'));
+  });
+
+  expect(handleConfirm).not.toHaveBeenCalled();
+  expect(screen.getByText('error.invalid_value.message'));
 });
 
 test('it can filter search results', async () => {

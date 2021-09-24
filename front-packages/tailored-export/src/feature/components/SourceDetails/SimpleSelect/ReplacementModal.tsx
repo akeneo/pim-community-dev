@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {
   AttributesIllustration,
@@ -13,10 +13,14 @@ import {
 } from 'akeneo-design-system';
 import {
   filterErrors,
+  formatParameters,
   getLabel,
   NoDataSection,
   NoDataText,
   NoDataTitle,
+  NotificationLevel,
+  useNotify,
+  useRoute,
   useTranslate,
   useUserContext,
   ValidationError,
@@ -95,16 +99,23 @@ const ReplacementModal = ({
 }: ReplacementModalProps) => {
   const translate = useTranslate();
   const [mapping, setMapping] = useState<ReplacementValues>(initialMapping);
+  const validateReplacementOperationRoute = useRoute('pimee_tailored_export_validate_replacement_operation_action');
+  const notify = useNotify();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue);
   const catalogLocale = useUserContext().get('catalogLocale');
   const [mappedFilterValue, setMappedFilterValue] = useState<MappedFilterValue>('all');
-  const mappingValidationErrors = filterErrors(validationErrors, '[mapping]');
   const [optionCodesToInclude, optionCodesToExclude] = useMemo(
     () => getIncludeExcludeCodes(mappedFilterValue, initialMapping),
     [mappedFilterValue, initialMapping]
   );
+  const [replacementOperationValidationErrors, setReplacementOperationValidationErrors] = useState(validationErrors);
+  const mappingValidationErrors = filterErrors(replacementOperationValidationErrors, '[mapping]');
+
+  useEffect(() => {
+    setReplacementOperationValidationErrors(validationErrors);
+  }, [validationErrors]);
 
   const [attributeOptions, totalItems] = useAttributeOptions(
     attribute.code,
@@ -125,7 +136,38 @@ const ReplacementModal = ({
     setCurrentPage(1);
   };
 
-  const handleConfirm = () => onConfirm(filterEmptyValues(mapping));
+  const handleConfirm = async () => {
+    const values = filterEmptyValues(mapping);
+
+    const response = await fetch(validateReplacementOperationRoute, {
+      body: JSON.stringify({
+        type: 'replacement',
+        mapping: values,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      method: 'POST',
+    });
+
+    setReplacementOperationValidationErrors([]);
+
+    if (response.ok) {
+      onConfirm(values);
+    } else {
+      try {
+        const errors = await response.json();
+
+        setReplacementOperationValidationErrors(formatParameters(errors));
+      } catch (error) {}
+
+      notify(
+        NotificationLevel.ERROR,
+        translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.validation_error')
+      );
+    }
+  };
 
   return (
     <Modal onClose={onCancel} closeTitle={translate('pim_common.close')}>
