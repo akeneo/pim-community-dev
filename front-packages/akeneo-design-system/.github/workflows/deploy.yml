@@ -25,7 +25,7 @@ jobs:
       - name: Build storybook
         run: yarn run storybook:build
 
-      - name: Add cleanup stagging script
+      - name: Add cleanup staging script
         run: |
           mkdir -p ./storybook-static/.github/workflows && \
           cp ./.github/workflows/cleanup-staging.js ./storybook-static/.github/workflows/cleanup-staging.js
