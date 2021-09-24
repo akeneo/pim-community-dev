@@ -46,10 +46,10 @@ final class ExportUserGroupIntegration extends TestCase
     {
         $expectedCsv = <<<CSV
 name
-All
 "IT support"
 Manager
 Redactor
+All
 
 CSV;
         $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []);

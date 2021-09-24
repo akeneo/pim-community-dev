@@ -14,6 +14,11 @@ Akeneo\UserManagement\Component\Model\Group:
             unique: true
             nullable: false
             lenght: 30
+        defaultPermissions:
+            column: default_permissions
+            type: json
+            unique: false
+            nullable: true
     manyToMany:
         roles:
             targetEntity: Akeneo\UserManagement\Component\Model\Role
