@@ -33,7 +33,7 @@ const StyledLocale = styled(Locale)`
   margin-right: 15px;
 `;
 
-const H3 = styled.h3`
+const PermissionTitle = styled.h3`
   color: ${getColor('grey', 140)};
   text-transform: uppercase;
   font-size: 15px;
@@ -107,7 +107,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
     return (
       <>
         <SectionTitle>
-          <H3>{translate('pim_permissions.widget.entity.locale.label')}</H3>
+          <PermissionTitle>{translate('pim_permissions.widget.entity.locale.label')}</PermissionTitle>
         </SectionTitle>
         {securityContext.isGranted('pimee_enrich_locale_edit_permissions') ? (
           <Helper level="info">{translate('pim_permissions.widget.entity.locale.help')}</Helper>
