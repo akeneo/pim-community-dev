@@ -113,10 +113,6 @@ const ReplacementModal = ({
   const [replacementOperationValidationErrors, setReplacementOperationValidationErrors] = useState(validationErrors);
   const mappingValidationErrors = filterErrors(replacementOperationValidationErrors, '[mapping]');
 
-  useEffect(() => {
-    setReplacementOperationValidationErrors(validationErrors);
-  }, [validationErrors]);
-
   const [attributeOptions, totalItems] = useAttributeOptions(
     attribute.code,
     debouncedSearchValue,
