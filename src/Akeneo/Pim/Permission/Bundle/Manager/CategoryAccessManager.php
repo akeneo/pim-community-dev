@@ -461,32 +461,6 @@ class CategoryAccessManager
         return $access;
     }
 
-    public function isGroupGranted(CategoryInterface $category, GroupInterface $group, $accessLevel): bool
-    {
-        $access = $this->accessRepository
-            ->findOneBy(
-                [
-                    'category'  => $category,
-                    'userGroup' => $group
-                ]
-            );
-
-        if (null === $access) {
-            return false;
-        }
-
-        switch ($accessLevel){
-            case Attributes::VIEW_ITEMS:
-                return $access->isViewItems();
-            case Attributes::EDIT_ITEMS:
-                return $access->isEditItems();
-            case Attributes::OWN_PRODUCTS:
-                return $access->isOwnItems();
-            default:
-                throw new \LogicException(sprintf('Unsupported access level %s', $accessLevel));
-        }
-    }
-
     public function revokeGroupAccess(CategoryInterface $category, GroupInterface $group): void
     {
         $access = $this->accessRepository
@@ -502,19 +476,6 @@ class CategoryAccessManager
         }
 
         $this->accessRemover->removeAll([$access]);
-    }
-
-    /**
-     * @return CategoryAccessInterface[]
-     */
-    public function getAccessesByGroup(GroupInterface $group): array
-    {
-        return $this->accessRepository
-            ->findBy(
-                [
-                    'userGroup' => $group
-                ]
-            );
     }
 
     /**
