@@ -10,7 +10,6 @@ use Akeneo\Test\Integration\TestCase;
 
 class GetAllRootCategoriesCodesIntegration extends TestCase
 {
-
     private GetAllRootCategoriesCodes $query;
 
     /**
@@ -28,7 +27,7 @@ class GetAllRootCategoriesCodesIntegration extends TestCase
         $this->query = $this->get(GetAllRootCategoriesCodes::class);
     }
 
-    public function testItFetchesAllRootCategoriesByCode()
+    public function testItFetchesAllRootCategoriesByCode(): void
     {
         $expected = [
             'a_tree',

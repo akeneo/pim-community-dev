@@ -52,6 +52,6 @@ SQL;
             return Attributes::VIEW_ITEMS;
         }
 
-        throw new \LogicException('Unexpected toto');
+        throw new \LogicException('Category access level is unknown');
     }
 }
