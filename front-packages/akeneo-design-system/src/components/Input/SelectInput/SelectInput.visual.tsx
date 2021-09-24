@@ -2,7 +2,7 @@ import 'expect-puppeteer';
 import {toMatchImageSnapshot} from 'jest-image-snapshot';
 expect.extend({toMatchImageSnapshot});
 
-const storyIds = ['standard', 'read-only', 'invalid', 'vertical-position', 'large'];
+const storyIds = ['standard', 'read-only', 'invalid', 'vertical-position', 'large', 'large-options'];
 test.each(storyIds)('Test select input %s is displayed correctly', async storyId => {
   await page.goto(`http://localhost:6006/iframe.html?id=components-inputs-select-input--${storyId}`);
   const root = await page.waitFor('#root');
