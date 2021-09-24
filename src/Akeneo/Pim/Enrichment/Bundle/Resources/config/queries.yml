@@ -410,8 +410,3 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren:
         arguments:
             - '@database_connection'
-
-    Akeneo\Pim\Enrichment\Component\Product\Query\PublicApi\GetRawValues:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetRawValues'
-        arguments:
-            - '@database_connection'
