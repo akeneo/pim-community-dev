@@ -85,7 +85,7 @@ test('it can update a replacement mapping', async () => {
   });
 });
 
-test('it validate replacement mapping before confirm mapping', async () => {
+test('it validates replacement mapping before confirming', async () => {
   const handleConfirm = jest.fn();
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: false,
