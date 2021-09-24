@@ -36,9 +36,7 @@ export const ConnectedAppPage: FC = () => {
                     code={404}
                 />
             )}
-            {false !== connectedApp && null !== connectedApp && (
-                <ConnectedAppContainer connectedApp={connectedApp} />
-            )}
+            {false !== connectedApp && null !== connectedApp && <ConnectedAppContainer connectedApp={connectedApp} />}
         </>
     );
 };

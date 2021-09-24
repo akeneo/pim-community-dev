@@ -8,7 +8,7 @@ const loadingBreath = keyframes`
 `;
 
 const ScopeListContainer = styled.div`
-  margin: 10px 20px;
+    margin: 10px 20px;
 `;
 
 const SkeletonScopeListItem = styled.div`

@@ -23,13 +23,13 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('The connected app container renders', async () => {
+test('The connected app container renders', () => {
     const connectedApp = {
         id: '12345',
         name: 'App A',
         scopes: ['scope1', 'scope2'],
         connection_code: 'some_connection_code',
-        logo: 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
         categories: ['e-commerce', 'print'],
         certified: false,
@@ -44,7 +44,7 @@ test('The connected app container renders', async () => {
     expect(TabBar).toHaveBeenCalledTimes(1);
     expect(ConnectedAppSettings).toHaveBeenCalledWith(
         {
-            connectedApp: connectedApp
+            connectedApp: connectedApp,
         },
         {}
     );

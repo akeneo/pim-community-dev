@@ -44,7 +44,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     </TabBar.Tab>
                 </TabBar>
 
-                <ConnectedAppSettings connectedApp={connectedApp}/>
+                <ConnectedAppSettings connectedApp={connectedApp} />
             </PageContent>
         </>
     );

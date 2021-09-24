@@ -10,7 +10,7 @@ import {useFeatureFlags} from '../../../shared/feature-flags';
 import {ConnectedAppScopeListIsLoading} from './ConnectedAppScopeListIsLoading';
 
 const ScopeListContainer = styled.div`
-  margin: 10px 20px;
+    margin: 10px 20px;
 `;
 
 type Props = {
@@ -41,14 +41,20 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp}) => {
     return (
         <>
             <SectionTitle>
-                <SectionTitle.Title>{translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.title')}</SectionTitle.Title>
+                <SectionTitle.Title>
+                    {translate(
+                        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.title'
+                    )}
+                </SectionTitle.Title>
             </SectionTitle>
             <Helper level='info'>
                 <div
                     dangerouslySetInnerHTML={{
                         __html: translate(
                             'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
-                            {link: `<a href='https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html#all-editions-authorization-step' target='_blank'>${informationLinkAnchor}</a>`}
+                            {
+                                link: `<a href='https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html#all-editions-authorization-step' target='_blank'>${informationLinkAnchor}</a>`, // eslint-disable-line max-len
+                            }
                         ),
                     }}
                 />
@@ -60,7 +66,9 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp}) => {
                     {0 === connectedAppScopeMessages.length ? (
                         <ScopeItem key='0' fontSize='default'>
                             <CheckRoundIcon size={24} />
-                            {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope')}
+                            {translate(
+                                'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope'
+                            )}
                         </ScopeItem>
                     ) : (
                         <ScopeList scopeMessages={connectedAppScopeMessages} itemFontSize='default' />

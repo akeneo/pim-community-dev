@@ -34,11 +34,11 @@ test('The connected app page renders with a connected app', async () => {
             {
                 icon: 'catalog_structure',
                 type: 'view',
-                entities: 'catalog_structure'
+                entities: 'catalog_structure',
             },
         ],
         connection_code: 'some_connection_code',
-        logo: 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
         categories: ['e-commerce', 'print'],
         certified: false,
@@ -74,9 +74,13 @@ test('The connected app page renders with internal api errors', async () => {
     });
 
     renderWithProviders(<ConnectedAppPage />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found'));
+    await waitForElement(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')
+    );
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')
+    ).toBeInTheDocument();
     expect(ConnectedAppContainer).not.toHaveBeenCalled();
 });

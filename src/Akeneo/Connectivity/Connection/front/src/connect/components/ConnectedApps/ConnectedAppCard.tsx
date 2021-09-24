@@ -102,10 +102,9 @@ type Props = {
 const ConnectedAppCard: FC<Props> = ({item}) => {
     const translate = useTranslate();
     const generateUrl = useRouter();
-    const connectedAppUrl = `#${generateUrl(
-        'akeneo_connectivity_connection_connect_connected_apps_any',
-        {any: item.connection_code}
-    )}`;
+    const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_any', {
+        any: item.connection_code,
+    })}`;
 
     return (
         <CardContainer>

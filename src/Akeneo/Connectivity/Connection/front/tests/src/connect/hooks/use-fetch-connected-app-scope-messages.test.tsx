@@ -7,14 +7,15 @@ test('it fetches the connected app scope messages', async () => {
         {
             icon: 'channel_settings',
             type: 'edit',
-            entities: 'channel_settings'
+            entities: 'channel_settings',
         },
     ];
 
     mockFetchResponses({
-        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=connectionCodeA': {
-            json: expectedScopeMessages,
-        },
+        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=connectionCodeA':
+            {
+                json: expectedScopeMessages,
+            },
     });
     const {result} = renderHook(() => useFetchConnectedAppScopeMessages('connectionCodeA'));
     const scopeMessages = await result.current();

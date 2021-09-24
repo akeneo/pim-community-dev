@@ -31,14 +31,15 @@ test('The connected settings renders with scopes', async () => {
         {
             icon: 'catalog_structure',
             type: 'view',
-            entities: 'catalog_structure'
+            entities: 'catalog_structure',
         },
     ];
 
     const fetchConnectedAppScopeMessagesResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code': {
-            json: scopes,
-        },
+        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code':
+            {
+                json: scopes,
+            },
     };
 
     mockFetchResponses({
@@ -50,7 +51,7 @@ test('The connected settings renders with scopes', async () => {
         name: 'App A',
         scopes: ['scope 1'],
         connection_code: 'some_connection_code',
-        logo: 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
         categories: ['e-commerce', 'print'],
         certified: false,
@@ -61,12 +62,15 @@ test('The connected settings renders with scopes', async () => {
     await wait(() => expect(ScopeList).toHaveBeenCalledTimes(1));
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information', {exact: false})
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
+            {exact: false}
+        )
     ).toBeInTheDocument();
     expect(ScopeList).toHaveBeenCalledWith(
         {
             scopeMessages: scopes,
-            itemFontSize: 'default'
+            itemFontSize: 'default',
         },
         {}
     );
@@ -74,9 +78,10 @@ test('The connected settings renders with scopes', async () => {
 
 test('The connected app settings renders without scopes', async () => {
     const fetchConnectedAppScopeMessagesResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code': {
-            json: [],
-        },
+        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code':
+            {
+                json: [],
+            },
     };
 
     mockFetchResponses({
@@ -88,7 +93,7 @@ test('The connected app settings renders without scopes', async () => {
         name: 'App A',
         scopes: [],
         connection_code: 'some_connection_code',
-        logo: 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
         categories: ['e-commerce', 'print'],
         certified: false,
@@ -96,11 +101,20 @@ test('The connected app settings renders without scopes', async () => {
     };
 
     renderWithProviders(<ConnectedAppSettings connectedApp={connectedApp} />);
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope'));
+    await waitForElement(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope')
+    );
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information', {exact: false})
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
+            {exact: false}
+        )
     ).toBeInTheDocument();
     expect(ScopeList).not.toHaveBeenCalled();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope')).toBeInTheDocument();
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope'
+        )
+    ).toBeInTheDocument();
 });

@@ -36,7 +36,7 @@ test('The scope list renders with scopes', () => {
     ).toBeInTheDocument();
     expect(ScopeList).toHaveBeenCalledWith(
         {
-            scopeMessages: scopes
+            scopeMessages: scopes,
         },
         {}
     );
@@ -68,5 +68,7 @@ test('The scope list renders without scopes', () => {
         })
     ).toBeInTheDocument();
     expect(ScopeList).not.toHaveBeenCalled();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')
+    ).toBeInTheDocument();
 });
