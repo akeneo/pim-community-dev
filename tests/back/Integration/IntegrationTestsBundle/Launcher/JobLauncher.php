@@ -363,7 +363,7 @@ class JobLauncher
     {
         $command = sprintf(
             'exec %s/console %s %s --env=%s --limit=1 --verbose %s',
-            sprintf('%s/../bin', $this->kernel->getContainer()->getParameter('kernel.root_dir')),
+            sprintf('%s/bin', $this->kernel->getContainer()->getParameter('kernel.project_dir')),
             static::MESSENGER_COMMAND_NAME,
             implode(' ', static::MESSENGER_RECEIVERS),
             $this->kernel->getEnvironment(),
