@@ -1,7 +1,7 @@
 export type ConnectedApp = {
     id: string;
     name: string;
-    scopes: any;
+    scopes: string[];
     connection_code: string;
     logo: string;
     author: string;

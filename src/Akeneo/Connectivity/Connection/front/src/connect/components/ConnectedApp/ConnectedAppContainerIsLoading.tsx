@@ -25,6 +25,7 @@ const SkeletonTabBar = styled.div`
     border-radius: 5px;
     margin-bottom: 10px;
 `;
+
 const SkeletonContent = styled.div`
     height: 400px;
     animation: ${loadingBreath} 2s infinite;
@@ -48,7 +49,7 @@ export const ConnectedAppContainerIsLoading: FC = () => {
         <Breadcrumb>
             <Breadcrumb.Step href={dashboardHref}>{translate('pim_menu.tab.connect')}</Breadcrumb.Step>
             <Breadcrumb.Step href={connectedAppsListHref}>{translate('pim_menu.item.connected_apps')}</Breadcrumb.Step>
-            <Breadcrumb.Step>...</Breadcrumb.Step>
+            <Breadcrumb.Step>{' '}</Breadcrumb.Step>
         </Breadcrumb>
     );
 
@@ -58,9 +59,7 @@ export const ConnectedAppContainerIsLoading: FC = () => {
                 breadcrumb={breadcrumb}
                 userButtons={<UserButtons />}
                 imageSrc={defaultImageUrl}
-            >
-                ...
-            </PageHeader>
+            />
 
             <PageContent>
                 <SkeletonTabBar />
