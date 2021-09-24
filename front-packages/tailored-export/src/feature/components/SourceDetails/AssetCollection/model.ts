@@ -61,6 +61,8 @@ type AssetCollectionSelection =
   | AssetCollectionMediaFileSelection
   | AssetCollectionMediaLinkSelection;
 
+type AssetCollectionMainMediaSelection = AssetCollectionMediaFileSelection | AssetCollectionMediaLinkSelection;
+
 const isAssetCollectionSelection = (selection: any): selection is AssetCollectionSelection => {
   if (
     !('type' in selection) ||
@@ -84,9 +86,7 @@ const isAssetCollectionSelection = (selection: any): selection is AssetCollectio
   }
 };
 
-const isAssetCollectionMediaSelection = (
-  selection: any
-): selection is AssetCollectionMediaFileSelection | AssetCollectionMediaLinkSelection =>
+const isAssetCollectionMediaSelection = (selection: any): selection is AssetCollectionMainMediaSelection =>
   isAssetCollectionSelection(selection) && ('media_link' === selection.type || 'media_file' === selection.type);
 
 const getDefaultAssetCollectionSelection = (): AssetCollectionSelection => ({
@@ -169,7 +169,7 @@ const isAssetCollectionOperations = (operations: Object): operations is AssetCol
 const isAssetCollectionSource = (source: Source): source is AssetCollectionSource =>
   isAssetCollectionSelection(source.selection) && isAssetCollectionOperations(source.operations);
 
-export type {AssetCollectionSelection, AssetCollectionSource};
+export type {AssetCollectionSelection, AssetCollectionMainMediaSelection, AssetCollectionSource};
 export {
   getDefaultAssetCollectionSource,
   isAssetCollectionSource,

@@ -106,38 +106,6 @@ test('it can select a media file selection type', async () => {
   });
 });
 
-test('it can select the property of a media file selection', async () => {
-  const onSelectionChange = jest.fn();
-
-  await renderWithProviders(
-    <AssetCollectionSelector
-      assetFamilyCode="wallpapers"
-      validationErrors={[]}
-      selection={{
-        type: 'media_file',
-        locale: null,
-        channel: null,
-        property: 'file_key',
-        separator: ',',
-      }}
-      onSelectionChange={onSelectionChange}
-    />
-  );
-
-  userEvent.click(
-    screen.getByText('akeneo.tailored_export.column_details.sources.selection.asset_collection.property')
-  );
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.name'));
-
-  expect(onSelectionChange).toHaveBeenCalledWith({
-    type: 'media_file',
-    locale: null,
-    channel: null,
-    property: 'original_filename',
-    separator: ',',
-  });
-});
-
 test('it can select a media link selection type', async () => {
   const onSelectionChange = jest.fn();
 
@@ -157,66 +125,6 @@ test('it can select a media link selection type', async () => {
     type: 'media_link',
     locale: null,
     channel: null,
-    with_prefix_and_suffix: false,
-    separator: ',',
-  });
-});
-
-test('it can select a channel when it have selected scopable main media selection type', async () => {
-  const onSelectionChange = jest.fn();
-
-  await renderWithProviders(
-    <AssetCollectionSelector
-      assetFamilyCode="raccoons"
-      validationErrors={[]}
-      selection={{
-        type: 'media_link',
-        locale: 'en_US',
-        channel: 'ecommerce',
-        with_prefix_and_suffix: false,
-        separator: ',',
-      }}
-      onSelectionChange={onSelectionChange}
-    />
-  );
-
-  userEvent.click(screen.getByLabelText('pim_common.channel'));
-  userEvent.click(screen.getByText('[print]'));
-
-  expect(onSelectionChange).toHaveBeenCalledWith({
-    type: 'media_link',
-    locale: 'en_US',
-    channel: 'print',
-    with_prefix_and_suffix: false,
-    separator: ',',
-  });
-});
-
-test('it can select a locale when main media is localizable', async () => {
-  const onSelectionChange = jest.fn();
-
-  await renderWithProviders(
-    <AssetCollectionSelector
-      assetFamilyCode="raccoons"
-      validationErrors={[]}
-      selection={{
-        type: 'media_link',
-        locale: 'en_US',
-        channel: 'ecommerce',
-        with_prefix_and_suffix: false,
-        separator: ',',
-      }}
-      onSelectionChange={onSelectionChange}
-    />
-  );
-
-  userEvent.click(screen.getByLabelText('pim_common.locale'));
-  userEvent.click(screen.getByText('Français'));
-
-  expect(onSelectionChange).toHaveBeenCalledWith({
-    type: 'media_link',
-    locale: 'fr_FR',
-    channel: 'ecommerce',
     with_prefix_and_suffix: false,
     separator: ',',
   });

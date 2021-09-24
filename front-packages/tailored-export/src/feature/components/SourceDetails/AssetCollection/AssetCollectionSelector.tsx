@@ -1,15 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {
-  ChannelCode,
-  getLocaleFromChannel,
   filterErrors,
   getAllLocalesFromChannels,
   Section,
   useTranslate,
   ValidationError,
   getErrorsForPath,
-  getLocalesFromChannel,
 } from '@akeneo-pim-community/shared';
 import {useChannels, useAssetFamily} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
@@ -20,11 +17,9 @@ import {
   isDefaultAssetCollectionSelection,
   getDefaultAssetCollectionSelection,
   getDefaultAssetCollectionMediaSelection,
-  ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE,
-  isValidAssetCollectionMediaFileSelectionProperty,
 } from './model';
-import {ChannelDropdown} from '../../ChannelDropdown';
 import {availableSeparators, isCollectionSeparator} from './model';
+import {AssetCollectionMainMediaSelector} from './AssetCollectionMainMediaSelector';
 
 type AssetCollectionSelectorProps = {
   assetFamilyCode: string;
@@ -45,10 +40,8 @@ const AssetCollectionSelector = ({
   const locales = getAllLocalesFromChannels(channels);
   const globalErrors = getErrorsForPath(validationErrors, '');
   const localeErrors = filterErrors(validationErrors, '[locale]');
-  const channelErrors = filterErrors(validationErrors, '[channel]');
   const typeErrors = filterErrors(validationErrors, '[type]');
   const separatorErrors = filterErrors(validationErrors, '[separator]');
-  const propertyErrors = filterErrors(validationErrors, '[property]');
   const assetFamily = useAssetFamily(assetFamilyCode);
   const handleSelectionTypeChange = useCallback(
     (type: string) => {
@@ -129,63 +122,11 @@ const AssetCollectionSelector = ({
             </Helper>
           ))}
         </Field>
-        {isAssetCollectionMediaSelection(selection) && ASSET_COLLECTION_MEDIA_FILE_SELECTION_TYPE === selection.type && (
-          <Field label={translate('akeneo.tailored_export.column_details.sources.selection.asset_collection.property')}>
-            <SelectInput
-              clearable={false}
-              invalid={0 < propertyErrors.length}
-              emptyResultLabel={translate('pim_common.no_result')}
-              openLabel={translate('pim_common.open')}
-              value={selection.property}
-              onChange={newProperty => {
-                if (isValidAssetCollectionMediaFileSelectionProperty(newProperty)) {
-                  onSelectionChange({...selection, property: newProperty});
-                }
-              }}
-            >
-              <SelectInput.Option
-                title={translate('akeneo.tailored_export.column_details.sources.selection.type.key')}
-                value="file_key"
-              >
-                {translate('akeneo.tailored_export.column_details.sources.selection.type.key')}
-              </SelectInput.Option>
-              <SelectInput.Option
-                title={translate('akeneo.tailored_export.column_details.sources.selection.type.path')}
-                value="file_path"
-              >
-                {translate('akeneo.tailored_export.column_details.sources.selection.type.path')}
-              </SelectInput.Option>
-              <SelectInput.Option
-                title={translate('akeneo.tailored_export.column_details.sources.selection.type.name')}
-                value="original_filename"
-              >
-                {translate('akeneo.tailored_export.column_details.sources.selection.type.name')}
-              </SelectInput.Option>
-            </SelectInput>
-            {propertyErrors.map((error, index) => (
-              <Helper key={index} inline={true} level="error">
-                {translate(error.messageTemplate, error.parameters)}
-              </Helper>
-            ))}
-          </Field>
-        )}
-        {isAssetCollectionMediaSelection(selection) && null !== selection.channel && (
-          <ChannelDropdown
-            value={selection.channel}
-            channels={channels}
-            validationErrors={channelErrors}
-            onChange={(channelCode: ChannelCode) => {
-              const localeCode = getLocaleFromChannel(channels, channelCode, selection.locale);
-              onSelectionChange({...selection, locale: localeCode, channel: channelCode});
-            }}
-          />
-        )}
-        {isAssetCollectionMediaSelection(selection) && selection.locale !== null && (
-          <LocaleDropdown
-            value={selection.locale}
-            validationErrors={localeErrors}
-            locales={getLocalesFromChannel(channels, selection.channel)}
-            onChange={localeCode => onSelectionChange({...selection, locale: localeCode})}
+        {isAssetCollectionMediaSelection(selection) && (
+          <AssetCollectionMainMediaSelector
+            selection={selection}
+            validationErrors={validationErrors}
+            onSelectionChange={onSelectionChange}
           />
         )}
         {'label' === selection.type && selection.locale !== null && (
