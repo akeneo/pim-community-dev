@@ -107,12 +107,10 @@ define([
       this.getRoot().trigger('pim_enrich:form:render:after');
       this.getRoot().trigger('pim_enrich:form:extension:render:after');
 
-      if (this.model && this.model.attributes) {
-        analytics.track('form:edit:opened', {
-          code: this.code,
-          attributes: this.model.attributes,
-        });
-      }
+      analytics.track('form:edit:opened', {
+        code: this.code,
+        model: this.model,
+      });
     },
 
     /**

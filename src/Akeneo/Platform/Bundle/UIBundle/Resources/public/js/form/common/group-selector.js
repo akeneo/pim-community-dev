@@ -96,13 +96,7 @@ define([
      * @param {Event} event
      */
     change: function (event) {
-      const attributeGroupCode = event.currentTarget.dataset.element;
-
-      analytics.track('product-grid:attribute-group:selected', {
-        name: attributeGroupCode,
-      });
-
-      this.setCurrent(attributeGroupCode);
+      this.setCurrent(event.currentTarget.dataset.element);
     },
 
     /**
@@ -130,6 +124,10 @@ define([
           this.trigger('group:change');
           this.getRoot().trigger('group:change');
         }
+
+        analytics.track('product-grid:attribute-group:selected', {
+          code: current,
+        });
 
         this.render();
       }

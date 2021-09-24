@@ -58,7 +58,7 @@ define([
       this.render();
 
       analytics.track('grid:mass-edit:item-chosen', {
-        name: code,
+        code: code,
       });
     },
 

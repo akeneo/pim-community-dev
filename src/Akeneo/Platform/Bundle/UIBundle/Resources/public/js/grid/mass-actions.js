@@ -87,13 +87,10 @@ define([
         this.count = Math.max(this.count - 1, 0);
       }
 
-      switch (this.collection.inputName) {
-        case 'family-grid':
-          analytics.track('family-grid:product:item-selected', {
-            count: this.count,
-          });
-          break;
-      }
+      analytics.track('grid:item:number-selected', {
+        inputName: this.collection.inputName,
+        count: this.count,
+      });
 
       this.updateView();
     },

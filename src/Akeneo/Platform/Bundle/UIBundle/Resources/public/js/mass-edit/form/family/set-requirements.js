@@ -113,11 +113,8 @@ define([
 
       data.actions = values;
 
-      _.each(data.actions, function (action) {
-        analytics.track('grid:mass-edit:requirements-checked', {
-          code: action.channel_code,
-          checked: action.is_required,
-        });
+      analytics.track('grid:mass-edit:requirements-checked', {
+        actions: data.actions,
       });
 
       this.setData(data);

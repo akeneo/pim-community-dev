@@ -90,7 +90,7 @@ define([
             .filter((code, index, codes) => codes.indexOf(code) === index);
 
           analytics.track('family:variant:attribute-set', {
-            name: axesAttributeCodes.join(','),
+            codes: axesAttributeCodes,
           });
 
           return $.when(

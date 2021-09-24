@@ -140,7 +140,7 @@ define([
           modal.$el.remove();
 
           analytics.track('attribute:create:type-selected', {
-            name: self.getAttributeType(dataRoute),
+            type: self.getAttributeType(dataRoute),
           });
 
           router.redirect(dataRoute, {trigger: true});
