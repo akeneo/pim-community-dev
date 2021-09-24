@@ -86,6 +86,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
         <MenuContainer>
           {entries.map(entry => (
             <MainNavigationItem
+              id={entry.code}
               key={entry.code}
               active={entry.code === activeEntryCode}
               disabled={entry.disabled}

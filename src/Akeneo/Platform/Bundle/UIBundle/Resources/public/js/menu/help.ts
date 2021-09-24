@@ -22,6 +22,7 @@ class Help extends BaseView {
     this.getUrl().then((url: string) => {
       this.$el.empty().append(
         this.template({
+          id: 'pim-menu-help',
           helper: __('pim_menu.tab.help.helper'),
           title: __('pim_menu.tab.help.title'),
           url,
