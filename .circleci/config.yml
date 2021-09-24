@@ -2121,7 +2121,7 @@ jobs:
           - set_gcloud_config_dev
           - run:
                 name: Remove unused resources
-                command:
+                command: |
                     PIM_CONTEXT=deployment make remove_unused_resources
 
   zdd_compliancy_diff:

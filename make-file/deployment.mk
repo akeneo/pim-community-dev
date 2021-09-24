@@ -420,7 +420,7 @@ delete_expired_uptime_check:
 	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
-remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials
 
 .PHONY: remove_unused_gcloud_dns
 remove_unused_gcloud_dns:
@@ -459,6 +459,13 @@ remove_unused_gcloud_disk:
 	@echo "=             Remove unused gcloud disk                  ="
 	@echo "=========================================================="
 	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+
+.PHONY: remove_unused_mailgun_credentials
+remove_unused_mailgun_credentials:
+	@echo "=========================================================="
+	@echo "=           Remove unused mailgun credentials            ="
+	@echo "=========================================================="
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} bash $(PWD)/deployments/bin/remove_unused_mailgun_credentials.sh
 
 .PHONY: clone_serenity
 clone_serenity:
