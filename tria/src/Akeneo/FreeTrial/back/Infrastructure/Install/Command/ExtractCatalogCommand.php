@@ -25,7 +25,6 @@ use League\Flysystem\MountManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class ExtractCatalogCommand extends Command
 {
@@ -73,21 +72,20 @@ final class ExtractCatalogCommand extends Command
     {
         $this->ensureAuthenticationParametersAreDefined();
 
-        $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Extract catalog data from %s', $this->apiBaseUrl));
+        $output->writeln(sprintf('<info>Extract Free-Trial catalog data from %s</info>', $this->apiBaseUrl));
 
         $apiClient = $this->buildApiClient($input);
 
-        $extractMediaFiles = new ExtractMediaFiles($this->catalogFileSystem, $apiClient, $io);
+        $extractMediaFiles = new ExtractMediaFiles($this->catalogFileSystem, $apiClient, $output);
         $extractMediaFiles();
 
-        $extractProducts = new ExtractProducts($apiClient, $io);
+        $extractProducts = new ExtractProducts($apiClient, $output);
         $extractProducts();
 
-        $extractStructure = new ExtractStructure($apiClient, $io);
+        $extractStructure = new ExtractStructure($apiClient, $output);
         $extractStructure();
 
-        $io->success('Catalog extracted!');
+        $output->writeln('<info>Free-Trial Catalog successfully extracted!</info>');
 
         return 0;
     }

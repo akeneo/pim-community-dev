@@ -15,7 +15,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor;
 
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExtractProducts
 {
@@ -23,15 +23,15 @@ final class ExtractProducts
 
     private AkeneoPimClientInterface $apiClient;
 
-    private StyleInterface $io;
+    private OutputInterface $output;
 
     private array $mediaFileAttributes = [];
     private array $productModelsAttributes = [];
 
-    public function __construct(AkeneoPimClientInterface $apiClient, StyleInterface $io)
+    public function __construct(AkeneoPimClientInterface $apiClient, OutputInterface $output)
     {
         $this->apiClient = $apiClient;
-        $this->io = $io;
+        $this->output = $output;
     }
 
     public function __invoke(): void
@@ -43,7 +43,7 @@ final class ExtractProducts
 
     private function extractProductModels(): void
     {
-        $this->io->section('Extract product models.');
+        $this->output->write('Extract product models... ');
 
         $productModelApi = $this->apiClient->getProductModelApi();
         $productModels = iterator_to_array($productModelApi->all());
@@ -61,12 +61,12 @@ final class ExtractProducts
             file_put_contents($this->getProductModelFixturesPath(), json_encode($productModel) . PHP_EOL, FILE_APPEND);
         }
 
-        $this->io->text(sprintf('%d product models extracted', count($productModels)));
+        $this->output->writeln(sprintf('%d product models extracted', count($productModels)));
     }
 
     private function extractProducts(): void
     {
-        $this->io->section('Extract products.');
+        $this->output->write('Extract products... ');
 
         $productApi = $this->apiClient->getProductApi();
         $productsCount = 0;
@@ -78,7 +78,7 @@ final class ExtractProducts
             $productsCount++;
         }
 
-        $this->io->text(sprintf('%d products extracted', $productsCount));
+        $this->output->writeln(sprintf('%d products extracted', $productsCount));
     }
 
     private function extractProductAssociations($product): void
