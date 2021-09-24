@@ -1,4 +1,8 @@
-# Akeneo Design System Repository
+# Akeneo Design System
+
+<p style={{textAlign: "center"}}>
+  <img style={{ width: '75%', margin: '0 auto 2em auto', maxWidth: '450px'}} src="./Introduction.png" alt="Akeneo design system introduction illustration"/>
+</p>
 
 ## What is a design system?
 
@@ -15,7 +19,7 @@ This project uses Storybook (https://storybook.js.org/) to display components an
 
 **Preview**
 
-Latest version is available here: https://akeneo.github.io/akeneo-design-system/
+Latest version is available here: https://dsm.akeneo.com
 
 **Locally**
 
@@ -23,7 +27,7 @@ To build this project, you need to have the following package installed:
 - Yarn (https://classic.yarnpkg.com/docs/install)
 
 You should execute the following commands:
-```bash
+```shell
 $ yarn install
 $ yarn storybook:start
 ```
@@ -34,7 +38,7 @@ You don't have to relaunch the command at each time you create or update a compo
 ## Using Akeneo Design System component in my project
 
 To add Akeneo Design System to your React application, run:
-```bash
+```shell
 $ yarn add akeneo-design-system
 ```
 
@@ -67,7 +71,7 @@ const MyHomePage = () => (
 )
 ```
 
-To know props of each component, visit dedicated page to the component here: https://akeneo.github.io/akeneo-design-system/, at the playground section of each component, you can edit all properties and click on "Show code".
+To know props of each component, visit dedicated page to the component here: https://dsm.akeneo.com, at the playground section of each component, you can edit all properties and click on "Show code".
 
 ## Contribution
 
@@ -100,7 +104,7 @@ There is two type of tests, unit and visual tests.
 ### Unit tests
 
 Unit tests can be launched with the following commands:
-```batch
+```shell
 # Launch only one time
 $ yarn test:unit:run
 
