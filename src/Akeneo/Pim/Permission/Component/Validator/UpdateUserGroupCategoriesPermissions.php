@@ -8,5 +8,5 @@ use Symfony\Component\Validator\Constraint;
 
 class UpdateUserGroupCategoriesPermissions extends Constraint
 {
-
+    public string $invalid_structure = 'category.permissions.validation.invalid_structure';
 }
