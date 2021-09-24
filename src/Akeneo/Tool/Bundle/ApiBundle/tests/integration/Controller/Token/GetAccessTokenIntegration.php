@@ -333,6 +333,7 @@ JSON;
 
     public function testInvalidToken()
     {
+        static::ensureKernelShutdown();
         $client = ApiTestCase::createClient();
 
         $client->request('GET', 'api/rest/v1/products/foo', [], [], [

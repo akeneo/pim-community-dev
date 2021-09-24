@@ -65,6 +65,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         $this->regenerateClientSecret('magento');
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -96,6 +97,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
             'CONTENT_TYPE'  => 'application/json',
         ];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -114,6 +116,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $decodedResponse = json_decode($responseContent, true);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
@@ -127,6 +130,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $this->regenerateClientSecret('magento');
 
         // Assert API client
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
@@ -180,6 +184,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         $this->regenerateUserPassword('magento');
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -208,6 +213,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
             'CONTENT_TYPE'  => 'application/json',
         ];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -226,6 +232,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $decodedResponse = json_decode($responseContent, true);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
@@ -239,6 +246,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $this->regenerateUserPassword('magento');
 
         // Assert API client
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
