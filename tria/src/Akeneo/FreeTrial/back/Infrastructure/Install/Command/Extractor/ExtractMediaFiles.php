@@ -70,7 +70,7 @@ final class ExtractMediaFiles
         $options['ContentType'] = $mediaFileData['mime_type'];
         $options['metadata']['contentType'] = $mediaFileData['mime_type'];
 
-        $isFileWritten = $this->filesystem->put($mediaFileData['code'], $mediaFileContent, $options);
+        $isFileWritten = $this->filesystem->put($mediaFileData['code'], strval($mediaFileContent), $options);
         if (!$isFileWritten) {
             throw new \Exception('Failed to write media-file ' . $mediaFileData['code']);
         }
