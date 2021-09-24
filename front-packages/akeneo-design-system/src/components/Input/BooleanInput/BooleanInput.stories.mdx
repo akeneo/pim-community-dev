@@ -8,7 +8,7 @@ import {useArgs, updateArgs} from '@storybook/client-api';
   component={BooleanInput}
   argTypes={{
     value: {
-      control: {type: 'select', options: [true, false, null]},
+      control: {type: 'select'}, options: [true, false, null],
       description: 'Value of the input. Can be null if the input is clearable.',
       table: {
         defaultValue: {summary: 'null'},
