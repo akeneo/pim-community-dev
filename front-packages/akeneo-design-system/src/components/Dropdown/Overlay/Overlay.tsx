@@ -30,7 +30,7 @@ const Container = styled.div<
   position: fixed;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
-  z-index: 2001;
+  z-index: 1901;
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
 `;
@@ -71,7 +71,7 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
+  z-index: 1900;
 `;
 
 const getOverlayPosition = (
