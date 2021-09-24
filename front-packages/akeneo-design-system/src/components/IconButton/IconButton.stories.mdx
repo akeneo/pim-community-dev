@@ -8,10 +8,10 @@ import * as Icons from '../../icons';
   component={IconButton}
   argTypes={{
     icon: {
-      control: {type: 'select', options: Object.keys(Icons)},
+      control: {type: 'select'}, options: Object.keys(Icons),
       table: {type: {summary: 'ReactElement<IconProps>'}},
     },
-    ghost: {control: {type: 'select', options: [false, true, 'borderless']}},
+    ghost: {control: {type: 'select'}, options: [false, true, 'borderless']},
     onClick: {action: 'Click on the icon button'},
   }}
   args={{
