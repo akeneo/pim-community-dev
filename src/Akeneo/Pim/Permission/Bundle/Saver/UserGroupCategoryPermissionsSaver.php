@@ -69,7 +69,7 @@ class UserGroupCategoryPermissionsSaver
         $existingHighestAccessLevelIndexedByCategoryCode = $this->getCategoriesAccessesWithHighestLevel->execute($group->getId());
         $removedCategoryCodes = array_diff(array_keys($existingHighestAccessLevelIndexedByCategoryCode), $affectedCategoriesCodes);
 
-        $this->revokeAccessesOnRemovedCategoryCodes($removedCategoryCodes, $group);
+        $this->revokeAccesses($removedCategoryCodes, $group);
 
         $this->updateAccesses($highestAccessLevelIndexedByCategoryCode, $existingHighestAccessLevelIndexedByCategoryCode, $group);
     }
@@ -183,7 +183,7 @@ class UserGroupCategoryPermissionsSaver
      * @param string[] $removedCategoryCodes
      * @param GroupInterface $group
      */
-    private function revokeAccessesOnRemovedCategoryCodes(array $removedCategoryCodes, GroupInterface $group): void
+    private function revokeAccesses(array $removedCategoryCodes, GroupInterface $group): void
     {
         foreach ($removedCategoryCodes as $categoryCode) {
             $category = $this->getRootCategoryReferenceFromCode->execute($categoryCode);
