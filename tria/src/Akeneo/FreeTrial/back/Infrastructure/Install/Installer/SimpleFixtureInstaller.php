@@ -53,7 +53,6 @@ final class SimpleFixtureInstaller implements FixtureInstaller
 
             $violations = $this->validator->validate($fixture);
             if (0 !== $violations->count()) {
-
                 throw new \Exception(sprintf(
                     'Validation failed on fixture "%s" with code "%s" and message: "%s"',
                     get_class($fixture),

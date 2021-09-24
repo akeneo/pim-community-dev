@@ -25,5 +25,6 @@ final class AkeneoFreeTrialExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('installers.yml');
         $loader->load('parameters.yml');
+        $loader->load('sso.yml');
     }
 }
