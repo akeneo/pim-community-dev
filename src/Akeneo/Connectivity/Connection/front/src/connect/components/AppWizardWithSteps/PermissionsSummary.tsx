@@ -7,8 +7,10 @@ import {PermissionsType} from './AppWizardWithSteps';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
-    padding: 20px 0 20px 40px;
+    padding: 20px 40px;
     border-left: 1px solid ${getColor('brand', 100)};
+    height: 500px;
+    overflow-y: scroll;
 `;
 
 const Connect = styled.h3`
