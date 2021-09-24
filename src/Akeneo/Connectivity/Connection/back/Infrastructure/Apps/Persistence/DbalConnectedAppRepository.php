@@ -95,17 +95,17 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     }
 
     /**
-     * @param array<array{
-     *  id: string,
-     *  name: string,
-     *  scopes: string[],
-     *  connection_code: string,
-     *  logo: string,
-     *  author: string,
-     *  categories: string[],
-     *  certified: bool,
-     *  partner: ?string,
-     * }> $dataRow
+     * @param array{
+     *    id: string,
+     *    name: string,
+     *    scopes: string,
+     *    connection_code: string,
+     *    logo: string,
+     *    author: string,
+     *    categories: string,
+     *    certified: bool,
+     *    partner: ?string,
+     * } $dataRow
      */
     private function denormalizeRow(array $dataRow): ConnectedApp
     {
