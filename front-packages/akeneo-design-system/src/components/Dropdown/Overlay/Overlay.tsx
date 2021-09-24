@@ -116,13 +116,14 @@ const Overlay = ({
   children,
   ...rest
 }: OverlayProps) => {
+  const [overlayPosition, setOverlayPosition] = useState<number[]>([0, 0]);
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'dropdown-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
-  horizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
+  const overlayVerticalPosition = useVerticalPosition(overlayRef, verticalPosition);
+  const overlayHorizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
   useWindowResize();
@@ -136,13 +137,18 @@ const Overlay = ({
     };
   }, []);
 
-  const [top, left] = getOverlayPosition(
-    verticalPosition,
-    horizontalPosition,
-    dropdownOpenerVisible,
-    parentRef,
-    overlayRef
-  );
+
+  useEffect(() => {
+    setOverlayPosition(getOverlayPosition(
+      overlayVerticalPosition,
+      overlayHorizontalPosition,
+      dropdownOpenerVisible,
+      parentRef,
+      overlayRef
+    ));
+  }, [children, overlayVerticalPosition, overlayHorizontalPosition, parentRef, overlayRef, dropdownOpenerVisible]);
+
+  const [top, left] = overlayPosition;
 
   return createPortal(
     <>
