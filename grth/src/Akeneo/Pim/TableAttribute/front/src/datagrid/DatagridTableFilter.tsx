@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dropdown, useBooleanState} from "akeneo-design-system";
+import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from "akeneo-design-system";
 import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from "../models";
 import {AttributeFetcher} from "../fetchers";
 import {getLabel, useRouter, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
@@ -8,6 +8,30 @@ import {ValueSelector} from "./ValueSelector";
 import {RowSelector} from "./RowSelector";
 import {OperatorSelector} from "./OperatorSelector";
 import {FilterValuesMapping} from "./FilterValues";
+import styled from "styled-components";
+
+const FilterSectionTitleTitle = styled(SectionTitle.Title)`
+  color: ${getColor('brand', 100)};
+`
+const FilterSectionTitle = styled(SectionTitle)`
+  border-bottom-color: ${getColor('brand', 100)};
+`
+
+const FilterSelectorList = styled.div`
+  margin-top: 20px;
+  & > * {
+    margin-bottom: 10px;
+  }
+`
+
+const FilterContainer = styled.div`
+  width: 280px;
+  padding: 0 20px 10px;
+`
+
+const FilterButtonContainer = styled.div`
+  text-align: center;
+`
 
 export type DatagridTableFilterValue = {
   row?: SelectOptionCode;
@@ -85,26 +109,35 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 
   return <Dropdown>
     {isOpen && attribute && <Dropdown.Overlay verticalPosition="down" onClose={close}>
-      <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={selectedColumn}/>
-      <RowSelector attribute={attribute} value={selectedRow} onChange={setSelectedRow}/>
-      <OperatorSelector
-        dataType={selectedColumn?.data_type}
-        value={selectedOperator}
-        onChange={handleOperatorChange}
-        filterValuesMapping={filterValuesMapping}
-      />
-      {selectedOperator && selectedColumn &&
-      <ValueSelector
-        dataType={selectedColumn?.data_type}
-        operator={selectedOperator}
-        onChange={setValue}
-        value={value}
-        filterValuesMapping={filterValuesMapping}
-        columnCode={selectedColumn.code}
-        attribute={attribute}
-      />
-      }
-      <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
+      <FilterContainer>
+        <FilterSectionTitle title={label}>
+          <FilterSectionTitleTitle>{label}</FilterSectionTitleTitle>
+        </FilterSectionTitle>
+        <FilterSelectorList>
+        <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={selectedColumn}/>
+        <RowSelector attribute={attribute} value={selectedRow} onChange={setSelectedRow}/>
+        <OperatorSelector
+          dataType={selectedColumn?.data_type}
+          value={selectedOperator}
+          onChange={handleOperatorChange}
+          filterValuesMapping={filterValuesMapping}
+        />
+        {selectedOperator && selectedColumn &&
+        <ValueSelector
+          dataType={selectedColumn?.data_type}
+          operator={selectedOperator}
+          onChange={setValue}
+          value={value}
+          filterValuesMapping={filterValuesMapping}
+          columnCode={selectedColumn.code}
+          attribute={attribute}
+        />
+        }
+        </FilterSelectorList>
+        <FilterButtonContainer>
+          <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
+        </FilterButtonContainer>
+      </FilterContainer>
     </Dropdown.Overlay>}
     <div className='AknFilterBox-filter filter-select' onClick={open}>
       {showLabel &&
