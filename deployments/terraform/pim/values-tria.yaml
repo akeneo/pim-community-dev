@@ -79,3 +79,8 @@ free_trial:
   akeneo_connect_saml_logout_url: "https://connect.ip.akeneo.com/auth/realms/trial/protocol/saml"
   akeneo_connect_api_client_id: "portal"
   akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"
+
+elasticsearch:
+  keystore: null
+  cluster:
+    plugins: null
