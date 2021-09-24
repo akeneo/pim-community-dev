@@ -10,6 +10,7 @@ class GetAccessTokenIntegration extends ApiTestCase
 {
     public function testGetAccessTokenWithJsonContentType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -40,6 +41,7 @@ class GetAccessTokenIntegration extends ApiTestCase
 
     public function testGetAccessTokenWithFormUrlEncodedContentType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -70,6 +72,7 @@ class GetAccessTokenIntegration extends ApiTestCase
 
     public function testGetAccessTokenWithBadContentType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -101,6 +104,7 @@ JSON;
 
     public function testMissingGrantType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -128,6 +132,7 @@ JSON;
 
     public function testInvalidGrantType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -156,6 +161,7 @@ JSON;
 
     public function testUnauthorizedGrantType()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -184,6 +190,7 @@ JSON;
 
     public function testInvalidClientId()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -212,6 +219,7 @@ JSON;
 
     public function testInvalidSecret()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -240,6 +248,7 @@ JSON;
 
     public function testMissingUsername()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -267,6 +276,7 @@ JSON;
 
     public function testMissingPassword()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -294,6 +304,7 @@ JSON;
 
     public function testUserNotFound()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
 
@@ -338,6 +349,7 @@ JSON;
 
     public function testGetAccessTokenWithTooLargeRequestContent()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
 
         $client->request(

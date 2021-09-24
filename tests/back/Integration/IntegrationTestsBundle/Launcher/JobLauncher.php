@@ -152,7 +152,7 @@ class JobLauncher
         $command = sprintf(
             '%s %s/console %s --env=%s --config=\'%s\' -v %s',
             $pathFinder->find(),
-             sprintf('%s/../bin', $this->kernel->getRootDir()),
+             sprintf('%s/bin', $this->kernel->getProjectDir()),
             'akeneo:batch:job',
             $this->kernel->getEnvironment(),
             json_encode($config, JSON_HEX_APOS),

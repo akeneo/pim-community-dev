@@ -95,6 +95,7 @@ abstract class ApiTestCase extends WebTestCase
             list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, $username, $password);
         }
 
+        static::ensureKernelShutdown();
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
 
@@ -172,6 +173,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function authenticate($clientId, $secret, $username, $password)
     {
+        static::ensureKernelShutdown();
         $webClient = static::createClient(['debug' => false]);
         $webClient->request(
             'POST',
