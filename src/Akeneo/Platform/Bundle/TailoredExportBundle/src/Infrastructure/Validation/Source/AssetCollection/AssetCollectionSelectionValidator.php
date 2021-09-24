@@ -15,6 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetC
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaFileAsMainMedia;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaLinkAsMainMedia;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;
@@ -136,7 +138,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         AttributeAsMainMedia $attributeAsMainMedia,
         ValidatorInterface $validator
     ): void {
-        if (!$attributeAsMainMedia->isMediaFile()) {
+        if (!$attributeAsMainMedia instanceof MediaFileAsMainMedia) {
             $this->context
                 ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
                     'asset_family_code' => $assetFamilyCode
@@ -173,7 +175,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         AttributeAsMainMedia $attributeAsMainMedia,
         ValidatorInterface $validator
     ): void {
-        if (!$attributeAsMainMedia->isMediaLink()) {
+        if (!$attributeAsMainMedia instanceof MediaLinkAsMainMedia) {
             $this->context
                 ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
                     'asset_family_code' => $assetFamilyCode

@@ -151,7 +151,8 @@ class SelectionHydrator
                     $selectionConfiguration['channel'],
                     $selectionConfiguration['locale'],
                     $attribute->properties()['reference_data_name'],
-                    $attribute->code()
+                    $attribute->code(),
+                    $selectionConfiguration['with_prefix_and_suffix'],
                 );
             default:
                 throw new \LogicException(

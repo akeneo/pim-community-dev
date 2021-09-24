@@ -11,10 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
-
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+namespace Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection;
 
 abstract class AttributeAsMainMedia
 {

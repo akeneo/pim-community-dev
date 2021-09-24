@@ -178,6 +178,7 @@ services:
     public: true
     arguments:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface'
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 
