@@ -62,7 +62,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
                     ->setParameters($violation->getParameters())
                     ->atPath(self::PROPERTY_PATH)
                     ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
+                    ->setPlural($violation->getPlural() ?? 0)
                     ->setInvalidValue($violation->getInvalidValue())
                     ->addViolation();
             }
