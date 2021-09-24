@@ -917,8 +917,6 @@ workflows:
                 name: test_back_behat_legacy_ce
                 requires:
                     - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
-                    - test_back_phpunit_ce
 
           - pull_request_success:
                 requires:

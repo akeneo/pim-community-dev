@@ -15,13 +15,13 @@ class PimContext extends RawMinkContext
     private KernelInterface $kernel;
     protected string $mainContextClass;
     protected FeatureContext $mainContext;
-    private static string $kernelRootDir;
+    private static string $projectDir;
 
     public function __construct(string $mainContextClass, KernelInterface $kernel)
     {
         $this->mainContextClass = $mainContextClass;
         $this->kernel = $kernel;
-        self::$kernelRootDir = $kernel->getRootDir();
+        self::$projectDir = $kernel->getProjectDir();
     }
 
     public static function resetPlaceholderValues()
@@ -29,8 +29,8 @@ class PimContext extends RawMinkContext
         self::$placeholderValues = [
             '%tmp%'      => $_ENV['BEHAT_TMPDIR'] ?? '/tmp/pim-behat',
             //TODO: change that later
-            '%fixtures%' => self::$kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
-            '%web%'      => self::$kernelRootDir . '/../public/'
+            '%fixtures%' => self::$projectDir . '/tests/legacy/features/Context/fixtures/',
+            '%web%'      => self::$projectDir . '/public/'
         ];
     }
 

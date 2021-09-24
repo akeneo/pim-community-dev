@@ -16,7 +16,7 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -63,36 +63,25 @@ abstract class ApiTestCase extends WebTestCase
 
     /**
      * Adds a valid access token to the client, so it is included in all its requests.
-     *
-     * @param array $options
-     * @param array $server
-     * @param string $clientId
-     * @param string $secret
-     * @param string $username
-     * @param string $password
-     * @param string $accessToken
-     * @param string $refreshToken
-     *
-     * @return Client
      */
     protected function createAuthenticatedClient(
         array $options = [],
         array $server = [],
-        $clientId = null,
-        $secret = null,
-        $username = self::USERNAME,
-        $password = self::PASSWORD,
-        $accessToken = null,
-        $refreshToken = null
-    ) {
+        ?string $clientId = null,
+        ?string $secret = null,
+        ?string $username = self::USERNAME,
+        ?string $password = self::PASSWORD,
+        ?string $accessToken = null,
+        ?string $refreshToken = null
+    ):KernelBrowser {
         $options = array_merge($options, ['debug' => false]);
 
         if (null === $clientId || null === $secret) {
-            list($clientId, $secret) = $this->createOAuthClient();
+            [$clientId, $secret] = $this->createOAuthClient();
         }
 
         if (null === $accessToken || null === $refreshToken) {
-            list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, $username, $password);
+            [$accessToken, $refreshToken] = $this->authenticate($clientId, $secret, $username, $password);
         }
 
         static::ensureKernelShutdown();
