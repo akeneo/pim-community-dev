@@ -161,21 +161,15 @@ services:
             - '@database_connection'
             - '@doctrine'
 
-    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferences:
-        arguments:
-            - '@database_connection'
-            - '@doctrine'
-
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode:
         arguments:
             - '@database_connection'
             - '@doctrine'
 
-    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoriesReferencesFromCodes:
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes:
         arguments:
             - '@database_connection'
-            - '@doctrine'
 
-    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes:
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel:
         arguments:
             - '@database_connection'

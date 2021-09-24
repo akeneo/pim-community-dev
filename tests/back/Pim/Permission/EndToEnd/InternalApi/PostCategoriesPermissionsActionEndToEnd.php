@@ -61,6 +61,13 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
             'category_edit' => true,
             'category_view' => true,
         ], $defaultPermissions);
+
+        $masterPermissions = $this->getCategoryAccessByUserGroup('Redactor', 'master');
+        assert::assertEquals([
+            'own' => true,
+            'edit' => true,
+            'view' => true,
+        ], $masterPermissions);
     }
 
     private function getUserGroupDefaultPermissions(string $name): array
@@ -75,6 +82,29 @@ SQL;
         ]);
 
         return json_decode($result, true) ?? [];
+    }
+
+    private function getCategoryAccessByUserGroup(string $userGroupName, string $categoryCode): ?array
+    {
+        $query = <<<SQL
+SELECT view_items AS view, edit_items AS edit, own_items AS own
+FROM pimee_security_product_category_access
+JOIN oro_access_group oag on pimee_security_product_category_access.user_group_id = oag.id
+JOIN pim_catalog_category pcc on pimee_security_product_category_access.category_id = pcc.id
+WHERE oag.name = :user_group_name
+AND pcc.code = :category_code
+SQL;
+
+        $permissions = $this->connection->fetchAssoc($query, [
+            'user_group_name' => $userGroupName,
+            'category_code' => $categoryCode,
+        ]) ?: null;
+
+        if (!$permissions) {
+            return null;
+        }
+
+        return array_map(fn($v) => (bool) $v, $permissions);
     }
 
     protected function getConfiguration(): Configuration

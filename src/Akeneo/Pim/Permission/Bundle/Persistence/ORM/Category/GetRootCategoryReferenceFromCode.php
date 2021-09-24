@@ -24,9 +24,9 @@ class GetRootCategoryReferenceFromCode
     }
 
     /**
-     * @return CategoryInterface
+     * @return ?CategoryInterface
      */
-    public function execute(string $code): CategoryInterface
+    public function execute(string $code): ?CategoryInterface
     {
         $query = <<<SQL
 SELECT id
@@ -39,8 +39,8 @@ SQL;
             'code' => $code,
         ]) ?: null;
 
-        if( null === $id) {
-            throw new \LogicException('Code not found');
+        if (null === $id) {
+            return null;
         }
 
         $em = $this->doctrine->getManager();
