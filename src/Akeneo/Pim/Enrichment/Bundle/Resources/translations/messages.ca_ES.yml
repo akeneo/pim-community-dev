@@ -77,7 +77,6 @@ pim_enrich:
       quick_export:
         launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
 category:
-  create: Crear una categoria
   edit: Editar categoria
   overview: Categories
 tree:

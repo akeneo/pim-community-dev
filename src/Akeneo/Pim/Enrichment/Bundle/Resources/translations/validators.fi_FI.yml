@@ -85,6 +85,7 @@ pim_catalog:
     pim_immutable_product_validator: Sama tunnus on jo toisen tuotteen käytössä
     pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
     quantified_associations:
+      unexpected_link_type: Linkkityyppiä "{{ value }}" ei ole olemassa. Voit liittää vain tuotteita tai tuotemalleja.
       max_associations: Olet saavuttanut {{ limit }} assosiaation enimmäismäärän. Poista olemassa olevia assosiaatioita ennen uusien assosiaatioiden lisäämistä.
       invalid_quantity: '"{{ value }}" on virheellinen määrä. Ole hyvä ja syötä arvo väliltä {{ min }} ja {{ max }}.'
       products_do_not_exist: "Seuraavia tuotteita ei ole olemassa: {{ values }}. Varmista, että tuotteita ei ole tällä välin poistettu."

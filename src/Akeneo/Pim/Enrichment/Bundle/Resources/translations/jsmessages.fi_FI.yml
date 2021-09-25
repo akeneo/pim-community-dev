@@ -310,24 +310,29 @@ pim_enrich.mass_edit.product:
       field: Ottaa käyttöön
     edit_common:
       label: Muokkaa attribuuttien arvoja
+      label_count: "{0}Muokkaa<span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen attribuuttien arvoja</span>|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen attribuuttien arvoja</span>"
       description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
       no_update: Valitse ainakin yksi attribuutti muokattavaksi
     add_attribute_value:
       label: Lisää attribuutin arvoja
+      label_count: "{0}Lisää <span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Lisää attribuuttien arvoja <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span>|]1, Inf[Lisää attribuuttien arvoja <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle</span>"
       description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
     change_family:
       label: Muuta perhe
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     add_to_group:
       label: Lisää ryhmiin
+      label_count: "{0}Lisää <span class=\"AknFullPage-title--highlight\">tuotetta</span> ryhmiin{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> ryhmiin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> ryhmiin"
       description: Valitse ryhmät joihin valitut tuotteet lisätään
       field: Ryhmät
       no_update: Valitse ryhmä jatkaaksesi
     add_to_category:
       label: Lisää kategorioihin
+      label_count: "{0}Lisää <span class=\"AknFullPage-title--highlight\">tuotetta</span> kategorioihin{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
     move_to_category:
       label: Siirrä kategorioihin
+      label_count: "{0}Siirrä <span class=\"AknFullPage-title--highlight\">tuotetta</span> kategorioiden välillä|{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioiden välillä|]1, Inf[Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioiden välillä"
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
     remove_from_category:
       label: Poista kategorioista
@@ -413,6 +418,8 @@ pim_datagrid:
       label: Ryhmät
     enabled:
       label: Status
+    scope:
+      label: Laajuus
     completeness:
       label: Valmis
     created:
