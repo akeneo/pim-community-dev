@@ -38,19 +38,19 @@ abstract class TestCase extends KernelTestCase
         $this->testKernel = static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
-        if (null !== $this->getConfiguration()) {
-            $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
-            $fixturesLoader->load($this->getConfiguration());
-        }
-
-        // authentication should be done after loading the database as the user is created with first activated locale as default locale
-        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
-        $authenticator->createSystemUser();
-
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-
-        // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
-        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
+//        if (null !== $this->getConfiguration()) {
+//            $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
+//            $fixturesLoader->load($this->getConfiguration());
+//        }
+//
+//        // authentication should be done after loading the database as the user is created with first activated locale as default locale
+//        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
+//        $authenticator->createSystemUser();
+//
+//        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+//
+//        // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
+//        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 
     /**
