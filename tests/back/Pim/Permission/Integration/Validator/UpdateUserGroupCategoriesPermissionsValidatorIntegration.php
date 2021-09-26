@@ -43,7 +43,7 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
     }
 
     /**
-     * @dataProvider invalid
+     * @dataProvider invalidPayloadDataProvider
      */
     public function testItReturnsViolationsIfTheValueIsInvalid($payload): void
     {
@@ -51,7 +51,7 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
         $this->assertGreaterThan(0, $violations->count());
     }
 
-    public function invalid(): array
+    public function invalidPayloadDataProvider(): array
     {
         return [
             // not an array
