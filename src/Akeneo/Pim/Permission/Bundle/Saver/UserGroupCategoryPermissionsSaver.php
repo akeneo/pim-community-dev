@@ -85,10 +85,6 @@ class UserGroupCategoryPermissionsSaver
         return $group;
     }
 
-    /**
-     * @param $group
-     * @param array $permissions
-     */
     private function updateDefaultPermissions(GroupInterface $group, array $permissions): void
     {
         $defaultPermissions = $group->getDefaultPermissions();
@@ -111,9 +107,9 @@ class UserGroupCategoryPermissionsSaver
     {
         if (true === ($defaultPermission[self::DEFAULT_PERMISSION_OWN] ?? null)) {
             return Attributes::OWN_PRODUCTS;
-        } else if (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
+        } elseif (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return Attributes::EDIT_ITEMS;
-        } else if (true === ($defaultPermission[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
+        } elseif (true === ($defaultPermission[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
             return Attributes::VIEW_ITEMS;
         }
 
@@ -124,9 +120,9 @@ class UserGroupCategoryPermissionsSaver
     {
         if (true === $permissions['own']['all']) {
             return Attributes::OWN_PRODUCTS;
-        } else if (true === $permissions['edit']['all']) {
+        } elseif (true === $permissions['edit']['all']) {
             return Attributes::EDIT_ITEMS;
-        } else if (true === $permissions['view']['all']) {
+        } elseif (true === $permissions['view']['all']) {
             return Attributes::VIEW_ITEMS;
         }
 
@@ -170,9 +166,9 @@ class UserGroupCategoryPermissionsSaver
     {
         if (true === $permissions['own']['all'] || in_array($categoryCode, $permissions['own']['identifiers'])) {
             return Attributes::OWN_PRODUCTS;
-        } else if (true === $permissions['edit']['all'] || in_array($categoryCode, $permissions['edit']['identifiers'])) {
+        } elseif (true === $permissions['edit']['all'] || in_array($categoryCode, $permissions['edit']['identifiers'])) {
             return Attributes::EDIT_ITEMS;
-        } else if (true === $permissions['view']['all'] || in_array($categoryCode, $permissions['view']['identifiers'])) {
+        } elseif (true === $permissions['view']['all'] || in_array($categoryCode, $permissions['view']['identifiers'])) {
             return Attributes::VIEW_ITEMS;
         }
 
@@ -197,10 +193,12 @@ class UserGroupCategoryPermissionsSaver
     /**
      * @param array<string, string> $highestAccessLevelIndexedByCategoryCode
      * @param array<string, string> $existingHighestAccessLevelIndexedByCategoryCode
-     * @param $group
      */
-    private function updateAccesses(array $highestAccessLevelIndexedByCategoryCode, array $existingHighestAccessLevelIndexedByCategoryCode, GroupInterface $group): void
-    {
+    private function updateAccesses(
+        array $highestAccessLevelIndexedByCategoryCode,
+        array $existingHighestAccessLevelIndexedByCategoryCode,
+        GroupInterface $group
+    ): void {
         foreach ($highestAccessLevelIndexedByCategoryCode as $categoryCode => $newLevel) {
             $existingLevel = $existingHighestAccessLevelIndexedByCategoryCode[$categoryCode] ?? null;
 
