@@ -54,32 +54,27 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
     public function invalidPayloadDataProvider(): array
     {
         return [
-            // not an array
-            [
+            'not an array' => [
                 null,
             ],
-            // user group not a string
-            [
+            'user group not a string' => [
                 [
                     'user_group' => null,
                 ],
             ],
-            // permissions not an array
-            [
+            'permissions not an array' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => null,
                 ],
             ],
-            // permissions levels are missing
-            [
+            'permissions levels are missing' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => [],
                 ],
             ],
-            // option "all" is not a boolean
-            [
+            'option "all" is not a boolean' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => [
@@ -98,8 +93,7 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
                     ],
                 ],
             ],
-            // "identifiers" is not an array
-            [
+            '"identifiers" is not an array' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => [
@@ -118,8 +112,7 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
                     ],
                 ],
             ],
-            // own all = true && edit all = false
-            [
+            'own all = true && edit all = false' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => [
@@ -138,8 +131,7 @@ class UpdateUserGroupCategoriesPermissionsValidatorIntegration extends KernelTes
                     ],
                 ],
             ],
-            // edit all = true && view all = false
-            [
+            'edit all = true && view all = false' => [
                 [
                     'user_group' => 'Redactor',
                     'permissions' => [
