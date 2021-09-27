@@ -178,6 +178,7 @@ services:
         arguments:
             - '@database_connection'
             - '@doctrine'
+            - '%pim_catalog.entity.attribute_group.class%'
 
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAllAttributeGroupCodes:
         arguments:
