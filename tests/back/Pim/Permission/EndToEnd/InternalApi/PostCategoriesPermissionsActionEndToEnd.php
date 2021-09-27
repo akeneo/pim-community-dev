@@ -32,7 +32,7 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
-            json_encode([
+            \json_encode([
                 'user_group' => 'Redactor',
                 'permissions' => [
                     'own' => [
