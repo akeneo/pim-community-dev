@@ -108,7 +108,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   }
 
   return <Dropdown>
-    {isOpen && attribute && <Dropdown.Overlay verticalPosition="down" onClose={close}>
+    {isOpen && attribute && <Dropdown.Overlay onClose={close}>
       <FilterContainer>
         <FilterSectionTitle title={label}>
           <FilterSectionTitleTitle>{label}</FilterSectionTitleTitle>
