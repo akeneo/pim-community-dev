@@ -134,14 +134,17 @@ akeneo.tailored_export:
           modal:
             title: Replacement
             subtitle: Manage options
+            no_result:
+              title: Sorry, there is no value in this attribute
             empty_result:
               title: Sorry, there is no result for your search
-              sub_title: Try again with new search criteria
+              text: Try again with new search criteria
             filters:
-              only_mapped:
+              mapped:
                 label: Display
-                yes: Only non mapped
-                no: All
+                unmapped: All values without replacement
+                mapped: All values with replacement
+                all: All values
             table:
               header:
                 values: Values

@@ -30,10 +30,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
 
   userEvent.click(screen.getByText('pim_common.confirm'));
 
-  expect(handleChange).toHaveBeenCalledWith({
-    type: 'replacement',
-    mapping: {},
-  });
+  expect(handleChange).toHaveBeenCalledWith(undefined);
 });
 
 test('it displays validation errors', () => {

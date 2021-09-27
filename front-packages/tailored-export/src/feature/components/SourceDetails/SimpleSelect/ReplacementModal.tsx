@@ -24,7 +24,7 @@ import {
 import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../hooks/useAttributeOptions';
 import {Attribute} from '../../../models';
 import {filterEmptyValues, ReplacementValues} from '../common';
-import {OnlyEmptyDropdown} from './OnlyEmptyDropdown';
+import {MappedFilterDropdown, MappedFilterValue} from './MappedFilterDropdown';
 
 const Container = styled.div`
   width: 100%;
@@ -75,6 +75,17 @@ type ReplacementModalProps = {
   onCancel: () => void;
 };
 
+const getIncludeExcludeCodes = (mappedFilterValue: MappedFilterValue, mapping: ReplacementValues): string[][] => {
+  switch (mappedFilterValue) {
+    case 'all':
+      return [[], []];
+    case 'mapped':
+      return [Object.keys(mapping), []];
+    case 'unmapped':
+      return [[], Object.keys(mapping)];
+  }
+};
+
 const ReplacementModal = ({
   initialMapping,
   attribute,
@@ -83,22 +94,23 @@ const ReplacementModal = ({
   validationErrors,
 }: ReplacementModalProps) => {
   const translate = useTranslate();
-  const [mapping, setMapping] = useState<{[from: string]: string}>(initialMapping);
+  const [mapping, setMapping] = useState<ReplacementValues>(initialMapping);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue);
   const catalogLocale = useUserContext().get('catalogLocale');
-  const [onlyEmpty, setOnlyEmpty] = useState<boolean>(false);
+  const [mappedFilterValue, setMappedFilterValue] = useState<MappedFilterValue>('all');
   const mappingValidationErrors = filterErrors(validationErrors, '[mapping]');
-  const optionCodesToExclude = useMemo(
-    () => (onlyEmpty ? Object.keys(initialMapping) : []),
-    [onlyEmpty, initialMapping]
+  const [optionCodesToInclude, optionCodesToExclude] = useMemo(
+    () => getIncludeExcludeCodes(mappedFilterValue, initialMapping),
+    [mappedFilterValue, initialMapping]
   );
 
   const [attributeOptions, totalItems] = useAttributeOptions(
     attribute.code,
     debouncedSearchValue,
     currentPage,
+    optionCodesToInclude,
     optionCodesToExclude
   );
 
@@ -130,78 +142,92 @@ const ReplacementModal = ({
           {translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.subtitle')}
         </Modal.Title>
         <Content>
-          <TableContainer>
-            <Search
-              sticky={0}
-              onSearchChange={handleSearchChange}
-              placeholder={translate('pim_common.search')}
-              searchValue={searchValue}
-              title={translate('pim_common.search')}
-            >
-              <Search.ResultCount>
-                {translate('pim_common.result_count', {itemsCount: totalItems}, totalItems)}
-              </Search.ResultCount>
-              <Search.Separator />
-              <OnlyEmptyDropdown value={onlyEmpty} onChange={setOnlyEmpty} />
-            </Search>
-            {0 === attributeOptions.length ? (
-              <NoDataSection>
-                <AttributesIllustration size={256} />
-                <NoDataTitle>
-                  {translate(
-                    'akeneo.tailored_export.column_details.sources.operation.replacement.modal.empty_result.title'
-                  )}
-                </NoDataTitle>
-                <NoDataText>
-                  {translate(
-                    'akeneo.tailored_export.column_details.sources.operation.replacement.modal.empty_result.title'
-                  )}
-                </NoDataText>
-              </NoDataSection>
-            ) : (
-              <Table>
-                <Table.Header sticky={44}>
-                  <Table.HeaderCell>
+          {'' === searchValue && 0 === attributeOptions.length ? (
+            <NoDataSection>
+              <AttributesIllustration size={256} />
+              <NoDataTitle>
+                {translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.no_result.title')}
+              </NoDataTitle>
+            </NoDataSection>
+          ) : (
+            <TableContainer>
+              <Search
+                sticky={0}
+                onSearchChange={handleSearchChange}
+                placeholder={translate('pim_common.search')}
+                searchValue={searchValue}
+                title={translate('pim_common.search')}
+              >
+                <Search.ResultCount>
+                  {translate('pim_common.result_count', {itemsCount: totalItems}, totalItems)}
+                </Search.ResultCount>
+                <Search.Separator />
+                <MappedFilterDropdown value={mappedFilterValue} onChange={setMappedFilterValue} />
+              </Search>
+              {'' !== searchValue && 0 === attributeOptions.length ? (
+                <NoDataSection>
+                  <AttributesIllustration size={256} />
+                  <NoDataTitle>
                     {translate(
-                      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.header.values'
+                      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.empty_result.title'
                     )}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
+                  </NoDataTitle>
+                  <NoDataText>
                     {translate(
-                      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.header.replacement'
+                      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.empty_result.text'
                     )}
-                  </Table.HeaderCell>
-                </Table.Header>
-                <Table.Body>
-                  {attributeOptions.map(attributeOption => (
-                    <Table.Row key={attributeOption.code}>
-                      <OptionLabelCell>
-                        <OptionLabel title={getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}>
-                          {getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}
-                        </OptionLabel>
-                      </OptionLabelCell>
-                      <Table.Cell>
-                        <Field>
-                          <TextInput
-                            placeholder={translate(
-                              'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.field.to_placeholder'
-                            )}
-                            value={mapping[attributeOption.code] ?? ''}
-                            onChange={newValue => updateMappedValue(attributeOption.code, newValue)}
-                          />
-                          {filterErrors(mappingValidationErrors, `[${attributeOption.code}]`).map((error, index) => (
-                            <Helper key={index} inline={true} level="error">
-                              {translate(error.messageTemplate, error.parameters)}
-                            </Helper>
-                          ))}
-                        </Field>
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            )}
-          </TableContainer>
+                  </NoDataText>
+                </NoDataSection>
+              ) : (
+                <Table>
+                  <Table.Header sticky={44}>
+                    <Table.HeaderCell>
+                      {translate(
+                        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.header.values'
+                      )}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      {translate(
+                        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.header.replacement'
+                      )}
+                    </Table.HeaderCell>
+                  </Table.Header>
+                  <Table.Body>
+                    {attributeOptions.map(attributeOption => {
+                      const optionErrors = filterErrors(mappingValidationErrors, `[${attributeOption.code}]`);
+
+                      return (
+                        <Table.Row key={attributeOption.code}>
+                          <OptionLabelCell>
+                            <OptionLabel title={getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}>
+                              {getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}
+                            </OptionLabel>
+                          </OptionLabelCell>
+                          <Table.Cell>
+                            <Field>
+                              <TextInput
+                                invalid={0 < optionErrors.length}
+                                placeholder={translate(
+                                  'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.field.to_placeholder'
+                                )}
+                                value={mapping[attributeOption.code] ?? ''}
+                                onChange={newValue => updateMappedValue(attributeOption.code, newValue)}
+                              />
+                              {optionErrors.map((error, index) => (
+                                <Helper key={index} inline={true} level="error">
+                                  {translate(error.messageTemplate, error.parameters)}
+                                </Helper>
+                              ))}
+                            </Field>
+                          </Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                  </Table.Body>
+                </Table>
+              )}
+            </TableContainer>
+          )}
         </Content>
         {0 !== totalItems && (
           <Pagination

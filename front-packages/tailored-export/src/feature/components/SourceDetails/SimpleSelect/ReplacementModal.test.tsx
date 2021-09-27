@@ -16,7 +16,13 @@ const attribute = {
 };
 
 jest.mock('../../../hooks/useAttributeOptions', () => ({
-  useAttributeOptions: (_attributeCode: string, searchValue: string) => [
+  useAttributeOptions: (
+    _attributeCode: string,
+    searchValue: string,
+    _page: number,
+    includeCodes: string[],
+    excludeCodes: string[]
+  ) => [
     [
       {
         code: 'black',
@@ -36,7 +42,12 @@ jest.mock('../../../hooks/useAttributeOptions', () => ({
           en_US: 'Blue',
         },
       },
-    ].filter(({code}) => code.includes(searchValue)),
+    ].filter(
+      ({code}) =>
+        code.includes(searchValue) &&
+        (0 === includeCodes.length || includeCodes.includes(code)) &&
+        !excludeCodes.includes(code)
+    ),
     3,
   ],
 }));
@@ -69,14 +80,12 @@ test('it can update a replacement mapping', async () => {
 test('it can filter search results', async () => {
   jest.useFakeTimers();
 
-  const handleConfirm = jest.fn();
-
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
       attribute={attribute}
       validationErrors={[]}
-      onConfirm={handleConfirm}
+      onConfirm={jest.fn()}
       onCancel={jest.fn()}
     />
   );
@@ -89,6 +98,80 @@ test('it can filter search results', async () => {
   expect(screen.getByText('Black')).toBeInTheDocument();
   expect(screen.getByText('Blue')).toBeInTheDocument();
   expect(screen.queryByText('Red')).not.toBeInTheDocument();
+});
+
+test('it can show only mapped results', async () => {
+  jest.useFakeTimers();
+
+  await renderWithProviders(
+    <ReplacementModal
+      initialMapping={{
+        black: 'Noir',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onConfirm={jest.fn()}
+      onCancel={jest.fn()}
+    />
+  );
+
+  act(() => {
+    userEvent.click(
+      screen.getByLabelText(
+        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
+      )
+    );
+    jest.runAllTimers();
+
+    userEvent.click(
+      screen.getByText(
+        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.mapped'
+      )
+    );
+    jest.runAllTimers();
+  });
+
+  expect(screen.getByText('Black')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('Noir')).toBeInTheDocument();
+  expect(screen.queryByText('Blue')).not.toBeInTheDocument();
+  expect(screen.queryByText('Red')).not.toBeInTheDocument();
+});
+
+test('it can show only unmapped results', async () => {
+  jest.useFakeTimers();
+
+  await renderWithProviders(
+    <ReplacementModal
+      initialMapping={{
+        black: 'Noir',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onConfirm={jest.fn()}
+      onCancel={jest.fn()}
+    />
+  );
+
+  act(() => {
+    userEvent.click(
+      screen.getByLabelText(
+        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
+      )
+    );
+    jest.runAllTimers();
+
+    userEvent.click(
+      screen.getByText(
+        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.unmapped'
+      )
+    );
+    jest.runAllTimers();
+  });
+
+  expect(screen.queryByText('Black')).not.toBeInTheDocument();
+  expect(screen.queryByDisplayValue('Noir')).not.toBeInTheDocument();
+  expect(screen.getByText('Blue')).toBeInTheDocument();
+  expect(screen.getByText('Red')).toBeInTheDocument();
 });
 
 test('it displays validation errors', async () => {

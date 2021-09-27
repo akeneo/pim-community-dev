@@ -33,7 +33,9 @@ const SimpleSelectReplacement = ({
   const [isModalOpen, openModal, closeModal] = useBooleanState();
 
   const handleConfirm = (mapping: ReplacementValues) => {
-    onOperationChange({...operation, mapping: mapping});
+    const newOperation = {...operation, mapping};
+
+    onOperationChange(isDefaultReplacementOperation(newOperation) ? undefined : newOperation);
     closeModal();
   };
 

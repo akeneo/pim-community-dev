@@ -4,7 +4,13 @@ import {AttributeOption} from '../models';
 
 const OPTION_COLLECTION_PAGE_SIZE = 25;
 
-const useAttributeOptions = (attributeCode: string, search: string, page: number, optionCodesToExclude: string[]) => {
+const useAttributeOptions = (
+  attributeCode: string,
+  search: string,
+  page: number,
+  optionCodesToInclude: string[],
+  optionCodesToExclude: string[]
+) => {
   const [attributeOptions, setAttributeOptions] = useState<AttributeOption[]>([]);
   const [matchesCount, setMatchesCount] = useState<number>(0);
   const isMounted = useIsMounted();
@@ -20,6 +26,7 @@ const useAttributeOptions = (attributeCode: string, search: string, page: number
           search,
           page,
           limit: OPTION_COLLECTION_PAGE_SIZE,
+          include_codes: optionCodesToInclude,
           exclude_codes: optionCodesToExclude,
           locale,
         }),
@@ -39,7 +46,7 @@ const useAttributeOptions = (attributeCode: string, search: string, page: number
     };
 
     fetchAttributeOptions();
-  }, [isMounted, attributeOptionsRoute, optionCodesToExclude, search, page, locale]);
+  }, [isMounted, attributeOptionsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale]);
 
   return [attributeOptions, matchesCount] as const;
 };

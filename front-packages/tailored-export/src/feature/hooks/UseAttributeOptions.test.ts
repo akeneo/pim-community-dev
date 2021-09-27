@@ -23,7 +23,9 @@ test('It fetches attributeOptions', async () => {
     json: async () => response,
   }));
 
-  const {result, waitForNextUpdate} = renderHookWithProviders(() => useAttributeOptions('color', 'my search', 1, []));
+  const {result, waitForNextUpdate} = renderHookWithProviders(() =>
+    useAttributeOptions('color', 'my search', 1, [], [])
+  );
 
   await act(async () => {
     await waitForNextUpdate();
@@ -53,7 +55,7 @@ test('It returns attribute options only if hook is mounted', async () => {
     ok: true,
     json: async () => response,
   }));
-  const {result, unmount} = renderHookWithProviders(() => useAttributeOptions('color', 'my search', 1, []));
+  const {result, unmount} = renderHookWithProviders(() => useAttributeOptions('color', 'my search', 1, [], []));
   unmount();
 
   const [attributeOptions, attributeOptionsTotalCount] = result.current;
