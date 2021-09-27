@@ -1,4 +1,13 @@
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
+import React, {
+  ReactNode,
+  useState,
+  useRef,
+  isValidElement,
+  ReactElement,
+  KeyboardEvent,
+  useCallback,
+  useEffect
+} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
@@ -160,8 +169,18 @@ type SelectInputProps = Override<
      * Force the vertical position of the overlay.
      */
     verticalPosition?: VerticalPosition;
-  }
->;
+
+    /**
+     * Handler called when the next page is almost reached.
+     */
+    onNextPage?: () => void;
+
+    /**
+     * Handler called when the search value changed
+     */
+    onSearchChange?: (searchValue: string) => void;
+}
+  >;
 
 /**
  * Select input allows the user to select content and data when the expected user input is composed of one option value.
@@ -179,12 +198,15 @@ const SelectInput = ({
   openLabel,
   readOnly = false,
   verticalPosition,
+  onNextPage,
+  onSearchChange,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const firstOptionRef = useRef<HTMLDivElement>(null);
   const lastOptionRef = useRef<HTMLDivElement>(null);
 
@@ -228,6 +250,7 @@ const SelectInput = ({
   };
 
   const handleSearch = (value: string) => {
+    onSearchChange?.(value);
     setSearchValue(value);
   };
 
@@ -300,6 +323,37 @@ const SelectInput = ({
     [onChange]
   );
 
+  useEffect(() => {
+    const containerElement = containerRef.current;
+    const lastElement = lastOptionRef.current;
+    if (
+      undefined === onNextPage ||
+      null === containerElement ||
+      null === lastOptionRef.current ||
+      null === lastElement
+    ) {
+      return;
+    }
+
+    const options = {
+      root: containerElement,
+      rootMargin: '0px 0px 100% 0px',
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      const lastEntry = entries[entries.length - 1];
+      console.log(lastEntry);
+      if (lastEntry.isIntersecting) {
+        onNextPage();
+      }
+    }, options);
+
+    observer.observe(lastElement);
+
+    return () => observer.unobserve(lastElement);
+  }, [onNextPage, dropdownIsOpen]);
+
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
@@ -348,7 +402,7 @@ const SelectInput = ({
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
         <Overlay parentRef={inputRef} verticalPosition={verticalPosition} onClose={handleBlur}>
-          <OptionCollection>
+          <OptionCollection ref={containerRef}>
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (

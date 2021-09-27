@@ -340,3 +340,24 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
     }}
   </Story>
 </Canvas>
+
+## Pagination
+
+<Canvas>
+  <Story name="Pagination">
+    {args => {
+      const [items, setItems] = useState([...Array(20).keys()]);
+      const [value, setValue] = useState(null);
+      const onNextPage = () => { setItems([...Array(items.length + 20).keys()]); };
+      return (
+        <SpaceContainer height={170}>
+          <SelectInput {...args} value={value} onChange={setValue} onNextPage={onNextPage}>
+            {items.map(item => <SelectInput.Option value={item} title="German (Germany)" key={item}>
+              Option {item + 1}
+            </SelectInput.Option>)}
+          </SelectInput>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
