@@ -35,14 +35,14 @@ const ActionContainer = styled.div`
   gap: 10px;
 `;
 
-const SelectedOptionContainer = styled.div<{readOnly: boolean, clearable: boolean} & AkeneoThemedProps>`
+const SelectedOptionContainer = styled.div<{readOnly: boolean; clearable: boolean} & AkeneoThemedProps>`
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 ${({clearable}) => clearable ? 68 : 38}px 0 16px;
+  padding: 0 ${({clearable}) => (clearable ? 68 : 38)}px 0 16px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
@@ -304,7 +304,9 @@ const SelectInput = ({
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
         {null !== value && '' === searchValue && (
-          <SelectedOptionContainer readOnly={readOnly} clearable={clearable}>{currentValueElement}</SelectedOptionContainer>
+          <SelectedOptionContainer readOnly={readOnly} clearable={clearable}>
+            {currentValueElement}
+          </SelectedOptionContainer>
         )}
         <TextInput
           id={id}
