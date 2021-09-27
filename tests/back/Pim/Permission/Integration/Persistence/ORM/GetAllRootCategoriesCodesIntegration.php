@@ -46,6 +46,6 @@ class GetAllRootCategoriesCodesIntegration extends TestCase
 
         $results = $this->query->execute();
 
-        $this->assertEqualsCanonicalizing($expected,$results, 'Categories codes are not matched');
+        $this->assertEqualsCanonicalizing($expected, $results, 'Categories codes are not matched');
     }
 }
