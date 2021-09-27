@@ -174,8 +174,10 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Product model saved');
           break;
-        case 'product-grid:product:all-selected':
-          appcues.track('All products are selected');
+        case 'grid:item:all-selected':
+          if (eventOptions && eventOptions.inputName === 'product-grid') {
+            appcues.track('All products are selected');
+          }
           break;
         case 'grid:mass-edit:clicked':
           if (eventOptions && eventOptions.name === 'product-edit') {
