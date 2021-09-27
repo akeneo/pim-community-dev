@@ -85,6 +85,22 @@ class UserGroupCategoryPermissionsSaver
         return $group;
     }
 
+    /**
+     * @param array{
+     *      own: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     */
     private function updateDefaultPermissions(GroupInterface $group, array $permissions): void
     {
         $defaultPermissions = $group->getDefaultPermissions();
@@ -103,20 +119,39 @@ class UserGroupCategoryPermissionsSaver
         $this->groupSaver->save($group);
     }
 
-    private function getCurrentHighestAll($defaultPermission): ?string
+    /**
+     * @param array<string, bool>|null $defaultPermissions
+     */
+    private function getCurrentHighestAll(?array $defaultPermissions): ?string
     {
-        if (true === ($defaultPermission[self::DEFAULT_PERMISSION_OWN] ?? null)) {
+        if (true === ($defaultPermissions[self::DEFAULT_PERMISSION_OWN] ?? null)) {
             return Attributes::OWN_PRODUCTS;
-        } elseif (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
+        } elseif (true === ($defaultPermissions[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return Attributes::EDIT_ITEMS;
-        } elseif (true === ($defaultPermission[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
+        } elseif (true === ($defaultPermissions[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
             return Attributes::VIEW_ITEMS;
         }
 
         return null;
     }
 
-    private function getSubmittedHighestAll($permissions): ?string
+    /**
+     * @param array{
+     *      own: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     */
+    private function getSubmittedHighestAll(array $permissions): ?string
     {
         if (true === $permissions['own']['all']) {
             return Attributes::OWN_PRODUCTS;
@@ -130,8 +165,22 @@ class UserGroupCategoryPermissionsSaver
     }
 
     /**
-     * @param array $permissions
-     * @return array
+     * @param array{
+     *      own: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     *
+     * @return string[]
      */
     public function getAffectedCategoriesCodes(array $permissions): array
     {
@@ -147,9 +196,23 @@ class UserGroupCategoryPermissionsSaver
     }
 
     /**
-     * @param array $categoriesCodesForAnyAccessLevel
-     * @param array $permissions
-     * @return array
+     * @param string[] $categoriesCodesForAnyAccessLevel
+     * @param array{
+     *      own: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     *
+     * @return array<string, string>
      */
     private function getHighestAccessLevelIndexedByCategoryCode(array $categoriesCodesForAnyAccessLevel, array $permissions): array
     {
@@ -162,6 +225,22 @@ class UserGroupCategoryPermissionsSaver
         return $highestAccessLevelIndexedByCategoryCode;
     }
 
+    /**
+     * @param array{
+     *      own: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     */
     private function getHighestAccessLevelFromPermissions(string $categoryCode, array $permissions): string
     {
         if (true === $permissions['own']['all'] || in_array($categoryCode, $permissions['own']['identifiers'])) {
