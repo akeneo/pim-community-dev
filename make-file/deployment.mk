@@ -286,13 +286,18 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	FT_CATALOG_API_BASE_URI=${FT_CATALOG_API_BASE_URI} \
 	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
 	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
 	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
+	FT_CATALOG_API_USERNAME=${FT_CATALOG_API_USERNAME} \
 	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
 	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
 	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
 	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
+	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
+	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
+	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
@@ -415,7 +420,7 @@ delete_expired_uptime_check:
 	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
-remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials
 
 .PHONY: remove_unused_gcloud_dns
 remove_unused_gcloud_dns:
@@ -454,6 +459,13 @@ remove_unused_gcloud_disk:
 	@echo "=             Remove unused gcloud disk                  ="
 	@echo "=========================================================="
 	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+
+.PHONY: remove_unused_mailgun_credentials
+remove_unused_mailgun_credentials:
+	@echo "=========================================================="
+	@echo "=           Remove unused mailgun credentials            ="
+	@echo "=========================================================="
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} bash $(PWD)/deployments/bin/remove_unused_mailgun_credentials.sh
 
 .PHONY: clone_serenity
 clone_serenity:

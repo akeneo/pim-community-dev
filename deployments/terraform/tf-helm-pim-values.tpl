@@ -104,9 +104,14 @@ free_trial:
   enabled: true
   akeneo_connect_saml_entity_id: ${akeneo_connect_saml_entity_id}
   akeneo_connect_saml_certificate: ${akeneo_connect_saml_certificate}
+  akeneo_connect_saml_sp_client_id: ${akeneo_connect_saml_sp_client_id}
+  akeneo_connect_saml_sp_certificate_base64: ${akeneo_connect_saml_sp_certificate_base64}
+  akeneo_connect_saml_sp_private_key_base64: ${akeneo_connect_saml_sp_private_key_base64}
   akeneo_connect_api_client_secret: ${akeneo_connect_api_client_secret}
   akeneo_connect_api_client_password: ${akeneo_connect_api_client_password}
+  ft_catalog_api_base_uri: ${ft_catalog_api_base_uri}
   ft_catalog_api_client_id: ${ft_catalog_api_client_id}
   ft_catalog_api_password: ${ft_catalog_api_password}
   ft_catalog_api_secret: ${ft_catalog_api_secret}
+  ft_catalog_api_username: ${ft_catalog_api_username}
 %{ endif }

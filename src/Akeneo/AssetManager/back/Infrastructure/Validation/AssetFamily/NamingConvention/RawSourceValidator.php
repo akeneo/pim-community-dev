@@ -27,9 +27,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
-
     private AttributeRepositoryInterface $attributeRepository;
-
     private FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia;
 
     public function __construct(
@@ -55,11 +53,15 @@ class RawSourceValidator extends ConstraintValidator
                 AttributeCode::fromString($rawSource['property']),
                 $constraint->getAssetFamilyIdentifier()
             );
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException $exception) {
             $this->context->buildViolation(
                 RawSource::ATTRIBUTE_NOT_FOUND_ERROR,
                 ['%property%' => $rawSource['property']]
             )->addViolation();
+
+            return;
+        } catch (\InvalidArgumentException $exception) {
+            $this->context->buildViolation($exception->getMessage())->addViolation();
 
             return;
         }

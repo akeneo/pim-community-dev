@@ -19,7 +19,11 @@ trait InstallCatalogTrait
 {
     private function isFreeTrialCatalogInstallation(InstallerEvent $installerEvent): bool
     {
-        $installedCatalog = $installerEvent->getArgument('catalog');
+        try {
+            $installedCatalog = $installerEvent->getArgument('catalog');
+        } catch (\InvalidArgumentException $exception) {
+            return false;
+        }
 
         return is_string($installedCatalog) && strpos($installedCatalog, 'free_trial_catalog') !== false;
     }
@@ -34,7 +38,7 @@ trait InstallCatalogTrait
         return $this->getFixturesPath() . '/extracted';
     }
 
-    private function getJobsFixturesPath(): string
+    private function getJobFixturesPath(): string
     {
         return $this->getFixturesPath() . '/jobs.yml';
     }

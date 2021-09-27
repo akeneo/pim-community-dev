@@ -33,8 +33,5 @@ pimee_enrichment:
 akeneo_authentication:
     resource: "@AkeneoPimEnterpriseAuthenticationBundle/Resources/config/routing.yml"
 
-hslavich_saml_sp:
-    resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
-
 shared_catalog:
     resource: "@AkeneoSharedCatalogBundle/Resources/config/routing.yml"

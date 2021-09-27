@@ -12,11 +12,13 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributeExtension extends \Twig_Extension
+class AttributeExtension extends AbstractExtension
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $repository;
@@ -32,12 +34,12 @@ class AttributeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'get_attribute_label_from_code',
                 [$this, 'getAttributeLabelFromCode'],
                 ['is_safe' => ['html']]
             ),
-            new \Twig_SimpleFunction('is_attribute_localizable', [$this, 'isAttributeLocalizable']),
+            new TwigFunction('is_attribute_localizable', [$this, 'isAttributeLocalizable']),
         ];
     }
 

@@ -17,7 +17,7 @@ use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\Pim\ApiClient\Api\MediaFileApiInterface;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExtractMediaFiles
 {
@@ -25,25 +25,25 @@ final class ExtractMediaFiles
 
     private AkeneoPimClientInterface $apiClient;
 
-    private StyleInterface $io;
+    private OutputInterface $output;
 
     private FilesystemInterface $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem, AkeneoPimClientInterface $apiClient, StyleInterface $io)
+    public function __construct(FilesystemInterface $filesystem, AkeneoPimClientInterface $apiClient, OutputInterface $output)
     {
         $this->apiClient = $apiClient;
-        $this->io = $io;
+        $this->output = $output;
         $this->filesystem = $filesystem;
     }
 
     public function __invoke(): void
     {
-        $this->io->section('Extract media files');
+        $this->output->write('Extract media files... ');
 
         $mediaFilesApi = $this->apiClient->getProductMediaFileApi();
-        $this->io->progressStart($mediaFilesApi->listPerPage(1, true)->getCount());
 
         file_put_contents($this->getMediaFileFixturesPath(), '');
+        $total = 0;
 
         foreach ($mediaFilesApi->all() as $mediaFile) {
             unset($mediaFile['_links']);
@@ -57,10 +57,10 @@ final class ExtractMediaFiles
             $mediaFile['hash'] = sha1($mediaFileContent);
 
             file_put_contents($this->getMediaFileFixturesPath(), json_encode($mediaFile) . PHP_EOL, FILE_APPEND);
-            $this->io->progressAdvance(1);
+            $total++;
         }
 
-        $this->io->progressFinish();
+        $this->output->writeln(sprintf('%d media files extracted', $total));
     }
 
     private function downloadMediaFile(array $mediaFileData, MediaFileApiInterface $mediaFileApi): string
@@ -70,7 +70,7 @@ final class ExtractMediaFiles
         $options['ContentType'] = $mediaFileData['mime_type'];
         $options['metadata']['contentType'] = $mediaFileData['mime_type'];
 
-        $isFileWritten = $this->filesystem->put($mediaFileData['code'], $mediaFileContent, $options);
+        $isFileWritten = $this->filesystem->put($mediaFileData['code'], strval($mediaFileContent), $options);
         if (!$isFileWritten) {
             throw new \Exception('Failed to write media-file ' . $mediaFileData['code']);
         }
