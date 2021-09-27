@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider;
+use Twig\TwigFunction;
 
-final class ExternalJavascriptDependenciesExtension extends \Twig_Extension
+final class ExternalJavascriptDependenciesExtension extends \Twig\Extension\AbstractExtension
 {
     private ExternalJavascriptDependenciesProvider $dependenciesProvider;
 
@@ -21,7 +22,7 @@ final class ExternalJavascriptDependenciesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('external_javascript_dependencies', [$this, 'getExternalJavascriptDependencies'], ['is_safe' => ['html']]),
+            new TwigFunction('external_javascript_dependencies', [$this, 'getExternalJavascriptDependencies'], ['is_safe' => ['html']]),
         ];
     }
 

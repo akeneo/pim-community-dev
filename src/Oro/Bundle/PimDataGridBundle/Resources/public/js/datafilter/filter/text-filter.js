@@ -200,6 +200,9 @@ define([
         })
       );
       this._renderCriteria(this.$(this.criteriaSelector));
+      this.$el.on('change', () => {
+        this._updateCriteriaSelectorPosition();
+      });
 
       return this;
     },

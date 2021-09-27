@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Twig;
 
+use Twig\TwigFunction;
+
 class RenderHeaderExtension extends AbstractExtension
 {
     /**
@@ -25,12 +27,12 @@ class RenderHeaderExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_header_javascript',
                 [$this, 'renderHeaderJavascript'],
                 $this->defaultFunctionOptions
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_header_stylesheet',
                 [$this, 'renderHeaderStylesheet'],
                 $this->defaultFunctionOptions

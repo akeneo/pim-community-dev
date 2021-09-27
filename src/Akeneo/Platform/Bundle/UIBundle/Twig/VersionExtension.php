@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\VersionProviderInterface;
+use Twig\TwigFunction;
 
 /**
  * Extension to display version of the Akeneo
@@ -11,7 +12,7 @@ use Akeneo\Platform\VersionProviderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionExtension extends \Twig_Extension
+class VersionExtension extends \Twig\Extension\AbstractExtension
 {
     /** @var VersionProviderInterface */
     private $versionProvider;
@@ -27,7 +28,7 @@ class VersionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('version', [$this, 'version']),
+            new TwigFunction('version', [$this, 'version']),
         ];
     }
 
