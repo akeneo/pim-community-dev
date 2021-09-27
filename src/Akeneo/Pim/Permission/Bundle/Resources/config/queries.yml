@@ -160,3 +160,4 @@ services:
         arguments:
             - '@database_connection'
             - '@doctrine'
+            - '%pim_user.entity.group.class%'
