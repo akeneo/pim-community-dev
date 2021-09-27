@@ -425,3 +425,8 @@ pim_system:
     enabled: SSO enabled
     disabled: SSO disabled
     title: SAML-based Single Sign-On
+
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action
