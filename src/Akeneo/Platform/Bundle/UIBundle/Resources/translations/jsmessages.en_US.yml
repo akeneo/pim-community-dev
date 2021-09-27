@@ -241,7 +241,8 @@ pim_common:
         DOES NOT CONTAIN: Does not contain
         STARTS WITH: Starts with
         ENDS WITH: Ends with
-    read_more: Read more
+        IN: In list
+        "NOT IN": Not in list
     channel: Channel
     locale: Locale
     categories: Categories
