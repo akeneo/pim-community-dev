@@ -20,6 +20,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
                 groups: ['update', 'import']
             - Type: array
             - All:
+                - NotNull: ~
                 - Type: object
             - Valid: ~
         actions:
@@ -31,6 +32,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
                 min: 1
                 groups: ['update', 'import']
             - All:
+                - NotNull: ~
                 - Type: object
             - Valid: ~
         labels:
