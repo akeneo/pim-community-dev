@@ -137,15 +137,16 @@ const Overlay = ({
     };
   }, []);
 
-
   useEffect(() => {
-    setOverlayPosition(getOverlayPosition(
-      overlayVerticalPosition,
-      overlayHorizontalPosition,
-      dropdownOpenerVisible,
-      parentRef,
-      overlayRef
-    ));
+    setOverlayPosition(
+      getOverlayPosition(
+        overlayVerticalPosition,
+        overlayHorizontalPosition,
+        dropdownOpenerVisible,
+        parentRef,
+        overlayRef
+      )
+    );
   }, [children, overlayVerticalPosition, overlayHorizontalPosition, parentRef, overlayRef, dropdownOpenerVisible]);
 
   const [top, left] = overlayPosition;

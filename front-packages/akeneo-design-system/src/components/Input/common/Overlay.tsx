@@ -92,7 +92,6 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
     };
   }, []);
 
-
   React.useEffect(() => {
     setOverlayPosition(getOverlayPosition(overlayVerticalPosition, parentRef, overlayRef));
   }, [children, overlayVerticalPosition, parentRef, overlayRef]);

@@ -22,7 +22,7 @@ const useVerticalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Verti
 
       setVerticalPosition(elementIsOverlappingBottom ? (elementIsOverlappingTop ? 'down' : 'up') : 'down');
     }
-  }, [forcedPosition, ref.current/*, ref.current?.getBoundingClientRect()?.height*/]);
+  }, [forcedPosition, ref.current]);
 
   return verticalPosition;
 };
