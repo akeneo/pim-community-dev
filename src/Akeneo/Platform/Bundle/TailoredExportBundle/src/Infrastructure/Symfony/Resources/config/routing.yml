@@ -17,3 +17,8 @@ pimee_tailored_export_validate_replacement_operation_action:
     path: /rest/tailored-export/validate-replacement-operation
     defaults: { _controller: akeneo.tailored_export.controller.validate_replacement_operation_action }
     methods: [POST]
+
+pimee_tailored_export_get_records_action:
+    path: /rest/tailored-export/records/{reference_entity_code}
+    defaults: { _controller: akeneo.tailored_export.controller.get_records_actions }
+    methods: [POST]
