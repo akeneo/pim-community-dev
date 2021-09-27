@@ -105,7 +105,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
 
         $retrievedApp = $this->repository->findOneByConnectionCode('bynder');
 
-            Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
     }
 
     public function test_it_finds_all_ordered_by_name()

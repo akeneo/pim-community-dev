@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
-import {CheckRoundIcon, Helper, SectionTitle} from 'akeneo-design-system';
+import {CheckRoundIcon, getColor, getFontSize, Helper, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
-import {ScopeItem, ScopeList} from '../ScopeList';
+import {ScopeList} from '../ScopeList';
 import ScopeMessage from '../../../model/Apps/scope-message';
 import {useFetchConnectedAppScopeMessages} from '../../hooks/use-fetch-connected-app-scope-messages';
 import {useFeatureFlags} from '../../../shared/feature-flags';
@@ -11,6 +11,21 @@ import {ConnectedAppScopeListIsLoading} from './ConnectedAppScopeListIsLoading';
 
 const ScopeListContainer = styled.div`
     margin: 10px 20px;
+`;
+
+const NoScope = styled.div`
+    color: ${getColor('grey', 140)};
+    font-size: ${getFontSize('default')};
+    font-weight: normal;
+    line-height: 21px;
+    margin-bottom: 13px;
+    display: flex;
+    align-items: center;
+
+    & > svg {
+        margin-right: 10px;
+        color: ${getColor('grey', 100)};
+    }
 `;
 
 type Props = {
@@ -64,12 +79,12 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp}) => {
             {false !== connectedAppScopeMessages && null !== connectedAppScopeMessages && (
                 <ScopeListContainer>
                     {0 === connectedAppScopeMessages.length ? (
-                        <ScopeItem key='0' fontSize='default'>
+                        <NoScope>
                             <CheckRoundIcon size={24} />
                             {translate(
                                 'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope'
                             )}
-                        </ScopeItem>
+                        </NoScope>
                     ) : (
                         <ScopeList scopeMessages={connectedAppScopeMessages} itemFontSize='default' />
                     )}

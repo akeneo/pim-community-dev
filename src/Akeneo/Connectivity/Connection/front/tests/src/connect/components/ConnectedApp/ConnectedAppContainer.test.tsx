@@ -5,16 +5,19 @@ import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/ConnectedAppContainer';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
-import {TabBar} from 'akeneo-design-system';
+
+// to make Tab usable with jest
+type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
+let entryCallback: EntryCallback | undefined = undefined;
+const intersectionObserverMock = (callback: EntryCallback) => ({
+    observe: jest.fn(() => (entryCallback = callback)),
+    unobserve: jest.fn(),
+});
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 jest.mock('@src/connect/components/ConnectedApp/ConnectedAppSettings', () => ({
     ...jest.requireActual('@src/connect/components/ConnectedApp/ConnectedAppSettings'),
     ConnectedAppSettings: jest.fn(() => null),
-}));
-
-jest.mock('akeneo-design-system', () => ({
-    ...jest.requireActual('akeneo-design-system'),
-    TabBar: jest.fn(() => null),
 }));
 
 beforeEach(() => {
@@ -41,11 +44,8 @@ test('The connected app container renders', () => {
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryByText('pim_menu.item.connected_apps')).toBeInTheDocument();
     expect(screen.queryAllByText('App A')).toHaveLength(2);
-    expect(TabBar).toHaveBeenCalledTimes(1);
-    expect(ConnectedAppSettings).toHaveBeenCalledWith(
-        {
-            connectedApp: connectedApp,
-        },
-        {}
-    );
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(ConnectedAppSettings).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
 });

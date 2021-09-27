@@ -17,9 +17,11 @@ import {
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
-export const ScopeItem = styled('li')<{fontSize?: keyof FontSize} & AkeneoThemedProps>`
+export const ScopeItem = styled.li.attrs((props: {fontSize?: keyof FontSize} & AkeneoThemedProps) => ({
+    fontSize: props.fontSize || 'bigger',
+}))`
     color: ${getColor('grey', 140)};
-    font-size: ${({fontSize}) => (fontSize && getFontSize(fontSize)) || getFontSize('bigger')};
+    font-size: ${props => getFontSize(props.fontSize)};
     font-weight: normal;
     line-height: 21px;
     margin-bottom: 13px;
