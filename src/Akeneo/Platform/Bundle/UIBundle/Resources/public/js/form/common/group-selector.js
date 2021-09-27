@@ -16,7 +16,8 @@ define([
   'oro/mediator',
   'pim/fetcher-registry',
   'pim/template/form/group-selector',
-], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template) {
+  'pim/analytics',
+], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template, analytics) {
   return BaseForm.extend({
     tagName: 'ul',
     className: 'AknVerticalNavtab nav nav-tabs group-selector',
@@ -123,6 +124,10 @@ define([
           this.trigger('group:change');
           this.getRoot().trigger('group:change');
         }
+
+        analytics.track('product-grid:attribute-group:selected', {
+          code: current,
+        });
 
         this.render();
       }

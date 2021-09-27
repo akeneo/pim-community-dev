@@ -17,7 +17,8 @@ define([
   'pim/field-manager',
   'pim/i18n',
   'pim/user-context',
-], function ($, _, __, BaseSave, messenger, ProductSaver, FieldManager, i18n, UserContext) {
+  'pim/analytics',
+], function ($, _, __, BaseSave, messenger, ProductSaver, FieldManager, i18n, UserContext, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),
     updateFailureMessage: __('pim_enrich.entity.product.flash.update.fail'),
@@ -57,6 +58,10 @@ define([
 
       this.showLoadingMask();
       this.getRoot().trigger('pim_enrich:form:entity:pre_save');
+
+      analytics.track('product:form:saved', {
+        name: product.identifier,
+      });
 
       return ProductSaver.save(productId, product)
         .fail(this.fail.bind(this))

@@ -6,13 +6,14 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/mass-edit/choose'], function (
-  $,
-  _,
-  __,
-  BaseForm,
-  template
-) {
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/form',
+  'pim/template/mass-edit/choose',
+  'pim/analytics',
+], function ($, _, __, BaseForm, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknSquareList',
@@ -51,8 +52,14 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/mass
      * @param {Event} event
      */
     updateOperation: function (event) {
-      this.getParent().setCurrentOperation($(event.target).closest('.operation').data('code'));
+      const code = $(event.target).closest('.operation').data('code');
+
+      this.getParent().setCurrentOperation(code);
       this.render();
+
+      analytics.track('grid:mass-edit:item-chosen', {
+        code: code,
+      });
     },
 
     /**
