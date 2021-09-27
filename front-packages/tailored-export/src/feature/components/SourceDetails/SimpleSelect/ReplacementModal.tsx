@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
   AttributesIllustration,
@@ -15,6 +15,7 @@ import {
   filterErrors,
   formatParameters,
   getLabel,
+  LabelCollection,
   NoDataSection,
   NoDataText,
   NoDataTitle,
@@ -25,8 +26,7 @@ import {
   useUserContext,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../hooks/useAttributeOptions';
-import {Attribute} from '../../../models';
+import {OPTION_COLLECTION_PAGE_SIZE} from '../../../hooks/useAttributeOptions';
 import {filterEmptyValues, ReplacementValues} from '../common';
 import {MappedFilterDropdown, MappedFilterValue} from './MappedFilterDropdown';
 
@@ -71,12 +71,16 @@ const Field = styled.div`
   gap: 5px;
 `;
 
-type ReplacementModalProps = {
-  initialMapping: ReplacementValues;
-  attribute: Attribute;
-  validationErrors: ValidationError[];
-  onConfirm: (updatedReplacementValues: ReplacementValues) => void;
-  onCancel: () => void;
+type Value = {
+  code: string;
+  labels: LabelCollection;
+};
+
+type ReplaceValueFilter = {
+  searchValue: string;
+  page: number;
+  codesToInclude: string[];
+  codesToExclude: string[];
 };
 
 const getIncludeExcludeCodes = (mappedFilterValue: MappedFilterValue, mapping: ReplacementValues): string[][] => {
@@ -90,36 +94,37 @@ const getIncludeExcludeCodes = (mappedFilterValue: MappedFilterValue, mapping: R
   }
 };
 
+type ReplacementModalProps = {
+  initialMapping: ReplacementValues;
+  values: Value[];
+  validationErrors: ValidationError[];
+  totalItems: number;
+  replaceValueFilter: ReplaceValueFilter;
+  onConfirm: (updatedReplacementValues: ReplacementValues) => void;
+  onCancel: () => void;
+  onReplaceValueFilterChange: (setFilter: (previousFilter: ReplaceValueFilter) => ReplaceValueFilter) => void;
+};
+
 const ReplacementModal = ({
   initialMapping,
-  attribute,
-  onConfirm,
-  onCancel,
+  values,
+  totalItems,
+  replaceValueFilter,
   validationErrors,
+  onConfirm,
+  onReplaceValueFilterChange,
+  onCancel,
 }: ReplacementModalProps) => {
   const translate = useTranslate();
   const [mapping, setMapping] = useState<ReplacementValues>(initialMapping);
   const validateReplacementOperationRoute = useRoute('pimee_tailored_export_validate_replacement_operation_action');
   const notify = useNotify();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchValue, setSearchValue] = useState<string>('');
-  const debouncedSearchValue = useDebounce(searchValue);
   const catalogLocale = useUserContext().get('catalogLocale');
-  const [mappedFilterValue, setMappedFilterValue] = useState<MappedFilterValue>('all');
-  const [optionCodesToInclude, optionCodesToExclude] = useMemo(
-    () => getIncludeExcludeCodes(mappedFilterValue, initialMapping),
-    [mappedFilterValue, initialMapping]
-  );
   const [replacementOperationValidationErrors, setReplacementOperationValidationErrors] = useState(validationErrors);
   const mappingValidationErrors = filterErrors(replacementOperationValidationErrors, '[mapping]');
-
-  const [attributeOptions, totalItems] = useAttributeOptions(
-    attribute.code,
-    debouncedSearchValue,
-    currentPage,
-    optionCodesToInclude,
-    optionCodesToExclude
-  );
+  const [searchValue, setSearchValue] = useState<string>(replaceValueFilter.searchValue);
+  const debouncedSearchValue = useDebounce(searchValue);
+  const [mappedFilterValue, setMappedFilterValue] = useState<MappedFilterValue>('all');
 
   const updateMappedValue = (from: string, updatedValue: string) => {
     const updatedMapping = {...mapping, [from]: updatedValue};
@@ -127,9 +132,30 @@ const ReplacementModal = ({
     setMapping(updatedMapping);
   };
 
-  const handleSearchChange = (updatedSearchValue: string) => {
-    setSearchValue(updatedSearchValue);
-    setCurrentPage(1);
+  useEffect(() => {
+    onReplaceValueFilterChange(replaceValueFilter => ({
+      ...replaceValueFilter,
+      page: 1,
+      searchValue: debouncedSearchValue,
+    }));
+  }, [debouncedSearchValue, onReplaceValueFilterChange]);
+
+  const handlePageChange = (page: number) => {
+    onReplaceValueFilterChange(replaceValueFilter => ({
+      ...replaceValueFilter,
+      page,
+    }));
+  };
+
+  const handleMappedFilterValueChange = (mappedFilterValue: MappedFilterValue) => {
+    const [codesToInclude, codesToExclude] = getIncludeExcludeCodes(mappedFilterValue, initialMapping);
+
+    setMappedFilterValue(mappedFilterValue);
+    onReplaceValueFilterChange(replaceValueFilter => ({
+      ...replaceValueFilter,
+      codesToInclude,
+      codesToExclude,
+    }));
   };
 
   const handleConfirm = async () => {
@@ -180,7 +206,7 @@ const ReplacementModal = ({
           {translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.subtitle')}
         </Modal.Title>
         <Content>
-          {'' === searchValue && 0 === attributeOptions.length ? (
+          {'' === replaceValueFilter.searchValue && 0 === values.length ? (
             <NoDataSection>
               <AttributesIllustration size={256} />
               <NoDataTitle>
@@ -191,7 +217,7 @@ const ReplacementModal = ({
             <TableContainer>
               <Search
                 sticky={0}
-                onSearchChange={handleSearchChange}
+                onSearchChange={setSearchValue}
                 placeholder={translate('pim_common.search')}
                 searchValue={searchValue}
                 title={translate('pim_common.search')}
@@ -200,9 +226,9 @@ const ReplacementModal = ({
                   {translate('pim_common.result_count', {itemsCount: totalItems}, totalItems)}
                 </Search.ResultCount>
                 <Search.Separator />
-                <MappedFilterDropdown value={mappedFilterValue} onChange={setMappedFilterValue} />
+                <MappedFilterDropdown value={mappedFilterValue} onChange={handleMappedFilterValueChange} />
               </Search>
-              {'' !== searchValue && 0 === attributeOptions.length ? (
+              {'' !== replaceValueFilter.searchValue && 0 === values.length ? (
                 <NoDataSection>
                   <AttributesIllustration size={256} />
                   <NoDataTitle>
@@ -231,7 +257,7 @@ const ReplacementModal = ({
                     </Table.HeaderCell>
                   </Table.Header>
                   <Table.Body>
-                    {attributeOptions.map(attributeOption => {
+                    {values.map(attributeOption => {
                       const optionErrors = filterErrors(mappingValidationErrors, `[${attributeOption.code}]`);
 
                       return (
@@ -269,10 +295,10 @@ const ReplacementModal = ({
         </Content>
         {0 !== totalItems && (
           <Pagination
-            currentPage={currentPage}
+            currentPage={replaceValueFilter.page}
             itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
             totalItems={totalItems}
-            followPage={setCurrentPage}
+            followPage={handlePageChange}
           />
         )}
       </Container>
@@ -281,3 +307,4 @@ const ReplacementModal = ({
 };
 
 export {ReplacementModal};
+export type {ReplaceValueFilter};

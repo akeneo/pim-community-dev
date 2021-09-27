@@ -8,8 +8,9 @@ import {
   isDefaultReplacementOperation,
 } from '../common/ReplacementOperation';
 import {Attribute} from '../../../models';
-import {ReplacementModal} from './ReplacementModal';
+import {ReplaceValueFilter, ReplacementModal} from './ReplacementModal';
 import {ReplacementValues} from '../common';
+import {useAttributeOptions} from '../../../hooks/useAttributeOptions';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
@@ -31,6 +32,20 @@ const SimpleSelectReplacement = ({
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
+  const [replaceValueFilter, setReplaceValueFilter] = useState<ReplaceValueFilter>({
+    searchValue: '',
+    page: 1,
+    codesToInclude: [],
+    codesToExclude: [],
+  });
+
+  const [attributeOptions, totalItems] = useAttributeOptions(
+    attribute.code,
+    replaceValueFilter.searchValue,
+    replaceValueFilter.page,
+    replaceValueFilter.codesToInclude,
+    replaceValueFilter.codesToExclude
+  );
 
   const handleConfirm = (mapping: ReplacementValues) => {
     const newOperation = {...operation, mapping};
@@ -57,8 +72,11 @@ const SimpleSelectReplacement = ({
       </EditMappingButton>
       {isModalOpen && (
         <ReplacementModal
+          replaceValueFilter={replaceValueFilter}
+          onReplaceValueFilterChange={setReplaceValueFilter}
+          values={attributeOptions}
+          totalItems={totalItems}
           initialMapping={operation.mapping}
-          attribute={attribute}
           validationErrors={validationErrors}
           onConfirm={handleConfirm}
           onCancel={closeModal}
