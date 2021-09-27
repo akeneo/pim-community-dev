@@ -42,6 +42,9 @@ class AddDefaultPermissionsToAttributeGroupIntegration extends TestCase
 
     /**
      * @dataProvider permissions
+     *
+     * @param array<string, bool> $defaultPermissions
+     * @param array<string, bool> $expectedPermissions
      */
     public function testUserGroupHasExpectedPermissionsOnNewAttributeGroupsByDefault(
         array $defaultPermissions,
