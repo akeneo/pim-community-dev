@@ -93,6 +93,7 @@
 - PIM-10068: Fix the Permissions tab disappeared for XLSX and CSV Published Products export profiles
 - PIM-10072: Fix difference on the migration Serenity > Flexibility
 - PIM-10083: Increase the limit of default values displayed in reference entities and assets filters in the product grid
+- PIM-10089: Add missing validation check on rule import
 
 ## Improvements
 

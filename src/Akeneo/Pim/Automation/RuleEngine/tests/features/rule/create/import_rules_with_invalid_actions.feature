@@ -26,6 +26,26 @@ Feature: Import rules
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
+  Scenario: Skip rules with empty action
+    When the following yaml file is imported:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:  set
+                  field: description
+                  value: A beautiful description
+                -
+    """
+    Then an exception with message "actions[1]: This value should not be null" has been thrown
+    And the rule list does not contain the "canon_beautiful_description" rule
+
+  @integration-back
   Scenario: Skip rules with missing from_field key for copy action
     When the following yaml file is imported:
     """
