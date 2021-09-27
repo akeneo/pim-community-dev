@@ -178,6 +178,10 @@ class Group implements GroupInterface
 
     public function setDefaultPermission(string $permission, bool $granted): void
     {
+        if (null === $this->defaultPermissions) {
+            $this->defaultPermissions = [];
+        }
+
         $this->defaultPermissions[$permission] = $granted;
     }
 
