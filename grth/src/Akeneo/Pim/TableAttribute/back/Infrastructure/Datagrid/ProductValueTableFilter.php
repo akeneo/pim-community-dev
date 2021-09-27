@@ -25,8 +25,7 @@ class ProductValueTableFilter extends AbstractFilter
 
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        var_dump($ds);
-        var_dump($data);
+        // TODO CPM-377
         throw new \Exception('NEED TO BE IMPLEMENTED');
     }
 }

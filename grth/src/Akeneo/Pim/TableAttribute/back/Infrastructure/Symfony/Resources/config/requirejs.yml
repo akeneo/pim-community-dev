@@ -42,7 +42,7 @@ config:
         oro/datafilter/table-filter:
             filter_values:
                 text:
-                    'STARTS_WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    'STARTS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
                     'ENDS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
                     'CONTAINS': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
                     'DOES NOT CONTAIN': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'

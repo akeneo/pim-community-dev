@@ -78,7 +78,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 
   const handleColumnChange = (column: ColumnDefinition | undefined) => {
     setSelectedColumn(column);
-    setSelectedOperator(undefined); // TODO Maybe we can keep the operator if it exists for the new datatype
+    setSelectedOperator(undefined);
     setValue(undefined);
   }
 
@@ -97,7 +97,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }
 
-  // TODO Think about wording and translate this
+  // TODO Think about wording and translate this CPM-378
   let criteriaLabel = 'All';
   if (typeof selectedColumn !== 'undefined') {
     criteriaLabel = '';
@@ -139,7 +139,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
         </FilterButtonContainer>
       </FilterContainer>
     </Dropdown.Overlay>}
-    <div className='AknFilterBox-filter filter-select' onClick={open}>
+    <div className='AknFilterBox-filter' onClick={open}>
       {showLabel &&
       <span className='AknFilterBox-filterLabel'>{label}</span>
       }
@@ -148,7 +148,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       </span>
       <span className='AknFilterBox-filterCaret'/>
     </div>
-    <div className='filter-criteria dropdown-menu'/>
     {canDisable &&
     <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable}/>
     }

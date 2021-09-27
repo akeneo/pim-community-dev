@@ -16,6 +16,8 @@ const StringFilterValue: DatagridTableFilterValueRenderer = ({
   const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
   const options = getOptionsFromColumnCode(columnCode);
 
+  // TODO Search & pagination CPM-379
+
   return <MultiSelectInput
     value={value || []}
     openLabel={translate('pim_common.open')}

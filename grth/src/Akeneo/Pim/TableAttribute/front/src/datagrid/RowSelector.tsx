@@ -25,7 +25,7 @@ const RowSelector: React.FC<RowSelectorProps> = ({
     onChange((options || []).find(option => option.code === selectOptionCode));
   }
 
-  // TODO Search & pagination
+  // TODO Search & pagination CPM-379
 
   return <SelectInput
     clearLabel={translate('pim_common.clear_value')}

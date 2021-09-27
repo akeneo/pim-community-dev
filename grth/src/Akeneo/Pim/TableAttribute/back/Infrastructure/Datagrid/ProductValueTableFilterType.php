@@ -11,7 +11,7 @@ class ProductValueTableFilterType extends AbstractType
 
     public function getParent(): string
     {
-        // TODO This parent is too complex, should be removed
+        // TODO This parent is too complex, should be removed CPM-377
         return FilterType::class;
     }
 

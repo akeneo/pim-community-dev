@@ -7,7 +7,7 @@ import {FilterValuesMapping} from "../../src/datagrid";
 
 export const defaultFilterValuesMapping: FilterValuesMapping = {
   text: {
-    'STARTS_WITH': {default: StringFilterValue},
+    'STARTS WITH': {default: StringFilterValue},
     'ENDS WITH': {default: StringFilterValue},
     'CONTAINS': {default: StringFilterValue},
     'DOES NOT CONTAIN': {default: StringFilterValue},
