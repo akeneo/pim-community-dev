@@ -102,11 +102,9 @@ define([
       this.count = this.collection.state.totalRecords;
       this.collection.trigger('backgrid:selectAll');
 
-      switch (this.collection.inputName) {
-        case 'product-grid':
-          analytics.track('product-grid:product:all-selected');
-          break;
-      }
+      analytics.track('grid:item:all-selected', {
+        inputName: this.collection.inputName,
+      });
 
       this.updateView();
     },
