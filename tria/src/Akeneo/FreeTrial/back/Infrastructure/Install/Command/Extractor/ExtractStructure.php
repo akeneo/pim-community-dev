@@ -15,7 +15,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor;
 
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExtractStructure
 {
@@ -23,12 +23,12 @@ final class ExtractStructure
 
     private AkeneoPimClientInterface $apiClient;
 
-    private StyleInterface $io;
+    private OutputInterface $output;
 
-    public function __construct(AkeneoPimClientInterface $apiClient, StyleInterface $io)
+    public function __construct(AkeneoPimClientInterface $apiClient, OutputInterface $output)
     {
         $this->apiClient = $apiClient;
-        $this->io = $io;
+        $this->output = $output;
     }
 
     public function __invoke(): void
@@ -61,7 +61,7 @@ final class ExtractStructure
 
     private function extractAttributes(): void
     {
-        $this->io->section('Extract attributes and attribute options');
+        $this->output->write('Extract attributes and attribute options... ');
 
         $attributeApi = $this->apiClient->getAttributeApi();
         $countAttributes = 0;
@@ -69,8 +69,6 @@ final class ExtractStructure
 
         file_put_contents($this->getAttributeFixturesPath(), '');
         file_put_contents($this->getAttributeOptionFixturesPath(), '');
-
-        $this->io->progressStart($attributeApi->listPerPage(1, true)->getCount());
 
         foreach ($attributeApi->all() as $attribute) {
             unset($attribute['_links']);
@@ -84,18 +82,16 @@ final class ExtractStructure
                     $this->getAttributeOptionFixturesPath()
                 );
             }
-
-            $this->io->progressAdvance(1);
         }
 
-        $this->io->progressFinish();
-
-        $this->io->text(sprintf('%d attributes and %d attribute options extracted', $countAttributes, $countAttributeOptions));
+        $this->output->writeln(
+            sprintf('%d attributes and %d attribute options extracted', $countAttributes, $countAttributeOptions)
+        );
     }
 
     private function extractAttributeGroups(): void
     {
-        $this->io->section('Extract attribute groups');
+        $this->output->write('Extract attribute groups... ');
 
         file_put_contents($this->getAttributeGroupFixturesPath(), '');
 
@@ -108,12 +104,12 @@ final class ExtractStructure
             }
         );
 
-        $this->io->text(sprintf('%d attribute groups extracted', $count));
+        $this->output->writeln(sprintf('%d attribute groups extracted', $count));
     }
 
     private function extractAssociationTypes(): void
     {
-        $this->io->section('Extract association types');
+        $this->output->write('Extract association types... ');
 
         file_put_contents($this->getAssociationTypeFixturesPath(), '');
 
@@ -122,12 +118,12 @@ final class ExtractStructure
             $this->getAssociationTypeFixturesPath()
         );
 
-        $this->io->text(sprintf('%d association types extracted', $count));
+        $this->output->writeln(sprintf('%d association types extracted', $count));
     }
 
     private function extractCategories(): void
     {
-        $this->io->section('Extract categories');
+        $this->output->write('Extract categories... ');
 
         file_put_contents($this->getCategoryFixturesPath(), '');
 
@@ -140,12 +136,12 @@ final class ExtractStructure
             }
         );
 
-        $this->io->text(sprintf('%d categories extracted', $count));
+        $this->output->writeln(sprintf('%d categories extracted', $count));
     }
 
     private function extractChannels(): void
     {
-        $this->io->section('Extract channels');
+        $this->output->write('Extract channels... ');
 
         file_put_contents($this->getChannelFixturesPath(), '');
 
@@ -154,12 +150,12 @@ final class ExtractStructure
             $this->getChannelFixturesPath()
         );
 
-        $this->io->text(sprintf('%d channels extracted', $count));
+        $this->output->writeln(sprintf('%d channels extracted', $count));
     }
 
     private function extractLocales(): void
     {
-        $this->io->section('Extract locales');
+        $this->output->write('Extract locales... ');
 
         file_put_contents($this->getLocaleFixturesPath(), '');
 
@@ -172,12 +168,12 @@ final class ExtractStructure
             }
         );
 
-        $this->io->text(sprintf('%d locales extracted', $count));
+        $this->output->writeln(sprintf('%d locales extracted', $count));
     }
 
     private function extractCurrencies(): void
     {
-        $this->io->section('Extract currencies');
+        $this->output->write('Extract currencies... ');
 
         file_put_contents($this->getCurrencyFixturesPath(), '');
 
@@ -186,12 +182,12 @@ final class ExtractStructure
             $this->getCurrencyFixturesPath()
         );
 
-        $this->io->text(sprintf('%d currencies extracted', $count));
+        $this->output->writeln(sprintf('%d currencies extracted', $count));
     }
 
     private function extractFamilies(): void
     {
-        $this->io->section('Extract families and family variants');
+        $this->output->write('Extract families and family variants... ');
 
         $familyApi = $this->apiClient->getFamilyApi();
         $countFamilies = 0;
@@ -200,21 +196,17 @@ final class ExtractStructure
         file_put_contents($this->getFamilyFixturesPath(), '');
         file_put_contents($this->getFamilyVariantFixturesPath(), '');
 
-        $this->io->progressStart($familyApi->listPerPage(1, true)->getCount());
-
         foreach ($familyApi->all() as $family) {
             unset($family['_links']);
             file_put_contents($this->getFamilyFixturesPath(), json_encode($family) . PHP_EOL, FILE_APPEND);
             $countFamilies++;
 
             $countFamilyVariants += $this->extractFamilyVariants($family['code']);
-
-            $this->io->progressAdvance(1);
         }
 
-        $this->io->progressFinish();
-
-        $this->io->text(sprintf('%d families and %d family variants extracted', $countFamilies, $countFamilyVariants));
+        $this->output->writeln(
+            sprintf('%d families and %d family variants extracted', $countFamilies, $countFamilyVariants)
+        );
     }
 
     private function extractFamilyVariants(string $family): int
@@ -234,7 +226,7 @@ final class ExtractStructure
 
     private function extractMeasurementFamilies(): void
     {
-        $this->io->section('Extract measurement families');
+        $this->output->write('Extract measurement families... ');
 
         file_put_contents($this->getMeasurementFamilyFixturesPath(), '');
 
@@ -244,6 +236,6 @@ final class ExtractStructure
             $count++;
         }
 
-        $this->io->text(sprintf('%d measurements extracted', $count));
+        $this->output->writeln(sprintf('%d measurements extracted', $count));
     }
 }

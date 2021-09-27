@@ -1011,9 +1011,43 @@ jobs:
           - attach_workspace:
               at: ~/
           - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Define value for next steps
               command: |
-                  echo "Do tests"
+                TYPE="tria"
+                echo export TYPE=${TYPE} >> $BASH_ENV
+          - run:
+              name: Setup tests results folder and log folder
+              command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer
+          - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ~/project ~/.cache/yarn ~/.composer
+          - run:
+              name: Load php image
+              command: docker load -i php-pim-image.tar
+          - run:
+              name: Install dependencies
+              command: make dependencies
+          - run:
+              name: Build the DSM
+              command: make dsm
+          - run:
+              name: Launch Tria in test mode
+              command: make pim-test
+          - run:
+              name: Lint Back
+              command: PIM_CONTEXT=test make lint-back
+          - run:
+              name: Unit Back
+              command: PIM_CONTEXT=test make unit-back
+          - run:
+              name: Integration Back
+              command: PIM_CONTEXT=test make pim-integration-back
+          - store_test_results:
+              path: ${TYPE}/var/tests
+          - store_artifacts:
+              path: ${TYPE}/var/tests
+          - store_artifacts:
+              path: ${TYPE}/var/logs
 
   pull_request_success:
       docker:
@@ -1246,16 +1280,25 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: make deploy-instance
+              command: |
+                  NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                  make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
               command: make test-prod
+          - run:
+              name: Check deployment logs
+              command: cat deployment.log
+              when: on_fail
           - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_deploy_srnt_deployment.log
           - persist_to_workspace:
               root: ~/
               paths:
@@ -1292,16 +1335,25 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: make deploy-instance
+              command: |
+                  NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                  make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
               command: make test-prod
+          - run:
+              name: Check deployment logs
+              command: cat deployment.log
+              when: on_fail
           - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_deploy_grth_deployment.log
           - persist_to_workspace:
               root: ~/
               paths:
@@ -1338,16 +1390,25 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: make deploy-instance
+              command: |
+                  NS=${TYPE}-${INSTANCE_NAME} bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                  make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
               command: make test-prod
+          - run:
+              name: Check deployment logs
+              command: cat deployment.log
+              when: on_fail
           - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_deploy_tria_deployment.log
           - persist_to_workspace:
               root: ~/
               paths:
@@ -1508,13 +1569,19 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Jenkins Upgrade
-                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                command: |
+                    NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                    OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
               name: Production tests on upgraded env
               command: make test-prod
           - run:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Check deployment logs
+              command: cat deployment.log
+              when: on_fail
           - run:
               name: Check if upgrader failed
               command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
@@ -1525,6 +1592,9 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_upgrade_srnt_from_last_release_deployment.log
           - run:
               name: Remove upgraded env
               command: make uncommit-instance
@@ -1554,16 +1624,19 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Jenkins Upgrade
-                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                command: |
+                    NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                    OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
                 name: Production tests on upgraded env
                 command: make test-prod
           - run:
-                name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+              name: Check deployment logs
+              command: cat deployment.log
+              when: on_fail
           - run:
               name: Check if upgrader failed
-              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+              command:  kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
               when: on_fail
           - run:
                 name: Prepare infrastructure artifacts
@@ -1571,6 +1644,9 @@ jobs:
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_upgrade_grth_from_last_release_deployment.log
           - run:
                 name: Remove upgraded env
                 command: make uncommit-instance
@@ -2045,7 +2121,7 @@ jobs:
           - set_gcloud_config_dev
           - run:
                 name: Remove unused resources
-                command:
+                command: |
                     PIM_CONTEXT=deployment make remove_unused_resources
 
   zdd_compliancy_diff:

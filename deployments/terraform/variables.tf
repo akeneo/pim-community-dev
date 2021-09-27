@@ -129,11 +129,6 @@ variable "akeneo_connect_saml_certificate" {
   type    = string
 }
 
-variable "akeneo_connect_saml_sp_client_id" {
-  default = ""
-  type    = string
-}
-
 variable "akeneo_connect_saml_sp_certificate_base64" {
   default = ""
   type    = string
@@ -154,11 +149,6 @@ variable "akeneo_connect_api_client_password" {
   type    = string
 }
 
-variable "ft_catalog_api_base_uri" {
-  default = ""
-  type    = string
-}
-
 variable "ft_catalog_api_client_id" {
   default = ""
   type    = string
@@ -170,11 +160,6 @@ variable "ft_catalog_api_password" {
 }
 
 variable "ft_catalog_api_secret" {
-  default = ""
-  type    = string
-}
-
-variable "ft_catalog_api_username" {
   default = ""
   type    = string
 }

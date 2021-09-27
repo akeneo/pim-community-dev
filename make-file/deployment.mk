@@ -227,6 +227,16 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
+
+ifeq ($(TYPE),tria)
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.ft_catalog_api_base_uri "https://plg-catalog.demo.cloud.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_api_client_base_uri "https://connect-sandbox.ip.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
+
+endif
 	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: prepare-chart-default-values
@@ -420,7 +430,7 @@ delete_expired_uptime_check:
 	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
-remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials
 
 .PHONY: remove_unused_gcloud_dns
 remove_unused_gcloud_dns:
@@ -459,6 +469,13 @@ remove_unused_gcloud_disk:
 	@echo "=             Remove unused gcloud disk                  ="
 	@echo "=========================================================="
 	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+
+.PHONY: remove_unused_mailgun_credentials
+remove_unused_mailgun_credentials:
+	@echo "=========================================================="
+	@echo "=           Remove unused mailgun credentials            ="
+	@echo "=========================================================="
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} bash $(PWD)/deployments/bin/remove_unused_mailgun_credentials.sh
 
 .PHONY: clone_serenity
 clone_serenity:

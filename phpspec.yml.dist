@@ -43,13 +43,6 @@ suites:
         src_path: src/Akeneo/Pim/Permission
         spec_prefix: Specification
 
-    FreeTrial:
-        namespace: Akeneo\FreeTrial
-        psr4_prefix: Akeneo\FreeTrial
-        spec_path: src/Akeneo/FreeTrial/tests/back
-        src_path: src/Akeneo/FreeTrial
-        spec_prefix: Specification
-
     ## Tailored export context
     TailoredExport:
         namespace: Akeneo\Platform\TailoredExport

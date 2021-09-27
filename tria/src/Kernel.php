@@ -43,19 +43,23 @@ class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $eeConfDir = $this->getProjectDir() . '/config';
+        $triaConfDir = $this->getProjectDir() . '/config';
+        $grthConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition';
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
 
         $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $ceConfDir);
-        $this->loadPackagesConfiguration($loader, $eeConfDir);
+        $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $grthConfDir);
+        $this->loadPackagesConfiguration($loader, $triaConfDir);
 
         $this->loadContainerConfiguration($loader, $ceConfDir);
-        $this->loadContainerConfiguration($loader, $eeConfDir);
+        $this->loadContainerConfiguration($loader, $grthConfDir);
+        $this->loadContainerConfiguration($loader, $triaConfDir);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config');
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition/config');
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config');
     }
 
