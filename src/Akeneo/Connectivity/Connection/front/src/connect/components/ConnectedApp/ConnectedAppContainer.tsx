@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Breadcrumb, TabBar} from 'akeneo-design-system';
+import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -7,10 +7,15 @@ import {useMediaUrlGenerator} from '../../../settings/use-media-url-generator';
 import {PageContent, PageHeader} from '../../../common';
 import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
+import {useSessionStorageState} from '@akeneo-pim-community/shared';
+import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 
 type Props = {
     connectedApp: ConnectedApp;
 };
+
+const settingsTabName = '#connected-app-tab-settings';
+const permissionsTabName = '#connected-app-tab-permissions';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
@@ -18,6 +23,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const generateMediaUrl = useMediaUrlGenerator();
+    const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
+    const [isCurrent, switchTo] = useTabBar(activeTab);
 
     const breadcrumb = (
         <Breadcrumb>
@@ -39,12 +46,29 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
             <PageContent>
                 <TabBar moreButtonTitle='More'>
-                    <TabBar.Tab isActive>
+                    <TabBar.Tab
+                        isActive={isCurrent(settingsTabName)}
+                        onClick={() => {
+                            setActiveTab(settingsTabName);
+                            switchTo(settingsTabName);
+                        }}
+                    >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
+                    </TabBar.Tab>
+                    <TabBar.Tab
+                        isActive={isCurrent(permissionsTabName)}
+                        onClick={() => {
+                            setActiveTab(permissionsTabName);
+                            switchTo(permissionsTabName);
+                        }}
+                    >
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
                     </TabBar.Tab>
                 </TabBar>
 
-                <ConnectedAppSettings connectedApp={connectedApp} />
+                {isCurrent(settingsTabName) && <ConnectedAppSettings connectedApp={connectedApp} />}
+
+                {isCurrent(permissionsTabName) && <ConnectedAppPermissions connectedApp={connectedApp} />}
             </PageContent>
         </>
     );
