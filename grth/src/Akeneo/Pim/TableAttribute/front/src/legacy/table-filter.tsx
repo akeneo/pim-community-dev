@@ -7,18 +7,26 @@ import {DatagridTableFilter, FilterValuesMapping} from "../datagrid";
 import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 
 class TableFilter extends AbstractFilter {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private show() {
     this.render();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private hide() {
     this.remove();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private _writeDOMValue() {
     return this;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private _readDOMValue() {
   }
 
