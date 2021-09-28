@@ -5,52 +5,26 @@ import {renderWithProviders} from 'feature/tests';
 import {ReplacementModal} from './ReplacementModal';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-const attribute = {
-  code: 'color',
-  type: 'pim_catalog_simpleselect',
-  labels: {},
-  scopable: false,
-  localizable: false,
-  is_locale_specific: false,
-  available_locales: [],
-};
-
-jest.mock('../../../hooks/useAttributeOptions', () => ({
-  useAttributeOptions: (
-    _attributeCode: string,
-    searchValue: string,
-    _page: number,
-    includeCodes: string[],
-    excludeCodes: string[]
-  ) => [
-    [
-      {
-        code: 'black',
-        labels: {
-          en_US: 'Black',
-        },
-      },
-      {
-        code: 'red',
-        labels: {
-          en_US: 'Red',
-        },
-      },
-      {
-        code: 'blue',
-        labels: {
-          en_US: 'Blue',
-        },
-      },
-    ].filter(
-      ({code}) =>
-        code.includes(searchValue) &&
-        (0 === includeCodes.length || includeCodes.includes(code)) &&
-        !excludeCodes.includes(code)
-    ),
-    3,
-  ],
-}));
+const values = [
+  {
+    code: 'black',
+    labels: {
+      en_US: 'Black',
+    },
+  },
+  {
+    code: 'red',
+    labels: {
+      en_US: 'Red',
+    },
+  },
+  {
+    code: 'blue',
+    labels: {
+      en_US: 'Blue',
+    },
+  },
+];
 
 const validResponse = {
   ok: true,
@@ -64,7 +38,10 @@ test('it can update a replacement mapping', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={jest.fn()}
+      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
       validationErrors={[]}
       onConfirm={handleConfirm}
       onCancel={jest.fn()}
@@ -97,9 +74,12 @@ test('it validates replacement mapping before confirming', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={jest.fn()}
+      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
       validationErrors={[]}
-      onConfirm={jest.fn()}
+      onConfirm={handleConfirm}
       onCancel={jest.fn()}
     />
   );
@@ -120,98 +100,113 @@ test('it validates replacement mapping before confirming', async () => {
 test('it can filter search results', async () => {
   jest.useFakeTimers();
 
+  const handleReplaceValueFilterChange = jest.fn();
+  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={handleReplaceValueFilterChange}
+      replaceValueFilter={replaceValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
     />
   );
 
+  userEvent.type(screen.getByPlaceholderText('pim_common.search'), 'bl');
   act(() => {
-    userEvent.type(screen.getByPlaceholderText('pim_common.search'), 'bl');
     jest.runAllTimers();
-  });
+  })
 
-  expect(screen.getByText('Black')).toBeInTheDocument();
-  expect(screen.getByText('Blue')).toBeInTheDocument();
-  expect(screen.queryByText('Red')).not.toBeInTheDocument();
+  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+    searchValue: 'bl',
+    page: 1,
+    codesToInclude: [],
+    codesToExclude: []
+  });
 });
 
 test('it can show only mapped results', async () => {
-  jest.useFakeTimers();
+  const handleReplaceValueFilterChange = jest.fn();
+  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
 
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{
         black: 'Noir',
       }}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={handleReplaceValueFilterChange}
+      replaceValueFilter={replaceValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
     />
   );
 
-  act(() => {
-    userEvent.click(
-      screen.getByLabelText(
-        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
-      )
-    );
-    jest.runAllTimers();
+  userEvent.click(
+    screen.getByLabelText(
+      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
+    )
+  );
 
-    userEvent.click(
-      screen.getByText(
-        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.mapped'
-      )
-    );
-    jest.runAllTimers();
+  userEvent.click(
+    screen.getByText(
+      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.mapped'
+    )
+  );
+
+  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+    searchValue: '',
+    page: 1,
+    codesToInclude: ['black'],
+    codesToExclude: []
   });
-
-  expect(screen.getByText('Black')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('Noir')).toBeInTheDocument();
-  expect(screen.queryByText('Blue')).not.toBeInTheDocument();
-  expect(screen.queryByText('Red')).not.toBeInTheDocument();
 });
 
 test('it can show only unmapped results', async () => {
-  jest.useFakeTimers();
+  const handleReplaceValueFilterChange = jest.fn();
+  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
 
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{
         black: 'Noir',
       }}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={handleReplaceValueFilterChange}
+      replaceValueFilter={replaceValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
     />
   );
 
-  act(() => {
-    userEvent.click(
-      screen.getByLabelText(
-        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
-      )
-    );
-    jest.runAllTimers();
+  userEvent.click(
+    screen.getByLabelText(
+      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
+    )
+  );
 
-    userEvent.click(
-      screen.getByText(
-        'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.unmapped'
-      )
-    );
-    jest.runAllTimers();
+  userEvent.click(
+    screen.getByText(
+      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.unmapped'
+    )
+  );
+
+  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+    searchValue: '',
+    page: 1,
+    codesToInclude: [],
+    codesToExclude: ['black']
   });
-
-  expect(screen.queryByText('Black')).not.toBeInTheDocument();
-  expect(screen.queryByDisplayValue('Noir')).not.toBeInTheDocument();
-  expect(screen.getByText('Blue')).toBeInTheDocument();
-  expect(screen.getByText('Red')).toBeInTheDocument();
 });
 
 test('it displays validation errors', async () => {
@@ -235,7 +230,10 @@ test('it displays validation errors', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      attribute={attribute}
+      totalItems={10}
+      values={values}
+      onReplaceValueFilterChange={jest.fn()}
+      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
       validationErrors={validationErrors}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
