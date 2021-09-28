@@ -7,6 +7,7 @@ import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon} from '../../../icons';
 import {ChipInput, ChipValue} from './ChipInput';
+import {usePagination} from '../../../hooks/usePagination';
 
 const MultiSelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -144,6 +145,16 @@ type MultiMultiSelectInputProps = Override<
      * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
+
+    /**
+     * Handler called when the next page is almost reached.
+     */
+    onNextPage?: () => void;
+
+    /**
+     * Handler called when the search value changed
+     */
+    onSearchChange?: (searchValue: string) => void;
   }
 >;
 
@@ -164,6 +175,8 @@ const MultiSelectInput = ({
   openLabel,
   readOnly = false,
   verticalPosition,
+  onNextPage,
+  onSearchChange,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: MultiMultiSelectInputProps) => {
@@ -171,6 +184,8 @@ const MultiSelectInput = ({
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const optionsContainerRef = useRef<HTMLDivElement>(null);
+  const lastOptionRef = useRef<HTMLDivElement>(null);
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<OptionProps> =>
     isValidElement<OptionProps>(child)
@@ -203,6 +218,7 @@ const MultiSelectInput = ({
 
       onChange?.(arrayUnique([...value, newValue]));
       setSearchValue('');
+      onSearchChange?.('');
       closeOverlay();
     } else {
       !readOnly && onSubmit?.();
@@ -211,6 +227,7 @@ const MultiSelectInput = ({
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
+    onSearchChange?.(value);
     openOverlay();
   };
 
@@ -221,15 +238,19 @@ const MultiSelectInput = ({
   const handleOptionClick = (newValue: string) => () => {
     onChange?.(arrayUnique([...value, newValue]));
     setSearchValue('');
+    onSearchChange?.('');
     closeOverlay();
     inputRef.current?.focus();
   };
 
   const handleBlur = () => {
     setSearchValue('');
+    onSearchChange?.('');
     closeOverlay();
     inputRef.current?.blur();
   };
+
+  usePagination(optionsContainerRef, lastOptionRef, onNextPage, dropdownIsOpen);
 
   const handleFocus = () => openOverlay();
 
@@ -269,15 +290,23 @@ const MultiSelectInput = ({
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
         <Overlay parentRef={containerRef} onClose={handleBlur}>
-          <OptionCollection>
+          <OptionCollection ref={optionsContainerRef}>
             {0 === filteredChildren.length ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (
-              filteredChildren.map(child => (
-                <OptionContainer key={child.props.value} onClick={handleOptionClick(child.props.value)}>
-                  {React.cloneElement(child)}
-                </OptionContainer>
-              ))
+              filteredChildren.map((child, index) => {
+                let ref = undefined;
+                switch (index) {
+                  case filteredChildren.length - 1:
+                    ref = lastOptionRef;
+                    break;
+                }
+                return (
+                  <OptionContainer key={child.props.value} onClick={handleOptionClick(child.props.value)} ref={ref}>
+                    {React.cloneElement(child)}
+                  </OptionContainer>
+                );
+              })
             )}
           </OptionCollection>
         </Overlay>
