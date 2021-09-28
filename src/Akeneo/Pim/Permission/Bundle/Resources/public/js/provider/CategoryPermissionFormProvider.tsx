@@ -189,21 +189,21 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
     </PermissionSectionSummary>
   ),
   save: async (userGroup: string, state: PermissionFormReducer.State) => {
-      const url = routing.generate('pimee_permissions_entities_set_categories');
-      const response = await fetch(url, {
-          method: 'POST',
-          headers: [['X-Requested-With', 'XMLHttpRequest']],
-          body: JSON.stringify({
-            user_group: userGroup,
-            permissions: state,
-          }),
-      });
+    const url = routing.generate('pimee_permissions_entities_set_categories');
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+      body: JSON.stringify({
+        user_group: userGroup,
+        permissions: state,
+      }),
+    });
 
-      if (false === response.ok) {
-          return Promise.reject(`${response.status} ${response.statusText}`);
-      }
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
 
-      return Promise.resolve();
+    return Promise.resolve();
   },
 };
 

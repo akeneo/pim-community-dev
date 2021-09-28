@@ -171,7 +171,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
   ),
   save: (_userGroup: string, _state: PermissionFormReducer.State) => {
     // @todo
-      return Promise.resolve();
+    return Promise.resolve();
   },
 };
 
