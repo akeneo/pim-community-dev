@@ -8,6 +8,7 @@ import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/Connect
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import userEvent from '@testing-library/user-event';
 
+// to make Tab usable with jest
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 let entryCallback: EntryCallback | undefined = undefined;
 const intersectionObserverMock = (callback: EntryCallback) => ({
@@ -70,12 +71,7 @@ test('The connected app container renders without permissions tab', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
     ).not.toBeInTheDocument();
-    expect(ConnectedAppSettings).toHaveBeenCalledWith(
-        {
-            connectedApp: connectedApp,
-        },
-        {}
-    );
+    expect(ConnectedAppSettings).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
     expect(ConnectedAppPermissions).not.toHaveBeenCalled();
 });
 

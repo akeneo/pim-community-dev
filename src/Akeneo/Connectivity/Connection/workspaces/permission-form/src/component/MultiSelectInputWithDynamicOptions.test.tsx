@@ -2,6 +2,8 @@ import $ from 'jquery';
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {MultiSelectInputWithDynamicOptions} from './MultiSelectInputWithDynamicOptions';
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
 
 // @ts-ignore
 const select2 = ($.fn.select2 = jest.fn());
@@ -18,7 +20,11 @@ const props = {
 };
 
 test('it renders with the expected configuration', () => {
-    render(<MultiSelectInputWithDynamicOptions {...props} />);
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
     expect(select2).toBeCalledWith({
         ajax: {
             cache: true,
@@ -36,7 +42,11 @@ test('it renders with the expected configuration', () => {
 });
 
 test('it calls onAdd when an entry is selected', () => {
-    render(<MultiSelectInputWithDynamicOptions {...props} />);
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
     const input = screen.getByTestId('select2');
     // @ts-ignore
     $(input).trigger({
@@ -53,7 +63,11 @@ test('it calls onAdd when an entry is selected', () => {
 });
 
 test('it calls onRemove when an entry is deselected', () => {
-    render(<MultiSelectInputWithDynamicOptions {...props} />);
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
     const input = screen.getByTestId('select2');
     $(input).trigger({
         type: 'change',
@@ -69,7 +83,11 @@ test('it calls onRemove when an entry is deselected', () => {
 });
 
 test('it calls onChange when the selection changes', () => {
-    render(<MultiSelectInputWithDynamicOptions {...props} />);
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
     const input = screen.getByTestId('select2');
     $(input).trigger({
         type: 'change',
@@ -80,13 +98,29 @@ test('it calls onChange when the selection changes', () => {
 });
 
 test('it is disabled when the corresponding props changes', () => {
-    const {rerender} = render(<MultiSelectInputWithDynamicOptions {...props} />);
-    rerender(<MultiSelectInputWithDynamicOptions {...props} disabled={true} />);
+    const {rerender} = render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
+    rerender(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} disabled={true} />
+        </ThemeProvider>
+    );
     expect(select2).toBeCalledWith('enable', false);
 });
 
 test('it has a new value when the corresponding props changes', () => {
-    const {rerender} = render(<MultiSelectInputWithDynamicOptions {...props} />);
-    rerender(<MultiSelectInputWithDynamicOptions {...props} value={['foo']} />);
+    const {rerender} = render(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} />
+        </ThemeProvider>
+    );
+    rerender(
+        <ThemeProvider theme={pimTheme}>
+            <MultiSelectInputWithDynamicOptions {...props} value={['foo']} />
+        </ThemeProvider>
+    );
     expect(select2).toBeCalledWith('val', ['foo']);
 });

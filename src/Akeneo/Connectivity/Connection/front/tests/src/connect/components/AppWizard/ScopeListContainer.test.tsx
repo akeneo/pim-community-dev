@@ -34,12 +34,7 @@ test('The scope list renders with scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(ScopeList).toHaveBeenCalledWith(
-        {
-            scopeMessages: scopes,
-        },
-        {}
-    );
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes}, {});
 });
 
 test('The scope list still renders with unknown scopes', () => {

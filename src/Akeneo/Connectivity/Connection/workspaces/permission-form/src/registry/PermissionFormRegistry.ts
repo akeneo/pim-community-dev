@@ -12,9 +12,10 @@ type ModuleConfig = {
 
 export interface PermissionFormProvider<T> {
     key: string;
+    label: string;
     renderForm: (onChange: (state: T) => void, initialState: T | undefined) => ReactNode;
     renderSummary: (state: T) => ReactNode;
-    save: (role: string, state: T) => boolean;
+    save: (userGroup: string, state: T) => Promise<void>;
 }
 
 let _config: ModuleConfig = {

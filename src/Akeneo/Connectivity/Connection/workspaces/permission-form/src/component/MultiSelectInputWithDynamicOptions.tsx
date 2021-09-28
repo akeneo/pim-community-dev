@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {getColor} from 'akeneo-design-system';
+import styled from 'styled-components';
 
 export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context | null) => Params;
 
@@ -42,6 +44,21 @@ type Props = {
     onAdd?: (value: string) => void;
     onRemove?: (value: string) => void;
 };
+
+const StyledSelect = styled.input`
+    & li.select2-search-choice {
+        color: ${getColor('grey', 140)} !important;
+        border: 1px ${getColor('grey', 80)} solid !important;
+        background-color: ${getColor('grey', 20)} !important;
+        align-items: center !important;
+        padding-left: 26px !important;
+    }
+    & .select2-search-choice-close {
+        opacity: 0.4 !important;
+        background-size: 16px !important;
+        left: 6px !important;
+    }
+`;
 
 export const MultiSelectInputWithDynamicOptions = ({
     url,
@@ -148,5 +165,5 @@ export const MultiSelectInputWithDynamicOptions = ({
         $select.select2('enable', !disabled);
     }, [disabled]);
 
-    return <input type='hidden' ref={ref} data-testid='select2' />;
+    return <StyledSelect type='hidden' ref={ref} data-testid='select2' />;
 };

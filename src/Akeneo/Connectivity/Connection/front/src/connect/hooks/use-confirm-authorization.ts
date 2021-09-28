@@ -3,6 +3,7 @@ import {useCallback} from 'react';
 
 interface ConfirmReturn {
     appId: string;
+    userGroup: string;
 }
 
 type hookType = (clientId: string) => () => Promise<ConfirmReturn>;
