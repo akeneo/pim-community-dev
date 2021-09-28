@@ -38,3 +38,11 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: 'pim_indexing_serializer.normalizer' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\GetTableValuesProjection:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\GetTableValuesProjection
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
+            - { name: 'akeneo.pim.enrichment.product_model.query.indexing_additional_properties' }

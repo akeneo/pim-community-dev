@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
-final class TableValueNormalizer extends AbstractProductValueNormalizer implements CacheableSupportsMethodInterface
+final class TableValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof TableValue
             && ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
@@ -34,11 +33,12 @@ final class TableValueNormalizer extends AbstractProductValueNormalizer implemen
     /**
      * {@inheritDoc}
      */
-    protected function getNormalizedData(ValueInterface $value): array
+    public function normalize($object, string $format = null, array $context = []): array
     {
-        Assert::isInstanceOf($value, TableValue::class);
+        Assert::isInstanceOf($object, TableValue::class);
 
-        return $value->getData()->normalize();
+        // we don't want table attribute values to be indexed in the regular `values` field
+        return [];
     }
 
     /**

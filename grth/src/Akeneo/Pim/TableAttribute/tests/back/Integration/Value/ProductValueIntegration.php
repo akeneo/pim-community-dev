@@ -15,13 +15,17 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Assert;
 
 final class ProductValueIntegration extends TestCase
 {
@@ -67,7 +71,57 @@ final class ProductValueIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
         $this->assertProductIsInDatabase($product);
-        $this->assertProductIsInIndex($product);
+        $this->assertIndexingFormat(\sprintf('product_%d', $product->getId()));
+    }
+
+    /** @test */
+    public function it_updates_validates_and_saves_a_table_product_model_value(): void
+    {
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'localizable' => false,
+            'scopable' => false,
+        ]);
+        $this->createAttributeOption(['attribute' => 'size', 'code' => 's']);
+
+        $this->createFamily([
+            'code' => 'shoes',
+            'attributes' => ['sku', 'size', 'nutrition'],
+            'attribute_requirements' => [],
+        ]);
+
+        $this->createFamilyVariant([
+            'code' => 'shoe_size',
+            'family' => 'shoes',
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['size'],
+                    'attributes' => ['size'],
+                ],
+            ],
+        ]);
+
+        $productModel = new ProductModel();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+            'code' => 'pm1',
+            'parent' => null,
+            'family_variant' => 'shoe_size',
+            'values' => [
+                'NUTRITION' => [
+                    ['locale' => null, 'scope' => null, 'data' => [['INGredients' => 'BAR', 'quantity' => 10]]],
+                ],
+            ],
+        ]);
+        self::assertInstanceOf(TableValue::class, $productModel->getValue('nutrition'));
+
+        $violations = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        self::assertCount(0, $violations, sprintf('Product model is not valid: %s', $violations));
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->assertProductModelIsInDatabase($productModel);
+        $this->assertIndexingFormat(\sprintf('product_model_%d', $productModel->getId()));
     }
 
     private function assertProductIsInDatabase(ProductInterface $product): void
@@ -78,7 +132,7 @@ final class ProductValueIntegration extends TestCase
         $rawValues = $connection->executeQuery(
             'SELECT raw_values FROM pim_catalog_product WHERE identifier = :identifier',
             ['identifier' => $product->getIdentifier()]
-        )->fetchColumn();
+        )->fetchOne();
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($product->getRawValues()), $rawValues);
 
@@ -102,15 +156,105 @@ final class ProductValueIntegration extends TestCase
         }
     }
 
-    private function assertProductIsInIndex(ProductInterface $product): void
+    private function assertProductModelIsInDatabase(ProductModelInterface $productModel): void
     {
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
-        $pqb->addFilter('identifier', Operators::EQUALS, 'id1');
-        $cursor = $pqb->execute();
-        self::assertCount(1, $cursor);
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
 
-        $productFromIndex = current(\iterator_to_array($cursor));
-        self::assertSame('id1', $productFromIndex->getIdentifier());
+        $rawValues = $connection->executeQuery(
+            'SELECT raw_values FROM pim_catalog_product_model WHERE code = :code',
+            ['code' => $productModel->getCode()]
+        )->fetchOne();
+        self::assertNotNull($rawValues);
+        self::assertJsonStringEqualsJsonString(\json_encode($productModel->getRawValues()), $rawValues);
+
+        $rawValues = \json_decode($rawValues, true);
+        $nutrition = $rawValues['nutrition']['<all_channels>']['<all_locales>'] ?? null;
+        self::assertNotNull($nutrition);
+        self::assertIsArray($nutrition);
+        self::assertCount(1, $nutrition);
+        self::assertCount(2, $nutrition[0]);
+        foreach ($nutrition[0] as $columnId => $value) {
+            self::assertDoesNotMatchRegularExpression(
+                '/^(quantity|ingredients)$/',
+                $columnId,
+                'The key should not be the code but the id'
+            );
+            self::assertMatchesRegularExpression(
+                '/^(quantity|ingredients)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                $columnId,
+                'The id is malformed'
+            );
+        }
+    }
+
+    private function assertIndexingFormat(string $esIdentifier): void
+    {
+        /** @var Client $productClient */
+        $productClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
+        $productClient->refreshIndex();
+
+        $res = $productClient->get($esIdentifier);
+        Assert::assertTrue($res['found']);
+
+        $indexedProduct = $res['_source'];
+        Assert::assertArrayNotHasKey('nutrition-table', $indexedProduct['values']);
+        Assert::arrayHasKey('table_values', $indexedProduct);
+        Assert::arrayHasKey('nutrition', $indexedProduct['table_values']);
+
+        $expectedTableValues = [
+            [
+                'row' => 'BAR',
+                'column' => 'quantity',
+                'value-number' => 10,
+                'is_column_complete' => true,
+            ],
+            [
+                'row' => 'BAR',
+                'column' => 'ingredients',
+                'value-select' => 'BAR',
+                'is_column_complete' => true,
+            ],
+        ];
+
+        Assert::assertEquals($expectedTableValues, $indexedProduct['table_values']['nutrition']);
+    }
+
+    private function createAttribute(array $data): void
+    {
+        $data['group'] = $data['group'] ?? 'other';
+
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
+        self::assertCount(0, $constraints, (string) $constraints);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function createAttributeOption(array $data): void
+    {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, $data);
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+    }
+
+    private function createFamily(array $data): void
+    {
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, $data);
+        $constraints = $this->get('validator')->validate($family);
+        self::assertCount(0, $constraints, (string) $constraints);
+        $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    private function createFamilyVariant(array $data = []) : FamilyVariantInterface
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
+        $constraints = $this->get('validator')->validate($familyVariant);
+        self::assertCount(0, $constraints, (string) $constraints);
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        return $familyVariant;
     }
 }

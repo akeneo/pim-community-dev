@@ -1044,6 +1044,9 @@ jobs:
               name: End to End Back
               command: PIM_CONTEXT=test make end-to-end-back
           - run:
+                name: PhpUnit Migration
+                command: PIM_CONTEXT=test make migration-back
+          - run:
                 name: Install assets & css
                 command: make assets css
           - run:

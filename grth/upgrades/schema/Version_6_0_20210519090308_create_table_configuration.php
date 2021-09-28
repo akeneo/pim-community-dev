@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -31,7 +30,7 @@ final class Version_6_0_20210519090308_create_table_configuration extends Abstra
             ADD CONSTRAINT pim_catalog_table_column_attribute_code_unique UNIQUE (attribute_id, code);
 
         CREATE TABLE pim_catalog_table_column_select_option (
-            column_id varchar(64) not null,
+            column_id varchar(137) not null,
             code varchar(100) not null,
             labels json not null default ('{}')
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,6 +45,6 @@ final class Version_6_0_20210519090308_create_table_configuration extends Abstra
 
     public function down(Schema $schema) : void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

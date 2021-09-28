@@ -109,4 +109,26 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('The first column should have "select" type'))
             ->duringInstantiation();
     }
+
+    function it_returns_column_by_id()
+    {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']);
+        $quantityColumn = NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']);
+        $this->beConstructedThrough('fromColumnDefinitions', [[$ingredientColumn, $quantityColumn]]);
+
+        $this->getColumn(ColumnId::fromString(ColumnIdGenerator::ingredient()))->shouldReturn($ingredientColumn);
+        $this->getColumn(ColumnId::fromString(ColumnIdGenerator::quantity()))->shouldReturn($quantityColumn);
+        $this->getColumn(ColumnId::fromString(ColumnIdGenerator::generateAsString('unknown')))->shouldReturn(null);
+    }
+
+    function it_returns_column_by_string_id()
+    {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']);
+        $quantityColumn = NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']);
+        $this->beConstructedThrough('fromColumnDefinitions', [[$ingredientColumn, $quantityColumn]]);
+
+        $this->getColumnFromStringId(ColumnIdGenerator::ingredient())->shouldReturn($ingredientColumn);
+        $this->getColumnFromStringId(ColumnIdGenerator::quantity())->shouldReturn($quantityColumn);
+        $this->getColumnFromStringId(ColumnIdGenerator::generateAsString('unknown'))->shouldReturn(null);
+    }
 }

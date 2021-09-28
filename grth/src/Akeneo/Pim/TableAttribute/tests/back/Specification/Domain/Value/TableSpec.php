@@ -20,6 +20,8 @@ class TableSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(Table::class);
+        $this->shouldImplement(\IteratorAggregate::class);
+        $this->shouldImplement(\Countable::class);
     }
 
     function it_cannot_be_instantiated_with_an_empty_array()
@@ -42,6 +44,11 @@ class TableSpec extends ObjectBehavior
                 ['bar' => 'baz', 'foo' => '333'],
             ]
         );
+    }
+
+    function it_is_countable()
+    {
+        $this->count()->shouldReturn(2);
     }
 
     function it_exposes_unique_column_ids()

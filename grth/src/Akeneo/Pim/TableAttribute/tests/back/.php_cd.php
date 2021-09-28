@@ -53,6 +53,7 @@ $rules = [
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
             'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
@@ -71,6 +72,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Tool\Component\Batch',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),

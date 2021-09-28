@@ -57,7 +57,7 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             ADD CONSTRAINT pim_catalog_table_column_attribute_code_unique UNIQUE (attribute_id, code);
 
         CREATE TABLE pim_catalog_table_column_select_option (
-            column_id varchar(64) not null,
+            column_id varchar(137) not null,
             code varchar(100) not null,
             labels json not null default ('{}')
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

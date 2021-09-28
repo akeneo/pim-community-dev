@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 /**
  * @phpstan-implements \IteratorAggregate<int, Row>
  */
-final class Table implements \IteratorAggregate
+final class Table implements \IteratorAggregate, \Countable
 {
     /** @var array<Row> */
     private array $rows;
@@ -37,6 +37,14 @@ final class Table implements \IteratorAggregate
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->rows);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        return \count($this->rows);
     }
 
     /**

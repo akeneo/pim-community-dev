@@ -46,4 +46,19 @@ final class ColumnIdGenerator
     {
         return 'supplier_d39d3c48-46e6-4744-8196-56e08563fd46';
     }
+
+    public static function parcel(): string
+    {
+        return 'parcel_d39d3c48-46e6-4744-8196-56e08563fd46';
+    }
+
+    public static function length(): string
+    {
+        return 'length_d39d3c48-46e6-4744-8196-56e08563fd46';
+    }
+
+    public static function width(): string
+    {
+        return 'width_d39d3c48-46e6-4744-8196-56e08563fd46';
+    }
 }

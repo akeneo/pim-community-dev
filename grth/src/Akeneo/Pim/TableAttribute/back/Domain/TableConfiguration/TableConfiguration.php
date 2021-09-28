@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Webmozart\Assert\Assert;
 
 final class TableConfiguration
 {
-    /** @var array<int, ColumnDefinition> */
+    /**
+     * @var array<string, ColumnDefinition>
+     * ColumnDefinition indexed by their column ids.
+     * Be careful if you update this parameter: the order is very important to know which is the first column,
+     * so never do some sort on it for instance.
+     */
     private array $columnDefinitions;
 
     /**
@@ -28,7 +32,9 @@ final class TableConfiguration
      */
     private function __construct(array $columnDefinitions)
     {
-        $this->columnDefinitions = $columnDefinitions;
+        foreach ($columnDefinitions as $columnDefinition) {
+            $this->columnDefinitions[$columnDefinition->id()->asString()] = $columnDefinition;
+        }
     }
 
     /**
@@ -60,10 +66,10 @@ final class TableConfiguration
      */
     public function normalize(): array
     {
-        return array_map(
+        return \array_values(\array_map(
             fn (ColumnDefinition $columnDefinition): array => $columnDefinition->normalize(),
             $this->columnDefinitions
-        );
+        ));
     }
 
     /**
@@ -71,10 +77,10 @@ final class TableConfiguration
      */
     public function columnIds(): array
     {
-        return \array_map(
+        return \array_values(\array_map(
             fn (ColumnDefinition $column): ColumnId => $column->id(),
             $this->columnDefinitions
-        );
+        ));
     }
 
     /**
@@ -82,20 +88,28 @@ final class TableConfiguration
      */
     public function columnCodes(): array
     {
-        return \array_map(
+        return \array_values(\array_map(
             fn (ColumnDefinition $column): ColumnCode => $column->code(),
             $this->columnDefinitions
-        );
+        ));
     }
 
     public function getFirstColumnId(): ColumnId
     {
-        return $this->columnDefinitions[0]->id();
+        reset($this->columnDefinitions);
+        $firstColumn = current($this->columnDefinitions);
+        Assert::implementsInterface($firstColumn, ColumnDefinition::class);
+
+        return $firstColumn->id();
     }
 
     public function getFirstColumnCode(): ColumnCode
     {
-        return $this->columnDefinitions[0]->code();
+        reset($this->columnDefinitions);
+        $firstColumn = current($this->columnDefinitions);
+        Assert::implementsInterface($firstColumn, ColumnDefinition::class);
+
+        return $firstColumn->code();
     }
 
     /**
@@ -122,13 +136,7 @@ final class TableConfiguration
 
     public function getColumn(ColumnId $columnId): ?ColumnDefinition
     {
-        foreach ($this->columnDefinitions as $columnDefinition) {
-            if ($columnDefinition->id()->equals($columnId)) {
-                return $columnDefinition;
-            }
-        }
-
-        return null;
+        return $this->columnDefinitions[$columnId->asString()] ?? null;
     }
 
     public function getColumnByCode(ColumnCode $columnCode): ?ColumnDefinition
@@ -140,5 +148,10 @@ final class TableConfiguration
         }
 
         return null;
+    }
+
+    public function getColumnFromStringId(string $columnId): ?ColumnDefinition
+    {
+        return $this->columnDefinitions[$columnId] ?? null;
     }
 }
