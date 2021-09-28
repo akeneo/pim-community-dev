@@ -7,7 +7,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
       - Type: array
       - Count:
           min: 2
+          max: 10
           minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
+          maxMessage: pim_table_configuration.validation.table_configuration.max_columns_reached
       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
       - All:

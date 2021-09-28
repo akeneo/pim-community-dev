@@ -3,6 +3,7 @@ pim_table_configuration:
         table_configuration:
             must_be_filled: The table attribute configuration must be filled
             must_contain_at_least_two_columns: The table attribute must contain at least 2 columns
+            max_columns_reached: You have reached the maximum number of columns in your table (10)
             missing_column: The {{ field }} column must be filled
             missing_option_field: The {{ field }} is required
             column_code_must_be_filled: The column code must be filled
@@ -43,3 +44,4 @@ pim_table_configuration:
             max_validation: This value should be {{ limit }} or less.
             value_integer_required: 'The required value is an integer'
             max_length_validation: This value should contain {{ limit }} characters or less.
+            too_many_rows: You have reached the maximum number of rows in your table ({{ limit }}).

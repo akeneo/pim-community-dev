@@ -20,6 +20,10 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration with only one column
     Then There is a violation with message: The table attribute must contain at least 2 columns
 
+  Scenario: Cannot create a table configuration with too many columns
+    When I create a table attribute with a configuration with too many columns
+    Then There is a violation with message: You have reached the maximum number of columns in your table (10)
+
   Scenario: Cannot create a table configuration without column code
     When I create a table attribute with a configuration '{"data_type": "text"}'
     Then There is a violation with message: The "code" column must be filled

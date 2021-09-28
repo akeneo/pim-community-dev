@@ -37,6 +37,7 @@ type TableStructureAppProps = {
   savedColumnCodes: ColumnCode[];
   columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
   dataTypesMapping: DataTypesMapping;
+  maxColumnCount?: number;
 };
 
 export type ColumnDefinitionWithId = ColumnDefinition & {id: string};
@@ -53,6 +54,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   savedColumnCodes,
   columnDefinitionPropertiesMapping,
   dataTypesMapping,
+  maxColumnCount = 10
 }) => {
   const translate = useTranslate();
   const router = useRouter();
@@ -209,6 +211,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           dataTypesMapping={dataTypesMapping}
         />
       )}
+      {tableConfiguration.length < maxColumnCount &&
       <CenteredHelper>
         <AddNewColumnButton
           title={translate('pim_table_attribute.form.attribute.add_column')}
@@ -218,6 +221,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           {translate('pim_table_attribute.form.attribute.add_column')}
         </AddNewColumnButton>
       </CenteredHelper>
+      }
     </div>
   );
 

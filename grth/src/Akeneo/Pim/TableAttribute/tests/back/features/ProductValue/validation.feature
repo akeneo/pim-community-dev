@@ -77,3 +77,7 @@ Feature: Enrich a table attribute value
       | attribute   | json_data                         |
       | test_number | [{"1": "11", "2": 20, "3": true}] |
     Then no product violation is raised
+
+  Scenario: Providing a table with too many rows should raise an error
+    When a product is created with too many values
+    Then the error "You have reached the maximum number of rows in your table (100)." is raised

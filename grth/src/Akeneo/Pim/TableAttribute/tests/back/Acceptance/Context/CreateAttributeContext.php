@@ -116,6 +116,27 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When I create a table attribute with a configuration with too many columns
+     */
+    public function iCreateATableAttributeWithAConfigurationWithTooManyColumns(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $rawConfiguration = [];
+        for ($i = 0; $i < 11; $i++) {
+            $rawConfiguration[] = [
+                'data_type' => 'select',
+                'code' => sprintf('column_%d', $i),
+            ];
+        }
+        $attribute->setRawTableConfiguration($rawConfiguration);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
      * @When /^I create a table attribute with a configuration having column code "([^"]*)"$/
      */
     public function iCreateATableAttributeWithAConfigurationHavingColumnCode(string $code): void
