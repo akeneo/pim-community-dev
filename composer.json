@@ -102,7 +102,7 @@
         "symfony/http-kernel": "4.4.25",
         "symfony/intl": "4.4.25",
         "symfony/lock": "4.4.25",
-        "symfony/messenger": "^4.4",
+        "symfony/messenger": "4.4.30",
         "symfony/monolog-bundle": "^3.4",
         "symfony/options-resolver": "4.4.25",
         "symfony/polyfill-apcu": "1.12.0",
