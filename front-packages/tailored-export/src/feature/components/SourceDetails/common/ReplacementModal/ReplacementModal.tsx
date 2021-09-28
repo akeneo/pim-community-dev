@@ -53,12 +53,12 @@ const TableContainer = styled.div`
   flex: 1;
 `;
 
-const OptionLabelCell = styled(Table.Cell)`
+const ValueLabelCell = styled(Table.Cell)`
   max-width: unset;
   width: 0;
 `;
 
-const OptionLabel = styled.div`
+const ValueLabel = styled.div`
   width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,11 +70,6 @@ const Field = styled.div`
   flex-direction: column;
   gap: 5px;
 `;
-
-type Value = {
-  code: string;
-  labels: LabelCollection;
-};
 
 const getIncludeExcludeCodes = (
   mappedFilterValue: MappedFilterValue,
@@ -88,6 +83,11 @@ const getIncludeExcludeCodes = (
     case 'unmapped':
       return [null, Object.keys(mapping)];
   }
+};
+
+type Value = {
+  code: string;
+  labels: LabelCollection;
 };
 
 type ReplacementModalProps = {
@@ -261,27 +261,27 @@ const ReplacementModal = ({
                   </Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {values.map(attributeOption => {
-                    const optionErrors = filterErrors(mappingValidationErrors, `[${attributeOption.code}]`);
+                  {values.map(value => {
+                    const valueErrors = filterErrors(mappingValidationErrors, `[${value.code}]`);
 
                     return (
-                      <Table.Row key={attributeOption.code}>
-                        <OptionLabelCell>
-                          <OptionLabel title={getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}>
-                            {getLabel(attributeOption.labels, catalogLocale, attributeOption.code)}
-                          </OptionLabel>
-                        </OptionLabelCell>
+                      <Table.Row key={value.code}>
+                        <ValueLabelCell>
+                          <ValueLabel title={getLabel(value.labels, catalogLocale, value.code)}>
+                            {getLabel(value.labels, catalogLocale, value.code)}
+                          </ValueLabel>
+                        </ValueLabelCell>
                         <Table.Cell>
                           <Field>
                             <TextInput
-                              invalid={0 < optionErrors.length}
+                              invalid={0 < valueErrors.length}
                               placeholder={translate(
                                 'akeneo.tailored_export.column_details.sources.operation.replacement.modal.table.field.to_placeholder'
                               )}
-                              value={mapping[attributeOption.code] ?? ''}
-                              onChange={newValue => updateMappedValue(attributeOption.code, newValue)}
+                              value={mapping[value.code] ?? ''}
+                              onChange={newValue => updateMappedValue(value.code, newValue)}
                             />
-                            {optionErrors.map((error, index) => (
+                            {valueErrors.map((error, index) => (
                               <Helper key={index} inline={true} level="error">
                                 {translate(error.messageTemplate, error.parameters)}
                               </Helper>

@@ -37,7 +37,7 @@ const ReferenceEntityReplacement = ({
     getDefaultReplacementValueFilter()
   );
 
-  const [attributeOptions, totalItems] = useRecords(
+  const [records, totalItems] = useRecords(
     referenceEntityCode,
     replacementValueFilter.searchValue,
     replacementValueFilter.page,
@@ -72,7 +72,7 @@ const ReferenceEntityReplacement = ({
         <ReplacementModal
           replacementValueFilter={replacementValueFilter}
           onReplacementValueFilterChange={setReplacementValueFilter}
-          values={attributeOptions}
+          values={records}
           totalItems={totalItems}
           itemsPerPage={RECORD_PAGE_SIZE}
           initialMapping={operation.mapping}
