@@ -10,12 +10,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,7 +35,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     private BulkSaverInterface $productModelSaver;
     private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
     private ValidatorInterface $validator;
-    private EntityManagerClearerInterface $cacheClearer;
+    private EventDispatcherInterface $eventDispatcher;
     private int $batchSize;
 
     public function __construct(
@@ -43,7 +45,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
-        EntityManagerClearerInterface $cacheClearer,
+        EventDispatcherInterface $eventDispatcher,
         int $batchSize = 100
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
@@ -53,7 +55,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
         $this->batchSize = $batchSize;
-        $this->cacheClearer = $cacheClearer;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -145,14 +147,14 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             if (count($productModels) >= $this->batchSize) {
                 $this->validateProductModels($productModels);
                 $this->productModelSaver->saveAll($productModels);
-                $this->cacheClearer->clear();
+                $this->clearBatchCaches();
                 $productModels = [];
             }
 
             if (count($products) >= $this->batchSize) {
                 $this->validateProducts($products);
                 $this->productSaver->saveAll($products);
-                $this->cacheClearer->clear();
+                $this->clearBatchCaches();
                 $products = [];
             }
         }
@@ -160,14 +162,22 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         if (!empty($productModels)) {
             $this->validateProductModels($productModels);
             $this->productModelSaver->saveAll($productModels);
-            $this->cacheClearer->clear();
+            $this->clearBatchCaches();
         }
 
         if (!empty($products)) {
             $this->validateProducts($products);
             $this->productSaver->saveAll($products);
-            $this->cacheClearer->clear();
+            $this->clearBatchCaches();
         }
+    }
+
+    private function clearBatchCaches(): void
+    {
+        // This event will trigger cache clearing wherever it's needed
+        $this->eventDispatcher->dispatch(
+            new StepExecutionEvent($this->stepExecution), EventInterface::ITEM_STEP_AFTER_BATCH
+        );
     }
 
     /**

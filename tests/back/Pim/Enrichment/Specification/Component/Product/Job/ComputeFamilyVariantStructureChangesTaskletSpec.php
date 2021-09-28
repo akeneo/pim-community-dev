@@ -5,9 +5,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -16,6 +17,8 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValu
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -27,7 +30,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        EntityManagerClearerInterface $clearer,
+        EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
@@ -37,7 +40,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             $productModelSaver,
             $keepOnlyValuesForVariation,
             $validator,
-            $clearer,
+            $eventDispatcher,
             10
         );
     }
@@ -49,7 +52,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $keepOnlyValuesForVariation,
         $validator,
         $productQueryBuilderFactory,
-        $clearer,
+        $eventDispatcher,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
@@ -105,7 +108,9 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
         $rootProductModelViolations->count()->willReturn(0);
         $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
-        $clearer->clear()->shouldBeCalledTimes(2);
+        $eventDispatcher
+            ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
+            ->shouldBeCalledTimes(2);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -118,7 +123,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $keepOnlyValuesForVariation,
         $validator,
         $productQueryBuilderFactory,
-        $clearer,
+        $eventDispatcher,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
@@ -204,7 +209,9 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
         $rootProductModelViolations->count()->willReturn(0);
         $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
-        $clearer->clear()->shouldBeCalledTimes(3);
+        $eventDispatcher
+            ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
+            ->shouldBeCalledTimes(3);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -333,7 +340,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $keepOnlyValuesForVariation,
         $validator,
         $productQueryBuilderFactory,
-        $clearer,
+        $eventDispatcher,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
@@ -365,7 +372,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             $productModelSaver,
             $keepOnlyValuesForVariation,
             $validator,
-            $clearer,
+            $eventDispatcher,
             2
         );
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -462,7 +469,9 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         $productModelSaver->saveAll([$rootProductModel, $rootProductModel2])->shouldBeCalled();
         $productModelSaver->saveAll([$rootProductModel3, $rootProductModel4])->shouldBeCalled();
         $productModelSaver->saveAll([$rootProductModel5])->shouldBeCalled();
-        $clearer->clear()->shouldBeCalledTimes(7);
+        $eventDispatcher
+            ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
+            ->shouldBeCalledTimes(7);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
