@@ -58,6 +58,8 @@ class UserGroupCategoryPermissionsSaver
      *          identifiers: string[],
      *      }
      * } $permissions
+     *
+     * @throws \LogicException
      */
     public function save(string $groupName, array $permissions): void
     {

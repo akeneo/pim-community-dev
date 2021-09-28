@@ -13,20 +13,22 @@ class GetRootCategoryReferenceFromCode
 {
     private Connection $connection;
     private Registry $doctrine;
-    private string $class;
+    private string $categoryClass;
 
     public function __construct(
         Connection $connection,
         Registry $doctrine,
-        string $class
+        string $categoryClass
     ) {
         $this->connection = $connection;
         $this->doctrine = $doctrine;
-        $this->class = $class;
+        $this->categoryClass = $categoryClass;
     }
 
     /**
      * @return ?CategoryInterface
+     *
+     * @throws \LogicException
      */
     public function execute(string $code): ?CategoryInterface
     {
@@ -50,6 +52,6 @@ SQL;
             throw new \LogicException(sprintf('Expected %s, got %s', EntityManagerInterface::class, get_class($em)));
         }
 
-        return $em->getReference($this->class, (int) $id);
+        return $em->getReference($this->categoryClass, (int) $id);
     }
 }
