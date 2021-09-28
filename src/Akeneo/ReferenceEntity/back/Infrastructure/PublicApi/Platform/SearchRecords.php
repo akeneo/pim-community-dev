@@ -43,7 +43,7 @@ class SearchRecords implements SearchRecordsInterface
             ]
         ];
 
-        if(!empty($searchParameters->getIncludeCodes())) {
+        if (null !== $searchParameters->getIncludeCodes()) {
             $recordQueryFilters[] = [
                 'field' => 'code',
                 'operator' => 'IN',
@@ -51,7 +51,7 @@ class SearchRecords implements SearchRecordsInterface
             ];
         }
 
-        if(!empty($searchParameters->getExcludeCodes())) {
+        if (null !== $searchParameters->getExcludeCodes()) {
             $recordQueryFilters[] = [
                 'field' => 'code',
                 'operator' => 'NOT IN',
@@ -60,7 +60,7 @@ class SearchRecords implements SearchRecordsInterface
         }
 
         $recordQuery = RecordQuery::createFromNormalized([
-            'channel' => null,
+            'channel' => $searchParameters->getChannel(),
             'locale' => $searchParameters->getLocale(),
             'filters' => $recordQueryFilters,
             'page' => $searchParameters->getPage() - 1,

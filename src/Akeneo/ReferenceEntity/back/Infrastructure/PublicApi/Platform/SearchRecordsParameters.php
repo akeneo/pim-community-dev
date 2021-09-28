@@ -15,33 +15,34 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform;
 
 class SearchRecordsParameters
 {
-    /** @var string[] */
-    private array $includeCodes = [];
+    /** @var string[] | null */
+    private ?array $includeCodes = null;
 
-    /** @var string[] */
-    private array $excludeCodes = [];
+    /** @var string[] | null */
+    private ?array $excludeCodes = null;
 
     private ?string $search = null;
+    private ?string $channel = null;
     private ?string $locale = null;
     private int $limit = 25;
     private int $page = 1;
 
-    public function getIncludeCodes(): array
+    public function getIncludeCodes(): ?array
     {
         return $this->includeCodes;
     }
 
-    public function getExcludeCodes(): array
+    public function getExcludeCodes(): ?array
     {
         return $this->excludeCodes;
     }
 
-    public function setIncludeCodes(array $includeCodes): void
+    public function setIncludeCodes(?array $includeCodes): void
     {
         $this->includeCodes = $includeCodes;
     }
 
-    public function setExcludeCodes(array $excludeCodes): void
+    public function setExcludeCodes(?array $excludeCodes): void
     {
         $this->excludeCodes = $excludeCodes;
     }
@@ -54,6 +55,16 @@ class SearchRecordsParameters
     public function setSearch(?string $search): void
     {
         $this->search = $search;
+    }
+
+    public function getChannel(): ?string
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?string $channel): void
+    {
+        $this->channel = $channel;
     }
 
     public function getLocale(): ?string

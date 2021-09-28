@@ -15,6 +15,7 @@ const useRecords = (
   const [matchesCount, setMatchesCount] = useState<number>(0);
   const isMounted = useIsMounted();
   const locale = useUserContext().get('catalogLocale');
+  const channel = useUserContext().get('catalogScope');
   const getRecordsRoute = useRoute('pimee_tailored_export_get_records_action', {
     reference_entity_code: referenceEntityCode,
   });
@@ -29,6 +30,7 @@ const useRecords = (
           include_codes: optionCodesToInclude,
           exclude_codes: optionCodesToExclude,
           locale,
+          channel,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ const useRecords = (
     };
 
     void fetchRecords();
-  }, [isMounted, getRecordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale]);
+  }, [isMounted, getRecordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, channel, locale]);
 
   return [records, matchesCount] as const;
 };

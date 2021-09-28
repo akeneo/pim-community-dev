@@ -49,6 +49,7 @@ final class GetRecordsAction
         $searchRecordsParameters->setIncludeCodes($request->get('include_codes'));
         $searchRecordsParameters->setExcludeCodes($request->get('exclude_codes'));
         $searchRecordsParameters->setSearch($request->get('search'));
+        $searchRecordsParameters->setChannel($request->get('channel'));
         $searchRecordsParameters->setLocale($request->get('locale'));
         $searchRecordsParameters->setLimit($request->get('limit', self::LIMIT_DEFAULT));
         $searchRecordsParameters->setPage($request->get('page', 1));
