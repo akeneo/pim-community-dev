@@ -13,16 +13,16 @@ class GetUserGroupsWithDefaultPermission
 {
     private Connection $connection;
     private Registry $doctrine;
-    private string $class;
+    private string $userGroupClass;
 
     public function __construct(
         Connection $connection,
         Registry $doctrine,
-        string $class
+        string $userGroupClass
     ) {
         $this->connection = $connection;
         $this->doctrine = $doctrine;
-        $this->class = $class;
+        $this->userGroupClass = $userGroupClass;
     }
 
     /**
@@ -47,7 +47,7 @@ SQL;
         }
 
         return array_map(function (string $id) use ($em) {
-            return $em->getReference($this->class, (int) $id);
+            return $em->getReference($this->userGroupClass, (int) $id);
         }, $results);
     }
 }
