@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Manager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Persistence\ObjectManager;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
@@ -201,5 +201,22 @@ class CategoryAccessManagerSpec extends ObjectBehavior
             $removeEditGroups,
             $removeOwnGroups
         );
+    }
+
+    public function it_revokes_accesses_on_a_category_for_the_provided_user_group(
+        CategoryAccessRepository $accessRepository,
+        BulkRemoverInterface $accessRemover,
+        CategoryInterface $category,
+        GroupInterface $group,
+        ProductCategoryAccess $access
+    ) {
+        $accessRepository->findOneBy([
+            'category' => $category,
+            'userGroup' => $group,
+        ])->willReturn($access);
+
+        $accessRemover->removeAll([$access])->shouldBeCalled();
+
+        $this->revokeGroupAccess($category, $group);
     }
 }
