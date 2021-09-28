@@ -22,20 +22,19 @@ class GetConnectedAppIdAndUserGroupQuery implements GetConnectedAppIdAndUserGrou
 
     public function execute(string $appPublicId): ?array
     {
-        $selectQuery = <<<SQL
-SELECT acca.id, oag.name
-FROM pim_api_client pac
-JOIN akeneo_connectivity_connection acc on pac.id = acc.client_id
-JOIN akeneo_connectivity_connected_app acca on acc.code = acca.connection_code
-JOIN oro_user_access_group ouag on acc.user_id = ouag.user_id
-JOIN oro_access_group oag on ouag.group_id = oag.id
-WHERE pac.marketplace_public_app_id = :id AND oag.name != 'All'
+        $query = <<<SQL
+SELECT akeneo_connectivity_connected_app.id as appId, oro_access_group.name as userGroup
+FROM pim_api_client
+JOIN akeneo_connectivity_connection on pim_api_client.id = akeneo_connectivity_connection.client_id
+JOIN akeneo_connectivity_connected_app on akeneo_connectivity_connection.code = akeneo_connectivity_connected_app.connection_code
+JOIN oro_user_access_group on akeneo_connectivity_connection.user_id = oro_user_access_group.user_id
+JOIN oro_access_group on oro_user_access_group.group_id = oro_access_group.id
+WHERE pim_api_client.marketplace_public_app_id = :id AND oro_access_group.name != 'All'
 SQL;
-        $resultRow = $this->connection->executeQuery($selectQuery, ['id' => $appPublicId])->fetch() ?: null;
 
-        return null !== $resultRow ? [
-            'appId' => $resultRow['id'],
-            'userGroup' => $resultRow['name'],
-        ] : null;
+        $stmt = $this->connection->executeQuery($query, ['id' => $appPublicId]);
+        $row = $stmt->fetch();
+
+        return false === $row ? null : $row;
     }
 }
