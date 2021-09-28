@@ -42,8 +42,8 @@ class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
         SearchAttributeOptionsParameters $searchParameters
     ): array {
         $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
-        $includeCondition = 0 < count($searchParameters->getIncludeCodes()) ? 'AND option.code IN (:include_codes)' : '';
-        $excludeCondition = 0 < count($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
+        $includeCondition = null !== $searchParameters->getIncludeCodes() ? 'AND option.code IN (:include_codes)' : '';
+        $excludeCondition = null !== $searchParameters->getExcludeCodes() ? 'AND option.code NOT IN (:exclude_codes)' : '';
         $order = $this->isAttributeAutoSorted($attributeCode) ? 'code' : 'sort_order, code';
         $limit = null !== $searchParameters->getLimit() ? 'LIMIT :limit' : '';
         $offset = null !== $searchParameters->getOffset() ? 'OFFSET :offset' : '';
@@ -106,8 +106,8 @@ SQL;
         SearchAttributeOptionsParameters $searchParameters
     ): int {
         $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
-        $includeCondition = 0 < count($searchParameters->getIncludeCodes()) ? 'AND option.code IN (:include_codes)' : '';
-        $excludeCondition = 0 < count($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
+        $includeCondition = null !== $searchParameters->getIncludeCodes() ? 'AND option.code IN (:include_codes)' : '';
+        $excludeCondition = null !== $searchParameters->getExcludeCodes() ? 'AND option.code NOT IN (:exclude_codes)' : '';
 
         $sql = <<<SQL
 SELECT COUNT(DISTINCT option.id)

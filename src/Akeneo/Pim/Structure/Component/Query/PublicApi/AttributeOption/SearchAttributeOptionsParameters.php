@@ -10,33 +10,33 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  */
 class SearchAttributeOptionsParameters
 {
-    /** @var string[] */
-    private array $includeCodes = [];
+    /** @var string[] | null */
+    private ?array $includeCodes = null;
 
-    /** @var string[] */
-    private array $excludeCodes = [];
+    /** @var string[] | null */
+    private ?array $excludeCodes = null;
 
     private ?string $search = null;
     private ?string $locale = null;
     private ?int $limit = null;
     private ?int $page = null;
 
-    public function getIncludeCodes(): array
+    public function getIncludeCodes(): ?array
     {
         return $this->includeCodes;
     }
 
-    public function getExcludeCodes(): array
+    public function getExcludeCodes(): ?array
     {
         return $this->excludeCodes;
     }
 
-    public function setIncludeCodes(array $includeCodes): void
+    public function setIncludeCodes(?array $includeCodes): void
     {
         $this->includeCodes = $includeCodes;
     }
 
-    public function setExcludeCodes(array $excludeCodes): void
+    public function setExcludeCodes(?array $excludeCodes): void
     {
         $this->excludeCodes = $excludeCodes;
     }
