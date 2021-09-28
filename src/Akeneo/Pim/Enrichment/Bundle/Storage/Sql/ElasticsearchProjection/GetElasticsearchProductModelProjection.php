@@ -58,11 +58,15 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
             );
         }
 
+        $context = ['value_collections' => \array_map(
+            static fn (array $row) => $row['value_collection'],
+            $valuesAndProperties
+        )];
         $additionalDataPerProductModel = [];
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalDataPerProductModel = \array_merge(
+            $additionalDataPerProductModel = \array_replace_recursive(
                 $additionalDataPerProductModel,
-                $additionalDataProvider->fromProductModelCodes($productModelCodes)
+                $additionalDataProvider->fromProductModelCodes($productModelCodes, $context)
             );
         }
 
@@ -192,6 +196,7 @@ SQL;
                 'ancestor_category_codes' => json_decode($row['ancestor_category_codes'], true),
                 'parent_code' => $row['parent_code'],
                 'values' => $this->valueCollectionNormalizer->normalize($row['values'], ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX),
+                'value_collection' => $row['values'],
                 'parent_id' => $row['parent_id'] ? (int) $row['parent_id'] : null,
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];
