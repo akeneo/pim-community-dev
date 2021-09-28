@@ -1,5 +1,6 @@
 import {getAppcuesAgent} from './appcues-agent';
 import {PimOnboarding} from './pim-onboarding';
+import {Category, useRouter} from "@akeneo-pim-community/shared";
 
 const _ = require('underscore');
 const FeatureFlags = require('pim/feature-flags');
@@ -356,6 +357,8 @@ const AppcuesOnboarding: PimOnboarding = {
     });
   },
   init: () => {
+    const router = useRouter();
+
     Mediator.on('route_complete', async () => {
       AppcuesOnboarding.page();
 
@@ -367,10 +370,13 @@ const AppcuesOnboarding: PimOnboarding = {
         AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
       });
 
-      AppcuesOnboarding.on('flow_started', (event: Event) => {
+      AppcuesOnboarding.on('flow_started', async (event: Event) => {
         if (event.flowName === 'FT - Guided Tour') {
-          console.log('test', sessionStorage.getItem('lastSelectedCategory'));
-          sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: '98'}));
+          const categoryRoute = router.generate('pim_enrich_category_rest_get', {identifier: '008_1_1'});
+          const categoryResponse = await fetch(categoryRoute);
+          const categoryPainManagement: Category = await categoryResponse.json();
+
+          sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id}));
         }
       });
     });
