@@ -17,6 +17,11 @@ class GetAttributeGroupsAccessesWithHighestLevel
         $this->connection = $connection;
     }
 
+    /**
+     * @return array<string, string>
+     *
+     * @throws \LogicException
+     */
     public function execute(int $groupId): array
     {
         $query = <<<SQL
@@ -38,6 +43,12 @@ SQL;
         return $results;
     }
 
+    /**
+     * @param array{edit: bool, view: bool} $row
+     * @return string|null
+     *
+     * @throws \LogicException
+     */
     private function getHighestAccessLevel(array $row): ?string
     {
         if ($row['edit']) {

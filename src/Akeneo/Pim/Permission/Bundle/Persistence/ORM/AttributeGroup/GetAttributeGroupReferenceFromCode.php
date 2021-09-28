@@ -25,6 +25,9 @@ class GetAttributeGroupReferenceFromCode
         $this->class = $class;
     }
 
+    /**
+     * @throws \LogicException
+     */
     public function execute(string $code): ?AttributeGroupInterface
     {
         $query = <<<SQL
