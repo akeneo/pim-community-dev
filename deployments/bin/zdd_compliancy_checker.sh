@@ -43,7 +43,7 @@ function downloadArtifacts() {
     if [[ ${TYPE} = "srnt" ]]; then
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${OLDEST_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${OLDEST_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
-    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/terraform/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
+    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
     rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/bin
 
     # Download the target release Docker image and Terraform modules
