@@ -8,6 +8,12 @@ RELEASE_BUCKET="serenity-edition"
 ZCC_CONTEXT=${ZCC_CONTEXT:-artifact}
 VERSIONS_FILE=${VERSIONS_FILE:-"./zdd_versions.env"}
 
+COLOR_RED=$(echo -en '\e[31m')
+COLOR_GREEN=$(echo -en '\e[32m')
+COLOR_BLUE=$(echo -en '\e[34m')
+COLOR_PURPLE=$(echo -en '\e[35m')
+COLOR_RESTORE=$(echo -en '\e[0m')
+
 function downloadArtifacts() {
     # Get the oldest release to use as a starting point
     # SRNT
@@ -38,6 +44,7 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${OLDEST_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${OLDEST_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/terraform/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
+    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/bin
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
@@ -48,82 +55,62 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
-}
-
-function getDiffType() {
-  local DIFF=$1
-  local CHAR=$(echo $DIFF | head -c 1)
-  local TYPE="NONE"
-
-  case $CHAR in
-    "<")
-      TYPE="DELETE"
-      ;;
-
-    ">")
-      TYPE="ADD"
-      ;;
-
-    "-")
-      TYPE="CONTINUE"
-      ;;
-  esac
-  echo $TYPE
-}
-
-function getDiffTypeFromPreviousState() {
-  local LINE=$1
-  local PREVIOUS_TYPE=$2
-  local CURRENT_TYPE=$(getDiffType "${LINE}")
-
-  if [[ $PREVIOUS_TYPE == "CONTINUE" && $CURRENT_TYPE == "ADD" ]]; then
-    CURRENT_TYPE="UPDATE"
-  fi
-
-  echo $CURRENT_TYPE
+    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/bin
 }
 
 function getDiff() {
-  local TARGETS=$1
-  local DIFF=$(diff -r $TARGETS)
-  local PREVIOUS_TYPE="NONE"
-  local CACHE=""
+  local SOURCE=$1
+  local TARGET=$2
+  local DIFF=$(diff -q -r "${SOURCE}" "${TARGET}")
 
-  local ZDD=0
+  ESCAPED_TARGET_PATH=$(echo ${TARGET} | sed "s/\//\\\\\//g")
 
   while IFS= read -r LINE; do
-    local CURRENT_TYPE=$(getDiffTypeFromPreviousState "${LINE}" ${PREVIOUS_TYPE})
+    # Files differ between source and target
+    if [[ ${LINE} =~ "Files " ]]; then
+      FILE_SOURCE_PATH=$(echo "${LINE}" | cut -d ' ' -f2)
+      FILE_TARGET_PATH=$(echo "${LINE}" | cut -d ' ' -f4)
+      UPDATED_FILE=$(echo ${LINE} | cut -d " " -f 4)
+      SDIFF=$(sdiff -s -B -W -E -Z ${FILE_SOURCE_PATH} ${FILE_TARGET_PATH} | sed -r $"s/(.*)(\s+[\<|]\t)(.*)/${COLOR_RED}\1${COLOR_RESTORE}\2\3/g" | sed -r $"s/(.*)(\s+[\>|]\t)(.*)/\1\2${COLOR_GREEN}\3${COLOR_RESTORE}/g")
 
-    if [[ $CURRENT_TYPE != "NONE" && $CURRENT_TYPE != "CONTINUE" ]]; then
-      LINE=$(echo $LINE | cut -c 3-)
+      if [[ ! -z "${SDIFF}" ]]; then
+        GIT_FILE_PATH=$(echo ${FILE_TARGET_PATH} | sed "s/${ESCAPED_TARGET_PATH}//g")
+        COLOR=$(echo -en '\e[35m')
+        echo ""
+        echo "=================================================="
+        echo "${COLOR_PURPLE}FILE : ${GIT_FILE_PATH}${COLOR_RESTORE}"
+        echo "${COLOR_BLUE}https://github.com/akeneo/pim-enterprise-dev/blob/master${GIT_FILE_PATH}${COLOR_RESTORE}"
+        echo "=================================================="
 
-      if [[ $CURRENT_TYPE == "UPDATE" ]]; then
-        ZDD=1
-        CACHE=""
-      else
-        if [[ $CACHE != "" ]]; then
-          echo $CACHE
-          CACHE=""
-        fi
+        echo -en "$SDIFF"
       fi
-
-      if [[ $CURRENT_TYPE == "DELETE" ]]; then
-        CACHE="${CURRENT_TYPE} : ${LINE}"
-        ZDD=1
-      else
-        echo "${CURRENT_TYPE} : ${LINE}"
-      fi
-
+      continue
     fi
-    PREVIOUS_TYPE=${CURRENT_TYPE}
 
+    # File has been added or deleted
+    if [[ ${LINE} =~ "Only in " ]]; then
+      FILE_PATH=$(echo "${LINE}" | grep -Eo '/.*' | sed 's/: /\//g' | sed 's/\/\//\//g')
+      GIT_FILE_PATH=$(echo ${FILE_PATH} | sed "s/${ESCAPED_TARGET_PATH}//g")
+      ACTION="ADDED"
+      COLOR=${COLOR_GREEN}
+      TYPE="FILE"
+      if [[ -d "$FILE_PATH" ]];then
+        TYPE="DIRECTORY"
+      fi
+
+      if [[ ${FILE_PATH} =~ ${SOURCE} ]]; then
+        ACTION="DELETED"
+        COLOR=${COLOR_RED}
+      fi
+      echo "=================================================="
+      echo "${COLOR}${TYPE} ${ACTION}: ${GIT_FILE_PATH}${COLOR_RESTORE}"
+      if [[ ${ACTION} == "ADDED" ]]; then
+        echo "${COLOR_BLUE}https://github.com/akeneo/pim-enterprise-dev/blob/master${GIT_FILE_PATH}${COLOR_RESTORE}"
+      fi
+      echo "=================================================="
+      continue
+    fi
   done <<< "$DIFF"
-
-  echo $CACHE
-
-  if [[ "$ZDD" == "1" ]]; then
-    exit 1
-  fi
 }
 
 case $ZCC_CONTEXT in
@@ -134,13 +121,19 @@ case $ZCC_CONTEXT in
 
     "diff_infra")
         # Diff Docker images and Terraform modules
-        echo -e "\n\n - Differences (infrastructure & migrations) between the oldest release in production & the next release to deploy :\n\n"
-        diff -r ~/zdd_compliancy_checker/*/deployments/
+        echo -en "\n\n - Differences in infrastructure between the oldest release in production & the next release to deploy :\n\n"
+        DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
+        SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
+        TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
+        getDiff "${SOURCE}/deployments" "${TARGET}/deployments"
         ;;
 
     "diff_db")
-        TARGETS="$(realpath ~/zdd_compliancy_checker)/*/dbschema/"
-        getDiff "${TARGETS}"
+        echo -en "\n\n - Differences in dbschema between the oldest release in production & the next release to deploy :\n\n"
+        DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
+        SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
+        TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
+        getDiff "${SOURCE}/dbschema" "${TARGET}/dbschema"
         exit $?
         ;;
 esac
