@@ -166,4 +166,4 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with too many options
     When I create a table attribute with too much options
-    Then There is a violation with message: TODO too many options
+    Then There is a violation with message: You have reached the maximum number of options in your column (20000).

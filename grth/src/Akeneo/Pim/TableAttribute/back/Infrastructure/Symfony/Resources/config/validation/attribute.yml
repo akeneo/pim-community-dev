@@ -89,7 +89,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: The Options field requires an array containing only key value objects
                       - Count:
                           max: 20000
-                          maxMessage: TODO too many options
+                          maxMessage: You have reached the maximum number of options in your column (20000).
                       - All:
                         - Type:
                             type: array

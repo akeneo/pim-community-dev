@@ -120,14 +120,19 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
             return;
         };
 
-
         $itemPosition = 0;
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }
 
-        throw new InvalidItemException('TODO too many options', new FileInvalidItem($item, $itemPosition));
+        throw new InvalidItemException(
+            sprintf(
+                'You have reached the maximum number of options in your column (%d).',
+                SelectOptionCollection::MAX_OPTIONS
+            ),
+            new FileInvalidItem($item, $itemPosition)
+        );
     }
 
     private function getCount(string $attributeCode, string $columnCode): int
