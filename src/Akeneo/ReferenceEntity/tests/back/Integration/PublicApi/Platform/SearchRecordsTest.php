@@ -24,6 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecords;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecordsParameters;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
@@ -35,6 +36,9 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $searchRecordIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
+        $searchRecordIndexHelper->resetIndex();
+
         $this->searchRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.query.platform.search_records');
         $this->resetDB();
 
@@ -48,7 +52,7 @@ class SearchRecordsTest extends SqlIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
     }
 
-    public function test_it_searches_record_codes_on_all_locales(): void
+    public function test_it_searches_record_codes_by_code(): void
     {
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
@@ -77,20 +81,16 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     public function test_it_searches_record_codes_on_a_locale(): void
     {
         $searchParameters = new SearchRecordsParameters();
-        $searchParameters->setSearch('bl');
-        $searchParameters->setLocale('en_US');
+        $searchParameters->setSearch('no');
+        $searchParameters->setLocale('fr_FR');
         $searchResult = $this->searchRecords->search('color', $searchParameters);
 
         self::assertEquals([
-            'matches_count' => 2,
+            'matches_count' => 1,
             'items' => [
                 [
                     'code' => 'black',
                     'labels' => ['fr_FR' => 'Noir', 'en_US' => 'Black'],
-                ],
-                [
-                    'code' => 'blue',
-                    'labels' => ['fr_FR' => 'Bleu', 'en_US' => 'Blue'],
                 ],
             ],
         ], $searchResult->normalize());
@@ -100,6 +100,7 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     {
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
+        $searchParameters->setLocale('fr_FR');
         $searchParameters->setIncludeCodes(['white', 'black']);
         $searchResult = $this->searchRecords->search('color', $searchParameters);
 
@@ -123,6 +124,7 @@ class SearchRecordsTest extends SqlIntegrationTestCase
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
         $searchParameters->setExcludeCodes(['blue']);
+        $searchParameters->setLocale('fr_FR');
         $searchResult = $this->searchRecords->search('color', $searchParameters);
 
         self::assertEquals([
@@ -160,6 +162,7 @@ class SearchRecordsTest extends SqlIntegrationTestCase
 
     private function createRecord(ReferenceEntity $referenceEntity, string $recordCode, array $labels): void
     {
+        /** @var RecordRepositoryInterface $recordRepository */
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordIdentifier = $recordRepository->nextIdentifier(
             $referenceEntity->getIdentifier(),
