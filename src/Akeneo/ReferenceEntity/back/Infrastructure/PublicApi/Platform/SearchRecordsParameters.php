@@ -23,8 +23,8 @@ class SearchRecordsParameters
 
     private ?string $search = null;
     private ?string $locale = null;
-    private ?int $limit = null;
-    private ?int $page = null;
+    private int $limit = 25;
+    private int $page = 1;
 
     public function getIncludeCodes(): array
     {
@@ -66,32 +66,23 @@ class SearchRecordsParameters
         $this->locale = $locale;
     }
 
-    public function getLimit(): ?int
+    public function getLimit(): int
     {
         return $this->limit;
     }
 
-    public function setLimit(?int $limit): void
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
 
-    public function getPage(): ?int
+    public function getPage(): int
     {
         return $this->page;
     }
 
-    public function setPage(?int $page): void
+    public function setPage(int $page): void
     {
         $this->page = $page;
-    }
-
-    public function getOffset(): ?int
-    {
-        if (null === $this->page || null === $this->limit) {
-            return null;
-        }
-
-        return ($this->page - 1) * $this->limit;
     }
 }

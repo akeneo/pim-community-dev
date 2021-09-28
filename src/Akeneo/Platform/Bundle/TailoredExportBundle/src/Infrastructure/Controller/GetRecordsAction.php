@@ -46,12 +46,12 @@ final class GetRecordsAction
         }
 
         $searchRecordsParameters = new SearchRecordsParameters();
-        $searchRecordsParameters->setIncludeCodes($request->get('include_codes', []));
-        $searchRecordsParameters->setExcludeCodes($request->get('exclude_codes', []));
-        $searchRecordsParameters->setSearch($request->get('search', null));
-        $searchRecordsParameters->setLocale($request->get('locale', null));
+        $searchRecordsParameters->setIncludeCodes($request->get('include_codes'));
+        $searchRecordsParameters->setExcludeCodes($request->get('exclude_codes'));
+        $searchRecordsParameters->setSearch($request->get('search'));
+        $searchRecordsParameters->setLocale($request->get('locale'));
         $searchRecordsParameters->setLimit($request->get('limit', self::LIMIT_DEFAULT));
-        $searchRecordsParameters->setPage($request->get('page', 1) - 1);
+        $searchRecordsParameters->setPage($request->get('page', 1));
 
         $searchRecordsResult = $this->searchRecords->search(
             $referenceEntityCode,

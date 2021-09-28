@@ -63,7 +63,7 @@ class SearchRecords implements SearchRecordsInterface
             'channel' => null,
             'locale' => $searchParameters->getLocale(),
             'filters' => $recordQueryFilters,
-            'page' => $searchParameters->getPage(),
+            'page' => $searchParameters->getPage() - 1,
             'size' => $searchParameters->getLimit()
         ]);
 
