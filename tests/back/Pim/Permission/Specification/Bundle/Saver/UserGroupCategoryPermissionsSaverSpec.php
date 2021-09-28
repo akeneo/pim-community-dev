@@ -100,7 +100,6 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         ]);
     }
 
-
     /**
      * FROM {"own":{"all":true,"identifiers":[]},"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
      * TO {"own":{"all":false,"identifiers":[]},"edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}

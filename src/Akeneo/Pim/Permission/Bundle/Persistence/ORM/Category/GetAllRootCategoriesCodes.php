@@ -28,6 +28,6 @@ SQL;
 
         $results = $this->connection->fetchAll($query) ?: [];
 
-        return array_map(fn($row) => $row['code'], $results);
+        return array_map(fn ($row) => $row['code'], $results);
     }
 }

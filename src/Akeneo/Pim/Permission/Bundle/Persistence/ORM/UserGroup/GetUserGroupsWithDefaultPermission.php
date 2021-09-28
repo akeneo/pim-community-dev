@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\UserGroup;
 
-use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
@@ -14,13 +13,16 @@ class GetUserGroupsWithDefaultPermission
 {
     private Connection $connection;
     private Registry $doctrine;
+    private string $userGroupClass;
 
     public function __construct(
         Connection $connection,
-        Registry $doctrine
+        Registry $doctrine,
+        string $userGroupClass
     ) {
         $this->connection = $connection;
         $this->doctrine = $doctrine;
+        $this->userGroupClass = $userGroupClass;
     }
 
     /**
@@ -45,7 +47,7 @@ SQL;
         }
 
         return array_map(function (string $id) use ($em) {
-            return $em->getReference(Group::class, (int) $id);
+            return $em->getReference($this->userGroupClass, (int) $id);
         }, $results);
     }
 }

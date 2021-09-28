@@ -160,11 +160,13 @@ services:
         arguments:
             - '@database_connection'
             - '@doctrine'
+            - '%pim_user.entity.group.class%'
 
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode:
         arguments:
             - '@database_connection'
             - '@doctrine'
+            - '%pim_catalog.entity.category.class%'
 
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes:
         arguments:

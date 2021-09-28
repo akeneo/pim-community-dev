@@ -21,7 +21,6 @@ class GetRootCategoryReferenceFromCodeIntegration extends TestCase
         parent::setUp();
 
         $this->query = self::$container->get(GetRootCategoryReferenceFromCode::class);
-
     }
 
     /**
