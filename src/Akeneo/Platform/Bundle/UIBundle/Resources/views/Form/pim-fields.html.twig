@@ -8,7 +8,7 @@
 {% endblock widget_container_attributes %}
 
 {% block date_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = 'text' %}
         {% if widget == 'single_text' %}
             {{ block('form_widget_simple')|raw }}
@@ -21,11 +21,11 @@
                 })|raw }}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock date_widget %}
 
 {% block choice_widget_expanded %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
         {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
         {% set attr = attr|merge({'class': attr.class ~ ' AknChoicesField'}) %}
@@ -37,11 +37,11 @@
                 </div>
             {% endfor %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block choice_widget_options %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% for group_label, choice in options %}
             {% if choice is iterable %}
                 <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
@@ -53,19 +53,19 @@
                 <option {{ block('choice_widget_option_attributes') }} value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (configs.is_safe is defined and configs.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
             {% endif %}
         {% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_options %}
 
 {% block choice_widget_option_attributes %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if choice.label.attr is defined and choice.label.attr|length > 0 %}
             {% for attrname, attrvalue in choice.label.attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_option_attributes %}
 
 {% block form_start %}
-{% spaceless %}
+{% apply spaceless %}
     {% set method = method|upper %}
     {% if method in ["GET", "POST"] %}
         {% set form_method = method %}
@@ -83,14 +83,14 @@
     {% if form_method != method %}
         <input type="hidden" name="_method" value="{{ method }}" />
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock form_start %}
 
 {% block form_end %}
-{% spaceless %}
+{% apply spaceless %}
     {{ form_row(form._token) }}
 </form>
-{% endspaceless %}
+{% endapply %}
 {% endblock form_end %}
 
 {% block form_row_field %}
@@ -108,13 +108,13 @@
 {% endblock %}
 
 {% block form_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {{ block('form_row_field') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_row %}
 
 {% block form_label %}
-{% spaceless %}
+{% apply spaceless %}
     {% if label is not same as(false) %}
         {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' AknFieldContainer-label')|trim}) %}
         {% if not compound %}
@@ -132,7 +132,7 @@
             {% set label_attr = { 'title': label }|merge(label_attr) %}
             {% set label_attr = label_attr|merge({ 'class': (label_attr.class is defined ? label_attr.class ~ ' ' : '') ~ 'truncate' }) %}
         {% endif %}
-        <label{% for attrname, attrvalue in label_attr if attrname != 'truncate' %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        <label{% for attrname, attrvalue in label_attr|filter(attrname => attrname != 'truncate') -%} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
                 <input type="checkbox" class="comparisonSelection exclude" />
             {% else %}
@@ -140,11 +140,11 @@
             {% endif %}
         </label>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock form_label %}
 
 {% block form_info %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if type is not defined or type != 'hidden' %}
             <div class="AknFieldContainer-iconsContainer icons-container">
                 {% if help is defined %}
@@ -159,14 +159,14 @@
                 <div>{{ info|trans }}</div>
             {% endif %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_info %}
 
 {% macro getRootId(form) -%}
     {{ form.parent ? _self.getRootId(form.parent) : form.vars.id }}
 {%- endmacro %}
 
-{% block form_errors %}{% spaceless %}
+{% block form_errors %}{% apply spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript" nonce="{{ js_nonce() }}">
             var el = document.getElementById('{{ _self.getRootId(form) }}');
@@ -189,7 +189,7 @@
             {{ parent() }}
         {% endif %}
     {% endif %}
-{% endspaceless %}{% endblock form_errors %}
+{% endapply %}{% endblock form_errors %}
 
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
@@ -212,7 +212,7 @@
 {% endblock %}
 
 {% block pim_enrich_media_row %}
-    {% spaceless %}
+    {% apply spaceless %}
     {% set empty = not form.vars.value or not form.vars.value.key %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered control-group upload-zone-container">
@@ -273,18 +273,18 @@
         </div>
     {% endif %}
 
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block widget_attributes %}
-{% spaceless %}
+{% apply spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if attr.read_only is defined and attr.read_only == true %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if attr.max_length is defined %} maxlength="{{ max_length }}"{% endif %}{% if pattern is defined %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-{% endspaceless %}
+{% endapply %}
 {% endblock widget_attributes %}
 
 {% block switch_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% set originalId = id %}
     {% set id         = 'input-' ~ originalId %}
     {% set switchId   = 'switch-' ~ originalId %}
@@ -306,7 +306,7 @@
         }
     );
     </script>
-{% endspaceless %}
+{% endapply %}
 {% endblock switch_widget %}
 
 {% block pim_ajax_entity_row %}
@@ -331,7 +331,7 @@
 {% endblock %}
 
 {% block oro_acl_privilege_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if 'groups' == privileges_config.view_type %}
             {% if 'entity' == form.vars.value.extensionKey and '(default)' != form.vars.value.identity.name %}
                 {{ form_widget(form.identity.id) }}
@@ -350,7 +350,7 @@
                 {{ form_widget(form.permissions) }}
             </tr>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block oro_acl_permission_widget %}
@@ -361,7 +361,7 @@
 {% block oro_acl_permission_collection_widget %}
     {% if 'entity' == form.parent.vars.value.extensionKey %}
         {% for field in privileges_config['permissions'] %}
-            {% for permission in form if permission.vars.value.name == field %}
+            {% for permission in form|filter(permission => permission.vars.value.name == field) -%}
                 {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field hide' : '' %}
                 {% if 'entity:Akeneo\\UserManagement\\Component\\Model\\Role' == form.parent.vars.value.identity.id %}
                     {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
@@ -374,7 +374,7 @@
         {% endfor %}
     {% else %}
         {% for field in privileges_config['permissions'] %}
-            {% for permission in form if permission.vars.value.name == field %}
+            {% for permission in form|filter(permission => permission.vars.value.name == field) -%}
                 {{ form_widget(permission) }}
             {% endfor %}
         {% endfor %}

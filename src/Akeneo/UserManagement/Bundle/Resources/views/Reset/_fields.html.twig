@@ -24,7 +24,7 @@
 {%- endblock form_widget_simple -%}
 
 {% block form_label %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if label is not same as(false) %}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' AknFieldContainer-label')|trim}) %}
             {% if not compound %}
@@ -42,7 +42,7 @@
                 {% set label_attr = { 'title': label }|merge(label_attr) %}
                 {% set label_attr = label_attr|merge({ 'class': (label_attr.class is defined ? label_attr.class ~ ' ' : '') ~ 'truncate' }) %}
             {% endif %}
-            <label{% for attrname, attrvalue in label_attr if attrname != 'truncate' %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            <label{% for attrname, attrvalue in label_attr | filter(attrname => attrname != 'truncate') %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
                 <input type="checkbox" class="comparisonSelection exclude" />
             {% else %}
@@ -50,7 +50,7 @@
             {% endif %}
             </label>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_label %}
 
 {%- block form_errors -%}
