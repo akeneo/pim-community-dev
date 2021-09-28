@@ -295,14 +295,12 @@ const MultiSelectInput = ({
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (
               filteredChildren.map((child, index) => {
-                let ref = undefined;
-                switch (index) {
-                  case filteredChildren.length - 1:
-                    ref = lastOptionRef;
-                    break;
-                }
                 return (
-                  <OptionContainer key={child.props.value} onClick={handleOptionClick(child.props.value)} ref={ref}>
+                  <OptionContainer
+                    key={child.props.value}
+                    onClick={handleOptionClick(child.props.value)}
+                    ref={index === filteredChildren.length - 1 ? lastOptionRef : undefined}
+                  >
                     {React.cloneElement(child)}
                   </OptionContainer>
                 );
