@@ -46,7 +46,6 @@ define([
               __('pim_enrich.entity.product.module.sequential_edit.item_limit', {count: response.total})
             );
           }
-          dev.mk;
 
           if (0 === response.total) {
             messenger.notify('error', __('pim_enrich.entity.product.module.sequential_edit.empty'));
