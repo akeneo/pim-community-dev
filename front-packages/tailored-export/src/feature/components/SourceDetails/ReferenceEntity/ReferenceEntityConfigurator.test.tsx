@@ -9,6 +9,7 @@ import {getDefaultDateSource} from '../Date/model';
 const attribute = {
   code: 'ref_entity',
   type: 'akeneo_reference_entity',
+  reference_data_name: 'brand',
   labels: {},
   scopable: false,
   localizable: false,

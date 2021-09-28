@@ -5,15 +5,42 @@ import {renderWithProviders} from 'feature/tests';
 import {SimpleSelectReplacement} from './SimpleSelectReplacement';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-const attribute = {
-  code: 'simpleselect',
-  type: 'pim_catalog_simpleselect',
-  labels: {},
-  scopable: false,
-  localizable: false,
-  is_locale_specific: false,
-  available_locales: [],
-};
+jest.mock('../../../hooks/useAttributeOptions', () => ({
+  useAttributeOptions: (
+    _attributeCode: string,
+    searchValue: string,
+    _page: number,
+    includeCodes: string[],
+    excludeCodes: string[]
+  ) => [
+    [
+      {
+        code: 'black',
+        labels: {
+          en_US: 'Black',
+        },
+      },
+      {
+        code: 'red',
+        labels: {
+          en_US: 'Red',
+        },
+      },
+      {
+        code: 'blue',
+        labels: {
+          en_US: 'Blue',
+        },
+      },
+    ].filter(
+      ({code}) =>
+        code.includes(searchValue) &&
+        (null === includeCodes || includeCodes.includes(code)) &&
+        (null === excludeCodes || !excludeCodes.includes(code))
+    ),
+    3,
+  ],
+}));
 
 test('it can open a replacement modal and calls the handler when confirming', async () => {
   const handleChange = jest.fn();
@@ -23,7 +50,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   }));
 
   await renderWithProviders(
-    <SimpleSelectReplacement attribute={attribute} validationErrors={[]} onOperationChange={handleChange} />
+    <SimpleSelectReplacement attributeCode="simpleselect" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -33,7 +60,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   ).toBeInTheDocument();
 
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.confirm'));
+    userEvent.click(screen.getByText('pim_common.confirm'));
   });
 
   expect(handleChange).toHaveBeenCalledWith(undefined);
@@ -58,7 +85,11 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <SimpleSelectReplacement attribute={attribute} validationErrors={validationErrors} onOperationChange={jest.fn()} />
+    <SimpleSelectReplacement
+      attributeCode="simpleselect"
+      validationErrors={validationErrors}
+      onOperationChange={jest.fn()}
+    />
   );
 
   expect(screen.getByRole('alert')).toBeInTheDocument();

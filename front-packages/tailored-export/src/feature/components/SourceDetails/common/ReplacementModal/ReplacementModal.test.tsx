@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, screen} from '@testing-library/react';
+import {act, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {ReplacementModal} from './ReplacementModal';
@@ -39,9 +39,10 @@ test('it can update a replacement mapping', async () => {
     <ReplacementModal
       initialMapping={{}}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={jest.fn()}
-      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
+      onReplacementValueFilterChange={jest.fn()}
+      replacementValueFilter={{searchValue: '', page: 1, codesToInclude: null, codesToExclude: null}}
       validationErrors={[]}
       onConfirm={handleConfirm}
       onCancel={jest.fn()}
@@ -75,9 +76,10 @@ test('it validates replacement mapping before confirming', async () => {
     <ReplacementModal
       initialMapping={{}}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={jest.fn()}
-      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
+      onReplacementValueFilterChange={jest.fn()}
+      replacementValueFilter={{searchValue: '', page: 1, codesToInclude: null, codesToExclude: null}}
       validationErrors={[]}
       onConfirm={handleConfirm}
       onCancel={jest.fn()}
@@ -100,15 +102,16 @@ test('it validates replacement mapping before confirming', async () => {
 test('it can filter search results', async () => {
   jest.useFakeTimers();
 
-  const handleReplaceValueFilterChange = jest.fn();
-  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
+  const handleReplacementValueFilterChange = jest.fn();
+  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={handleReplaceValueFilterChange}
-      replaceValueFilter={replaceValueFilter}
+      onReplacementValueFilterChange={handleReplacementValueFilterChange}
+      replacementValueFilter={replacementValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
@@ -118,20 +121,20 @@ test('it can filter search results', async () => {
   userEvent.type(screen.getByPlaceholderText('pim_common.search'), 'bl');
   act(() => {
     jest.runAllTimers();
-  })
+  });
 
-  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
-  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+  expect(handleReplacementValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplacementValueFilterChange.mock.calls[1][0](replacementValueFilter)).toEqual({
     searchValue: 'bl',
     page: 1,
-    codesToInclude: [],
-    codesToExclude: []
+    codesToInclude: null,
+    codesToExclude: null,
   });
 });
 
-test('it can show only mapped results', async () => {
-  const handleReplaceValueFilterChange = jest.fn();
-  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
+test('it can show all results', async () => {
+  const handleReplacementValueFilterChange = jest.fn();
+  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
 
   await renderWithProviders(
     <ReplacementModal
@@ -139,9 +142,10 @@ test('it can show only mapped results', async () => {
         black: 'Noir',
       }}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={handleReplaceValueFilterChange}
-      replaceValueFilter={replaceValueFilter}
+      onReplacementValueFilterChange={handleReplacementValueFilterChange}
+      replacementValueFilter={replacementValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
@@ -155,23 +159,21 @@ test('it can show only mapped results', async () => {
   );
 
   userEvent.click(
-    screen.getByText(
-      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.mapped'
-    )
+    screen.getByTitle('akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.all')
   );
 
-  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
-  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+  expect(handleReplacementValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplacementValueFilterChange.mock.calls[1][0](replacementValueFilter)).toEqual({
     searchValue: '',
     page: 1,
-    codesToInclude: ['black'],
-    codesToExclude: []
+    codesToInclude: null,
+    codesToExclude: null,
   });
 });
 
-test('it can show only unmapped results', async () => {
-  const handleReplaceValueFilterChange = jest.fn();
-  const replaceValueFilter = {searchValue: '', page: 1, codesToInclude: [], codesToExclude: []};
+test('it can show only mapped results', async () => {
+  const handleReplacementValueFilterChange = jest.fn();
+  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
 
   await renderWithProviders(
     <ReplacementModal
@@ -179,9 +181,49 @@ test('it can show only unmapped results', async () => {
         black: 'Noir',
       }}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={handleReplaceValueFilterChange}
-      replaceValueFilter={replaceValueFilter}
+      onReplacementValueFilterChange={handleReplacementValueFilterChange}
+      replacementValueFilter={replacementValueFilter}
+      validationErrors={[]}
+      onConfirm={jest.fn()}
+      onCancel={jest.fn()}
+    />
+  );
+
+  userEvent.click(
+    screen.getByLabelText(
+      'akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.label:'
+    )
+  );
+
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.filters.mapped.mapped')
+  );
+
+  expect(handleReplacementValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplacementValueFilterChange.mock.calls[1][0](replacementValueFilter)).toEqual({
+    searchValue: '',
+    page: 1,
+    codesToInclude: ['black'],
+    codesToExclude: null,
+  });
+});
+
+test('it can show only unmapped results', async () => {
+  const handleReplacementValueFilterChange = jest.fn();
+  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
+
+  await renderWithProviders(
+    <ReplacementModal
+      initialMapping={{
+        black: 'Noir',
+      }}
+      totalItems={10}
+      itemsPerPage={25}
+      values={values}
+      onReplacementValueFilterChange={handleReplacementValueFilterChange}
+      replacementValueFilter={replacementValueFilter}
       validationErrors={[]}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
@@ -200,12 +242,12 @@ test('it can show only unmapped results', async () => {
     )
   );
 
-  expect(handleReplaceValueFilterChange.mock.calls).toHaveLength(2);
-  expect(handleReplaceValueFilterChange.mock.calls[1][0](replaceValueFilter)).toEqual({
+  expect(handleReplacementValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplacementValueFilterChange.mock.calls[1][0](replacementValueFilter)).toEqual({
     searchValue: '',
     page: 1,
-    codesToInclude: [],
-    codesToExclude: ['black']
+    codesToInclude: null,
+    codesToExclude: ['black'],
   });
 });
 
@@ -231,9 +273,10 @@ test('it displays validation errors', async () => {
     <ReplacementModal
       initialMapping={{}}
       totalItems={10}
+      itemsPerPage={25}
       values={values}
-      onReplaceValueFilterChange={jest.fn()}
-      replaceValueFilter={{searchValue: '', page: 1, codesToInclude: [], codesToExclude: []}}
+      onReplacementValueFilterChange={jest.fn()}
+      replacementValueFilter={{searchValue: '', page: 1, codesToInclude: null, codesToExclude: null}}
       validationErrors={validationErrors}
       onConfirm={jest.fn()}
       onCancel={jest.fn()}
