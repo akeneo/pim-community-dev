@@ -10,8 +10,8 @@ jest.mock('./useRecords', () => ({
     _referenceEntityCode: string,
     searchValue: string,
     _page: number,
-    includeCodes: string[],
-    excludeCodes: string[]
+    includeCodes: string[] | null,
+    excludeCodes: string[] | null
   ) => [
     [
       {

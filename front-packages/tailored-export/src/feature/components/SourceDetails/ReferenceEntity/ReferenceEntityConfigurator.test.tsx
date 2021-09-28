@@ -117,7 +117,7 @@ test('it tells when the source data is invalid', () => {
   mockedConsole.mockRestore();
 });
 
-test('it can update Reference entity replacement operation', () => {
+test('it can update a reference entity replacement operation', () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(

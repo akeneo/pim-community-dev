@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {useRecords} from './useRecords';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {Record} from '../../../models/Record';
+import {Record} from '../../../models';
 
 test('It fetches records', async () => {
   const response: {
@@ -29,9 +29,9 @@ test('It fetches records', async () => {
     await waitForNextUpdate();
   });
 
-  const [attributeOptions, attributeOptionsTotalCount] = result.current;
-  expect(attributeOptions).toEqual(response.items);
-  expect(attributeOptionsTotalCount).toEqual(response.matches_count);
+  const [records, recordsTotalCount] = result.current;
+  expect(records).toEqual(response.items);
+  expect(recordsTotalCount).toEqual(response.matches_count);
 });
 
 test('It returns records only if hook is mounted', async () => {
@@ -56,7 +56,7 @@ test('It returns records only if hook is mounted', async () => {
   const {result, unmount} = renderHookWithProviders(() => useRecords('brand', 'my search', 1, [], []));
   unmount();
 
-  const [attributeOptions, attributeOptionsTotalCount] = result.current;
-  expect(attributeOptions).toEqual([]);
-  expect(attributeOptionsTotalCount).toEqual(0);
+  const [records, recordsTotalCount] = result.current;
+  expect(records).toEqual([]);
+  expect(recordsTotalCount).toEqual(0);
 });

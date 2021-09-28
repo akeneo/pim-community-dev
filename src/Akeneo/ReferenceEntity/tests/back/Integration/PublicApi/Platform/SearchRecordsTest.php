@@ -197,7 +197,6 @@ class SearchRecordsTest extends SqlIntegrationTestCase
                 ValueCollection::fromValues($labelValues)
             )
         );
-
     }
 
     private function resetDB(): void

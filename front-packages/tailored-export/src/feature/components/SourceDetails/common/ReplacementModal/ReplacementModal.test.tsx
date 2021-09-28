@@ -103,12 +103,12 @@ test('it can filter search results', async () => {
   jest.useFakeTimers();
 
   const handleReplacementValueFilterChange = jest.fn();
-  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
+  const replacementValueFilter = {searchValue: '', page: 2, codesToInclude: null, codesToExclude: null};
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
       totalItems={3}
-      itemsPerPage={25}
+      itemsPerPage={1}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
       replacementValueFilter={replacementValueFilter}
@@ -243,7 +243,7 @@ test('it can show only mapped results', async () => {
 
 test('it can show only unmapped results', async () => {
   const handleReplacementValueFilterChange = jest.fn();
-  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
+  const replacementValueFilter = {searchValue: '', page: 2, codesToInclude: null, codesToExclude: null};
 
   await renderWithProviders(
     <ReplacementModal
@@ -251,7 +251,7 @@ test('it can show only unmapped results', async () => {
         black: 'Noir',
       }}
       totalItems={3}
-      itemsPerPage={25}
+      itemsPerPage={2}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
       replacementValueFilter={replacementValueFilter}
