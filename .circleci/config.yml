@@ -207,6 +207,29 @@ jobs:
             key: front-packages-shared-{{ checksum "~/shared.hash" }}
             paths:
                 - << parameters.path_to_front_packages >>/shared/
+      - run:
+          name: Creating hash key for docker images
+          command: |
+              sha1sum docker-compose.yml > ~/docker-images.hash
+              date +%F >> ~/docker-images.hash
+      - restore_cache:
+          name: Restore docker images cache
+          key: docker-images-{{ checksum "~/docker-images.hash" }}
+      - run:
+          name: Pull docker images
+          command: |
+              ls docker-images.tar && docker load -i docker-images.tar
+              ls docker-images.tar || docker-compose pull mysql elasticsearch object-storage pubsub-emulator
+              ls docker-images.tar || docker save -o docker-images.tar \
+                $(docker-compose config | yq e '.services.mysql.image' -) \
+                $(docker-compose config | yq e '.services.elasticsearch.image' -) \
+                $(docker-compose config | yq e '.services.object-storage.image' -) \
+                $(docker-compose config | yq e '.services.pubsub-emulator.image' -)
+      - save_cache:
+          name: Save docker images
+          key: docker-images-{{ checksum "~/docker-images.hash" }}
+          paths:
+              - docker-images.tar
       - persist_to_workspace:
           root: ~/
           paths:
