@@ -114,7 +114,7 @@ test('it validates replacement mapping before confirming', async () => {
   });
 
   expect(handleConfirm).not.toHaveBeenCalled();
-  expect(screen.getByText('error.invalid_value.message'));
+  expect(screen.getByText('error.invalid_value.message')).toBeInTheDocument();
 });
 
 test('it can filter search results', async () => {
