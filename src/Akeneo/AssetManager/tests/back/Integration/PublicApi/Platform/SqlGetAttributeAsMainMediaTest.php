@@ -31,6 +31,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaFileAsMainMedia;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaLinkAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAttributeAsMainMedia;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
@@ -52,22 +54,29 @@ final class SqlGetAttributeAsMainMediaTest extends SqlIntegrationTestCase
     {
         $this->createAssetFamilyWithMediaFileAsMainMediaAttribute('media_file_as_main_media');
         $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_file_as_main_media');
-        self::assertTrue($mainMedia->isMediaFile());
-        self::assertFalse($mainMedia->isMediaLink());
-
-        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('media_link_as_main_media', false, false);
-        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_link_as_main_media');
-        self::assertTrue($mainMedia->isMediaLink());
-        self::assertFalse($mainMedia->isMediaFile());
+        self::assertInstanceOf(MediaFileAsMainMedia::class, $mainMedia);
         self::assertFalse($mainMedia->isScopable());
         self::assertFalse($mainMedia->isLocalizable());
 
+        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('media_link_as_main_media', false, false);
+        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_link_as_main_media');
+        self::assertInstanceOf(MediaLinkAsMainMedia::class, $mainMedia);
+        self::assertFalse($mainMedia->isScopable());
+        self::assertFalse($mainMedia->isLocalizable());
+        self::assertEquals('', $mainMedia->getPrefix());
+        self::assertEquals('', $mainMedia->getSuffix());
+
         $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('scopable_and_localizable_media_link_as_main_media', true, true);
         $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('scopable_and_localizable_media_link_as_main_media');
-        self::assertTrue($mainMedia->isMediaLink());
-        self::assertFalse($mainMedia->isMediaFile());
+        self::assertInstanceOf(MediaLinkAsMainMedia::class, $mainMedia);
         self::assertTrue($mainMedia->isScopable());
         self::assertTrue($mainMedia->isLocalizable());
+
+        $this->createAssetFamilyWithMediaLinkAsMainMediaAttribute('media_link_as_main_media_with_prefix_and_suffix', false, true, 'https://', '.png');
+        $mainMedia = $this->sqlGetAttributeAsMainMedia->forAssetFamilyCode('media_link_as_main_media_with_prefix_and_suffix');
+        self::assertInstanceOf(MediaLinkAsMainMedia::class, $mainMedia);
+        self::assertEquals('https://', $mainMedia->getPrefix());
+        self::assertEquals('.png', $mainMedia->getSuffix());
     }
 
     /** @test */
@@ -95,7 +104,9 @@ final class SqlGetAttributeAsMainMediaTest extends SqlIntegrationTestCase
     private function createAssetFamilyWithMediaLinkAsMainMediaAttribute(
         string $assetFamilyIdentifier,
         bool $valuePerChannel,
-        bool $valuePerLocale
+        bool $valuePerLocale,
+        ?string $prefix = null,
+        ?string $suffix = null
     ): void {
         $this->createAssetFamilyWithMediaFileAsMainMediaAttribute($assetFamilyIdentifier);
 
@@ -110,8 +121,8 @@ final class SqlGetAttributeAsMainMediaTest extends SqlIntegrationTestCase
             AttributeIsReadOnly::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean($valuePerChannel),
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
-            Prefix::createEmpty(),
-            Suffix::createEmpty(),
+            Prefix::fromString($prefix),
+            Suffix::fromString($suffix),
             MediaType::fromString(MediaType::PDF)
         );
 

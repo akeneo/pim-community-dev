@@ -22,19 +22,22 @@ final class AssetCollectionMediaLinkSelection implements AssetCollectionSelectio
     private ?string $locale;
     private string $assetFamilyCode;
     private string $attributeCode;
+    private bool $withPrefixAndSuffix;
 
     public function __construct(
         string $separator,
         ?string $channel,
         ?string $locale,
         string $assetFamilyCode,
-        string $attributeCode
+        string $attributeCode,
+        bool $withPrefixAndSuffix
     ) {
         $this->separator = $separator;
         $this->channel = $channel;
         $this->locale = $locale;
         $this->assetFamilyCode = $assetFamilyCode;
         $this->attributeCode = $attributeCode;
+        $this->withPrefixAndSuffix = $withPrefixAndSuffix;
     }
 
     public function getSeparator(): string
@@ -60,5 +63,10 @@ final class AssetCollectionMediaLinkSelection implements AssetCollectionSelectio
     public function getAttributeCode(): string
     {
         return $this->attributeCode;
+    }
+
+    public function withPrefixAndSuffix(): bool
+    {
+        return $this->withPrefixAndSuffix;
     }
 }

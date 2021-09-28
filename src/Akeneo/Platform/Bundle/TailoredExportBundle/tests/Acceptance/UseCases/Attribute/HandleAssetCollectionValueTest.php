@@ -23,7 +23,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectio
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\MediaLinkAsMainMedia;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetMainMediaAttribute;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetMainMediaData;
 use PHPUnit\Framework\Assert;
 
@@ -89,11 +91,17 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'packshot_0.jpg']
             ],
-            'it selects the asset main media when main media is a media link' => [
+            'it selects the data of asset main media link' => [
                 'operations' => [],
-                'selection' => new AssetCollectionMediaLinkSelection(',', 'ecommerce', 'en_US', 'notice', 'my_asset_collection'),
+                'selection' => new AssetCollectionMediaLinkSelection(',', 'ecommerce', 'en_US', 'notice', 'my_asset_collection', false),
                 'value' => new AssetCollectionValue(['notice_0', 'notice_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'http://packshot_0.com']
+            ],
+            'it selects the data of asset main media link with prefix and suffix' => [
+                'operations' => [],
+                'selection' => new AssetCollectionMediaLinkSelection(',', 'ecommerce', 'en_US', 'asset_collection_with_prefix_and_suffix', 'my_asset_collection', true),
+                'value' => new AssetCollectionValue(['asset0'], 'my_desk', 'ecommerce', null),
+                'expected' => [self::TARGET_NAME => 'https://test.fr/asset0.png']
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
@@ -142,6 +150,26 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
             'ecommerce',
             'en_US',
             'http://packshot_0.com'
+        );
+
+        $assetMainMediaDataRepository->addAssetMainMediaData(
+            'asset_collection_with_prefix_and_suffix',
+            'asset0',
+            'ecommerce',
+            'en_US',
+            'asset0'
+        );
+
+        /** @var InMemoryFindAssetMainMediaAttribute $assetMainMediaAttribute */
+        $assetMainMediaAttribute = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface');
+        $assetMainMediaAttribute->addAttributeAsMainMedia(
+            'asset_collection_with_prefix_and_suffix',
+            new MediaLinkAsMainMedia(
+                true,
+                true,
+                'https://test.fr/',
+                '.png'
+            )
         );
     }
 }
