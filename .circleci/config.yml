@@ -2166,8 +2166,8 @@ jobs:
           - checkout
           - run:
                 name: Run the tool zdd_compliancy_checker
-                command: |
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash -x deployments/bin/zdd_compliancy_checker.sh
+                command:
+                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
 
 workflows:
   pull_request:
