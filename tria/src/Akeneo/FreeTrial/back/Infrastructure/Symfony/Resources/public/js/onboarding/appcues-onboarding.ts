@@ -1,11 +1,12 @@
 import {getAppcuesAgent} from './appcues-agent';
 import {PimOnboarding} from './pim-onboarding';
-import {Category, useRouter} from "@akeneo-pim-community/shared";
+import {Category} from '@akeneo-pim-community/shared';
 
 const _ = require('underscore');
 const FeatureFlags = require('pim/feature-flags');
 const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
+const Router = require('pim/router');
 
 interface EventOptions {
   code?: string,
@@ -357,8 +358,6 @@ const AppcuesOnboarding: PimOnboarding = {
     });
   },
   init: () => {
-    const router = useRouter();
-
     Mediator.on('route_complete', async () => {
       AppcuesOnboarding.page();
 
@@ -372,7 +371,7 @@ const AppcuesOnboarding: PimOnboarding = {
 
       AppcuesOnboarding.on('flow_started', async (event: Event) => {
         if (event.flowName === 'FT - Guided Tour') {
-          const categoryRoute = router.generate('pim_enrich_category_rest_get', {identifier: '008_1_1'});
+          const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: '008_1_1'});
           const categoryResponse = await fetch(categoryRoute);
           const categoryPainManagement: Category = await categoryResponse.json();
 
