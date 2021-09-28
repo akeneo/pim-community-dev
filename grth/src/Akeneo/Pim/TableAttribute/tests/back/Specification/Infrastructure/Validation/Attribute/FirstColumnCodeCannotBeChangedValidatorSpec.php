@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChangedValidator;
+use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -26,9 +31,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilder;
 
 final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository, ExecutionContext $context)
+    function let(TableConfigurationRepository $tableConfigurationRepository, ExecutionContext $context)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($tableConfigurationRepository);
         $this->initialize($context);
     }
 
@@ -43,7 +48,7 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [[], new NotBlank()]);
     }
 
-    function it_throws_an_execption_when_value_is_not_an_attribute(ExecutionContext $context)
+    function it_throws_an_exception_when_value_is_not_an_attribute(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -55,19 +60,19 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_when_the_first_column_code_does_not_change(
         ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attributeToValidate,
-        AttributeInterface $formerAttribute
+        TableConfigurationRepository $tableConfigurationRepository,
+        AttributeInterface $attributeToValidate
     ) {
         $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
+        $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            ])
+        );
 
-        $formerAttribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
-            ['code' => 'quantity'],
-        ]);
         $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
+            ['code' => 'ingredient'],
             ['code' => 'new'],
         ]);
 
@@ -78,19 +83,20 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_when_the_first_column_code_does_not_change_with_case_insensitive(
         ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
+        TableConfigurationRepository $tableConfigurationRepository,
         AttributeInterface $attributeToValidate,
         AttributeInterface $formerAttribute
     ) {
         $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
 
-        $formerAttribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
-            ['code' => 'quantity'],
-        ]);
+        $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            ])
+        );
         $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'INGredients'],
+            ['code' => 'INGredient'],
             ['code' => 'new'],
         ]);
 
@@ -99,16 +105,18 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
     }
 
-    function it_does_nothing_when_the_attribute_is_not_found(
+    function it_does_nothing_when_the_former_table_configuration_is_not_found(
         ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
+        TableConfigurationRepository $tableConfigurationRepository,
         AttributeInterface $attributeToValidate
     ) {
         $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn(null);
+        $tableConfigurationRepository->getByAttributeCode('table')->willThrow(
+            TableConfigurationNotFoundException::class
+        );
 
         $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
+            ['code' => 'ingredient'],
             ['code' => 'new'],
         ]);
 
@@ -128,6 +136,20 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
     }
 
+    function it_does_nothing_when_new_table_configuration_has_not_a_valid_first_column(
+        ExecutionContext $context,
+        AttributeInterface $attributeToValidate
+    ) {
+        $attributeToValidate->getRawTableConfiguration()->willReturn([
+            ['code' => new \stdClass()],
+            ['code' => 'quantity'],
+        ]);
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
+    }
+
     function it_does_nothing_when_attribute_has_no_table_configuration(
         ExecutionContext $context,
         AttributeInterface $attributeToValidate
@@ -139,63 +161,24 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
     }
 
-    function it_does_nothing_when_the_former_attribute_has_no_table_configuration(
-        ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attributeToValidate,
-        AttributeInterface $formerAttribute
-    ) {
-        $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
-
-        $formerAttribute->getRawTableConfiguration()->willReturn(null);
-        $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
-            ['code' => 'new'],
-        ]);
-
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
-    }
-
-    function it_does_nothing_when_the_former_table_configuration_has_no_first_column(
-        ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attributeToValidate,
-        AttributeInterface $formerAttribute
-    ) {
-        $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
-
-        $formerAttribute->getRawTableConfiguration()->willReturn([]);
-        $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
-            ['code' => 'new'],
-        ]);
-
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
-    }
-
     function it_adds_a_violation_when_the_first_column_code_changes(
         ExecutionContext $context,
-        AttributeRepositoryInterface $attributeRepository,
+        TableConfigurationRepository $tableConfigurationRepository,
         AttributeInterface $attributeToValidate,
         AttributeInterface $formerAttribute,
         ConstraintViolationBuilder $violationBuilder
     ) {
         $constraint = new FirstColumnCodeCannotBeChanged();
         $attributeToValidate->getCode()->willReturn('table');
-        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
+        $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            ])
+        );
 
-        $formerAttribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'new'],
-            ['code' => 'quantity'],
-        ]);
         $attributeToValidate->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients'],
+            ['code' => 'new'],
             ['code' => 'quantity'],
         ]);
 

@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,11 +23,11 @@ use Webmozart\Assert\Assert;
 
 final class FirstColumnCodeCannotBeChangedValidator extends ConstraintValidator
 {
-    private AttributeRepositoryInterface $attributeRepository;
+    private TableConfigurationRepository $tableConfigurationRepository;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
     {
-        $this->attributeRepository = $attributeRepository;
+        $this->tableConfigurationRepository = $tableConfigurationRepository;
     }
 
     public function validate($attribute, Constraint $constraint): void
@@ -39,25 +40,24 @@ final class FirstColumnCodeCannotBeChangedValidator extends ConstraintValidator
             return;
         }
 
-        /** @var AttributeInterface $formerAttribute */
-        $formerAttribute = $this->attributeRepository->findOneByIdentifier($attribute->getCode());
-        if (!$formerAttribute instanceof AttributeInterface) {
+        $newFirstStringColumnCode = $newRawTableConfiguration[0]['code'] ?? null;
+        if (!\is_string($newFirstStringColumnCode)) {
             return;
         }
 
-        $formerRawTableConfiguration = $formerAttribute->getRawTableConfiguration();
-        if (!\is_array($formerRawTableConfiguration) || 0 === count($formerRawTableConfiguration)) {
+        try {
+            $newFirstColumnCode = ColumnCode::fromString($newFirstStringColumnCode);
+        } catch (\Exception $e) {
             return;
         }
 
-        $formerFirstColumnCode = $formerRawTableConfiguration[0]['code'] ?? null;
-        $newFirstColumnCode = $newRawTableConfiguration[0]['code'] ?? null;
-        if (!\is_string($formerFirstColumnCode) || !\is_string($newFirstColumnCode)) {
+        try {
+            $formerTableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
+        } catch (TableConfigurationNotFoundException $e) {
             return;
         }
 
-        $formerFirstColumnCode = ColumnCode::fromString($formerFirstColumnCode);
-        $newFirstColumnCode = ColumnCode::fromString($newFirstColumnCode);
+        $formerFirstColumnCode = $formerTableConfiguration->getFirstColumnCode();
         if (!$formerFirstColumnCode->equals($newFirstColumnCode)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('[0].code')

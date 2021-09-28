@@ -22,6 +22,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Ramsey\Uuid\Uuid;
 
 class InMemoryTableConfigurationRepository implements TableConfigurationRepository
@@ -58,15 +59,18 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
 
         return TableConfiguration::fromColumnDefinitions(
             array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
-                    [
-                        'id' => $row['id'],
-                        'code' => $row['code'],
-                        'data_type' => $row['data_type'],
-                        'labels' => $row['labels'] ?? [],
-                        'validations' => $row['validations'] ?? [],
-                    ]
-                ),
+                function (array $row): ColumnDefinition {
+                    $row['id'] = $row['id'] ?? ColumnIdGenerator::generateAsString($row['code']);
+                    return $this->columnFactory->createFromNormalized(
+                        [
+                            'id' => $row['id'],
+                            'code' => $row['code'],
+                            'data_type' => $row['data_type'],
+                            'labels' => $row['labels'] ?? [],
+                            'validations' => $row['validations'] ?? [],
+                        ]
+                    );
+                },
                 $attribute->getRawTableConfiguration()
             )
         );
