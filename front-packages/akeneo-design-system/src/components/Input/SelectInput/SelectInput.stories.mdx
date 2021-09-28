@@ -352,7 +352,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       return (
         <SpaceContainer height={170}>
           <SelectInput {...args} value={value} onChange={setValue} onNextPage={onNextPage}>
-            {items.map(item => <SelectInput.Option value={item} title="German (Germany)" key={item}>
+            {items.map(item => <SelectInput.Option value={item} title={item} key={item}>
               Option {item + 1}
             </SelectInput.Option>)}
           </SelectInput>
