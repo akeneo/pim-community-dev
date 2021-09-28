@@ -46,8 +46,8 @@ final class GetAttributeOptionsAction
         }
 
         $searchAttributeOptionsParameters = new SearchAttributeOptionsParameters();
-        $searchAttributeOptionsParameters->setIncludeCodes($request->get('include_codes', []));
-        $searchAttributeOptionsParameters->setExcludeCodes($request->get('exclude_codes', []));
+        $searchAttributeOptionsParameters->setIncludeCodes($request->get('include_codes', null));
+        $searchAttributeOptionsParameters->setExcludeCodes($request->get('exclude_codes', null));
         $searchAttributeOptionsParameters->setSearch($request->get('search', null));
         $searchAttributeOptionsParameters->setLocale($request->get('locale', null));
         $searchAttributeOptionsParameters->setLimit($request->get('limit', self::LIMIT_DEFAULT));

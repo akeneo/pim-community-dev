@@ -2,14 +2,14 @@ import {useState, useEffect} from 'react';
 import {useIsMounted, useRoute, useUserContext} from '@akeneo-pim-community/shared';
 import {Record} from './Record';
 
-const OPTION_COLLECTION_PAGE_SIZE = 25;
+const RECORD_PAGE_SIZE = 25;
 
 const useRecords = (
   referenceEntityCode: string,
   search: string,
   page: number,
-  optionCodesToInclude: string[],
-  optionCodesToExclude: string[]
+  optionCodesToInclude: string[] | null,
+  optionCodesToExclude: string[] | null
 ) => {
   const [records, setRecords] = useState<Record[]>([]);
   const [matchesCount, setMatchesCount] = useState<number>(0);
@@ -25,7 +25,7 @@ const useRecords = (
         body: JSON.stringify({
           search,
           page,
-          limit: OPTION_COLLECTION_PAGE_SIZE,
+          limit: RECORD_PAGE_SIZE,
           include_codes: optionCodesToInclude,
           exclude_codes: optionCodesToExclude,
           locale,
@@ -51,4 +51,4 @@ const useRecords = (
   return [records, matchesCount] as const;
 };
 
-export {useRecords, OPTION_COLLECTION_PAGE_SIZE};
+export {useRecords, RECORD_PAGE_SIZE};

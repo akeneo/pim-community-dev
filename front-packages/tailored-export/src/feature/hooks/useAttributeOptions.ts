@@ -8,8 +8,8 @@ const useAttributeOptions = (
   attributeCode: string,
   search: string,
   page: number,
-  optionCodesToInclude: string[],
-  optionCodesToExclude: string[]
+  optionCodesToInclude: string[] | null,
+  optionCodesToExclude: string[] | null
 ) => {
   const [attributeOptions, setAttributeOptions] = useState<AttributeOption[]>([]);
   const [matchesCount, setMatchesCount] = useState<number>(0);
@@ -45,7 +45,7 @@ const useAttributeOptions = (
       setMatchesCount(result.matches_count);
     };
 
-    fetchAttributeOptions();
+    void fetchAttributeOptions();
   }, [isMounted, attributeOptionsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale]);
 
   return [attributeOptions, matchesCount] as const;

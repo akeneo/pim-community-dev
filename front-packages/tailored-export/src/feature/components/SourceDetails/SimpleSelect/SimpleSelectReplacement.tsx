@@ -8,9 +8,10 @@ import {
   ReplacementModal,
   ReplacementOperation,
   ReplacementValues,
-  ReplaceValueFilter,
+  ReplacementValueFilter,
+  getDefaultReplacementValueFilter,
 } from '../common';
-import {useAttributeOptions} from '../../../hooks/useAttributeOptions';
+import {useAttributeOptions, OPTION_COLLECTION_PAGE_SIZE} from '../../../hooks/useAttributeOptions';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
@@ -32,19 +33,16 @@ const SimpleSelectReplacement = ({
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const [replaceValueFilter, setReplaceValueFilter] = useState<ReplaceValueFilter>({
-    searchValue: '',
-    page: 1,
-    codesToInclude: [],
-    codesToExclude: [],
-  });
+  const [replacementValueFilter, setReplacementValueFilter] = useState<ReplacementValueFilter>(
+    getDefaultReplacementValueFilter()
+  );
 
   const [attributeOptions, totalItems] = useAttributeOptions(
     attributeCode,
-    replaceValueFilter.searchValue,
-    replaceValueFilter.page,
-    replaceValueFilter.codesToInclude,
-    replaceValueFilter.codesToExclude
+    replacementValueFilter.searchValue,
+    replacementValueFilter.page,
+    replacementValueFilter.codesToInclude,
+    replacementValueFilter.codesToExclude
   );
 
   const handleConfirm = (mapping: ReplacementValues) => {
@@ -72,9 +70,10 @@ const SimpleSelectReplacement = ({
       </EditMappingButton>
       {isModalOpen && (
         <ReplacementModal
-          replaceValueFilter={replaceValueFilter}
-          onReplaceValueFilterChange={setReplaceValueFilter}
+          replacementValueFilter={replacementValueFilter}
+          onReplacementValueFilterChange={setReplacementValueFilter}
           values={attributeOptions}
+          itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
           totalItems={totalItems}
           initialMapping={operation.mapping}
           validationErrors={validationErrors}

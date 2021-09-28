@@ -8,9 +8,10 @@ import {
   ReplacementModal,
   ReplacementOperation,
   ReplacementValues,
-  ReplaceValueFilter,
+  ReplacementValueFilter,
+  getDefaultReplacementValueFilter,
 } from '../common';
-import {useRecords} from './useRecords';
+import {RECORD_PAGE_SIZE, useRecords} from './useRecords';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
@@ -32,19 +33,16 @@ const ReferenceEntityReplacement = ({
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const [replaceValueFilter, setReplaceValueFilter] = useState<ReplaceValueFilter>({
-    searchValue: '',
-    page: 1,
-    codesToInclude: [],
-    codesToExclude: [],
-  });
+  const [replacementValueFilter, setReplacementValueFilter] = useState<ReplacementValueFilter>(
+    getDefaultReplacementValueFilter()
+  );
 
   const [attributeOptions, totalItems] = useRecords(
     referenceEntityCode,
-    replaceValueFilter.searchValue,
-    replaceValueFilter.page,
-    replaceValueFilter.codesToInclude,
-    replaceValueFilter.codesToExclude
+    replacementValueFilter.searchValue,
+    replacementValueFilter.page,
+    replacementValueFilter.codesToInclude,
+    replacementValueFilter.codesToExclude
   );
 
   const handleConfirm = (mapping: ReplacementValues) => {
@@ -72,10 +70,11 @@ const ReferenceEntityReplacement = ({
       </EditMappingButton>
       {isModalOpen && (
         <ReplacementModal
-          replaceValueFilter={replaceValueFilter}
-          onReplaceValueFilterChange={setReplaceValueFilter}
+          replacementValueFilter={replacementValueFilter}
+          onReplacementValueFilterChange={setReplacementValueFilter}
           values={attributeOptions}
           totalItems={totalItems}
+          itemsPerPage={RECORD_PAGE_SIZE}
           initialMapping={operation.mapping}
           validationErrors={validationErrors}
           onConfirm={handleConfirm}
