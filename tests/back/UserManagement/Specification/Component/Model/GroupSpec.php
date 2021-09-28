@@ -51,4 +51,12 @@ class GroupSpec extends ObjectBehavior
 
         $this->getRoleLabelsAsString()->shouldReturn('user, admin');
     }
+
+    public function it_can_set_a_default_permission()
+    {
+        $this->setDefaultPermission('foo', true);
+        $this->getDefaultPermissions()->shouldReturn([
+            'foo' => true,
+        ]);
+    }
 }

@@ -90,4 +90,6 @@ interface GroupInterface
      * @param array<string, bool> $defaultPermissions
      */
     public function setDefaultPermissions(array $defaultPermissions): void;
+
+    public function setDefaultPermission(string $permission, bool $granted): void;
 }
