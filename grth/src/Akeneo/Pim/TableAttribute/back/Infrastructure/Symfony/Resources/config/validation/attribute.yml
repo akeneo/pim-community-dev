@@ -2,6 +2,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
   constraints:
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsMaximumTableAttributesReached: ~
   properties:
     rawTableConfiguration:
       - Type: array

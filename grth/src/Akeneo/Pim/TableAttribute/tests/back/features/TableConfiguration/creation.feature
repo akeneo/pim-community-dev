@@ -167,3 +167,8 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with too many options
     When I create a table attribute with too much options
     Then There is a violation with message: You have reached the maximum number of options in your column (20000).
+
+  Scenario: Cannot create a 51th table attribute
+    Given 50 table attributes
+    When I create a table attribute with a valid configuration
+    Then There is a violation with message: You have reached the maximum number of table attributes within your PIM (50)

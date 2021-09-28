@@ -53,34 +53,7 @@ final class CreateAttributeContext implements Context
      */
     public function iCreateATableAttributeWithAValidConfiguration(): void
     {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-                'options' => [
-                    ['code' => 'sugar'],
-                    ['code' => 'salt'],
-                ],
-            ],
-            [
-                'data_type' => 'number',
-                'code' => 'quantity',
-            ],
-            [
-                'data_type' => 'boolean',
-                'code' => 'isAllergenic',
-            ],
-            [
-                'data_type' => 'text',
-                'code' => 'comments',
-            ],
-        ]);
-        $this->saveAttribute($attribute);
+        $this->createValidAttribute('table');
     }
 
     /**
@@ -292,5 +265,47 @@ final class CreateAttributeContext implements Context
                 SelectOptionCollection::fromNormalized(\json_decode($row['options'], true))
             );
         }
+    }
+
+    /**
+     * @Given :tableAttributeCount table attributes
+     */
+    public function tableAttributes(int $tableAttributeCount)
+    {
+        for ($i = 0; $i < $tableAttributeCount; $i++) {
+            $this->createValidAttribute(sprintf('table_attribute_%d', $i));
+        }
+    }
+
+    private function createValidAttribute(string $attributeCode): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode($attributeCode)
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'select',
+                'code' => 'ingredients',
+                'options' => [
+                    ['code' => 'sugar'],
+                    ['code' => 'salt'],
+                ],
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
+            [
+                'data_type' => 'boolean',
+                'code' => 'isAllergenic',
+            ],
+            [
+                'data_type' => 'text',
+                'code' => 'comments',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
     }
 }

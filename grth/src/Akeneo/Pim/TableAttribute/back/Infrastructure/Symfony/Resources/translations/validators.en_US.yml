@@ -34,6 +34,7 @@ pim_table_configuration:
             options_cannot_be_set: Options cannot be set for a "{{ data_type }}" column type
             no_validations_allowed: 'Do not use Validations on a "{{ columnType }}" column, current column type: "{{ given }}"'
             invalid_validation_key: 'The "{{ given }}" Validations does not work on a "{{ columnType }}" column, allowed: "{{ expected }}"'
+            too_many_table_attributes: You have reached the maximum number of table attributes within your PIM ({{ limit }})
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
