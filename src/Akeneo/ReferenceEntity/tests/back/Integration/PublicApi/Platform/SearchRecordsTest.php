@@ -56,10 +56,9 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     {
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
-        $searchParameters->setLocale('fr_FR');
-        $searchResult = $this->searchRecords->search('color', $searchParameters);
+        $searchResult = $this->searchRecords->search('color', 'ecommerce', 'fr_FR', $searchParameters);
 
-        self::assertEquals([
+        self::assertEqualsCanonicalizing([
             'matches_count' => 3,
             'items' => [
                 [
@@ -82,10 +81,9 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     {
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('no');
-        $searchParameters->setLocale('fr_FR');
-        $searchResult = $this->searchRecords->search('color', $searchParameters);
+        $searchResult = $this->searchRecords->search('color', 'ecommerce', 'fr_FR', $searchParameters);
 
-        self::assertEquals([
+        self::assertEqualsCanonicalizing([
             'matches_count' => 1,
             'items' => [
                 [
@@ -100,11 +98,10 @@ class SearchRecordsTest extends SqlIntegrationTestCase
     {
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
-        $searchParameters->setLocale('fr_FR');
         $searchParameters->setIncludeCodes(['white', 'black']);
-        $searchResult = $this->searchRecords->search('color', $searchParameters);
+        $searchResult = $this->searchRecords->search('color', 'ecommerce', 'fr_FR', $searchParameters);
 
-        self::assertEquals([
+        self::assertEqualsCanonicalizing([
             'matches_count' => 2,
             'items' => [
                 [
@@ -124,10 +121,9 @@ class SearchRecordsTest extends SqlIntegrationTestCase
         $searchParameters = new SearchRecordsParameters();
         $searchParameters->setSearch('bl');
         $searchParameters->setExcludeCodes(['blue']);
-        $searchParameters->setLocale('fr_FR');
-        $searchResult = $this->searchRecords->search('color', $searchParameters);
+        $searchResult = $this->searchRecords->search('color', 'ecommerce', 'fr_FR', $searchParameters);
 
-        self::assertEquals([
+        self::assertEqualsCanonicalizing([
             'matches_count' => 2,
             'items' => [
                 [
@@ -139,6 +135,20 @@ class SearchRecordsTest extends SqlIntegrationTestCase
                     'labels' => ['fr_FR' => 'Blanc', 'en_US' => 'White'],
                 ],
             ],
+        ], $searchResult->normalize());
+    }
+
+    public function test_it_searches_record_codes_and_can_ignore_empty_included_codes(): void
+    {
+        $searchParameters = new SearchRecordsParameters();
+        $searchParameters->setSearch('bl');
+        $searchParameters->setExcludeCodes([]);
+        $searchParameters->setIncludeCodes([]);
+        $searchResult = $this->searchRecords->search('color', 'ecommerce', 'fr_FR', $searchParameters);
+
+        self::assertEquals([
+            'matches_count' => 0,
+            'items' => [],
         ], $searchResult->normalize());
     }
 

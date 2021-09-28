@@ -28,6 +28,8 @@ class SearchRecords implements SearchRecordsInterface
 
     public function search(
         string $referenceEntityCode,
+        string $channel,
+        string $locale,
         SearchRecordsParameters $searchParameters
     ): SearchRecordsResult {
         $recordQueryFilters = [
@@ -44,6 +46,10 @@ class SearchRecords implements SearchRecordsInterface
         ];
 
         if (null !== $searchParameters->getIncludeCodes()) {
+            if (empty($searchParameters->getIncludeCodes())) {
+                return new SearchRecordsResult([], 0);
+            }
+
             $recordQueryFilters[] = [
                 'field' => 'code',
                 'operator' => 'IN',
@@ -60,8 +66,8 @@ class SearchRecords implements SearchRecordsInterface
         }
 
         $recordQuery = RecordQuery::createFromNormalized([
-            'channel' => $searchParameters->getChannel(),
-            'locale' => $searchParameters->getLocale(),
+            'channel' => $channel,
+            'locale' => $locale,
             'filters' => $recordQueryFilters,
             'page' => $searchParameters->getPage() - 1,
             'size' => $searchParameters->getLimit()

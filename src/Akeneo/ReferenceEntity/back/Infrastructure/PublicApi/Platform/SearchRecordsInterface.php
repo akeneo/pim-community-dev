@@ -17,6 +17,8 @@ interface SearchRecordsInterface
 {
     public function search(
         string $referenceEntityCode,
+        string $channel,
+        string $locale,
         SearchRecordsParameters $searchParameters
     ): SearchRecordsResult;
 }

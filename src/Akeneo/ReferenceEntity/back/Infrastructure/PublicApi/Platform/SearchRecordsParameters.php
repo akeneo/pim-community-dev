@@ -22,8 +22,6 @@ class SearchRecordsParameters
     private ?array $excludeCodes = null;
 
     private ?string $search = null;
-    private ?string $channel = null;
-    private ?string $locale = null;
     private int $limit = 25;
     private int $page = 1;
 
@@ -55,26 +53,6 @@ class SearchRecordsParameters
     public function setSearch(?string $search): void
     {
         $this->search = $search;
-    }
-
-    public function getChannel(): ?string
-    {
-        return $this->channel;
-    }
-
-    public function setChannel(?string $channel): void
-    {
-        $this->channel = $channel;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(?string $locale): void
-    {
-        $this->locale = $locale;
     }
 
     public function getLimit(): int
