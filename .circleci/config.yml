@@ -222,10 +222,10 @@ jobs:
               ls docker-images.tar && docker load -i docker-images.tar
               ls docker-images.tar || docker-compose pull -q mysql elasticsearch object-storage pubsub-emulator
               ls docker-images.tar || docker save -o docker-images.tar \
-                $(docker-compose config | yq r '.services.mysql.image' -) \
-                $(docker-compose config | yq r '.services.elasticsearch.image' -) \
-                $(docker-compose config | yq r '.services.object-storage.image' -) \
-                $(docker-compose config | yq r '.services.pubsub-emulator.image' -)
+                $(docker-compose config | yq r - 'services.mysql.image') \
+                $(docker-compose config | yq r - 'services.elasticsearch.image') \
+                $(docker-compose config | yq r - 'services.object-storage.image') \
+                $(docker-compose config | yq r - 'services.pubsub-emulator.image')
       - save_cache:
           name: Save docker images
           key: docker-images-{{ checksum "~/docker-images.hash" }}
