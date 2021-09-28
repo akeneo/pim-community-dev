@@ -109,6 +109,7 @@
 - PIM-10078: Add sanity check on attribute options to avoid having an empty screen.
 - PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
 - PIM-10074: Add translation key for mass action selection
+- Bump NodeJS library to fix CVE on  tmpl 1.0.4 
 
 ## New features
 
