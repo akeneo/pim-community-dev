@@ -93,6 +93,8 @@
 - PIM-10068: Fix the Permissions tab disappeared for XLSX and CSV Published Products export profiles
 - PIM-10072: Fix difference on the migration Serenity > Flexibility
 - PIM-10083: Increase the limit of default values displayed in reference entities and assets filters in the product grid
+- PIM-10089: Add missing validation check on rule import
+- PIM-10088: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset 
 
 ## Improvements
 

@@ -94,7 +94,9 @@ const CreateButton = ({children}: CreateButtonProps) => {
   if (0 === validChildren.length) {
     return null;
   } else if (1 === validChildren.length && isValidElement(validChildren[0])) {
-    return <Button onClick={validChildren[0].props.onClick}>{validChildren[0].props.children}</Button>;
+    return !validChildren[0].props.disabled ? (
+      <Button onClick={validChildren[0].props.onClick}>{validChildren[0].props.children}</Button>
+    ) : null;
   }
 
   const decoratedChildren = validChildren.map(child => {
