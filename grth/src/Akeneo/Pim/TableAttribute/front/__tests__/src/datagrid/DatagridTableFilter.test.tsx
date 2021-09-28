@@ -7,6 +7,11 @@ import {act, fireEvent, screen} from '@testing-library/react';
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
+window.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+}));
+
 describe('DatagridTableFilter', () => {
   it('should display a filter', async () => {
     renderWithProviders(

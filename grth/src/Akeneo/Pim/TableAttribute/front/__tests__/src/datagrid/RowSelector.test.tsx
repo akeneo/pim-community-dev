@@ -7,6 +7,14 @@ import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOp
 
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
+type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
+let entryCallback: EntryCallback | undefined = undefined;
+const intersectionObserverMock = (callback: EntryCallback) => ({
+  observe: jest.fn(() => (entryCallback = callback)),
+  unobserve: jest.fn(),
+});
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
 describe('RowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
@@ -26,6 +34,9 @@ describe('RowSelector', () => {
 
     act(() => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
+    act(() => {
+      entryCallback?.([{isIntersecting: true}]);
     });
     expect(screen.getByText('Salt')).toBeInTheDocument();
     expect(screen.getAllByText('Pepper')).toHaveLength(2);

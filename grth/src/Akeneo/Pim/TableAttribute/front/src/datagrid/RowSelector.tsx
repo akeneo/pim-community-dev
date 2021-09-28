@@ -16,12 +16,17 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
   const catalogLocale = userContext.get('catalogLocale');
   const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
   const options = getOptionsFromColumnCode(attribute.table_configuration[0].code);
+  const [page, setPage] = React.useState<number>(0);
+  const [searchValue, setSearchValue] = React.useState<string>('');
 
   const handleChange = (selectOptionCode: SelectOptionCode | null) => {
     onChange((options || []).find(option => option.code === selectOptionCode));
   };
 
-  // TODO Search & pagination CPM-379
+  const filteredOptions = (options || []).filter((option) => {
+    return option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
+      getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase());
+  }).slice(0, (page + 1) * 20);
 
   return (
     <SelectInput
@@ -31,8 +36,11 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
       onChange={handleChange}
       placeholder='TODO Fill row (optional)'
       value={value?.code || null}
-      openLabel={translate('pim_common.open')}>
-      {(options || []).map(option => {
+      openLabel={translate('pim_common.open')}
+      onNextPage={() => { setPage(page + 1)}}
+      onSearchChange={setSearchValue}
+    >
+      {filteredOptions.map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
         return (
           <SelectInput.Option title={label} value={option.code} key={option.code}>
