@@ -9,6 +9,8 @@ import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
+import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
 
 const Content = styled.div`
     display: grid;
@@ -53,6 +55,7 @@ interface Props {
 export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
+    const notify = useNotify();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
     const steps: string[] = ['authorizations', 'permissions', 'summary'];
@@ -61,6 +64,8 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
     const [permissions, setPermissions] = useState<PermissionsType>({});
+
+    const confirmAuthorization = useConfirmAuthorization(clientId);
 
     useEffect(() => {
         permissionFormRegistry.all().then(providers => setProviders(providers));
@@ -72,6 +77,47 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
 
     const redirectToMarketplace = () => {
         history.push('/connect/marketplace');
+    };
+
+    const notifyPermissionProviderError = (entity: string): void => {
+        notify(
+            NotificationLevel.ERROR,
+            translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
+            {
+                titleMessage: translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.title', {
+                    entity: entity,
+                }),
+            }
+        );
+    };
+
+    const handleConfirm = async () => {
+        let userGroup = null;
+        try {
+            const confirmResult = await confirmAuthorization();
+            userGroup = confirmResult.userGroup;
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+            return;
+        }
+
+        for (const provider of providers) {
+            try {
+                await provider.save(userGroup, permissions[provider.key]);
+            } catch {
+                notifyPermissionProviderError(provider.label);
+            }
+        }
+
+        notify(
+            NotificationLevel.SUCCESS,
+            translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+        );
+
+        redirectToMarketplace();
     };
 
     if (wizardData === null) {
@@ -100,7 +146,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 </StyledActionButton>
             )}
             {isCurrent('summary') && (
-                <StyledActionButton>
+                <StyledActionButton onClick={handleConfirm}>
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                 </StyledActionButton>
             )}
