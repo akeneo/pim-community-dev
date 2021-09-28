@@ -59,6 +59,7 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
         $this->installFixture('connection');
         $this->installFixture('connection_data_flows');
         $this->installFixture('view');
+        $this->installFixture('dqi_dashboard');
     }
 
     public function onPreLoadFixture(InstallerEvent $installerEvent): void

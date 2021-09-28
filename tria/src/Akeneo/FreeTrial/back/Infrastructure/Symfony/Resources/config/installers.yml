@@ -188,3 +188,11 @@ services:
             - '@logger'
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'view' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\DqiDashboardInstaller:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'dqi_dashboard' }
