@@ -4,9 +4,14 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelSelector, DefaultValue, Operations} from '../common';
 import {isReferenceEntitySource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {ReferenceEntityReplacement} from "./ReferenceEntityReplacement";
+import {ReferenceEntityReplacement} from './ReferenceEntityReplacement';
 
-const ReferenceEntityConfigurator = ({attribute, source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
+const ReferenceEntityConfigurator = ({
+  attribute,
+  source,
+  validationErrors,
+  onSourceChange,
+}: AttributeConfiguratorProps) => {
   if (!isReferenceEntitySource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for reference entity configurator`);
   }

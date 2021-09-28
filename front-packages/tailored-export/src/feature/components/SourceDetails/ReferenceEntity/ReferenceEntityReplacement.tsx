@@ -10,7 +10,7 @@ import {
   ReplacementValues,
   ReplaceValueFilter,
 } from '../common';
-import {useRecords} from "./useRecords";
+import {useRecords} from './useRecords';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
