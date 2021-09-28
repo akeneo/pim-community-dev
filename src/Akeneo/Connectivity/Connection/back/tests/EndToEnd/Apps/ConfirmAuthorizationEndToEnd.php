@@ -137,6 +137,8 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');
         Assert::assertIsString($responseContent['appId']);
+        Assert::assertArrayHasKey('userGroup', $responseContent, 'Response missing userGroup');
+        Assert::assertIsString($responseContent['userGroup']);
     }
 
     private function loadAppsFixtures(): void

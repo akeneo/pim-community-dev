@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -28,7 +27,7 @@ class ConfirmAuthorizationAction
 {
     private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
     private FeatureFlag $featureFlag;
-    private ConnectedAppRepositoryInterface $appRepository;
+    private GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery;
     private SecurityFacade $security;
     private ViolationListNormalizer $violationListNormalizer;
     private LoggerInterface $logger;
@@ -36,14 +35,14 @@ class ConfirmAuthorizationAction
     public function __construct(
         CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
-        ConnectedAppRepositoryInterface $appRepository,
+        GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery,
         ViolationListNormalizer $violationListNormalizer,
         SecurityFacade $security,
         LoggerInterface $logger
     ) {
         $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
         $this->featureFlag = $featureFlag;
-        $this->appRepository = $appRepository;
+        $this->getConnectedAppIdAndUserGroupQuery = $getConnectedAppIdAndUserGroupQuery;
         $this->violationListNormalizer = $violationListNormalizer;
         $this->security = $security;
         $this->logger = $logger;
@@ -63,9 +62,9 @@ class ConfirmAuthorizationAction
             return new RedirectResponse('/');
         }
 
-        $app = $this->appRepository->findOneById($clientId);
-        if (null !== $app) {
-            return new JsonResponse(['appId' => $app->getId()]);
+        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
+        if (null !== $connectedAppIdAndUserGroup) {
+            return new JsonResponse($connectedAppIdAndUserGroup);
         }
 
         try {
@@ -78,11 +77,11 @@ class ConfirmAuthorizationAction
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $app = $this->appRepository->findOneById($clientId);
-        if (null === $app) {
-            throw new \LogicException('The CreateApp hander was executed without error but the resulting App cannot be found');
+        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
+        if (null === $connectedAppIdAndUserGroup) {
+            throw new \LogicException('The CreateApp handler was executed without error but the resulting App cannot be found');
         }
 
-        return new JsonResponse(['appId' => $app->getId()]);
+        return new JsonResponse($connectedAppIdAndUserGroup);
     }
 }
