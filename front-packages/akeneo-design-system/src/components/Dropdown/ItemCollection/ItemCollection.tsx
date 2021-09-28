@@ -1,16 +1,8 @@
 import {Key, Override} from '../../../shared';
-import React, {
-  ReactNode,
-  Children,
-  useRef,
-  useCallback,
-  KeyboardEvent,
-  useEffect,
-  isValidElement,
-  cloneElement,
-} from 'react';
+import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, isValidElement, cloneElement} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus, useCombinedRefs} from '../../../hooks';
+import {usePagination} from '../../../hooks/usePagination';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;
@@ -65,36 +57,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       return child;
     });
 
-    useEffect(() => {
-      const containerElement = containerRef.current;
-      const lastElement = lastItemRef.current;
-      if (
-        undefined === onNextPage ||
-        null === containerElement ||
-        null === lastItemRef.current ||
-        null === lastElement
-      ) {
-        return;
-      }
-
-      const options = {
-        root: containerElement,
-        rootMargin: '0px 0px 100% 0px',
-        threshold: 0,
-      };
-
-      const observer = new IntersectionObserver(entries => {
-        const lastEntry = entries[entries.length - 1];
-        if (lastEntry.isIntersecting) {
-          onNextPage();
-        }
-      }, options);
-
-      observer.observe(lastElement);
-
-      return () => observer.unobserve(lastElement);
-    }, [onNextPage]);
-
+    usePagination(containerRef, lastItemRef, onNextPage, true);
     useAutoFocus(firstItemRef);
 
     return (

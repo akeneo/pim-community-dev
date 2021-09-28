@@ -1,13 +1,4 @@
-import React, {
-  ReactNode,
-  useState,
-  useRef,
-  isValidElement,
-  ReactElement,
-  KeyboardEvent,
-  useCallback,
-  useEffect
-} from 'react';
+import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
@@ -15,6 +6,7 @@ import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {usePagination} from '../../../hooks/usePagination';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -179,8 +171,8 @@ type SelectInputProps = Override<
      * Handler called when the search value changed
      */
     onSearchChange?: (searchValue: string) => void;
-}
-  >;
+  }
+>;
 
 /**
  * Select input allows the user to select content and data when the expected user input is composed of one option value.
@@ -323,36 +315,7 @@ const SelectInput = ({
     [onChange]
   );
 
-  useEffect(() => {
-    const containerElement = containerRef.current;
-    const lastElement = lastOptionRef.current;
-    if (
-      undefined === onNextPage ||
-      null === containerElement ||
-      null === lastOptionRef.current ||
-      null === lastElement
-    ) {
-      return;
-    }
-
-    const options = {
-      root: containerElement,
-      rootMargin: '0px 0px 100% 0px',
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver(entries => {
-      const lastEntry = entries[entries.length - 1];
-      console.log(lastEntry);
-      if (lastEntry.isIntersecting) {
-        onNextPage();
-      }
-    }, options);
-
-    observer.observe(lastElement);
-
-    return () => observer.unobserve(lastElement);
-  }, [onNextPage, dropdownIsOpen]);
+  usePagination(containerRef, lastOptionRef, onNextPage, dropdownIsOpen);
 
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
