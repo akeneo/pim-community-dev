@@ -220,7 +220,7 @@ jobs:
           name: Pull docker images
           command: |
               ls docker-images.tar && docker load -i docker-images.tar
-              ls docker-images.tar || docker-compose pull mysql elasticsearch object-storage pubsub-emulator
+              ls docker-images.tar || docker-compose pull -q mysql elasticsearch object-storage pubsub-emulator
               ls docker-images.tar || docker save -o docker-images.tar \
                 $(docker-compose config | yq e '.services.mysql.image' -) \
                 $(docker-compose config | yq e '.services.elasticsearch.image' -) \
@@ -1001,8 +1001,8 @@ commands:
       - run:
           name: Install yq
           command: |
-            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
-            echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+            echo "3a011f37fd67ac2fe3b334b46a6e848698d5621d  /usr/local/bin/yq" > /tmp/checksum
             sha1sum -c /tmp/checksum
             sudo chmod +x /usr/local/bin/yq
