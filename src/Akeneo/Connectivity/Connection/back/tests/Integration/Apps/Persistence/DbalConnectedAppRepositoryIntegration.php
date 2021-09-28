@@ -86,6 +86,28 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
     }
 
+    public function test_it_can_retrieve_an_app_by_connection_code(): void
+    {
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+
+        $createdApp = new ConnectedApp(
+            '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
+            'my app',
+            ['foo', 'bar'],
+            'bynder',
+            'app logo',
+            'app author',
+            ['e-commerce'],
+            false,
+            'akeneo'
+        );
+        $this->repository->create($createdApp);
+
+        $retrievedApp = $this->repository->findOneByConnectionCode('bynder');
+
+        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+    }
+
     public function test_it_finds_all_ordered_by_name()
     {
         $this->connectionLoader->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);

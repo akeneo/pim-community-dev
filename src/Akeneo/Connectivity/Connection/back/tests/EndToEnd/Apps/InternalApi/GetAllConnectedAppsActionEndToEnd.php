@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetAllConnectedAppsEndToEnd extends WebTestCase
+class GetAllConnectedAppsActionEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
 
@@ -101,7 +101,6 @@ class GetAllConnectedAppsEndToEnd extends WebTestCase
             'author B',
             ['category B1'],
             true,
-            null,
             null
         );
 
@@ -115,8 +114,7 @@ class GetAllConnectedAppsEndToEnd extends WebTestCase
             'author A',
             ['category A1', 'category A2'],
             false,
-            'partner A',
-            'http://www.example.com/path/to/app/a'
+            'partner A'
         );
 
         $expectedResult = [

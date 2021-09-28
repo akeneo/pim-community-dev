@@ -114,3 +114,20 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_connected_app:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.connected_app.get_all_scope_messages:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppScopeMessagesAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@pim_api.security.scope_mapper'

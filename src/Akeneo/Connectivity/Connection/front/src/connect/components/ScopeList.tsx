@@ -12,12 +12,16 @@ import {
     ProductIcon,
     ShopIcon,
     CheckRoundIcon,
+    AkeneoThemedProps,
+    FontSize,
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
-export const ScopeItem = styled.li`
+export const ScopeItem = styled.li.attrs((props: {fontSize?: keyof FontSize} & AkeneoThemedProps) => ({
+    fontSize: props.fontSize || 'bigger',
+}))`
     color: ${getColor('grey', 140)};
-    font-size: ${getFontSize('bigger')};
+    font-size: ${props => getFontSize(props.fontSize)};
     font-weight: normal;
     line-height: 21px;
     margin-bottom: 13px;
@@ -42,9 +46,10 @@ const iconsMap: {[key: string]: React.ElementType} = {
 
 interface Props {
     scopeMessages: ScopeMessage[];
+    itemFontSize?: string;
 }
 
-export const ScopeList: FC<Props> = ({scopeMessages}) => {
+export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize}) => {
     const translate = useTranslate();
 
     return (
@@ -56,7 +61,7 @@ export const ScopeList: FC<Props> = ({scopeMessages}) => {
                 const Icon = iconsMap[scopeMessage.icon] ?? CheckRoundIcon;
 
                 return (
-                    <ScopeItem key={key}>
+                    <ScopeItem key={key} fontSize={itemFontSize}>
                         <Icon title={entities} size={24} />
                         <div
                             dangerouslySetInnerHTML={{

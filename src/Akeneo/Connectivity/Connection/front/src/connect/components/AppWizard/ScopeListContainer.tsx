@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link, CheckRoundIcon} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
-import {ScopeItem, ScopeList} from '../ScopeList';
+import {ScopeList} from '../ScopeList';
 import ScopeMessage from '../../../model/Apps/scope-message';
 
 const AppTitle = styled.h2`
@@ -20,6 +20,21 @@ const Helper = styled.div`
     line-height: 18px;
     margin: 17px 0 19px 0;
     width: 280px;
+`;
+
+const NoScope = styled.div`
+    color: ${getColor('grey', 140)};
+    font-size: ${getFontSize('bigger')};
+    font-weight: normal;
+    line-height: 21px;
+    margin-bottom: 13px;
+    display: flex;
+    align-items: center;
+
+    & > svg {
+        margin-right: 10px;
+        color: ${getColor('grey', 100)};
+    }
 `;
 
 interface Props {
@@ -51,13 +66,10 @@ export const ScopeListContainer: FC<Props> = ({appName, scopeMessages}) => {
                 </Link>
             </Helper>
             {0 === scopeMessages.length ? (
-                <ScopeItem key='0'>
-                    <CheckRoundIcon
-                        size={24}
-                        title={translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')}
-                    />
+                <NoScope>
+                    <CheckRoundIcon size={24} />
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')}
-                </ScopeItem>
+                </NoScope>
             ) : (
                 <ScopeList scopeMessages={scopeMessages} />
             )}

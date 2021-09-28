@@ -32,20 +32,10 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
 
-        $connectedApps = [];
-        foreach ($dataRows as $dataRow) {
-            $connectedApps[] = new ConnectedApp(
-                $dataRow['id'],
-                $dataRow['name'],
-                \json_decode($dataRow['scopes'], true),
-                $dataRow['connection_code'],
-                $dataRow['logo'],
-                $dataRow['author'],
-                \json_decode($dataRow['categories'], true),
-                (bool) $dataRow['certified'],
-                $dataRow['partner']
-            );
-        }
+        $connectedApps = array_map(
+            fn ($dataRow) => $this->denormalizeRow($dataRow),
+            $dataRows
+        );
 
         return $connectedApps;
     }
@@ -88,17 +78,47 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
 
         $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['id' => $appId])->fetch();
 
-        return $dataRow ?
-            new ConnectedApp(
-                $dataRow['id'],
-                $dataRow['name'],
-                \json_decode($dataRow['scopes'], true),
-                $dataRow['connection_code'],
-                $dataRow['logo'],
-                $dataRow['author'],
-                \json_decode($dataRow['categories'], true),
-                (bool) $dataRow['certified'],
-                $dataRow['partner']
-            ) : null;
+        return $dataRow ? $this->denormalizeRow($dataRow) : null;
+    }
+
+    public function findOneByConnectionCode(string $connectionCode): ?ConnectedApp
+    {
+        $selectQuery = <<<SQL
+        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
+        FROM akeneo_connectivity_connected_app
+        WHERE connection_code = :connectionCode
+        SQL;
+
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['connectionCode' => $connectionCode])->fetch();
+
+        return $dataRow ? $this->denormalizeRow($dataRow) : null;
+    }
+
+    /**
+     * @param array{
+     *    id: string,
+     *    name: string,
+     *    scopes: string,
+     *    connection_code: string,
+     *    logo: string,
+     *    author: string,
+     *    categories: string,
+     *    certified: bool,
+     *    partner: ?string,
+     * } $dataRow
+     */
+    private function denormalizeRow(array $dataRow): ConnectedApp
+    {
+        return new ConnectedApp(
+            $dataRow['id'],
+            $dataRow['name'],
+            \json_decode($dataRow['scopes'], true),
+            $dataRow['connection_code'],
+            $dataRow['logo'],
+            $dataRow['author'],
+            \json_decode($dataRow['categories'], true),
+            (bool) $dataRow['certified'],
+            $dataRow['partner']
+        );
     }
 }

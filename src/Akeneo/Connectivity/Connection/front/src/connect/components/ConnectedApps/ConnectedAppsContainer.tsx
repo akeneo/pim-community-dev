@@ -4,7 +4,7 @@ import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../../shared/scroll/utils/findScrollParent';
-import {ConnectedApp} from '../../../model/connected-app';
+import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useFeatureFlags} from '../../../shared/feature-flags';
 import ConnectedAppsContainerHelper from './ConnectedAppsContainerHelper';
 import {ConnectedAppCard} from './ConnectedAppCard';

@@ -2,7 +2,8 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Button} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
-import {ConnectedApp} from '../../../model/connected-app';
+import {ConnectedApp} from '../../../model/Apps/connected-app';
+import {useRouter} from '../../../shared/router/use-router';
 
 const Grid = styled.section`
     margin: 20px 0;
@@ -100,6 +101,10 @@ type Props = {
 
 const ConnectedAppCard: FC<Props> = ({item}) => {
     const translate = useTranslate();
+    const generateUrl = useRouter();
+    const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
+        connectionCode: item.connection_code,
+    })}`;
 
     return (
         <CardContainer>
@@ -116,7 +121,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
-                <Button ghost level='tertiary' href='#'>
+                <Button ghost level='tertiary' href={connectedAppUrl}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
             </Actions>

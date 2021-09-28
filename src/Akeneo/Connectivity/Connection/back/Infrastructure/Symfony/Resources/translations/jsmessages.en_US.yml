@@ -37,6 +37,7 @@ pim_title:
     akeneo_connectivity_connection_webhook_event_logs: Event logs
     akeneo_connectivity_connection_settings_redirect: Connections
     akeneo_connectivity_connection_connect_connected_apps: Apps
+    akeneo_connectivity_connection_connect_connected_apps_edit: App settings
 
 akeneo_connectivity.connection:
     connect:
@@ -82,6 +83,16 @@ akeneo_connectivity.connection:
                     manage_app: Manage app
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
+            edit:
+                not_found: App not found
+                tabs:
+                    settings: Settings
+                settings:
+                    authorizations:
+                        title: authorizations
+                        information: 'To know more about app authorizations, check out our {{ link }}.'
+                        information_link_anchor: Help Center article
+                        no_scope: No specific authorizations have been requested.
         apps:
             flash:
                 permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
