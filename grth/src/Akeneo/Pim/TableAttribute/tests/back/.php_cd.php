@@ -23,6 +23,7 @@ $rules = [
             'Symfony\Component\DependencyInjection',
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Config\FileLocator',
+            'Symfony\Component\Form\AbstractType',
             'Symfony\Component\Validator',
             'Symfony\Component\Serializer',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
@@ -75,6 +76,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Tool\Component\Batch',
+            'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
+            'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
+            'Oro\Bundle\FilterBundle\Filter\AbstractFilter'
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
