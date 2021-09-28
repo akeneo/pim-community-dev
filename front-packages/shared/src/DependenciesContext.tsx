@@ -7,7 +7,8 @@ import {
   UserContext,
   ViewBuilder,
   Mediator,
-  FeatureFlags
+  FeatureFlags,
+  Analytics
 } from './DependenciesProvider.type';
 
 type DependenciesContextProps = {
@@ -19,6 +20,7 @@ type DependenciesContextProps = {
   viewBuilder?: ViewBuilder;
   mediator?: Mediator;
   featureFlags?: FeatureFlags;
+  analytics?: Analytics;
 };
 
 const DependenciesContext = createContext<DependenciesContextProps>({});

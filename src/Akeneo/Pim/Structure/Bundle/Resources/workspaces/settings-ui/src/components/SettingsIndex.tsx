@@ -8,6 +8,7 @@ import {
   useSecurity,
   useTranslate,
   Translate,
+  useAnalytics,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -55,6 +56,7 @@ const SettingsIndex = () => {
   const {isGranted} = useSecurity();
   const router = useRouter();
   const theme = useTheme();
+  const analytics = useAnalytics();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -219,7 +221,10 @@ const SettingsIndex = () => {
                     id="pim-settings-attribute"
                     icon={<ValueIcon />}
                     label={translate('pim_enrich.entity.attribute.plural_label')}
-                    onClick={() => redirectToRoute('pim_enrich_attribute_index')}
+                    onClick={() => {
+                      analytics.track('settings:attributes:clicked');
+                      redirectToRoute('pim_enrich_attribute_index');
+                    }}
                     content={getPluralizedTranslation(
                       translate,
                       'pim_settings.count.attributes',
@@ -233,7 +238,10 @@ const SettingsIndex = () => {
                     id="pim-settings-family"
                     icon={<AttributeFileIcon />}
                     label={translate('pim_menu.item.family')}
-                    onClick={() => redirectToRoute('pim_enrich_family_index')}
+                    onClick={() => {
+                      analytics.track('settings:families:clicked');
+                      redirectToRoute('pim_enrich_family_index');
+                    }}
                     content={getPluralizedTranslation(
                       translate,
                       'pim_settings.count.families',

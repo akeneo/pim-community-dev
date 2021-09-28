@@ -25,6 +25,7 @@ define([
   'pim/template/product/form/variant-navigation/product-item',
   'pim/template/product/form/variant-navigation/product-model-item',
   'pim/template/product/form/variant-navigation/add-child-button',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -42,7 +43,8 @@ define([
   template,
   templateProduct,
   templateProductModel,
-  templateAddChild
+  templateAddChild,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -438,6 +440,10 @@ define([
       if (!entity) {
         return;
       }
+
+      analytics.track('product-model:form:variant-selected', {
+        identifier: entity.identifier,
+      });
 
       const params = {id: entity.id};
       const route = 'product_model' === entity.model_type ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';

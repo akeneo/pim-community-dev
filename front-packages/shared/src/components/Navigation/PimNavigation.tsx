@@ -4,6 +4,7 @@ import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
+import {useAnalytics} from '../../hooks';
 
 type NavigationEntry = {
   code: string;
@@ -26,10 +27,16 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   const translate = useTranslate();
   const router = useRouter();
   const theme = useTheme();
+  const analytics = useAnalytics();
 
   const handleFollowEntry = (event: any, entry: NavigationEntry) => {
     event.stopPropagation();
     event.preventDefault();
+
+    analytics.track('navigation:entry:clicked', {
+      code: entry.code,
+    });
+
     router.redirect(router.generate(entry.route));
   };
 

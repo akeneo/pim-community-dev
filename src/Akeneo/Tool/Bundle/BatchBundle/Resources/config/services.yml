@@ -110,5 +110,6 @@ services:
     Akeneo\Tool\Component\Batch\Event\ErrorHandlerConfigurationListener:
         arguments:
           - '@logger'
+          - '%kernel.environment%'
         tags:
           - { name: kernel.event_listener, event: console.command }

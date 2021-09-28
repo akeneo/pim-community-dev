@@ -13,6 +13,7 @@ import {
 import {useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useScrollToAttribute} from '../../hooks';
+import {useAnalytics} from '@akeneo-pim-community/shared';
 
 type Props = {
   currentCompleteness: CurrentCompleteness | null;
@@ -27,6 +28,7 @@ const ProductCurrentCompleteness: FC<Props> = ({
   redirectToAttributeTab,
   changeLocale,
 }) => {
+  const analytics = useAnalytics();
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const userContext = useUserContext();
@@ -86,7 +88,13 @@ const ProductCurrentCompleteness: FC<Props> = ({
       <SwitcherButton
         className="completeness-badge"
         inline
-        onClick={open}
+        onClick={() => {
+          open();
+
+          analytics.track('product-grid:completeness:opened', {
+            name: product.identifier,
+          });
+        }}
         label={translate('pim_enrich.entity.product.module.completeness.complete')}
       >
         <Badge
