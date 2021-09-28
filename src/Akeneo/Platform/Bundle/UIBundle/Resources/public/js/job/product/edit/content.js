@@ -6,13 +6,14 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'oro/translator', 'backbone', 'pim/template/export/product/edit/content', 'pim/form'], function (
-  _,
-  __,
-  Backbone,
-  template,
-  BaseForm
-) {
+define([
+  'underscore',
+  'oro/translator',
+  'backbone',
+  'pim/template/export/product/edit/content',
+  'pim/form',
+  'pim/analytics',
+], function (_, __, Backbone, template, BaseForm, analytics) {
   return BaseForm.extend({
     template: _.template(template),
 
@@ -47,6 +48,10 @@ define(['underscore', 'oro/translator', 'backbone', 'pim/template/export/product
       }
 
       this.$el.html(this.template({}));
+
+      analytics.track('export-profile:product:content-tab-opened', {
+        code: this.code,
+      });
 
       this.renderExtensions();
     },

@@ -9,7 +9,8 @@ define([
   'pim/user-context',
   'pim/common/form-modal-creator',
   'pim/template/family/tab/family-variant',
-], function (_, BaseForm, mediator, Grid, __, UserContext, formModalCreator, template) {
+  'pim/analytics',
+], function (_, BaseForm, mediator, Grid, __, UserContext, formModalCreator, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'tabbable variant',
@@ -53,6 +54,10 @@ define([
           localeCode: UserContext.get('catalogLocale'),
         });
       }
+
+      analytics.track('family:edit:variant-selected', {
+        code: this.code,
+      });
 
       this.$el.html(this.template());
 

@@ -19,6 +19,7 @@ define([
   'routing',
   'pim/fetcher-registry',
   'pim/router',
+  'pim/analytics',
   'bootstrap-modal',
 ], function (
   $,
@@ -31,7 +32,8 @@ define([
   innerTemplateModal,
   Routing,
   FetcherRegistry,
-  router
+  router,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -75,6 +77,25 @@ define([
       return objectParams[paramName] ?? '';
     },
 
+    getAttributeType: function (dataRoute) {
+      if (!dataRoute.includes('attribute_type')) {
+        return null;
+      }
+
+      const stringParam = dataRoute.substring(dataRoute.indexOf('attribute_type'));
+      const params = stringParam.split('=');
+      if (params.length !== 2) {
+        return null;
+      }
+
+      const tab = params[1].split('_');
+      if (tab.length !== 3) {
+        return null;
+      }
+
+      return tab[2];
+    },
+
     /**
      * Create the dialog modal and bind clicks
      */
@@ -113,9 +134,16 @@ define([
         }
 
         modal.$el.on('click', '.attribute-choice', function () {
+          const dataRoute = $(this).attr('data-route');
+
           modal.close();
           modal.$el.remove();
-          router.redirect($(this).attr('data-route'), {trigger: true});
+
+          analytics.track('attribute:create:type-selected', {
+            type: self.getAttributeType(dataRoute),
+          });
+
+          router.redirect(dataRoute, {trigger: true});
         });
 
         modal.$el.on('click', '.cancel', () => {

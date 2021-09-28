@@ -14,17 +14,23 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
 class ErrorHandlerConfigurationListener
 {
     private Logger $logger;
+    private string $environment;
 
-    public function __construct(Logger $logger)
+    public function __construct(Logger $logger, string $environment)
     {
         $this->logger = $logger;
+        $this->environment = $environment;
     }
 
     public function onConsoleCommand(ConsoleCommandEvent $consoleCommandEvent)
     {
-        $handler = new ErrorHandler($this->logger);
-        $handler->registerErrorHandler([], false);
-        $handler->registerExceptionHandler(Logger::CRITICAL, false);
-        $handler->registerFatalHandler();
+        if ('prod' === $this->environment) {
+            $handler = new ErrorHandler($this->logger);
+            $handler->registerErrorHandler([], false);
+            $handler->registerExceptionHandler(Logger::CRITICAL, false);
+            $handler->registerFatalHandler();
+
+            $consoleCommandEvent->getCommand()->getApplication()->setCatchExceptions(false);
+        }
     }
 }

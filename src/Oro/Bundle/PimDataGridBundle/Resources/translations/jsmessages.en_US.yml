@@ -60,7 +60,6 @@ pim_datagrid:
       success: Mass action performed
       error: Mass action was not performed
       no_items: Please, select items to perform mass action.
-      select_action: Select action
     quick_export:
       title: Quick Export
       success: Quick export has been launched
