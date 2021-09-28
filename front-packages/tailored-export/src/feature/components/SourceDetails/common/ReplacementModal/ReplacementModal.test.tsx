@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, screen, within} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {ReplacementModal} from './ReplacementModal';
@@ -38,7 +38,7 @@ test('it can update a replacement mapping', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={jest.fn()}
@@ -55,7 +55,7 @@ test('it can update a replacement mapping', async () => {
 
   userEvent.type(blackInput, 'Noir');
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.confirm'));
+    userEvent.click(screen.getByText('pim_common.confirm'));
   });
 
   expect(handleConfirm).toHaveBeenCalledWith({
@@ -75,7 +75,7 @@ test('it validates replacement mapping before confirming', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={jest.fn()}
@@ -92,7 +92,7 @@ test('it validates replacement mapping before confirming', async () => {
 
   userEvent.type(blackInput, 'invalid_mapping');
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.confirm'));
+    userEvent.click(screen.getByText('pim_common.confirm'));
   });
 
   expect(handleConfirm).not.toHaveBeenCalled();
@@ -107,7 +107,7 @@ test('it can filter search results', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
@@ -141,7 +141,7 @@ test('it can show all results', async () => {
       initialMapping={{
         black: 'Noir',
       }}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
@@ -171,6 +171,37 @@ test('it can show all results', async () => {
   });
 });
 
+test('it can change page', async () => {
+  const handleReplacementValueFilterChange = jest.fn();
+  const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
+
+  await renderWithProviders(
+    <ReplacementModal
+      initialMapping={{
+        black: 'Noir',
+      }}
+      totalItems={3}
+      itemsPerPage={1}
+      values={values}
+      onReplacementValueFilterChange={handleReplacementValueFilterChange}
+      replacementValueFilter={replacementValueFilter}
+      validationErrors={[]}
+      onConfirm={jest.fn()}
+      onCancel={jest.fn()}
+    />
+  );
+
+  userEvent.click(screen.getByTitle('No. 2'));
+
+  expect(handleReplacementValueFilterChange.mock.calls).toHaveLength(2);
+  expect(handleReplacementValueFilterChange.mock.calls[1][0](replacementValueFilter)).toEqual({
+    searchValue: '',
+    page: 2,
+    codesToInclude: null,
+    codesToExclude: null,
+  });
+});
+
 test('it can show only mapped results', async () => {
   const handleReplacementValueFilterChange = jest.fn();
   const replacementValueFilter = {searchValue: '', page: 1, codesToInclude: null, codesToExclude: null};
@@ -180,7 +211,7 @@ test('it can show only mapped results', async () => {
       initialMapping={{
         black: 'Noir',
       }}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
@@ -219,7 +250,7 @@ test('it can show only unmapped results', async () => {
       initialMapping={{
         black: 'Noir',
       }}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={handleReplacementValueFilterChange}
@@ -272,7 +303,7 @@ test('it displays validation errors', async () => {
   await renderWithProviders(
     <ReplacementModal
       initialMapping={{}}
-      totalItems={10}
+      totalItems={3}
       itemsPerPage={25}
       values={values}
       onReplacementValueFilterChange={jest.fn()}

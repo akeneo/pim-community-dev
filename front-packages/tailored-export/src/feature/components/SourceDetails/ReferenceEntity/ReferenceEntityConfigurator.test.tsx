@@ -5,6 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityConfigurator} from './ReferenceEntityConfigurator';
 import {getDefaultReferenceEntitySource} from './model';
 import {getDefaultDateSource} from '../Date/model';
+import {ReplacementOperation} from '../common';
 
 const attribute = {
   code: 'ref_entity',
@@ -19,6 +20,27 @@ const attribute = {
 
 jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
+
+jest.mock('./ReferenceEntityReplacement', () => ({
+  ReferenceEntityReplacement: ({
+    onOperationChange,
+  }: {
+    onOperationChange: (updatedOperation: ReplacementOperation) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onOperationChange({
+          type: 'replacement',
+          mapping: {
+            foo: 'bar',
+          },
+        })
+      }
+    >
+      Reference entity replacement
+    </button>
+  ),
+}));
 
 test('it displays a reference entity configurator', () => {
   const onSourceChange = jest.fn();
@@ -90,6 +112,62 @@ test('it tells when the source data is invalid', () => {
       />
     );
   }).toThrow('Invalid source data "date_attribute" for reference entity configurator');
+
+  expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
+  mockedConsole.mockRestore();
+});
+
+test('it can update Reference entity replacement operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <ReferenceEntityConfigurator
+      source={{
+        ...getDefaultReferenceEntitySource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Reference entity replacement'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultReferenceEntitySource(attribute, null, null),
+    operations: {
+      replacement: {
+        type: 'replacement',
+        mapping: {
+          foo: 'bar',
+        },
+      },
+    },
+    selection: {
+      type: 'code',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it tells when the attribute is invalid', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const invalidAttribute = {...attribute, reference_data_name: undefined};
+
+  expect(() => {
+    renderWithProviders(
+      <ReferenceEntityConfigurator
+        source={{
+          ...getDefaultReferenceEntitySource(attribute, null, null),
+          uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+        }}
+        attribute={invalidAttribute}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Reference entity attribute "ref_entity" should have a reference_data_name');
 
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
