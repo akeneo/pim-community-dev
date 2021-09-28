@@ -40,6 +40,11 @@ const PermissionFormRegistry = {
             })
         );
     },
+    countProviders: (): number => {
+        const providers = _config.providers || [];
+
+        return Object.keys(providers).length
+    },
 };
 
 export default PermissionFormRegistry;

@@ -9,6 +9,7 @@ import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {ConnectedAppPermissions} from './ConnectedAppPermissions';
+import {usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -23,6 +24,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const generateMediaUrl = useMediaUrlGenerator();
+    const permissionFormRegistry = usePermissionFormRegistry();
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -55,15 +57,17 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    <TabBar.Tab
-                        isActive={isCurrent(permissionsTabName)}
-                        onClick={() => {
-                            setActiveTab(permissionsTabName);
-                            switchTo(permissionsTabName);
-                        }}
-                    >
-                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
-                    </TabBar.Tab>
+                    {permissionFormRegistry.countProviders() > 0 && (
+                        <TabBar.Tab
+                            isActive={isCurrent(permissionsTabName)}
+                            onClick={() => {
+                                setActiveTab(permissionsTabName);
+                                switchTo(permissionsTabName);
+                            }}
+                        >
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
+                        </TabBar.Tab>
+                    )}
                 </TabBar>
 
                 {isCurrent(settingsTabName) && <ConnectedAppSettings connectedApp={connectedApp} />}

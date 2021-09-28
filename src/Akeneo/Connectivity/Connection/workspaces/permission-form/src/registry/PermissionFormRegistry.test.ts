@@ -36,3 +36,28 @@ test('it can retrieve the list of registered providers', async () => {
         {module_that_should_be_imported: 'module/d'},
     ]);
 });
+
+test('it can count the number of registered providers', () => {
+    PermissionFormRegistry.setModuleConfig({
+        providers: {
+            d: {
+                module: 'module/d',
+                order: 20,
+            },
+            c: {
+                module: 'module/c',
+                order: 10,
+            },
+            a: {
+                module: 'module/a',
+            },
+            b: {
+                module: 'module/b',
+            },
+        },
+    });
+
+    const countProviders = PermissionFormRegistry.countProviders();
+
+    expect(countProviders).toEqual(4);
+});
