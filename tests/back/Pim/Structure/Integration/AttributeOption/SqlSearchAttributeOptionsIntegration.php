@@ -124,6 +124,42 @@ final class SqlSearchAttributeOptionsIntegration extends TestCase
         ], $searchResult->normalize());
     }
 
+    public function test_it_searches_attribute_option_codes_among_an_empty_include_codes_list(): void
+    {
+        $searchParameters = new SearchAttributeOptionsParameters();
+        $searchParameters->setSearch('bl');
+        $searchParameters->setIncludeCodes([]);
+        $searchResult = $this->sqlSearchAttributeOptions->search('color', $searchParameters);
+
+        self::assertEquals([
+            'matches_count' => 0,
+            'items' => [],
+        ], $searchResult->normalize());
+    }
+
+    public function test_it_searches_attribute_option_codes_with_an_empty_exclude_codes_list(): void
+    {
+        $searchParameters = new SearchAttributeOptionsParameters();
+        $searchParameters->setSearch('bl');
+        $searchParameters->setLocale('en_US');
+        $searchParameters->setExcludeCodes([]);
+        $searchResult = $this->sqlSearchAttributeOptions->search('color', $searchParameters);
+
+        self::assertEquals([
+            'matches_count' => 2,
+            'items' => [
+                [
+                    'code' => 'blue',
+                    'labels' => ['fr_FR' => 'Bleu', 'en_US' => 'Blue'],
+                ],
+                [
+                    'code' => 'black',
+                    'labels' => ['fr_FR' => 'Noir', 'en_US' => 'Black'],
+                ],
+            ],
+        ], $searchResult->normalize());
+    }
+
     public function test_it_searches_attribute_option_codes_and_can_exclude_codes(): void
     {
         $searchParameters = new SearchAttributeOptionsParameters();

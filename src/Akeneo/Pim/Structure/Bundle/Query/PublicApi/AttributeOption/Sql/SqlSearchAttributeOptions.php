@@ -43,7 +43,7 @@ class SqlSearchAttributeOptions implements SearchAttributeOptionsInterface
     ): array {
         $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
         $includeCondition = null !== $searchParameters->getIncludeCodes() ? 'AND option.code IN (:include_codes)' : '';
-        $excludeCondition = null !== $searchParameters->getExcludeCodes() ? 'AND option.code NOT IN (:exclude_codes)' : '';
+        $excludeCondition = !empty($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
         $order = $this->isAttributeAutoSorted($attributeCode) ? 'code' : 'sort_order, code';
         $limit = null !== $searchParameters->getLimit() ? 'LIMIT :limit' : '';
         $offset = null !== $searchParameters->getOffset() ? 'OFFSET :offset' : '';
@@ -107,7 +107,7 @@ SQL;
     ): int {
         $localeCondition = null !== $searchParameters->getLocale() ? 'AND option_value.locale_code = :locale_code' : '';
         $includeCondition = null !== $searchParameters->getIncludeCodes() ? 'AND option.code IN (:include_codes)' : '';
-        $excludeCondition = null !== $searchParameters->getExcludeCodes() ? 'AND option.code NOT IN (:exclude_codes)' : '';
+        $excludeCondition = !empty($searchParameters->getExcludeCodes()) ? 'AND option.code NOT IN (:exclude_codes)' : '';
 
         $sql = <<<SQL
 SELECT COUNT(DISTINCT option.id)
