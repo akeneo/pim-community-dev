@@ -99,6 +99,7 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
 
 const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'attribute-groups',
+  label: translate('pim_permissions.widget.entity.attribute_group.label'),
   renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
@@ -168,9 +169,9 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       </LevelSummaryField>
     </PermissionSectionSummary>
   ),
-  save: (_role: string, _state: PermissionFormReducer.State) => {
+  save: (_userGroup: string, _state: PermissionFormReducer.State) => {
     // @todo
-    return true;
+    return Promise.resolve();
   },
 };
 

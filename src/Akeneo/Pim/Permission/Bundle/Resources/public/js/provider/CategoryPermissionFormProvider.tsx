@@ -99,6 +99,7 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'categories',
+  label: translate('pim_permissions.widget.entity.category.label'),
   renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
@@ -187,9 +188,22 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
       </LevelSummaryField>
     </PermissionSectionSummary>
   ),
-  save: (_role: string, _state: PermissionFormReducer.State) => {
-    // @todo
-    return true;
+  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+    const url = routing.generate('pimee_permissions_entities_set_categories');
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+      body: JSON.stringify({
+        user_group: userGroup,
+        permissions: state,
+      }),
+    });
+
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
+
+    return Promise.resolve();
   },
 };
 
