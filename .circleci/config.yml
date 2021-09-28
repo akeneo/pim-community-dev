@@ -85,6 +85,7 @@ jobs:
     steps:
       - attach_workspace:
             at: ~/
+      - install_yq
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
