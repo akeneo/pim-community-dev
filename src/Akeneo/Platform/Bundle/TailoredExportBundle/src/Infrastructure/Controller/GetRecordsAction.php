@@ -51,7 +51,7 @@ final class GetRecordsAction
         $searchRecordsParameters->setSearch($request->get('search', null));
         $searchRecordsParameters->setLocale($request->get('locale', null));
         $searchRecordsParameters->setLimit($request->get('limit', self::LIMIT_DEFAULT));
-        $searchRecordsParameters->setPage($request->get('page', null));
+        $searchRecordsParameters->setPage($request->get('page', 1) - 1);
 
         $searchRecordsResult = $this->searchRecords->search(
             $referenceEntityCode,

@@ -10,25 +10,25 @@ import {
   ReplacementValues,
   ReplaceValueFilter,
 } from '../common';
-import {useAttributeOptions} from '../../../hooks/useAttributeOptions';
+import {useRecords} from "./useRecords";
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
 `;
 
-type SimpleSelectReplacementProps = {
+type ReferenceEntityReplacementProps = {
+  referenceEntityCode: string;
   operation?: ReplacementOperation;
-  attributeCode: string;
   validationErrors: ValidationError[];
   onOperationChange: (updatedOperation?: ReplacementOperation) => void;
 };
 
-const SimpleSelectReplacement = ({
+const ReferenceEntityReplacement = ({
   operation = getDefaultReplacementOperation(),
-  attributeCode,
+  referenceEntityCode,
   validationErrors,
   onOperationChange,
-}: SimpleSelectReplacementProps) => {
+}: ReferenceEntityReplacementProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
@@ -39,8 +39,8 @@ const SimpleSelectReplacement = ({
     codesToExclude: [],
   });
 
-  const [attributeOptions, totalItems] = useAttributeOptions(
-    attributeCode,
+  const [attributeOptions, totalItems] = useRecords(
+    referenceEntityCode,
     replaceValueFilter.searchValue,
     replaceValueFilter.page,
     replaceValueFilter.codesToInclude,
@@ -86,4 +86,4 @@ const SimpleSelectReplacement = ({
   );
 };
 
-export {SimpleSelectReplacement};
+export {ReferenceEntityReplacement};

@@ -32,9 +32,14 @@ class SearchRecords implements SearchRecordsInterface
     ): SearchRecordsResult {
         $recordQueryFilters = [
             [
-                'field'    => 'reference_entity',
+                'field' => 'reference_entity',
                 'operator' => '=',
-                'value'    => $referenceEntityCode
+                'value' => $referenceEntityCode,
+            ],
+            [
+                'field' => 'code_label',
+                'operator' => '=',
+                'value' => $searchParameters->getSearch(),
             ]
         ];
 
