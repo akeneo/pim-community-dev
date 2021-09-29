@@ -48,7 +48,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const isLoading = typeof options === 'undefined';
   let option = null;
   if (value && typeof options !== 'undefined') {
-    option = options.find(option => option.code === value);
+    option = options.find(option => option.code.toLowerCase() === value.toLowerCase());
   }
   let label = '';
   if (value && option) {
