@@ -1,10 +1,9 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelSelector, DefaultValue, Operations} from '../common';
+import {CodeLabelSelector, DefaultValue, Operations, RecordsReplacement} from '../common';
 import {isReferenceEntitySource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {ReferenceEntityReplacement} from './ReferenceEntityReplacement';
 
 const ReferenceEntityConfigurator = ({
   attribute,
@@ -29,7 +28,7 @@ const ReferenceEntityConfigurator = ({
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
         }
       />
-      <ReferenceEntityReplacement
+      <RecordsReplacement
         operation={source.operations.replacement}
         referenceEntityCode={attribute.reference_data_name}
         validationErrors={filterErrors(validationErrors, '[operations][replacement]')}

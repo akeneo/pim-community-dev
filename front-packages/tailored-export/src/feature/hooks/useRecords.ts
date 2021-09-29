@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useIsMounted, useRoute, useUserContext} from '@akeneo-pim-community/shared';
-import {Record} from '../../../models';
+import {Record} from '../models';
 
 const RECORD_PAGE_SIZE = 25;
 

@@ -7,8 +7,9 @@ import {getDefaultReferenceEntityCollectionSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
 
 const attribute = {
-  code: 'multiselect',
-  type: 'pim_catalog_multiselect',
+  code: 'reference_entity_collection',
+  type: 'akeneo_reference_entity_collection',
+  reference_data_name: 'brand',
   labels: {},
   scopable: false,
   localizable: false,
@@ -18,6 +19,7 @@ const attribute = {
 
 jest.mock('../common/CodeLabelCollectionSelector');
 jest.mock('../common/DefaultValue');
+jest.mock('../common/RecordsReplacement');
 
 test('it displays a reference entity collection configurator', () => {
   const onSourceChange = jest.fn();
@@ -76,7 +78,38 @@ test('it can update default value operation', () => {
   });
 });
 
-test('it tells when the source data is invalid', () => {
+test('it can update a reference entity collection replacement operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <ReferenceEntityCollectionConfigurator
+      source={{
+        ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Records replacement'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+    operations: {
+      replacement: {
+        type: 'replacement',
+        mapping: {
+          foo: 'bar',
+        },
+      },
+    },
+  });
+});
+
+test('it throws when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
@@ -90,6 +123,28 @@ test('it tells when the source data is invalid', () => {
       />
     );
   }).toThrow('Invalid source data "date_attribute" for reference entity collection configurator');
+
+  expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
+  mockedConsole.mockRestore();
+});
+
+test('it throws when the attribute is invalid', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const invalidAttribute = {...attribute, reference_data_name: undefined};
+
+  expect(() => {
+    renderWithProviders(
+      <ReferenceEntityCollectionConfigurator
+        source={{
+          ...getDefaultReferenceEntityCollectionSource(attribute, null, null),
+          uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+        }}
+        attribute={invalidAttribute}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Reference entity collection attribute "reference_entity_collection" should have a reference_data_name');
 
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();

@@ -96,7 +96,7 @@ test('it tells when the source data is invalid', () => {
   mockedConsole.mockRestore();
 });
 
-test('it tells when the attribute is invalid', () => {
+test('it throws when the attribute is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const invalidAttribute = {...attribute, reference_data_name: undefined};
 
