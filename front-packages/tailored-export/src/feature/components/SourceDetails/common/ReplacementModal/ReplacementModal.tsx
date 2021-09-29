@@ -148,7 +148,7 @@ const ReplacementModal = ({
   };
 
   const handleMappedFilterValueChange = (mappedFilterValue: MappedFilterValue) => {
-    const [codesToInclude, codesToExclude] = getIncludeExcludeCodes(mappedFilterValue, initialMapping);
+    const [codesToInclude, codesToExclude] = getIncludeExcludeCodes(mappedFilterValue, mapping);
 
     setMappedFilterValue(mappedFilterValue);
     onReplacementValueFilterChange(replacementValueFilter => ({
