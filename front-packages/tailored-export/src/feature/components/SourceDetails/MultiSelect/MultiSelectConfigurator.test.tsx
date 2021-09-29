@@ -5,6 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {MultiSelectConfigurator} from './MultiSelectConfigurator';
 import {getDefaultMultiSelectSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
+import {ReplacementOperation} from '../common';
 
 const attribute = {
   code: 'multiselect',
@@ -18,6 +19,27 @@ const attribute = {
 
 jest.mock('../common/CodeLabelCollectionSelector');
 jest.mock('../common/DefaultValue');
+
+jest.mock('./MultiSelectReplacement', () => ({
+  MultiSelectReplacement: ({
+    onOperationChange,
+  }: {
+    onOperationChange: (updatedOperation: ReplacementOperation) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onOperationChange({
+          type: 'replacement',
+          mapping: {
+            blue: 'Bleu',
+          },
+        })
+      }
+    >
+      Multi select replacement
+    </button>
+  ),
+}));
 
 test('it displays a multi select configurator', () => {
   const onSourceChange = jest.fn();
@@ -70,6 +92,37 @@ test('it can update default value operation', () => {
       default_value: {
         type: 'default_value',
         value: 'foo',
+      },
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update multi select replacement operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <MultiSelectConfigurator
+      source={{
+        ...getDefaultMultiSelectSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Multi select replacement'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultMultiSelectSource(attribute, null, null),
+    operations: {
+      replacement: {
+        type: 'replacement',
+        mapping: {
+          blue: 'Bleu',
+        },
       },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',

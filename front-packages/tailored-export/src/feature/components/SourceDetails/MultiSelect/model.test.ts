@@ -29,6 +29,20 @@ test('it validates that something is a MultiSelect source', () => {
     isMultiSelectSource({
       ...source,
       operations: {
+        replacement: {
+          type: 'replacement',
+          mapping: {
+            blue: 'Bleu',
+          },
+        },
+      },
+    })
+  ).toEqual(true);
+
+  expect(
+    isMultiSelectSource({
+      ...source,
+      operations: {
         foo: 'bar',
       },
     })
