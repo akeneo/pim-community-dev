@@ -3,7 +3,6 @@
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

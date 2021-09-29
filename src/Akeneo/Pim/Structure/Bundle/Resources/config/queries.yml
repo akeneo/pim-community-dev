@@ -112,6 +112,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.find_blacklisted_attribute_codes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\FindBlacklistedAttributesCodes
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.get_blacklisted_attribute_job_execution_id:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetBlacklistedAttributeJobExecutionId
         arguments:
