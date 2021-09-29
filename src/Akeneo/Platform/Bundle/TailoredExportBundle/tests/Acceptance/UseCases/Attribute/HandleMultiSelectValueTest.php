@@ -78,7 +78,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
                 'value' => new MultiSelectValue(['cotton', 'wool']),
                 'expected' => [self::TARGET_NAME => 'cotton/wool']
             ],
-            'it applies replacement operation when value is found in the mapping' => [
+            'it applies replacement operation on label selection when value is found in the mapping' => [
                 'operations' => [
                     new ReplacementOperation([
                         'cotton' => 'amazing cotton',
@@ -88,7 +88,27 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
                 'value' => new MultiSelectValue(['cotton', 'wool'], ['cotton' => 'amazing cotton']),
                 'expected' => [self::TARGET_NAME => 'amazing cotton/Laine'],
             ],
-            'it does not apply replacement operation when value is not found in the mapping' => [
+            'it applies replacement operation on code selection when value is found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new MultiSelectValue(['cotton', 'wool'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => 'amazing cotton/wool'],
+            ],
+            'it does not apply replacement operation on label selection when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectLabelSelection('/', 'fr_FR', 'material'),
+                'value' => new MultiSelectValue(['polyester'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => '[polyester]'],
+            ],
+            'it does not apply replacement operation on code selection when value is not found in the mapping' => [
                 'operations' => [
                     new ReplacementOperation([
                         'cotton' => 'amazing cotton',

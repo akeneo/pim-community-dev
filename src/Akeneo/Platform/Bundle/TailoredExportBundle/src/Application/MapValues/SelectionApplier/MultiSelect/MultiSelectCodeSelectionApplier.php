@@ -31,11 +31,10 @@ class MultiSelectCodeSelectionApplier implements SelectionApplierInterface
         }
 
         $optionsCodes = $value->getOptionCodes();
-        $mappedReplacementValues = $value->getMappedReplacementValues();
 
-        $selectedData = array_map(static function ($optionCode) use ($mappedReplacementValues) {
-            if (array_key_exists($optionCode, $mappedReplacementValues)) {
-                return $mappedReplacementValues[$optionCode];
+        $selectedData = array_map(static function ($optionCode) use ($value) {
+            if ($value->hasMappedValue($optionCode)) {
+                return $value->getMappedValue($optionCode);
             }
 
             return $optionCode;

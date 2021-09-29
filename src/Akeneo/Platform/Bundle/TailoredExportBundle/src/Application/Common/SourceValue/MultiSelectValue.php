@@ -38,4 +38,17 @@ class MultiSelectValue implements SourceValueInterface
     {
         return $this->mappedReplacementValues;
     }
+
+    public function hasMappedValue(string $optionCode): bool
+    {
+        return array_key_exists($optionCode, $this->mappedReplacementValues);
+    }
+
+    public function getMappedValue(string $optionCode): string
+    {
+        if (!$this->hasMappedValue($optionCode))  {
+            throw new \InvalidArgument('This option code is not mapped');
+        }
+        return $this->mappedReplacementValues[$optionCode];
+    }
 }
