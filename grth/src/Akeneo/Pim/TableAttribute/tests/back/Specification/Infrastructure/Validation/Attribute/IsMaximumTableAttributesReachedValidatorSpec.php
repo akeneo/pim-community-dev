@@ -80,7 +80,7 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
         $this->validate($attribute, new IsMaximumTableAttributesReached());
     }
 
-    function it_should_build_violation_when_there_is_too_many_table_attributes(
+    function it_should_build_violation_when_there_are_too_many_table_attributes(
         AttributeRepositoryInterface $attributeRepository,
         ExecutionContext $executionContext,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -108,7 +108,7 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
         $this->validate($attribute, new IsMaximumTableAttributesReached());
     }
 
-    function it_should_not_build_violation_when_there_is_not_too_many_table_attributes(
+    function it_should_not_build_violation_when_there_are_not_too_many_table_attributes(
         ExecutionContext $executionContext,
         AttributeRepositoryInterface $attributeRepository
     ) {
@@ -131,7 +131,7 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
         $this->validate($attribute, new IsMaximumTableAttributesReached());
     }
 
-    function it_should_validate_several_attribute_creation_in_a_raw(
+    function it_should_validate_several_attribute_creations_in_a_row(
         ExecutionContext $executionContext,
         AttributeRepositoryInterface $attributeRepository
     ) {
@@ -162,7 +162,7 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
         $this->validate($attribute2, new IsMaximumTableAttributesReached());
     }
 
-    function it_should_add_a_violation_when_validate_several_attribute_creation_in_a_raw(
+    function it_should_add_a_violation_when_validate_several_attribute_creations_in_a_row(
         ExecutionContext $executionContext,
         ConstraintViolationBuilderInterface $violationBuilder,
         AttributeRepositoryInterface $attributeRepository

@@ -41,7 +41,7 @@ class TableShouldNotHaveTooManyRowsValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new TableShouldNotHaveTooManyRows());
     }
 
-    function it_should_add_a_violation_when_there_is_too_many_rows(
+    function it_should_add_a_violation_when_there_are_too_many_rows(
         TableValue $tableValue,
         ExecutionContext $executionContext,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -70,7 +70,7 @@ class TableShouldNotHaveTooManyRowsValidatorSpec extends ObjectBehavior
         $this->validate($tableValue, new TableShouldNotHaveTooManyRows());
     }
 
-    function it_should_not_add_violation_when_there_is_not_too_many_rows(
+    function it_should_not_add_violation_when_there_are_not_too_many_rows(
         TableValue $tableValue,
         ExecutionContext $executionContext
     ) {

@@ -12,6 +12,7 @@ use Webmozart\Assert\Assert;
 final class IsMaximumTableAttributesReachedValidator extends ConstraintValidator
 {
     private AttributeRepositoryInterface $attributeRepository;
+    /** @var array<string, mixed> */
     private array $pendingTableAttributeCodes = [];
 
     public function __construct(AttributeRepositoryInterface $attributeRepository)
