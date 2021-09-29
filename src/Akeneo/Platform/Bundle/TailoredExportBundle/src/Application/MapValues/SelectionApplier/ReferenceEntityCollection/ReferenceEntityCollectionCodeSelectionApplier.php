@@ -30,7 +30,14 @@ class ReferenceEntityCollectionCodeSelectionApplier implements SelectionApplierI
             throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
         }
 
-        return implode($selection->getSeparator(), $value->getRecordCodes());
+        $optionsCodes = $value->getRecordCodes();
+        $selectedData = array_map(
+            static fn ($recordCode) =>
+            $value->hasMappedValue($recordCode) ? $value->getMappedValue($recordCode): $recordCode,
+            $optionsCodes
+        );
+
+        return implode($selection->getSeparator(), $selectedData);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

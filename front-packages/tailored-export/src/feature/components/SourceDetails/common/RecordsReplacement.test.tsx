@@ -103,11 +103,7 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <RecordsReplacement
-      referenceEntityCode="brand"
-      validationErrors={validationErrors}
-      onOperationChange={jest.fn()}
-    />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={validationErrors} onOperationChange={jest.fn()} />
   );
 
   expect(screen.getByRole('alert')).toBeInTheDocument();

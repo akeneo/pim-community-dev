@@ -30,6 +30,23 @@ class ReferenceEntityCollectionCodeSelectionApplierSpec extends ObjectBehavior
             ->shouldReturn('record_code1/record_code2/record_code...');
     }
 
+    public function it_applies_the_selection_with_mapped_replacement_values()
+    {
+        $selection = new ReferenceEntityCollectionCodeSelection('/');
+        $value = new ReferenceEntityCollectionValue(
+            [
+                'record_code1',
+                'record_code2'
+            ],
+            [
+                'record_code2' => 'replacement_option',
+            ]
+        );
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('record_code1/replacement_option');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

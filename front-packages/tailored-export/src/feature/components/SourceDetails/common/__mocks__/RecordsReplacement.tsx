@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReplacementOperation} from "../ReplacementOperation";
+import {ReplacementOperation} from '../ReplacementOperation';
 
 type RecordsReplacementProps = {
   onOperationChange: (updatedOperation: ReplacementOperation) => void;
@@ -20,5 +20,4 @@ const RecordsReplacement = ({onOperationChange}: RecordsReplacementProps) => (
   </button>
 );
 
-export {RecordsReplacement}
-
+export {RecordsReplacement};

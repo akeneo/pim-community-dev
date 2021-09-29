@@ -46,9 +46,10 @@ class MultiSelectValue implements SourceValueInterface
 
     public function getMappedValue(string $optionCode): string
     {
-        if (!$this->hasMappedValue($optionCode))  {
-            throw new \InvalidArgument('This option code is not mapped');
+        if (!$this->hasMappedValue($optionCode)) {
+            throw new \InvalidArgumentException('This option code is not mapped');
         }
+
         return $this->mappedReplacementValues[$optionCode];
     }
 }
