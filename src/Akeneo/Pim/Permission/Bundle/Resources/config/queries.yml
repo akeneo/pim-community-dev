@@ -175,3 +175,17 @@ services:
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupReferenceFromCode:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'
+            - '%pim_catalog.entity.attribute_group.class%'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAllAttributeGroupCodes:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupsAccessesWithHighestLevel:
+        arguments:
+            - '@database_connection'
