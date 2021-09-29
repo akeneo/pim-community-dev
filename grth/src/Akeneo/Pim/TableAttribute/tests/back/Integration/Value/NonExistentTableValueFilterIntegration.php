@@ -81,7 +81,7 @@ class NonExistentTableValueFilterIntegration extends TestCase
         self::assertInstanceOf(TableValue::class, $value);
         self::assertEqualsCanonicalizing(
             [
-                ['INGredient' => 'SALT', 'quantity' => 10],
+                ['INGredient' => 'salt', 'quantity' => 10],
                 ['ingredient' => 'sugar', 'quantity' => 6, 'supplier' => 'akeneo'],
                 ['ingredient' => 'pepper'],
             ],
@@ -210,7 +210,7 @@ class NonExistentTableValueFilterIntegration extends TestCase
         self::assertCount(0, $violations, sprintf('Attribute is not valid: %s', $violations));
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
-    
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

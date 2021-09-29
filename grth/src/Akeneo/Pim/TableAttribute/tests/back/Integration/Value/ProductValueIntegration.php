@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -45,7 +46,7 @@ final class ProductValueIntegration extends TestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'options' => [['code' => 'bar']]],
+                ['code' => 'ingredient', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'options' => [['code' => 'bar']]],
                 ['code' => 'quantity', 'data_type' => 'number', 'labels' => ['en_US' => 'Quantity']],
             ],
         ]);
@@ -55,13 +56,13 @@ final class ProductValueIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_validates_and_saves_a_table_product_value(): void
+    public function it_updates_and_validates_then_saves_a_table_product_value(): void
     {
         /** @var Product $product */
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'NUTRITION' => [
-                ['locale' => null, 'scope' => null, 'data' => [['INGredients' => 'BAR', 'quantity' => 10]]],
+                ['locale' => null, 'scope' => null, 'data' => [['INGredient' => 'BAR', 'quantity' => 10]]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));
@@ -72,10 +73,11 @@ final class ProductValueIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
         $this->assertProductIsInDatabase($product);
         $this->assertIndexingFormat(\sprintf('product_%d', $product->getId()));
+        $this->assertValuesAreSanitized();
     }
 
     /** @test */
-    public function it_updates_validates_and_saves_a_table_product_model_value(): void
+    public function it_updates_and_validates_then_saves_a_table_product_model_value(): void
     {
         $this->createAttribute([
             'code' => 'size',
@@ -110,7 +112,7 @@ final class ProductValueIntegration extends TestCase
             'family_variant' => 'shoe_size',
             'values' => [
                 'NUTRITION' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['INGredients' => 'BAR', 'quantity' => 10]]],
+                    ['locale' => null, 'scope' => null, 'data' => [['INGredient' => 'BAR', 'quantity' => 10]]],
                 ],
             ],
         ]);
@@ -144,12 +146,12 @@ final class ProductValueIntegration extends TestCase
         self::assertCount(2, $nutrition[0]);
         foreach ($nutrition[0] as $columnId => $value) {
             self::assertDoesNotMatchRegularExpression(
-                '/^(quantity|ingredients)$/',
+                '/^(quantity|ingredient)$/',
                 $columnId,
                 'The key should not be the code but the id'
             );
             self::assertMatchesRegularExpression(
-                '/^(quantity|ingredients)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                '/^(quantity|ingredient)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
                 $columnId,
                 'The id is malformed'
             );
@@ -176,12 +178,12 @@ final class ProductValueIntegration extends TestCase
         self::assertCount(2, $nutrition[0]);
         foreach ($nutrition[0] as $columnId => $value) {
             self::assertDoesNotMatchRegularExpression(
-                '/^(quantity|ingredients)$/',
+                '/^(quantity|ingredient)$/',
                 $columnId,
                 'The key should not be the code but the id'
             );
             self::assertMatchesRegularExpression(
-                '/^(quantity|ingredients)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                '/^(quantity|ingredient)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
                 $columnId,
                 'The id is malformed'
             );
@@ -204,20 +206,20 @@ final class ProductValueIntegration extends TestCase
 
         $expectedTableValues = [
             [
-                'row' => 'BAR',
+                'row' => 'bar',
                 'column' => 'quantity',
                 'value-number' => 10,
                 'is_column_complete' => true,
             ],
             [
-                'row' => 'BAR',
-                'column' => 'ingredients',
-                'value-select' => 'BAR',
+                'row' => 'bar',
+                'column' => 'ingredient',
+                'value-select' => 'bar',
                 'is_column_complete' => true,
             ],
         ];
 
-        Assert::assertEquals($expectedTableValues, $indexedProduct['table_values']['nutrition']);
+        Assert::assertEqualsCanonicalizing($expectedTableValues, $indexedProduct['table_values']['nutrition']);
     }
 
     private function createAttribute(array $data): void
@@ -256,5 +258,15 @@ final class ProductValueIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         return $familyVariant;
+    }
+
+    private function assertValuesAreSanitized(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('id1');
+        $tableValue = $product->getValue('nutrition');
+
+        self::assertNotNull($tableValue);
+        self::assertEqualsCanonicalizing(['bar', 10], \array_values($tableValue->getData()->normalize()[0]));
     }
 }

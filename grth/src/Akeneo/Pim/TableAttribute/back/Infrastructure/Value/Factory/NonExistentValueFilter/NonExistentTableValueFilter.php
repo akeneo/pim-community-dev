@@ -19,6 +19,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
@@ -126,10 +127,15 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
         foreach ($rawTableValue as $rowIndex => $row) {
             foreach ($row as $columnId => $value) {
                 $foundColumn = $selectColumnIds[\strtolower($columnId)] ?? null;
-                if (null !== $foundColumn
-                    && !$this->optionExists($attributeCode, $foundColumn->code(), $value)
-                ) {
+                if (null === $foundColumn) {
+                    continue;
+                }
+
+                $option = $this->getOption($attributeCode, $foundColumn->code(), $value);
+                if (null === $option) {
                     unset($rawTableValue[$rowIndex][$columnId]);
+                } else {
+                    $rawTableValue[$rowIndex][$columnId] = $option->code()->asString();
                 }
             }
 
@@ -141,10 +147,10 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
         return array_values($rawTableValue);
     }
 
-    private function optionExists(string $attributeCode, ColumnCode $columnCode, string $option): bool
+    private function getOption(string $attributeCode, ColumnCode $columnCode, string $option): ?SelectOption
     {
         $selectOptionCollection = $this->selectOptionCollectionRepository->getByColumn($attributeCode, $columnCode);
 
-        return null !== $selectOptionCollection->getByCode($option);
+        return $selectOptionCollection->getByCode($option);
     }
 }

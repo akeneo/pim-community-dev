@@ -107,7 +107,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                 '<all_channels>' => [
                                     '<all_locales>' => [
                                         [
-                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::ingredient() => 'SUgar',
                                             ColumnIdGenerator::quantity() => 5,
                                         ],
                                         [
@@ -222,7 +222,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_unknown_select_cells()
+    function it_filters_unknown_select_cells_and_sanitizes_the_remaining_ones()
     {
         $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
             [
@@ -235,7 +235,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                     '<all_locales>' => [
                                         [
                                             ColumnIdGenerator::ingredient() => 'sugar',
-                                            ColumnIdGenerator::supplier() => 'akeneo',
+                                            ColumnIdGenerator::supplier() => 'aKeNEo',
                                             ColumnIdGenerator::quantity() => 10,
                                         ],
                                         [
@@ -263,8 +263,8 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => [
                                     [
-                                        ColumnIdGenerator::ingredient() => 'sugar',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::ingredient() => 'SUgar',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                         ColumnIdGenerator::quantity() => 10,
                                     ],
                                     [
@@ -340,13 +340,13 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => [
                                     [
-                                        ColumnIdGenerator::ingredient() => 'sugar',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::ingredient() => 'SUgar',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                         ColumnIdGenerator::quantity() => 10,
                                     ],
                                     [
                                         ColumnIdGenerator::ingredient() => 'salt',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                         ColumnIdGenerator::quantity() => 20,
                                     ],
                                 ],
@@ -425,25 +425,25 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 'en_US' => [
                                     [
-                                        ColumnIdGenerator::ingredient() => 'sugar',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::ingredient() => 'SUgar',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                         ColumnIdGenerator::quantity() => 10,
                                     ],
                                     [
                                         ColumnIdGenerator::ingredient() => 'salt',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                         ColumnIdGenerator::quantity() => 20,
                                     ],
                                 ],
                                 'fr_FR' => [
                                     [
-                                        ColumnIdGenerator::ingredient() => 'sugar',
-                                        ColumnIdGenerator::supplier() => 'akeneo',
+                                        ColumnIdGenerator::ingredient() => 'SUgar',
+                                        ColumnIdGenerator::supplier() => 'AKENEO',
                                     ],
                                 ],
                                 'de_DE' => [
                                     [
-                                        ColumnIdGenerator::ingredient() => 'sugar',
+                                        ColumnIdGenerator::ingredient() => 'SUgar',
                                     ],
                                 ],
                             ],
