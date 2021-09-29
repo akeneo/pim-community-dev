@@ -17,9 +17,7 @@
     }
     %}
 {% else %}
-    {% block breadcrumbs %}
-        {{ title }}
-    {% endblock breadcrumbs %}
+    {% set breadcrumbs = title %}
 {% endif %}
 
 {% block navButtons %}
@@ -55,7 +53,6 @@
             {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
-    {{ form_end(form) }}
     <script type="text/javascript" nonce="{{ js_nonce() }}">
         require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
 
