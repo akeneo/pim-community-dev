@@ -60,7 +60,6 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
                 ],
                 [
                     'option_code_1' => 'replacement_option_code_1',
-                    'option_code_2' => 'replacement_option_code_2',
                     'option_code_3' => 'replacement_option_code_3',
                 ]
             )

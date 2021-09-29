@@ -31,7 +31,9 @@ class MultiSelectReplacementOperationApplier implements OperationApplierInterfac
             throw new \InvalidArgumentException('Cannot apply multi select option replacement operation');
         }
 
-        return new MultiSelectValue($value->getOptionCodes(), $operation->getMapping());
+        $mappedOptionValues = array_intersect_key($operation->getMapping(), array_flip($value->getOptionCodes()));
+
+        return new MultiSelectValue($value->getOptionCodes(), $mappedOptionValues);
     }
 
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool
