@@ -46,7 +46,11 @@ class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
             $locale
         );
 
-        $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations) {
+        $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations, $value) {
+            if ($value->hasMappedValue($optionCode)) {
+                return $value->getMappedValue($optionCode);
+            }
+
             return $attributeOptionTranslations[$optionCode] ?? sprintf('[%s]', $optionCode);
         }, $optionsCodes);
 

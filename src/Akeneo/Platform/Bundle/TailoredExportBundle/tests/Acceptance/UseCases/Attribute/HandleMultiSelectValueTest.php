@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -76,6 +77,46 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
                 'selection' => new MultiSelectCodeSelection('/'),
                 'value' => new MultiSelectValue(['cotton', 'wool']),
                 'expected' => [self::TARGET_NAME => 'cotton/wool']
+            ],
+            'it applies replacement operation on label selection when value is found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectLabelSelection('/', 'fr_FR', 'material'),
+                'value' => new MultiSelectValue(['cotton', 'wool'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => 'amazing cotton/Laine'],
+            ],
+            'it applies replacement operation on code selection when value is found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new MultiSelectValue(['cotton', 'wool'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => 'amazing cotton/wool'],
+            ],
+            'it does not apply replacement operation on label selection when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectLabelSelection('/', 'fr_FR', 'material'),
+                'value' => new MultiSelectValue(['polyester'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => '[polyester]'],
+            ],
+            'it does not apply replacement operation on code selection when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new MultiSelectValue(['polyester'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => 'polyester'],
             ],
         ];
     }
