@@ -1,0 +1,8 @@
+batch_jobs:
+  asset_manager_csv_asset_export:
+    label: Экспорт активов в CSV
+    export.label: Экспорт активов
+  asset_manager_xlsx_asset_export:
+    label: Экспорт активов в XLSX
+    export.label: Экспорт активов
+akeneo_assetmanager.export.assets.filter.asset_family: Семейство активов

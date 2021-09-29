@@ -111,6 +111,7 @@ class CanEditTailoredExportSpec extends ObjectBehavior
 
         $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
+            'name' => null,
             'Weight' => $Weight
         ]);
 

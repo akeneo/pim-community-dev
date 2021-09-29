@@ -3,7 +3,7 @@ set -x
 set -e
 apt-get -qq update
 apt-get -qq --no-install-recommends --no-install-suggests --yes --quiet install curl jq ca-certificates
-CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5"
+CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused"
 
 export LOGIN_DATA=$(mktemp)
 export COOKIE_JAR=$(mktemp)
