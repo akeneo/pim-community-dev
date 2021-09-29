@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent} from '@testing-library/react';
+import {act, screen, fireEvent} from '@testing-library/react';
 import {OperatorSelector} from '../../../src/datagrid';
 import {defaultFilterValuesMapping} from '../../factories';
 
@@ -29,7 +29,9 @@ describe('OperatorSelector', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('pim_common.open'));
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'))
+    });
     expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
     expect(screen.getAllByText('pim_common.operators.>=')).toHaveLength(2);
     expect(screen.getByText('pim_common.operators.<')).toBeInTheDocument();

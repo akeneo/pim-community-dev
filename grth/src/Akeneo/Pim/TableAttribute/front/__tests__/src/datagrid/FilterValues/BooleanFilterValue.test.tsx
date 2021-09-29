@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent} from '@testing-library/react';
+import {act, screen, fireEvent} from '@testing-library/react';
 import BooleanFilterValue from '../../../../src/datagrid/FilterValues/BooleanFilterValue';
 import {getComplexTableAttribute} from '../../../factories';
 
@@ -29,7 +29,9 @@ describe('BooleanFilterValue', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('pim_common.open'));
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
     expect(screen.getByText('pim_common.yes')).toBeInTheDocument();
     expect(screen.getAllByText('pim_common.no')).toHaveLength(2);
     fireEvent.click(screen.getByTitle('pim_common.yes'));

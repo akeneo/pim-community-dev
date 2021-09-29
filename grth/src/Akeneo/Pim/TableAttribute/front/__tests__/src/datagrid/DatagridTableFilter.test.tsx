@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {defaultFilterValuesMapping} from '../../factories';
 import {DatagridTableFilter} from '../../../src/datagrid';
-import {fireEvent, screen} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -41,20 +41,28 @@ describe('DatagridTableFilter', () => {
 
     // Open dropdown
     expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Nutrition'));
+    act(() => {
+      fireEvent.click(screen.getByText('Nutrition'));
+    });
 
     // Select column
-    fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
+    });
     expect(screen.getByText('Quantity')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Quantity'));
 
     // Select row
-    fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
+    });
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Pepper'));
 
     // Select operator
-    fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
+    });
     expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_common.operators.>'));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent} from '@testing-library/react';
+import {act, screen, fireEvent} from '@testing-library/react';
 import {RowSelector} from '../../../src/datagrid';
 import {getComplexTableAttribute} from '../../factories';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
@@ -24,7 +24,9 @@ describe('RowSelector', () => {
 
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTitle('pim_common.open'));
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
     expect(screen.getByText('Salt')).toBeInTheDocument();
     expect(screen.getAllByText('Pepper')).toHaveLength(2);
     expect(screen.getByText('[eggs]')).toBeInTheDocument();

@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent} from '@testing-library/react';
+import {act, screen, fireEvent} from '@testing-library/react';
 import {ColumnDefinitionSelector} from '../../../src/datagrid';
 import {getComplexTableAttribute} from '../../factories';
 
@@ -27,7 +27,9 @@ describe('ColumnDefinitionSelector', () => {
       />
     );
 
-    fireEvent.click(screen.getByTitle('pim_common.open'));
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
     expect(screen.getAllByText('Ingredients')).toHaveLength(2);
     expect(screen.getByText('Quantity')).toBeInTheDocument();
     expect(screen.getByText('Is allergenic')).toBeInTheDocument();
