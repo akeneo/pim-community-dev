@@ -20,7 +20,10 @@ class GetConnectedAppIdAndUserGroupQuery implements GetConnectedAppIdAndUserGrou
         $this->connection = $connection;
     }
 
-    public function execute(string $appPublicId): ?array
+    /**
+     * {@inheritDoc}
+     */
+    public function execute(string $marketplaceAppId): ?array
     {
         $query = <<<SQL
 SELECT akeneo_connectivity_connected_app.id as appId, oro_access_group.name as userGroup
@@ -29,10 +32,13 @@ JOIN akeneo_connectivity_connection on pim_api_client.id = akeneo_connectivity_c
 JOIN akeneo_connectivity_connected_app on akeneo_connectivity_connection.code = akeneo_connectivity_connected_app.connection_code
 JOIN oro_user_access_group on akeneo_connectivity_connection.user_id = oro_user_access_group.user_id
 JOIN oro_access_group on oro_user_access_group.group_id = oro_access_group.id
-WHERE pim_api_client.marketplace_public_app_id = :id AND oro_access_group.name != 'All'
+WHERE pim_api_client.marketplace_public_app_id = :marketplace_public_app_id
+AND oro_access_group.name != 'All'
 SQL;
 
-        $stmt = $this->connection->executeQuery($query, ['id' => $appPublicId]);
+        $stmt = $this->connection->executeQuery($query, [
+            'marketplace_public_app_id' => $marketplaceAppId,
+        ]);
         $row = $stmt->fetch();
 
         return false === $row ? null : $row;

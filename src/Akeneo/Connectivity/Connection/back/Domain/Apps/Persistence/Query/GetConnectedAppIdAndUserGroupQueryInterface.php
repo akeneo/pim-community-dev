@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query;
 interface GetConnectedAppIdAndUserGroupQueryInterface
 {
     /**
-     * @return array{appId:string, userGroup:string}|null $appIdAndUserGroup
+     * @return array{appId:string, userGroup:string}|null $marketplaceAppId
      */
-    public function execute(string $appPublicId): ?array;
+    public function execute(string $marketplaceAppId): ?array;
 }
