@@ -9,15 +9,17 @@ jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
 describe('DatagridTableFilter', () => {
   it('should display a filter', async () => {
-    renderWithProviders(<DatagridTableFilter
-      onChange={jest.fn()}
-      showLabel={true}
-      label={'Nutrition'}
-      attributeCode={'nutrition'}
-      canDisable={true}
-      onDisable={jest.fn()}
-      filterValuesMapping={defaultFilterValuesMapping}
-    />);
+    renderWithProviders(
+      <DatagridTableFilter
+        onChange={jest.fn()}
+        showLabel={true}
+        label={'Nutrition'}
+        attributeCode={'nutrition'}
+        canDisable={true}
+        onDisable={jest.fn()}
+        filterValuesMapping={defaultFilterValuesMapping}
+      />
+    );
 
     expect(await screen.findByText('Nutrition')).toBeInTheDocument();
     expect(screen.getByText('All')).toBeInTheDocument();
@@ -25,15 +27,17 @@ describe('DatagridTableFilter', () => {
 
   it('should callback changes', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<DatagridTableFilter
-      onChange={handleChange}
-      showLabel={true}
-      label={'Nutrition'}
-      attributeCode={'nutrition'}
-      canDisable={true}
-      onDisable={jest.fn()}
-      filterValuesMapping={defaultFilterValuesMapping}
-    />);
+    renderWithProviders(
+      <DatagridTableFilter
+        onChange={handleChange}
+        showLabel={true}
+        label={'Nutrition'}
+        attributeCode={'nutrition'}
+        canDisable={true}
+        onDisable={jest.fn()}
+        filterValuesMapping={defaultFilterValuesMapping}
+      />
+    );
 
     // Open dropdown
     expect(await screen.findByText('Nutrition')).toBeInTheDocument();
@@ -60,10 +64,10 @@ describe('DatagridTableFilter', () => {
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(handleChange).toBeCalledWith({
-      'column': 'quantity',
-      'operator': '>',
-      'row': 'pepper',
-      'value': '4000',
+      column: 'quantity',
+      operator: '>',
+      row: 'pepper',
+      value: '4000',
     });
   });
 });

@@ -1,20 +1,16 @@
 import React from 'react';
-import {getLabel, useUserContext, useTranslate} from "@akeneo-pim-community/shared";
-import {SelectInput} from "akeneo-design-system";
-import {SelectOption, SelectOptionCode, TableAttribute} from "../models";
-import {useFetchOptions} from "../product";
+import {getLabel, useUserContext, useTranslate} from '@akeneo-pim-community/shared';
+import {SelectInput} from 'akeneo-design-system';
+import {SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {useFetchOptions} from '../product';
 
 type RowSelectorProps = {
   attribute: TableAttribute;
   onChange: (option: SelectOption | undefined) => void;
   value?: SelectOption;
-}
+};
 
-const RowSelector: React.FC<RowSelectorProps> = ({
-  attribute,
-  onChange,
-  value,
-}) => {
+const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -23,27 +19,29 @@ const RowSelector: React.FC<RowSelectorProps> = ({
 
   const handleChange = (selectOptionCode: SelectOptionCode | null) => {
     onChange((options || []).find(option => option.code === selectOptionCode));
-  }
+  };
 
   // TODO Search & pagination CPM-379
 
-  return <SelectInput
-    clearLabel={translate('pim_common.clear_value')}
-    clearable
-    emptyResultLabel={translate('pim_common.no_result')}
-    onChange={handleChange}
-    placeholder="TODO Fill row (optional)"
-    value={value?.code || null}
-    openLabel={translate('pim_common.open')}
-  >
-    {(options || []).map(option => {
+  return (
+    <SelectInput
+      clearLabel={translate('pim_common.clear_value')}
+      clearable
+      emptyResultLabel={translate('pim_common.no_result')}
+      onChange={handleChange}
+      placeholder='TODO Fill row (optional)'
+      value={value?.code || null}
+      openLabel={translate('pim_common.open')}>
+      {(options || []).map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
-        return <SelectInput.Option title={label} value={option.code} key={option.code}>
-          {label}
-        </SelectInput.Option>
-      }
-    )}
-  </SelectInput>
-}
+        return (
+          <SelectInput.Option title={label} value={option.code} key={option.code}>
+            {label}
+          </SelectInput.Option>
+        );
+      })}
+    </SelectInput>
+  );
+};
 
 export {RowSelector};

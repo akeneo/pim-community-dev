@@ -1,10 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const AbstractFilter = require('oro/datafilter/abstract-filter');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {DatagridTableFilter, FilterValuesMapping} from "../datagrid";
-import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
+import {DatagridTableFilter, FilterValuesMapping} from '../datagrid';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 class TableFilter extends AbstractFilter {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -27,8 +28,8 @@ class TableFilter extends AbstractFilter {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  private _readDOMValue() {
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private _readDOMValue() {}
 
   render(): any {
     const onDisable = this.disable.bind(this);

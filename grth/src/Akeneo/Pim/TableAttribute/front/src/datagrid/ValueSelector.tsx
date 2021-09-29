@@ -1,6 +1,6 @@
 import React from 'react';
-import {FilterValuesMapping} from "./FilterValues";
-import {ColumnCode, TableAttribute} from "../models";
+import {FilterValuesMapping} from './FilterValues';
+import {ColumnCode, TableAttribute} from '../models';
 
 type ValueSelectorProps = {
   dataType?: string;
@@ -10,7 +10,7 @@ type ValueSelectorProps = {
   filterValuesMapping: FilterValuesMapping;
   attribute: TableAttribute;
   columnCode: ColumnCode;
-}
+};
 
 const ValueSelector: React.FC<ValueSelectorProps> = ({
   value,
@@ -23,12 +23,11 @@ const ValueSelector: React.FC<ValueSelectorProps> = ({
 }) => {
   const Renderer = (filterValuesMapping[dataType || ''] || {})[operator || '']?.default;
 
-  return Renderer ? <Renderer
-    value={value}
-    onChange={onChange}
-    attribute={attribute}
-    columnCode={columnCode}
-  /> : <></>
-}
+  return Renderer ? (
+    <Renderer value={value} onChange={onChange} attribute={attribute} columnCode={columnCode} />
+  ) : (
+    <></>
+  );
+};
 
 export {ValueSelector};

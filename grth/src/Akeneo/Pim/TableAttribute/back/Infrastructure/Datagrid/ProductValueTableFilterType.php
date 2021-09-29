@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 
 class ProductValueTableFilterType extends AbstractType
 {
-    const NAME = 'oro_type_text_filter';
+    private const NAME = 'oro_type_text_filter';
 
     public function getParent(): string
     {

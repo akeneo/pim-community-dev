@@ -18,12 +18,12 @@ use Oro\Bundle\FilterBundle\Filter\AbstractFilter;
 
 class ProductValueTableFilter extends AbstractFilter
 {
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return ProductValueTableFilterType::class;
     }
 
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         // TODO CPM-377
         throw new \Exception('NEED TO BE IMPLEMENTED');

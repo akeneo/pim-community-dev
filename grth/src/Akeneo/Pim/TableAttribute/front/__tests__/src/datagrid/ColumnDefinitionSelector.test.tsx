@@ -1,27 +1,31 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, fireEvent} from '@testing-library/react';
-import {ColumnDefinitionSelector} from "../../../src/datagrid";
-import {getComplexTableAttribute} from "../../factories";
+import {ColumnDefinitionSelector} from '../../../src/datagrid';
+import {getComplexTableAttribute} from '../../factories';
 
 describe('ColumnDefinitionSelector', () => {
   it('should display current column', () => {
-    renderWithProviders(<ColumnDefinitionSelector
-      attribute={getComplexTableAttribute()}
-      value={getComplexTableAttribute().table_configuration[0]}
-      onChange={jest.fn()}
-    />);
+    renderWithProviders(
+      <ColumnDefinitionSelector
+        attribute={getComplexTableAttribute()}
+        value={getComplexTableAttribute().table_configuration[0]}
+        onChange={jest.fn()}
+      />
+    );
 
     expect(screen.getByText('Ingredients')).toBeInTheDocument();
   });
 
   it('should display all columns, then update it', () => {
     const handleChange = jest.fn();
-    renderWithProviders(<ColumnDefinitionSelector
-      attribute={getComplexTableAttribute()}
-      value={getComplexTableAttribute().table_configuration[0]}
-      onChange={handleChange}
-    />);
+    renderWithProviders(
+      <ColumnDefinitionSelector
+        attribute={getComplexTableAttribute()}
+        value={getComplexTableAttribute().table_configuration[0]}
+        onChange={handleChange}
+      />
+    );
 
     fireEvent.click(screen.getByTitle('pim_common.open'));
     expect(screen.getAllByText('Ingredients')).toHaveLength(2);

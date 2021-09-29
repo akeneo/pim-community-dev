@@ -1,8 +1,8 @@
 import React from 'react';
-import {DatagridTableFilterValueRenderer} from "./index";
+import {DatagridTableFilterValueRenderer} from './index';
 
 const EmptyFilterValue: DatagridTableFilterValueRenderer = () => {
-  return <></>
+  return <></>;
 };
 
 export default EmptyFilterValue;
