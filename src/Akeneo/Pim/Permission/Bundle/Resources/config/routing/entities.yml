@@ -12,3 +12,8 @@ pimee_permissions_entities_get_attribute_groups:
   path: /rest/permissions/attribute-group
   defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction }
   methods: [ GET ]
+
+pimee_permissions_entities_set_attribute_groups:
+  path: /rest/permissions/attribute-group
+  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostAttributeGroupsPermissionsAction }
+  methods: [ POST ]

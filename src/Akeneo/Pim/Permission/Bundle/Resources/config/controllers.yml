@@ -162,3 +162,10 @@ services:
         arguments:
             - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels'
             - '@router'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostAttributeGroupsPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver'
