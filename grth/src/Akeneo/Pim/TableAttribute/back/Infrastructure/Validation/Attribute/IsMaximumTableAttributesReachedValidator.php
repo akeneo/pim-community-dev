@@ -18,7 +18,7 @@ class IsMaximumTableAttributesReachedValidator extends ConstraintValidator
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IsMaximumTableAttributesReached::class);
 

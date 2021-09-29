@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class FirstColumnCodeCannotBeChanged extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.table_configuration.first_column_code_cannot_be_changed';
+    public string $message = 'pim_table_configuration.validation.table_configuration.first_column_code_cannot_be_changed';
 
     public function getTargets(): array
     {

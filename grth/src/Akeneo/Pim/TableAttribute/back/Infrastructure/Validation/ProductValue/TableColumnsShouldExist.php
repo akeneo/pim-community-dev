@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class TableColumnsShouldExist extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.product_value.non_existing_columns';
+    public string $message = 'pim_table_configuration.validation.product_value.non_existing_columns';
 
     public function getTargets(): array
     {

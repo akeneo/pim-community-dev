@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class CellDataTypesShouldMatch extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.product_value.invalid_data_type';
+    public string $message = 'pim_table_configuration.validation.product_value.invalid_data_type';
 
     public function getTargets(): array
     {

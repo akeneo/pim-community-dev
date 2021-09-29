@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class SelectOptionsShouldExist extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.product_value.unknown_option';
+    public string $message = 'pim_table_configuration.validation.product_value.unknown_option';
 
     public function getTargets(): array
     {

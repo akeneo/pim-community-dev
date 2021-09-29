@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class FirstColumnShouldBeFilled extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.product_value.first_column_required';
+    public string $message = 'pim_table_configuration.validation.product_value.first_column_required';
 
     public function getTargets(): array
     {

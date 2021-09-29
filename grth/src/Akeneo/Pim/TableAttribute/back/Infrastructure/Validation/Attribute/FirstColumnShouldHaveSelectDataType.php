@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class FirstColumnShouldHaveSelectDataType extends Constraint
 {
-    public $message = 'pim_table_configuration.validation.table_configuration.first_column_should_be_select';
+    public string $message = 'pim_table_configuration.validation.table_configuration.first_column_should_be_select';
 
     public function getTargets(): array
     {

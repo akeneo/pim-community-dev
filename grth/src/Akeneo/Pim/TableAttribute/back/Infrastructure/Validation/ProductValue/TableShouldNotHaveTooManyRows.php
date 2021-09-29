@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint;
 class TableShouldNotHaveTooManyRows extends Constraint
 {
     public const LIMIT = 100;
-    public $message = 'pim_table_configuration.validation.product_value.too_many_rows';
+    public string $message = 'pim_table_configuration.validation.product_value.too_many_rows';
 
     public function getTargets(): array
     {
