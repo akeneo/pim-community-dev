@@ -13,7 +13,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Symfony\Component\Validator\Constraint;
 
-class TableShouldNotHaveTooManyRows extends Constraint
+final class TableShouldNotHaveTooManyRows extends Constraint
 {
     public const LIMIT = 100;
     public string $message = 'pim_table_configuration.validation.product_value.too_many_rows';

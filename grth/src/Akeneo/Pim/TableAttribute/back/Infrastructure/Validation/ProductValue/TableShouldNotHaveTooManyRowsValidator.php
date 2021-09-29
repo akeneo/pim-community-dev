@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class TableShouldNotHaveTooManyRowsValidator extends ConstraintValidator
+final class TableShouldNotHaveTooManyRowsValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
