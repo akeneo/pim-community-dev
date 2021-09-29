@@ -1,10 +1,12 @@
 import {getAppcuesAgent} from './appcues-agent';
 import {PimOnboarding} from './pim-onboarding';
+import {Category} from '@akeneo-pim-community/shared';
 
 const _ = require('underscore');
 const FeatureFlags = require('pim/feature-flags');
 const UserContext = require('pim/user-context');
 const Mediator = require('oro/mediator');
+const Router = require('pim/router');
 
 interface EventOptions {
   code?: string,
@@ -42,6 +44,16 @@ interface Action {
   channel_code?: string,
   is_required?: boolean
 }
+
+interface Event {
+  name?: string,
+  checklistName?: string,
+  flowName?: string,
+  flowId?: string,
+}
+
+const FLOW_GUIDED_TOUR_ID = 'd413bbd2-02cf-4664-bcd2-1e799624f639';
+const CATEGORY_PAIN_MANAGEMENT_CODE = '008_1_1';
 
 const AppcuesOnboarding: PimOnboarding = {
   registerUser: () => {
@@ -237,17 +249,17 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'attribute:create:type-selected':
           if (eventOptions && eventOptions.type) {
-            appcues.track('Attribute of type "' + eventOptions.type +'" created');
+            appcues.track('Attribute of type "' + eventOptions.type + '" created');
           }
           break;
         case 'common:form:value-changed':
           if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.name) {
-            appcues.track('On attribute form, the value of field "' + eventOptions.name +'" changed');
+            appcues.track('On attribute form, the value of field "' + eventOptions.name + '" changed');
           }
           break;
         case 'translation:form:value-changed':
           if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.localeCode) {
-            appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode +'" changed');
+            appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode + '" changed');
           }
           break;
         case 'common:form:saved':
@@ -319,10 +331,21 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'navigation:entry:clicked':
           if (eventOptions && eventOptions.code) {
-            appcues.track('Navigation entry "' + eventOptions.code +'" clicked');
+            appcues.track('Navigation entry "' + eventOptions.code + '" clicked');
           }
           break;
+        default:
+          appcues.track(event);
       }
+    });
+  },
+  on: (eventName: string, _callback: (event: object) => void) => {
+    getAppcuesAgent().then(appcues => {
+      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
+        return;
+      }
+
+      appcues.on(eventName, _callback);
     });
   },
   loadLaunchpad: (element: string) => {
@@ -341,6 +364,25 @@ const AppcuesOnboarding: PimOnboarding = {
   init: () => {
     Mediator.on('route_complete', async () => {
       AppcuesOnboarding.page();
+
+      AppcuesOnboarding.on('checklist_completed', (event: Event) => {
+        AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
+      });
+
+      AppcuesOnboarding.on('checklist_dismissed', (event: Event) => {
+        AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
+      });
+
+      AppcuesOnboarding.on('flow_started', async (event: Event) => {
+        if (event.flowId === FLOW_GUIDED_TOUR_ID) {
+          // Set the "Pain Management" category id in session in order to deploy it when the user has launched the flow "FT - Guided Tour"
+          const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: CATEGORY_PAIN_MANAGEMENT_CODE});
+          const categoryResponse = await fetch(categoryRoute);
+          const categoryPainManagement: Category = await categoryResponse.json();
+
+          sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id}));
+        }
+      });
     });
     AppcuesOnboarding.registerUser();
     AppcuesOnboarding.loadLaunchpad('#appcues-launchpad-btn');
