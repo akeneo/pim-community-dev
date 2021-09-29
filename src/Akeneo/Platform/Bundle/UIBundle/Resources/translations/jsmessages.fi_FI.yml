@@ -402,3 +402,7 @@ pim_system:
     enabled: SSO käytössä
     disabled: SSO pois käytöstä
     title: SAML-pohjainen kertakirjautuminen
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Valitse toiminto
