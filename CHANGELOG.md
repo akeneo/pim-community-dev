@@ -111,6 +111,7 @@
 - PIM-10074: Add translation key for mass action selection
 - PIM-10062: Suppress PHP warning when missing 'dataScope' value.
 - Bump NodeJS library to fix CVE on  tmpl 1.0.4 
+- GHSA-w7rc-rwvf-8q5r: Bump node-fetch from 1.7.3 to 2.6.1
 
 ## New features
 
