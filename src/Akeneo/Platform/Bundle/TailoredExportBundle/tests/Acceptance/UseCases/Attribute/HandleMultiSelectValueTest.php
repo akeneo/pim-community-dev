@@ -80,25 +80,24 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
             ],
             'it applies replacement operation when value is found in the mapping' => [
                 'operations' => [
-//                    new ReplacementOperation([
-//                        'cotton' => 'amazing cotton',
-//                    ]),
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
                 ],
                 'selection' => new MultiSelectLabelSelection('/', 'fr_FR', 'material'),
                 'value' => new MultiSelectValue(['cotton', 'wool'], ['cotton' => 'amazing cotton']),
                 'expected' => [self::TARGET_NAME => 'amazing cotton/Laine'],
             ],
-
-//            'it does not apply replacement operation when value is not found in the mapping' => [
-//                'operations' => [
-//                    new ReplacementOperation([
-//                        'cotton' => 'amazing cotton',
-//                    ]),
-//                ],
-//                'selection' => new SimpleSelectCodeSelection(),
-//                'value' => new MultiSelectValue(['polyester']),
-//                'expected' => [self::TARGET_NAME => 'polyester'],
-//            ],
+            'it does not apply replacement operation when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new MultiSelectValue(['polyester'], ['cotton' => 'amazing cotton']),
+                'expected' => [self::TARGET_NAME => 'polyester'],
+            ],
         ];
     }
 
