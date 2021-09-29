@@ -70,7 +70,7 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(array_map(
                 static fn (int $i): string => sprintf('table_attribute_%d', $i),
-                range(0, 50)
+                range(1, 50)
             ));
 
         $executionContext
@@ -87,13 +87,14 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
     ) {
         $attribute = new Attribute();
         $attribute->setType(AttributeTypes::TABLE);
+        $attribute->setCode('new');
 
         $attributeRepository
             ->getAttributeCodesByType(AttributeTypes::TABLE)
             ->shouldBeCalled()
             ->willReturn(array_map(
                 static fn (int $i): string => sprintf('table_attribute_%d', $i),
-                range(0, 50)
+                range(1, 50)
             ));
 
         $executionContext
@@ -113,16 +114,89 @@ class IsMaximumTableAttributesReachedValidatorSpec extends ObjectBehavior
     ) {
         $attribute = new Attribute();
         $attribute->setType(AttributeTypes::TABLE);
+        $attribute->setCode('new');
 
         $attributeRepository
             ->getAttributeCodesByType(AttributeTypes::TABLE)
             ->shouldBeCalled()
-            ->willReturn(['nutrition', 'jambon_fromage']);
+            ->willReturn(array_map(
+                static fn (int $i): string => sprintf('table_attribute_%d', $i),
+                range(1, 49)
+            ));
 
         $executionContext
             ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($attribute, new IsMaximumTableAttributesReached());
+    }
+
+    function it_should_validate_several_attribute_creation_in_a_raw(
+        ExecutionContext $executionContext,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $attributeRepository
+            ->getAttributeCodesByType(AttributeTypes::TABLE)
+            ->shouldBeCalled()
+            ->willReturn(array_map(
+                static fn (int $i): string => sprintf('table_attribute_%d', $i),
+                range(1, 48)
+            ));
+
+        $executionContext->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $attribute = new Attribute();
+        $attribute->setType(AttributeTypes::TABLE);
+        $attribute->setCode('table_attribute_3');
+        $this->validate($attribute, new IsMaximumTableAttributesReached());
+
+        $attribute1 = new Attribute();
+        $attribute1->setType(AttributeTypes::TABLE);
+        $attribute1->setCode('new_table_1');
+        for ($i = 0; $i < 3; $i++) {
+            $this->validate($attribute1, new IsMaximumTableAttributesReached());
+        }
+        $attribute2 = new Attribute();
+        $attribute2->setType(AttributeTypes::TABLE);
+        $attribute2->setCode('new_table_2');
+        $this->validate($attribute2, new IsMaximumTableAttributesReached());
+    }
+
+    function it_should_add_a_violation_when_validate_several_attribute_creation_in_a_raw(
+        ExecutionContext $executionContext,
+        ConstraintViolationBuilderInterface $violationBuilder,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $attributeRepository
+            ->getAttributeCodesByType(AttributeTypes::TABLE)
+            ->shouldBeCalled()
+            ->willReturn(array_map(
+                static fn (int $i): string => sprintf('table_attribute_%d', $i),
+                range(1, 48)
+            ));
+
+        $executionContext
+            ->buildViolation(Argument::any(), ['{{ limit }}' => 50])
+            ->shouldBeCalledTimes(5)
+            ->willReturn($violationBuilder);
+        $violationBuilder
+            ->addViolation()
+            ->shouldBeCalledTimes(5);
+
+        $attribute1 = new Attribute();
+        $attribute1->setType(AttributeTypes::TABLE);
+        $attribute1->setCode('new_table_1');
+        $this->validate($attribute1, new IsMaximumTableAttributesReached());
+        $attribute2 = new Attribute();
+        $attribute2->setType(AttributeTypes::TABLE);
+        $attribute2->setCode('new_table_2');
+        $this->validate($attribute2, new IsMaximumTableAttributesReached());
+
+        $attribute3 = new Attribute();
+        $attribute3->setType(AttributeTypes::TABLE);
+        $attribute3->setCode('new_table_3');
+        for ($i = 0; $i < 5; $i++) {
+            $this->validate($attribute3, new IsMaximumTableAttributesReached());
+        }
     }
 }

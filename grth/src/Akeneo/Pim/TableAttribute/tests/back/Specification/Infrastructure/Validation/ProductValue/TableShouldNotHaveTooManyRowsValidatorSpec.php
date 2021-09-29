@@ -78,15 +78,18 @@ class TableShouldNotHaveTooManyRowsValidatorSpec extends ObjectBehavior
             ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $table = Table::fromNormalized([[
-            ColumnIdGenerator::ingredient() => 'red hot chili peppers',
-            ColumnIdGenerator::quantity() => 4,
-        ]]);
+        $normalized = [];
+        for ($i = 0; $i < 100; $i++) {
+            $normalized[] = [
+                ColumnIdGenerator::ingredient() => sprintf('ingredient_%d', $i),
+                ColumnIdGenerator::quantity() => 4,
+            ];
+        }
 
         $tableValue
             ->getData()
             ->shouldBeCalled()
-            ->willReturn($table);
+            ->willReturn(Table::fromNormalized($normalized));
 
         $this->validate($tableValue, new TableShouldNotHaveTooManyRows());
     }
