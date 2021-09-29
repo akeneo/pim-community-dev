@@ -23,10 +23,16 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
     onChange((options || []).find(option => option.code === selectOptionCode));
   };
 
-  const filteredOptions = (options || []).filter((option) => {
-    return option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
-      getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase());
-  }).slice(0, (page + 1) * 20);
+  const filteredOptions = (options || [])
+    .filter(option => {
+      return (
+        option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
+        getLabel(option.labels, catalogLocale, option.code)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+      );
+    })
+    .slice(0, (page + 1) * 20);
 
   return (
     <SelectInput
@@ -37,9 +43,10 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
       placeholder='TODO Fill row (optional)'
       value={value?.code || null}
       openLabel={translate('pim_common.open')}
-      onNextPage={() => { setPage(page + 1)}}
-      onSearchChange={setSearchValue}
-    >
+      onNextPage={() => {
+        setPage(page + 1);
+      }}
+      onSearchChange={setSearchValue}>
       {filteredOptions.map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
         return (

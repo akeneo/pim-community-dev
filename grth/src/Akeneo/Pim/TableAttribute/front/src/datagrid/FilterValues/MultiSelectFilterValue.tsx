@@ -13,10 +13,16 @@ const StringFilterValue: DatagridTableFilterValueRenderer = ({value, onChange, a
   const [page, setPage] = React.useState<number>(0);
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  const filteredOptions = (options || []).filter((option) => {
-    return option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
-      getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase());
-  }).slice(0, (page + 1) * 20);
+  const filteredOptions = (options || [])
+    .filter(option => {
+      return (
+        option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
+        getLabel(option.labels, catalogLocale, option.code)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+      );
+    })
+    .slice(0, (page + 1) * 20);
 
   return (
     <MultiSelectInput
@@ -26,8 +32,7 @@ const StringFilterValue: DatagridTableFilterValueRenderer = ({value, onChange, a
       removeLabel={translate('pim_common.remove')}
       onChange={onChange}
       onSearchChange={setSearchValue}
-      onNextPage={() => setPage(page + 1)}
-    >
+      onNextPage={() => setPage(page + 1)}>
       {filteredOptions.map(option => (
         <MultiSelectInput.Option value={option.code} key={option.code}>
           {getLabel(option.labels, catalogLocale, option.code)}

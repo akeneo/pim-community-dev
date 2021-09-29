@@ -30,7 +30,7 @@ describe('OperatorSelector', () => {
     );
 
     act(() => {
-      fireEvent.click(screen.getByTitle('pim_common.open'))
+      fireEvent.click(screen.getByTitle('pim_common.open'));
     });
     expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
     expect(screen.getAllByText('pim_common.operators.>=')).toHaveLength(2);
