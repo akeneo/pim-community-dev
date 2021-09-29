@@ -48,7 +48,8 @@ interface Action {
 interface Event {
   name?: string,
   checklistName?: string,
-  flowName?: string
+  flowName?: string,
+  flowId?: string,
 }
 
 const AppcuesOnboarding: PimOnboarding = {
@@ -370,7 +371,7 @@ const AppcuesOnboarding: PimOnboarding = {
       });
 
       AppcuesOnboarding.on('flow_started', async (event: Event) => {
-        if (event.flowName === 'FT - Guided Tour') {
+        if (event.flowId === 'd413bbd2-02cf-4664-bcd2-1e799624f639') {
           const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: '008_1_1'});
           const categoryResponse = await fetch(categoryRoute);
           const categoryPainManagement: Category = await categoryResponse.json();
