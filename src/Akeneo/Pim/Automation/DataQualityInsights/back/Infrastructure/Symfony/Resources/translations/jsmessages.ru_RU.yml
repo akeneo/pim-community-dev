@@ -1,0 +1,22 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_spelling:
+        recommendation: Атрибуты с орфографическими проблемами
+    axis:
+      consistency:
+        title: Согласованность
+        attributes_link: Показать все улучшенные атрибуты
+        success: Данные вашего продукта полностью согласованы. Поздравляем!
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: Все улучшенные атрибуты
+    spellcheck_popover:
+      title: Исправления
+      original_text_title: Оригинал
+      suggestions_title: Предложения
+      ignore_all_suggestions_button_label: Пропустить
+  attribute_grid:
+    quality:
+      to_improve: Улучшить
+      good: Хорошо
