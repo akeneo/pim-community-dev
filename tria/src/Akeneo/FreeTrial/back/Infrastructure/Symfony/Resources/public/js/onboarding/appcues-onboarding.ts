@@ -52,6 +52,9 @@ interface Event {
   flowId?: string,
 }
 
+const FLOW_GUIDED_TOUR_ID = 'd413bbd2-02cf-4664-bcd2-1e799624f639';
+const CATEGORY_PAIN_MANAGEMENT_CODE = '008_1_1';
+
 const AppcuesOnboarding: PimOnboarding = {
   registerUser: () => {
     getAppcuesAgent().then(appcues => {
@@ -371,8 +374,9 @@ const AppcuesOnboarding: PimOnboarding = {
       });
 
       AppcuesOnboarding.on('flow_started', async (event: Event) => {
-        if (event.flowId === 'd413bbd2-02cf-4664-bcd2-1e799624f639') {
-          const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: '008_1_1'});
+        if (event.flowId === FLOW_GUIDED_TOUR_ID) {
+          // Set the "Pain Management" category id in session in order to deploy it when the user has launched the flow "FT - Guided Tour"
+          const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: CATEGORY_PAIN_MANAGEMENT_CODE});
           const categoryResponse = await fetch(categoryRoute);
           const categoryPainManagement: Category = await categoryResponse.json();
 
