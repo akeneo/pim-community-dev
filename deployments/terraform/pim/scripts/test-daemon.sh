@@ -7,7 +7,7 @@ apt-get -qq --no-install-recommends --no-install-suggests --yes  install curl jq
 LOGIN_DATA=$(mktemp)
 COOKIE_JAR=$(mktemp)
 
-CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5"
+CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused"
 
 echo "Testing ${TARGET}"
 timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} >/dev/null
