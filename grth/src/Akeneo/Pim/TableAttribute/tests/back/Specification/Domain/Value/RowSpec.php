@@ -55,4 +55,9 @@ class RowSpec extends ObjectBehavior
         $this->cell(ColumnId::fromString('unknown_64fdf664-ad55-4cc7-bbf7-466efb950173'))
             ->shouldReturn(null);
     }
+
+    function it_is_countable()
+    {
+        $this->count()->shouldReturn(2);
+    }
 }

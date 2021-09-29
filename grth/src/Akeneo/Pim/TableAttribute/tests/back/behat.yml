@@ -7,6 +7,7 @@ default:
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\CreateAttributeContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
                 - test.channel.context
                 - test.locale.context
                 - test.user.context

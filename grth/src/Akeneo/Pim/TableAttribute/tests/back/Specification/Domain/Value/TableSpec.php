@@ -55,4 +55,9 @@ class TableSpec extends ObjectBehavior
     {
         $this->uniqueColumnIds()->shouldReturn(['foo', '0', 'bar']);
     }
+
+    function it_counts_the_number_of_cells()
+    {
+        $this->cellsCount()->shouldReturn(4);
+    }
 }

@@ -14,6 +14,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext'
 
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation:
+        public: true
+        arguments:
+            - '@test.catalog.product_validation.context'
+            - '@test.catalog.product.builder'
+
     Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext:
         public: true
 

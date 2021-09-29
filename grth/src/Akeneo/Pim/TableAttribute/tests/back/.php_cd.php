@@ -55,6 +55,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
             'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',

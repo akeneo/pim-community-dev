@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
 /**
  * @phpstan-implements \IteratorAggregate<string, Cell>
  */
-final class Row implements \IteratorAggregate
+final class Row implements \IteratorAggregate, \Countable
 {
     /** @var array<string, Cell> */
     private array $cells;
@@ -56,6 +56,14 @@ final class Row implements \IteratorAggregate
                 \array_filter($row, $isCellFilled)
             )
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->cells);
     }
 
     /**

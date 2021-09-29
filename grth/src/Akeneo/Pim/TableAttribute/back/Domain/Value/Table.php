@@ -80,4 +80,12 @@ final class Table implements \IteratorAggregate, \Countable
     {
         return \array_unique(\array_merge(...\array_map(fn (Row $row): array => $row->columnIds(), $this->rows)));
     }
+
+    public function cellsCount(): int
+    {
+        return array_reduce(
+            $this->rows,
+            static fn (?int $sum, Row $row): int => $sum + count($row)
+        ) ?? 0;
+    }
 }
