@@ -76,7 +76,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
             readOnly={true}
             value={null}
             placeholder="Placeholder"
-            emptyResultLabel="Not matches found"
+            emptyResultLabel="No match found"
           >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -238,7 +238,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState(null);
       return (
         <>
-          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No match found">
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -298,7 +298,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState(null);
       return (
         <>
-          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No match found">
             <SelectInput.Option value="en_US" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </SelectInput.Option>
