@@ -56,7 +56,7 @@ final class GetGroupedSourcesAction
 
         $options = $request->get('options', []);
         $search = $request->get('search');
-        $limit = $options['limit'] ?? self::LIMIT_DEFAULT;
+        $limit = (int) $options['limit'] ?? self::LIMIT_DEFAULT;
         $systemOffset = (int) $options['offset']['system'];
         $associationTypeOffset = (int) $options['offset']['association_type'];
         $attributeOffset = (int) $options['offset']['attribute'];

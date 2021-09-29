@@ -42,14 +42,21 @@ const SimpleSelectReplacement = ({
     replacementValueFilter.searchValue,
     replacementValueFilter.page,
     replacementValueFilter.codesToInclude,
-    replacementValueFilter.codesToExclude
+    replacementValueFilter.codesToExclude,
+    isModalOpen
   );
+
+  const handleCancel = () => {
+    closeModal();
+    setReplacementValueFilter(getDefaultReplacementValueFilter());
+  };
 
   const handleConfirm = (mapping: ReplacementValues) => {
     const newOperation = {...operation, mapping};
 
     onOperationChange(isDefaultReplacementOperation(newOperation) ? undefined : newOperation);
     closeModal();
+    setReplacementValueFilter(getDefaultReplacementValueFilter());
   };
 
   return (
@@ -78,7 +85,7 @@ const SimpleSelectReplacement = ({
           initialMapping={operation.mapping}
           validationErrors={validationErrors}
           onConfirm={handleConfirm}
-          onCancel={closeModal}
+          onCancel={handleCancel}
         />
       )}
     </Collapse>

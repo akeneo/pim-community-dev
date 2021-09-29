@@ -9,7 +9,8 @@ const useRecords = (
   search: string,
   page: number,
   optionCodesToInclude: string[] | null,
-  optionCodesToExclude: string[] | null
+  optionCodesToExclude: string[] | null,
+  shouldFetch: boolean
 ) => {
   const [records, setRecords] = useState<Record[]>([]);
   const [matchesCount, setMatchesCount] = useState<number>(0);
@@ -47,8 +48,18 @@ const useRecords = (
       setMatchesCount(result.matches_count);
     };
 
-    void fetchRecords();
-  }, [isMounted, getRecordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, channel, locale]);
+    if (shouldFetch) void fetchRecords();
+  }, [
+    shouldFetch,
+    isMounted,
+    getRecordsRoute,
+    optionCodesToInclude,
+    optionCodesToExclude,
+    search,
+    page,
+    channel,
+    locale,
+  ]);
 
   return [records, matchesCount] as const;
 };
