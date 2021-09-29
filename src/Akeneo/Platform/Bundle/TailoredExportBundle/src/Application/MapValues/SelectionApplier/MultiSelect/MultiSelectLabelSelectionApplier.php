@@ -38,6 +38,7 @@ class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
 
         $attributeCode = $selection->getAttributeCode();
         $optionsCodes = $value->getOptionCodes();
+        $mappedReplacementValues = $value->getMappedReplacementValues();
         $locale = $selection->getLocale();
 
         $attributeOptionTranslations = $this->getAttributeOptionLabels->byAttributeCodeAndOptionCodes(
@@ -46,7 +47,11 @@ class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
             $locale
         );
 
-        $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations) {
+        $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations, $mappedReplacementValues) {
+            if (array_key_exists($optionCode, $mappedReplacementValues)) {
+                return $mappedReplacementValues[$optionCode];
+            }
+
             return $attributeOptionTranslations[$optionCode] ?? sprintf('[%s]', $optionCode);
         }, $optionsCodes);
 

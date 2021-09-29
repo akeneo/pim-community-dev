@@ -19,16 +19,23 @@ class MultiSelectValue implements SourceValueInterface
 {
     /** @var string[] */
     private array $optionCodes;
+    private array $mappedReplacementValues;
 
-    public function __construct(array $optionCodes)
+    public function __construct(array $optionCodes, array $mappedReplacementValues = [])
     {
         Assert::allString($optionCodes);
 
         $this->optionCodes = $optionCodes;
+        $this->mappedReplacementValues = $mappedReplacementValues;
     }
 
     public function getOptionCodes(): array
     {
         return $this->optionCodes;
+    }
+
+    public function getMappedReplacementValues(): array
+    {
+        return $this->mappedReplacementValues;
     }
 }

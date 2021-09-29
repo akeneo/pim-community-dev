@@ -22,6 +22,11 @@ class ReplacementOperation implements OperationInterface
         $this->mapping = $mapping;
     }
 
+    public function getMapping(): array
+    {
+        return $this->mapping;
+    }
+
     public function hasMappedValue(string $value): bool
     {
         return array_key_exists($value, $this->mapping);
