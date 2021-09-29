@@ -4,7 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector, DefaultValue, Operations} from '../common';
 import {isMultiSelectSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {MultiSelectReplacement} from './MultiSelectReplacement';
+import {AttributeOptionsReplacement} from '../common/AttributeOptionsReplacement';
 
 const MultiSelectConfigurator = ({attribute, source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isMultiSelectSource(source)) {
@@ -20,7 +20,7 @@ const MultiSelectConfigurator = ({attribute, source, validationErrors, onSourceC
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
         }
       />
-      <MultiSelectReplacement
+      <AttributeOptionsReplacement
         operation={source.operations.replacement}
         attributeCode={attribute.code}
         validationErrors={filterErrors(validationErrors, '[operations][replacement]')}

@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {MultiSelectConfigurator} from './MultiSelectConfigurator';
 import {getDefaultMultiSelectSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {ReplacementOperation} from '../common';
 
 const attribute = {
   code: 'multiselect',
@@ -19,27 +18,7 @@ const attribute = {
 
 jest.mock('../common/CodeLabelCollectionSelector');
 jest.mock('../common/DefaultValue');
-
-jest.mock('./MultiSelectReplacement', () => ({
-  MultiSelectReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: ReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            blue: 'Bleu',
-          },
-        })
-      }
-    >
-      Multi select replacement
-    </button>
-  ),
-}));
+jest.mock('../common/AttributeOptionsReplacement');
 
 test('it displays a multi select configurator', () => {
   const onSourceChange = jest.fn();
@@ -113,7 +92,7 @@ test('it can update multi select replacement operation', () => {
     />
   );
 
-  userEvent.click(screen.getByText('Multi select replacement'));
+  userEvent.click(screen.getByText('Attribute options replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultMultiSelectSource(attribute, null, null),

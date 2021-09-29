@@ -17,19 +17,19 @@ const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
 `;
 
-type MultiSelectReplacementProps = {
+type AttributeOptionsReplacementProps = {
   operation?: ReplacementOperation;
   attributeCode: string;
   validationErrors: ValidationError[];
   onOperationChange: (updatedOperation?: ReplacementOperation) => void;
 };
 
-const MultiSelectReplacement = ({
+const AttributeOptionsReplacement = ({
   operation = getDefaultReplacementOperation(),
   attributeCode,
   validationErrors,
   onOperationChange,
-}: MultiSelectReplacementProps) => {
+}: AttributeOptionsReplacementProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
@@ -85,4 +85,4 @@ const MultiSelectReplacement = ({
   );
 };
 
-export {MultiSelectReplacement};
+export {AttributeOptionsReplacement};

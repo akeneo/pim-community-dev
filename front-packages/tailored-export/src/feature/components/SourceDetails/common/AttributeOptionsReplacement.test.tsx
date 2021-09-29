@@ -2,7 +2,7 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {MultiSelectReplacement} from './MultiSelectReplacement';
+import {AttributeOptionsReplacement} from './AttributeOptionsReplacement';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
 jest.mock('../../../hooks/useAttributeOptions', () => ({
@@ -50,7 +50,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   }));
 
   await renderWithProviders(
-    <MultiSelectReplacement attributeCode="multiselect" validationErrors={[]} onOperationChange={handleChange} />
+    <AttributeOptionsReplacement attributeCode="multiselect" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -85,7 +85,7 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <MultiSelectReplacement
+    <AttributeOptionsReplacement
       attributeCode="multiselect"
       validationErrors={validationErrors}
       onOperationChange={jest.fn()}
