@@ -81,7 +81,7 @@ class NonExistentTableValueFilterIntegration extends TestCase
         self::assertInstanceOf(TableValue::class, $value);
         self::assertEqualsCanonicalizing(
             [
-                ['INGredient' => 'salt', 'quantity' => 10],
+                ['ingredient' => 'salt', 'quantity' => 10],
                 ['ingredient' => 'sugar', 'quantity' => 6, 'supplier' => 'akeneo'],
                 ['ingredient' => 'pepper'],
             ],
