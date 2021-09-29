@@ -36,3 +36,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\CleanHTMLTagsOperationApplier:
     tags:
       - { name: akeneo.tailored_export.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\MultiSelectReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier }
