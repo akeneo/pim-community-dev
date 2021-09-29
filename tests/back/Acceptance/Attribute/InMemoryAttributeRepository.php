@@ -220,13 +220,13 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getAttributeCodesByType($type)
     {
-        return \array_map(
+        return \array_values(\array_map(
             fn (AttributeInterface $attribute): string => $attribute->getCode(),
             \array_filter(
                 $this->attributes->toArray(),
                 fn (AttributeInterface $attribute): bool => $attribute->getType() === $type
             )
-        );
+        ));
     }
 
     /**
