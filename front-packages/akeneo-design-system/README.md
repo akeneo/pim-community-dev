@@ -82,7 +82,7 @@ const MyHomePage = () => (
 )
 ```
 
-To know the props of each component, visit the dedicated page of the component here: https://dsm.akeneo.com. You can edit all properties and click on "Show code" in the playground section available for each components.ss
+To know the props of each component, visit the dedicated page of the component here: https://dsm.akeneo.com. You can edit all properties and click on "Show code" in the playground section available for each components.
 
 ## Contribution
 
