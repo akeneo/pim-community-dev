@@ -129,7 +129,7 @@ const ReplacementModal = ({
   const updateMappedValue = (from: string, updatedValue: string) => {
     const updatedMapping = {...mapping, [from]: updatedValue};
 
-    setMapping(updatedMapping);
+    setMapping(filterEmptyValues(updatedMapping));
   };
 
   useEffect(() => {
@@ -160,12 +160,10 @@ const ReplacementModal = ({
   };
 
   const handleConfirm = async () => {
-    const values = filterEmptyValues(mapping);
-
     const response = await fetch(validateReplacementOperationRoute, {
       body: JSON.stringify({
         type: 'replacement',
-        mapping: values,
+        mapping,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -177,7 +175,7 @@ const ReplacementModal = ({
     setReplacementOperationValidationErrors([]);
 
     if (response.ok) {
-      onConfirm(values);
+      onConfirm(mapping);
     } else {
       try {
         const errors = await response.json();
