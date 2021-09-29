@@ -1306,11 +1306,6 @@ jobs:
               root: ~/
               paths:
                 - upgrades.tfplan.json
-          - run:
-              name: Remove env on kubernetes
-              no_output_timeout: 30m
-              command: make delete
-              when: always
 
   test_deploy_grth:
       environment:
@@ -1361,11 +1356,6 @@ jobs:
               root: ~/
               paths:
                 - upgrades.tfplan.json
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: always
 
   test_deploy_tria:
       environment:
@@ -1416,11 +1406,6 @@ jobs:
               root: ~/
               paths:
                 - upgrades.tfplan.json
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: always
 
   test_deploy_srnt_last_release:
       environment:
@@ -1480,10 +1465,6 @@ jobs:
               root: ~/
               paths:
                 - project/persisted_env_vars
-          - run:
-              name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
-              when: on_fail
 
   test_deploy_grth_last_release:
       environment:
@@ -1543,10 +1524,6 @@ jobs:
               root: ~/
               paths:
                 - project/persisted_env_vars
-          - run:
-              name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
-              when: on_fail
 
   test_upgrade_srnt_from_last_release:
       environment:
@@ -1598,10 +1575,6 @@ jobs:
           - store_artifacts:
               path: deployment.log
               destination: test_upgrade_srnt_from_last_release_deployment.log
-          - run:
-              name: Remove upgraded env
-              command: make uncommit-instance
-              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -1650,10 +1623,6 @@ jobs:
           - store_artifacts:
               path: deployment.log
               destination: test_upgrade_grth_from_last_release_deployment.log
-          - run:
-                name: Remove upgraded env
-                command: make uncommit-instance
-                when: always
 
   test_upgrade_from_srnt_customer_db:
       parameters:
@@ -1716,11 +1685,6 @@ jobs:
               root: ~/
               paths:
                 - project/persisted_env_vars
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: on_fail
 
 
   ##################
@@ -1979,11 +1943,6 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: on_fail
 
   deploy_pr_grth_environment:
       environment:
@@ -2028,11 +1987,6 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: on_fail
 
   deploy_pr_tria_environment:
       environment:
@@ -2077,11 +2031,6 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: make delete
-              no_output_timeout: 30m
-              when: on_fail
 
   ##################
   # Cleanup        #
