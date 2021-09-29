@@ -119,7 +119,7 @@ final class ProductValidation implements Context
                 sprintf(
                     'Expected error message "%s" was not found, %s given',
                     $errorMessage,
-                    implode(',', $messages)
+                    implode(PHP_EOL, $messages)
                 )
             );
         }
@@ -169,7 +169,7 @@ final class ProductValidation implements Context
                     'Expected violation message "%s" at path "%s" was not found, %s given',
                     $errorMessage,
                     $errorPath,
-                    implode(',', $messages)
+                    implode(PHP_EOL, $messages)
                 )
             );
         }
@@ -183,5 +183,10 @@ final class ProductValidation implements Context
     {
         $violations = $this->productValidator->validate($this->updatedProduct);
         Assert::count($violations, 0, 'No violation should be raised, found: ' . $violations->__toString());
+    }
+
+    public function setUpdatedProduct(ProductInterface $updatedProduct): void
+    {
+        $this->updatedProduct = $updatedProduct;
     }
 }
