@@ -114,7 +114,7 @@
     "@testing-library/react": "^10.4.8",
     "@testing-library/react-hooks": "^3.4.2",
     "@testing-library/user-event": "^7.1.2",
-
+    "core-js": "^2.6.12",
     "ajv": "^6.10.2",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",

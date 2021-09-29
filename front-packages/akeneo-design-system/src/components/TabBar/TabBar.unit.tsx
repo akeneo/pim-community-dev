@@ -91,7 +91,9 @@ test('it displays a Dropdown button when having a lot of tabs', () => {
     entryCallback?.([{isIntersecting: false}]);
   });
 
-  userEvent.click(screen.getByTitle('More'));
+  act(() => {
+    userEvent.click(screen.getByTitle('More'));
+  });
   userEvent.click(screen.getByTitle('Last tab'));
 
   expect(handleClick).toHaveBeenCalled();

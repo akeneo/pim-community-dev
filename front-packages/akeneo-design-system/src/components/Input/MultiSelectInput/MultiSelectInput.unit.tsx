@@ -1,6 +1,6 @@
 import React from 'react';
 import {MultiSelectInput} from './MultiSelectInput';
-import {render, screen, fireEvent} from '../../../storybook/test-util';
+import {render, screen, fireEvent, act} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 
 test('it renders its children properly', () => {
@@ -131,6 +131,10 @@ test('it handles codes that do not have a label', () => {
   expect(codeWithoutOption).toBeInTheDocument();
 });
 
+
+
+
+
 test('it handles removing a Chip', () => {
   const onChange = jest.fn();
   render(
@@ -217,7 +221,7 @@ test('it closes the overlay when hitting Escape', () => {
   expect(germanOption).not.toBeInTheDocument();
 });
 
-test('it can remove a chip using Backspace', () => {
+test.only('it can remove a chip using Backspace', async () => {
   const onChange = jest.fn();
   render(
     <MultiSelectInput
@@ -235,8 +239,10 @@ test('it can remove a chip using Backspace', () => {
     </MultiSelectInput>
   );
 
-  const input = screen.getByRole('textbox');
-  userEvent.type(input, '{backspace}{backspace}');
+  act(() => {
+    fireEvent.keyDown(screen.getByRole('textbox'), {code:8, key: 'Backspace'});
+    fireEvent.keyDown(screen.getByRole('textbox'), {code:8, key: 'Backspace'});
+  });
 
   expect(onChange).toBeCalledWith(['en_US']);
 });
