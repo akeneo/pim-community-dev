@@ -197,3 +197,9 @@ services:
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocalesAccessesWithHighestLevel:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocaleReferenceFromCode:
+        arguments:
+            - '@database_connection'
+            - '@doctrine'
+            - '%pim_catalog.entity.locale.class%'
