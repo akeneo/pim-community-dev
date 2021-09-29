@@ -20,62 +20,60 @@ const attribute = {
 jest.mock('./AssetCollectionSelector');
 jest.mock('../common/DefaultValue');
 
-describe('it displays an asset collection configurator', () => {
-  test('it can update default value operation', () => {
-    const onSourceChange = jest.fn();
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
 
-    renderWithProviders(
-      <AssetCollectionConfigurator
-        source={{
-          ...getDefaultAssetCollectionSource(attribute, null, null),
-          uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-        }}
-        attribute={attribute}
-        validationErrors={[]}
-        onSourceChange={onSourceChange}
-      />
-    );
+  renderWithProviders(
+    <AssetCollectionConfigurator
+      source={{
+        ...getDefaultAssetCollectionSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
 
-    userEvent.click(screen.getByText('Default value'));
+  userEvent.click(screen.getByText('Default value'));
 
-    expect(onSourceChange).toHaveBeenCalledWith({
-      ...getDefaultAssetCollectionSource(attribute, null, null),
-      operations: {
-        default_value: {
-          type: 'default_value',
-          value: 'foo',
-        },
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultAssetCollectionSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
       },
-      uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-    });
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
+});
 
-  test('it can update asset collection selector', () => {
-    const onSourceChange = jest.fn();
+test('it can update asset collection selector', () => {
+  const onSourceChange = jest.fn();
 
-    renderWithProviders(
-      <AssetCollectionConfigurator
-        source={{
-          ...getDefaultAssetCollectionSource(attribute, null, null),
-          uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-        }}
-        attribute={attribute}
-        validationErrors={[]}
-        onSourceChange={onSourceChange}
-      />
-    );
+  renderWithProviders(
+    <AssetCollectionConfigurator
+      source={{
+        ...getDefaultAssetCollectionSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
 
-    userEvent.click(screen.getByText('Asset collection selector'));
+  userEvent.click(screen.getByText('Asset collection selector'));
 
-    expect(onSourceChange).toHaveBeenCalledWith({
-      ...getDefaultAssetCollectionSource(attribute, null, null),
-      selection: {
-        type: 'label',
-        locale: 'en_US',
-        separator: ',',
-      },
-      uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
-    });
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultAssetCollectionSource(attribute, null, null),
+    selection: {
+      type: 'label',
+      locale: 'en_US',
+      separator: ',',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });
 

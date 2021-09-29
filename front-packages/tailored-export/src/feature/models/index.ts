@@ -6,4 +6,5 @@ export * from './AvailableSource';
 export * from './ColumnConfiguration';
 export * from './Configurator';
 export * from './MeasurementFamily';
+export * from './Record';
 export * from './Source';

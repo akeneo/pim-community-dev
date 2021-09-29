@@ -24,7 +24,7 @@ jest.mock('./SimpleSelectReplacement', () => ({
   SimpleSelectReplacement: ({
     onOperationChange,
   }: {
-    onOperationChange: (updatedSelection: ReplacementOperation) => void;
+    onOperationChange: (updatedOperation: ReplacementOperation) => void;
   }) => (
     <button
       onClick={() =>

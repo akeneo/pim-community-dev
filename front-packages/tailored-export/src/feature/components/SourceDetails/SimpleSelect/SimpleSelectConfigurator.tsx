@@ -27,7 +27,7 @@ const SimpleSelectConfigurator = ({
       />
       <SimpleSelectReplacement
         operation={source.operations.replacement}
-        attribute={attribute}
+        attributeCode={attribute.code}
         validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})

@@ -1,0 +1,6 @@
+services:
+  # Query functions
+  akeneo_referenceentity.infrastructure.persistence.query.platform.search_records:
+    class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecords
+    arguments:
+      - '@akeneo_referenceentity.application.record.search_record'

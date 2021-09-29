@@ -1,34 +1,36 @@
 import {useState, useEffect} from 'react';
 import {useIsMounted, useRoute, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributeOption} from '../models';
+import {Record} from '../../../models';
 
-const OPTION_COLLECTION_PAGE_SIZE = 25;
+const RECORD_PAGE_SIZE = 25;
 
-const useAttributeOptions = (
-  attributeCode: string,
+const useRecords = (
+  referenceEntityCode: string,
   search: string,
   page: number,
   optionCodesToInclude: string[] | null,
   optionCodesToExclude: string[] | null
 ) => {
-  const [attributeOptions, setAttributeOptions] = useState<AttributeOption[]>([]);
+  const [records, setRecords] = useState<Record[]>([]);
   const [matchesCount, setMatchesCount] = useState<number>(0);
   const isMounted = useIsMounted();
-  const attributeOptionsRoute = useRoute('pimee_tailored_export_get_attribute_options_action', {
-    attribute_code: attributeCode,
-  });
   const locale = useUserContext().get('catalogLocale');
+  const channel = useUserContext().get('catalogScope');
+  const getRecordsRoute = useRoute('pimee_tailored_export_get_records_action', {
+    reference_entity_code: referenceEntityCode,
+  });
 
   useEffect(() => {
-    const fetchAttributeOptions = async () => {
-      const response = await fetch(attributeOptionsRoute, {
+    const fetchRecords = async () => {
+      const response = await fetch(getRecordsRoute, {
         body: JSON.stringify({
           search,
           page,
-          limit: OPTION_COLLECTION_PAGE_SIZE,
+          limit: RECORD_PAGE_SIZE,
           include_codes: optionCodesToInclude,
           exclude_codes: optionCodesToExclude,
           locale,
+          channel,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -41,14 +43,14 @@ const useAttributeOptions = (
 
       if (!isMounted()) return;
 
-      setAttributeOptions(result.items);
+      setRecords(result.items);
       setMatchesCount(result.matches_count);
     };
 
-    void fetchAttributeOptions();
-  }, [isMounted, attributeOptionsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale]);
+    void fetchRecords();
+  }, [isMounted, getRecordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, channel, locale]);
 
-  return [attributeOptions, matchesCount] as const;
+  return [records, matchesCount] as const;
 };
 
-export {useAttributeOptions, OPTION_COLLECTION_PAGE_SIZE};
+export {useRecords, RECORD_PAGE_SIZE};

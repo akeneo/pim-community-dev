@@ -39,19 +39,18 @@ final class GetAttributeOptionsAction
             return new RedirectResponse('/');
         }
 
-        $attributeCode = $request->get('attribute_code', null);
-
+        $attributeCode = $request->get('attribute_code');
         if (null === $attributeCode) {
             throw new BadRequestHttpException('Missing attribute code');
         }
 
         $searchAttributeOptionsParameters = new SearchAttributeOptionsParameters();
-        $searchAttributeOptionsParameters->setIncludeCodes($request->get('include_codes', []));
-        $searchAttributeOptionsParameters->setExcludeCodes($request->get('exclude_codes', []));
-        $searchAttributeOptionsParameters->setSearch($request->get('search', null));
-        $searchAttributeOptionsParameters->setLocale($request->get('locale', null));
+        $searchAttributeOptionsParameters->setIncludeCodes($request->get('include_codes'));
+        $searchAttributeOptionsParameters->setExcludeCodes($request->get('exclude_codes'));
+        $searchAttributeOptionsParameters->setSearch($request->get('search'));
+        $searchAttributeOptionsParameters->setLocale($request->get('locale'));
         $searchAttributeOptionsParameters->setLimit($request->get('limit', self::LIMIT_DEFAULT));
-        $searchAttributeOptionsParameters->setPage($request->get('page', null));
+        $searchAttributeOptionsParameters->setPage($request->get('page'));
 
         $searchAttributeOptionsResult = $this->searchAttributeOptions->search(
             $attributeCode,
