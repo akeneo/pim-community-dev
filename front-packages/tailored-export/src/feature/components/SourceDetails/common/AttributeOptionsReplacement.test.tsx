@@ -66,6 +66,24 @@ test('it can open a replacement modal and calls the handler when confirming', as
   expect(handleChange).toHaveBeenCalledWith(undefined);
 });
 
+test('it does not change replacement when cancelling', async () => {
+  const handleChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeOptionsReplacement attributeCode="color" validationErrors={[]} onOperationChange={handleChange} />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
+
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.title')
+  ).toBeInTheDocument();
+
+  userEvent.click(screen.getByTitle('pim_common.close'));
+
+  expect(handleChange).not.toHaveBeenCalled();
+});
+
 test('it displays validation errors', () => {
   const validationErrors: ValidationError[] = [
     {

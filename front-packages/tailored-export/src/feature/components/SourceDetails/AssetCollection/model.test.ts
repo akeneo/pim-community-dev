@@ -181,6 +181,7 @@ test('it validates that something is a default asset collection selection', () =
 
   expect(
     isDefaultAssetCollectionSelection({
+      // @ts-expect-error invalid type
       type: 'label',
       locale: null,
       separator: ',',
@@ -328,6 +329,7 @@ test('it validates that something is an asset collection source', () => {
   ).toEqual(true);
 
   expect(
+    // @ts-expect-error invalid type
     isAssetCollectionSource({
       ...source,
       operations: {

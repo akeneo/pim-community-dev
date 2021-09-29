@@ -40,6 +40,7 @@ test('it validates that something is a MultiSelect source', () => {
   ).toEqual(true);
 
   expect(
+    // @ts-expect-error invalid operation
     isMultiSelectSource({
       ...source,
       operations: {
