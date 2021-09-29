@@ -30,7 +30,7 @@ const Container = styled.div<
   position: fixed;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
-  z-index: 2001;
+  z-index: 1901;
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
 `;
@@ -71,7 +71,7 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
+  z-index: 1900;
 `;
 
 const getOverlayPosition = (
@@ -116,13 +116,14 @@ const Overlay = ({
   children,
   ...rest
 }: OverlayProps) => {
+  const [overlayPosition, setOverlayPosition] = useState<number[]>([0, 0]);
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'dropdown-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
-  horizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
+  const overlayVerticalPosition = useVerticalPosition(overlayRef, verticalPosition);
+  const overlayHorizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
   useWindowResize();
@@ -136,13 +137,19 @@ const Overlay = ({
     };
   }, []);
 
-  const [top, left] = getOverlayPosition(
-    verticalPosition,
-    horizontalPosition,
-    dropdownOpenerVisible,
-    parentRef,
-    overlayRef
-  );
+  useEffect(() => {
+    setOverlayPosition(
+      getOverlayPosition(
+        overlayVerticalPosition,
+        overlayHorizontalPosition,
+        dropdownOpenerVisible,
+        parentRef,
+        overlayRef
+      )
+    );
+  }, [children, overlayVerticalPosition, overlayHorizontalPosition, parentRef, overlayRef, dropdownOpenerVisible]);
+
+  const [top, left] = overlayPosition;
 
   return createPortal(
     <>
