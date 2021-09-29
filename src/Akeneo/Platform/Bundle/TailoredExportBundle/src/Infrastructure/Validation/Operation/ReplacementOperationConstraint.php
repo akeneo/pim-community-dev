@@ -15,10 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
 use Symfony\Component\Validator\Constraint;
 
-class BooleanReplacementOperationConstraint extends Constraint
+class ReplacementOperationConstraint extends Constraint
 {
     public function validatedBy(): string
     {
-        return BooleanReplacementOperationValidator::class;
+        return ReplacementOperationValidator::class;
     }
 }

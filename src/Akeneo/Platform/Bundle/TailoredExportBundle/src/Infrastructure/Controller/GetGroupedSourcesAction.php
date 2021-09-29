@@ -26,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class GetGroupedSourcesAction
 {
-    private const LIMIT_DEFAULT = 20;
+    private const LIMIT_DEFAULT = 25;
     private const FIELD_TRANSLATION_BASE = 'pim_common.';
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'System';
     private const DEFAULT_LOCALE = 'en_US';
@@ -56,7 +56,7 @@ final class GetGroupedSourcesAction
 
         $options = $request->get('options', []);
         $search = $request->get('search');
-        $limit = $options['limit'] ?? self::LIMIT_DEFAULT;
+        $limit = (int) ($options['limit'] ?? self::LIMIT_DEFAULT);
         $systemOffset = (int) $options['offset']['system'];
         $associationTypeOffset = (int) $options['offset']['association_type'];
         $attributeOffset = (int) $options['offset']['attribute'];

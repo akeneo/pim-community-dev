@@ -580,6 +580,9 @@ jobs:
           - run:
                 name: Rules Engine
                 command: PIM_CONTEXT=rule-engine make rule-engine-integration-back
+          - run:
+                name: Tailored Export
+                command: PIM_CONTEXT=tailored-export make integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:

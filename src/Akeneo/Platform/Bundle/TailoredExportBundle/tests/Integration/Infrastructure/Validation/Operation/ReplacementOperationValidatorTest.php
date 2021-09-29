@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\Operation;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\BooleanReplacementOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\ReplacementOperationConstraint;
 use Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
-class BooleanReplacementOperationValidatorTest extends AbstractValidationTest
+class ReplacementOperationValidatorTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validOperation
      */
     public function test_it_does_not_build_violations_on_valid_operation(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new BooleanReplacementOperationConstraint());
+        $violations = $this->getValidator()->validate($value, new ReplacementOperationConstraint());
 
         $this->assertNoViolation($violations);
     }
@@ -37,7 +37,7 @@ class BooleanReplacementOperationValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new BooleanReplacementOperationConstraint());
+        $violations = $this->getValidator()->validate($value, new ReplacementOperationConstraint());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -49,8 +49,8 @@ class BooleanReplacementOperationValidatorTest extends AbstractValidationTest
                 [
                     'type' => 'replacement',
                     'mapping' => [
-                        'true' => 'vrai',
-                        'false' => 'faux',
+                        'code_1' => 'replacement_value_1',
+                        'code_2' => 'replacement_value_2',
                     ],
                 ],
             ],
@@ -66,52 +66,30 @@ class BooleanReplacementOperationValidatorTest extends AbstractValidationTest
                 [
                     'type' => 'invalid type',
                     'mapping' => [
-                        'true' => 'vrai',
-                        'false' => 'faux',
+                        'code_1' => 'replacement_value_1',
+                        'code_2' => 'replacement_value_2',
                     ],
                 ],
             ],
-            'too long true replacement' => [
+            'too long replacement' => [
                 'akeneo.tailored_export.validation.max_length_reached',
-                '[mapping][true]',
+                '[mapping][code_1]',
                 [
                     'type' => 'replacement',
                     'mapping' => [
-                        'true' => str_repeat('m', 256),
-                        'false' => 'faux',
+                        'code_1' => str_repeat('m', 256),
+                        'code_2' => 'replacement_value_2',
                     ],
                 ],
             ],
-            'too long false replacement' => [
-                'akeneo.tailored_export.validation.max_length_reached',
-                '[mapping][false]',
-                [
-                    'type' => 'replacement',
-                    'mapping' => [
-                        'true' => 'vrai',
-                        'false' => str_repeat('m', 256),
-                    ],
-                ],
-            ],
-            'empty true replacement' => [
+            'empty replacement' => [
                 'akeneo.tailored_export.validation.required',
-                '[mapping][true]',
+                '[mapping][code_2]',
                 [
                     'type' => 'replacement',
                     'mapping' => [
-                        'true' => '',
-                        'false' => 'faux',
-                    ],
-                ],
-            ],
-            'empty false replacement' => [
-                'akeneo.tailored_export.validation.required',
-                '[mapping][false]',
-                [
-                    'type' => 'replacement',
-                    'mapping' => [
-                        'true' => 'vrai',
-                        'false' => '',
+                        'code_1' => 'replacement_value_1',
+                        'code_2' => '',
                     ],
                 ],
             ],

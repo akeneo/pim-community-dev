@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class BooleanReplacementOperationValidator extends ConstraintValidator
+class ReplacementOperationValidator extends ConstraintValidator
 {
     public function validate($operation, Constraint $constraint)
     {
@@ -29,28 +30,15 @@ class BooleanReplacementOperationValidator extends ConstraintValidator
         $violations = $validator->validate($operation, new Collection([
             'fields' => [
                 'type' => new EqualTo(['value' => 'replacement']),
-                'mapping' => new Collection([
-                    'fields' => [
-                        'true' => [
-                            new NotBlank([
-                                'message' => 'akeneo.tailored_export.validation.required'
-                            ]),
-                            new Length([
-                                'max' => 255,
-                                'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
-                            ])
-                        ],
-                        'false' => [
-                            new NotBlank([
-                                'message' => 'akeneo.tailored_export.validation.required'
-                            ]),
-                            new Length([
-                                'max' => 255,
-                                'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
-                            ])
-                        ],
-                    ]
-                ])
+                'mapping' => new All([
+                    new NotBlank([
+                        'message' => 'akeneo.tailored_export.validation.required'
+                    ]),
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
+                    ]),
+                ]),
             ]
         ]));
 
