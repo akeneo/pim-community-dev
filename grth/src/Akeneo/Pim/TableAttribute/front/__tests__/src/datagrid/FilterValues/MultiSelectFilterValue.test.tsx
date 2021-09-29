@@ -28,7 +28,9 @@ describe('MultiSelectFilterValue', () => {
     expect(await screen.findByText('F')).toBeInTheDocument();
     expect(screen.getByText('B')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTitle('pim_common.open'));
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
     expect(screen.getByText('T')).toBeInTheDocument();
     expect(screen.queryByText('U')).not.toBeInTheDocument();
     act(() => {
