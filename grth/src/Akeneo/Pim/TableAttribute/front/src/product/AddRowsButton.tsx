@@ -46,10 +46,10 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState<Option[] | undefined>(undefined);
-
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
+  const lowercaseCheckedOptionCodes = checkedOptionCodes.map(code => code.toLowerCase());
 
   const searchRef = React.createRef<HTMLInputElement>();
 
@@ -128,7 +128,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
             {itemsToDisplay.map((item, index) => (
               <Dropdown.Item key={item.code}>
                 <Checkbox
-                  checked={checkedOptionCodes.includes(item.code)}
+                  checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                   onChange={() => toggleChange(item.code)}
                   data-testid={`checkbox-${index}`}>
                   {item.label}

@@ -33,7 +33,7 @@ const useFetchOptions: (
             (await SelectOptionRepository.findFromColumn(router, attributeCode, column.code)) || [];
           for await (const row of valueData) {
             if (typeof row[column.code] !== 'undefined') {
-              selectOptionLabels[`${column.code}-${row[column.code]}`] = await innerGetOptionLabel(
+              selectOptionLabels[`${column.code}-${row[column.code]}`.toLowerCase()] = await innerGetOptionLabel(
                 column.code,
                 row[column.code] as string
               );
@@ -52,7 +52,7 @@ const useFetchOptions: (
   };
 
   const getOptionLabel = (columnCode: ColumnCode, value: TableCell) => {
-    return selectOptionLabels[`${columnCode}-${value}`];
+    return selectOptionLabels[`${columnCode}-${value}`.toLowerCase()];
   };
 
   return {

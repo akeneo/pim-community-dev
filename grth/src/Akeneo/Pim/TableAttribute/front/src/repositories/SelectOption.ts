@@ -34,7 +34,7 @@ const getSelectOption = async (
 ): Promise<SelectOption | null> => {
   const options = await getSelectOptions(router, attributeCode, columnCode);
 
-  return options?.find(option => option.code === selectOptionCode) ?? null;
+  return options?.find(option => option.code.toLowerCase() === selectOptionCode.toLowerCase()) ?? null;
 };
 
 const SelectOptionRepository = {
