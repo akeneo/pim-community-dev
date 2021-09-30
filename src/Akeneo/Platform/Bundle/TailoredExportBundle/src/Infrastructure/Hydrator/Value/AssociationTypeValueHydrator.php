@@ -52,7 +52,7 @@ final class AssociationTypeValueHydrator
         $this->checkProductOrProductModelEntity($productOrProductModel);
 
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedProducts = $association ? $association->getProducts()->toArray() : [];
+        $associatedProducts = $association !== null ? $association->getProducts()->toArray() : [];
 
         return array_map(
             static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier(),
@@ -65,7 +65,7 @@ final class AssociationTypeValueHydrator
         $this->checkProductOrProductModelEntity($productOrProductModel);
 
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedProductModels = $association ? $association->getProductModels()->toArray() : [];
+        $associatedProductModels = $association !== null ? $association->getProductModels()->toArray() : [];
 
         return array_map(
             static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode(),
@@ -78,7 +78,7 @@ final class AssociationTypeValueHydrator
         $this->checkProductOrProductModelEntity($productOrProductModel);
 
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedGroups = $association ? $association->getGroups()->toArray() : [];
+        $associatedGroups = $association !== null ? $association->getGroups()->toArray() : [];
 
         return array_map(
             static fn (GroupInterface $associationGroup): string => $associationGroup->getCode(),

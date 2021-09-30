@@ -28,6 +28,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
@@ -407,7 +408,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
-            MediaFile\MediaType::fromString(MediaFile\MediaType::IMAGE)
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->createAssetFamily($assetFamilyIdentifier, $attribute);

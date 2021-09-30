@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaFileAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaLinkAsMainMedia;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;
@@ -98,7 +99,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             $this->buildViolations($violations, '[locale]');
         } elseif ('media_file' === $selection['type'] || 'media_link' === $selection['type']) {
             $attribute = $this->getAttributes->forCode($constraint->attributeCode);
-            if (null === $attribute) {
+            if (!$attribute instanceof Attribute) {
                 return;
             }
 
