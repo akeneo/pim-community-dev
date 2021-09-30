@@ -3,6 +3,7 @@ config:
         pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-structure-tab
         pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
         pim/table-attribute/attribute/properties-helper: akeneopimtableattribute/legacy/properties-helper
+        pim/filter/attribute/boolean: akeneopimtableattribute/legacy/product-export-table-filter
         oro/datafilter/table-filter: akeneopimtableattribute/legacy/table-filter
 
     config:
@@ -40,6 +41,37 @@ config:
                 boolean: '@akeneopimtableattribute/product/CellMatchers/BooleanMatcher'
 
         oro/datafilter/table-filter:
+            filter_values:
+                text:
+                    'STARTS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    'ENDS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    'CONTAINS': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    'DOES NOT CONTAIN': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    '=': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    '!=': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'
+                    'EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                    'NOT EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                number:
+                    '>': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    '>=': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    '<': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    '<=': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    '=': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    '!=': '@akeneopimtableattribute/datagrid/FilterValues/NumberFilterValue'
+                    'EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                    'NOT EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                boolean:
+                    '=': '@akeneopimtableattribute/datagrid/FilterValues/BooleanFilterValue'
+                    '!=': '@akeneopimtableattribute/datagrid/FilterValues/BooleanFilterValue'
+                    'EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                    'NOT EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                select:
+                    'EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                    'NOT EMPTY': '@akeneopimtableattribute/datagrid/FilterValues/EmptyFilterValue'
+                    'IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
+                    'NOT IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
+
+        pim/filter/attribute/boolean:
             filter_values:
                 text:
                     'STARTS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'

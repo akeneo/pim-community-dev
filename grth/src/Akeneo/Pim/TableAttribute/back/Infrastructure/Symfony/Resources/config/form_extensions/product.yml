@@ -1,2 +1,6 @@
 attribute_fields:
     akeneo-table-field: pim/table-attribute/product/table-field
+
+extensions:
+    akeneo-attribute-table-filter:
+        module: pim/filter/attribute/boolean

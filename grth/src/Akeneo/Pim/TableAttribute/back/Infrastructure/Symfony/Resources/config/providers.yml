@@ -3,6 +3,10 @@ services:
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Provider\TableFilterProvider:
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 100 }
+
     pim_table_attribute.provider.form.job_instance:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
@@ -13,3 +17,8 @@ services:
               xlsx_table_attribute_options_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.filter.base:
+      class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\BaseFilterProvider'
+      tags:
+        - { name: pim_enrich.provider.filter, priority: 100 }

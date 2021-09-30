@@ -3,25 +3,15 @@ import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-
 import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ColumnDefinitionSelector} from './ColumnDefinitionSelector';
-import {ValueSelector} from './ValueSelector';
-import {RowSelector} from './RowSelector';
-import {OperatorSelector} from './OperatorSelector';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
+import {FilterSelectorList} from "./FilterSelectorList";
 
 const FilterSectionTitleTitle = styled(SectionTitle.Title)`
   color: ${getColor('brand', 100)};
 `;
 const FilterSectionTitle = styled(SectionTitle)`
   border-bottom-color: ${getColor('brand', 100)};
-`;
-
-const FilterSelectorList = styled.div`
-  margin-top: 20px;
-  & > * {
-    margin-bottom: 10px;
-  }
 `;
 
 const FilterContainer = styled.div`
@@ -36,6 +26,13 @@ const FilterButtonContainer = styled.div`
 export type DatagridTableFilterValue = {
   row?: SelectOptionCode;
   column: ColumnCode;
+  operator: string;
+  value?: any;
+};
+
+export type TableFilterValue = {
+  row?: SelectOption;
+  column?: ColumnDefinition;
   operator: string;
   value?: any;
 };
@@ -65,10 +62,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [selectedColumn, setSelectedColumn] = useState<ColumnDefinition | undefined>();
-  const [selectedRow, setSelectedRow] = useState<SelectOption | undefined>();
-  const [selectedOperator, setSelectedOperator] = useState<string | undefined>();
-  const [value, setValue] = useState<any | undefined>();
+  const [filterValue, setFilterValue] = useState<TableFilterValue>({
+    operator: '',
+  });
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
@@ -76,37 +72,26 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }, []);
 
-  const handleColumnChange = (column: ColumnDefinition | undefined) => {
-    setSelectedColumn(column);
-    setSelectedOperator(undefined);
-    setValue(undefined);
-  };
-
-  const handleOperatorChange = (operator: string | undefined) => {
-    setSelectedOperator(operator);
-    setValue(undefined);
-  };
-
   const handleValidate = () => {
     close();
     onChange({
-      row: selectedRow?.code,
-      column: selectedColumn?.code as ColumnCode,
-      operator: selectedOperator as string,
-      value: value,
+      row: filterValue.row?.code,
+      column: filterValue.column?.code as string,
+      operator: filterValue.operator,
+      value: filterValue.value,
     });
   };
 
   // TODO Think about wording and translate this CPM-378
   let criteriaLabel = 'All';
-  if (typeof selectedColumn !== 'undefined') {
+  if (typeof filterValue.column !== 'undefined') {
     criteriaLabel = '';
     criteriaLabel +=
-      typeof selectedRow === 'undefined' ? 'Any' : getLabel(selectedRow.labels, catalogLocale, selectedRow.code) + ' ';
-    criteriaLabel += getLabel(selectedColumn.labels, catalogLocale, selectedColumn.code) + ' ';
+      typeof filterValue.row === 'undefined' ? 'Any' : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
+    criteriaLabel += getLabel(filterValue.column.labels, catalogLocale, filterValue.column.code) + ' ';
     criteriaLabel +=
-      typeof selectedOperator !== 'undefined' ? translate(`pim_common.operators.${selectedOperator}`) + ' ' : '';
-    criteriaLabel += typeof value !== 'undefined' ? JSON.stringify(value) : '';
+      typeof filterValue.operator !== 'undefined' ? translate(`pim_common.operators.${filterValue.operator}`) + ' ' : '';
+    criteriaLabel += typeof filterValue.value !== 'undefined' ? JSON.stringify(filterValue.value) : '';
   }
 
   return (
@@ -117,27 +102,11 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
             <FilterSectionTitle title={label}>
               <FilterSectionTitleTitle>{label}</FilterSectionTitleTitle>
             </FilterSectionTitle>
-            <FilterSelectorList>
-              <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={selectedColumn} />
-              <RowSelector attribute={attribute} value={selectedRow} onChange={setSelectedRow} />
-              <OperatorSelector
-                dataType={selectedColumn?.data_type}
-                value={selectedOperator}
-                onChange={handleOperatorChange}
-                filterValuesMapping={filterValuesMapping}
-              />
-              {selectedOperator && selectedColumn && (
-                <ValueSelector
-                  dataType={selectedColumn?.data_type}
-                  operator={selectedOperator}
-                  onChange={setValue}
-                  value={value}
-                  filterValuesMapping={filterValuesMapping}
-                  columnCode={selectedColumn.code}
-                  attribute={attribute}
-                />
-              )}
-            </FilterSelectorList>
+            <FilterSelectorList
+              attribute={attribute}
+              filterValuesMapping={filterValuesMapping}
+              onChange={setFilterValue}
+            />
             <FilterButtonContainer>
               <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
             </FilterButtonContainer>
