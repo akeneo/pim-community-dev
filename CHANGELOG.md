@@ -96,6 +96,7 @@
 - PIM-10089: Add missing validation check on rule import
 - PIM-10088: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset 
 - PIM-10093: Fix tailored export access when an attribute used as source is deleted
+- PIM-10091: Add translation keys for the "Computation of asset transformations" job
 
 ## Improvements
 
