@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CodeValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;

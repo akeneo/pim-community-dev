@@ -21,7 +21,7 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
      */
     public function byAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes, string $locale): array
     {
-        $optionKeys = array_map(fn($optionCode) => sprintf('%s.%s', $attributeCode, $optionCode), $optionCodes);
+        $optionKeys = array_map(fn ($optionCode) => sprintf('%s.%s', $attributeCode, $optionCode), $optionCodes);
 
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues
             ->fromAttributeCodeAndOptionCodes($optionKeys);

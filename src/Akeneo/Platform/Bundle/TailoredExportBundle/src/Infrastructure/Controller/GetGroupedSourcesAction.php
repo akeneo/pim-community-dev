@@ -92,11 +92,11 @@ final class GetGroupedSourcesAction
 
     private function formatSystemFields(array $fields, string $localeCode): array
     {
-        if ($fields === []) {
+        if (empty($fields)) {
             return [];
         }
 
-        $children = array_map(fn(string $field): array => [
+        $children = array_map(fn (string $field): array => [
             'code' => $field,
             'type' => 'property',
             'label' => $this->translator->trans(
@@ -120,7 +120,7 @@ final class GetGroupedSourcesAction
             return [];
         }
 
-        $associationFields = array_map(static fn(AssociationType $field): array => [
+        $associationFields = array_map(static fn (AssociationType $field): array => [
             'code' => $field->getCode(),
             'type' => 'association_type',
             'label' => $field->getLabel($localeCode),

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaFileAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\MediaLinkAsMainMedia;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttribute;

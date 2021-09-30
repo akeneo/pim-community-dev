@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
