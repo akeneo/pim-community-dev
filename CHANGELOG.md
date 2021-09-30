@@ -111,6 +111,7 @@
 - PIM-10074: Add translation key for mass action selection
 - PIM-10062: Suppress PHP warning when missing 'dataScope' value.
 - Bump NodeJS library to fix CVE on  tmpl 1.0.4 
+- CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
 
 ## New features
 
