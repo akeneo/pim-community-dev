@@ -122,6 +122,7 @@ $rules = [
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
+        'Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister'
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
