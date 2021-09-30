@@ -37,6 +37,7 @@ interface EventOptions {
   type?: string,
   inputName?: string,
   actions?: [Action],
+  values?: object,
 }
 
 interface Action {
@@ -99,6 +100,10 @@ const AppcuesOnboarding: PimOnboarding = {
 
           if (eventOptions && eventOptions.name === 'Food - To enrich') {
             appcues.track('View "Food - To enrich" selected');
+          }
+
+          if (eventOptions && eventOptions.name === 'Automotive - To enrich') {
+            appcues.track('Automotive "Food - To enrich" selected');
           }
 
           appcues.track('View selected');
@@ -219,15 +224,44 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'grid:mass-edit:attributes-added':
-          if (eventOptions && eventOptions.name && eventOptions.name.includes('certifications')) {
-            appcues.track('Attribute "Certifications" added in a bulk action');
-          }
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
 
-          if (eventOptions && eventOptions.name && eventOptions.name.includes('food_standard')) {
-            appcues.track('Attribute "Industry Standards" added in a bulk action');
+            if (codes.includes('certifications')) {
+              appcues.track('Attribute "Certifications" added in a bulk action');
+            }
+
+            if (codes.includes('food_standard')) {
+              appcues.track('Attribute "Industry Standards" added in a bulk action');
+            }
           }
 
           appcues.track('Attribute added in a bulk action');
+          break;
+        case 'family-grid:mass-edit:attributes-added':
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
+
+            if (codes.includes('photo_printing')) {
+              appcues.track('Attribute "Photo printing" added in a bulk action');
+            }
+          }
+          break;
+        case 'product-grid:mass-edit:attributes-added':
+          if (eventOptions && eventOptions.values) {
+            _.each(eventOptions.values, function (attributeArray: any, code: string) {
+              const data = attributeArray['0']['data'];
+              const attributeOptions = data.join(',');
+
+              if (code === 'certifications' && attributeOptions.includes('vegan')) {
+                appcues.track('Option "Vegan" added from the attribute "Certifications" in a bulk action');
+              }
+
+              if (code === 'food_standard' && attributeOptions.includes('red_tractor')) {
+                appcues.track('Option "Red Tractor" added from the attribute "Industry Standards" in a bulk action');
+              }
+            });
+          }
           break;
         case 'product:form:compare-clicked':
           appcues.track('Compare button clicked');
