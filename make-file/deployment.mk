@@ -235,6 +235,7 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_api_client_base_uri "https://connect-sandbox.ip.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
 endif
 	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
