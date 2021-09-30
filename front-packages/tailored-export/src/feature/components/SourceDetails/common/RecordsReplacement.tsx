@@ -11,25 +11,25 @@ import {
   ReplacementValueFilter,
   getDefaultReplacementValueFilter,
 } from '../common';
-import {RECORD_PAGE_SIZE, useRecords} from './useRecords';
+import {RECORD_PAGE_SIZE, useRecords} from '../../../hooks/useRecords';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
 `;
 
-type ReferenceEntityReplacementProps = {
+type RecordsReplacementProps = {
   referenceEntityCode: string;
   operation?: ReplacementOperation;
   validationErrors: ValidationError[];
   onOperationChange: (updatedOperation?: ReplacementOperation) => void;
 };
 
-const ReferenceEntityReplacement = ({
+const RecordsReplacement = ({
   operation = getDefaultReplacementOperation(),
   referenceEntityCode,
   validationErrors,
   onOperationChange,
-}: ReferenceEntityReplacementProps) => {
+}: RecordsReplacementProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
@@ -92,4 +92,4 @@ const ReferenceEntityReplacement = ({
   );
 };
 
-export {ReferenceEntityReplacement};
+export {RecordsReplacement};

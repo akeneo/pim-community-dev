@@ -2,10 +2,10 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {ReferenceEntityReplacement} from './ReferenceEntityReplacement';
+import {RecordsReplacement} from './RecordsReplacement';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-jest.mock('./useRecords', () => ({
+jest.mock('../../../hooks/useRecords', () => ({
   useRecords: (
     _referenceEntityCode: string,
     searchValue: string,
@@ -50,7 +50,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   }));
 
   await renderWithProviders(
-    <ReferenceEntityReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -70,7 +70,7 @@ test('it does not change replacement when cancelling', async () => {
   const handleChange = jest.fn();
 
   await renderWithProviders(
-    <ReferenceEntityReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -103,11 +103,7 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <ReferenceEntityReplacement
-      referenceEntityCode="brand"
-      validationErrors={validationErrors}
-      onOperationChange={jest.fn()}
-    />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={validationErrors} onOperationChange={jest.fn()} />
   );
 
   expect(screen.getByRole('alert')).toBeInTheDocument();

@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityConfigurator} from './ReferenceEntityConfigurator';
 import {getDefaultReferenceEntitySource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {ReplacementOperation} from '../common';
 
 const attribute = {
   code: 'ref_entity',
@@ -20,27 +19,7 @@ const attribute = {
 
 jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
-
-jest.mock('./ReferenceEntityReplacement', () => ({
-  ReferenceEntityReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: ReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            foo: 'bar',
-          },
-        })
-      }
-    >
-      Reference entity replacement
-    </button>
-  ),
-}));
+jest.mock('../common/RecordsReplacement');
 
 test('it displays a reference entity configurator', () => {
   const onSourceChange = jest.fn();
@@ -132,10 +111,11 @@ test('it can update a reference entity replacement operation', () => {
     />
   );
 
-  userEvent.click(screen.getByText('Reference entity replacement'));
+  userEvent.click(screen.getByText('Records replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultReferenceEntitySource(attribute, null, null),
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
     operations: {
       replacement: {
         type: 'replacement',
@@ -144,14 +124,10 @@ test('it can update a reference entity replacement operation', () => {
         },
       },
     },
-    selection: {
-      type: 'code',
-    },
-    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });
 
-test('it tells when the attribute is invalid', () => {
+test('it throws when the attribute is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const invalidAttribute = {...attribute, reference_data_name: undefined};
 

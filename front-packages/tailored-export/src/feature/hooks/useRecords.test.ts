@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {useRecords} from './useRecords';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {Record} from '../../../models';
+import {Record} from '../models';
 
 test('It fetches records', async () => {
   const response: {
