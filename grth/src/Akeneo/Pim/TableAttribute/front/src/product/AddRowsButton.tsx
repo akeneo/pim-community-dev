@@ -38,7 +38,13 @@ type Option = {
   label: string;
 };
 
-const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, checkedOptionCodes, toggleChange, maxRowCount = 100}) => {
+const AddRowsButton: React.FC<AddRowsButtonProps> = ({
+  attribute,
+  columnCode,
+  checkedOptionCodes,
+  toggleChange,
+  maxRowCount = 100,
+}) => {
   const router = useRouter();
   const translate = useTranslate();
   const security = useSecurity();
@@ -127,12 +133,13 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={handleNextPage} data-testid={'item_collection'}>
             {itemsToDisplay.map((item, index) => (
-              <Dropdown.Item key={item.code} disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}>
+              <Dropdown.Item
+                key={item.code}
+                disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}>
                 <Checkbox
                   checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                   onChange={() => toggleChange(item.code)}
-                  data-testid={`checkbox-${index}`}
-                >
+                  data-testid={`checkbox-${index}`}>
                   {item.label}
                 </Checkbox>
               </Dropdown.Item>

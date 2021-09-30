@@ -54,7 +54,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   savedColumnCodes,
   columnDefinitionPropertiesMapping,
   dataTypesMapping,
-  maxColumnCount = 10
+  maxColumnCount = 10,
 }) => {
   const translate = useTranslate();
   const router = useRouter();
@@ -211,17 +211,17 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           dataTypesMapping={dataTypesMapping}
         />
       )}
-      {tableConfiguration.length < maxColumnCount &&
-      <CenteredHelper>
-        <AddNewColumnButton
-          title={translate('pim_table_attribute.form.attribute.add_column')}
-          ghost
-          level='secondary'
-          onClick={openNewColumnModal}>
-          {translate('pim_table_attribute.form.attribute.add_column')}
-        </AddNewColumnButton>
-      </CenteredHelper>
-      }
+      {tableConfiguration.length < maxColumnCount && (
+        <CenteredHelper>
+          <AddNewColumnButton
+            title={translate('pim_table_attribute.form.attribute.add_column')}
+            ghost
+            level='secondary'
+            onClick={openNewColumnModal}>
+            {translate('pim_table_attribute.form.attribute.add_column')}
+          </AddNewColumnButton>
+        </CenteredHelper>
+      )}
     </div>
   );
 
