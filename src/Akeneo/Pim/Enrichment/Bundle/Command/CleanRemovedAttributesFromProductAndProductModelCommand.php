@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsW
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
-use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAllBlacklistedAttributeCodesInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;

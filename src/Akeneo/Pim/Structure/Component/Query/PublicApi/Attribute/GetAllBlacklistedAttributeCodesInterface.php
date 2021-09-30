@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Component\Query\InternalApi;
+namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute;
 
 interface GetAllBlacklistedAttributeCodesInterface
 {
