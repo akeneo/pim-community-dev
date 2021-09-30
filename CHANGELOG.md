@@ -113,6 +113,7 @@
 - Bump NodeJS library to fix CVE on  tmpl 1.0.4 
 - CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
 - CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5
 - CVE-2021-23368: Bump postcss from 7.0.35 to 7.0.36
 
 ## New features
