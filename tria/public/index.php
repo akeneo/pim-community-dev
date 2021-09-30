@@ -13,6 +13,8 @@ if ($_SERVER['APP_DEBUG']) {
 
 if ($trustedProxies = $_SERVER['TRUSTED_PROXY_IPS'] ?? $_ENV['TRUSTED_PROXY_IPS'] ?? false) {
     Request::setTrustedProxies(explode(',', $trustedProxies),Request::HEADER_X_FORWARDED_ALL);
+    // Tell onelogin-saml to trust the proxy, too: @see https://github.com/hslavich/OneloginSamlBundle/issues/114
+    \OneLogin\Saml2\Utils::setProxyVars(true);
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
