@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\GetAllBlacklistedAttributeCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
