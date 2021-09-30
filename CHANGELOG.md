@@ -114,6 +114,7 @@
 - CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
 - CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
 - GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5
+- PIM-10096: Reload PEF main image on channel switching
 
 ## New features
 
