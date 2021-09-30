@@ -122,41 +122,18 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             return 1;
         }
 
-        if (!$shouldCleanAll && empty($attributeCodesToClean)) {
-            $io->writeln(
-                '<info>Please specify a list of attribute codes to clean or use the --all-blacklisted-attributes option to process all blacklisted attributes.</info>'
-            );
-            $io->writeln('<info>Nothing to do.</info>');
-
-            return 1;
-        }
-
         if ($shouldCleanAll) {
-            if (!empty($allBlacklistedAttributeCodes)) {
-                $io->writeln('Here is the list of blacklisted attributes:');
-                $io->listing($allBlacklistedAttributeCodes);
-            }
-            $answer = $io->confirm(
-                'This command will remove all values of deleted attributes on all products and product models'."\n".
-                'Do you want to proceed?',
-                true
-            );
-
-            if (!$answer) {
-                $io->text('That\'s ok, see you!');
+            if (empty($allBlacklistedAttributeCodes)) {
+                $io->writeln('<info>There was no blacklisted attributes to clean.</info>');
+                $io->writeln('Nothing to do.');
 
                 return 0;
             }
 
-            $io->text([
-                          'Ok, let\'s go!',
-                          '(If you see warnings appearing in the console output, it\'s totally normal as ',
-                          'the goal of the command is to avoid those warnings in the future)',
-                      ]);
-            $io->newLine(2);
+            $io->writeln('Here is the list of blacklisted attributes that will be cleaned:');
+            $io->listing($allBlacklistedAttributeCodes);
 
-            $this->cleanAllProductsAndProductModels($output, $input, $io);
-            $this->purgeCleanedBlackListedAttributes($allBlacklistedAttributeCodes);
+            $this->launchCleanRemovedAttributeJob($io, $allBlacklistedAttributeCodes);
 
             return 0;
         }
@@ -174,6 +151,28 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
             return 0;
         }
+
+        $answer = $io->confirm(
+            'This command will remove all values of deleted attributes on all products and product models'."\n".
+            'Do you want to proceed?',
+            true
+        );
+
+        if (!$answer) {
+            $io->text('That\'s ok, see you!');
+
+            return 0;
+        }
+
+        $io->text([
+                      'Ok, let\'s go!',
+                      '(If you see warnings appearing in the console output, it\'s totally normal as ',
+                      'the goal of the command is to avoid those warnings in the future)',
+                  ]);
+        $io->newLine(2);
+
+        $this->cleanAllProductsAndProductModels($output, $input, $io);
+        $this->purgeCleanedBlackListedAttributes($allBlacklistedAttributeCodes);
 
         return 0;
     }
