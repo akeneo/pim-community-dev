@@ -106,6 +106,7 @@ services:
             - '%pim_api.configuration%'
             - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
+            - '@pim_catalog.remover.product_model'
 
     pim_api.controller.category:
         public: true
