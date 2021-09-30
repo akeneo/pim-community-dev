@@ -103,9 +103,7 @@ class ProductReader implements
             $filters = $this->getStepExecution()->getJobParameters()->get('filters')['data'] ?? [];
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return array_filter($filters, fn($filter) => count($filter) > 0);
     }
 
     /**

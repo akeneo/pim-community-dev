@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\Source\AssetCollection;
 
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
@@ -407,7 +408,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
             AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
-            MediaFile\MediaType::fromString(MediaFile\MediaType::IMAGE)
+            MediaType::fromString(MediaType::IMAGE)
         );
 
         $this->createAssetFamily($assetFamilyIdentifier, $attribute);
