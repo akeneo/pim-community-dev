@@ -162,8 +162,5 @@ connectivity-connection-coverage:
 connectivity-connection-insight:
 	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction ${O}
 
-connectivity-connection-pmd:
-	$(PHP_RUN) vendor/bin/phpmd ${O} text cleancode, codesize, controversial, design, naming, unusedcode
-
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml

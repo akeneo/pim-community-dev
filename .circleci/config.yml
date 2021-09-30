@@ -354,19 +354,10 @@ jobs:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
       - run:
-          name: Test PHP Insights /Domain
-          command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Domain'
+          name: PHP Insights results
+          command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Domain src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Infrastructure'
       - run:
-          name: Test PHP MD /Domain
-          command: make connectivity-connection-pmd O='src/Akeneo/Connectivity/Connection/back/Domain' || true
-      - run:
-          name: Test PHP Insights /Application
-          command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Application'
-      - run:
-          name: Test PHP MD /Application
-          command: make connectivity-connection-pmd O='src/Akeneo/Connectivity/Connection/back/Application' || true
-      - run:
-          name: Test PSALM
+          name: PSALM results
           command: make connectivity-connection-psalm || true
       - run:
           name: Start containers

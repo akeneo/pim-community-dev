@@ -6,5 +6,6 @@
     <projectFiles>
         <directory name="../Domain" />
         <directory name="../Application" />
+        <directory name="../Infrastructure" />
     </projectFiles>
 </psalm>
