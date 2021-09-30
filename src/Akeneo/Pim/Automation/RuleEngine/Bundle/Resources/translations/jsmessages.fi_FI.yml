@@ -117,7 +117,7 @@ pimee_catalog_rule:
       add_conditions: Lisää ehtoja
       products_count:
         products: "]-Inf, 1]{{ count }} tuote|]1, +Inf[{{ count }} tuotetta"
-        product_models: "]-Inf, 1]{{ count }} tuotemalli ]1, +Inf[{{ count }} tuotemallia"
+        product_models: "]-Inf, 1]{{ count }} tuotemalli|]1, +Inf[{{ count }} tuotemallia"
         products_and_product_models: "{{ products }} ja {{ product_models }}"
         pending: Lasketaan tuotteita ja tuotemalleja
         error: Tuotteita ja tuotemalleja ei voi laskea
