@@ -110,7 +110,9 @@
 - PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
 - PIM-10074: Add translation key for mass action selection
 - PIM-10062: Suppress PHP warning when missing 'dataScope' value.
-- Bump NodeJS library to fix CVE on  tmpl 1.0.4
+- Bump NodeJS library to fix CVE on  tmpl 1.0.4 
+- CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
 - CVE-2021-23358: Bump underscore from 1.8.3 to 1.12.1
 
 ## New features
