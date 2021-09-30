@@ -7,11 +7,12 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'pim/product/add-select/attribute', 'pim/fetcher-registry'], function (
+define(['jquery', 'underscore', 'pim/product/add-select/attribute', 'pim/fetcher-registry', 'pim/analytics'], function (
   $,
   _,
   AddAttributeSelect,
-  FetcherRegistry
+  FetcherRegistry,
+  analytics
 ) {
   return AddAttributeSelect.extend({
     /**
@@ -57,6 +58,10 @@ define(['jquery', 'underscore', 'pim/product/add-select/attribute', 'pim/fetcher
      */
     addItems: function () {
       this.getRoot().trigger(this.addEvent, {codes: this.selection});
+
+      analytics.track('family-grid:mass-edit:attributes-added', {
+        codes: this.selection,
+      });
     },
 
     /**
