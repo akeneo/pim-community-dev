@@ -2,34 +2,34 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {SimpleSelectReplacement} from './SimpleSelectReplacement';
+import {RecordsReplacement} from './RecordsReplacement';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-jest.mock('../../../hooks/useAttributeOptions', () => ({
-  useAttributeOptions: (
-    _attributeCode: string,
+jest.mock('../../../hooks/useRecords', () => ({
+  useRecords: (
+    _referenceEntityCode: string,
     searchValue: string,
     _page: number,
-    includeCodes: string[],
-    excludeCodes: string[]
+    includeCodes: string[] | null,
+    excludeCodes: string[] | null
   ) => [
     [
       {
-        code: 'black',
+        code: 'alessi',
         labels: {
-          en_US: 'Black',
+          en_US: 'Alessi',
         },
       },
       {
-        code: 'red',
+        code: 'starck',
         labels: {
-          en_US: 'Red',
+          en_US: 'Starck',
         },
       },
       {
-        code: 'blue',
+        code: 'yamaha',
         labels: {
-          en_US: 'Blue',
+          en_US: 'Yamaha',
         },
       },
     ].filter(
@@ -50,7 +50,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   }));
 
   await renderWithProviders(
-    <SimpleSelectReplacement attributeCode="simpleselect" validationErrors={[]} onOperationChange={handleChange} />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -70,7 +70,7 @@ test('it does not change replacement when cancelling', async () => {
   const handleChange = jest.fn();
 
   await renderWithProviders(
-    <SimpleSelectReplacement attributeCode="color" validationErrors={[]} onOperationChange={handleChange} />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -94,20 +94,16 @@ test('it displays validation errors', () => {
       propertyPath: '[mapping][blue]',
     },
     {
-      messageTemplate: 'error.key.black',
+      messageTemplate: 'error.key.alessi',
       invalidValue: '',
-      message: 'this is a black error',
+      message: 'this is a alessi error',
       parameters: {},
-      propertyPath: '[mapping][black]',
+      propertyPath: '[mapping][alessi]',
     },
   ];
 
   renderWithProviders(
-    <SimpleSelectReplacement
-      attributeCode="simpleselect"
-      validationErrors={validationErrors}
-      onOperationChange={jest.fn()}
-    />
+    <RecordsReplacement referenceEntityCode="brand" validationErrors={validationErrors} onOperationChange={jest.fn()} />
   );
 
   expect(screen.getByRole('alert')).toBeInTheDocument();

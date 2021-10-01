@@ -11,25 +11,25 @@ import {
   ReplacementValueFilter,
   getDefaultReplacementValueFilter,
 } from '../common';
-import {useAttributeOptions, OPTION_COLLECTION_PAGE_SIZE} from '../../../hooks/useAttributeOptions';
+import {RECORD_PAGE_SIZE, useRecords} from '../../../hooks/useRecords';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
 `;
 
-type SimpleSelectReplacementProps = {
+type RecordsReplacementProps = {
+  referenceEntityCode: string;
   operation?: ReplacementOperation;
-  attributeCode: string;
   validationErrors: ValidationError[];
   onOperationChange: (updatedOperation?: ReplacementOperation) => void;
 };
 
-const SimpleSelectReplacement = ({
+const RecordsReplacement = ({
   operation = getDefaultReplacementOperation(),
-  attributeCode,
+  referenceEntityCode,
   validationErrors,
   onOperationChange,
-}: SimpleSelectReplacementProps) => {
+}: RecordsReplacementProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
@@ -37,8 +37,8 @@ const SimpleSelectReplacement = ({
     getDefaultReplacementValueFilter()
   );
 
-  const [attributeOptions, totalItems] = useAttributeOptions(
-    attributeCode,
+  const [records, totalItems] = useRecords(
+    referenceEntityCode,
     replacementValueFilter.searchValue,
     replacementValueFilter.page,
     replacementValueFilter.codesToInclude,
@@ -79,9 +79,9 @@ const SimpleSelectReplacement = ({
         <ReplacementModal
           replacementValueFilter={replacementValueFilter}
           onReplacementValueFilterChange={setReplacementValueFilter}
-          values={attributeOptions}
-          itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
+          values={records}
           totalItems={totalItems}
+          itemsPerPage={RECORD_PAGE_SIZE}
           initialMapping={operation.mapping}
           validationErrors={validationErrors}
           onConfirm={handleConfirm}
@@ -92,4 +92,4 @@ const SimpleSelectReplacement = ({
   );
 };
 
-export {SimpleSelectReplacement};
+export {RecordsReplacement};

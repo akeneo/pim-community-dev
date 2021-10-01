@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {SimpleSelectConfigurator} from './SimpleSelectConfigurator';
 import {getDefaultSimpleSelectSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {ReplacementOperation} from '../common';
 
 const attribute = {
   code: 'simpleselect',
@@ -19,27 +18,7 @@ const attribute = {
 
 jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
-
-jest.mock('./SimpleSelectReplacement', () => ({
-  SimpleSelectReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: ReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            foo: 'bar',
-          },
-        })
-      }
-    >
-      Simple select replacement
-    </button>
-  ),
-}));
+jest.mock('../common/AttributeOptionsReplacement');
 
 test('it displays a simple select configurator', () => {
   const onSourceChange = jest.fn();
@@ -115,7 +94,7 @@ test('it can update simple select replacement operation', () => {
     />
   );
 
-  userEvent.click(screen.getByText('Simple select replacement'));
+  userEvent.click(screen.getByText('Attribute options replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultSimpleSelectSource(attribute, null, null),
@@ -123,7 +102,7 @@ test('it can update simple select replacement operation', () => {
       replacement: {
         type: 'replacement',
         mapping: {
-          foo: 'bar',
+          blue: 'Bleu',
         },
       },
     },

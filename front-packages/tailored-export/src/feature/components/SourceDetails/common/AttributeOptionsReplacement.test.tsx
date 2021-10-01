@@ -2,34 +2,34 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {ReferenceEntityReplacement} from './ReferenceEntityReplacement';
+import {AttributeOptionsReplacement} from './AttributeOptionsReplacement';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-jest.mock('./useRecords', () => ({
-  useRecords: (
-    _referenceEntityCode: string,
+jest.mock('../../../hooks/useAttributeOptions', () => ({
+  useAttributeOptions: (
+    _attributeCode: string,
     searchValue: string,
     _page: number,
-    includeCodes: string[] | null,
-    excludeCodes: string[] | null
+    includeCodes: string[],
+    excludeCodes: string[]
   ) => [
     [
       {
-        code: 'alessi',
+        code: 'black',
         labels: {
-          en_US: 'Alessi',
+          en_US: 'Black',
         },
       },
       {
-        code: 'starck',
+        code: 'red',
         labels: {
-          en_US: 'Starck',
+          en_US: 'Red',
         },
       },
       {
-        code: 'yamaha',
+        code: 'blue',
         labels: {
-          en_US: 'Yamaha',
+          en_US: 'Blue',
         },
       },
     ].filter(
@@ -50,7 +50,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   }));
 
   await renderWithProviders(
-    <ReferenceEntityReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
+    <AttributeOptionsReplacement attributeCode="multiselect" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -70,7 +70,7 @@ test('it does not change replacement when cancelling', async () => {
   const handleChange = jest.fn();
 
   await renderWithProviders(
-    <ReferenceEntityReplacement referenceEntityCode="brand" validationErrors={[]} onOperationChange={handleChange} />
+    <AttributeOptionsReplacement attributeCode="color" validationErrors={[]} onOperationChange={handleChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
@@ -94,17 +94,17 @@ test('it displays validation errors', () => {
       propertyPath: '[mapping][blue]',
     },
     {
-      messageTemplate: 'error.key.alessi',
+      messageTemplate: 'error.key.black',
       invalidValue: '',
-      message: 'this is a alessi error',
+      message: 'this is a black error',
       parameters: {},
-      propertyPath: '[mapping][alessi]',
+      propertyPath: '[mapping][black]',
     },
   ];
 
   renderWithProviders(
-    <ReferenceEntityReplacement
-      referenceEntityCode="brand"
+    <AttributeOptionsReplacement
+      attributeCode="multiselect"
       validationErrors={validationErrors}
       onOperationChange={jest.fn()}
     />

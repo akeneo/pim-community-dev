@@ -4,7 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelSelector, DefaultValue, Operations} from '../common';
 import {isSimpleSelectSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {SimpleSelectReplacement} from './SimpleSelectReplacement';
+import {AttributeOptionsReplacement} from '../common/AttributeOptionsReplacement';
 
 const SimpleSelectConfigurator = ({
   source,
@@ -25,7 +25,7 @@ const SimpleSelectConfigurator = ({
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
         }
       />
-      <SimpleSelectReplacement
+      <AttributeOptionsReplacement
         operation={source.operations.replacement}
         attributeCode={attribute.code}
         validationErrors={filterErrors(validationErrors, '[operations][replacement]')}

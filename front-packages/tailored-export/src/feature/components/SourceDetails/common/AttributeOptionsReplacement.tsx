@@ -11,25 +11,25 @@ import {
   ReplacementValueFilter,
   getDefaultReplacementValueFilter,
 } from '../common';
-import {RECORD_PAGE_SIZE, useRecords} from './useRecords';
+import {useAttributeOptions, OPTION_COLLECTION_PAGE_SIZE} from '../../../hooks/useAttributeOptions';
 
 const EditMappingButton = styled(Button)`
   margin: 2px 2px 10px;
 `;
 
-type ReferenceEntityReplacementProps = {
-  referenceEntityCode: string;
+type AttributeOptionsReplacementProps = {
   operation?: ReplacementOperation;
+  attributeCode: string;
   validationErrors: ValidationError[];
   onOperationChange: (updatedOperation?: ReplacementOperation) => void;
 };
 
-const ReferenceEntityReplacement = ({
+const AttributeOptionsReplacement = ({
   operation = getDefaultReplacementOperation(),
-  referenceEntityCode,
+  attributeCode,
   validationErrors,
   onOperationChange,
-}: ReferenceEntityReplacementProps) => {
+}: AttributeOptionsReplacementProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(false);
   const [isModalOpen, openModal, closeModal] = useBooleanState();
@@ -37,8 +37,8 @@ const ReferenceEntityReplacement = ({
     getDefaultReplacementValueFilter()
   );
 
-  const [records, totalItems] = useRecords(
-    referenceEntityCode,
+  const [attributeOptions, totalItems] = useAttributeOptions(
+    attributeCode,
     replacementValueFilter.searchValue,
     replacementValueFilter.page,
     replacementValueFilter.codesToInclude,
@@ -79,9 +79,9 @@ const ReferenceEntityReplacement = ({
         <ReplacementModal
           replacementValueFilter={replacementValueFilter}
           onReplacementValueFilterChange={setReplacementValueFilter}
-          values={records}
+          values={attributeOptions}
+          itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
           totalItems={totalItems}
-          itemsPerPage={RECORD_PAGE_SIZE}
           initialMapping={operation.mapping}
           validationErrors={validationErrors}
           onConfirm={handleConfirm}
@@ -92,4 +92,4 @@ const ReferenceEntityReplacement = ({
   );
 };
 
-export {ReferenceEntityReplacement};
+export {AttributeOptionsReplacement};
