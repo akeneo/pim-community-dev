@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsW
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
+use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAllBlacklistedAttributeCodesInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -52,6 +54,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     private CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute;
     private RouterInterface $router;
     private string $pimUrl;
+    private ?GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes;
+    private ?AttributeCodeBlacklister $attributeCodeBlacklister;
 
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
@@ -65,7 +69,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute,
         CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute,
         RouterInterface $router,
-        string $pimUrl
+        string $pimUrl,
+        GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes = null, // @pull-up master: Remove "= null"
+        AttributeCodeBlacklister $attributeCodeBlacklister = null // // @pull-up master: Remove "= null"
     ) {
         parent::__construct();
 
@@ -81,6 +87,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->countProductsAndProductModelsWithInheritedRemovedAttribute = $countProductsAndProductModelsWithInheritedRemovedAttribute;
         $this->router = $router;
         $this->pimUrl = $pimUrl;
+        $this->getAllBlacklistedAttributeCodes = $getAllBlacklistedAttributeCodes;
+        $this->attributeCodeBlacklister = $attributeCodeBlacklister;
     }
 
     /**
@@ -90,6 +98,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $this
             ->setDescription('Removes all values of deleted attributes on all products and product models')
+            ->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
             ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 
@@ -101,17 +110,55 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title('Clean removed attributes values');
 
-        $attributeCodes = $input->getArgument('attributes');
+        $shouldCleanAllBlacklistedAttributes = $input->getOption('all-blacklisted-attributes');
+        $attributeCodesToClean = $input->getArgument('attributes');
+        $allBlacklistedAttributeCodes = [];
+        /** TODO pull-up: extract this assigment from if **/
+        if ($this->getAllBlacklistedAttributeCodes !== null) {
+            $allBlacklistedAttributeCodes = $this->getAllBlacklistedAttributeCodes->execute();
+        }
 
-        if (!empty($attributeCodes)) {
-            $this->launchCleanRemovedAttributeJob($io, $attributeCodes);
+        if ($shouldCleanAllBlacklistedAttributes && !empty($attributeCodesToClean)) {
+            $io->writeln(
+                '<error>You cannot specify attribute codes when using the --all-blacklisted-attributes option.</error>'
+            );
+
+            return 1;
+        }
+
+        if ($shouldCleanAllBlacklistedAttributes) {
+            if (empty($allBlacklistedAttributeCodes)) {
+                $io->writeln('<info>There was no blacklisted attributes to clean.</info>');
+                $io->writeln('Nothing to do.');
+
+                return 0;
+            }
+
+            $io->writeln('Here is the list of blacklisted attributes that will be cleaned:');
+            $io->listing($allBlacklistedAttributeCodes);
+
+            $this->launchCleanRemovedAttributeJob($io, $allBlacklistedAttributeCodes);
+
+            return 0;
+        }
+
+        if (!empty($attributeCodesToClean)) {
+            if (!$this->checkBlacklistedAttributeCodesToCleanAllExist(
+                $io,
+                $attributeCodesToClean,
+                $allBlacklistedAttributeCodes
+            )) {
+                return 0;
+            }
+
+            $this->launchCleanRemovedAttributeJob($io, $attributeCodesToClean);
 
             return 0;
         }
 
         $answer = $io->confirm(
-            'This command will remove all values of deleted attributes on all products and product models' . "\n" .
-                'Do you want to proceed?',
+            'This command will remove all values of deleted attributes on all products and product models'."\n".
+            'Do you want to proceed?',
             true
         );
 
@@ -122,22 +169,14 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         }
 
         $io->text([
-            'Ok, let\'s go!',
-            '(If you see warnings appearing in the console output, it\'s totally normal as ',
-            'the goal of the command is to avoid those warnings in the future)'
-        ]);
+                      'Ok, let\'s go!',
+                      '(If you see warnings appearing in the console output, it\'s totally normal as ',
+                      'the goal of the command is to avoid those warnings in the future)',
+                  ]);
         $io->newLine(2);
 
-        $products = $this->getProducts($this->productQueryBuilderFactory);
-
-        $progressBar = new ProgressBar($output, count($products));
-
-        $env = $input->getOption('env');
-        $this->cleanProducts($products, $progressBar, $this->productBatchSize, $this->entityManagerClearer, $env, $this->kernelRootDir);
-        $io->newLine();
-        $io->text(sprintf('%d products well cleaned', $products->count()));
-
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+        $this->cleanAllProductsAndProductModels($output, $input, $io);
+        $this->purgeCleanedBlackListedAttributes($allBlacklistedAttributeCodes);
 
         return 0;
     }
@@ -168,7 +207,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         $productToCleanCount = 0;
         foreach ($products as $product) {
-            $productIds[] = IdEncoder::encode($product instanceof ProductModel ? 'product_model' : 'product', $product->getId());
+            $productIds[] = IdEncoder::encode(
+                $product instanceof ProductModel ? 'product_model' : 'product',
+                $product->getId()
+            );
             $productToCleanCount++;
             if (0 === $productToCleanCount % $productBatchSize) {
                 $this->launchCleanTask($productIds, $env, $rootDir);
@@ -190,7 +232,14 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     private function launchCleanTask(array $productIds, string $env, string $rootDir)
     {
-        $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
+        $process = new Process(
+            [
+                sprintf('%s/../bin/console', $rootDir),
+                'pim:product:refresh',
+                sprintf('--env=%s', $env),
+                implode(',', $productIds),
+            ]
+        );
         $process->setTimeout(null);
         $process->run();
     }
@@ -202,18 +251,22 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $countProducts = $this->countProductsWithRemovedAttribute->count($attributeCodes);
         $countProductModels = $this->countProductModelsWithRemovedAttribute->count($attributeCodes);
-        $countProductVariants = $this->countProductsAndProductModelsWithInheritedRemovedAttribute->count($attributeCodes);
+        $countProductVariants = $this->countProductsAndProductModelsWithInheritedRemovedAttribute->count(
+            $attributeCodes
+        );
 
         $confirmMessage = sprintf(
-            "This command will launch a job to remove the values of the attributes:\n" .
-                "%s\n" .
-                " This will update:\n" .
-                " - %d product model(s) (and %d product variant(s))\n" .
-                " - %d product(s)\n" .
-                " Do you want to proceed?",
-            implode(array_map(function (string $attributeCode) {
-                return sprintf(" - %s\n", $attributeCode);
-            }, $attributeCodes)),
+            "This command will launch a job to remove the values of the attributes:\n".
+            "%s\n".
+            " This will update:\n".
+            " - %d product model(s) (and %d product variant(s))\n".
+            " - %d product(s)\n".
+            " Do you want to proceed?",
+            implode(
+                array_map(function (string $attributeCode) {
+                    return sprintf(" - %s\n", $attributeCode);
+                }, $attributeCodes)
+            ),
             $countProductModels,
             $countProductVariants,
             $countProducts
@@ -227,7 +280,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
         $jobExecution = $this->jobLauncher->launch($jobInstance, new User(UserInterface::SYSTEM_USER_NAME, null), [
-            'attribute_codes' => $attributeCodes
+            'attribute_codes' => $attributeCodes,
         ]);
 
         $jobUrl = sprintf(
@@ -236,9 +289,71 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             $this->router->generate(self::JOB_TRACKER_ROUTE, ['id' => $jobExecution->getId()])
         );
 
-        $io->text(sprintf(
-            'The cleaning removed attribute values job has been launched, you can follow its progression here: %s',
-            $jobUrl
-        ));
+        $io->text(
+            sprintf(
+                'The cleaning removed attribute values job has been launched, you can follow its progression here: %s',
+                $jobUrl
+            )
+        );
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+    }
+
+    private function checkBlacklistedAttributeCodesToCleanAllExist(
+        SymfonyStyle $io,
+        array $attributeCodesToClean,
+        array $allBlacklistedAttributeCodes
+    ): bool {
+        $nonExistingBlacklistedAttributeCodes = array_diff($attributeCodesToClean, $allBlacklistedAttributeCodes);
+        if (!empty($nonExistingBlacklistedAttributeCodes)) {
+            $io->writeln('<error>The following attribute codes do not exist in the Blacklist:</error>');
+            $io->listing($nonExistingBlacklistedAttributeCodes);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param SymfonyStyle $io
+     *
+     */
+    protected function cleanAllProductsAndProductModels(
+        OutputInterface $output,
+        InputInterface $input,
+        SymfonyStyle $io
+    ): void {
+        $products = $this->getProducts($this->productQueryBuilderFactory);
+
+        $progressBar = new ProgressBar($output, count($products));
+
+        $env = $input->getOption('env');
+        $this->cleanProducts(
+            $products,
+            $progressBar,
+            $this->productBatchSize,
+            $this->entityManagerClearer,
+            $env,
+            $this->kernelRootDir
+        );
+        $io->newLine();
+        $io->text(sprintf('%d products well cleaned', $products->count()));
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+    }
+
+    private function purgeCleanedBlackListedAttributes(array $allBlacklistedAttributeCodes)
+    {
+        // @pull-up master: Remove this condition
+        if ($this->attributeCodeBlacklister === null) {
+            return;
+        }
+
+        foreach ($allBlacklistedAttributeCodes as $blacklistedAttributeCode) {
+            $this->attributeCodeBlacklister->removeFromBlacklist($blacklistedAttributeCode);
+        }
     }
 }
