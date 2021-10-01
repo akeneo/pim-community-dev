@@ -54,7 +54,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     private CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute;
     private RouterInterface $router;
     private string $pimUrl;
-    private GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes;
+    private ?GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes;
     private ?AttributeCodeBlacklister $attributeCodeBlacklister;
 
     public function __construct(
@@ -110,11 +110,15 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title('Clean removed attributes values');
 
-        $shouldCleanAll = $input->getOption('all-blacklisted-attributes');
+        $shouldCleanAllBlacklistedAttributes = $input->getOption('all-blacklisted-attributes');
         $attributeCodesToClean = $input->getArgument('attributes');
-        $allBlacklistedAttributeCodes = $this->getAllBlacklistedAttributeCodes->execute();
+        $allBlacklistedAttributeCodes = [];
+        /** TODO pull-up: extract this assigment from if **/
+        if ($this->getAllBlacklistedAttributeCodes !== null) {
+            $allBlacklistedAttributeCodes = $this->getAllBlacklistedAttributeCodes->execute();
+        }
 
-        if ($shouldCleanAll && !empty($attributeCodesToClean)) {
+        if ($shouldCleanAllBlacklistedAttributes && !empty($attributeCodesToClean)) {
             $io->writeln(
                 '<error>You cannot specify attribute codes when using the --all-blacklisted-attributes option.</error>'
             );
@@ -122,7 +126,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
             return 1;
         }
 
-        if ($shouldCleanAll) {
+        if ($shouldCleanAllBlacklistedAttributes) {
             if (empty($allBlacklistedAttributeCodes)) {
                 $io->writeln('<info>There was no blacklisted attributes to clean.</info>');
                 $io->writeln('Nothing to do.');
@@ -343,6 +347,11 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     private function purgeCleanedBlackListedAttributes(array $allBlacklistedAttributeCodes)
     {
+        // @pull-up master: Remove this condition
+        if ($this->attributeCodeBlacklister === null) {
+            return;
+        }
+
         foreach ($allBlacklistedAttributeCodes as $blacklistedAttributeCode) {
             $this->attributeCodeBlacklister->removeFromBlacklist($blacklistedAttributeCode);
         }
