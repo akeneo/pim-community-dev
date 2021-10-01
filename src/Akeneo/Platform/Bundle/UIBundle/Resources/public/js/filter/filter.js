@@ -287,5 +287,17 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'pim/form', 'p
 
       this.elements[position][code] = element;
     },
+
+    shutdown() {
+      this.doShutdown();
+
+      Object.values(this.elements).forEach(positionnedElements => {
+        Object.values(positionnedElements).forEach(element => {
+          if ('function' === typeof element.shutdown) {
+            element.shutdown();
+          }
+        });
+      });
+    },
   });
 });
