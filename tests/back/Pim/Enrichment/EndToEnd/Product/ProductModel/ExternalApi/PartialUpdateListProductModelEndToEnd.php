@@ -300,7 +300,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testErrorWhenCodeIsMissing()
+    public function testErrorWhenCodeIsMissingOrInvalid()
     {
         $data =
             <<<JSON
@@ -309,6 +309,7 @@ JSON;
     {"code": ""}
     {"code": " "}
     {}
+    {"code":123456}
 JSON;
 
         $expectedContent =
@@ -318,6 +319,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Code is missing."}
 {"line":4,"status_code":422,"message":"Code is missing."}
 {"line":5,"status_code":422,"message":"Code is missing."}
+{"line":6,"code":123456,"status_code":422,"message":"The code field requires a string. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_product_models__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);

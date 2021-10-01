@@ -190,7 +190,7 @@ JSON;
   "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -232,7 +232,7 @@ JSON;
   "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -275,7 +275,7 @@ JSON;
   "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -381,7 +381,7 @@ JSON;
     "message": "Property \"parent\" expects a valid parent code. The new parent of the product model must be a root product model, \"tshirt_sub_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -485,7 +485,7 @@ JSON;
   "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -615,7 +615,7 @@ JSON;
   "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -864,7 +864,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -897,7 +897,7 @@ JSON;
     "message": "The family \"non_matching_family\" does not match the family of the variant \"familyVariantA1\". Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -932,7 +932,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product identifier. The product does not exist, \"a_non_exiting_product\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
