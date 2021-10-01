@@ -121,6 +121,7 @@
 - CVE-2021-23364: Bump browserslist from 4.16.4 to 4.16.6 in /front-packages/shared
 - PIM-10095: Fix API error when providing an integer for the identifier or code when patching products or models
 - CVE-2021-3807: Bump ansi-regex from 5.0.0 to 5.0.1 in /front-packages/shared
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7 in /front-packages/shared
 
 ## New features
 
