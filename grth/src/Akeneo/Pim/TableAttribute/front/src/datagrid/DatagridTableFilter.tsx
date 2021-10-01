@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {TableAttribute} from '../models';
+import {ColumnDefinition, TableAttribute} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
-import {BackendTableFilterValue, FilterSelectorList, PendingTableFilterValue} from "./FilterSelectorList";
+import {BackendTableFilterValue, FilterSelectorList, PendingTableFilterValue} from './FilterSelectorList';
 
 const FilterSectionTitleTitle = styled(SectionTitle.Title)`
   color: ${getColor('brand', 100)};
@@ -48,9 +48,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({
-    operator: '',
-  });
+  const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({});
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
@@ -58,14 +56,21 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }, []);
 
+  const isValid =
+    typeof filterValue.column !== 'undefined' &&
+    typeof filterValue.operator !== 'undefined' &&
+    typeof filterValue.value !== 'undefined';
+
   const handleValidate = () => {
-    close();
-    onChange({
-      row: filterValue.row?.code,
-      column: filterValue.column?.code as string,
-      operator: filterValue.operator as string,
-      value: filterValue.value,
-    });
+    if (isValid) {
+      close();
+      onChange({
+        row: filterValue.row?.code,
+        column: (filterValue.column as ColumnDefinition).code,
+        operator: filterValue.operator as string,
+        value: filterValue.value,
+      });
+    }
   };
 
   // TODO Think about wording and translate this CPM-378
@@ -73,10 +78,14 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   if (typeof filterValue.column !== 'undefined') {
     criteriaLabel = '';
     criteriaLabel +=
-      typeof filterValue.row === 'undefined' ? 'Any' : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
+      typeof filterValue.row === 'undefined'
+        ? 'Any'
+        : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
     criteriaLabel += getLabel(filterValue.column.labels, catalogLocale, filterValue.column.code) + ' ';
     criteriaLabel +=
-      typeof filterValue.operator !== 'undefined' ? translate(`pim_common.operators.${filterValue.operator}`) + ' ' : '';
+      typeof filterValue.operator !== 'undefined'
+        ? translate(`pim_common.operators.${filterValue.operator}`) + ' '
+        : '';
     criteriaLabel += typeof filterValue.value !== 'undefined' ? JSON.stringify(filterValue.value) : '';
   }
 
@@ -95,7 +104,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               initialFilter={{}}
             />
             <FilterButtonContainer>
-              <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
+              <Button onClick={handleValidate} disabled={!isValid}>
+                {translate('pim_common.update')}
+              </Button>
             </FilterButtonContainer>
           </FilterContainer>
         </Dropdown.Overlay>
