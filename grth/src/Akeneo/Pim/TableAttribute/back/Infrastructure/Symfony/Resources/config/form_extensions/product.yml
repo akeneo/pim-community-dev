@@ -3,4 +3,4 @@ attribute_fields:
 
 extensions:
     akeneo-attribute-table-filter:
-        module: pim/filter/attribute/boolean
+        module: pim/filter/attribute/table

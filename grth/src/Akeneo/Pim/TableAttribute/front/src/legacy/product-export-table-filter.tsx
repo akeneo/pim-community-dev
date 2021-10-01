@@ -18,7 +18,8 @@ type TemplateContext = {
 };
 
 class ProductExportTableFilter extends AbstractFilter {
-  private r;
+  private element: Element | undefined = undefined;
+
   private updateState(value: BackendTableFilterValue) {
     const data = {
       field: this.getField(),
@@ -37,6 +38,8 @@ class ProductExportTableFilter extends AbstractFilter {
     }
 
     this.element = document.createElement('div');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const filterValuesMapping = __moduleConfig.filter_values as FilterValuesMapping;
     const {attribute} = templateContext;
     const handleChange = this.updateState.bind(this);
