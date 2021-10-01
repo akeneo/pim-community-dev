@@ -6,12 +6,13 @@ import React, {useState} from "react";
 import styled, {css} from "styled-components";
 import {ColumnDefinition, SelectOption, TableAttribute} from "../models";
 import {FilterValuesMapping} from "./FilterValues";
-import {TableFilterValue} from "./DatagridTableFilter";
+import {DatagridTableFilterValue, TableFilterValue} from "./DatagridTableFilter";
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedProps>`
   ${({inline}) => inline ? css`
      display: flex;
+     width: 100%;
   ` : css`
     margin-top: 20px;
     & > * {
@@ -26,6 +27,7 @@ type FilterSelectorListProps = {
   filterValuesMapping: FilterValuesMapping;
   onChange: (value: TableFilterValue) => void;
   inline?: boolean;
+  initialFilter: TableFilterValue;
 };
 
 const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
@@ -33,74 +35,55 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
   filterValuesMapping,
   onChange,
   inline = false,
+  initialFilter,
 }) => {
-  const [selectedColumn, setSelectedColumn] = useState<ColumnDefinition | undefined>();
-  const [selectedRow, setSelectedRow] = useState<SelectOption | undefined>();
-  const [selectedOperator, setSelectedOperator] = useState<string | undefined>();
-  const [value, setValue] = useState<any | undefined>();
+  const [filter, setFilter] = useState<TableFilterValue>(initialFilter);
 
-  const handleChange = () => {
-    onChange({
-      row: selectedRow,
-      column: selectedColumn,
-      operator: selectedOperator as string,
-      value: value,
-    });
+  const updateFilter = (newFilter: TableFilterValue) => {
+    setFilter(newFilter);
+    if (isValid(newFilter)) {
+      onChange(newFilter);
+    }
   }
 
-  const isValid = () => {
+  const isValid = (_newFilter: TableFilterValue) => {
     // TODO check if value are correclty filled
     return true;
   }
 
   const handleColumnChange = (column: ColumnDefinition | undefined) => {
-    setSelectedColumn(column);
-    setSelectedOperator(undefined);
-    setValue(undefined);
-    if (isValid()) {
-      handleChange();
-    }
+    updateFilter({...filter, column, operator: undefined, value: undefined})
   };
 
   const handleOperatorChange = (operator: string | undefined) => {
-    setSelectedOperator(operator);
-    setValue(undefined);
-    if (isValid()) {
-      handleChange();
-    }
+    updateFilter({...filter, operator, value: undefined})
   };
 
   const handleRowChange = (row: SelectOption | undefined) => {
-    setSelectedRow(row);
-    if (isValid()) {
-      handleChange();
-    }
+    updateFilter({...filter, row});
   }
 
   const handleValueChange = (value: any) => {
-    setValue(value);
-    if (isValid()) {
-      handleChange();
-    }
+    updateFilter({...filter, value});
   }
 
   return <FilterSelectorListContainer inline={inline}>
-    <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={selectedColumn} />
-    <RowSelector attribute={attribute} value={selectedRow} onChange={handleRowChange} />
+    <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={filter.column} />
+    <RowSelector attribute={attribute} value={filter.row} onChange={handleRowChange} />
     <OperatorSelector
-      dataType={selectedColumn?.data_type}
-      value={selectedOperator}
+      dataType={filter.column?.data_type}
+      value={filter.operator}
       onChange={handleOperatorChange}
       filterValuesMapping={filterValuesMapping}
     />
-    {selectedOperator && selectedColumn && (
+    {filter.operator && filter.column && (
       <ValueSelector
-        dataType={selectedColumn?.data_type}
-        operator={selectedOperator}
+        dataType={filter.column?.data_type}
+        operator={filter.operator}
         onChange={handleValueChange}
-        value={value}
+        value={filter.value}
         filterValuesMapping={filterValuesMapping}
-        columnCode={selectedColumn.code}
+        columnCode={filter.column.code}
         attribute={attribute}
       />
     )}

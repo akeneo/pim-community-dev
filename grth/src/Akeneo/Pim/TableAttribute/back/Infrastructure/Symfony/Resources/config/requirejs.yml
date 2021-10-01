@@ -3,7 +3,7 @@ config:
         pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-structure-tab
         pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
         pim/table-attribute/attribute/properties-helper: akeneopimtableattribute/legacy/properties-helper
-        pim/filter/attribute/boolean: akeneopimtableattribute/legacy/product-export-table-filter
+        pim/filter/attribute/table: akeneopimtableattribute/legacy/product-export-table-filter
         oro/datafilter/table-filter: akeneopimtableattribute/legacy/table-filter
 
     config:
@@ -71,7 +71,7 @@ config:
                     'IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
                     'NOT IN': '@akeneopimtableattribute/datagrid/FilterValues/MultiSelectFilterValue'
 
-        pim/filter/attribute/boolean:
+        pim/filter/attribute/table:
             filter_values:
                 text:
                     'STARTS WITH': '@akeneopimtableattribute/datagrid/FilterValues/StringFilterValue'

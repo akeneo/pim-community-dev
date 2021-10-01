@@ -33,7 +33,7 @@ export type DatagridTableFilterValue = {
 export type TableFilterValue = {
   row?: SelectOption;
   column?: ColumnDefinition;
-  operator: string;
+  operator?: string;
   value?: any;
 };
 
@@ -77,7 +77,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     onChange({
       row: filterValue.row?.code,
       column: filterValue.column?.code as string,
-      operator: filterValue.operator,
+      operator: filterValue.operator as string,
       value: filterValue.value,
     });
   };
@@ -106,6 +106,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               attribute={attribute}
               filterValuesMapping={filterValuesMapping}
               onChange={setFilterValue}
+              initialFilter={{attribute}}
             />
             <FilterButtonContainer>
               <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>

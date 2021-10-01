@@ -1,6 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import {FilterValuesMapping} from "../datagrid";
-
 const AbstractFilter = require('pim/filter/attribute/attribute');
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,6 +7,7 @@ import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, TableAttribute} from "../models";
 import {ProductExportBuilderFilter} from "../datagrid/ProductExportBuilderFilter";
+import {DatagridTableFilterValue, FilterValuesMapping} from "../datagrid";
 
 type TemplateContext = {
   attribute: Attribute;
@@ -18,31 +17,55 @@ type TemplateContext = {
 }
 
 class ProductExportTableFilter extends AbstractFilter {
-  renderInput(templateContext: TemplateContext): any {
-    const filterValuesMapping = __moduleConfig.filter_values as FilterValuesMapping;
+  private r;
+  private updateState(value: DatagridTableFilterValue) {
+    const data = {
+      field: this.getField(),
+      operator: value.operator,
+      value: value.value,
+      row: value.row,
+      column: value.column,
+    };
 
-    const {attribute, editable, label, removable} = templateContext;
+    this.setData(data);
+  }
+
+  renderInput(templateContext: TemplateContext): any {
+    if (this.element) {
+      return this.element;
+    }
+
+    this.element = document.createElement('div');
+    const filterValuesMapping = __moduleConfig.filter_values as FilterValuesMapping;
+    const {attribute} = templateContext;
+    const handleChange = this.updateState.bind(this);
+
+    const initialDataFilter = this.getFormData() as DatagridTableFilterValue;
+
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
           <ProductExportBuilderFilter
             attribute={attribute as TableAttribute}
-            editable={editable}
-            label={label}
-            removable={removable}
             filterValuesMapping={filterValuesMapping}
+            onChange={handleChange}
+            initialDataFilter={initialDataFilter}
           />
         </ThemeProvider>
       </DependenciesProvider>,
-      this.el
+      this.element
     );
-    return this;
+
+    return this.element;
   }
 
   remove(): any {
-    ReactDOM.unmountComponentAtNode(this.el);
+    if (this.element) {
+      ReactDOM.unmountComponentAtNode(this.element);
+      this.element = undefined;
 
-    return super.remove();
+      return super.remove();
+    }
   }
 }
 
