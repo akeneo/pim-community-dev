@@ -18,7 +18,7 @@ interface FilterProviderInterface
      *
      * @param mixed $element
      *
-     * @return string
+     * @return array<string, string>
      */
     public function getFilters($element);
 
