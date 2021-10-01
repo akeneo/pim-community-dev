@@ -114,7 +114,7 @@ define([
       this.trigger(this.addEvent, {codes: this.selection});
 
       analytics.track('grid:mass-edit:attributes-added', {
-        name: this.selection.join(),
+        codes: this.selection,
       });
     },
   });
