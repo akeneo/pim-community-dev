@@ -4,9 +4,8 @@ import {OperatorSelector} from "./OperatorSelector";
 import {ValueSelector} from "./ValueSelector";
 import React, {useState} from "react";
 import styled, {css} from "styled-components";
-import {ColumnDefinition, SelectOption, TableAttribute} from "../models";
+import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from "../models";
 import {FilterValuesMapping} from "./FilterValues";
-import {DatagridTableFilterValue, TableFilterValue} from "./DatagridTableFilter";
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedProps>`
@@ -22,12 +21,33 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
   }
 `;
 
+export type BackendTableFilterValue = {
+  row?: SelectOptionCode;
+  column: ColumnCode;
+  operator: string;
+  value?: any;
+};
+
+export type PendingTableFilterValue = {
+  row?: SelectOption;
+  column?: ColumnDefinition;
+  operator?: string;
+  value?: any;
+};
+
+export type ValidTableFilterValue = {
+  row?: SelectOption;
+  column: ColumnDefinition;
+  operator: string;
+  value: any;
+};
+
 type FilterSelectorListProps = {
   attribute: TableAttribute;
   filterValuesMapping: FilterValuesMapping;
-  onChange: (value: TableFilterValue) => void;
+  onChange: (value: ValidTableFilterValue) => void;
   inline?: boolean;
-  initialFilter: TableFilterValue;
+  initialFilter: PendingTableFilterValue;
 };
 
 const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
@@ -37,18 +57,19 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
   inline = false,
   initialFilter,
 }) => {
-  const [filter, setFilter] = useState<TableFilterValue>(initialFilter);
+  const [filter, setFilter] = useState<PendingTableFilterValue>(initialFilter);
 
-  const updateFilter = (newFilter: TableFilterValue) => {
+  const updateFilter = (newFilter: PendingTableFilterValue) => {
     setFilter(newFilter);
     if (isValid(newFilter)) {
-      onChange(newFilter);
+      onChange(newFilter as ValidTableFilterValue);
     }
   }
 
-  const isValid = (_newFilter: TableFilterValue) => {
-    // TODO check if value are correclty filled
-    return true;
+  const isValid = (newFilter: PendingTableFilterValue) => {
+    return typeof newFilter.column !== 'undefined' &&
+      typeof newFilter.operator !== 'undefined' &&
+      typeof newFilter.value !== 'undefined';
   }
 
   const handleColumnChange = (column: ColumnDefinition | undefined) => {

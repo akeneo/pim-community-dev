@@ -2,7 +2,7 @@ import React from 'react';
 import {TableAttribute} from "../models";
 import {FilterSelectorList} from "./FilterSelectorList";
 import {FilterValuesMapping} from "./FilterValues";
-import {DatagridTableFilterValue, TableFilterValue} from "./DatagridTableFilter";
+import {BackendTableFilterValue, PendingTableFilterValue} from "./DatagridTableFilter";
 import {SelectOptionFetcher} from "../fetchers";
 import {useRouter} from '@akeneo-pim-community/shared';
 

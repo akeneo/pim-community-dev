@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {TableAttribute} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
-import {FilterSelectorList} from "./FilterSelectorList";
+import {BackendTableFilterValue, FilterSelectorList, PendingTableFilterValue} from "./FilterSelectorList";
 
 const FilterSectionTitleTitle = styled(SectionTitle.Title)`
   color: ${getColor('brand', 100)};
@@ -23,27 +23,13 @@ const FilterButtonContainer = styled.div`
   text-align: center;
 `;
 
-export type DatagridTableFilterValue = {
-  row?: SelectOptionCode;
-  column: ColumnCode;
-  operator: string;
-  value?: any;
-};
-
-export type TableFilterValue = {
-  row?: SelectOption;
-  column?: ColumnDefinition;
-  operator?: string;
-  value?: any;
-};
-
 type DatagridTableFilterProps = {
   showLabel: boolean;
   label: string;
   canDisable: boolean;
   onDisable: () => void;
   attributeCode: string;
-  onChange: (value: DatagridTableFilterValue) => void;
+  onChange: (value: BackendTableFilterValue) => void;
   filterValuesMapping: FilterValuesMapping;
 };
 
@@ -62,7 +48,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [filterValue, setFilterValue] = useState<TableFilterValue>({
+  const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({
     operator: '',
   });
 
@@ -106,7 +92,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               attribute={attribute}
               filterValuesMapping={filterValuesMapping}
               onChange={setFilterValue}
-              initialFilter={{attribute}}
+              initialFilter={{}}
             />
             <FilterButtonContainer>
               <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>

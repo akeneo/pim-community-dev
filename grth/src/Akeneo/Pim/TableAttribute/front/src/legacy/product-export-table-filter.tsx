@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AbstractFilter = require('pim/filter/attribute/attribute');
+import {BackendTableFilterValue} from "../datagrid/FilterSelectorList";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
@@ -7,7 +8,7 @@ import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, TableAttribute} from "../models";
 import {ProductExportBuilderFilter} from "../datagrid/ProductExportBuilderFilter";
-import {DatagridTableFilterValue, FilterValuesMapping} from "../datagrid";
+import {FilterValuesMapping} from "../datagrid";
 
 type TemplateContext = {
   attribute: Attribute;
@@ -18,7 +19,7 @@ type TemplateContext = {
 
 class ProductExportTableFilter extends AbstractFilter {
   private r;
-  private updateState(value: DatagridTableFilterValue) {
+  private updateState(value: BackendTableFilterValue) {
     const data = {
       field: this.getField(),
       operator: value.operator,
@@ -40,7 +41,7 @@ class ProductExportTableFilter extends AbstractFilter {
     const {attribute} = templateContext;
     const handleChange = this.updateState.bind(this);
 
-    const initialDataFilter = this.getFormData() as DatagridTableFilterValue;
+    const initialDataFilter = this.getFormData() as BackendTableFilterValue;
 
     ReactDOM.render(
       <DependenciesProvider>
