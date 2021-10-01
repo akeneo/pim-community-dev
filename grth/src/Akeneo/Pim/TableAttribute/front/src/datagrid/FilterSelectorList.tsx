@@ -25,6 +25,13 @@ export type BackendTableFilterValue = {
   row?: SelectOptionCode;
   column: ColumnCode;
   operator: string;
+  value: any;
+};
+
+export type PendingBackendTableFilterValue = {
+  row?: SelectOptionCode;
+  column?: ColumnCode;
+  operator?: string;
   value?: any;
 };
 

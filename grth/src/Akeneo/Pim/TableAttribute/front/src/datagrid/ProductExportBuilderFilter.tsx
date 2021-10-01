@@ -1,16 +1,20 @@
 import React from 'react';
 import {TableAttribute} from "../models";
-import {FilterSelectorList} from "./FilterSelectorList";
+import {
+  BackendTableFilterValue,
+  FilterSelectorList,
+  PendingBackendTableFilterValue,
+  PendingTableFilterValue
+} from "./FilterSelectorList";
 import {FilterValuesMapping} from "./FilterValues";
-import {BackendTableFilterValue, PendingTableFilterValue} from "./DatagridTableFilter";
 import {SelectOptionFetcher} from "../fetchers";
 import {useRouter} from '@akeneo-pim-community/shared';
 
 type ProductExportBuilderFilterProps = {
   attribute: TableAttribute;
   filterValuesMapping: FilterValuesMapping;
-  onChange: (val: DatagridTableFilterValue) => void;
-  initialDataFilter: DatagridTableFilterValue;
+  onChange: (val: BackendTableFilterValue) => void;
+  initialDataFilter: PendingBackendTableFilterValue;
 }
 
 const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
@@ -20,16 +24,20 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   initialDataFilter,
 }) => {
   const router = useRouter();
-  const handleChange = (val: TableFilterValue) => {
-    onChange({
-      operator: val.operator as string,
-      column: val.column?.code as string,
-      value: val.value,
-      row: val.row?.code,
-    });
+  const handleChange = (filter: PendingTableFilterValue) => {
+    if (typeof filter.operator !== 'undefined' &&
+      typeof filter.column !== 'undefined' &&
+      typeof filter.value !== 'undefined') {
+      onChange({
+        operator: filter.operator,
+        column: filter.column?.code,
+        value: filter.value,
+        row: filter.row?.code,
+      });
+    }
   };
 
-  const [initialFilter, setInitialFilter] = React.useState<TableFilterValue | undefined>();
+  const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
 
   React.useEffect(() => {
     const column = attribute.table_configuration.find((column => column.code === initialDataFilter.column));
