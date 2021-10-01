@@ -368,5 +368,11 @@ define([
     getFilters: function () {
       return this.getFormData().configuration.filters;
     },
+
+    shutdown() {
+      this.doShutdown();
+
+      Object.values(this.filterViews).forEach((filterView) => filterView.shutdown());
+    },
   });
 });
