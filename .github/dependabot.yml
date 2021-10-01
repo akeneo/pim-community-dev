@@ -1,55 +1,46 @@
 # This is an example with only required properties:
 version: 2
 updates:
-  # Default branch
+  # Default branch (master)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "npm"
     directory: "/front-packages/akeneo-design-system"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "npm"
     directory: "/front-packages/shared"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "npm"
     directory: "/front-packages/measurement"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
-
-  #4.0
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "4.0"
-
-  - package-ecosystem: "composer"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "4.0"
-
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "4.0"
 
   #5.0
   - package-ecosystem: "npm"
@@ -57,15 +48,51 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/akeneo-design-system"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "daily"
     target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
     target-branch: "5.0"
+
+  #4.0
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
+
