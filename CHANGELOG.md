@@ -117,6 +117,7 @@
 - PIM-10096: Reload PEF main image on channel switching
 - CVE-2021-23368: Bump postcss from 7.0.35 to 7.0.36
 - CVE-2021-23358: Bump underscore from 1.8.3 to 1.12.1
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5 (yarn.lock and front-packages/share/yarn.lock)
 
 ## New features
 
