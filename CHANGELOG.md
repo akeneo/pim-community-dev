@@ -119,6 +119,7 @@
 - CVE-2021-23358: Bump underscore from 1.8.3 to 1.12.1
 - GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5 (yarn.lock and front-packages/share/yarn.lock)
 - CVE-2021-23364: Bump browserslist from 4.16.4 to 4.16.6 in /front-packages/shared
+- PIM-10095: Fix API error when providing an integer for the identifier or code when patching products or models
 
 ## New features
 

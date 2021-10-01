@@ -176,9 +176,17 @@ class ProductModelController
         $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
 
         $data = $this->getDecodedContent($request->getContent());
+        if (isset($data['code']) && !\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_product_models',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
+
         $productModel = $this->factory->create();
 
-        $this->updateProductModel($productModel, $data, 'post_product_model');
+        $this->updateProductModel($productModel, $data, 'post_product_models');
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
 
@@ -201,6 +209,14 @@ class ProductModelController
 
         $data = $this->getDecodedContent($request->getContent());
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
+
+        if (!\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_product_models__code_',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         $isCreation = null === $productModel;
