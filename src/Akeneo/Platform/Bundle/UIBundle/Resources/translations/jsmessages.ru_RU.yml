@@ -203,6 +203,7 @@ pim_common:
     DOES NOT CONTAIN: Не содержит
     STARTS WITH: Начинается с
     ENDS WITH: Заканчивается на
+  read_more: Читать далее
 error:
   forbidden: Запрещено. У вас нет доступа к этой странице
 alert:

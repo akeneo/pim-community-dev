@@ -380,3 +380,4 @@ batch_jobs:
     perform.label: Установить обязательность/ необязательность атрибутов
   default_steps:
     delete_products_and_product_models: Удалить продукты и модели продуктов
+    remove_completeness_for_channel_and_locale: Удалить завершенность для канала и локали
