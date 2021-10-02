@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: アセットの一括削除を実行
     mass_edit_assets: アセットの一括編集を実行
     link_assets_to_products: アセットを商品にリンク
+    compute_transformations: アセット変換を計算
 job_execution:
   summary:
     assets: アセット
