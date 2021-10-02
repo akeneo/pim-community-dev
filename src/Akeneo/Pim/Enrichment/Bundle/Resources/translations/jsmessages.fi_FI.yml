@@ -319,6 +319,7 @@ pim_enrich.mass_edit.product:
       description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
     change_family:
       label: Muuta perhe
+      label_count: "{0}Muuta <span class=\"AknFullPage-title--highlight\">tuotteiden</span> perhe|{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen</span> perhe|]1, Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> perhe"
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     add_to_group:
       label: Lisää ryhmiin
@@ -336,14 +337,17 @@ pim_enrich.mass_edit.product:
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
     remove_from_category:
       label: Poista kategorioista
+      label_count: "{0}Poista <span class=\"AknFullPage-title--highlight\">tuotetta</span> kategorioista|{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|]1, Inf[Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
       description: Tuotteet poistetaan seuraavista kategorioista.
       no_update: Kategoriaa ei ole valittu poistettaville tuotteille.
     add_to_existing_product_model:
       label: Lisää olemassaolevaan tuotemalliin
+      label_count: "{0}Lisää <span class=\"AknFullPage-title--highlight\">tuotetta</span> olemassa olevaan tuotemalliin|{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
       description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
       no_update: Valitse tuotemalli jatkaaksesi
     convert_to_simple_products:
       label: Muunna yksittäistuotteeksi
+      label_count: "{0}Muunna <span class=\"AknFullPage-title--highlight\">tuotteet</span> yksittäistuotteiksi|{1}Muunna <span class=\"AknFullPage-title--highlight\">1 tuote</span> yksittäistuotteeksi|]1, Inf[Muunna <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> yksittäistuotteiksi"
       description: Kaikki aikaisemmat arvot, kategoriat ja assosiaatiot säilytetään.
     associate_to_product_and_product_model:
       label: Liitä
@@ -352,6 +356,7 @@ pim_enrich.mass_edit.product:
       validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     change_parent_product_model:
       label: Vaihda ylätason tuotemalli
+      label_count: "{0}Vaihda <span class=\"AknFullPage-title--highlight\">tuotteiden ylätason tuotemalli</span>|{1}Vaihda ylätason tuotemalli <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span>|]1,Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
       description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_datagrid:
   mass_action_group:

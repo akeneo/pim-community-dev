@@ -24,4 +24,6 @@ pim_catalog_volume:
     average_max_options_per_attribute: Опции по атрибуту
     count_categories: Категории
     count_category_trees: Деревья категории
+    count_variant_products: Варианты продуктов
+    count_product_models: Модели продукта
     warning: Ух ты! Вы побили рекорд по этому измерению! Не стесняйтесь обращаться к нам, если вам нужна помощь.
