@@ -67,6 +67,7 @@ pim_enrich:
       quick_export:
         launched_flash: Выполняется работа экспорта продуктов
 category:
+  create: Создать категорию
   overview: Категории
 tree:
   create: Создать дерево категорий

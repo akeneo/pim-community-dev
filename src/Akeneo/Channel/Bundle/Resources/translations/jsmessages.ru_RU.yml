@@ -61,3 +61,8 @@ pim_enrich.entity.locale:
   plural_label: Локали
 pim_enrich.entity.currency:
   plural_label: Валюты
+flash:
+  currency:
+    error:
+      linked_to_channel: Вы не можете отключить валюту, связанную с каналом
+    updated: Валюта успешно обновлена
