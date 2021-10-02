@@ -75,8 +75,8 @@ resource "null_resource" "helm_release_pim" {
     command = <<EOF
 yq w -i ${path.module}/pim/Chart.yaml version 0.0.0-${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
-helm3 repo add akeneo-charts gs://akeneo-charts/
-helm3 dependencies update ${path.module}/pim/
+helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
+helm3 dependencies update ${path.module}/pim/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 export KUBECONFIG="${local_file.kubeconfig.filename}"
 helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF

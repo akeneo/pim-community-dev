@@ -1290,7 +1290,7 @@ jobs:
               name: Test PIM connexion on kubernetes
               command: make test-prod
           - run:
-              name: Check deployment logs
+              name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
@@ -1340,7 +1340,7 @@ jobs:
               name: Test PIM connexion on kubernetes
               command: make test-prod
           - run:
-              name: Check deployment logs
+              name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
@@ -1390,7 +1390,7 @@ jobs:
               name: Test PIM connexion on kubernetes
               command: make test-prod
           - run:
-              name: Check deployment logs
+              name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
@@ -1559,7 +1559,7 @@ jobs:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
-              name: Check deployment logs
+              name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
@@ -1607,7 +1607,7 @@ jobs:
                 name: Production tests on upgraded env
                 command: make test-prod
           - run:
-              name: Check deployment logs
+              name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:

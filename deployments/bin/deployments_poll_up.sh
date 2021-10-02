@@ -1,37 +1,37 @@
-EXIT_CODE=0
-LAST_STATE=""
+#!/bin/bash
 
-### WAIT FOR HELM INSTALL/UPGRADE START ###
 while ! (helm3 --namespace ${NS} history ${NS} | grep -q "pending-${PHASE}")
 do
-sleep 10
+    sleep 60
 done
 
 date
 helm3 --namespace ${NS} history ${NS}
 
-### WAIT FOR DEPLOYMENTS ###
+sleep 30 # Give some time to helm for deployment creation
 for i in $(kubectl get deployments -n ${NS} -o=jsonpath="{.items[*]['metadata.name']}")
 do
-    kubectl -n ${NS} rollout status deployment ${i} | grep 'successfully rolled out' || (kubectl -n ${NS} logs deployments/${i})
+    (kubectl -n ${NS} rollout status deployment ${i} | grep 'successfully rolled out' || (kubectl -n ${NS} logs deployments/${i})) &
 done
 
-date
-helm3 --namespace ${NS} history ${NS}
+for i in $(kubectl get statefulset -n ${NS} -o=jsonpath="{.items[*]['metadata.name']}")
+do
+    (kubectl -n ${NS} rollout status statefulset ${i} | grep 'statefulset rolling update complete' || (echo -e "\n### Statefulset ${i} failing ###\n" && kubectl -n ${NS} logs statefulset/${i})) &
+done
 
-### WAIT FOR HOOKS ###
 while (helm3 --namespace ${NS} history ${NS} | grep -q "pending-${PHASE}")
 do
-    HOOK_LIST=$(helm3 --namespace ${NS} status ${NS} -o json | jq -r '.hooks[] | select((.last_run.phase != "")) | [.name, .last_run.phase] | @tsv' | sort)
-    comm -13 <(echo "${LAST_STATE}") <(echo "${HOOK_LIST}")
-    LAST_STATE=${HOOK_LIST}
+    # Look for hooks near the backoffLimit
+    FAILING_HOOKS=$(kubectl -n ${NS} get job -o json | jq -r '.items[] | select((.spec.backoffLimit - 1) <= .status.failed) | .metadata.name')
+    if [ "${FAILING_HOOKS}" != "" ]; then
+        for i in ${FAILING_HOOKS}
+        do
+            echo -e "\n### Hook ${i} failing ###\n"
+            kubectl -n ${NS} logs -l "job-name=${i}" --max-log-requests 2
+        done
+        break
+    fi
     sleep 5
-done
-
-### SHOW FAILED HOOKS ###
-for i in $(helm3 status ${NS} -o json | jq -r '.hooks[] | select((.last_run.phase == "Failed")).name')
-do
-    kubectl logs -l "job-name=${i}" --namespace=${TYPE}-${INSTANCE_NAME}
 done
 
 date
