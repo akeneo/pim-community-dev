@@ -70,6 +70,14 @@ services:
             - '@validator'
             - '@pim_catalog.saver.category'
 
+    akeneo_connectivity.connection.fixtures.enrichment.user_group_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader'
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@validator'
+            - '@pim_user.saver.group'
+
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
         arguments:

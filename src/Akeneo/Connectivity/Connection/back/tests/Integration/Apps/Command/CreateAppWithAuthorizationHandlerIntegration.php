@@ -197,7 +197,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         Assert::assertEquals(2, $userGroups->count(), 'User do not belong to exactly 2 groups');
         Assert::assertTrue($userGroups->exists(function (int $index, Group $group) {
             return $group->getName() === User::GROUP_DEFAULT;
-        }),'User do not have default user group');
+        }), 'User do not have default user group');
 
         $userRoles = $foundUser->getRoles();
         Assert::assertCount(1, $userRoles, 'User do not have exactly 1 role');

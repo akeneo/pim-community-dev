@@ -31,13 +31,14 @@ class ConnectedAppLoader
         string $connectionCode,
         string $logo,
         string $author,
+        string $userGroupName,
         array $categories,
         bool $certified,
         ?string $partner
     ): int {
         $query = <<<SQL
-INSERT INTO akeneo_connectivity_connected_app(id, name, logo, author, partner, categories, certified, connection_code, scopes)
-VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes)
+INSERT INTO akeneo_connectivity_connected_app(id, name, logo, author, partner, categories, certified, connection_code, scopes, user_group_name)
+VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes, :user_group_name)
 SQL;
 
         return $this->dbalConnection->executeUpdate(
@@ -52,6 +53,7 @@ SQL;
                 'certified' => $certified,
                 'connection_code' => $connectionCode,
                 'scopes' => $scopes,
+                'user_group_name' => $userGroupName,
             ],
             [
                 'certified' => Types::BOOLEAN,

@@ -100,7 +100,12 @@ final class CreateAppWithAuthorizationHandler
             $user->id(),
         );
 
-        $this->createApp->execute($marketplaceApp, $appAuthorization->getScopeList(), $connection->code());
+        $this->createApp->execute(
+            $marketplaceApp,
+            $appAuthorization->getScopeList(),
+            $connection->code(),
+            $group->getName()
+        );
     }
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string

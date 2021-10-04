@@ -40,6 +40,7 @@ test('The connected app page renders with a connected app', async () => {
         connection_code: 'some_connection_code',
         logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
+        user_group_name: 'app_123456abcde',
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,

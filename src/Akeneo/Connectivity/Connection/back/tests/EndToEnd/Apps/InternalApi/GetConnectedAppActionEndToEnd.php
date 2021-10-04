@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -112,6 +113,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 
         $this->getConnectionLoader()->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
+        $this->getUserGroupLoader()->create(['name' => 'app_7891011ghijkl']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
             'App B',
@@ -119,12 +121,14 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'connectionCodeB',
             'http://www.example.com/path/to/logo/b',
             'author B',
+            'app_7891011ghijkl',
             ['category B1'],
             true,
             null
         );
 
         $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
+        $this->getUserGroupLoader()->create(['name' => 'app_123456abcdef']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
             'App A',
@@ -132,6 +136,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'connectionCodeA',
             'http://www.example.com/path/to/logo/a',
             'author A',
+            'app_123456abcdef',
             ['category A1', 'category A2'],
             false,
             'partner A'
@@ -144,6 +149,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'connection_code' => 'connectionCodeA',
             'logo' => 'http://www.example.com/path/to/logo/a',
             'author' => 'author A',
+            'user_group_name' => 'app_123456abcdef',
             'categories' => ['category A1', 'category A2'],
             'certified' => false,
             'partner' => 'partner A',
@@ -173,5 +179,10 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
     private function getConnectedAppLoader(): ConnectedAppLoader
     {
         return $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
+    }
+
+    private function getUserGroupLoader(): UserGroupLoader
+    {
+        return $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
     }
 }

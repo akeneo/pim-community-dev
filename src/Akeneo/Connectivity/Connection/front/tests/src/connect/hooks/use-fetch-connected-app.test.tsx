@@ -10,6 +10,7 @@ test('it fetches the connected app', async () => {
         connection_code: 'connectionCodeA',
         logo: 'http://www.example.test/path/to/logo/a',
         author: 'author A',
+        user_group_name: 'app_123456abcde',
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',

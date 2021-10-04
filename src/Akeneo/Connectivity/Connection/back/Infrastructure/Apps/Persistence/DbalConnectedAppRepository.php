@@ -25,7 +25,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findAll(): array
     {
         $selectSQL = <<<SQL
-        SELECT id, name, scopes, connection_code, logo, author, categories, certified, partner
+        SELECT id, name, scopes, connection_code, logo, author, user_group_name, categories, certified, partner
         FROM akeneo_connectivity_connected_app
         ORDER BY name ASC
         SQL;
@@ -43,8 +43,8 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function create(ConnectedApp $app): void
     {
         $insertQuery = <<<SQL
-        INSERT INTO akeneo_connectivity_connected_app (id, name, logo, author, partner, categories, scopes, certified, connection_code)
-        VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code)
+        INSERT INTO akeneo_connectivity_connected_app (id, name, logo, author, partner, categories, scopes, certified, connection_code, user_group_name)
+        VALUES (:id, :name, :logo, :author, :partner, :categories, :scopes, :certified, :connection_code, :user_group_name)
         SQL;
 
         $this->dbalConnection->executeQuery(
@@ -59,6 +59,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
                 'scopes' => $app->getScopes(),
                 'certified' => $app->isCertified(),
                 'connection_code' => $app->getConnectionCode(),
+                'user_group_name' => $app->getUserGroupName(),
             ],
             [
                 'certified' => Types::BOOLEAN,
@@ -71,7 +72,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findOneById(string $appId): ?ConnectedApp
     {
         $selectQuery = <<<SQL
-        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
+        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, user_group_name
         FROM akeneo_connectivity_connected_app
         WHERE id = :id
         SQL;
@@ -84,7 +85,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findOneByConnectionCode(string $connectionCode): ?ConnectedApp
     {
         $selectQuery = <<<SQL
-        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code
+        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, user_group_name
         FROM akeneo_connectivity_connected_app
         WHERE connection_code = :connectionCode
         SQL;
@@ -102,6 +103,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
      *    connection_code: string,
      *    logo: string,
      *    author: string,
+     *    user_group_name: string,
      *    categories: string,
      *    certified: bool,
      *    partner: ?string,
@@ -116,6 +118,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
             $dataRow['connection_code'],
             $dataRow['logo'],
             $dataRow['author'],
+            $dataRow['user_group_name'],
             \json_decode($dataRow['categories'], true),
             (bool) $dataRow['certified'],
             $dataRow['partner']
