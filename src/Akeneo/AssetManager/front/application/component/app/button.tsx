@@ -194,11 +194,11 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
             </>
           )}
         </>
-      ) : (
+      ) : !items[0].isDisabled ? (
         <Button {...props} onClick={items[0].action}>
           {items[0].label}
         </Button>
-      )}
+      ) : null}
     </Container>
   );
 };
