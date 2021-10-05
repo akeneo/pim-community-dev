@@ -350,6 +350,7 @@ pimee_catalog_rule:
         date: Valitse päivämäärä
         relative_date: Valitse päivämäärä
         locale: Valitse lokaali
+        scope: Valitse kanava
         period: Valitse aikayksikkö
         open_period: Avaa aikayksikön valikko
         date_from: Valitse aloituspäivämäärä
