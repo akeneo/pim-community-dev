@@ -45,4 +45,8 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~
