@@ -5,6 +5,7 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Adapter;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Prophecy\Argument;
 
 class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 {
@@ -47,13 +48,23 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
         FamilyInterface $family1,
         FamilyInterface $family2
     ) {
-        $massActionDispatcher->dispatch(['gridName' => 'family-grid'])->willReturn([$family1, $family2]);
+        $parameters = [
+            'gridName' => 'family-grid',
+            'inset'    => true,
+            'filters'  => ['myfilter' => 'value'],
+        ];
+
+        $massActionDispatcher->dispatch([
+            'gridName' => 'family-grid',
+            'inset'    => true,
+            'filters'  => [],
+        ])->willReturn([$family1, $family2]);
         $family1->getId()->willReturn(45);
         $family2->getId()->willReturn(70);
 
-        $massActionDispatcher->getRawFilters(['gridName' => 'family-grid'])->shouldNotBeCalled();
+        $massActionDispatcher->getRawFilters(Argument::any())->shouldNotBeCalled();
 
-        $this->adapt(['gridName' => 'family-grid'])->shouldReturn([[
+        $this->adapt($parameters)->shouldReturn([[
             'field'    => 'id',
             'operator' => 'IN',
             'value'    => [45, 70],
