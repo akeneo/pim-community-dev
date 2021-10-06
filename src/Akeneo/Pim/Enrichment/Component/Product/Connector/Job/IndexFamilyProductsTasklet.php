@@ -42,8 +42,7 @@ final class IndexFamilyProductsTasklet implements TaskletInterface, TrackableTas
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         EntityManagerClearerInterface $cacheClearer,
         int $batchSize = self::DEFAULT_BATCH_SIZE
-    )
-    {
+    ) {
         $this->jobRepository = $jobRepository;
         $this->familyReader = $familyReader;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;

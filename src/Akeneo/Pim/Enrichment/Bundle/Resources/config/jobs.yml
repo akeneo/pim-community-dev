@@ -295,7 +295,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@pim_connector.doctrine.cache_clearer'
-            - 100
+            - '%pim_job_product_batch_size%'
 
     pim_connector.job.csv_group_import:
         class: '%pim_connector.job.simple_job.class%'
