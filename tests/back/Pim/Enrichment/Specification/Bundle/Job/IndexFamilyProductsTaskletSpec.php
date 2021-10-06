@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\IndexFamilyProductsTasklet;
+use Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;

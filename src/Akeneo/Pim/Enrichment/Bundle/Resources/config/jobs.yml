@@ -288,7 +288,7 @@ services:
             - '@akeneo_batch.job_repository'
 
     pim_connector.tasklet.mass_edit_family.index_family_products:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\IndexFamilyProductsTasklet'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsTasklet'
         arguments:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.connector.reader.mass_edit.family'
