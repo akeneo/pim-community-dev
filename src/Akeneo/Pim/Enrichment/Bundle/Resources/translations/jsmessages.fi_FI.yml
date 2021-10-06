@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       success: Tuote päivitetty.
       fail: Tuotetta ei voitu päivittää.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-      already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+      already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja kanavalle "{{ scope }}"
       file_upload: Tiedoston lataamisessa tapahtui virhe
     delete:
       success: Tuote poistettiin.
@@ -57,7 +57,7 @@ pim_enrich.entity.product:
       label: Muunna yksittäistuotteeksi
       dialog:
         title: Vahvista muuntaminen
-        content: "Oletko varma, että haluat muuntaa tämän variantin tuotteen yksittäistuotteeksi? Kaikki sen aiemmat arvot, kategoriat ja assosiaatiot tallennetaan."
+        content: "Oletko varma, että haluat muuntaa tämän variantin tuotteen yksittäistuotteeksi? Kaikki sen aiemmat arvot, kategoriat ja tuoteliitokset tallennetaan."
     history:
       version: Versio
       author: Tekijä
@@ -92,7 +92,7 @@ pim_enrich.entity.product:
       save_and_next: Tallenna ja seuraava
       save_and_finish: Tallenna ja lopeta
     associations:
-      title: Assosiaatiot ({{ count }})
+      title: Tuoteliitokset ({{ count }})
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
@@ -109,10 +109,10 @@ pim_enrich.entity.product:
         quantity: Määrä
       search:
         placeholder: Etsi nimellä tai tunnisteella
-      no_data: Tuotteen assosiaatioita ei ole.
-      remove: Poista assosiaatio
+      no_data: Tuoteliitoksia ei ole.
+      remove: Poista tuoteliitos
       edit: Muokkaa tuotetta
-      limit_reached: Et voi lisätä enemmän kuin {{ maxLimit }} assosiaatiota tähän tuotteeseen.
+      limit_reached: Et voi lisätä enemmän kuin {{ maxLimit }} tuoteliitosta tähän tuotteeseen.
       variant_updated: Olet päivittänyt lukumäärän variantilla. Lukumääriä ei enää synkronoida.
     attribute_filter:
       display: Näytä
@@ -394,7 +394,7 @@ pim_enrich.mass_edit.product:
     convert_to_simple_products:
       label: Muunna yksittäistuotteeksi
       label_count: "{0}Muunna <span class=\"AknFullPage-title--highlight\">tuotteet</span> yksittäistuotteiksi|{1}Muunna <span class=\"AknFullPage-title--highlight\">1 tuote</span> yksittäistuotteeksi|]1, Inf[Muunna <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> yksittäistuotteiksi"
-      description: Kaikki aikaisemmat arvot, kategoriat ja assosiaatiot säilytetään.
+      description: Kaikki aikaisemmat arvot, kategoriat ja tuoteliitokset säilytetään.
     associate_to_product_and_product_model:
       label: Liitä tuotteita
       label_count: "{0}Liitä <span class=\"AknFullPage-title--highlight\">tuotteita</span> tuotteisiin tai tuotemalleihin|{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|]1, Inf[Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
@@ -554,4 +554,4 @@ batch_jobs:
 error:
   removing:
     group: Ryhmää ei voitu poistaa
-    association type: Assosiaatiotyyppiä ei voitu poistaa
+    association type: Tuoteliitostyyppiä ei voitu poistaa
