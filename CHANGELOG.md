@@ -126,6 +126,7 @@
 - PIM-10101: Fix incorrect count of families selection in the family grid
 - PIM-10107: Hide add quantified association button when ACL is not granted
 - PIM-10092: Display an error message when trying to delete a category tree linked to a channel
+- PIM-10100: Added a product indexation step for setAttributeRequirements job
 
 ## New features
 
