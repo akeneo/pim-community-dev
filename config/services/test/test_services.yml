@@ -101,6 +101,18 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@validator'
 
+    akeneo_integration_tests.loader.attribute_group_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupPermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pimee_security.manager.attribute_group_access'
+            - '@doctrine.orm.default_entity_manager'
+
+    akeneo_integration_tests.loader.user_group_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader'
+        arguments:
+            - '@pim_user.saver.group'
+
     akeneo_integration_tests.event_dispatcher:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock'
         decorates: event_dispatcher
