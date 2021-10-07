@@ -1,0 +1,13 @@
+akeneo.tailored_export:
+  column_details:
+    sources:
+      invalid_source:
+        association_type: Tämä tuoteliitostyyppi on poistettu ja luotu toisella tyypillä, poista lähde ja lisää se uudelleen.
+      deleted_association_type:
+        title: Tämä tuoteliitostyyppi on poistettu, et voi enää käyttää sitä lähteenä.
+      selection:
+        quantified_association:
+          quantity: Lukumäärä
+  validation:
+    sources:
+      association_type_should_exist: Tuoteliitostyyppiä {{ association_type_code }} ei ole olemassa. Luo se tai valitse toinen lähde.
