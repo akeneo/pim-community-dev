@@ -162,3 +162,8 @@ services:
         arguments:
             - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels'
             - '@router'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupLocalesPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetUserGroupLocalesAccesses'
