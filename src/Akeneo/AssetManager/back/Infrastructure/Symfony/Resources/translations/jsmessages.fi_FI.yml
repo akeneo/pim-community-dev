@@ -113,6 +113,7 @@ pim_asset_manager:
         link: 'Jos haluat tutustua tarkemmin tuotelinkityssääntöihin, klikkaa tästä'
       execute_rules:
         confirm_title: Vahvista suoritus
+        confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
         execute_rules: Suorita säännöt
       execute_naming_convention:
         confirm_title: Vahvista suoritus
