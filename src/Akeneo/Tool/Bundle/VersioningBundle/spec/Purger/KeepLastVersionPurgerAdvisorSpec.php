@@ -39,4 +39,13 @@ class KeepLastVersionPurgerAdvisorSpec extends ObjectBehavior
 
         $this->isPurgeable($versionList)->shouldBeLike(new PurgeableVersionList('resource_name', [1, 2, 3]));
     }
+
+    function it_returns_no_version_when_all_are_last_version(
+        SqlGetAllButLastVersionIdsByIdsQuery $sqlGetAllButLastVersionIdsByIdsQuery
+    ) {
+        $versionList = new PurgeableVersionList('resource_name', [1, 2, 3, 4]);
+        $sqlGetAllButLastVersionIdsByIdsQuery->execute([1, 2, 3, 4])->willReturn([]);
+
+        $this->isPurgeable($versionList)->shouldBeLike(new PurgeableVersionList('resource_name', []));
+    }
 }
