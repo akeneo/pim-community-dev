@@ -36,10 +36,14 @@ const AttributeOptionsContext = createContext<AttributeOptionsState>({
 });
 
 type Props = {
-  attributeOptionsQualityFetcher?: undefined | (() => Promise<SpellcheckEvaluation>);
+  attributeOptionsQualityFetcher?: undefined | (() => Promise<SpellcheckEvaluation> | null);
 };
 
-const mergeAttributeOptionsEvaluation = (attributeOptions: AttributeOption[], evaluation: SpellcheckEvaluation) => {
+const mergeAttributeOptionsEvaluation = (attributeOptions: AttributeOption[], evaluation: SpellcheckEvaluation | null) => {
+  if (!evaluation) {
+    return attributeOptions;
+  }
+
   Object.entries(evaluation.options).forEach(([optionCode, optionEvaluation]) => {
     const optionIndex = attributeOptions.findIndex(
       (attributeOption: AttributeOption) => attributeOption.code === optionCode
@@ -76,7 +80,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
         return attributeOption.id === updatedAttributeOption.id ? updatedAttributeOption : attributeOption;
       });
       if (attributeOptionsQualityFetcher) {
-        const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+        const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
         newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
       }
 
@@ -133,7 +137,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
 
   const handleRefreshEvaluation = async () => {
     if (attributeOptionsQualityFetcher && attributeOptions !== null) {
-      const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+      const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
       let newAttributeOptions = [...attributeOptions];
       newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
       setAttributeOptions(newAttributeOptions);
@@ -146,7 +150,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
         let attributeOptions = await baseFetcher(route);
 
         if (attributeOptionsQualityFetcher) {
-          const attributeOptionsEvaluation: SpellcheckEvaluation = await attributeOptionsQualityFetcher();
+          const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
           attributeOptions = mergeAttributeOptionsEvaluation(attributeOptions, attributeOptionsEvaluation);
         }
         setAttributeOptions(attributeOptions);
