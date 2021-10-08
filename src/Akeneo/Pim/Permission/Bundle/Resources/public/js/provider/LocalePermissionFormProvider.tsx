@@ -221,6 +221,21 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
     // @todo
     return Promise.resolve();
   },
+  loadPermissions: async (userGroupName: string) => {
+    const url = routing.generate('pimee_permissions_entities_get_user_group_locales', {
+      userGroupName: userGroupName,
+    });
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    });
+
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+  },
 };
 
 export default LocalePermissionFormProvider;
