@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductCategoryRepositoryInterface;
-use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetUserGroupRootCategoriesAccesses;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Doctrine\Persistence\ObjectManager;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\CategoryPermissionsFixturesLoader;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader;
 
 class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
 {
     private GetUserGroupRootCategoriesAccesses $query;
-    private CategoryAccessManager $categoryAccessManager;
-    private ObjectManager $objectManager;
-    private ProductCategoryRepositoryInterface $productCategoryRepository;
+    private CategoryPermissionsFixturesLoader $categoryPermissionsFixturesLoader;
+    private UserGroupPermissionsFixturesLoader $userGroupPermissionsFixturesLoader;
     private GroupInterface $redactorUserGroup;
-    private SaverInterface $userGroupSaver;
 
     /**
      * {@inheritdoc}
@@ -37,18 +33,14 @@ class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
 
         $this->query = $this->get(GetUserGroupRootCategoriesAccesses::class);
 
-        $this->categoryAccessManager = $this->get('pimee_security.manager.category_access');
-        $this->objectManager = $this->get('doctrine.orm.default_entity_manager');
-        $this->productCategoryRepository = $this->get('pim_catalog.repository.product_category');
-        $this->userGroupSaver = $this->get('pim_user.saver.group');
+        $this->categoryPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.category_permissions');
+        $this->userGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.user_group_permissions');
 
         $adminUser = $this->createAdminUser();
         $this->redactorUserGroup = $this->get('pim_user.repository.group')->findOneByIdentifier('redactor');
         $adminUser->addGroup($this->redactorUserGroup);
 
-        $masterCategory = $this->productCategoryRepository->findOneByIdentifier('master');
-        $this->categoryAccessManager->revokeAccess($masterCategory);
-        $this->objectManager->flush($masterCategory);
+        $this->categoryPermissionsFixturesLoader->revokeCategoryPermissions('master');
 
         $this->createCategory(['code' => 'a_tree']);
         $this->createCategory(['code' => 'a_tree_child_A', 'parent' => 'a_tree']);
@@ -58,7 +50,7 @@ class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
         $this->createCategory(['code' => 'b_tree_child_A', 'parent' => 'b_tree']);
     }
 
-    public function categoryHighestAccessLevelDataProvider(): array
+    public function categoryPermissionsDataProvider(): array
     {
         return [
             'test without permissions' => [
@@ -77,9 +69,9 @@ class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
                     ],
                 ],
                 'userGroupDefaultPermissions' => [],
-                'viewableCategories' => [],
-                'editableCategories' => [],
                 'ownableCategories' => [],
+                'editableCategories' => [],
+                'viewableCategories' => [],
             ],
             'test it returns "all" flag and categories for each access level' => [
                 'expected' => [
@@ -101,6 +93,14 @@ class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
                     'category_edit' => false,
                     'category_view' => true,
                 ],
+                'ownableCategories' => [
+                    'b_tree',
+                ],
+                'editableCategories' => [
+                    'master',
+                    'a_tree_child_A',
+                    'b_tree',
+                ],
                 'viewableCategories' => [
                     'master',
                     'a_tree',
@@ -108,67 +108,28 @@ class GetUserGroupRootCategoriesAccessesIntegration extends TestCase
                     'b_tree',
                     'b_tree_child_A',
                 ],
-                'editableCategories' => [
-                    'master',
-                    'a_tree_child_A',
-                    'b_tree',
-                ],
-                'ownableCategories' => [
-                    'b_tree',
-                ],
             ],
         ];
     }
 
     /**
-     * @dataProvider categoryHighestAccessLevelDataProvider
+     * @dataProvider categoryPermissionsDataProvider
      */
     public function testItFetchesUserGroupRootCategoriesAccesses(
         array $expected,
         array $userGroupDefaultPermissions,
-        array $viewableCategories,
+        array $ownableCategories,
         array $editableCategories,
-        array $ownableCategories
+        array $viewableCategories
     ): void
     {
-        $this->givenTheRightOnCategoryCodes(Attributes::VIEW_ITEMS, $this->redactorUserGroup, $viewableCategories);
-        $this->givenTheRightOnCategoryCodes(Attributes::EDIT_ITEMS, $this->redactorUserGroup, $editableCategories);
-        $this->givenTheRightOnCategoryCodes(Attributes::OWN_PRODUCTS, $this->redactorUserGroup, $ownableCategories);
-        $this->givenTheUserGroupDefaultPermissions($this->redactorUserGroup, $userGroupDefaultPermissions);
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::VIEW_ITEMS, $this->redactorUserGroup, $viewableCategories);
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::EDIT_ITEMS, $this->redactorUserGroup, $editableCategories);
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::OWN_PRODUCTS, $this->redactorUserGroup, $ownableCategories);
+        $this->userGroupPermissionsFixturesLoader->givenTheUserGroupDefaultPermissions($this->redactorUserGroup, $userGroupDefaultPermissions);
 
         $results = $this->query->execute($this->redactorUserGroup->getName());
 
         $this->assertSame($expected, $results);
-    }
-
-    /**
-     * @param string[] $categoryCodes
-     */
-    private function givenTheRightOnCategoryCodes(string $accessLevel, GroupInterface $userGroup, array $categoryCodes): void
-    {
-        foreach ($categoryCodes as $categoryCode) {
-            $category = $this->productCategoryRepository->findOneByIdentifier($categoryCode);
-
-            $this->categoryAccessManager->revokeAccess($category);
-            $this->objectManager->flush($category);
-
-            $this->categoryAccessManager->grantAccess($category, $userGroup, $accessLevel);
-        }
-    }
-
-    /**
-     * @param array{
-     *     category_own: bool,
-     *     category_edit: bool,
-     *     category_view: bool
-     * } $defaultPermissions
-     */
-    private function givenTheUserGroupDefaultPermissions(GroupInterface $userGroup, array $defaultPermissions): void
-    {
-        foreach ($defaultPermissions as $permissionName => $flag) {
-            $userGroup->setDefaultPermission($permissionName, $flag);
-        }
-
-        $this->userGroupSaver->save($userGroup);
     }
 }

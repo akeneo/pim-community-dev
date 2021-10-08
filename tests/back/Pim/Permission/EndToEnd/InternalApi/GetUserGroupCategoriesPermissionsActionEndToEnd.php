@@ -4,45 +4,36 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductCategoryRepositoryInterface;
-use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\CategoryPermissionsFixturesLoader;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetUserGroupCategoriesPermissionsActionEndToEnd extends WebTestCase
 {
+    private CategoryPermissionsFixturesLoader $categoryPermissionsFixturesLoader;
+    private UserGroupPermissionsFixturesLoader $userGroupPermissionsFixturesLoader;
     private GroupRepositoryInterface $groupRepository;
-    private CategoryAccessManager $categoryAccessManager;
-    private ObjectManager $objectManager;
-    private ProductCategoryRepositoryInterface $productCategoryRepository;
-    private SaverInterface $userGroupSaver;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->categoryPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.category_permissions');
+        $this->userGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.user_group_permissions');
         $this->groupRepository = $this->get('pim_user.repository.group');
-        $this->categoryAccessManager = $this->get('pimee_security.manager.category_access');
-        $this->objectManager = $this->get('doctrine.orm.default_entity_manager');
-        $this->productCategoryRepository = $this->get('pim_catalog.repository.product_category');
-        $this->userGroupSaver = $this->get('pim_user.saver.group');
     }
 
     public function testItReturnsUserGroupCategoryPermissions(): void
     {
         $adminUser = $this->authenticateAsAdmin();
-        $redactorUserGroup = $this->groupRepository->findOneByIdentifier('redactor');
+        $redactorUserGroup = $this->groupRepository->findOneByIdentifier('Redactor');
         $adminUser->addGroup($redactorUserGroup);
 
-        $masterCategory = $this->productCategoryRepository->findOneByIdentifier('master');
-        $this->categoryAccessManager->revokeAccess($masterCategory);
-        $this->objectManager->flush($masterCategory);
+        $this->categoryPermissionsFixturesLoader->revokeCategoryPermissions('master');
 
         $this->createCategory(['code' => 'a_tree']);
         $this->createCategory(['code' => 'a_tree_child_A', 'parent' => 'a_tree']);
@@ -51,20 +42,20 @@ class GetUserGroupCategoriesPermissionsActionEndToEnd extends WebTestCase
         $this->createCategory(['code' => 'b_tree']);
         $this->createCategory(['code' => 'b_tree_child_A', 'parent' => 'b_tree']);
 
-        $this->givenTheRightOnCategoryCodes(Attributes::VIEW_ITEMS, $redactorUserGroup, [
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::VIEW_ITEMS, $redactorUserGroup, [
             'master',
             'a_tree',
             'a_tree_child_A',
             'b_tree',
             'b_tree_child_A',
         ]);
-        $this->givenTheRightOnCategoryCodes(Attributes::EDIT_ITEMS, $redactorUserGroup, [
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::EDIT_ITEMS, $redactorUserGroup, [
             'master',
             'a_tree_child_A',
             'b_tree',
         ]);
-        $this->givenTheRightOnCategoryCodes(Attributes::OWN_PRODUCTS, $redactorUserGroup, ['b_tree']);
-        $this->givenTheUserGroupDefaultPermissions($redactorUserGroup, [
+        $this->categoryPermissionsFixturesLoader->givenTheRightOnCategoryCodes(Attributes::OWN_PRODUCTS, $redactorUserGroup, ['b_tree']);
+        $this->userGroupPermissionsFixturesLoader->givenTheUserGroupDefaultPermissions($redactorUserGroup, [
             'category_own' => false,
             'category_edit' => false,
             'category_view' => true,
@@ -72,7 +63,7 @@ class GetUserGroupCategoriesPermissionsActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'GET',
-            '/rest/permissions/user-group/redactor/category',
+            '/rest/permissions/user-group/Redactor/category',
             [],
             [],
             [
@@ -126,37 +117,6 @@ class GetUserGroupCategoriesPermissionsActionEndToEnd extends WebTestCase
         Assert::assertArrayHasKey('identifiers', $result['view']);
         Assert::assertIsArray($result['view']['identifiers']);
         Assert::assertCount(0, $result['view']['identifiers']);
-    }
-
-    /**
-     * @param string[] $categoryCodes
-     */
-    private function givenTheRightOnCategoryCodes(string $accessLevel, GroupInterface $userGroup, array $categoryCodes): void
-    {
-        foreach ($categoryCodes as $categoryCode) {
-            $category = $this->productCategoryRepository->findOneByIdentifier($categoryCode);
-
-            $this->categoryAccessManager->revokeAccess($category);
-            $this->objectManager->flush($category);
-
-            $this->categoryAccessManager->grantAccess($category, $userGroup, $accessLevel);
-        }
-    }
-
-    /**
-     * @param array {
-     *     category_own: bool,
-     *     category_edit: bool,
-     *     category_view: bool
-     * } $defaultPermissions
-     */
-    private function givenTheUserGroupDefaultPermissions(GroupInterface $userGroup, array $defaultPermissions): void
-    {
-        foreach ($defaultPermissions as $permissionName => $flag) {
-            $userGroup->setDefaultPermission($permissionName, $flag);
-        }
-
-        $this->userGroupSaver->save($userGroup);
     }
 
     protected function getConfiguration(): Configuration
