@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
@@ -142,6 +144,22 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_catalog.saver.category')->save($category);
 
         return $category;
+    }
+
+    protected function createLocale(array $data, ?ChannelInterface $channel = null): LocaleInterface
+    {
+        /** @var LocaleInterface $locale */
+        $locale = $this->get('pim_catalog.factory.locale')->create();
+        $this->get('pim_catalog.updater.locale')->update($locale, $data);
+
+        if (null !== $channel) {
+            $locale->addChannel($channel);
+        }
+
+        $this->get('validator')->validate($locale);
+        $this->get('pim_catalog.saver.locale')->save($locale);
+
+        return $locale;
     }
 
     protected function createAdminUser(): UserInterface
