@@ -10,5 +10,5 @@ export interface PermissionFormProvider<T> {
 
 export interface PermissionFormRegistry {
     all: () => Promise<PermissionFormProvider<any>[]>;
-    countProviders: () => number;
+    count: () => number;
 }
