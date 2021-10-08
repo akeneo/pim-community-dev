@@ -6,6 +6,7 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -142,6 +143,16 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_catalog.saver.category')->save($category);
 
         return $category;
+    }
+
+    protected function createAttributeGroup(array $data = []): AttributeGroupInterface
+    {
+        $attributeGroup = $this->get('pim_catalog.factory.attribute_group')->create();
+        $this->get('pim_catalog.updater.attribute_group')->update($attributeGroup, $data);
+        $this->get('validator')->validate($attributeGroup);
+        $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
+
+        return $attributeGroup;
     }
 
     protected function createAdminUser(): UserInterface
