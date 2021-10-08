@@ -14,7 +14,12 @@ const fetchSpellcheckEvaluation = async (attributeCode: string) => {
     },
   });
 
-  return response.json();
+  if (response.ok) {
+    return response.json();
+  } else {
+    //Can happen when DQI is deactivated
+    return null;
+  }
 };
 
 export default fetchSpellcheckEvaluation;
