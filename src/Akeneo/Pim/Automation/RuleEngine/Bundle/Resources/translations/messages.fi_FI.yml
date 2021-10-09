@@ -22,7 +22,7 @@ pimee_catalog_rule:
     fields:
       family: Perhe
       family_variant: Varianttiperhe
-      associations: Assosiaatiot
+      associations: Tuoteliitokset
       groups: Ryhmät
       categories: Kategoriat
       completeness: Valmistumisaste
