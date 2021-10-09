@@ -86,13 +86,13 @@ pim_catalog:
     pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
     quantified_associations:
       unexpected_link_type: Linkkityyppiä "{{ value }}" ei ole olemassa. Voit liittää vain tuotteita tai tuotemalleja.
-      max_associations: Olet saavuttanut {{ limit }} assosiaation enimmäismäärän. Poista olemassa olevia assosiaatioita ennen uusien assosiaatioiden lisäämistä.
+      max_associations: Olet saavuttanut {{ limit }} tuoteliitostyypin enimmäismäärän. Poista olemassa olevia tuoteliitoksia ennen uusien lisäämistä.
       invalid_quantity: '"{{ value }}" on virheellinen määrä. Ole hyvä ja syötä arvo väliltä {{ min }} ja {{ max }}.'
       products_do_not_exist: "Seuraavia tuotteita ei ole olemassa: {{ values }}. Varmista, että tuotteita ei ole tällä välin poistettu."
       product_models_do_not_exist: "Seuraavia tuotemalleja ei ole olemassa: {{ values }}. Varmista, että tuotemalleja ei ole poistettu."
-      association_type_does_not_exist: Tätä assosiaatiotyyppiä ei ole olemassa. Varmista, että sitä ei ole poistettu.
-      association_type_is_not_quantified: 'Assosiaatiotyyppiä "{{ association_type }}" ei voi käyttää määrälliseen assosiaatioon. Ole hyvä ja valitse määrällinen assosiaatiotyyppi tai luo uusi assosiaatio.'
-      association_type_should_not_be_quantified: 'Assosiaatiotyyppiä "{{ association_type }}" voidaan käyttää ainoastaan määrälliseen assosiaatioon. Ole hyvä ja valitse eri assosiaatiotyyppi tai luo uusi määrällinen assosiaatio.'
+      association_type_does_not_exist: Tätä tuoteliitostyyppiä ei ole olemassa. Varmista, että sitä ei ole poistettu.
+      association_type_is_not_quantified: 'Tuoteliitostyyppiä "{{ association_type }}" ei voi käyttää lukumäärälliseen tuoteliitokseen. Ole hyvä ja valitse määrällinen tuoteliitostyyppi tai luo uusi tuoteliitos.'
+      association_type_should_not_be_quantified: 'Tuoteliitostyyppiä "{{ association_type }}" voidaan käyttää ainoastaan lukumäärälliseen tuoteliitokseen. Ole hyvä ja valitse eri tuoteliitostyyppi tai luo uusi määrällinen tuoteliitos.'
 mass_edit:
   edit_common_attributes:
     invalid_values: Attribuutit-lomakkeessa on virheitä
