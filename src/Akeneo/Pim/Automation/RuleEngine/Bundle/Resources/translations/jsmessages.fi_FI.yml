@@ -176,17 +176,17 @@ pimee_catalog_rule:
           select_asset: Valitse assetit
           select_measurement_unit: Valitse yksikkö
         set_quantified_associations:
-          title: ASETA/KORVAA lukumäärällinen assosiaatio
-          helper: Asettaaksesi lukumäärällisiä assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+          title: ASETA/KORVAA lukumäärällisiä tuoteliitoksia
+          helper: Asettaaksesi lukumäärällisiä tuoteliitoksia, valitse tuoteliitostyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
         set_associations:
-          title: ASETA/KORVAA assosiaatiot
-          helper: Asettaaksesi assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
-          select_association_type: Valitse assosiaatiotyyppi
-          association_types: Assosiaatiotyypit
+          title: ASETA/KORVAA tuoteliitoksia
+          helper: Asettaaksesi tuoteliitoksia, valitse tuoteliitostyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+          select_association_type: Valitse tuoteliitostyyppi
+          association_types: Tuoteliitostyypit
           add_group: Lisää ryhmä
           add_product: Lisää tuote
           add_product_model: Lisää tuotemalli
-          add_association_type: Lisää assosiaatiotyyppi
+          add_association_type: Lisää tuoteliitostyyppi
           select_title:
             products: Valitse tuotteet
             product_models: Valitse tuotemallit
@@ -200,18 +200,18 @@ pimee_catalog_rule:
             product_models: ']-Inf, 1]{{ count }} tuotemalli|]1, +Inf[{{ count }} tuotemallia'
             groups: ']-Inf, 1]{{ count }} ryhmä|]1, +Inf[{{ count }} ryhmää'
         add_associations:
-          title: LISÄÄ assosiaatioita
-          helper: Asettaaksesi assosiaatiota, valitse assosiaatiotyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
+          title: LISÄÄ tuoteliitoksia
+          helper: Asettaaksesi tuoteliitoksia, valitse tuoteliitostyyppi ja sitten tuotteet, tuotemallit tai ryhmät, jotka haluat liittää valitsemiisi tuotteisiin.
         clear_attribute:
           title: TYHJENNÄ attribuutin arvo
           subtitle: Valitse tyhjennettävä attribuutti
           attribute_label: Attribuutti
         clear_associations:
-          title: TYHJENNÄ assosiaatiot
-          helper: Kaikki valittujen tuotteiden assosiaatiot tyhjennetään.
+          title: TYHJENNÄ tuoteliitokset
+          helper: Kaikki valittujen tuotteiden tuoteliitokset tyhjennetään.
         clear_quantified_associations:
-          title: TYHJENNÄ määrällinen assosiaatio
-          helper: Kaikki valittujen tuotteiden määrälliset assosiaatiot poistetaan.
+          title: TYHJENNÄ lukumäärälliset tuoteliitokset
+          helper: Kaikki valittujen tuotteiden lukumäärälliset tuoteliitokset poistetaan.
         clear_categories:
           title: TYHJENNÄ kategoriat
         clear_groups:
@@ -342,6 +342,7 @@ pimee_catalog_rule:
         date: Valitse päivämäärä
         relative_date: Valitse päivämäärä
         locale: Valitse lokaali
+        scope: Valitse kanava
         period: Valitse aikayksikkö
         open_period: Avaa aikayksikön valikko
         date_from: Valitse aloituspäivämäärä

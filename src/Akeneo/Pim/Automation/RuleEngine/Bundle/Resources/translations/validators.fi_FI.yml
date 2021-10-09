@@ -16,9 +16,9 @@ pimee_catalog_rule:
         unknown_locale: 'Attribuutti "{{ attributeCode }}" vaatii olemassa olevan ja aktivoidun lokaalin. Varmista, että lokaali on olemassa ja aktivoitu'
         invalid_specific_locale: 'Attribuutti "{{ attributeCode }}" on lokaalikohtainen ja vaatii yhden seuraavista lokaaleista: {{ expectedLocales }}'
         locale_not_bound_to_channel: 'Kanavalla "{{ channelCode }}" ei ole lokaalia "{{ invalidLocale }}"'
-        missing_scope: 'Attribuutti "{{ attributeCode }}" vaatii kontekstin'
-        unexpected_scope: 'Attribuutti "{{ attributeCode }}" ei vaadi kontekstia. Ole hyvä, ja poista se'
-        unknown_scope: 'Attribuutti "{{ attributeCode }}" vaatii olemassa olevan kontekstin'
+        missing_scope: 'Attribuutti "{{ attributeCode }}" vaatii kanavan'
+        unexpected_scope: 'Attribuutti "{{ attributeCode }}" ei vaadi kanavaa. Ole hyvä, ja poista se'
+        unknown_scope: 'Attribuutti "{{ attributeCode }}" vaatii olemassa olevan kanavan'
       invalid_code: 'Säännön tunniste voi sisältää ainoastaan kirjaimia, numeroita ja alaviivoja'
       actions:
         add:
