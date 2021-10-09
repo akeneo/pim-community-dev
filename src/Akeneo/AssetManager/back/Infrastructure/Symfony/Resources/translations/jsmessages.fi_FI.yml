@@ -115,6 +115,7 @@ pim_asset_manager:
         link: 'Jos haluat tutustua Product Link Rules -ominaisuuteen, klikkaa tästä'
       execute_rules:
         confirm_title: Vahvista suoritus
+        confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
         execute_rules: Suorita säännöt
         cancel: Peruuta
     properties:
