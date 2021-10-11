@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-class PostAttributeGroupsPermissionsAction
+class SaveAttributeGroupsPermissionsAction
 {
     private SecurityFacade $securityFacade;
     private ValidatorInterface $validator;

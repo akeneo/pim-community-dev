@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
+class SaveAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
 {
     private Connection $connection;
 

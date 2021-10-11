@@ -163,7 +163,7 @@ services:
             - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels'
             - '@router'
 
-    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostAttributeGroupsPermissionsAction:
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveAttributeGroupsPermissionsAction:
         public: true
         arguments:
             - '@oro_security.security_facade'
