@@ -164,7 +164,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           invalid={invalid}
           autoComplete="off"
           value={value}
-          title={rest.value}
+          title={value}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}

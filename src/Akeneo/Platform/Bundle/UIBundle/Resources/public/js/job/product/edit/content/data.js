@@ -372,7 +372,7 @@ define([
     shutdown() {
       this.doShutdown();
 
-      Object.values(this.filterViews).forEach((filterView) => filterView.shutdown());
+      Object.values(this.filterViews).forEach(filterView => filterView.shutdown());
     },
   });
 });
