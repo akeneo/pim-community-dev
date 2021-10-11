@@ -87,23 +87,15 @@ const AppcuesOnboarding: PimOnboarding = {
 
       switch (event) {
         case 'product-grid:view:saved':
-          if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
-            appcues.track('View "Furniture - To enrich" saved');
+          if (eventOptions && eventOptions.name) {
+            appcues.track('View "' + eventOptions.name + '" saved');
           }
 
           appcues.track('View saved');
           break;
         case 'product-grid:view:selected':
-          if (eventOptions && eventOptions.name === 'Furniture - To enrich') {
-            appcues.track('View "Furniture - To enrich" selected');
-          }
-
-          if (eventOptions && eventOptions.name === 'Food - To enrich') {
-            appcues.track('View "Food - To enrich" selected');
-          }
-
-          if (eventOptions && eventOptions.name === 'Automotive - To enrich') {
-            appcues.track('Automotive "Food - To enrich" selected');
+          if (eventOptions && eventOptions.name) {
+            appcues.track('View "' + eventOptions.name + '" selected');
           }
 
           appcues.track('View selected');
