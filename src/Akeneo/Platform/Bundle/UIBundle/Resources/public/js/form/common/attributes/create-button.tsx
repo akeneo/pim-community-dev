@@ -4,9 +4,10 @@ import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {CreateAttributeButtonApp} from '../../../attribute/form/CreateAttributeButtonApp';
+import {AttributeData, CreateAttributeButtonApp} from '../../../attribute/form/CreateAttributeButtonApp';
 const translate = require('oro/translator');
 const router = require('pim/router');
+const analytics = require('pim/analytics');
 
 type CreateButtonConfig = {
   buttonTitle: string;
@@ -31,7 +32,9 @@ class CreateButton extends BaseView {
     return params.get(paramName);
   }
 
-  onClick(data: any): void {
+  onClick(data: AttributeData): void {
+    analytics.track('attribute:create:type-selected', {type: data.attribute_type});
+
     router.redirectToRoute('pim_enrich_attribute_create', data);
   }
 
