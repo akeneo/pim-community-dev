@@ -87,6 +87,7 @@ akeneo_connectivity.connection:
                 not_found: App not found
                 tabs:
                     settings: Settings
+                    permissions: Permissions
                 settings:
                     authorizations:
                         title: authorizations

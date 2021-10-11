@@ -215,7 +215,10 @@ test('The wizard saves app and permissions on confirm', async () => {
             save: providerSave,
         },
     ];
-    const registry = {all: () => Promise.resolve(providers)};
+    const registry = {
+        all: () => Promise.resolve(providers),
+        count: () => providers.length,
+    };
 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
@@ -299,7 +302,10 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             save: providerSave,
         },
     ];
-    const registry = {all: () => Promise.resolve(providers)};
+    const registry = {
+        all: () => Promise.resolve(providers),
+        count: () => providers.length,
+    };
 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
