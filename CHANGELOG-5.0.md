@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.50 (2021-10-11)
+
 ## Bug fixes
 
 - PIM-10105: Fix PurgeableVersionList no longer keeps every version if it is asked to keep none
