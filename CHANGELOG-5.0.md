@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.49 (2021-10-11)
+
 ## Bug fixes
 
 - PIM-10099: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset (backport #PIM-10088)
