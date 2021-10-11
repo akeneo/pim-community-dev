@@ -28,7 +28,7 @@ jobs:
 
       - name: Install peer dependencies
         # TODO RAC-594 Do not used fixed peer dependencies
-        run: cd front-packages/akeneo-design-system && yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
+        run: cd front-packages/akeneo-design-system && npx yarn@1.19.0 add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
 
       - name: Install node modules
         run: cd front-packages/akeneo-design-system && yarn install
