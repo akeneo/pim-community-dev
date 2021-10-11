@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AbstractFilter = require('oro/datafilter/abstract-filter');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
