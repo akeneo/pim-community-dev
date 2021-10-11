@@ -17,9 +17,13 @@ class RetrievePimFQDN
 {
     private string $fqdn;
 
-    public function __construct(string $fqdn)
+    public function __construct(string $url)
     {
-        $this->fqdn = $fqdn;
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            throw new \InvalidArgumentException(sprintf('The parameter "%s" is not a valid url', $url));
+        }
+
+        $this->fqdn = parse_url($url, PHP_URL_HOST);
     }
 
     public function __invoke(): string

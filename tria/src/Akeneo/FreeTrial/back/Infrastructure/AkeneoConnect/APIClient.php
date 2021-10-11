@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 class APIClient
 {
     public const URI_CONNECT = '/auth/realms/connect/protocol/openid-connect/token';
-    public const URI_INVITE_USER = '/api/v1/console/trial/invite';
+    public const URI_INVITE_USER = '/api/v2/console/trial/invite';
 
     private string $clientId;
 
@@ -30,19 +30,23 @@ class APIClient
 
     private string $password;
 
-    private ClientInterface $httpClient;
+    private ClientInterface $connectApi;
+
+    private ClientInterface $portalApi;
 
     private RetrievePimFQDN $retrievePimFQDN;
 
     public function __construct(
-        ClientInterface $httpClient,
+        ClientInterface $connectApi,
+        ClientInterface $portalApi,
         RetrievePimFQDN $retrievePimFQDN,
         string $clientId,
         string $clientSecret,
         string $userName,
         string $password
     ) {
-        $this->httpClient = $httpClient;
+        $this->connectApi = $connectApi;
+        $this->portalApi = $portalApi;
         $this->retrievePimFQDN = $retrievePimFQDN;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -54,7 +58,7 @@ class APIClient
     {
         $token = $this->connect();
 
-        return $this->httpClient->request('POST', self::URI_INVITE_USER, [
+        return $this->portalApi->request('POST', self::URI_INVITE_USER, [
             'headers' => [
                 'Content-type' => 'application/json',
                 'Authorization' => sprintf('Bearer %s', $token),
@@ -77,7 +81,7 @@ class APIClient
             'client_id' => $this->clientId,
         ];
 
-        $response = $this->httpClient->request('POST', self::URI_CONNECT, [
+        $response = $this->connectApi->request('POST', self::URI_CONNECT, [
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
