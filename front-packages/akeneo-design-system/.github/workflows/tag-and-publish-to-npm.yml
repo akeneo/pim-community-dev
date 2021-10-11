@@ -21,7 +21,7 @@ jobs:
       - name: Prepare node to Publish
         uses: actions/setup-node@v1
         with:
-          node-version: 12.20
+          node-version: '12.20'
           registry-url: 'https://registry.npmjs.org'
       - name: Install node modules
         run: yarn install

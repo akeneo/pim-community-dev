@@ -13,7 +13,7 @@ jobs:
       - name: Install node 12.20 for the rest of the workflow
         uses: actions/setup-node@v1
         with:
-          node-version: 12.20
+          node-version: '12.20'
 
       - name: Install peer dependencies
         # TODO RAC-594 Do not used fixed peer dependencies
