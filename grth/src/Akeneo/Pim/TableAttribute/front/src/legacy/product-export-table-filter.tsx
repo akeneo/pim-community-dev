@@ -8,7 +8,7 @@ import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, TableAttribute} from '../models';
 import {ProductExportBuilderFilter} from '../datagrid/ProductExportBuilderFilter';
-import {FilterValuesMapping} from '../datagrid';
+import {FilterValuesProvider} from './filter-values-provider';
 
 type TemplateContext = {
   attribute: Attribute;
@@ -38,9 +38,7 @@ class ProductExportTableFilter extends AbstractFilter {
     }
 
     this.element = document.createElement('div');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const filterValuesMapping = __moduleConfig.filter_values as FilterValuesMapping;
+    const filterValuesMapping = FilterValuesProvider.getMapping();
     const {attribute} = templateContext;
     const handleChange = this.updateState.bind(this);
 
