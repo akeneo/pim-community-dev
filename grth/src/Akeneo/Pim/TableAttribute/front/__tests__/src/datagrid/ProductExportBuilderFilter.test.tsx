@@ -8,6 +8,12 @@ import {fireEvent} from '@testing-library/dom';
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
+const intersectionObserverMock = () => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+});
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
 describe('ProductExportBuilderFilter', () => {
   it('should call handleChange', async () => {
     const handleChange = jest.fn();
