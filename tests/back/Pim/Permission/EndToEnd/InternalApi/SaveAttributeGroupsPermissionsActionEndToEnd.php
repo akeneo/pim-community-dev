@@ -113,6 +113,7 @@ JOIN oro_access_group oag on ag_access.user_group_id = oag.id
 JOIN pim_catalog_attribute_group attribute_group on ag_access.attribute_group_id = attribute_group.id
 WHERE oag.name = :user_group_name
 AND attribute_group.code = :ag_code
+LIMIT 1
 SQL;
 
         $permissions = $this->connection->fetchAssoc($query, [
