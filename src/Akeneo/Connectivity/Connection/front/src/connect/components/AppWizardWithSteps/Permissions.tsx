@@ -39,12 +39,6 @@ const Helper = styled.div`
     width: 280px;
 `;
 
-type RowProps = {
-    provider: PermissionFormProvider<any>;
-    setPermissions: (state: any) => void;
-    permissions: PermissionsByProviderKey | undefined;
-};
-
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];

@@ -1,20 +1,23 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {act, screen, wait, waitForElement} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {AppWizardWithSteps, PermissionsType} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
+import {AppWizardWithSteps} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
 import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared/permission-form-registry';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
+import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
 
 const notify = jest.fn();
 const providerSave = jest.fn();
+const providerLoadPermissions = jest.fn();
 
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
     notify.mockClear();
     providerSave.mockClear();
+    providerLoadPermissions.mockClear();
 });
 
 jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
@@ -24,8 +27,8 @@ jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
 type PermissionsProps = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: PermissionsType) => void;
-    permissions: PermissionsType;
+    setPermissions: (state: PermissionsByProviderKey) => void;
+    permissions: PermissionsByProviderKey;
 };
 jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
     Permissions: ({permissions, setPermissions}: PermissionsProps) => {
@@ -47,7 +50,7 @@ jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
     },
 }));
 type SummaryProps = {
-    permissions: PermissionsType;
+    permissions: PermissionsByProviderKey;
 };
 jest.mock('@src/connect/components/AppWizardWithSteps/PermissionsSummary', () => ({
     PermissionsSummary: ({permissions}: SummaryProps) => <div>permissions-summary-component {permissions.data}</div>,
@@ -206,6 +209,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
         {
             key: 'formProvider2',
@@ -213,6 +217,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
     ];
     const registry = {
@@ -279,6 +284,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
         {
             key: 'formProvider2',
@@ -286,6 +292,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
         {
             key: 'formProvider3',
@@ -293,6 +300,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
         {
             key: 'formProvider4',
@@ -300,6 +308,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             renderForm: () => null,
             renderSummary: () => null,
             save: providerSave,
+            loadPermissions: providerLoadPermissions,
         },
     ];
     const registry = {

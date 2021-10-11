@@ -26,7 +26,7 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('The connected settings renders with scopes', async () => {
+test('The connected app settings renders with scopes', async () => {
     const scopes = [
         {
             icon: 'catalog_structure',

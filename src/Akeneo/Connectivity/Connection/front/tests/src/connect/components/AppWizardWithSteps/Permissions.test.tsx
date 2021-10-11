@@ -23,6 +23,7 @@ test('The permissions step renders with the providers from the registry', done =
             renderForm: (_onChange: any, initialState: any) => <div>test form {initialState.print}</div>,
             renderSummary: () => null,
             save: () => Promise.resolve(),
+            loadPermissions: jest.fn(),
         },
     ];
 
