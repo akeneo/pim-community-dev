@@ -124,7 +124,7 @@ SQL;
             return null;
         }
 
-        return array_map(fn ($v) => (bool) $v, $permissions);
+        return array_map(fn ($permissionFlag) => (bool) $permissionFlag, $permissions);
     }
 
     protected function getConfiguration(): Configuration

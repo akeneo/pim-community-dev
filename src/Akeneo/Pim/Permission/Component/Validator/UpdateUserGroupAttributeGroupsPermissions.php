@@ -33,7 +33,10 @@ class UpdateUserGroupAttributeGroupsPermissions extends Constraint
                         'view' => $this->getPermissionLevelConstraint(),
                     ]),
                     new Assert\Callback(function ($permissions, ExecutionContextInterface $context) {
-                        if ($permissions['edit']['all'] ?? null === true && $permissions['view']['all'] ?? null === false) {
+                        $editAll = $permissions['edit']['all'] ?? false;
+                        $viewAll = $permissions['view']['all'] ?? false;
+
+                        if ($editAll === true && $viewAll === false) {
                             $context->buildViolation($this->message)->addViolation();
                         }
                     }),
