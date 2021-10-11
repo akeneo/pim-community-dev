@@ -25,6 +25,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
 
 final class ProductValueIntegration extends TestCase
@@ -133,7 +134,7 @@ final class ProductValueIntegration extends TestCase
         $rawValues = $connection->executeQuery(
             'SELECT raw_values FROM pim_catalog_product WHERE identifier = :identifier',
             ['identifier' => $product->getIdentifier()]
-        )->fetchOne();
+        )->fetch(FetchMode::COLUMN);
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($product->getRawValues()), $rawValues);
 
@@ -165,7 +166,7 @@ final class ProductValueIntegration extends TestCase
         $rawValues = $connection->executeQuery(
             'SELECT raw_values FROM pim_catalog_product_model WHERE code = :code',
             ['code' => $productModel->getCode()]
-        )->fetchOne();
+        )->fetch(FetchMode::COLUMN);
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($productModel->getRawValues()), $rawValues);
 
