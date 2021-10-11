@@ -2,6 +2,7 @@ import React from 'react';
 import {MultiSelectInput} from './MultiSelectInput';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
+import {act} from 'react-dom/test-utils';
 
 test('it renders its children properly', () => {
   const onChange = jest.fn();
@@ -187,7 +188,11 @@ test('it handles keyboard events', () => {
   expect(germanOption).toBeInTheDocument();
 
   const input = screen.getByDisplayValue('');
-  userEvent.type(input, '{enter}{enter}');
+
+  act(() => {
+    userEvent.type(input, '{enter}');
+  });
+  userEvent.type(input, '{enter}');
   expect(onSubmit).toHaveBeenCalled();
 });
 
@@ -236,7 +241,11 @@ test('it can remove a chip using Backspace', () => {
   );
 
   const input = screen.getByRole('textbox');
-  userEvent.type(input, '{backspace}{backspace}');
+
+  act(() => {
+    userEvent.type(input, '{backspace}');
+  });
+  userEvent.type(input, '{backspace}');
 
   expect(onChange).toBeCalledWith(['en_US']);
 });
@@ -260,7 +269,8 @@ test('it does not remove the chip when the search value is not empty', () => {
   );
 
   const input = screen.getByRole('textbox');
-  userEvent.type(input, 'something{backspace}{backspace}');
+  userEvent.type(input, 'something{backspace}');
+  userEvent.type(input, '{backspace}');
 
   expect(screen.getByDisplayValue('somethi')).toBeInTheDocument();
   expect(onChange).not.toBeCalled();

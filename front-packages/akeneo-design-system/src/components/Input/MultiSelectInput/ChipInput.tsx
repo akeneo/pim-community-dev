@@ -116,7 +116,6 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
     forwardedRef: Ref<HTMLInputElement>
   ) => {
     const [isLastSelected, selectLast, unselectLast] = useBooleanState();
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value);
 
     const handleBackspace = () => {

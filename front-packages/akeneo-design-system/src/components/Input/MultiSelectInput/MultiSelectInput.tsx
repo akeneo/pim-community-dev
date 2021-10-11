@@ -1,4 +1,4 @@
-import React, {useState, useRef, ReactElement, isValidElement} from 'react';
+import React, {useState, useRef, ReactElement, isValidElement, useMemo} from 'react';
 import styled from 'styled-components';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
@@ -192,6 +192,11 @@ const MultiSelectInput = ({
     return indexedChips;
   }, {});
 
+  const memoizedValue: ChipValue[] = useMemo(
+    () => value.map((chipCode: string) => indexedChips[chipCode] ?? {code: chipCode, label: chipCode}),
+    [value]
+  );
+
   const filteredChildren = validChildren.filter(({props}) => {
     const childValue = props.value;
     const optionValue = childValue + props.children;
@@ -245,7 +250,7 @@ const MultiSelectInput = ({
           ref={inputRef}
           id={id}
           placeholder={placeholder}
-          value={value.map(chipCode => indexedChips[chipCode] ?? {code: chipCode, label: chipCode})}
+          value={memoizedValue}
           searchValue={searchValue}
           removeLabel={removeLabel}
           readOnly={readOnly}
