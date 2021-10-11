@@ -217,7 +217,7 @@ test('it closes the overlay when hitting Escape', () => {
   expect(germanOption).not.toBeInTheDocument();
 });
 
-test('it can remove a chip using Backspace', async () => {
+test('it can remove a chip using Backspace', () => {
   const onChange = jest.fn();
   render(
     <MultiSelectInput
