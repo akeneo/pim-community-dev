@@ -186,11 +186,11 @@ test('it updates the state with the action DISABLE_ALL_VIEW', () => {
     });
 });
 
-test('it updates the state with the action DISABLE_ALL_VIEW and empties own and edit', () => {
+test('it updates the state with the action DISABLE_ALL_VIEW and preserve identifiers inheritance', () => {
     const state = {
         own: {
             all: false,
-            identifiers: ['a', 'b'],
+            identifiers: ['a'],
         },
         edit: {
             all: false,
@@ -204,24 +204,24 @@ test('it updates the state with the action DISABLE_ALL_VIEW and empties own and 
     expect(reducer(state, {type: Actions.DISABLE_ALL_VIEW})).toEqual({
         own: {
             all: false,
-            identifiers: [],
+            identifiers: ['a'],
         },
         edit: {
             all: false,
-            identifiers: [],
+            identifiers: ['a', 'b'],
         },
         view: {
             all: false,
-            identifiers: [],
+            identifiers: ['a', 'b'],
         },
     });
 });
 
-test('it updates the state with the action DISABLE_ALL_EDIT and empties own', () => {
+test('it updates the state with the action DISABLE_ALL_EDIT and preserve identifiers inheritance', () => {
     const state = {
         own: {
             all: false,
-            identifiers: ['a', 'b'],
+            identifiers: ['a'],
         },
         edit: {
             all: true,
@@ -235,11 +235,11 @@ test('it updates the state with the action DISABLE_ALL_EDIT and empties own', ()
     expect(reducer(state, {type: Actions.DISABLE_ALL_EDIT})).toEqual({
         own: {
             all: false,
-            identifiers: [],
+            identifiers: ['a'],
         },
         edit: {
             all: false,
-            identifiers: [],
+            identifiers: ['a'],
         },
         view: {
             all: true,
@@ -523,6 +523,68 @@ test('it updates the state with the action REMOVE_FROM_VIEW', () => {
         view: {
             all: false,
             identifiers: ['b', 'c'],
+        },
+    });
+});
+
+test('it doesn\'t override edit:all & view:all when adding an identifier in own', () => {
+    const state = {
+        own: {
+            all: false,
+            identifiers: [],
+        },
+        edit: {
+            all: true,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.ADD_TO_OWN, identifier: 'a'})).toEqual({
+        own: {
+            all: false,
+            identifiers: ['a'],
+        },
+        edit: {
+            all: true,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    });
+});
+
+test('it doesn\'t override view:all when adding an identifier in edit', () => {
+    const state = {
+        own: {
+            all: false,
+            identifiers: [],
+        },
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.ADD_TO_EDIT, identifier: 'a'})).toEqual({
+        own: {
+            all: false,
+            identifiers: [],
+        },
+        edit: {
+            all: false,
+            identifiers: ['a'],
+        },
+        view: {
+            all: true,
+            identifiers: [],
         },
     });
 });

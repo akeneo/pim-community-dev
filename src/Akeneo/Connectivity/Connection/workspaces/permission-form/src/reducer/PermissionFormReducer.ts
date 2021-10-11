@@ -117,11 +117,11 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: [],
+                    identifiers: [...state.own.identifiers],
                 },
                 edit: {
                     all: false,
-                    identifiers: [],
+                    identifiers: [...state.own.identifiers],
                 },
             };
 
@@ -139,15 +139,15 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: [],
+                    identifiers: [...state.own.identifiers],
                 },
                 edit: {
                     all: false,
-                    identifiers: [],
+                    identifiers: [...state.edit.identifiers],
                 },
                 view: {
                     all: false,
-                    identifiers: [],
+                    identifiers: [...state.edit.identifiers],
                 },
             };
 
@@ -198,12 +198,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                     identifiers: unique([...state.own.identifiers, action.identifier]),
                 },
                 edit: {
-                    all: false,
-                    identifiers: unique([...state.edit.identifiers, action.identifier]),
+                    ...state.edit,
+                    identifiers: state.edit.all ? [] : unique([...state.edit.identifiers, action.identifier]),
                 },
                 view: {
-                    all: false,
-                    identifiers: unique([...state.view.identifiers, action.identifier]),
+                    ...state.view,
+                    identifiers: state.view.all ? [] : unique([...state.view.identifiers, action.identifier]),
                 },
             };
 
@@ -215,8 +215,8 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                     identifiers: unique([...state.edit.identifiers, action.identifier]),
                 },
                 view: {
-                    all: false,
-                    identifiers: unique([...state.view.identifiers, action.identifier]),
+                    ...state.view,
+                    identifiers: state.view.all ? [] : unique([...state.view.identifiers, action.identifier]),
                 },
             };
 
