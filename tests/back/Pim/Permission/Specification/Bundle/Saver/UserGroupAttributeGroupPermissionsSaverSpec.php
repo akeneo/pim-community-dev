@@ -95,7 +95,6 @@ class UserGroupAttributeGroupPermissionsSaverSpec extends ObjectBehavior
         ]);
     }
 
-
     /**
      * FROM {"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
      * TO {"edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}

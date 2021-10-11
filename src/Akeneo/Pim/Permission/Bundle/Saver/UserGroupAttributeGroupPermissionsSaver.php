@@ -97,7 +97,16 @@ class UserGroupAttributeGroupPermissionsSaver
 
     /**
      * @param $group
-     * @param array $permissions
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
      */
     private function updateDefaultPermissions(GroupInterface $group, array $permissions): void
     {
