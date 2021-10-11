@@ -23,7 +23,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
