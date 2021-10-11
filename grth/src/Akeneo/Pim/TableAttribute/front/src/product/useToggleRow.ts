@@ -11,7 +11,9 @@ const useToggleRow: (
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
 
   return (optionCode: SelectOptionCode) => {
-    const index = tableValue.findIndex(row => (row[firstColumnCode] as string).toLowerCase() === optionCode.toLowerCase());
+    const index = tableValue.findIndex(
+      row => (row[firstColumnCode] as string).toLowerCase() === optionCode.toLowerCase()
+    );
     if (index >= 0) {
       const removed = tableValue.splice(index, 1);
       if (removed.length === 1) {
