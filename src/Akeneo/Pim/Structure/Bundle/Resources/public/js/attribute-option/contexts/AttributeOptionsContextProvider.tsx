@@ -39,7 +39,10 @@ type Props = {
   attributeOptionsQualityFetcher?: undefined | (() => Promise<SpellcheckEvaluation> | null);
 };
 
-const mergeAttributeOptionsEvaluation = (attributeOptions: AttributeOption[], evaluation: SpellcheckEvaluation | null) => {
+const mergeAttributeOptionsEvaluation = (
+  attributeOptions: AttributeOption[],
+  evaluation: SpellcheckEvaluation | null
+) => {
   if (!evaluation) {
     return attributeOptions;
   }
