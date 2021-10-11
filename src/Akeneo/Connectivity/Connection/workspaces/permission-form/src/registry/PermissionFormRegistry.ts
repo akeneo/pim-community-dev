@@ -16,6 +16,7 @@ export interface PermissionFormProvider<T> {
     renderForm: (onChange: (state: T) => void, initialState: T | undefined) => ReactNode;
     renderSummary: (state: T) => ReactNode;
     save: (userGroup: string, state: T) => Promise<void>;
+    loadPermissions: (userGroup: string) => Promise<T>;
 }
 
 let _config: ModuleConfig = {

@@ -1,9 +1,10 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
 import {PermissionFormProvider} from '../../../shared/permission-form-registry';
-import {PermissionsType} from './AppWizardWithSteps';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+import {PermissionsForm} from '../PermissionsForm';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -41,28 +42,14 @@ const Helper = styled.div`
 type RowProps = {
     provider: PermissionFormProvider<any>;
     setPermissions: (state: any) => void;
-    permissions: PermissionsType | undefined;
+    permissions: PermissionsByProviderKey | undefined;
 };
-const FormContainer = styled.div`
-    padding-bottom: 10px;
-`;
-
-const PermissionRow: FC<RowProps> = React.memo(({provider, setPermissions, permissions}) => {
-    const handleChange = useCallback(
-        (state: any) => {
-            setPermissions((permissions: PermissionsType) => ({...permissions, [provider.key]: state}));
-        },
-        [setPermissions]
-    );
-
-    return <FormContainer>{provider.renderForm(handleChange, permissions)}</FormContainer>;
-});
 
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: PermissionsType) => void;
-    permissions: PermissionsType;
+    setPermissions: (state: PermissionsByProviderKey) => void;
+    permissions: PermissionsByProviderKey;
 };
 
 export const Permissions: FC<Props> = ({appName, providers, setPermissions, permissions}) => {
@@ -79,7 +66,7 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions, perm
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow
+                <PermissionsForm
                     key={provider.key}
                     provider={provider}
                     setPermissions={setPermissions}
