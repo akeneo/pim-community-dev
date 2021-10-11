@@ -46,9 +46,9 @@ const RichTextEditor = ({value, readOnly = false, onChange, ...rest}: RichTextEd
           options: ['bold', 'italic'],
         },
       }}
-      onEditorStateChange={handleChange as any}
+      onEditorStateChange={handleChange}
       {...rest}
-      editorState={editorState as any}
+      editorState={editorState}
     />
   );
 };

@@ -27,12 +27,12 @@
     "styled-components": "^5.1.1"
   },
   "dependencies": {
-    "@types/draft-js": "^0.10.45",
+    "@types/draft-js": "0.10.*",
     "@types/draftjs-to-html": "^0.8.0",
     "@types/html-to-draftjs": "^1.4.0",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.12",
-    "@types/react-draft-wysiwyg": "^1.13.2",
+    "@types/react-draft-wysiwyg": "1.13.*",
     "@types/styled-components": "^5.1.1",
     "@types/testing-library__jest-dom": "^5.9.2",
     "@typescript-eslint/eslint-plugin": "^4.1.0",

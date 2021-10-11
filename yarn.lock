@@ -3076,7 +3076,7 @@
     "@types/react" "*"
     immutable "~3.7.4"
 
-"@types/draft-js@^0.10.25":
+"@types/draft-js@0.10.*":
   version "0.10.45"
   resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.45.tgz#4ab5b0785fcacdea7d5a836d0024158fa8108e70"
   integrity sha512-ozmVQEI088kGQfY2XPB0b+YRNbkv1mxdxcLieBLCc2F4IkVWMs6mnIaEbBRExmM3H/Amm9CvhlmIYmDL4CjBvA==
@@ -3407,7 +3407,7 @@
   dependencies:
     "@types/react" "^16"
 
-"@types/react-draft-wysiwyg@^1.12.13":
+"@types/react-draft-wysiwyg@1.13.*":
   version "1.13.3"
   resolved "https://registry.yarnpkg.com/@types/react-draft-wysiwyg/-/react-draft-wysiwyg-1.13.3.tgz#044806edfcd3302c1039dd767bcc06e1467f7d26"
   integrity sha512-njzkDqwIrEDUWz7Xzn2grlghu2PLlNf9PfOyGjQpUMOw5hwMEI3aQ6D4GUXBfGXaMv2nuheO4lu7Gu0cak5vmw==
@@ -4028,12 +4028,12 @@ ajv@^8.0.1:
 "akeneo-design-system@link:front-packages/akeneo-design-system":
   version "0.0.0"
   dependencies:
-    "@types/draft-js" "^0.10.25"
+    "@types/draft-js" "0.10.*"
     "@types/draftjs-to-html" "^0.8.0"
     "@types/html-to-draftjs" "^1.4.0"
     "@types/react" "^16.14.0"
     "@types/react-dom" "^16.9.12"
-    "@types/react-draft-wysiwyg" "^1.12.13"
+    "@types/react-draft-wysiwyg" "1.13.*"
     "@types/styled-components" "^5.1.1"
     "@types/testing-library__jest-dom" "^5.9.2"
     "@typescript-eslint/eslint-plugin" "^4.1.0"
@@ -4041,7 +4041,10 @@ ajv@^8.0.1:
     draft-js "^0.10.5"
     draftjs-to-html "^0.8.4"
     html-to-draftjs "^1.5.0"
+    react "^16.14.0"
+    react-dom "^16.9.12"
     react-draft-wysiwyg "^1.12.13"
+    styled-components "^5.1.1"
     typescript "^4.1.3"
 
 alphanum-sort@^1.0.0:
