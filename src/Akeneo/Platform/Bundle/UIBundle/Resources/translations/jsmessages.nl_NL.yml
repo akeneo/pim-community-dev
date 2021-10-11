@@ -403,3 +403,7 @@ pim_system:
     enabled: Eenmalige aanmelding ingeschakeld
     disabled: Eenmalige aanmelding uitgeschakeld
     title: Eenmalige aanmelding (SSO) op basis van SAML
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Actie selecteren
