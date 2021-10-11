@@ -21,7 +21,7 @@ export type CreateAttributeButtonAppProps = {
 
 type AttributeType = string;
 
-type AttributeData = {
+export type AttributeData = {
   attribute_type?: AttributeType;
 } & {[key: string]: any};
 
