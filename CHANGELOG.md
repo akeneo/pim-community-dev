@@ -110,7 +110,7 @@
 - PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
 - PIM-10074: Add translation key for mass action selection
 - PIM-10062: Suppress PHP warning when missing 'dataScope' value.
-- Bump NodeJS library to fix CVE on  tmpl 1.0.4 
+- Bump NodeJS library to fix CVE on tmpl 1.0.4
 - CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
 - CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
 - GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5
@@ -122,6 +122,7 @@
 - PIM-10095: Fix API error when providing an integer for the identifier or code when patching products or models
 - CVE-2021-3807: Bump ansi-regex from 5.0.0 to 5.0.1 in /front-packages/shared
 - CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7 in /front-packages/shared
+- PIM-10094: Increase product grid filters limit display in user settings
 - PIM-10101: Fix incorrect count of families selection in the family grid
 
 ## New features
