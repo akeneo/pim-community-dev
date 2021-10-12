@@ -47,7 +47,7 @@ final class TableValueFilter extends AbstractAttributeFilter
     public function addAttributeFilter(
         AttributeInterface $attribute,
         $operator,
-        $value,
+        $data,
         $locale = null,
         $channel = null,
         $options = []
@@ -59,21 +59,22 @@ final class TableValueFilter extends AbstractAttributeFilter
         $this->checkLocaleAndChannel($attribute, $locale, $channel);
         $attributePath = \sprintf('table_values.%s', $attribute->getCode());
 
-        $columnCode = $options['column'] ?? null;
-        $rowCode = $options['row'] ?? null;
+        $value = $data['value'] ?? null;
+        $columnCode = $data['column'] ?? null;
+        $rowCode = $data['row'] ?? null;
 
         if (null === $columnCode) {
             return $this->addAttributeFilterOnEntireTable($attribute, $attributePath, $operator, $locale, $channel);
         }
 
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
-        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($options['column']));
+        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
         /** @var ?ColumnTypeFilter $columnFilter */
         $columnFilter = $this->columnFilters[$column->dataType()->asString()] ?? null;
         if (null === $columnFilter) {
             throw new \InvalidArgumentException(sprintf(
                 'The \'%s\' column with \'%s\' type is not supported',
-                $options['column'],
+                $columnCode,
                 $column->dataType()->asString()
             ));
         }

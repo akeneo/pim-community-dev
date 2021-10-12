@@ -14,7 +14,7 @@ services:
   Akeneo\Pim\TableAttribute\Infrastructure\Datagrid\ProductValueTableFilter:
       arguments:
           - '@form.factory'
-          - '@oro_filter.filter_utility'
+          - '@pim_filter.product_utility'
       tags:
           - { name: oro_filter.extension.orm_filter.filter, type: product_value_table }
 

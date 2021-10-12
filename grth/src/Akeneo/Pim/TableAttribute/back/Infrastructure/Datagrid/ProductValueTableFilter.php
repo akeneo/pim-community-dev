@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Datagrid;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\AbstractFilter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 
 class ProductValueTableFilter extends AbstractFilter
 {
@@ -25,7 +28,37 @@ class ProductValueTableFilter extends AbstractFilter
 
     public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
-        // TODO CPM-377
-        throw new \Exception('NEED TO BE IMPLEMENTED');
+        $operator = $data['operator'] ?? null;
+        if (null === $operator
+            || (!isset($data['value']) && !in_array($operator, [Operators::IS_NOT_EMPTY, Operators::IS_EMPTY]))
+        ) {
+            return false;
+        }
+
+        unset($data['operator']);
+        unset($data['type']);
+        $ds->generateParameterName($this->getName());
+
+        $this->util->applyFilter(
+            $ds,
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
+            $operator,
+            $data
+        );
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'label' => ucfirst($this->name),
+            'type' => 'table',
+            FilterUtility::ENABLED_KEY => true,
+        ];
     }
 }

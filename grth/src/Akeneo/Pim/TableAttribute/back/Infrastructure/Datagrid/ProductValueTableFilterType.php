@@ -2,17 +2,29 @@
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Datagrid;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class ProductValueTableFilterType extends AbstractType
 {
-    private const NAME = 'oro_type_text_filter';
+    /** @staticvar string */
+    private const NAME = 'pim_type_table_filter';
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
-        // TODO This parent is too complex, should be removed CPM-377
-        return FilterType::class;
+        return FormType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('row');
+        $builder->add('column');
+        $builder->add('operator');
+        $builder->add('value');
     }
 
     public function getBlockPrefix(): string

@@ -5,10 +5,11 @@ import {
   ColumnCode,
   ColumnDefinition,
   isFilterValid,
+  PendingBackendTableFilterValue,
   PendingTableFilterValue,
   TableAttribute,
 } from '../models';
-import {AttributeFetcher} from '../fetchers';
+import {AttributeFetcher, SelectOptionFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
@@ -43,6 +44,7 @@ type DatagridTableFilterProps = {
   attributeCode: string;
   onChange: (value: BackendTableFilterValue) => void;
   filterValuesMapping: FilterValuesMapping;
+  initialDataFilter: PendingBackendTableFilterValue;
 };
 
 const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
@@ -53,6 +55,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   attributeCode,
   onChange,
   filterValuesMapping,
+  initialDataFilter,
 }) => {
   const router = useRouter();
   const translate = useTranslate();
@@ -61,10 +64,25 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({});
+  const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
-      setAttribute(attribute as TableAttribute);
+      const tableAttribute = attribute as TableAttribute;
+      setAttribute(tableAttribute);
+
+      const column = tableAttribute.table_configuration.find(column => column.code === initialDataFilter.column);
+      SelectOptionFetcher.fetchFromColumn(router, attribute.code, tableAttribute.table_configuration[0].code).then(options => {
+        const row = (options || []).find(option => option.code === initialDataFilter.row);
+        const pendingFilter = {
+          row,
+          column,
+          value: initialDataFilter.value,
+          operator: initialDataFilter.operator,
+        };
+        setFilterValue(pendingFilter);
+        setInitialFilter(pendingFilter);
+      });
     });
   }, []);
 
@@ -113,7 +131,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 
   return (
     <Dropdown>
-      {isOpen && attribute && (
+      {isOpen && attribute && initialFilter && (
         <Dropdown.Overlay onClose={close}>
           <FilterContainer>
             <FilterSectionTitle title={label}>
@@ -123,7 +141,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               attribute={attribute}
               filterValuesMapping={filterValuesMapping}
               onChange={setFilterValue}
-              initialFilter={filterValue}
+              initialFilter={initialFilter}
             />
             <FilterButtonContainer>
               <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>

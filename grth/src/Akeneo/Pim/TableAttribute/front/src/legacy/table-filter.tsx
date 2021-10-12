@@ -9,6 +9,8 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {FilterValuesProvider} from './filter-values-provider';
 
 class TableFilter extends AbstractFilter {
+  private initialDataFilter = {};
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   private show() {
@@ -23,7 +25,10 @@ class TableFilter extends AbstractFilter {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  private _writeDOMValue() {
+  private _writeDOMValue(value) {
+    this.initialDataFilter = value;
+    ReactDOM.unmountComponentAtNode(this.el);
+    this.render();
     return this;
   }
 
@@ -48,6 +53,7 @@ class TableFilter extends AbstractFilter {
             attributeCode={this.name}
             onChange={onChange}
             filterValuesMapping={filterValuesMapping}
+            initialDataFilter={this.initialDataFilter}
           />
         </ThemeProvider>
       </DependenciesProvider>,
