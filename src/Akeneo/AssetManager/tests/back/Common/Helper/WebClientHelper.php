@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Helper;
 
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -38,7 +38,7 @@ class WebClientHelper
     }
 
     public function callRoute(
-        Client $client,
+        KernelBrowser $client,
         string $route,
         array $arguments = [],
         string $method = 'GET',
@@ -124,7 +124,7 @@ HTML;
         Assert::assertSame(500, $response->getStatusCode());
     }
 
-    public function assertRequest(Client $client, string $relativeFilePath): void
+    public function assertRequest(KernelBrowser $client, string $relativeFilePath): void
     {
         $response = $this->requestFromFile($client, $relativeFilePath);
         $this->assertFromFile($response, $relativeFilePath);
@@ -158,7 +158,7 @@ HTML;
         }
     }
 
-    public function requestFromFile(Client $client, string $relativeFilePath): Response
+    public function requestFromFile(KernelBrowser $client, string $relativeFilePath): Response
     {
         $fileData = json_decode(file_get_contents(self::RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $fileData) {

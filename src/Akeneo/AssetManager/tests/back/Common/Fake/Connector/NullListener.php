@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake\Connector;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Can be used in unit testing, in a situations where a firewall listener is not needed.
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class NullListener implements ListenerInterface
+class NullListener
 {
-    public function handle(GetResponseEvent $event): void
+    public function __invoke(RequestEvent $event)
     {
     }
 }
