@@ -30,7 +30,7 @@ const QualityScoreSelector = ({
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           placeholder={translate('pim_enrich.export.product.filter.quality-score.empty_selection')}
-          removeLabel={translate('akeneo.tailored_export.filters.quality_score.quality_score.remove')}
+          removeLabel={translate('akeneo.tailored_export.filters.quality_score.score.remove')}
         >
           {availableQualityScores.map((qualityScore: QualityScore) => (
             <MultiSelectInput.Option key={qualityScore} title={qualityScore} value={qualityScore}>

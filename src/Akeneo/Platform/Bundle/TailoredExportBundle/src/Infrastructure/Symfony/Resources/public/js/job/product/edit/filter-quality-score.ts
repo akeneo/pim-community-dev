@@ -159,7 +159,7 @@ class FilterQualityScore extends BaseFilter {
                 this.render();
               },
               // TODO: Find a way to get rid of the [3] part below
-              validationErrors: filterErrors(this.validationErrors, '[filters][data][3]'),
+              validationErrors: filterErrors(this.validationErrors, '[filters][data][quality_score_multi_locales]'),
             })
           )
         )

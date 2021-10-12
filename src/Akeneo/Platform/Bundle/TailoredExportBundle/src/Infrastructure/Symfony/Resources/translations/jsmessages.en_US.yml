@@ -11,7 +11,8 @@ akeneo.tailored_export:
         placeholder: Select some locales
         remove: Remove the locale
     quality_score:
-      remove: Remove quality score
+      score:
+        remove: Remove quality score
       locales:
         placeholder: Select some locales
         label: Define the locales for the quality score

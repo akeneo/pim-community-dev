@@ -255,13 +255,13 @@ const FakePIM = () => {
               ]}
               filter={completenessFilter}
               onChange={handleCompletenessFilterChange}
-              validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
+              validationErrors={filterErrors(validationErrors, '[filters][data][completeness]')}
             />
             <QualityScoreFilter
               availableOperators={['IN AT LEAST ONE LOCALE', 'IN ALL LOCALES']}
               filter={qualityScoreFilter ?? {field: 'quality_score_multi_locales', operator: null, value: []}}
               onChange={handleQualityScoreFilterChange}
-              validationErrors={filterErrors(validationErrors, '[filters][data][3]')}
+              validationErrors={filterErrors(validationErrors, '[filters][data][quality_score_multi_locales]')}
             />
           </FieldContainer>
         )}
