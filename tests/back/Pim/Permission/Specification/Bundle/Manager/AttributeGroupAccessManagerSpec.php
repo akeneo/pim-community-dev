@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Manager;
 
 use Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
@@ -15,12 +16,14 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
     function let(
         AttributeGroupAccessRepository $repository,
-        BulkSaverInterface $saver
+        BulkSaverInterface $saver,
+        BulkRemoverInterface $remover
     ) {
         $this->beConstructedWith(
             $repository,
             $saver,
-            AttributeGroupAccess::class
+            AttributeGroupAccess::class,
+            $remover
         );
     }
 
