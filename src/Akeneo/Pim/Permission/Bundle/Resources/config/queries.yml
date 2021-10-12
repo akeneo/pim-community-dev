@@ -176,6 +176,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetUserGroupRootCategoriesAccesses:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupReferenceFromCode:
         arguments:
             - '@database_connection'
