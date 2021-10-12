@@ -134,9 +134,9 @@ class UserGroupAttributeGroupPermissionsSaver
     }
 
     /**
-     * @param array<string, bool> $defaultPermission
+     * @param null | array<string, bool> $defaultPermission
      */
-    private function getCurrentHighestAll(array $defaultPermission): ?string
+    private function getCurrentHighestAll(?array $defaultPermission): ?string
     {
         if (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return self::PERMISSION_EDIT;

@@ -171,7 +171,7 @@ class UserGroupAttributeGroupPermissionsSaverSpec extends ObjectBehavior
         AttributeGroupInterface $attributeGroupB,
         AttributeGroupInterface $attributeGroupC
     ) {
-        $group->getDefaultPermissions()->willReturn([]);
+        $group->getDefaultPermissions()->willReturn(null);
         $group->setDefaultPermission('attribute_group_edit', false)->shouldBeCalled();
         $group->setDefaultPermission('attribute_group_view', true)->shouldBeCalled();
         $groupSaver->save($group)->shouldBeCalled();
