@@ -44,14 +44,7 @@ const StyledSelect = styled.input`
     }
 `;
 
-export const MultiSelectInputWithStaticOptions = ({
-    disabled,
-    value,
-    onChange,
-    onAdd,
-    onRemove,
-    options,
-}: Props) => {
+export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, onAdd, onRemove, options}: Props) => {
     const ref = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
@@ -118,11 +111,12 @@ export const MultiSelectInputWithStaticOptions = ({
 
     return (
         <select ref={ref} multiple={true} data-testid='select2'>
-            {options && options.map(option => (
-                <option key={option.id} value={option.id}>
-                    {option.text}
-                </option>
-            ))}
+            {options &&
+                options.map(option => (
+                    <option key={option.id} value={option.id}>
+                        {option.text}
+                    </option>
+                ))}
         </select>
     );
 };

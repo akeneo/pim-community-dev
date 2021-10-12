@@ -31,12 +31,10 @@ test('it renders with the expected configuration', () => {
 });
 
 test('it renders the options', () => {
-    const options = [
-        {id: 'foo', text: 'foo'},
-    ];
+    const options = [{id: 'foo', text: 'foo'}];
     render(
         <ThemeProvider theme={pimTheme}>
-            <MultiSelectInputWithStaticOptions {...props} options={options}/>
+            <MultiSelectInputWithStaticOptions {...props} options={options} />
         </ThemeProvider>
     );
     expect(screen.queryByText('foo')).toBeInTheDocument();

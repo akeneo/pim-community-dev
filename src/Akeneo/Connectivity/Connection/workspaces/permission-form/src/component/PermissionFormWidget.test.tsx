@@ -37,20 +37,18 @@ test('it renders the ajax version without error', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget {...props} ajax={ajax}/>
-        </ThemeProvider>,
+            <PermissionFormWidget {...props} ajax={ajax} />
+        </ThemeProvider>
     );
 });
 
 test('it renders the select version without error', () => {
-    const options = [
-        {id: 'foo', text: 'foo'},
-    ];
+    const options = [{id: 'foo', text: 'foo'}];
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget {...props} options={options}/>
-        </ThemeProvider>,
+            <PermissionFormWidget {...props} options={options} />
+        </ThemeProvider>
     );
 });
 
@@ -58,7 +56,7 @@ test('it can check and uncheck the checkbox', () => {
     const {rerender} = render(
         <ThemeProvider theme={pimTheme}>
             <PermissionFormWidget {...props} />
-        </ThemeProvider>,
+        </ThemeProvider>
     );
 
     const checkbox = screen.getByRole('checkbox');

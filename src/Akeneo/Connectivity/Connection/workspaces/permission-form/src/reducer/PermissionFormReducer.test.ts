@@ -527,7 +527,7 @@ test('it updates the state with the action REMOVE_FROM_VIEW', () => {
     });
 });
 
-test('it doesn\'t override edit:all & view:all when adding an identifier in own', () => {
+test("it doesn't override edit:all & view:all when adding an identifier in own", () => {
     const state = {
         own: {
             all: false,
@@ -558,7 +558,7 @@ test('it doesn\'t override edit:all & view:all when adding an identifier in own'
     });
 });
 
-test('it doesn\'t override view:all when adding an identifier in edit', () => {
+test("it doesn't override view:all when adding an identifier in edit", () => {
     const state = {
         own: {
             all: false,
