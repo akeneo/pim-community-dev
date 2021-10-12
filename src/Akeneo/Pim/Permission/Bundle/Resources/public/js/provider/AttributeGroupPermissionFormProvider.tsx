@@ -176,7 +176,10 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
           headers: [['X-Requested-With', 'XMLHttpRequest']],
           body: JSON.stringify({
               user_group: userGroup,
-              permissions: state,
+              permissions: {
+                  edit: state.edit,
+                  view: state.view,
+              },
           }),
       });
 
