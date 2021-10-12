@@ -58,6 +58,9 @@ final class GetAvailableFieldsController
         $offset = ($page - 1) * $limit;
 
         $attributeTypes = $options['attributeTypes'] ?? null;
+        if ('' === $attributeTypes) {
+            $attributeTypes = null;
+        }
 
         $fields = $options['systemFields'] ?? [];
         $filteredFields = $this->filterSystemFieldByText($fields, $search);
@@ -78,10 +81,12 @@ final class GetAvailableFieldsController
             );
         }
 
-        return new JsonResponse(array_merge(
-            $this->formatSystemFields($paginatedFields),
-            $this->formatAttributes($paginatedAttributes)
-        ));
+        return new JsonResponse(
+            array_merge(
+                $this->formatSystemFields($paginatedFields),
+                $this->formatAttributes($paginatedAttributes)
+            )
+        );
     }
 
     private function filterSystemFieldByText(array $fields, ?string $search): array
@@ -114,11 +119,13 @@ final class GetAvailableFieldsController
             ];
         }, $fields);
 
-        return [[
-            'id' => 'system',
-            'text' => $this->translator->trans(static::SYSTEM_GROUP_TRANSLATION_KEY),
-            'children' => $children,
-        ]];
+        return [
+            [
+                'id' => 'system',
+                'text' => $this->translator->trans(static::SYSTEM_GROUP_TRANSLATION_KEY),
+                'children' => $children,
+            ],
+        ];
     }
 
     private function formatAttributes(array $attributes): array

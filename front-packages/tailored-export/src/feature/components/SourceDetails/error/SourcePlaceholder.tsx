@@ -81,7 +81,18 @@ const InvalidPropertySourcePlaceholder = () => {
   );
 };
 
+const AssetCollectionMainMediaNotFoundPlaceholder = () => {
+  const translate = useTranslate();
+
+  return (
+    <SourcePlaceholder>
+      {translate('akeneo.tailored_export.column_details.sources.invalid_source.asset_collection_main_media')}
+    </SourcePlaceholder>
+  );
+};
+
 export {
+  AssetCollectionMainMediaNotFoundPlaceholder,
   DeletedAssociationTypeSourcePlaceholder,
   DeletedAttributeSourcePlaceholder,
   InvalidAssociationTypeSourcePlaceholder,

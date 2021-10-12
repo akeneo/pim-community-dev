@@ -289,6 +289,26 @@ Feature: Import rules
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
+  Scenario: Skip rules with empty condition
+    When the following yaml file is imported:
+    """
+    rules:
+      null_condition:
+        priority: 10
+        conditions:
+          - field:    updated
+            operator: <
+            value:    '1 day'
+          -
+        actions:
+          - type:   set
+            field:  enabled
+            value:  true
+    """
+    Then an exception with message "conditions[1]: This value should not be null" has been thrown
+    And the rule list does not contain the "null_condition" rule
+
+  @integration-back
   Scenario: Skip rules with missing operator key for conditions
     When the following yaml file is imported:
     """
@@ -395,7 +415,7 @@ Feature: Import rules
         priority: 10
         conditions:
           - field:    updated
-            operator: <
+            operator: '<'
             value:    '1 day'
           - field: created
             operator: '>'
@@ -407,7 +427,7 @@ Feature: Import rules
     """
     Then an exception with message "conditions[0]: Property \"updated\" expects a string with the format \"yyyy-mm-dd H:i:s\" as data, \"1 day\" given" has been thrown
     And an exception with message "conditions[1]: Property \"created\" expects a string with the format \"yyyy-mm-dd H:i:s\" as data, \"-1.5 week\" given" has been thrown
-    And the rule list does not contain the "disable_old_products" rule
+    And the rule list does not contain the "disable_recent_products" rule
 
   @integration-back
   Scenario: Skip rules with null value for categories in conditions

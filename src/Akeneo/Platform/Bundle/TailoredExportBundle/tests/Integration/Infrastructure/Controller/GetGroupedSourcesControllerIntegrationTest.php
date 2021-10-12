@@ -170,9 +170,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
 
     private function assertFiltersCount(int $expectedCount, array $sourceGroups): void
     {
-        $totalCount = array_reduce($sourceGroups, function (int $totalCount, array $group): int {
-            return $totalCount + count($group['children']);
-        }, 0);
+        $totalCount = array_reduce($sourceGroups, static fn (int $totalCount, array $group): int => $totalCount + count($group['children']), 0);
 
         $this->assertSame($expectedCount, $totalCount);
     }

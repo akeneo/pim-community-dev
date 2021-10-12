@@ -78,8 +78,8 @@ SQL;
             ],
             [
                 'userGroupsIds'     => Connection::PARAM_INT_ARRAY,
-                'ownerId'           => \PDO:: PARAM_INT,
-                'associationTypeId' => \PDO:: PARAM_INT
+                'ownerId'           => \PDO::PARAM_INT,
+                'associationTypeId' => \PDO::PARAM_INT
             ]
         );
 

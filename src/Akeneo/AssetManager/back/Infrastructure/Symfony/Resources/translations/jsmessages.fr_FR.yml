@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: Lancer la suppression en masse des ressources
     mass_edit_assets: Lancer l'édition en masse des ressources
     link_assets_to_products: Lier les ressources aux produits
+    compute_transformations: Exécuter les transformations de ressources
 job_execution:
   summary:
     assets: Ressources

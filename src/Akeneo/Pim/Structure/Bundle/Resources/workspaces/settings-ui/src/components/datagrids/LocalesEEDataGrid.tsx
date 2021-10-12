@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {FollowLocaleHandler, Locale, NoResults, useFilteredLocales} from '@akeneo-pim-community/settings-ui';
-import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
-import {Badge, Table, getColor} from 'akeneo-design-system';
+import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
+import {Badge, Search, Table, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useLocaleSelection} from '../../hooks/locales/useLocaleSelection';
 
@@ -20,6 +20,9 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
   const {isItemSelected, onSelectionChange, selectionState, updateTotalLocalesCount} = useLocaleSelection();
 
   const debouncedSearch = useDebounceCallback(search, 300);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     updateTotalLocalesCount(filteredLocales.length);
@@ -35,11 +38,15 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
   return (
     <>
       <LocalesSearchBar
-        count={filteredLocales.length}
-        searchValue={searchString === undefined ? '' : searchString}
+        searchValue={searchString}
         placeholder={translate('pim_enrich.entity.locale.grid.filters.search_placeholder')}
         onSearchChange={onSearch}
-      />
+        inputRef={inputRef}
+      >
+        <Search.ResultCount>
+          {translate('pim_common.result_count', {itemsCount: filteredLocales.length}, filteredLocales.length)}
+        </Search.ResultCount>
+      </LocalesSearchBar>
       {searchString !== '' && filteredLocales.length === 0 ? (
         <NoResults
           title={translate('pim_datagrid.no_results', {entityHint: 'locale'})}
@@ -104,19 +111,8 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
   );
 };
 
-const LocalesSearchBar = styled(SearchBar)`
-  margin: 10px 40px 20px 0px;
-  border: none;
-  border-left: 40px solid ${getColor('white')};
-
-  :after {
-    content: '';
-    background-color: ${getColor('grey', 100)};
-    height: 1px;
-    bottom: 1px;
-    position: absolute;
-    width: 100%;
-  }
+const LocalesSearchBar = styled(Search)`
+  margin: 10px 40px 20px 40px;
 `;
 
 const LocalesTable = styled.div<{isDqiFeatureActive: boolean}>`

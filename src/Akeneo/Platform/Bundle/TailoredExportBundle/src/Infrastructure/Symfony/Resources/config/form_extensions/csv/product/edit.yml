@@ -186,13 +186,13 @@ extensions:
                     view: akeneo-product-enabled-filter
                 -
                     field: categories
-                    view: akeneo-all-category-filter
+                    view: akeneo-tailored-export-all-category-filter
                 -
                     field: completeness
-                    view: akeneo-product-localized-completeness-filter
+                    view: akeneo-tailored-export-product-localized-completeness-filter
                 -
                     field: quality_score_multi_locales
-                    view: akeneo-product-quality-score-filter
+                    view: akeneo-tailored-export-product-quality-score-filter
                 -
                     field: updated
                     view: akeneo-product-updated-filter

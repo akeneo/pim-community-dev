@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -68,6 +69,15 @@ final class HandleScalarValueTest extends AttributeTestCase
                 'value' => new StringValue('Sunglasses'),
                 'expected' => [self::TARGET_NAME => 'Sunglasses'],
             ],
+            'it does apply not clean html tags operation on the default value' => [
+                'operations' => [
+                    new DefaultValueOperation('<h1>test</h1>'),
+                    new CleanHTMLTagsOperation()
+                ],
+                'selection' => new ScalarSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => '<h1>test</h1>']
+            ]
         ];
     }
 }

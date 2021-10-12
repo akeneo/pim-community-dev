@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -53,19 +54,19 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 'operations' => [],
                 'selection' => new ReferenceEntityCodeSelection(),
                 'value' => new ReferenceEntityValue('starck'),
-                'expected' => [self::TARGET_NAME => 'starck']
+                'expected' => [self::TARGET_NAME => 'starck'],
             ],
             'it selects the record label' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
                 'value' => new ReferenceEntityValue('starck'),
-                'expected' => [self::TARGET_NAME => 'Starck']
+                'expected' => [self::TARGET_NAME => 'Starck'],
             ],
             'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
                 'value' => new ReferenceEntityValue('record_without_label'),
-                'expected' => [self::TARGET_NAME => '[record_without_label]']
+                'expected' => [self::TARGET_NAME => '[record_without_label]'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
@@ -73,7 +74,7 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 ],
                 'selection' => new ReferenceEntityCodeSelection(),
                 'value' => new NullValue(),
-                'expected' => [self::TARGET_NAME => 'n/a']
+                'expected' => [self::TARGET_NAME => 'n/a'],
             ],
             'it does not apply default value operation when value is not null' => [
                 'operations' => [
@@ -81,7 +82,27 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
                 ],
                 'selection' => new ReferenceEntityCodeSelection(),
                 'value' => new ReferenceEntityValue('starck'),
-                'expected' => [self::TARGET_NAME => 'starck']
+                'expected' => [self::TARGET_NAME => 'starck'],
+            ],
+            'it applies replacement operation when value is found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'stark' => 'philippe stark',
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCodeSelection(),
+                'value' => new ReferenceEntityValue('stark'),
+                'expected' => [self::TARGET_NAME => 'philippe stark'],
+            ],
+            'it does not apply replacement operation when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'starck' => 'philippe stark',
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCodeSelection(),
+                'value' => new ReferenceEntityValue('michel'),
+                'expected' => [self::TARGET_NAME => 'michel'],
             ],
         ];
     }

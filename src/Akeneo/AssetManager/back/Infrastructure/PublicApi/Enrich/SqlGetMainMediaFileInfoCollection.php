@@ -64,7 +64,7 @@ SQL;
             $mediaFileInfoCollection = array_merge($mediaFileInfoCollection, array_map(static fn ($mainMediaValue) => new MediaFileInfo(
                 $mainMediaValue['data']['filePath'],
                 $mainMediaValue['data']['originalFilename'],
-                Storage::FILE_STORAGE_ALIAS
+                Storage::FILE_STORAGE_ALIAS,
             ), $mainMediaValues));
         }
 

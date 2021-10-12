@@ -1,8 +1,8 @@
 extensions:
-    akeneo-all-category-filter:
+    akeneo-tailored-export-all-category-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-categories
 
-    akeneo-product-model-localized-completeness-filter:
+    akeneo-tailored-export-product-model-localized-completeness-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-localized-completeness
         config:
             operators:
@@ -10,7 +10,7 @@ extensions:
                 - AT LEAST COMPLETE
                 - ALL COMPLETE
 
-    akeneo-product-localized-completeness-filter:
+    akeneo-tailored-export-product-localized-completeness-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-localized-completeness
         config:
             operators:
@@ -19,7 +19,7 @@ extensions:
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
-    akeneo-product-quality-score-filter:
+    akeneo-tailored-export-product-quality-score-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-quality-score
         config:
             operators:

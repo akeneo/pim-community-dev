@@ -1,0 +1,10 @@
+services:
+  akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api:
+    class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAttributeAsMainMedia'
+    arguments:
+      - '@database_connection'
+
+  akeneo_assetmanager.infrastructure.persistence.query.platform.get_asset_main_media_data_public_api:
+    class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAssetMainMediaData'
+    arguments:
+      - '@database_connection'

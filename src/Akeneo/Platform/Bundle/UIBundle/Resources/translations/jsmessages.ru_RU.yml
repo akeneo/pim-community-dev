@@ -1,2 +1,10 @@
 user:
-  email_notifications: Уведомления эл. почты
+  email_notifications: Уведомления по эл. почте
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Проекты
+      helper: Чтобы узнать больше о проектах и о том, как вы можете улучшить завершенность проекта, <a href="{{ link }}" target="_blank">прочитайте в нашем справочном центре</a>.
+      no_project:
+        title: Проекты могут помочь вам отслеживать прогресс в наполнении продукта.
+        subtitle: Создайте свой первый проект.

@@ -62,6 +62,10 @@ pimee_workflow:
         second: 操作を選択
         third: 構成
         fourth: 確認
+  check_removal:
+    product_error: 公開済の商品を削除することはできません
+    product_model_error: この製品モデルには、公開済のバリエーション商品があります。非公開にしてから、もう一度お試しください。
+    entity_error: 公開済の商品にリンクされたエンティティは削除できません。
 btn:
   publish: 公開
   unpublish: 非公開にする

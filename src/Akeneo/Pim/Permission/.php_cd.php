@@ -13,7 +13,7 @@ $rules = [
         'Doctrine',
         'Symfony\Component',
         'Symfony\Contracts',
-        'Twig\Environment',
+        'Twig',
         'Akeneo\Tool',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',

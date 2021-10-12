@@ -23,12 +23,12 @@ $rules = [
         [
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredExport\Domain',
-        ]
+        ],
     )->in('Akeneo\Platform\TailoredExport\Application'),
     $builder->only(
         [
             'Webmozart\Assert\Assert',
-        ]
+        ],
     )->in('Akeneo\Platform\TailoredExport\Domain'),
     $builder->only(
         [
@@ -60,10 +60,12 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
             'Akeneo\UserManagement\Component\Model\UserInterface',
-        ]
+        ],
     )->in('Akeneo\Platform\TailoredExport\Infrastructure'),
 ];
 

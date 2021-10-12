@@ -15,30 +15,35 @@ BUCKET_LIST_JSON=$(gcloud alpha storage ls --json)
 
 COUNT=0
 for BUCKET_URL in $(echo $BUCKET_LIST_JSON | jq -r '.[].url'); do
-    BUCKET_INFO=$(echo $BUCKET_LIST_JSON | jq -r ".[] | select(.url | contains(\"${BUCKET_URL}\"))")
+    BUCKET_INFO=$(echo $BUCKET_LIST_JSON | jq -r ".[] | select(.url == \"${BUCKET_URL}\")")
     PFID=$(echo ${BUCKET_INFO} | jq -r '.metadata.labels.additionalProperties[]? | select(.key | contains("pfid")).value')
     
     if [[ ${PFID} =~ $NAMESPACE_REGEX_FILTER ]] ; then
-        NS_EXIST=$(echo $KUBE_NS_LIST | grep ${BUCKET_URL} | wc -l)
+        echo "-------------------------------------"
+        echo "Bucket ${BUCKET_URL}"
+        echo "  Namespace     :   ${PFID}"
+
+        NS_EXIST=$(echo $KUBE_NS_LIST | grep -w ${PFID} | wc -l)
+        echo "  NS exists     :   ${NS_EXIST}"
+
         SIZE_INFO=$(gsutil du -sh ${BUCKET_URL})
+
         SIZE_STRING=$(echo ${SIZE_INFO} | awk '{print $1 $2}')
+        echo "  Bucket size   :   ${SIZE_STRING}"
+
         SIZE_NUMBER=$(echo ${SIZE_INFO} | awk '{print $1}')
+        echo "  Bucket size   :   ${SIZE_NUMBER}"
+
         CREATION_DATE=$(echo ${BUCKET_INFO} | jq -r '.metadata.timeCreated')
+        echo "  Creation date :   ${CREATION_DATE}"
+
         UPDATE_DATE=$(echo ${BUCKET_INFO} | jq -r '.metadata.updated')
+        echo "  Update date   :   ${UPDATE_DATE}"
 
         CD_TS=$(date -u -d ${CREATION_DATE} '+%s')
         CURRENT_TS=$(date -u '+%s')
         DIFF_TS="$((${CURRENT_TS}-${CD_TS}))"    
         DIFF_DAY="$((${DIFF_TS}/${SECONDS_PER_DAY}))"
-        
-        echo "-------------------------------------"
-        echo "Bucket ${BUCKET_URL}"
-        echo "  Namespace     :   ${PFID}"
-        echo "  NS exists     :   ${NS_EXIST}"
-        echo "  Bucket size   :   ${SIZE_STRING}"
-        echo "  Bucket size   :   ${SIZE_NUMBER}"
-        echo "  Creation date :   ${CREATION_DATE}"
-        echo "  Update date   :   ${UPDATE_DATE}"
         echo "  Age           :   ${DIFF_DAY}"
         
         if [[ ${NS_EXIST} -eq 1 ]]; then
@@ -53,9 +58,9 @@ for BUCKET_URL in $(echo $BUCKET_LIST_JSON | jq -r '.[].url'); do
         fi
 
         echo "  Command debug"
-        echo "      gsutil rb ${BUCKET_URL}"
+        echo "      gsutil -m rm -r ${BUCKET_URL}"
 
-        gsutil rb ${BUCKET_URL}
+        gsutil -m rm -r ${BUCKET_URL}
 
         ((COUNT++))
     fi

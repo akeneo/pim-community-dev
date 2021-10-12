@@ -76,6 +76,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: アセット
+    transformations: アセット変換
+    skipped: スキップ済
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: アセットは警告付きで正常に削除されました
   success: アセットは正常に削除されました

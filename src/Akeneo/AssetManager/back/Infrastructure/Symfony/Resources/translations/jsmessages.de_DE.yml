@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: Asset Massenlöschung ausführen
     mass_edit_assets: Asset-Massenbearbeitung ausführen
     link_assets_to_products: Assets mit Produkten verknüpfen
+    compute_transformations: Asset-Transformationen berechnen
 job_execution:
   summary:
     assets: Assets
