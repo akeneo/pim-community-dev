@@ -278,7 +278,9 @@ describe('ManageOptionsModal', () => {
     expect(confirmationInput).toBeInTheDocument();
     fireEvent.change(confirmationInput, {target: {value: 'U'}});
     expect(screen.getByText('pim_common.delete')).not.toBeDisabled();
-    fireEvent.click(screen.getByText('pim_common.delete'));
+    act(() => {
+      fireEvent.click(screen.getByText('pim_common.delete'));
+    });
 
     expect(await findCodeInput(19)).toBeInTheDocument();
   }, 10000);
