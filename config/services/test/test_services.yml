@@ -107,6 +107,20 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pimee_security.manager.category_access'
 
+    akeneo_integration_tests.loader.attribute_group:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@validator'
+
+    akeneo_integration_tests.loader.attribute_group_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupPermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pimee_security.manager.attribute_group_access'
+
     akeneo_integration_tests.loader.user_group_permissions:
         class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader'
         arguments:

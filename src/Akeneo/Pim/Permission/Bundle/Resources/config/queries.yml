@@ -193,3 +193,7 @@ services:
     Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupsAccessesWithHighestLevel:
         arguments:
             - '@database_connection'
+            -
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetUserGroupAttributeGroupsAccesses:
+        arguments:
+            - '@database_connection'
