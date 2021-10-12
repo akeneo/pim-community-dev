@@ -16,7 +16,8 @@ define([
   'pim/fetcher-registry',
   'pim/attribute-manager',
   'pim/formatter/choices/base',
-], function ($, _, __, BaseAddSelect, LineView, FetcherRegistry, AttributeManager, ChoicesFormatter) {
+  'pim/analytics',
+], function ($, _, __, BaseAddSelect, LineView, FetcherRegistry, AttributeManager, ChoicesFormatter, analytics) {
   return BaseAddSelect.extend({
     className: 'AknButtonList-item add-attribute',
     lineView: LineView,
@@ -111,6 +112,10 @@ define([
      */
     addItems: function () {
       this.trigger(this.addEvent, {codes: this.selection});
+
+      analytics.track('grid:mass-edit:attributes-added', {
+        codes: this.selection,
+      });
     },
   });
 });

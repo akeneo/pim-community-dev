@@ -25,6 +25,11 @@ jobs:
       - name: Build storybook
         run: yarn run storybook:build
 
+      - name: Add cleanup staging script
+        run: |
+          mkdir -p ./storybook-static/.github/workflows && \
+          cp ./.github/workflows/cleanup-staging.js ./storybook-static/.github/workflows/cleanup-staging.js
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:

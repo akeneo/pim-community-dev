@@ -107,7 +107,24 @@
 - PIM-10071: Fix fatal error in case of Cursor::getResults is called without been initialized
 - PIM-10077: Fix the "product image" filter display (untranslatable values on languages other than english)
 - PIM-10078: Add sanity check on attribute options to avoid having an empty screen.
+- PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
 - PIM-10074: Add translation key for mass action selection
+- PIM-10062: Suppress PHP warning when missing 'dataScope' value.
+- Bump NodeJS library to fix CVE on tmpl 1.0.4
+- CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5
+- PIM-10096: Reload PEF main image on channel switching
+- CVE-2021-23368: Bump postcss from 7.0.35 to 7.0.36
+- CVE-2021-23358: Bump underscore from 1.8.3 to 1.12.1
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5 (yarn.lock and front-packages/share/yarn.lock)
+- CVE-2021-23364: Bump browserslist from 4.16.4 to 4.16.6 in /front-packages/shared
+- PIM-10095: Fix API error when providing an integer for the identifier or code when patching products or models
+- CVE-2021-3807: Bump ansi-regex from 5.0.0 to 5.0.1 in /front-packages/shared
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7 in /front-packages/shared
+- PIM-10094: Increase product grid filters limit display in user settings
+- PIM-10101: Fix incorrect count of families selection in the family grid
+- PIM-10107: Hide add quantified association button when ACL is not granted
 
 ## New features
 

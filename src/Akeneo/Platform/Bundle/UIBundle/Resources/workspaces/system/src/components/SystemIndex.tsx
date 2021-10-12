@@ -121,6 +121,7 @@ const SystemIndex = () => {
               <IconCardGrid>
                 {canAccessCatalogVolumMonitoring && (
                   <IconCard
+                    id="pim-system-catalog-volume"
                     icon={<ActivityIcon />}
                     label={translate('pim_menu.item.catalog_volume')}
                     onClick={() => redirectToRoute('pim_enrich_catalog_volume_index')}
@@ -137,6 +138,7 @@ const SystemIndex = () => {
                 )}
                 {canAccessConfiguration && (
                   <IconCard
+                    id="pim-system-configuration"
                     icon={<SettingsIcon />}
                     label={translate('pim_menu.item.configuration')}
                     onClick={() => redirectToRoute('oro_config_configuration_system')}
@@ -144,6 +146,7 @@ const SystemIndex = () => {
                 )}
                 {canAccessSystemInfos && (
                   <IconCard
+                    id="pim-system-info"
                     icon={<FileIcon />}
                     label={translate('pim_menu.item.info')}
                     onClick={() => redirectToRoute('pim_analytics_system_info_index')}
@@ -151,6 +154,7 @@ const SystemIndex = () => {
                 )}
                 {canAccessSSO && !featureFlags.isEnabled('free_trial') && (
                   <IconCard
+                    id="pim-system-sso"
                     icon={<IdIcon />}
                     label={translate('pim_system.sso.title')}
                     onClick={() => redirectToRoute('authentication_sso_configuration_edit')}
@@ -159,6 +163,7 @@ const SystemIndex = () => {
                 )}
                 {featureFlags.isEnabled('free_trial') && (
                   <DisableIconCard
+                    id="pim-system-sso"
                     icon={
                       <LockIconContainer>
                         <LockIcon size={16} color={theme.color.blue100} />
@@ -181,6 +186,7 @@ const SystemIndex = () => {
               <IconCardGrid>
                 {canAccessUsers && (
                   <IconCard
+                    id="pim-system-user-user"
                     icon={<UserIcon />}
                     label={translate('pim_menu.item.user')}
                     onClick={() => redirectToRoute('pim_user_index')}
@@ -194,6 +200,7 @@ const SystemIndex = () => {
                 )}
                 {canAccessUserGroups && !featureFlags.isEnabled('free_trial') && (
                   <IconCard
+                    id="pim-system-user-group"
                     icon={<GroupsIcon />}
                     label={translate('pim_menu.item.user_group')}
                     onClick={() => redirectToRoute('pim_user_group_index')}
@@ -207,6 +214,7 @@ const SystemIndex = () => {
                 )}
                 {featureFlags.isEnabled('free_trial') && (
                   <DisableIconCard
+                    id="pim-system-user-group"
                     icon={
                       <LockIconContainer>
                         <LockIcon size={16} color={theme.color.blue100} />
@@ -218,6 +226,7 @@ const SystemIndex = () => {
                 )}
                 {canAccessRoles && (
                   <IconCard
+                    id="pim-system-user-role"
                     icon={<KeyIcon />}
                     label={translate('pim_menu.item.user_role')}
                     onClick={() => redirectToRoute('pim_user_role_index')}

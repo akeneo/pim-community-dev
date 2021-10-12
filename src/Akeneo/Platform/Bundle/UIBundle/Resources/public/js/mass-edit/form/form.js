@@ -16,7 +16,8 @@ define([
   'pim/form/common/edit-form',
   'oro/loading-mask',
   'pim/template/mass-edit/form',
-], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template) {
+  'pim/analytics',
+], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     currentStep: 'choose',
@@ -169,6 +170,10 @@ define([
      * @param {String} action
      */
     applyAction: function (action) {
+      analytics.track('grid:mass-edit:action-step', {
+        name: action,
+      });
+
       switch (action) {
         case 'grid':
           router.redirectToRoute(this.config.backRoute);

@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Twig\TwigFilter;
+
 /**
  * Some presentation filters
  *
@@ -9,7 +11,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StyleExtension extends \Twig_Extension
+class StyleExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -17,7 +19,7 @@ class StyleExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('highlight', [$this, 'highlight'])
+            new TwigFilter('highlight', [$this, 'highlight'])
         ];
     }
 

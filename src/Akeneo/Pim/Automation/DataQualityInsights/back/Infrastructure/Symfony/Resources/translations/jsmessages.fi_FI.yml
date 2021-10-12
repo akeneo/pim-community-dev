@@ -95,7 +95,7 @@ akeneo_data_quality_insights:
       title: Laatupisteiden jakauma
     quality_score_evolution:
       title: Laatupisteiden kehitys
-      current_score: on nykyinen katalogin laatuarvosana tälle kontekstille.
+      current_score: on nykyinen katalogin laatuarvosana tälle kanavalle.
       current_month_label: Tässä kuussa
       no_catalog_score: Emme voineet laskea nykyisiä laatupisteitäsi.
   product_evaluation:

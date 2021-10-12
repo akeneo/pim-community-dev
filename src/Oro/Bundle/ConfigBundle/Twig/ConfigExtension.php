@@ -3,8 +3,9 @@
 namespace Oro\Bundle\ConfigBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\TwigFunction;
 
-class ConfigExtension extends \Twig_Extension
+class ConfigExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var ConfigManager
@@ -24,7 +25,7 @@ class ConfigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('oro_config_value', [$this, 'getUserValue']),
+            new TwigFunction('oro_config_value', [$this, 'getUserValue']),
         ];
     }
 

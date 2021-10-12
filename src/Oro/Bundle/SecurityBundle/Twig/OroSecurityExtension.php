@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Twig;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Twig\TwigFunction;
 
-class OroSecurityExtension extends \Twig_Extension
+class OroSecurityExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var SecurityFacade
@@ -27,7 +28,7 @@ class OroSecurityExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('resource_granted', [$this, 'checkResourceIsGranted']),
+            new TwigFunction('resource_granted', [$this, 'checkResourceIsGranted']),
         ];
     }
 

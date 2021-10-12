@@ -385,7 +385,7 @@ pim_settings:
     attributes: '{0}Teillä on 0 attribuuttia|{1}Teillä on 1 attribuutti|]1, Inf[Teillä on {{ count }} attribuuttia'
     families: '{0}Teillä on 0 perhettä|{1}Teillä on 1 perhe|]1, Inf[Teillä on {{ count }} perhettä'
     measurements: '{0}Teillä on 0 mittaa|{1}Teillä on 1 mitta|]1, Inf[Teillä on {{ count }} mittaa'
-    association_types: '{0}Teillä on 0 assosiaatiotyyppiä|{1}Teillä on 1 assosiaatiotyyppi|]1, Inf[Teillä on {{ count }} assosiaatiotyyppi'
+    association_types: '{0}Teillä on 0 tuoteliitostyyppiä|{1}Teillä on 1 tuoteliitostyyppi|]1, Inf[Teillä on {{ count }} tuoteliitostyyppiä'
     group_types: '{0}Teillä on 0 ryhmätyyppiä|{1}Teillä on 1 ryhmätyyppi|]1, Inf[Teillä on {{ count }} ryhmätyyppiä'
     groups: '{0}Teillä on 0 ryhmää|{1}Teillä on 1 ryhmä|]1, Inf[Teillä on {{ count }} ryhmää'
     rules: '{0}Teillä on 0 sääntöä käytössä|{1}Teillä on 1 sääntö käytössä|]1, Inf[Teillä on {{ count }} sääntöä käytössä'
@@ -402,3 +402,7 @@ pim_system:
     enabled: SSO käytössä
     disabled: SSO pois käytöstä
     title: SAML-pohjainen kertakirjautuminen
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Valitse toiminto

@@ -16,7 +16,8 @@ define([
   'pim/attribute-manager',
   'pim/i18n',
   'oro/mediator',
-], function ($, Backbone, _, fieldTemplate, guidelinesTemplate, AttributeManager, i18n, mediator) {
+  'pim/analytics',
+], function ($, Backbone, _, fieldTemplate, guidelinesTemplate, AttributeManager, i18n, mediator, analytics) {
   var FieldModel = Backbone.Model.extend({
     values: [],
   });
@@ -367,6 +368,11 @@ define([
 
       productValue.data = value;
       mediator.trigger('pim_enrich:form:entity:update_state');
+
+      analytics.track('product:attribute-value:updated', {
+        value: value,
+        attribute: this.attribute.code,
+      });
     },
 
     /**
