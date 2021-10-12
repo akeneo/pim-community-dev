@@ -8,19 +8,18 @@ use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAllAttributeGroupCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupReferenceFromCode;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupsAccessesWithHighestLevel;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class UserGroupAttributeGroupPermissionsSaverSpec extends ObjectBehavior
 {
     public function let(
         AttributeGroupAccessManager $attributeGroupAccessManager,
-        GroupRepository $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
         GetAllAttributeGroupCodes $getAllAttributeGroupCodes,
         GetAttributeGroupsAccessesWithHighestLevel $getAttributeGroupsAccessesWithHighestLevel,
@@ -95,7 +94,6 @@ class UserGroupAttributeGroupPermissionsSaverSpec extends ObjectBehavior
             ],
         ]);
     }
-
 
     /**
      * FROM {"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}

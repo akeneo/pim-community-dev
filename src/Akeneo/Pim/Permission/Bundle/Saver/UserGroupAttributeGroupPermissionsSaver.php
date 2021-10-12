@@ -10,8 +10,8 @@ use Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGrou
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupsAccessesWithHighestLevel;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 
 class UserGroupAttributeGroupPermissionsSaver
 {
@@ -22,7 +22,7 @@ class UserGroupAttributeGroupPermissionsSaver
     private const PERMISSION_VIEW = Attributes::VIEW_ATTRIBUTES;
 
     private AttributeGroupAccessManager $attributeGroupAccessManager;
-    private GroupRepository $groupRepository;
+    private GroupRepositoryInterface $groupRepository;
     private SaverInterface $groupSaver;
     private GetAllAttributeGroupCodes $getAllAttributeGroupCodes;
     private GetAttributeGroupsAccessesWithHighestLevel $getAttributeGroupsAccessesWithHighestLevel;
@@ -30,7 +30,7 @@ class UserGroupAttributeGroupPermissionsSaver
 
     public function __construct(
         AttributeGroupAccessManager $attributeGroupAccessManager,
-        GroupRepository $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
         GetAllAttributeGroupCodes $getAllAttributeGroupCodes,
         GetAttributeGroupsAccessesWithHighestLevel $getAttributeGroupsAccessesWithHighestLevel,
@@ -56,6 +56,7 @@ class UserGroupAttributeGroupPermissionsSaver
      *          identifiers: string[],
      *      }
      * } $permissions
+     * @throws \LogicException
      */
     public function save(string $groupName, array $permissions): void
     {
@@ -95,8 +96,16 @@ class UserGroupAttributeGroupPermissionsSaver
     }
 
     /**
-     * @param $group
-     * @param array $permissions
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
      */
     private function updateDefaultPermissions(GroupInterface $group, array $permissions): void
     {
@@ -118,15 +127,16 @@ class UserGroupAttributeGroupPermissionsSaver
         );
         $group->setDefaultPermission(
             self::DEFAULT_PERMISSION_EDIT,
-            in_array($submittedHighestAll, [
-                self::PERMISSION_EDIT,
-            ])
+            $submittedHighestAll === self::PERMISSION_EDIT
         );
 
         $this->groupSaver->save($group);
     }
 
-    private function getCurrentHighestAll($defaultPermission): ?string
+    /**
+     * @param array<string, bool> $defaultPermission
+     */
+    private function getCurrentHighestAll(array $defaultPermission): ?string
     {
         if (true === ($defaultPermission[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return self::PERMISSION_EDIT;
@@ -137,7 +147,19 @@ class UserGroupAttributeGroupPermissionsSaver
         return null;
     }
 
-    private function getSubmittedHighestAll($permissions): ?string
+    /**
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     */
+    private function getSubmittedHighestAll(array $permissions): ?string
     {
         if (true === $permissions['edit']['all']) {
             return self::PERMISSION_EDIT;
@@ -149,8 +171,16 @@ class UserGroupAttributeGroupPermissionsSaver
     }
 
     /**
-     * @param array $permissions
-     * @return array
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
      */
     public function getAffectedAttributeGroupCodes(array $permissions): array
     {
@@ -169,9 +199,18 @@ class UserGroupAttributeGroupPermissionsSaver
     }
 
     /**
-     * @param array $attributeGroupsCodesForAnyAccessLevel
-     * @param array $permissions
-     * @return array
+     * @param string[] $attributeGroupsCodesForAnyAccessLevel
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     * @return array<string, string>
      */
     private function getHighestAccessLevelIndexedByAttributeGroupCode(
         array $attributeGroupsCodesForAnyAccessLevel,
@@ -189,6 +228,18 @@ class UserGroupAttributeGroupPermissionsSaver
         return $highestAccessLevelIndexedByAttributeGroupCode;
     }
 
+    /**
+     * @param array{
+     *      edit: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      },
+     *      view: array{
+     *          all: bool,
+     *          identifiers: string[],
+     *      }
+     * } $permissions
+     */
     private function getHighestAccessLevelFromPermissions(string $attributeGroupCode, array $permissions): string
     {
         if (true === $permissions['edit']['all']
@@ -204,7 +255,6 @@ class UserGroupAttributeGroupPermissionsSaver
 
     /**
      * @param string[] $removedAttributeGroupCodes
-     * @param GroupInterface $group
      */
     private function revokeAccesses(array $removedAttributeGroupCodes, GroupInterface $group): void
     {
@@ -220,7 +270,6 @@ class UserGroupAttributeGroupPermissionsSaver
     /**
      * @param array<string, string> $highestAccessLevelIndexedByCode
      * @param array<string, string> $existingHighestAccessLevelIndexedByCode
-     * @param $group
      */
     private function updateAccesses(
         array $highestAccessLevelIndexedByCode,

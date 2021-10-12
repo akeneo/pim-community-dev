@@ -4,5 +4,7 @@ config:
             providers:
                 categories:
                     module: akeneopimpermission/js/provider/CategoryPermissionFormProvider
+                locales:
+                    module: akeneopimpermission/js/provider/LocalePermissionFormProvider
                 attribute-groups:
                     module: akeneopimpermission/js/provider/AttributeGroupPermissionFormProvider
