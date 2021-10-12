@@ -15,6 +15,7 @@ class ChainedRunnerSpec extends ObjectBehavior
 {
     function let(EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
     {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith($eventDispatcher,$logger, false);
     }
 

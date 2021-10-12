@@ -25,6 +25,7 @@ class DraftApplierSpec extends ObjectBehavior
         EventDispatcherInterface $dispatcher,
         IdentifiableObjectRepositoryInterface $repository
     ) {
+        $dispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith($propertySetter, $dispatcher, $repository);
     }
 

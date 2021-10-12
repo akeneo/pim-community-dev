@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RuleDefinitionSaverSpec extends ObjectBehavior
@@ -15,6 +16,7 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $entityManager,
             $eventDispatcher,
