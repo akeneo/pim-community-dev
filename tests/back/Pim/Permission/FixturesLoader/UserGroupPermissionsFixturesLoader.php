@@ -19,6 +19,11 @@ class UserGroupPermissionsFixturesLoader
 
     /**
      * @param array{
+     *     category_own: bool,
+     *     category_edit: bool,
+     *     category_view: bool,
+     *     attribute_group_edit: bool,
+     *     attribute_group_view: bool,
      *     locale_edit: bool,
      *     locale_view: bool
      * } $defaultPermissions

@@ -157,11 +157,21 @@ services:
             - '@validator'
             - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
 
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupCategoriesPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetUserGroupRootCategoriesAccesses'
+
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction:
         public: true
         arguments:
             - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels'
             - '@router'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupAttributeGroupsPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetUserGroupAttributeGroupsAccesses'
 
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupLocalesPermissionsAction:
         public: true
