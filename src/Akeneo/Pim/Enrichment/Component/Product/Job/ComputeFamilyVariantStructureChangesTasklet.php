@@ -176,7 +176,8 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     {
         // This event will trigger cache clearing wherever it's needed
         $this->eventDispatcher->dispatch(
-            new StepExecutionEvent($this->stepExecution), EventInterface::ITEM_STEP_AFTER_BATCH
+            new StepExecutionEvent($this->stepExecution),
+            EventInterface::ITEM_STEP_AFTER_BATCH
         );
     }
 
