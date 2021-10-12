@@ -43,7 +43,7 @@ const PermissionFormRegistry = {
         );
     },
     count: (): number => {
-        const providers = _config.providers || [];
+        const providers = _config.providers;
 
         return Object.keys(providers).length;
     },
