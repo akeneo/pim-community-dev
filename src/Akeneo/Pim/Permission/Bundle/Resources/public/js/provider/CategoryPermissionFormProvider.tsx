@@ -135,10 +135,12 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
+          ajax={{
+              ajaxUrl: categoriesAjaxUrl,
+              processAjaxResponse: processCategories,
+              fetchByIdentifiers: fetchCategoriesByIdentifiers,
+              buildQueryParams: buildQueryParams,
+          }}
         />
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
         <PermissionFormWidget
@@ -151,10 +153,12 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
+          ajax={{
+              ajaxUrl: categoriesAjaxUrl,
+              processAjaxResponse: processCategories,
+              fetchByIdentifiers: fetchCategoriesByIdentifiers,
+              buildQueryParams: buildQueryParams,
+          }}
         />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
@@ -167,10 +171,12 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
-          ajaxUrl={categoriesAjaxUrl}
-          processAjaxResponse={processCategories}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
+          ajax={{
+              ajaxUrl: categoriesAjaxUrl,
+              processAjaxResponse: processCategories,
+              fetchByIdentifiers: fetchCategoriesByIdentifiers,
+              buildQueryParams: buildQueryParams,
+          }}
         />
       </>
     );

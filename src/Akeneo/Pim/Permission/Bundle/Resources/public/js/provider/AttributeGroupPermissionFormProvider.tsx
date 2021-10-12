@@ -54,7 +54,7 @@ const processAttributeGroups = (data: Response) => ({
   },
 });
 
-const fetchCategoriesByIdentifiers = (identifiers: string[]) => {
+const fetchAttributeGroupsByIdentifiers = (identifiers: string[]) => {
   return FetcherRegistry.getFetcher('attribute-group')
     .fetchByIdentifiers(identifiers)
     .then((results: any) =>
@@ -135,10 +135,12 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajaxUrl={attributeGroupsAjaxUrl}
-          processAjaxResponse={processAttributeGroups}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
+          ajax={{
+              ajaxUrl: attributeGroupsAjaxUrl,
+              processAjaxResponse: processAttributeGroups,
+              fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
+              buildQueryParams: buildQueryParams,
+          }}
         />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
@@ -151,10 +153,12 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
-          ajaxUrl={attributeGroupsAjaxUrl}
-          processAjaxResponse={processAttributeGroups}
-          fetchByIdentifiers={fetchCategoriesByIdentifiers}
-          buildQueryParams={buildQueryParams}
+          ajax={{
+              ajaxUrl: attributeGroupsAjaxUrl,
+              processAjaxResponse: processAttributeGroups,
+              fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
+              buildQueryParams: buildQueryParams,
+          }}
         />
       </>
     );
