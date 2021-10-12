@@ -1,0 +1,13 @@
+pim_reference_entity:
+  record:
+    validation:
+      record:
+        should_not_be_used_as_product_variant_axis: 'Вы не можете удалить эту запись, так как она используется в качестве разновидности измерения в одном из ваших вариантов продукта'
+      record_collection:
+        should_not_be_used_as_product_variant_axis: 'Вы не можете удалить эти записи, так как они используются в качестве разновидности измерения в одном или нескольких вариантах продукта'
+      channel:
+        is_expected: 'Атрибут "%attribute_code%" ссылочной сущности%reference_entity_identifier%требует одно значение на канал.'
+      locale:
+        is_expected: 'Атрибут "%attribute_code%" ссылочной сущности "%reference_entity_identifier%" требует одно значение для локали.'
+      channel_and_locale:
+        are_expected: 'Атрибут «%attribute_code%» справочной сущности «%reference_entity_identifier%» требует одного значения в канале и одного на локаль'

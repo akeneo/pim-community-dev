@@ -9,24 +9,18 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface
 
 final class Appcues implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private const CUSTOMER_ID = 86340;
+    private string $appcuesId;
 
-    private ExternalDependenciesFeatureFlag $featureFlag;
-
-    public function __construct(ExternalDependenciesFeatureFlag $featureFlag)
+    public function __construct(string $appcuesId)
     {
-        $this->featureFlag = $featureFlag;
+        $this->appcuesId = $appcuesId;
     }
 
     public function getScript(): string
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return '';
-        }
-
         return sprintf(
             '<script src="https://fast.appcues.com/%s.js"></script>',
-            self::CUSTOMER_ID
+            $this->appcuesId
         );
     }
 
@@ -35,10 +29,6 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
      */
     public function getContentSecurityPolicy(): array
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return [];
-        }
-
         return [
             'frame-src'   => ["'self'", "https://*.appcues.com"],
             'style-src'   => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "https://fonts.googleapis.com", "'unsafe-inline'"],

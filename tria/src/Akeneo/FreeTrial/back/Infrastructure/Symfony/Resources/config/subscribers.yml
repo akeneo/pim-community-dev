@@ -11,3 +11,19 @@ services:
       - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallCatalogSubscriber:
+    arguments:
+      - '@akeneo.free_trial.installer_registry'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\ExtractCatalogSubscriber:
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\UpdateViewsOwnerSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_subscriber' }

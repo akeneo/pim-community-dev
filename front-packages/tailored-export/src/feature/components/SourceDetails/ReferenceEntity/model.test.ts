@@ -29,6 +29,22 @@ test('it validates that something is a reference entity source', () => {
     isReferenceEntitySource({
       ...source,
       operations: {
+        replacement: {
+          type: 'replacement',
+          mapping: {
+            black: 'rouge',
+            red: 'noir',
+          },
+        },
+      },
+    })
+  ).toEqual(true);
+
+  expect(
+    // @ts-expect-error invalid operation
+    isReferenceEntitySource({
+      ...source,
+      operations: {
         foo: 'bar',
       },
     })

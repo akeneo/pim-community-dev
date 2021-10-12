@@ -74,6 +74,40 @@ class AssetCollectionSourceValidatorTest extends AbstractValidationTest
                     'operations' => [],
                 ],
             ],
+            'a valid asset collection media file selection' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'attribute_code',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'media_file',
+                        'separator' => ',',
+                        'locale' => 'en_US',
+                        'channel' => null,
+                        'property' => 'file_key'
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a valid asset collection media link selection' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'attribute_code',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'media_link',
+                        'separator' => ',',
+                        'locale' => 'en_US',
+                        'channel' => null,
+                        'with_prefix_and_suffix' => false
+                    ],
+                    'operations' => [],
+                ],
+            ],
             'a valid asset collection selection with default value' => [
                 [
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',

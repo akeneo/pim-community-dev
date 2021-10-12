@@ -8,6 +8,8 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaLinkSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesLabelSelection;
@@ -133,6 +135,24 @@ class SelectionHydrator
                     $selectionConfiguration['locale'],
                     $attribute->properties()['reference_data_name'],
                     $attribute->code()
+                );
+            case AssetCollectionMediaFileSelection::TYPE:
+                return new AssetCollectionMediaFileSelection(
+                    $selectionConfiguration['separator'],
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code(),
+                    $selectionConfiguration['property']
+                );
+            case AssetCollectionMediaLinkSelection::TYPE:
+                return new AssetCollectionMediaLinkSelection(
+                    $selectionConfiguration['separator'],
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code(),
+                    $selectionConfiguration['with_prefix_and_suffix'],
                 );
             default:
                 throw new \LogicException(

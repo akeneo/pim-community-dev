@@ -18,6 +18,7 @@ const attribute = {
 
 jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
+jest.mock('../common/AttributeOptionsReplacement');
 
 test('it displays a simple select configurator', () => {
   const onSourceChange = jest.fn();
@@ -69,6 +70,40 @@ test('it can update default value operation', () => {
       default_value: {
         type: 'default_value',
         value: 'foo',
+      },
+    },
+    selection: {
+      type: 'code',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update simple select replacement operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <SimpleSelectConfigurator
+      source={{
+        ...getDefaultSimpleSelectSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Attribute options replacement'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultSimpleSelectSource(attribute, null, null),
+    operations: {
+      replacement: {
+        type: 'replacement',
+        mapping: {
+          blue: 'Bleu',
+        },
       },
     },
     selection: {

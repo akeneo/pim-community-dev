@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
+import {CodeLabelCollectionSelector, getDefaultCodeLabelCollectionSelection} from './CodeLabelCollectionSelector';
 import {renderWithProviders} from 'feature/tests';
 
 test('it displays a type dropdown and a separator dropdown when the selection type is code', async () => {
@@ -136,4 +136,11 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
   expect(screen.getByRole('alert')).toBeInTheDocument();
+});
+
+test('it returns a default code label collection selection', () => {
+  expect(getDefaultCodeLabelCollectionSelection()).toStrictEqual({
+    type: 'code',
+    separator: ',',
+  });
 });

@@ -40,18 +40,13 @@ interface GetGroupedAttributes
      *  ]
      *
      *
-     * @param string $localeCode
-     * @param string $search
-     * @param int $limit
-     * @param int $offset
      * @param string[] | null $attributeTypes
-     * @return array
      */
     public function findAttributes(
         string $localeCode,
         int $limit,
         int $offset = 0,
-        array $attributeTypes = null,
-        string $search = null
+        ?array $attributeTypes = null,
+        ?string $search = null
     ): array;
 }

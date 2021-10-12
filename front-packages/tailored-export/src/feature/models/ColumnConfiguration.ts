@@ -84,9 +84,9 @@ const addAttributeSource = (
   const filteredLocaleSpecificLocales = attribute.is_locale_specific
     ? locales.filter(({code}) => attribute.available_locales.includes(code))
     : locales;
-  const locale = attribute.localizable ? filteredLocaleSpecificLocales[0].code : null;
+  const localeCode = attribute.localizable ? filteredLocaleSpecificLocales[0].code : null;
 
-  return addSource(columnConfiguration, getDefaultAttributeSource(attribute, channelCode, locale));
+  return addSource(columnConfiguration, getDefaultAttributeSource(attribute, channelCode, localeCode));
 };
 
 const addAssociationTypeSource = (

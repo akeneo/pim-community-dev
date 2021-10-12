@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
@@ -106,7 +108,7 @@ class SourcesValidator extends ConstraintValidator
     {
         $constraint = $this->propertyConstraints[$source['code']] ?? null;
 
-        if (null === $constraint) {
+        if (!$constraint instanceof Constraint) {
             return;
         }
 
@@ -119,7 +121,7 @@ class SourcesValidator extends ConstraintValidator
         $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
         $associationType = $associationTypes[$source['code']] ?? null;
 
-        if (null === $associationType) {
+        if (!$associationType instanceof AssociationType) {
             $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
                 ->atPath(sprintf('[%s]', $source['uuid']))
                 ->setParameter('association_type_code', $source['code'])
@@ -140,7 +142,7 @@ class SourcesValidator extends ConstraintValidator
     {
         $attribute = $this->getAttributes->forCode($source['code']);
 
-        if (null === $attribute) {
+        if (!$attribute instanceof Attribute) {
             $this->context->buildViolation(
                 Sources::ATTRIBUTE_SHOULD_EXIST,
                 [
@@ -155,7 +157,7 @@ class SourcesValidator extends ConstraintValidator
 
         $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
 
-        if (null === $constraint) {
+        if (!$constraint instanceof Constraint) {
             return;
         }
 

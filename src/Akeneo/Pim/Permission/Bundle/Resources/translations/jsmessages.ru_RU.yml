@@ -17,17 +17,21 @@ pimee_enrich.entity.attribute group:
   module:
     permissions:
       grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов
-      revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов
+      revoke: Группа <strong>{{ group }}}</strong> не будет <strong>{{ permission }}</strong> в этой группе атрибутов
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
+      added: Группа {{ group }} будет доступна {{ permission }} группе атрибутов
       view: Разрешено просматривать атрибуты
       edit: Разрешено изменение атрибутов
+      removed: Группа {{ group }} не будет доступна {{ permission }} группе атрибутов
 pimee_enrich.entity.job_instance:
   module:
     permissions:
-      execute: Разрешено выполнение заданий профиля
+      added: Группа {{ group }} будет доступна {{ permission }} процессу
+      execute: Разрешено выполнять профили задач
       edit: Разрешено изменение заданий профиля
+      removed: Группа {{ group }} не будет доступна {{ permission }} процессу
 batch_jobs:
   add_product_value_with_permission_and_rules:
     label: Добавить значение продукта с проверкой прав доступа & применением правил
@@ -39,5 +43,6 @@ batch_jobs:
     label: Удалить значение продукта с проверкой прав доступа & применением правил
     perform.label: Удалить значение продукта
   edit_common_attributes_with_permission_and_rules:
-    perform.label: Редактировать атрибуты
+    label: Редактировать атрибуты с проверкой прав доступа и применения правил
+    perform.label: Изменить атрибуты
     cleaner.label: Очистить временные файлы

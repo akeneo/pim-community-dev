@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\ReplacementOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
@@ -29,6 +30,7 @@ class SimpleSelectSourceValidator extends ConstraintValidator
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = new CodeLabelSelectionConstraint();
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'replacement' => new Optional(new ReplacementOperationConstraint()),
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);
 

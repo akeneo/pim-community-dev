@@ -23,7 +23,7 @@ class ReferenceEntityCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new ReferenceEntityCodeSelection('/');
+        $selection = new ReferenceEntityCodeSelection();
         $value = new ReferenceEntityValue('record_code1');
 
         $this->applySelection($selection, $value)

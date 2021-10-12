@@ -57,5 +57,7 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('datagrid/query.yml');
 
         $loader->load('connector/json_schema_validators.yml');
+
+        $loader->load('public_api/platform.yml');
     }
 }

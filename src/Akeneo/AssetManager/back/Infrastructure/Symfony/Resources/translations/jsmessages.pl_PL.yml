@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: Wykonaj masowe usuwanie zasobów
     mass_edit_assets: Wykonaj masową edycję zasobów
     link_assets_to_products: Połącz zasoby z produktami
+    compute_transformations: Wykonaj transformację zasobów
 job_execution:
   summary:
     assets: Zasoby

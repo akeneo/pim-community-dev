@@ -15,17 +15,10 @@ use PHPUnit\Framework\Assert;
 
 class ProductProposalStorageContext implements Context
 {
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    private $proposalRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var AttributeColumnInfoExtractor */
-    private $attributeColumnInfoExtractor;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityWithValuesDraftRepositoryInterface $proposalRepository;
+    private IdentifiableObjectRepositoryInterface $productRepository;
+    private AttributeColumnInfoExtractor $attributeColumnInfoExtractor;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityWithValuesDraftRepositoryInterface $proposalRepository,

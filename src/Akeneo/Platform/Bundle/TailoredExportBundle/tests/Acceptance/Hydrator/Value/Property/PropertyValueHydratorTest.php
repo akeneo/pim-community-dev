@@ -113,7 +113,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $this->assertEquals(new NullValue(), $this->getHydrator()->hydrate('parent', new Product()));
     }
 
-    public function it_throw_an_exception_when_property_is_not_supported()
+    public function it_throws_an_exception_when_property_is_not_supported()
     {
         $this->expectErrorMessage('Unsupported property name "unknown_property"');
 

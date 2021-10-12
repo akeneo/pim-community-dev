@@ -1,10 +1,11 @@
-import React, {FC, useCallback, useState} from 'react';
-import {Table, IconButton, CloseIcon, Pagination} from 'akeneo-design-system';
+import React, {FC, useCallback, useRef, useState} from 'react';
+import {Table, IconButton, CloseIcon, Pagination, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Word} from '../../../../domain';
-import {SearchBar, useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
+import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
 import {NoSearchResults} from './NoSearchResults';
 import {NoData} from './NoData';
+import {WordsSearchBar} from './WordsSearchBar';
 import {useDictionaryState} from '../../../../infrastructure';
 
 const WordsGrid: FC = () => {
@@ -12,6 +13,9 @@ const WordsGrid: FC = () => {
   const {dictionary, totalWords, itemsPerPage, currentPage, search, deleteWord} = useDictionaryState();
   const [searchString, setSearchString] = useState('');
   const debouncedSearch = useDebounceCallback(search, 300);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useAutoFocus(inputRef);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
@@ -44,13 +48,7 @@ const WordsGrid: FC = () => {
     <>
       {totalWords > 0 || searchString !== '' ? (
         <>
-          <WordsSearchBar
-            count={totalWords}
-            searchValue={searchString}
-            placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
-            onSearchChange={onSearch}
-            className={'filter-box'}
-          />
+          <WordsSearchBar searchValue={searchString} onSearchChange={onSearch} resultNumber={totalWords} />
           <Pagination
             followPage={onChangePage}
             currentPage={totalWords > 0 ? currentPage : 0}
@@ -104,10 +102,6 @@ const WordsGrid: FC = () => {
     </>
   );
 };
-
-const WordsSearchBar = styled(SearchBar)`
-  margin: 10px 0 20px;
-`;
 
 const WordLabel = styled.span`
   text-transform: capitalize;

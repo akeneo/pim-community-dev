@@ -123,7 +123,7 @@ ifeq ($(UPGRADE_STEP_2),true)
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
 	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
-	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
+	cd $(INSTANCE_DIR) && HELM_DEBUG=true terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates
@@ -187,9 +187,6 @@ endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
 endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
@@ -215,9 +212,6 @@ endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
 endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),beta)
@@ -233,6 +227,17 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
+
+ifeq ($(TYPE),tria)
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.ft_catalog_api_base_uri "https://plg-catalog.demo.cloud.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_api_client_base_uri "https://connect-sandbox.ip.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
+endif
+	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: prepare-chart-default-values
 prepare-chart-default-values:
@@ -291,13 +296,18 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	FT_CATALOG_API_BASE_URI=${FT_CATALOG_API_BASE_URI} \
 	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
 	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
 	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
+	FT_CATALOG_API_USERNAME=${FT_CATALOG_API_USERNAME} \
 	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
 	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
 	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
 	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
+	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
+	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
+	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
@@ -357,6 +367,7 @@ upgrade-instance:
 	JENKINS_LIBS_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 \
 	PERRYBOT_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 \
 	DEVTEST=true \
+	HELM_DEBUG=true \
 	DEVTEST_INSTANCE=$(PFID) \
 	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
 	/app/bin/jenkinsfile-runner-launcher -ns -u \
@@ -420,7 +431,7 @@ delete_expired_uptime_check:
 	cd deployments/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
-remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials
 
 .PHONY: remove_unused_gcloud_dns
 remove_unused_gcloud_dns:
@@ -459,6 +470,13 @@ remove_unused_gcloud_disk:
 	@echo "=             Remove unused gcloud disk                  ="
 	@echo "=========================================================="
 	CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash $(PWD)/deployments/bin/remove_unused_gcloud_disk.sh
+
+.PHONY: remove_unused_mailgun_credentials
+remove_unused_mailgun_credentials:
+	@echo "=========================================================="
+	@echo "=           Remove unused mailgun credentials            ="
+	@echo "=========================================================="
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} bash $(PWD)/deployments/bin/remove_unused_mailgun_credentials.sh
 
 .PHONY: clone_serenity
 clone_serenity:

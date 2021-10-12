@@ -110,8 +110,13 @@ onboarder:
 free_trial:
   akeneo_connect_saml_entity_id: "fakeValue"
   akeneo_connect_saml_certificate: "fakeValue"
+  akeneo_connect_saml_sp_client_id: "fakeValue"
+  akeneo_connect_saml_sp_certificate_base64: "fakeValue"
+  akeneo_connect_saml_sp_private_key_base64: "fakeValue"
   akeneo_connect_api_client_secret: "fakeValue"
   akeneo_connect_api_client_password: "fakeValue"
+  ft_catalog_api_base_uri: "fakeValue"
   ft_catalog_api_client_id: "fakeValue"
   ft_catalog_api_password: "fakeValue"
   ft_catalog_api_secret: "fakeValue"
+  ft_catalog_api_username: "fakeValue"

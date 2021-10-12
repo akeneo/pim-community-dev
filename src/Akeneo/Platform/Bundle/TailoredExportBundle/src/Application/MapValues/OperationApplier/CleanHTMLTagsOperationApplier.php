@@ -26,15 +26,13 @@ class CleanHTMLTagsOperationApplier implements OperationApplierInterface
             throw new \InvalidArgumentException('Cannot apply Clean HTML tags operation');
         }
 
-        $cleanedValue = new StringValue(
+        return new StringValue(
             strip_tags(
                 htmlspecialchars_decode(
                     str_replace('&nbsp;', ' ', $value->getData())
                 )
             )
         );
-
-        return $cleanedValue;
     }
 
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool

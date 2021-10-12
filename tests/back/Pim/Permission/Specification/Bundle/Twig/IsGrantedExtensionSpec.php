@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\TwigFunction;
 
 class IsGrantedExtensionSpec extends ObjectBehavior
 {
@@ -31,8 +32,8 @@ class IsGrantedExtensionSpec extends ObjectBehavior
         $functions = $this->getFunctions();
 
         $functions->shouldHaveCount(2);
-        $functions[0]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
-        $functions[1]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
+        $functions[0]->shouldBeAnInstanceOf(TwigFunction::class);
+        $functions[1]->shouldBeAnInstanceOf(TwigFunction::class);
         $functions[0]->getName()->shouldReturn('is_attribute_granted');
         $functions[1]->getName()->shouldReturn('is_locale_granted');
     }
