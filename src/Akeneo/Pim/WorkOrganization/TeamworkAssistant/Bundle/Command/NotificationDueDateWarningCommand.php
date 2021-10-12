@@ -66,7 +66,7 @@ class NotificationDueDateWarningCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projects = $this->projectRepository->findAll();
 
@@ -80,6 +80,6 @@ class NotificationDueDateWarningCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

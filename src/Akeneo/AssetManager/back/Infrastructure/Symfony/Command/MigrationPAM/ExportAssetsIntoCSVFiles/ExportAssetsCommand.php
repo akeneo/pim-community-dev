@@ -46,7 +46,7 @@ class ExportAssetsCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
         $fileDir = $input->getArgument('fileDir');
@@ -63,11 +63,11 @@ class ExportAssetsCommand extends Command
 
         $hasValidTargetDir = $this->hasTargetDir($fileDir);
         if (!$hasValidTargetDir) {
-            return 1;
+            return Command::FAILURE;
         }
         $hasValidFilePaths = $this->hasValidFilePaths($assetsFilePath, $variationFilePath);
         if (!$hasValidFilePaths) {
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->io->text('');
@@ -90,7 +90,7 @@ class ExportAssetsCommand extends Command
             sprintf('- %s', $variationFilePath),
         ]);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function hasValidFilePaths(string $assetsFilePath, string $variationFilePath): bool

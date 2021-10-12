@@ -46,7 +46,7 @@ final class HealthCheckCommand extends Command
             ->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -68,7 +68,7 @@ final class HealthCheckCommand extends Command
             $this->outputLastEvaluationResultPerProductModels($io, $productModelsIds);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function outputCatalogInfo(SymfonyStyle $io)

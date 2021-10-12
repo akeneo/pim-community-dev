@@ -77,7 +77,7 @@ class ProjectRecalculationCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projects = $this->projectRepository->findAll();
 
@@ -95,6 +95,6 @@ class ProjectRecalculationCommand extends Command
             $projectToDetach = $project;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
