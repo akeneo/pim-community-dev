@@ -57,6 +57,7 @@ akeneo.tailored_export:
         attribute: Dit attribuut is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze bron en voeg het opnieuw toe.
         association_type: Dit associatietype is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze bron en voeg het opnieuw toe.
         property: Deze eigenschap is ongeldig. Verwijder deze bron en voeg hem opnieuw toe.
+        asset_collection_main_media: De belangrijkste media van de door het attribuut gebruikte assetcollectie is niet gevonden. Controleer de instelling voor de assetfamilie.
       no_source_configuration:
         title: Er zijn geen bewerkingen beschikbaar voor deze bron. De waarde wordt geëxporteerd zoals hij er nu staat.
       deleted_attribute:
@@ -78,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Bedrag
           currency: Valuta
+          main_media: Belangrijkste media
           key: Bestandssleutel
           path: Pad
           name: Bestandsnaam
+        asset_collection:
+          property: Eigenschap
+          with_prefix_and_suffix: Voorvoegsel & achtervoegsel toevoegen
         format: Indeling
         parent:
           information:
@@ -124,6 +129,28 @@ akeneo.tailored_export:
           disabled: Vervangende waarde uitgeschakeld
           yes: Wel vervangende waarde
           no: Geen vervangende waarde
+          edit_mapping: Vervangende waarden bewerken
+          modal:
+            title: Vervanging
+            subtitle: Opties beheren
+            no_result:
+              title: Dit attribuut bevat geen waarde
+            empty_result:
+              title: Er zijn geen resultaten voor uw zoekopdracht
+              text: Probeer opnieuw met nieuwe zoekcriteria
+            filters:
+              mapped:
+                label: Weergave
+                unmapped: Alle waarden zonder vervanging
+                mapped: Alle waarden met vervanging
+                all: Alle waarden
+            table:
+              header:
+                values: Waarden
+                replacement: Vervangende waarden
+              field:
+                to_placeholder: Geef de vervangende waarde op
+            validation_error: Sommige vervangende waarden zijn ongeldig. Raadpleeg de foutmeldingen onder elk veld.
         default_value:
           title: Standaardwaarde gebruiken indien leeg
           label: Standaardwaarde
@@ -165,6 +192,12 @@ akeneo.tailored_export:
       locale_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per taal meer. Maak deze aan of kies een andere bron.
       channel_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per kanaal meer. Maak dit aan of kies een andere bron.
       invalid_specific_locale: Het attribuut {{ attribute_code }} is taalspecifiek. Selecteer een andere taal.
+    asset_collection:
+      locale_should_not_be_blank: Het belangrijkste media-attribuut van de assetfamilie {{ asset_family_code }} bevat nu een waarde per taal. Maak het aan of kies een andere bron.
+      channel_should_not_be_blank: Het belangrijkste media-attribuut van de assetfamilie {{ asset_family_code }} bevat nu een waarde per kanaal. Maak het aan of kies een andere bron.
+      locale_should_be_blank: Het belangrijkste media-attribuut van de assetfamilie {{ asset_family_code }} heeft geen waarde per taal meer. Maak het aan of kies een andere bron.
+      channel_should_be_blank: Het belangrijkste media-attribuut van de assetfamilie {{ asset_family_code }} heeft geen waarde per kanaal meer. Maak het aan of kies een andere bron.
+      invalid_type: Het belangrijkste media-attribuut van de assetfamilie {{ asset_family_code }} is gewijzigd. Maak het aan of kies een andere bron.
     measurement:
       family:
         does_not_exist: De afmetingenfamilie {{ measurement_family_code }} bestaat niet.
