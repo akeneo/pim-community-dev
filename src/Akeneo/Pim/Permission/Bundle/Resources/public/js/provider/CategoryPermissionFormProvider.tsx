@@ -195,6 +195,10 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
     </PermissionSectionSummary>
   ),
   save: async (userGroup: string, state: PermissionFormReducer.State) => {
+    if (!securityContext.isGranted('pimee_enrich_category_edit_permissions')) {
+      return Promise.resolve();
+    }
+
     const url = routing.generate('pimee_permissions_entities_set_categories');
     const response = await fetch(url, {
       method: 'POST',
