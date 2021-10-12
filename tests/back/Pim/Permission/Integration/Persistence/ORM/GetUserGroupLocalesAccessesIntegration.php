@@ -9,6 +9,7 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader;
 
@@ -40,12 +41,15 @@ class GetUserGroupLocalesAccessesIntegration extends TestCase
         $this->redactorUserGroup = $this->get('pim_user.repository.group')->findOneByIdentifier('redactor');
         $adminUser->addGroup($this->redactorUserGroup);
 
+        /** @var LocaleFixturesLoader $localeFixturesLoader */
+        $localeFixturesLoader = $this->get('akeneo_integration_tests.loader.locale');
+
         $ecommerceChannel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
 
-        $this->createLocale(['code' => 'locale_A'], $ecommerceChannel);
-        $this->createLocale(['code' => 'locale_B'], $ecommerceChannel);
-        $this->createLocale(['code' => 'locale_C'], $ecommerceChannel);
-        $this->createLocale(['code' => 'locale_D']); // not activated
+        $localeFixturesLoader->createLocale(['code' => 'locale_A'], $ecommerceChannel);
+        $localeFixturesLoader->createLocale(['code' => 'locale_B'], $ecommerceChannel);
+        $localeFixturesLoader->createLocale(['code' => 'locale_C'], $ecommerceChannel);
+        $localeFixturesLoader->createLocale(['code' => 'locale_D']); // not activated
     }
 
     public function localePermissionsDataProvider(): array

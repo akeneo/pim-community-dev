@@ -7,22 +7,18 @@ namespace AkeneoTestEnterprise\Pim\Permission\FixturesLoader;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Doctrine\Persistence\ObjectManager;
 
 class LocalePermissionsFixturesLoader
 {
     private LocaleAccessManager $localeAccessManager;
-    private ObjectManager $objectManager;
     private LocaleRepositoryInterface $localeRepository;
 
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        LocaleAccessManager $localeAccessManager,
-        ObjectManager $objectManager
+        LocaleAccessManager $localeAccessManager
     ) {
         $this->localeRepository = $localeRepository;
         $this->localeAccessManager = $localeAccessManager;
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -34,8 +30,6 @@ class LocalePermissionsFixturesLoader
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
 
             $this->localeAccessManager->revokeAccess($locale);
-            $this->objectManager->flush($locale);
-
             $this->localeAccessManager->grantAccess($locale, $userGroup, $accessLevel);
         }
     }

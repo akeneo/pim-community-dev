@@ -101,6 +101,14 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@validator'
 
+    akeneo_integration_tests.loader.locale:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@pim_catalog.saver.locale'
+            - '@validator'
+
     akeneo_integration_tests.loader.locale_permissions:
         class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader'
         arguments:
