@@ -57,7 +57,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
       response.ok && refreshCategoryTrees();
       const message = response.ok
         ? 'pim_enrich.entity.category.category_tree_deletion.success'
-        : (response.errorMessage || 'pim_enrich.entity.category.category_tree_deletion.error');
+        : response.errorMessage || 'pim_enrich.entity.category.category_tree_deletion.error';
       notify(
         response.ok ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
         translate(message, {tree: categoryTreeToDelete.label})
