@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Twig;
 
+use Twig\Environment;
 use Twig\TwigFunction;
 
 class RenderHeaderExtension extends AbstractExtension
@@ -43,32 +44,26 @@ class RenderHeaderExtension extends AbstractExtension
     /**
      * Render specific block from template
      *
-     * @param \Twig_Environment $environment
+     * @param Environment $environment
      * @param string $blockName
      * @param array $context
-     * @return string
      */
-    protected function renderTemplateBlock(\Twig_Environment $environment, $blockName, $context = [])
+    protected function renderTemplateBlock(Environment $environment, $blockName, $context = []): string
     {
-        /** @var $template \Twig_Template */
-        $template = $environment->loadTemplate($this->templateName);
+        $template = $environment->loadTemplate(
+            $environment->getTemplateClass($this->templateName),
+            $this->templateName
+        );
+
         return $template->renderBlock($blockName, $context);
     }
 
-    /**
-     * @param \Twig_Environment $environment
-     * @return string
-     */
-    public function renderHeaderJavascript(\Twig_Environment $environment)
+    public function renderHeaderJavascript(Environment $environment): string
     {
         return $this->renderTemplateBlock($environment, self::HEADER_JAVASCRIPT);
     }
 
-    /**
-     * @param \Twig_Environment $environment
-     * @return string
-     */
-    public function renderHeaderStylesheet(\Twig_Environment $environment)
+    public function renderHeaderStylesheet(Environment $environment)
     {
         return $this->renderTemplateBlock($environment, self::HEADER_STYLESHEET);
     }

@@ -62,6 +62,11 @@ class TwigTemplateProperty extends AbstractProperty
      */
     protected function getTemplate()
     {
-        return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
+        $templateName = $this->get(self::TEMPLATE_KEY);
+
+        return $this->environment->loadTemplate(
+            $this->environment->getTemplateClass($templateName),
+            $templateName,
+        );
     }
 }

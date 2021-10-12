@@ -37,11 +37,14 @@ class TwigProperty extends FieldProperty
 
     /**
      * Load twig template
-     *
-     * @return \Twig_TemplateInterface
      */
     protected function getTemplate()
     {
-        return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
+        $templateName = $this->get(self::TEMPLATE_KEY);
+
+        return $this->environment->loadTemplate(
+            $this->environment->getTemplateClass($templateName),
+            $templateName,
+        );
     }
 }
