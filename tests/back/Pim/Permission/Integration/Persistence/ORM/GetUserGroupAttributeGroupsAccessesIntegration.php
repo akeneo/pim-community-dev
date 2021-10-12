@@ -9,12 +9,14 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupPermissionsFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader;
 
 class GetUserGroupAttributeGroupsAccessesIntegration extends TestCase
 {
     private GetUserGroupAttributeGroupsAccesses $query;
+    private AttributeGroupFixturesLoader $attributeGroupFixturesLoader;
     private AttributeGroupPermissionsFixturesLoader $attributeGroupPermissionsFixturesLoader;
     private UserGroupPermissionsFixturesLoader $userGroupPermissionsFixturesLoader;
     private GroupInterface $redactorUserGroup;
@@ -33,6 +35,7 @@ class GetUserGroupAttributeGroupsAccessesIntegration extends TestCase
 
         $this->query = $this->get(GetUserGroupAttributeGroupsAccesses::class);
 
+        $this->attributeGroupFixturesLoader = $this->get('akeneo_integration_tests.loader.attribute_group');
         $this->attributeGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.attribute_group_permissions');
         $this->userGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.user_group_permissions');
 
@@ -42,9 +45,9 @@ class GetUserGroupAttributeGroupsAccessesIntegration extends TestCase
 
         $this->attributeGroupPermissionsFixturesLoader->revokeAttributeGroupPermissions('other');
 
-        $this->createAttributeGroup(['code' => 'attribute_group_A']);
-        $this->createAttributeGroup(['code' => 'attribute_group_B']);
-        $this->createAttributeGroup(['code' => 'attribute_group_C']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_A']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_B']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_C']);
     }
 
     public function attributeGroupPermissionsDataProvider(): array

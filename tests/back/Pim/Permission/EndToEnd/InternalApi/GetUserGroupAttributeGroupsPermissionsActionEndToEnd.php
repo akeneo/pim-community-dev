@@ -7,6 +7,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\InternalApi;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupPermissionsFixturesLoader;
 use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader;
 use PHPUnit\Framework\Assert;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetUserGroupAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
 {
+    private AttributeGroupFixturesLoader $attributeGroupFixturesLoader;
     private AttributeGroupPermissionsFixturesLoader $attributeGroupPermissionsFixturesLoader;
     private UserGroupPermissionsFixturesLoader $userGroupPermissionsFixturesLoader;
     private GroupRepositoryInterface $groupRepository;
@@ -22,6 +24,7 @@ class GetUserGroupAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
+        $this->attributeGroupFixturesLoader = $this->get('akeneo_integration_tests.loader.attribute_group');
         $this->attributeGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.attribute_group_permissions');
         $this->userGroupPermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.user_group_permissions');
         $this->groupRepository = $this->get('pim_user.repository.group');
@@ -35,9 +38,9 @@ class GetUserGroupAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
 
         $this->attributeGroupPermissionsFixturesLoader->revokeAttributeGroupPermissions('other');
 
-        $this->createAttributeGroup(['code' => 'attribute_group_A']);
-        $this->createAttributeGroup(['code' => 'attribute_group_B']);
-        $this->createAttributeGroup(['code' => 'attribute_group_C']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_A']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_B']);
+        $this->attributeGroupFixturesLoader->createAttributeGroup(['code' => 'attribute_group_C']);
 
         $this->attributeGroupPermissionsFixturesLoader->givenTheRightOnAttributeGroupCodes(Attributes::VIEW_ATTRIBUTES, $redactorUserGroup, [
             'attribute_group_A',

@@ -7,22 +7,18 @@ namespace AkeneoTestEnterprise\Pim\Permission\FixturesLoader;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Doctrine\Persistence\ObjectManager;
 
 class AttributeGroupPermissionsFixturesLoader
 {
     private AttributeGroupAccessManager $attributeGroupAccessManager;
-    private ObjectManager $objectManager;
     private AttributeGroupRepositoryInterface $attributeGroupRepository;
 
     public function __construct(
         AttributeGroupRepositoryInterface $attributeGroupRepository,
-        AttributeGroupAccessManager $attributeGroupAccessManager,
-        ObjectManager $objectManager
+        AttributeGroupAccessManager $attributeGroupAccessManager
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -34,8 +30,6 @@ class AttributeGroupPermissionsFixturesLoader
             $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupCode);
 
             $this->attributeGroupAccessManager->revokeAccess($attributeGroup);
-            $this->objectManager->flush($attributeGroup);
-
             $this->attributeGroupAccessManager->grantAccess($attributeGroup, $userGroup, $accessLevel);
         }
     }
@@ -44,6 +38,5 @@ class AttributeGroupPermissionsFixturesLoader
     {
         $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupCode);
         $this->attributeGroupAccessManager->revokeAccess($attributeGroup);
-        $this->objectManager->flush($attributeGroup);
     }
 }
