@@ -34,7 +34,7 @@ jest.mock('@src/shared/permission-form-registry/use-permission-form-registry', (
     usePermissionFormRegistry: () => {
         return {
             all: jest.fn(() => null),
-            countProviders: jest.fn(() => countRegistryProviders),
+            count: jest.fn(() => countRegistryProviders),
         };
     },
 }));
