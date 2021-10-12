@@ -209,6 +209,9 @@ pim_table_attribute:
     product_edit_form:
         add_rows: Add rows
         search: Search
+    datagrid:
+        placeholder: This value can not be displayed in the product list
+
 pim_enrich:
     entity:
         attribute:
