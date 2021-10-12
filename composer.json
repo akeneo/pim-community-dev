@@ -22,7 +22,7 @@
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"],
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\TailoredExport\\": "src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
-            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
+            "Akeneo\\FreeTrial\\": ["vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -70,34 +70,32 @@
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",
-        "symfony/debug-bundle": "4.4.7",
-        "symfony/web-profiler-bundle": "4.4.7",
-        "symfony/web-server-bundle": "4.4.7",
-        "behat/behat": "3.8.1",
-        "behat/gherkin": "4.6.2",
-        "behat/mink": "1.7.1",
-        "behat/mink-browserkit-driver": "1.3.3",
-        "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "1.3.1",
-        "instaclick/php-webdriver": "1.4.7",
-        "behat/symfony2-extension": "2.1.5",
         "behat/transliterator": "1.3.0",
         "blackfire/php-sdk": "^1.25",
-        "league/flysystem-memory": "^1.0",
+        "friends-of-behat/mink": "^1.9.0",
+        "friends-of-behat/mink-browserkit-driver": "^1.5.0",
+        "friends-of-behat/mink-extension": "2.4.*",
+        "friends-of-behat/symfony-extension": "^2.2.0",
+        "friends-of-phpspec/phpspec-code-coverage": "^6.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "instaclick/php-webdriver": "1.4.7",
+        "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "league/flysystem-memory": "^1.0",
+        "liuggio/fastest": "1.8.*",
+        "mcustiel/phiremock": "2.1.1",
         "phpspec/phpspec": "~7.0.0",
         "phpspec/prophecy": "v1.12.1",
-        "phpunit/phpunit": "^9.5",
-        "sebastian/exporter": "^4.0.0",
-        "sensiolabs/behat-page-object-extension": "2.1.0",
-        "friends-of-behat/symfony-extension": "^2.0",
-        "liuggio/fastest": "1.8.*",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-symfony": "^0.12.44",
-        "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
-        "jfcherng/php-diff": "^6.10",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "phpunit/phpunit": "^9.5",
+        "sebastian/exporter": "^4.0.0",
+        "sensiolabs/behat-page-object-extension": "^2.3.3",
+        "symfony/debug-bundle": "4.4.18",
+        "symfony/web-profiler-bundle": "4.4.18",
+        "symfony/web-server-bundle": "4.4.18"
     },
     "repositories": {
         "onboarder-extension": {
@@ -136,5 +134,8 @@
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    }
 }

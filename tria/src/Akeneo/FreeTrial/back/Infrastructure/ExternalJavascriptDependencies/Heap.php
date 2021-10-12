@@ -10,24 +10,18 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface
 
 final class Heap implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private const CUSTOMER_ID = 2875170433;
-
     private ScriptNonceGenerator $nonceGenerator;
 
-    private ExternalDependenciesFeatureFlag $featureFlag;
+    private string $heapId;
 
-    public function __construct(ScriptNonceGenerator $nonceGenerator, ExternalDependenciesFeatureFlag $featureFlag)
+    public function __construct(ScriptNonceGenerator $nonceGenerator, string $heapId)
     {
         $this->nonceGenerator = $nonceGenerator;
-        $this->featureFlag = $featureFlag;
+        $this->heapId = $heapId;
     }
 
     public function getScript(): string
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return '';
-        }
-
         $nonce = $this->nonceGenerator->getGeneratedNonce();
 
         $javascript = <<<JS
@@ -37,7 +31,7 @@ final class Heap implements ExternalDependencyProviderInterface, ContentSecurity
 </script>
 JS;
 
-        return sprintf($javascript, self::CUSTOMER_ID);
+        return sprintf($javascript, $this->heapId);
     }
 
     /**
@@ -45,13 +39,9 @@ JS;
      */
     public function getContentSecurityPolicy(): array
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return [];
-        }
-
         return [
             'script-src'  => ["https://cdn.heapanalytics.com", "https://heapanalytics.com", "'unsafe-inline'", "'unsafe-eval'"],
-            'img-src'     => ["https://heapanalytics.com"],
+            'img-src'     => ["https://heapanalytics.com", "https://logo.clearbit.com"],
             'style-src'   => ["https://heapanalytics.com"],
             'connect-src' => ["https://heapanalytics.com"],
             'font-src'    => ["https://heapanalytics.com"],

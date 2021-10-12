@@ -16,11 +16,7 @@ DNS_LIST=$(gcloud --project=akeneo-cloud dns record-sets list --zone=dev-cloud-a
 COUNT_DNS=0
 for DNS in ${DNS_LIST}; do
     DNS_PREFIX=$(echo ${DNS} | sed 's/\..*//')
-    NS_EXIST=0
-
-    if [[ ${KUBE_NS_LIST} =~ ${DNS_PREFIX} ]] ; then
-        NS_EXIST=1
-    fi
+    NS_EXIST=$(echo $KUBE_NS_LIST | grep -w ${DNS_PREFIX} | wc -l)
 
     echo "-------------------------------------"
     echo "DNS ${DNS}"
@@ -35,7 +31,7 @@ for DNS in ${DNS_LIST}; do
     echo "  Command debug"
     echo "      gcloud --project=akeneo-cloud dns record-sets delete ${DNS} --type=CNAME --zone=dev-cloud-akeneo-com"
 
-    gcloud --project=akeneo-cloud dns record-sets delete ${DNS} --type=CNAME --zone=dev-cloud-akeneo-com
+    gcloud beta --project=akeneo-cloud dns record-sets delete ${DNS} --type=CNAME --zone=dev-cloud-akeneo-com
 
     ((COUNT_DNS++))
 done

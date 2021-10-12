@@ -26,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class GetGroupedSourcesAction
 {
-    private const LIMIT_DEFAULT = 20;
+    private const LIMIT_DEFAULT = 25;
     private const FIELD_TRANSLATION_BASE = 'pim_common.';
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'System';
     private const DEFAULT_LOCALE = 'en_US';
@@ -56,7 +56,7 @@ final class GetGroupedSourcesAction
 
         $options = $request->get('options', []);
         $search = $request->get('search');
-        $limit = $options['limit'] ?? self::LIMIT_DEFAULT;
+        $limit = (int) ($options['limit'] ?? self::LIMIT_DEFAULT);
         $systemOffset = (int) $options['offset']['system'];
         $associationTypeOffset = (int) $options['offset']['association_type'];
         $attributeOffset = (int) $options['offset']['attribute'];
@@ -92,22 +92,20 @@ final class GetGroupedSourcesAction
 
     private function formatSystemFields(array $fields, string $localeCode): array
     {
-        if (count($fields) === 0) {
+        if (empty($fields)) {
             return [];
         }
 
-        $children = array_map(function (string $field) use ($localeCode): array {
-            return [
-                'code' => $field,
-                'type' => 'property',
-                'label' => $this->translator->trans(
-                    sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
-                    [],
-                    null,
-                    $localeCode
-                ),
-            ];
-        }, $fields);
+        $children = array_map(fn (string $field): array => [
+            'code' => $field,
+            'type' => 'property',
+            'label' => $this->translator->trans(
+                sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
+                [],
+                null,
+                $localeCode
+            ),
+        ], $fields);
 
         return [[
             'code' => 'system',
@@ -122,13 +120,11 @@ final class GetGroupedSourcesAction
             return [];
         }
 
-        $associationFields = array_map(static function (AssociationType $field) use ($localeCode): array {
-            return [
-                'code' => $field->getCode(),
-                'type' => 'association_type',
-                'label' => $field->getLabel($localeCode),
-            ];
-        }, $fields);
+        $associationFields = array_map(static fn (AssociationType $field): array => [
+            'code' => $field->getCode(),
+            'type' => 'association_type',
+            'label' => $field->getLabel($localeCode),
+        ], $fields);
 
         return [[
             'code' => 'association_types',

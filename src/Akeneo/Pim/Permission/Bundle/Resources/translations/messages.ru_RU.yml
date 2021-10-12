@@ -1,18 +1,25 @@
-pimee_enrich.acl.locale.edit_permissions: Управление разрешениями локали
-pimee_enrich.acl.category.edit_permissions: Управление разрешениями категории
-pimee_enrich.acl.attribute_group.edit_permissions: Управление разрешениями группы атрибутов
+pimee_enrich.acl.locale.edit_permissions: Управление правами доступа локали
+pimee_enrich.acl.category.edit_permissions: Управление правами доступа категории
+pimee_enrich.acl.attribute_group.edit_permissions: Управление правами доступа группы атрибутов
 pimee_importexport.acl.export_profile.edit_permissions: Управление правами профиля экспорта
-pimee_importexport.acl.import_profile.edit_permissions: Управление привами профиля импорта
-pimee_enrich.groups.label: Группы владельцы
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Редактировать атрибуты
+pimee_importexport.acl.import_profile.edit_permissions: Управление правами доступа профиля импорта
+pimee_enrich.groups.label: Владельцы группы
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Изменить атрибуты
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Удалить значение продукта с правами доступа
+edit_common_attributes_with_permission: Редактировать атрибуты с правами доступа
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редактировать атрибуты с правами доступа
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Количество пользовательских доступов к локали
+    nb_custom_category_accesses: Количество пользовательских доступов к категории
+    nb_custom_attribute_group_accesses: Количество пользовательских доступов к группе атрибутов
 job_profile.permissions:
-  execute.label: Разрешено выполнение заданий профиля
+  execute.label: Разрешено выполнять профили задач
   edit.label: Разрешено изменение заданий профиля
 pim_title.locale:
-  edit: "Локали %locale.code% | Изменить"
+  edit: "Локали %locale.code% | Редактировать"
 attribute group.permissions:
   view.label: Разрешено просматривать атрибуты
   view.help: Разрешить просмотр продуктов в этой группе атрибутов
@@ -28,7 +35,7 @@ category.permissions:
   own.help: Разрешено публиковать, снимать с публикации, классифицировать, ассоциировать и писать обзоры на продукты в этой категории (подразумевает права на изменение)
   no_access_to_products: Вы не имеете прав доступа к продуктам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
   apply_on_children.label: Применить изменения на дочерние элементы
-  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права на дочерние элементы сохраняются
 locale.permissions:
   no_access_to_products: Вы не имеете прав доступа к данным продукта ни в одной локали. Пожалуйста, обратитесь к вашему администратору
 flash.locale.updated: Локаль и права доступа были обновлены
@@ -37,14 +44,14 @@ pim_enrich:
     product:
       not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
       page_title: Продукты
-      page_subtitle: Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)
+      page_subtitle: Массовое редактирование (1 продукта)|Массовое редактирование (%count% продуктов)|Массовое редактирование (%count% продуктов)
       title: Выберите операцию
-      subtitle: Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов
-      confirm: Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.
+      subtitle: Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов
+      confirm: Вы собираетесь обновить продукт следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов следующей информацией, пожалуйста, подтвердите.
       steps:
         first: Выберите продукты
         second: Выберите операцию
-        third: Настройка
+        third: Настроить
         fourth: Подтверждение
     publish:
       message:
@@ -55,7 +62,7 @@ pim_enrich:
       message:
         error: Вы не владелец продукта, вы не можете снять его с публикации.
         warning: Вы не являетесь владельцем всех выбранных продуктов. Вы не можете снять продукты "%notGranted%" с публикации.
-        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+        info: '%nbProducts% выбранных продуктов будет снят с публикации.'
       not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
     classify:
       message:
@@ -76,14 +83,14 @@ pimee_enrich:
       permission:
         title: Права доступа
   groups:
-    label: Группы владельцы
+    label: группы владельцев
     empty: Пусто
 add_product_value_with_permission_and_rules:
   steps.perform: Добавить значение продукта
 update_product_value_with_permission_and_rules:
   steps.perform: Обновить значение продукта
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Редактировать атрибуты
-  steps.edit_common_attributes_processor.title: Редактировать атрибуты
+  steps.perform: Изменить атрибуты
+  steps.edit_common_attributes_processor.title: Изменить атрибуты
 pim_enrich_attribute_form:
   isReadOnly: Только для чтения

@@ -45,10 +45,17 @@ class RawChannelShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        $channelIdentifier = ChannelIdentifier::fromCode($rawChannel);
-        if (!$this->channelExists->exists($channelIdentifier)) {
-            $this->context->buildViolation(ChannelShouldExist::ERROR_MESSAGE)
-                ->setParameter('channel_identifier', $channelIdentifier->normalize())
+        try {
+            $channelIdentifier = ChannelIdentifier::fromCode($rawChannel);
+
+            if (!$this->channelExists->exists($channelIdentifier)) {
+                $this->context->buildViolation(ChannelShouldExist::ERROR_MESSAGE)
+                    ->setParameter('channel_identifier', $channelIdentifier->normalize())
+                    ->atPath('channel')
+                    ->addViolation();
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $this->context->buildViolation($exception->getMessage())
                 ->atPath('channel')
                 ->addViolation();
         }

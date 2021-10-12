@@ -57,11 +57,16 @@ if [[ ${PFID} =~ "tria" ]]; then
   if [[ -z "${TRIA_VAR}" ]]; then
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
     yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
     yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
+    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
   fi
 fi
 terraform init
@@ -69,8 +74,8 @@ terraform init
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 export TF_VAR_force_destroy_storage=true
-terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket
-terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket
+terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
+terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
@@ -79,11 +84,13 @@ export KUBECONFIG=.kubeconfig
 # grep -v mysql because the mysql disk is manage by terraform process
 LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
 
-helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID}
+if helm3 list -n "${PFID}" | grep "${PFID}"; then
+  helm3 uninstall ${PFID} -n ${PFID}
 
-echo "Wait MySQL deletion"
-POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
-kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+  echo "Wait MySQL deletion"
+  POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+fi
 
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 

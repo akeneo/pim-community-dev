@@ -27,9 +27,9 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductCon
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Check some pre remove events and forbid deletion if the entity is linked to a published product
@@ -50,6 +50,8 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    private TranslatorInterface $translator;
+
     /**
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
@@ -60,12 +62,14 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         PublishedProductRepositoryInterface $publishedRepository,
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        TranslatorInterface $translator
     ) {
         $this->publishedRepository = $publishedRepository;
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -93,13 +97,19 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
             return;
         }
 
-        $message = 'Impossible to remove a published product';
+        $message = 'pimee_workflow.check_removal.entity_error';
 
-        if (!$subject instanceof ProductInterface) {
-            $message = 'pimee_workflow.entity.removing_error';
+        if ($subject instanceof ProductInterface) {
+            $message = 'pimee_workflow.check_removal.product_error';
+        } elseif ($subject instanceof ProductModelInterface) {
+            $message = 'pimee_workflow.check_removal.product_model_error';
         }
 
-        throw new PublishedProductConsistencyException($message);
+        /*
+         * @fixme See PIM-10098. It should not be the responsibility of this subscriber to translate the error message.
+         *        But it would requires the study of a global solution for this kind of problem
+         */
+        throw new PublishedProductConsistencyException($this->translator->trans($message));
     }
 
     /**

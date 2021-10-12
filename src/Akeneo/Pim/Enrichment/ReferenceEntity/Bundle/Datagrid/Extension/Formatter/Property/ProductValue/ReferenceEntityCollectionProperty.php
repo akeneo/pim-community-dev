@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Extension\Format
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
+use Twig\Environment;
 
 /**
  * Datagrid column formatter for a reference entity or a reference entity collection
@@ -24,19 +25,11 @@ use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigP
  */
 class ReferenceEntityCollectionProperty extends TwigProperty
 {
-    /** @var RequestParametersExtractorInterface */
-    protected $paramsExtractor;
+    protected RequestParametersExtractorInterface $paramsExtractor;
+    protected UserContext $userContext;
 
-    /** @var UserContext */
-    protected $userContext;
-
-    /**
-     * @param \Twig_Environment                   $environment
-     * @param RequestParametersExtractorInterface $paramsExtractor
-     * @param UserContext                         $userContext
-     */
     public function __construct(
-        \Twig_Environment $environment,
+        Environment $environment,
         RequestParametersExtractorInterface $paramsExtractor,
         UserContext $userContext
     ) {

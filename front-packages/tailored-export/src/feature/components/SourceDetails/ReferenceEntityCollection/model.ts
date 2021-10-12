@@ -6,10 +6,13 @@ import {
   isCodeLabelCollectionSelection,
   DefaultValueOperation,
   isDefaultValueOperation,
+  ReplacementOperation,
+  isReplacementOperation,
 } from '../common';
 
 type ReferenceEntityCollectionOperations = {
   default_value?: DefaultValueOperation;
+  replacement?: ReplacementOperation;
 };
 
 type ReferenceEntityCollectionSource = {
@@ -41,6 +44,8 @@ const isReferenceEntityCollectionOperations = (operations: Object): operations i
     switch (type) {
       case 'default_value':
         return isDefaultValueOperation(operation);
+      case 'replacement':
+        return isReplacementOperation(operation);
       default:
         return false;
     }

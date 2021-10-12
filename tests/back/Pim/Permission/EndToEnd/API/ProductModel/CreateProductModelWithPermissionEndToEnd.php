@@ -264,7 +264,7 @@ JSON;
             "message": "%s",
             "_links": {
                 "documentation":{
-                    "href":"http://api.akeneo.com/api-reference.html#post_product_model"
+                    "href":"http://api.akeneo.com/api-reference.html#post_product_models"
                 }
             }
         }

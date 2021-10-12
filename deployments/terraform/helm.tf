@@ -26,27 +26,29 @@ data "template_file" "helm_pim_config" {
       0,
       min(63, length(var.papo_project_code)),
     )
-    papoProjectCodeHashed                   = md5(var.papo_project_code)
-    pimVersion                              = var.pim_version
-    monitoring_authentication_token         = local.monitoring_authentication_token
-    mysql_disk_name                         = google_compute_disk.mysql-disk.name
-    mysql_disk_size                         = google_compute_disk.mysql-disk.size
-    mysql_disk_storage_class                = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
-    subscription_webhook                    = google_pubsub_subscription.webhook.name
-    subscription_job_queue_ui               = google_pubsub_subscription.job-queue-ui.name
-    subscription_job_queue_import_export    = google_pubsub_subscription.job-queue-import-export.name
-    subscription_job_queue_data_maintenance = google_pubsub_subscription.job-queue-data-maintenance.name
-    topic_business_event                    = google_pubsub_topic.business-event.name
-    topic_job_queue_ui                      = google_pubsub_topic.job-queue-ui.name
-    topic_job_queue_import_export           = google_pubsub_topic.job-queue-import-export.name
-    topic_job_queue_data_maintenance        = google_pubsub_topic.job-queue-data-maintenance.name
-    akeneo_connect_saml_entity_id           = var.akeneo_connect_saml_entity_id
-    akeneo_connect_saml_certificate         = var.akeneo_connect_saml_certificate
-    akeneo_connect_api_client_secret        = var.akeneo_connect_api_client_secret
-    akeneo_connect_api_client_password      = var.akeneo_connect_api_client_password
-    ft_catalog_api_client_id                = var.ft_catalog_api_client_id
-    ft_catalog_api_password                 = var.ft_catalog_api_password
-    ft_catalog_api_secret                   = var.ft_catalog_api_secret
+    papoProjectCodeHashed                       = md5(var.papo_project_code)
+    pimVersion                                  = var.pim_version
+    monitoring_authentication_token             = local.monitoring_authentication_token
+    mysql_disk_name                             = google_compute_disk.mysql-disk.name
+    mysql_disk_size                             = google_compute_disk.mysql-disk.size
+    mysql_disk_storage_class                    = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+    subscription_webhook                        = google_pubsub_subscription.webhook.name
+    subscription_job_queue_ui                   = google_pubsub_subscription.job-queue-ui.name
+    subscription_job_queue_import_export        = google_pubsub_subscription.job-queue-import-export.name
+    subscription_job_queue_data_maintenance     = google_pubsub_subscription.job-queue-data-maintenance.name
+    topic_business_event                        = google_pubsub_topic.business-event.name
+    topic_job_queue_ui                          = google_pubsub_topic.job-queue-ui.name
+    topic_job_queue_import_export               = google_pubsub_topic.job-queue-import-export.name
+    topic_job_queue_data_maintenance            = google_pubsub_topic.job-queue-data-maintenance.name
+    akeneo_connect_saml_entity_id               = var.akeneo_connect_saml_entity_id
+    akeneo_connect_saml_certificate             = var.akeneo_connect_saml_certificate
+    akeneo_connect_saml_sp_certificate_base64   = var.akeneo_connect_saml_sp_certificate_base64
+    akeneo_connect_saml_sp_private_key_base64   = var.akeneo_connect_saml_sp_private_key_base64
+    akeneo_connect_api_client_secret            = var.akeneo_connect_api_client_secret
+    akeneo_connect_api_client_password          = var.akeneo_connect_api_client_password
+    ft_catalog_api_client_id                    = var.ft_catalog_api_client_id
+    ft_catalog_api_password                     = var.ft_catalog_api_password
+    ft_catalog_api_secret                       = var.ft_catalog_api_secret
   }
 }
 
@@ -73,8 +75,8 @@ resource "null_resource" "helm_release_pim" {
     command = <<EOF
 yq w -i ${path.module}/pim/Chart.yaml version 0.0.0-${var.pim_version}
 yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
-helm3 repo add akeneo-charts gs://akeneo-charts/
-helm3 dependencies update ${path.module}/pim/
+helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
+helm3 dependencies update ${path.module}/pim/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 export KUBECONFIG="${local_file.kubeconfig.filename}"
 helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 EOF
