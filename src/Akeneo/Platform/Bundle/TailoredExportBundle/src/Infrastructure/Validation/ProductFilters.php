@@ -15,6 +15,6 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
-class FilterProducts extends Constraint
+class ProductFilters extends Constraint
 {
 }

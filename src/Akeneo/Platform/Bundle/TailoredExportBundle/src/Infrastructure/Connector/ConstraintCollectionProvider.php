@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Columns;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\FilterProducts;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ProductFilters;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -56,7 +54,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         );
 
         $constraintFields['filters'] = new Assert\Collection([
-            'fields' => ['data' => new FilterProducts()],
+            'fields' => ['data' => new ProductFilters()],
         ]);
 
         return new Assert\Collection(['fields' => $constraintFields]);

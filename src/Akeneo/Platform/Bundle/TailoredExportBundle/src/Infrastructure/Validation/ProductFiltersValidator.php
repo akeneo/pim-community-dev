@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
-final class FilterProductsValidator extends ConstraintValidator
+final class ProductFiltersValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -31,7 +31,7 @@ final class FilterProductsValidator extends ConstraintValidator
             return;
         }
 
-        if (!$constraint instanceof FilterProducts) {
+        if (!$constraint instanceof ProductFilters) {
             throw new \InvalidArgumentException('Invalid constraint');
         }
 
