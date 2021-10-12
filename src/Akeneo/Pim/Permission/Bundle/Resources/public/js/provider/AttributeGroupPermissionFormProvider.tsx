@@ -169,9 +169,22 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       </LevelSummaryField>
     </PermissionSectionSummary>
   ),
-  save: (_userGroup: string, _state: PermissionFormReducer.State) => {
-    // @todo
-    return Promise.resolve();
+  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+      const url = routing.generate('pimee_permissions_entities_set_attribute_groups');
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: [['X-Requested-With', 'XMLHttpRequest']],
+          body: JSON.stringify({
+              user_group: userGroup,
+              permissions: state,
+          }),
+      });
+
+      if (false === response.ok) {
+          return Promise.reject(`${response.status} ${response.statusText}`);
+      }
+
+      return Promise.resolve();
   },
 };
 
