@@ -60,17 +60,10 @@ final class EventDispatcherMock implements Context, EventDispatcherInterface
             $this->eventDispatcher->dispatch($event);
         }
 
-        if (\is_object($event)) {
-            $eventName = $eventName ?? \get_class($event);
-        } elseif (\is_string($event) && (null === $eventName || \is_object($eventName))) {
-            // Deprecated since symfony 4.3
-            // See https://github.com/symfony/event-dispatcher/blob/v4.3.11/EventDispatcher.php#L58
-            $swap = $event;
-            $event = $eventName;
-            $eventName = $swap;
-        }
-
+        $eventName = $eventName ?? \get_class($event);
         $this->events[] = ['name' => $eventName, 'event' => $event];
+
+        return $event;
     }
 
     /**

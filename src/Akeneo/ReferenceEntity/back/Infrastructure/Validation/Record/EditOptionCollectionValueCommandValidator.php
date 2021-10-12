@@ -86,7 +86,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
                     ->setParameters($violation->getParameters())
                     ->atPath((string) $command->attribute->getCode())
                     ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
+                    ->setPlural((int)$violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())
                     ->addViolation();
             }

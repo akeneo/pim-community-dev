@@ -191,7 +191,7 @@ class EditValueCommandValidator extends ConstraintValidator
                 ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->atPath($attributeCode)
                 ->setCode($violation->getCode())
-                ->setPlural($violation->getPlural())
+                ->setPlural((int)$violation->getPlural())
                 ->setInvalidValue($violation->getInvalidValue())
                 ->addViolation();
         }
