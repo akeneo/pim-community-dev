@@ -17,10 +17,15 @@ class GetCategoriesAccessesWithHighestLevel
         $this->connection = $connection;
     }
 
+    /**
+     * @return array<string, string>
+     *
+     * @throws \LogicException
+     */
     public function execute(int $groupId): array
     {
         $query = <<<SQL
-SELECT pim_catalog_category.code, view_items, edit_items, own_items 
+SELECT pim_catalog_category.code, view_items AS view, edit_items AS edit, own_items AS own
 FROM pimee_security_product_category_access
 JOIN pim_catalog_category ON pim_catalog_category.id = pimee_security_product_category_access.category_id
 WHERE user_group_id = :user_group_id
@@ -38,13 +43,22 @@ SQL;
         return $results;
     }
 
+    /**
+     * @param array{
+     *     own: bool,
+     *     edit: bool,
+     *     view: bool
+     * } $row
+     *
+     * @throws \LogicException
+     */
     private function getHighestAccessLevel(array $row): ?string
     {
-        if ($row['own_items']) {
+        if ($row['own']) {
             return Attributes::OWN_PRODUCTS;
-        } elseif ($row['edit_items']) {
+        } elseif ($row['edit']) {
             return Attributes::EDIT_ITEMS;
-        } elseif ($row['view_items']) {
+        } elseif ($row['view']) {
             return Attributes::VIEW_ITEMS;
         }
 

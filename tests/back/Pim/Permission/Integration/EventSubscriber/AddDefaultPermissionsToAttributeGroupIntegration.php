@@ -42,6 +42,9 @@ class AddDefaultPermissionsToAttributeGroupIntegration extends TestCase
 
     /**
      * @dataProvider permissions
+     *
+     * @param array<string, bool> $defaultPermissions
+     * @param array<string, bool> $expectedPermissions
      */
     public function testUserGroupHasExpectedPermissionsOnNewAttributeGroupsByDefault(
         array $defaultPermissions,
@@ -60,7 +63,7 @@ class AddDefaultPermissionsToAttributeGroupIntegration extends TestCase
     public function permissions(): array
     {
         return [
-            [
+            'all permissions are given by default' => [
                 [
                     'attribute_group_view' => true,
                     'attribute_group_edit' => true,
@@ -70,7 +73,7 @@ class AddDefaultPermissionsToAttributeGroupIntegration extends TestCase
                     'edit' => true,
                 ],
             ],
-            [
+            'only the view permission is given by default' => [
                 [
                     'attribute_group_view' => true,
                     'attribute_group_edit' => false,

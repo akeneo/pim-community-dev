@@ -43,4 +43,3 @@ class GetAttributeGroupsAccessesWithHighestLevelIntegration extends TestCase
         $this->assertSame($expected, $results);
     }
 }
-
