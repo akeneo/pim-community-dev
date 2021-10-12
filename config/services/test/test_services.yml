@@ -121,6 +121,21 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pimee_security.manager.attribute_group_access'
 
+    akeneo_integration_tests.loader.locale:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@pim_catalog.saver.locale'
+            - '@validator'
+
+    akeneo_integration_tests.loader.locale_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pimee_security.manager.locale_access'
+            - '@doctrine.orm.default_entity_manager'
+
     akeneo_integration_tests.loader.user_group_permissions:
         class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader'
         arguments:

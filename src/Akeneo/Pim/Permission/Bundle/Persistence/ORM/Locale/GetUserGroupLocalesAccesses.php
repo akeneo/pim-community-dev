@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category;
+namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale;
 
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-class GetUserGroupRootCategoriesAccesses
+class GetUserGroupLocalesAccesses
 {
     private Connection $connection;
 
@@ -21,10 +21,6 @@ class GetUserGroupRootCategoriesAccesses
 
     /**
      * @return array{
-     *     own: array{
-     *         all: bool,
-     *         identifiers: string[]
-     *     },
      *     edit: array{
      *         all: bool,
      *         identifiers: string[]
@@ -38,10 +34,6 @@ class GetUserGroupRootCategoriesAccesses
     public function execute(string $userGroupName): array
     {
         $permissions = [
-            'own' => [
-                'all' => false,
-                'identifiers' => [],
-            ],
             'edit' => [
                 'all' => false,
                 'identifiers' => [],
@@ -60,10 +52,6 @@ class GetUserGroupRootCategoriesAccesses
 
     /**
      * @param array{
-     *     own: array{
-     *         all: bool,
-     *         identifiers: string[]
-     *     },
      *     edit: array{
      *         all: bool,
      *         identifiers: string[]
@@ -90,18 +78,13 @@ SQL;
         if (false !== $row && null !== $row['default_permissions']) {
             $defaultPermissions = json_decode($row['default_permissions'], true);
 
-            $permissions['own']['all'] = $defaultPermissions['category_own'] ?: false;
-            $permissions['edit']['all'] = $defaultPermissions['category_edit'] ?: false;
-            $permissions['view']['all'] = $defaultPermissions['category_view'] ?: false;
+            $permissions['edit']['all'] = $defaultPermissions['locale_edit'] ?: false;
+            $permissions['view']['all'] = $defaultPermissions['locale_view'] ?: false;
         }
     }
 
     /**
      * @param array{
-     *     own: array{
-     *         all: bool,
-     *         identifiers: string[]
-     *     },
      *     edit: array{
      *         all: bool,
      *         identifiers: string[]
@@ -116,15 +99,14 @@ SQL;
     {
         $query = <<<SQL
 SELECT 
-       pim_catalog_category.code, 
-       view_items AS view, 
-       edit_items AS edit, 
-       own_items AS own
-FROM pimee_security_product_category_access
-JOIN pim_catalog_category ON pim_catalog_category.id = pimee_security_product_category_access.category_id
-JOIN oro_access_group ON oro_access_group.id = pimee_security_product_category_access.user_group_id
+       pim_catalog_locale.code, 
+       view_products AS view, 
+       edit_products AS edit
+FROM pimee_security_locale_access
+JOIN pim_catalog_locale ON pim_catalog_locale.id = pimee_security_locale_access.locale_id
+JOIN oro_access_group ON oro_access_group.id = pimee_security_locale_access.user_group_id
 WHERE oro_access_group.name = :user_group_name
-AND pim_catalog_category.parent_id IS NULL
+    AND pim_catalog_locale.is_activated = 1
 SQL;
 
         $rows = $this->connection->fetchAll($query, [
