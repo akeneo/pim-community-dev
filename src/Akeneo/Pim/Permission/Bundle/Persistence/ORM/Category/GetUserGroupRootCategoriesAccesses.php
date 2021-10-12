@@ -21,15 +21,15 @@ class GetUserGroupRootCategoriesAccesses
 
     /**
      * @return array{
-     *     own: array {
+     *     own: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
@@ -60,15 +60,15 @@ class GetUserGroupRootCategoriesAccesses
 
     /**
      * @param array{
-     *     own: array {
+     *     own: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
@@ -98,15 +98,15 @@ SQL;
 
     /**
      * @param array{
-     *     own: array {
+     *     own: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
