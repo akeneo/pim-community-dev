@@ -3,6 +3,7 @@ import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnValidation, TextColumnDefinition} from '../../models';
 import {ColumnProperties} from './index';
+import {TABLE_STRING_MAX_LENGTH} from "../../product/CellInputs/TextInput";
 
 const TextProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
   const translate = useTranslate();
@@ -10,7 +11,7 @@ const TextProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
 
   const isMaxLengthInvalid =
     typeof textSelectedColumn.validations.max_length !== 'undefined' &&
-    (textSelectedColumn.validations.max_length < 1 || textSelectedColumn.validations.max_length > 100);
+    (textSelectedColumn.validations.max_length < 1 || textSelectedColumn.validations.max_length > TABLE_STRING_MAX_LENGTH);
 
   const handleValidationChange = (validation: ColumnValidation) => {
     textSelectedColumn.validations = {...textSelectedColumn.validations, ...validation};
@@ -24,11 +25,11 @@ const TextProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
         value={`${textSelectedColumn.validations.max_length}`}
         onChange={value => handleValidationChange({max_length: value === '' ? undefined : parseInt(value)})}
         min={1}
-        max={100}
+        max={TABLE_STRING_MAX_LENGTH}
         step={1}
       />
       {isMaxLengthInvalid && (
-        <Helper level='error'>{translate('pim_table_attribute.validations.max_length_range', {maximum: 100})}</Helper>
+        <Helper level='error'>{translate('pim_table_attribute.validations.max_length_range', {maximum: TABLE_STRING_MAX_LENGTH})}</Helper>
       )}
     </Field>
   );

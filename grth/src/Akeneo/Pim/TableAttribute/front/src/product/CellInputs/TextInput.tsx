@@ -3,6 +3,8 @@ import React from 'react';
 import {TextColumnValidation} from '../../models';
 import {CellInput} from './index';
 
+export const TABLE_STRING_MAX_LENGTH = 100;
+
 type TableInputTextProps = {
   value?: string;
   onChange: (value: string) => void;
@@ -21,14 +23,15 @@ const TextInputInner: React.FC<TableInputTextProps> = ({
   readOnly = false,
   ...rest
 }) => {
-  const isTooLong = typeof validations.max_length !== 'undefined' && (value || '').length > validations.max_length;
+  const maxLength = typeof validations.max_length !== 'undefined' ? validations.max_length : TABLE_STRING_MAX_LENGTH;
+  const isTooLong = (value || '').length > maxLength;
 
   return (
     <TableInput.Text
       value={value || ''}
       onChange={onChange}
       highlighted={highlighted}
-      maxLength={validations.max_length}
+      maxLength={maxLength}
       inError={inError || isTooLong}
       readOnly={readOnly}
       {...rest}
