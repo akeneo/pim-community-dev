@@ -10,6 +10,7 @@ import {
   useTranslate,
   useNotify,
   NotificationLevel,
+  useSecurity,
 } from '@akeneo-pim-community/shared';
 import {
   Row,
@@ -79,6 +80,7 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const notify = useNotify();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
@@ -96,6 +98,7 @@ const QuantifiedAssociations = ({
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
   const inputRef = useRef<HTMLInputElement>(null);
+  const shouldDisplayAddButton = !isCompact && isGranted('pim_enrich_associations_edit');
 
   useAutoFocus(inputRef);
 
@@ -168,7 +171,7 @@ const QuantifiedAssociations = ({
           )}
         </Search.ResultCount>
       </Search>
-      {!isCompact && (
+      {shouldDisplayAddButton && (
         <Buttons>
           <Button level="secondary" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}
