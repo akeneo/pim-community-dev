@@ -75,48 +75,20 @@ class GetUserGroupCategoriesPermissionsActionEndToEnd extends WebTestCase
 
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        /* expected result :
-         * [
-         *     'own' => [
-         *         'all' => false,
-         *         'identifiers' => ['b_tree'],
-         *     ],
-         *     'edit' => [
-         *         'all' => false,
-         *         'identifiers' => ['master', 'b_tree'],
-         *     ],
-         *     'view' => [
-         *         'all' => true,
-         *         'identifiers' => [],
-         *     ],
-         * ];
-         */
-        Assert::assertCount(3, $result);
-
-        Assert::assertArrayHasKey('own', $result);
-        Assert::assertIsArray($result['own']);
-        Assert::assertCount(2, $result['own']);
-        Assert::assertArrayHasKey('all', $result['own']);
-        Assert::assertFalse($result['own']['all']);
-        Assert::assertArrayHasKey('identifiers', $result['own']);
-        Assert::assertEqualsCanonicalizing(['b_tree'], $result['own']['identifiers']);
-
-        Assert::assertArrayHasKey('edit', $result);
-        Assert::assertIsArray($result['edit']);
-        Assert::assertCount(2, $result['edit']);
-        Assert::assertArrayHasKey('all', $result['edit']);
-        Assert::assertFalse($result['edit']['all']);
-        Assert::assertArrayHasKey('identifiers', $result['edit']);
-        Assert::assertEqualsCanonicalizing(['master', 'b_tree'], $result['edit']['identifiers']);
-
-        Assert::assertArrayHasKey('view', $result);
-        Assert::assertIsArray($result['view']);
-        Assert::assertCount(2, $result['view']);
-        Assert::assertArrayHasKey('all', $result['view']);
-        Assert::assertTrue($result['view']['all']);
-        Assert::assertArrayHasKey('identifiers', $result['view']);
-        Assert::assertIsArray($result['view']['identifiers']);
-        Assert::assertCount(0, $result['view']['identifiers']);
+        Assert::assertSame([
+            'own' => [
+                'all' => false,
+                'identifiers' => ['b_tree'],
+            ],
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['master', 'b_tree'],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+        ], $result);
     }
 
     protected function getConfiguration(): Configuration
