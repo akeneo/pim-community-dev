@@ -3,10 +3,9 @@
 namespace Oro\Bundle\DataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
 
-class MetadataExtension extends Twig_Extension
+class MetadataExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @param ContainerInterface $container
@@ -22,8 +21,8 @@ class MetadataExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),
-            new Twig_SimpleFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata'])
+            new TwigFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),
+            new TwigFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata'])
         ];
     }
 }

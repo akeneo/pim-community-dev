@@ -10,7 +10,7 @@ import * as Illustrations from '../../illustrations';
   component={Modal}
   argTypes={{
     illustration: {
-      control: {type: 'select', options: [undefined, ...Object.keys(Illustrations)]},
+      control: {type: 'select'}, options: [undefined, ...Object.keys(Illustrations)],
       table: {type: {summary: 'ReactElement<IllustrationProps>'}},
     },
   }}

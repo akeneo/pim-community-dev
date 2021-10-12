@@ -8,7 +8,8 @@ define([
   'pim/form-builder',
   'pim/page-title',
   'routing',
-], function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
+  'pim/analytics',
+], function ($, _, __, BaseController, FormBuilder, PageTitle, Routing, analytics) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -46,6 +47,10 @@ define([
         return 'values' === parameter.key;
       }).value.split(',');
       const queryWithoutValues = query.replace(/&values=[^&]+/, '');
+
+      analytics.track('grid:mass-edit:clicked', {
+        name: actionName,
+      });
 
       return $.ajax({
         url: Routing.generate(this.config.route) + queryWithoutValues,

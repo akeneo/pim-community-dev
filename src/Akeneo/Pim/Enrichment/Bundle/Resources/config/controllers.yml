@@ -237,6 +237,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.value:
         public: true

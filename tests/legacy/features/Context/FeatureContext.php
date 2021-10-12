@@ -6,10 +6,10 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Testwork\Counter\Exception\TimerException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
+use Doctrine\Persistence\ObjectManager;
 use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
@@ -28,6 +28,8 @@ use Pim\Behat\Context\JobContext;
 use Pim\Behat\Context\Storage\AttributeOptionStorage;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -37,37 +39,33 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureContext extends MinkContext implements KernelAwareContext
+class FeatureContext extends MinkContext
 {
     use SpinCapableTrait;
 
-    /** @var KernelInterface */
-    protected $kernel;
-
     /** @var string[] */
     protected static $errorMessages = [];
+    protected static int $timeout;
+    protected array $contexts = [];
+    private KernelInterface $kernel;
 
-    /** @var int */
-    protected static $timeout;
-
-    /**
-     * @var array
-     */
-    protected $contexts = [];
-
-    /**
-     * Register contexts
-     *
-     * @param array $parameters
-     */
-    public function __construct(array $parameters)
+    public function __construct(array $parameters, KernelInterface $kernel)
     {
         $this->setTimeout($parameters);
+        $this->kernel = $kernel;
+    }
+
+    public function getContainer(): ContainerInterface
+    {
+        return $this->kernel->getContainer()->get('test.service_container');
+    }
+
+    public function getEntityManager(): ObjectManager
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
-     * @param string $context
-     *
      * @return mixed
      * @throws \Exception
      */
@@ -114,53 +112,12 @@ class FeatureContext extends MinkContext implements KernelAwareContext
         $this->contexts['security'] = $environment->getContext(SecurityContext::class);
     }
 
-    /**
-     * @return int the timeout in milliseconds
-     */
-    public static function getTimeout()
+    public static function getTimeout(): int
     {
         return static::$timeout;
     }
 
-
-    /**
-     * Sets Kernel instance.
-     *
-     * @param KernelInterface $kernel HttpKernel instance
-     */
-    public function setKernel(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
-    /**
-     * Returns Container instance.
-     *
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->kernel->getContainer()->get('test.service_container');
-    }
-
-    /**
-     * Return doctrine manager instance
-     *
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * Transform a list to array
-     *
-     * @param string $list
-     *
-     * @return array
-     */
-    public function listToArray($list)
+    public function listToArray(string $list): array
     {
         if (empty($list)) {
             return [];
@@ -169,46 +126,25 @@ class FeatureContext extends MinkContext implements KernelAwareContext
         return explode(', ', str_replace(' and ', ', ', $list));
     }
 
-    /**
-     * Create an expectation exception
-     *
-     * @param string $message
-     *
-     * @return ExpectationException
-     */
-    public function createExpectationException($message)
+    public function createExpectationException(string $message): ExpectationException
     {
         return new ExpectationException($message, $this->getSession());
     }
 
-    /**
-     * Add an error message
-     *
-     * @param string $message
-     */
-    public function addErrorMessage($message)
+    public function addErrorMessage(string $message)
     {
         self::$errorMessages[] = $message;
     }
 
-    /**
-     * Get error messages
-     *
-     * @return array $messages
-     */
-    public static function getErrorMessages()
+    public static function getErrorMessages(): array
     {
         return self::$errorMessages;
     }
 
     /**
-     * Wait
-     *
-     * @param string $condition
-     *
      * @throws TimerException If timeout is reached
      */
-    public function wait($condition = null)
+    public function wait(?string $condition = null)
     {
         if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
             return;
@@ -217,18 +153,23 @@ class FeatureContext extends MinkContext implements KernelAwareContext
         $timeout = $this->getTimeout();
 
         $start = microtime(true);
-        $end   = $start + $timeout / 1000.0;
+        $end = $start + $timeout / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
-            $conditions       = [
-                "document.readyState == 'complete'",           // Page is ready
-                "typeof $ != 'undefined'",                     // jQuery is loaded
-                "!$.active",                                   // No ajax request is active
-                "$('#page').css('display') != 'none'",         // Page is displayed (no progress bar)
+            $conditions = [
+                "document.readyState == 'complete'",
+                // Page is ready
+                "typeof $ != 'undefined'",
+                // jQuery is loaded
+                "!$.active",
+                // No ajax request is active
+                "$('#page').css('display') != 'none'",
+                // Page is displayed (no progress bar)
                 // Page is not loading (no black mask loading page)
                 "($('.hash-loading-mask .loading-mask').length == 0 || $('.hash-loading-mask .loading-mask').css('display') == 'none')",
-                "$('.jstree-loading').length == 0",            // Jstree has finished loading
+                "$('.jstree-loading').length == 0",
+                // Jstree has finished loading
             ];
 
             $condition = implode(' && ', $conditions);
@@ -278,13 +219,12 @@ class FeatureContext extends MinkContext implements KernelAwareContext
 
         $this->spin(function () use ($link) {
             $this->getSession()->getPage()->clickLink($link);
+
             return true;
         }, sprintf('Link %s is not present on the page', $link));
     }
 
     /**
-     *
-     *
      * @param string $message
      * @param string $label
      *
@@ -384,14 +324,7 @@ class FeatureContext extends MinkContext implements KernelAwareContext
         }
     }
 
-    /**
-     * Execute javascript
-     *
-     * @param string $script
-     *
-     * @return bool Success or failure
-     */
-    public function executeScript($script)
+    public function executeScript(string $script): bool
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $this->getSession()->executeScript($script);
@@ -450,20 +383,12 @@ class FeatureContext extends MinkContext implements KernelAwareContext
         }, sprintf('Spinning for asserting checkbox "%d" is not checked', $checkbox));
     }
 
-    /**
-     * Set the waiting timeout
-     *
-     * @param $parameters
-     */
-    protected function setTimeout($parameters)
+    protected function setTimeout(array $parameters): void
     {
         static::$timeout = $parameters['timeout'];
     }
 
-    /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    private function getCurrentPage()
+    private function getCurrentPage(): PageObject
     {
         return $this->getSubcontext('navigation')->getCurrentPage();
     }

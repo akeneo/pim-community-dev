@@ -6,7 +6,7 @@ import {
   SubNavigationItem,
   SubNavigationPanel,
   Tag,
-  useBooleanState
+  useBooleanState,
 } from 'akeneo-design-system';
 import {useRouter, useTranslate} from '../../hooks';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
@@ -45,7 +45,15 @@ type Props = SubNavigationType & {
   freeTrialEnabled?: boolean;
 };
 
-const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode, activeSubEntryCode, freeTrialEnabled}) => {
+const SubNavigation: FC<Props> = ({
+  title,
+  sections,
+  entries,
+  backLink,
+  stateCode,
+  activeSubEntryCode,
+  freeTrialEnabled,
+}) => {
   const translate = useTranslate();
   const router = useRouter();
   const subNavigationState = sessionStorage.getItem(`collapsedColumn_${stateCode}`);
@@ -88,6 +96,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                 .filter(subNav => subNav.sectionCode === section.code)
                 .map(subEntry => (
                   <StyledSubNavigationItem
+                    id={subEntry.code}
                     active={subEntry.code === activeSubEntryCode}
                     key={subEntry.code}
                     href={subEntry.disabled ? undefined : `#${router.generate(subEntry.route, subEntry.routeParams)}`}
@@ -97,12 +106,12 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                     hasIconTag={subEntry.disabled && freeTrialEnabled}
                   >
                     {subEntry.title}
-                    {subEntry.disabled && freeTrialEnabled &&
-                      <Tag tint='blue'>
+                    {subEntry.disabled && freeTrialEnabled && (
+                      <Tag tint="blue">
                         <StyledLockIcon size={16} color={theme.color.blue100}/>
                       </Tag>
-                    }
-                    {subEntry.new && <Tag tint='green'>New</Tag>}
+                    )}
+                    {subEntry.new && <Tag tint="green">New</Tag>}
                   </StyledSubNavigationItem>
                 ))}
             </Section>
@@ -112,7 +121,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
         PIM-10029: This div is added so that legacy modules could inject necessary content into sub-navigation panel
         such as filters. It is a shortcut until a proper solution is developed
         */}
-        <div className="subnavigation-additional-container"/>
+        <div className="subnavigation-additional-container" />
       </SubNavigationPanel>
     </SubNavContainer>
   );
@@ -145,7 +154,7 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean, ha
   ${Tag} {
     align-self: center;
     box-sizing: content-box;
-    
+
     ${({hasIconTag}) => hasIconTag && css`
       height: 24px;
       padding: 0;
@@ -153,9 +162,11 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean, ha
     `
   }
 
-  ${({disabled}) => disabled && css`
-    cursor: pointer;
-  `}
+  ${({disabled}) =>
+    disabled &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 const StyledLockIcon = styled(LockIcon)`

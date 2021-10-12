@@ -19,6 +19,7 @@ define([
   'pim/i18n',
   'pim/common/property',
   'pim/template/mass-edit/product/edit-common-attributes',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -31,7 +32,8 @@ define([
   FetcherRegistry,
   i18n,
   propertyAccessor,
-  template
+  template,
+  analytics
 ) {
   return BaseOperation.extend({
     className: 'AknGridContainer--withoutNoDataPanel',
@@ -118,6 +120,10 @@ define([
      */
     updateModel: function (event) {
       this.setValue(event.values);
+
+      analytics.track('product-grid:mass-edit:attributes-added', {
+        values: event.values,
+      });
     },
 
     /**

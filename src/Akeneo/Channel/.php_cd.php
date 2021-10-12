@@ -16,7 +16,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
-        'Twig_Environment',
+        'Twig',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',

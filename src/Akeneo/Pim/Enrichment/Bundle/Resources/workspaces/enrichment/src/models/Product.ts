@@ -8,6 +8,7 @@ type VariantNavigation = {
 };
 
 type Product = {
+  identifier: string;
   meta: {
     level: null | number;
     attributes_for_this_level: string[];

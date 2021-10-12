@@ -16,7 +16,8 @@ define([
   'pim/form/common/edit-form',
   'oro/loading-mask',
   'pim/template/mass-edit/form',
-], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template) {
+  'pim/analytics',
+], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     currentStep: 'choose',
@@ -80,6 +81,7 @@ define([
           previousLabel: __('pim_common.previous'),
           nextLabel: __('pim_common.next'),
           confirmLabel: __('pim_common.confirm'),
+          selectActionLabel: __('pim_datagrid.mass_action.default.select_action'),
           illustrationClass: step.getIllustrationClass(),
           __: __,
         })
@@ -168,6 +170,10 @@ define([
      * @param {String} action
      */
     applyAction: function (action) {
+      analytics.track('grid:mass-edit:action-step', {
+        name: action,
+      });
+
       switch (action) {
         case 'grid':
           router.redirectToRoute(this.config.backRoute);

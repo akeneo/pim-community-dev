@@ -7,6 +7,7 @@ const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
 const mediator = require('oro/mediator');
 const featureFlags = require('pim/feature-flags');
+const analytics = require('pim/analytics');
 
 const dependencies = {
   router,
@@ -19,6 +20,7 @@ const dependencies = {
   },
   mediator,
   featureFlags,
+  analytics,
 };
 
 export {dependencies};

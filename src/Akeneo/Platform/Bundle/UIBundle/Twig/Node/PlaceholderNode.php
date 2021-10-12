@@ -6,6 +6,7 @@ use \Twig_Node_Expression_Constant;
 use \Twig_Node_Expression_Function;
 use \Twig_Node_Include;
 use \Twig_Node_Print;
+use Twig\Node\Node;
 
 class PlaceholderNode extends \Twig_Node
 {
@@ -68,12 +69,12 @@ class PlaceholderNode extends \Twig_Node
                     // {{ render(controller('Bundle:Directory:controllerAction', { action: attributes })) }}
                     $controllerFunctionExpression = new Twig_Node_Expression_Function(
                         'controller',
-                        new \Twig_Node([$expression, $attributes]),
+                        new Node([$expression, $attributes]),
                         $this->lineno
                     );
                     $renderFunctionExpression = new Twig_Node_Expression_Function(
                         'render',
-                        new \Twig_Node(['uri' => $controllerFunctionExpression]),
+                        new Node(['uri' => $controllerFunctionExpression]),
                         $this->lineno
                     );
 
