@@ -9,6 +9,7 @@ import {
 import {FilterValuesMapping} from './FilterValues';
 import {SelectOptionFetcher} from '../fetchers';
 import {useRouter} from '@akeneo-pim-community/shared';
+import styled from "styled-components";
 
 type ProductExportBuilderFilterProps = {
   attribute: TableAttribute;
@@ -16,6 +17,10 @@ type ProductExportBuilderFilterProps = {
   onChange: (val: BackendTableFilterValue) => void;
   initialDataFilter: PendingBackendTableFilterValue;
 };
+
+const FieldContainer = styled.div`
+  margin-bottom: 0;
+`
 
 const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   attribute,
@@ -27,8 +32,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   const handleChange = (filter: PendingTableFilterValue) => {
     if (
       typeof filter.operator !== 'undefined' &&
-      typeof filter.column !== 'undefined' &&
-      typeof filter.value !== 'undefined'
+      typeof filter.column !== 'undefined'
     ) {
       onChange({
         operator: filter.operator,
@@ -55,7 +59,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   }, []);
 
   return (
-    <div className='AknFieldContainer AknFieldContainer--big'>
+    <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
       <div className='AknFieldContainer-inputContainer'>
         {initialFilter && (
           <FilterSelectorList
@@ -67,7 +71,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
           />
         )}
       </div>
-    </div>
+    </FieldContainer>
   );
 };
 

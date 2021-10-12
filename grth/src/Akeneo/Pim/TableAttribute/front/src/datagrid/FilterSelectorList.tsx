@@ -14,6 +14,19 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
       ? css`
           display: flex;
           width: 100%;
+          & > div:not(:last-child) {
+            input, ul {
+              border-right-width: 0;
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+            }
+          }
+          & > div:not(:first-child) {
+            input, ul {
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+          }
         `
       : css`
           margin-top: 20px;
@@ -78,8 +91,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
   const isValid = (newFilter: PendingTableFilterValue) => {
     return (
       typeof newFilter.column !== 'undefined' &&
-      typeof newFilter.operator !== 'undefined' &&
-      typeof newFilter.value !== 'undefined'
+      typeof newFilter.operator !== 'undefined'
     );
   };
 

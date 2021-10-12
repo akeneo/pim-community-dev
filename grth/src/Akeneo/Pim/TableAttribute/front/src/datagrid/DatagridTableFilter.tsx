@@ -7,6 +7,11 @@ import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {BackendTableFilterValue, FilterSelectorList, PendingTableFilterValue} from './FilterSelectorList';
 
+const FilterBox = styled.div`
+  margin-bottom: 10px;
+  width: 200px;
+`
+
 const FilterSectionTitleTitle = styled(SectionTitle.Title)`
   color: ${getColor('brand', 100)};
 `;
@@ -58,8 +63,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 
   const isValid =
     typeof filterValue.column !== 'undefined' &&
-    typeof filterValue.operator !== 'undefined' &&
-    typeof filterValue.value !== 'undefined';
+    typeof filterValue.operator !== 'undefined';
 
   const handleValidate = () => {
     if (isValid) {
@@ -111,13 +115,13 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
           </FilterContainer>
         </Dropdown.Overlay>
       )}
-      <div className='AknFilterBox-filter' onClick={open}>
+      <FilterBox className='AknFilterBox-filter' onClick={open}>
         {showLabel && <span className='AknFilterBox-filterLabel'>{label}</span>}
         <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaLabel}>
           {criteriaLabel}
         </span>
         <span className='AknFilterBox-filterCaret' />
-      </div>
+      </FilterBox>
       {canDisable && (
         <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable} />
       )}
