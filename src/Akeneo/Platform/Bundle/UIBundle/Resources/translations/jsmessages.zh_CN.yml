@@ -403,3 +403,7 @@ pim_system:
     enabled: SSO 已启用
     disabled: SSO 已禁用
     title: 基于 SAML 的单点登录
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: 选择操作
