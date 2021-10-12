@@ -86,12 +86,13 @@ LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | s
 
 if helm3 list -n "${PFID}" | grep "${PFID}"; then
   helm3 uninstall ${PFID} -n ${PFID}
-
-  echo "Wait MySQL deletion"
-  POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
-  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
 fi
 
+echo "Wait MySQL deletion"
+POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+
+echo "Running terraform destroy"
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "Remove PODS"
