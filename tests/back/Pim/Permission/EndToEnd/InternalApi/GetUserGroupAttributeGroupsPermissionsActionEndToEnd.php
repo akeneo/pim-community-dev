@@ -70,36 +70,16 @@ class GetUserGroupAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
 
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        /* expected result :
-         * [
-         *     'edit' => [
-         *         'all' => false,
-         *         'identifiers' => ['attribute_group_A', 'attribute_group_C'],
-         *     ],
-         *     'view' => [
-         *         'all' => true,
-         *         'identifiers' => [],
-         *     ],
-         * ];
-         */
-        Assert::assertCount(2, $result);
-
-        Assert::assertArrayHasKey('edit', $result);
-        Assert::assertIsArray($result['edit']);
-        Assert::assertCount(2, $result['edit']);
-        Assert::assertArrayHasKey('all', $result['edit']);
-        Assert::assertFalse($result['edit']['all']);
-        Assert::assertArrayHasKey('identifiers', $result['edit']);
-        Assert::assertEqualsCanonicalizing(['attribute_group_A', 'attribute_group_C'], $result['edit']['identifiers']);
-
-        Assert::assertArrayHasKey('view', $result);
-        Assert::assertIsArray($result['view']);
-        Assert::assertCount(2, $result['view']);
-        Assert::assertArrayHasKey('all', $result['view']);
-        Assert::assertTrue($result['view']['all']);
-        Assert::assertArrayHasKey('identifiers', $result['view']);
-        Assert::assertIsArray($result['view']['identifiers']);
-        Assert::assertCount(0, $result['view']['identifiers']);
+        Assert::assertSame([
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['attribute_group_A', 'attribute_group_C'],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+        ], $result);
     }
 
     protected function getConfiguration(): Configuration
