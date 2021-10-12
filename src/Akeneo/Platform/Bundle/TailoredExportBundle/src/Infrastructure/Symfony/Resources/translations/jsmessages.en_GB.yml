@@ -57,6 +57,7 @@ akeneo.tailored_export:
         attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
         association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
         property: This property is invalid, please remove this source and add it again.
+        asset_collection_main_media: The main media of the asset collection used by the attribute was not found, please check the asset family settings.
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
       deleted_attribute:
@@ -78,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Amount
           currency: Currency
+          main_media: Main media
           key: Filekey
           path: Path
           name: Filename
+        asset_collection:
+          property: Property
+          with_prefix_and_suffix: Add prefix & suffix
         format: Format
         parent:
           information:
@@ -124,6 +129,28 @@ akeneo.tailored_export:
           disabled: Disabled replacement value
           yes: Yes replacement value
           no: No replacement value
+          edit_mapping: Edit replacement values
+          modal:
+            title: Replacement
+            subtitle: Manage options
+            no_result:
+              title: Sorry, there is no value for this attribute
+            empty_result:
+              title: Sorry, there is no result for your search
+              text: Try again with new search criteria.
+            filters:
+              mapped:
+                label: Display
+                unmapped: All values without replacement
+                mapped: All values with replacement
+                all: All values
+            table:
+              header:
+                values: Values
+                replacement: Replacement values
+              field:
+                to_placeholder: Define the replacement value
+            validation_error: Some replacement values are invalid, please refer to the error messages below each field.
         default_value:
           title: Use default value when empty
           label: Default value
@@ -165,6 +192,12 @@ akeneo.tailored_export:
       locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
       channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
       invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
+    asset_collection:
+      locale_should_not_be_blank: The main media attribute of asset family {{ asset_family_code }} now has a value per locale. Please either create it or select a different source.
+      channel_should_not_be_blank: The main media attribute of asset family {{ asset_family_code }} now has a value per channel. Please either create it or select a different source.
+      locale_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per locale anymore. Please either create it or select a different source.
+      channel_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per channel anymore. Please either create it or select a different source.
+      invalid_type: The main media attribute type of asset family {{ asset_family_code }} has changed. Please either create it or select a different source.
     measurement:
       family:
         does_not_exist: The measurement family {{ measurement_family_code }} does not exist.
