@@ -84,11 +84,13 @@ export KUBECONFIG=.kubeconfig
 # grep -v mysql because the mysql disk is manage by terraform process
 LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
 
-helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID}
+if helm3 list -n "${PFID}" | grep "${PFID}"; then
+  helm3 uninstall ${PFID} -n ${PFID}
 
-echo "Wait MySQL deletion"
-POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
-kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+  echo "Wait MySQL deletion"
+  POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+fi
 
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
