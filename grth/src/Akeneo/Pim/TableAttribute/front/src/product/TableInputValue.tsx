@@ -78,7 +78,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const userContext = useUserContext();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
-  const [currentViolatedCells, setCurrentViolatedCells] = React.useState<ViolatedCell[]>(violatedCells);
+  const [dirtyCells, setDirtyCells] = React.useState<ViolatedCell[]>([]);
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
@@ -94,16 +94,18 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     setCurrentPage(0);
   }, [searchText]);
 
-  const deleteValidationErrors = (uniqueId: string, columnCode: ColumnCode | undefined) => {
-    const newViolatedCells = currentViolatedCells.filter((cell: ViolatedCell) => {
-      return !(cell.id === uniqueId && (typeof columnCode === 'undefined' || cell.columnCode === columnCode));
-    });
-    setCurrentViolatedCells(newViolatedCells);
+  const addDirtyCell = (id: string, columnCode: ColumnCode | undefined) => {
+    if (typeof columnCode === 'undefined') {
+      attribute.table_configuration.forEach(columnDefinition => dirtyCells.push({id, columnCode: columnDefinition.code}));
+    } else {
+      dirtyCells.push({id, columnCode});
+    }
+    setDirtyCells([...dirtyCells]);
   };
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
-    deleteValidationErrors(uniqueId, columnCode);
+    addDirtyCell(uniqueId, columnCode);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
       if (typeof cellValue === 'undefined') {
@@ -145,7 +147,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueData.length, filteredData.length, itemsPerPage, currentPage, setCurrentPage]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
-    return currentViolatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
+    return violatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode) &&
+      !dirtyCells.some(dirtyCell => dirtyCell.id === id && dirtyCell.columnCode === columnCode);
   };
 
   const handleReorder = (indexesFromPage: number[]) => {
@@ -166,13 +169,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isOpenActions = (uniqueId: string) => isActionsOpened === uniqueId;
 
   const handleDeleteRow = (uniqueId: string) => {
-    deleteValidationErrors(uniqueId, undefined);
+    addDirtyCell(uniqueId, undefined);
     onChange?.(valueData.filter(row => row['unique id'] !== uniqueId));
   };
 
   const handleClearRow = (uniqueId: string) => {
     closeActions();
-    deleteValidationErrors(uniqueId, undefined);
+    addDirtyCell(uniqueId, undefined);
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];

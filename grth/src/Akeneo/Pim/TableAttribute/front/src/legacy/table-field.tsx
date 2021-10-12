@@ -37,6 +37,7 @@ export type Violations = {path: string; attribute: string; locale: LocaleCode | 
 class TableField extends (Field as {new (config: any): any}) {
   private violations: Violations[] = [];
   private selected: boolean;
+  private configured: boolean;
 
   constructor(config: any) {
     super({...config, className: 'AknComparableFields AknComparableFields--maxLength field-container'});
@@ -45,6 +46,11 @@ class TableField extends (Field as {new (config: any): any}) {
     this.copyContext = undefined;
     this.selected = false;
     this.fieldType = 'akeneo-table-field';
+    this.configured = false;
+  }
+
+  clearViolations() {
+    this.violations = [];
   }
 
   setFilteredViolations(event: {response: {values: Violations[]}}, attributeCode: string) {
@@ -55,6 +61,11 @@ class TableField extends (Field as {new (config: any): any}) {
 
   render() {
     ReactDOM.unmountComponentAtNode(this.el);
+
+    if (!this.configured) {
+      this.listenTo(mediator, 'pim_enrich:form:entity:post_save', this.clearViolations.bind(this));
+      this.configured = true;
+    }
 
     this.setEditable(!this.locked);
     this.setValid(true);
