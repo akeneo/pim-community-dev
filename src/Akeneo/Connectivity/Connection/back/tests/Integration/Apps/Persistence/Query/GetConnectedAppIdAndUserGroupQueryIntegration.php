@@ -86,6 +86,7 @@ class GetConnectedAppIdAndUserGroupQueryIntegration extends TestCase
             'connectionCode_' . $appPublicId,
             'http://www.example.com/path/to/logo',
             'author',
+            'userGroup_' . $appPublicId,
             [],
             false,
             'partner'

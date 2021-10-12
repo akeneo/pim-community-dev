@@ -7,6 +7,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -21,6 +22,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
     private DbalConnectedAppRepository $repository;
     private Connection $connection;
     private ConnectionLoader $connectionLoader;
+    private UserGroupLoader $userGroupLoader;
 
     protected function setUp(): void
     {
@@ -29,11 +31,13 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         $this->repository = $this->get(DbalConnectedAppRepository::class);
         $this->connection = $this->get('database_connection');
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
+        $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
     }
 
     public function test_it_persist_an_app(): void
     {
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $this->repository->create(
             new ConnectedApp(
@@ -43,6 +47,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
                 'bynder',
                 'app logo',
                 'app author',
+                'app_123456abcdef',
                 ['e-commerce'],
                 false,
                 'akeneo'
@@ -61,12 +66,14 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'certified' => '0',
             'connection_code' => 'bynder',
             'scopes' => '["foo", "bar"]',
+            'user_group_name' => 'app_123456abcdef',
         ], $row);
     }
 
     public function test_it_can_retrieve_an_app(): void
     {
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $createdApp = new ConnectedApp(
             '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
@@ -75,6 +82,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'bynder',
             'app logo',
             'app author',
+            'app_123456abcdef',
             ['e-commerce'],
             false,
             'akeneo'
@@ -89,6 +97,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
     public function test_it_can_retrieve_an_app_by_connection_code(): void
     {
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $createdApp = new ConnectedApp(
             '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
@@ -97,6 +106,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'bynder',
             'app logo',
             'app author',
+            'app_123456abcdef',
             ['e-commerce'],
             false,
             'akeneo'
@@ -111,6 +121,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
     public function test_it_finds_all_ordered_by_name()
     {
         $this->connectionLoader->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
+        $this->userGroupLoader->create(['name' => 'app_7891011ghijkl']);
         $createdAppB = new ConnectedApp(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
             'App B',
@@ -118,6 +129,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'connectionCodeB',
             'http://www.example.com/path/to/logo/b',
             'author B',
+            'app_7891011ghijkl',
             ['category B1'],
             true,
             null
@@ -125,6 +137,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         $this->repository->create($createdAppB);
 
         $this->connectionLoader->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
         $createdAppA = new ConnectedApp(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
             'App A',
@@ -132,6 +145,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'connectionCodeA',
             'http://www.example.com/path/to/logo/a',
             'author A',
+            'app_123456abcdef',
             ['category A1', 'category A2'],
             false,
             'partner A'

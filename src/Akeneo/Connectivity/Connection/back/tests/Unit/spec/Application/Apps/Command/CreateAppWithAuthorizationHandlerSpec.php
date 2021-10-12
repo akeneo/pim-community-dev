@@ -248,10 +248,11 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ['a_scope'],
             'random_connection_code',
             'a/path/to/a/logo',
-            'an_author'
+            'an_author',
+            'a_group'
         );
         $createApp
-            ->execute($app, ['a_scope'], 'random_connection_code')
+            ->execute($app, ['a_scope'], 'random_connection_code', 'a_group')
             ->willReturn($connectedApp)
             ->shouldBeCalled();
 
