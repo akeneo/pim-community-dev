@@ -880,14 +880,6 @@ workflows:
                 name: marketplace_activate_e2e_ce
                 requires:
                   - marketplace_activate_e2e?
-          - test_octopus_code_quality?:
-              type: approval
-              requires:
-                - build_dev_ce
-          - test_octopus_code_quality:
-              name: test_octopus_code_quality
-              requires:
-                - test_octopus_code_quality?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
