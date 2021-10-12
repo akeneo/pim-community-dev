@@ -21,11 +21,11 @@ class GetUserGroupAttributeGroupsAccesses
 
     /**
      * @return array{
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
@@ -52,11 +52,11 @@ class GetUserGroupAttributeGroupsAccesses
 
     /**
      * @param array{
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
@@ -85,11 +85,11 @@ SQL;
 
     /**
      * @param array{
-     *     edit: array {
+     *     edit: array{
      *         all: bool,
      *         identifiers: string[]
      *     },
-     *     view: array {
+     *     view: array{
      *         all: bool,
      *         identifiers: string[]
      *     }
