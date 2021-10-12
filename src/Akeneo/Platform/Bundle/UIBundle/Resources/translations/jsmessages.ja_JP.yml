@@ -403,3 +403,7 @@ pim_system:
     enabled: SSO有効
     disabled: SSO無効
     title: SAMLベースのシングルサインオン
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: アクションを選択
