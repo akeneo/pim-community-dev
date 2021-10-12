@@ -124,6 +124,7 @@
 - CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7 in /front-packages/shared
 - PIM-10094: Increase product grid filters limit display in user settings
 - PIM-10101: Fix incorrect count of families selection in the family grid
+- PIM-10107: Hide add quantified association button when ACL is not granted
 
 ## New features
 
