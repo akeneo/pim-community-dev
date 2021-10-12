@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -40,7 +40,8 @@ final class ProductFiltersValidator extends ConstraintValidator
                 ->getValidator()
                 ->inContext($this->context)
                 ->atPath(sprintf('[%s]', $filter['field']))
-                ->validate($filter, new Assert\Collection([
+                ->validate($filter, new Assert\Collection(
+                    [
                     'fields' => [
                         'field' => new Assert\NotBlank(),
                         'operator' => new Assert\NotBlank(),
@@ -62,7 +63,7 @@ final class ProductFiltersValidator extends ConstraintValidator
                     ],
                     'allowExtraFields' => true,
                 ]
-            ));
+                ));
         }
     }
 }
