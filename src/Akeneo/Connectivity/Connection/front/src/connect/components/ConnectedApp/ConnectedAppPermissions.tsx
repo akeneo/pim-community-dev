@@ -1,35 +1,17 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
-import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
+import {PermissionFormProvider} from '../../../shared/permission-form-registry';
 import {PermissionsForm} from '../PermissionsForm';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 type Props = {
     connectedApp: ConnectedApp;
+    providers: PermissionFormProvider<any>[];
+    setPermissions: (state: any) => void;
+    permissions: PermissionsByProviderKey;
 };
 
-export const ConnectedAppPermissions: FC<Props> = ({connectedApp}) => {
-    const permissionFormRegistry = usePermissionFormRegistry();
-    const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
-    const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
-
-    useEffect(() => {
-        permissionFormRegistry.all().then(providers => {
-            Promise.all(providers.map(provider => provider.loadPermissions(connectedApp.user_group_name))).then(
-                providersPermissions => {
-                    providers.map((provider, index) => {
-                        setPermissions((permissions: PermissionsByProviderKey) => ({
-                            ...permissions,
-                            [provider.key]: providersPermissions[index],
-                        }));
-                    });
-
-                    setProviders(providers);
-                }
-            );
-        });
-    }, []);
-
+export const ConnectedAppPermissions: FC<Props> = ({connectedApp, providers, setPermissions, permissions}) => {
     return (
         <>
             {providers.map(provider => (

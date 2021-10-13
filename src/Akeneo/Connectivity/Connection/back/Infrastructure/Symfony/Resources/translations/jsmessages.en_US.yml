@@ -94,6 +94,10 @@ akeneo_connectivity.connection:
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                flash:
+                    permissions_error.title: 'Permissions on {{ entity }} could not be updated.'
+                    permissions_error.description: Please check the App permission settings.
+                    success: App settings successfully updated.
         apps:
             flash:
                 permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
