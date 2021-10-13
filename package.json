@@ -27,7 +27,7 @@
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "dsm:build": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile; yarn --cwd=front-packages/akeneo-design-system lib:build",
-    "shared:build": "yarn --cwd=front-packages/shared install --frozen-lockfile; yarn --cwd=front-packages/shared lib:build",
+    "shared:build": "yarn --cwd=front-packages/shared lib:build",
     "measurement:build": "yarn --cwd=front-packages/measurement install --frozen-lockfile; yarn --cwd=front-packages/measurement lib:build",
     "packages:build": "yarn dsm:build; yarn shared:build; yarn measurement:build",
     "packages:unit": "yarn --cwd=front-packages/shared test:unit:run && yarn --cwd=front-packages/measurement test:unit:run",
@@ -47,14 +47,13 @@
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.10.4",
     "@testing-library/cypress": "^7.0.4",
-    "@testing-library/dom": "^6.3.0",
-    "@testing-library/jest-dom": "^5.11.3",
-    "@testing-library/react": "^10.4.8",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
     "@testing-library/react-hooks": "^3.4.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/user-event": "^12.8.3",
     "@types/backbone": "1.4.8",
     "@types/diff": "^5.0.0",
-    "@types/jest": "^26.0.14",
+    "@types/jest": "^26.0.22",
     "@types/jquery": "^3.3.31",
     "@types/lodash": "^4.14.145",
     "@types/luxon": "^1.26.2",
@@ -115,7 +114,6 @@
   },
   "dependencies": {
     "@akeneo-pim-community/measurement": "link:front-packages/measurement",
-    "@akeneo-pim-community/shared": "link:front-packages/shared",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
@@ -155,6 +153,7 @@
     "src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
-    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
+    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
+    "front-packages/shared"
   ]
 }
