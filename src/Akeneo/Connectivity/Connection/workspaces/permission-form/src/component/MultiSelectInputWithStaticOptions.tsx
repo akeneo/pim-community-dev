@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {getColor} from 'akeneo-design-system';
 import styled from 'styled-components';
 
@@ -28,21 +28,6 @@ type Props = {
     onRemove?: (value: string) => void;
     options: Select2Option[];
 };
-
-const StyledSelect = styled.input`
-    & li.select2-search-choice {
-        color: ${getColor('grey', 140)} !important;
-        border: 1px ${getColor('grey', 80)} solid !important;
-        background-color: ${getColor('grey', 20)} !important;
-        align-items: center !important;
-        padding-left: 26px !important;
-    }
-    & .select2-search-choice-close {
-        opacity: 0.4 !important;
-        background-size: 16px !important;
-        left: 6px !important;
-    }
-`;
 
 export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, onAdd, onRemove, options}: Props) => {
     const ref = useRef<HTMLSelectElement>(null);
