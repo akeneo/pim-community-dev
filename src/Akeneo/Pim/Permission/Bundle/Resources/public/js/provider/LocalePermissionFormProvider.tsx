@@ -22,6 +22,7 @@ import {Actions} from '@akeneo-pim-community/permission-form/src/reducer/Permiss
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
+const routing = require('routing');
 const securityContext = require('pim/security-context');
 
 const Field = styled.div`
