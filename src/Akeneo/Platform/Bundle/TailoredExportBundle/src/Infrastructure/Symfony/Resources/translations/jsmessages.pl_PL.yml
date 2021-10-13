@@ -57,6 +57,7 @@ akeneo.tailored_export:
         attribute: Ten atrybut został usunięty i odtworzony za pomocą innego typu. Usuń to źródło i dodaj je ponownie.
         association_type: Ten typ powiązania został usunięty i odtworzony za pomocą innego typu. Usuń to źródło i dodaj je ponownie.
         property: Ta właściwość jest nieprawidłowa. Usuń to źródło i dodaj je ponownie.
+        asset_collection_main_media: Nie znaleziono głównych mediów kolekcji zasobów wykorzystywanych przez atrybut. Sprawdź ustawienie rodziny zasobów.
       no_source_configuration:
         title: Dla tego źródła nie ma dostępnych operacji. Jego wartość zostanie wyeksportowana bez zmian.
       deleted_attribute:
@@ -78,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Kwota
           currency: Waluta
+          main_media: Główne media
           key: Klucz pliku
           path: Ścieżka
           name: Nazwa pliku
+        asset_collection:
+          property: Właściwość
+          with_prefix_and_suffix: Dodaj prefiks i sufiks
         format: Format
         parent:
           information:
@@ -124,6 +129,28 @@ akeneo.tailored_export:
           disabled: Wyłączona wartość zastępcza
           yes: Istnieje wartość zastępcza
           no: Brak wartości zastępczej
+          edit_mapping: Edytuj wartości zastępcze
+          modal:
+            title: Zastąpienie
+            subtitle: Zarządzaj opcjami
+            no_result:
+              title: Przepraszamy, w tym atrybucie nie ma żadnej wartości.
+            empty_result:
+              title: Brak wyników Twojego wyszukiwania.
+              text: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+            filters:
+              mapped:
+                label: Wyświetl
+                unmapped: Wszystkie wartości bez zastąpienia
+                mapped: Wszystkie wartości z zastąpieniem
+                all: Wszystkie wartości
+            table:
+              header:
+                values: Wartości
+                replacement: Wartości zastępcze
+              field:
+                to_placeholder: Zdefiniuj wartość zastępczą
+            validation_error: Niektóre wartości zastępcze są nieprawidłowe. Zapoznaj się z komunikatami o błędach pod każdym polem.
         default_value:
           title: Użyj wartości domyślnej przy braku zadanej
           label: Wartość domyślna
@@ -165,6 +192,12 @@ akeneo.tailored_export:
       locale_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od ustawień regionalnych. Utwórz go lub wybierz inne źródło.
       channel_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od kanału. Utwórz go lub wybierz inne źródło.
       invalid_specific_locale: Atrybut {{ attribute_code }} jest przypisany do ustawień regionalnych. Wybierz inną wersję językową.
+    asset_collection:
+      locale_should_not_be_blank: Atrybut głównych mediów rodziny zasobów {{ attribute_code }} ma obecnie wartość zależną od wersji językowej. Utwórz go lub wybierz inne źródło.
+      channel_should_not_be_blank: Atrybut głównych mediów rodziny zasobów {{ attribute_code }} ma obecnie wartość zależną od kanału. Utwórz go lub wybierz inne źródło.
+      locale_should_be_blank: Atrybut głównych mediów rodziny zasobów {{ attribute_code }} nie ma już wartości zależnej od wersji językowej. Utwórz go lub wybierz inne źródło.
+      channel_should_be_blank: Atrybut głównych mediów rodziny zasobów {{ attribute_code }} nie ma już wartości zależnej od kanału. Utwórz go lub wybierz inne źródło.
+      invalid_type: Atrybut głównych mediów rodziny zasobów {{ attribute_code }} zmienił się. Utwórz go lub wybierz inne źródło.
     measurement:
       family:
         does_not_exist: Rodzina miar {{ measurement_family_code }} nie istnieje.
