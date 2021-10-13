@@ -86,12 +86,41 @@ const AppcuesOnboarding: PimOnboarding = {
       }
 
       switch (event) {
-        case 'product-grid:view:saved':
-          if (eventOptions && eventOptions.name) {
-            appcues.track('View "' + eventOptions.name + '" saved');
-          }
+        case 'grid:item:selected':
+          if (eventOptions) {
+            if (eventOptions.name === 'product-grid' && eventOptions.entityHint === 'product') {
+              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'PLGCHAELK001') {
+                appcues.track('Product "Elka Peacock Armchair" selected');
+              }
 
-          appcues.track('View saved');
+              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
+                appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
+              }
+
+              appcues.track('Product selected');
+            }
+
+            if (eventOptions.name === 'export-profile-grid' && eventOptions.entityHint === 'export profile') {
+              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
+                appcues.track('Export profile "Printers for Amazon (weekly)" selected');
+              }
+
+              appcues.track('Export profile selected');
+            }
+
+            if (eventOptions.name === 'family-grid' && eventOptions.entityHint === 'family') {
+              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.label === 'Tires') {
+                appcues.track('Family "Tires" selected');
+              }
+
+              appcues.track('Family selected');
+            }
+          }
+          break;
+        case 'grid:item:all-selected':
+          if (eventOptions && eventOptions.inputName === 'product-grid') {
+            appcues.track('All products are selected');
+          }
           break;
         case 'product-grid:view:selected':
           if (eventOptions && eventOptions.name) {
@@ -100,50 +129,19 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('View selected');
           break;
+        case 'product-grid:view:saved':
+          if (eventOptions && eventOptions.name) {
+            appcues.track('View "' + eventOptions.name + '" saved');
+          }
+
+          appcues.track('View saved');
+          break;
         case 'product-grid:column:selected':
           if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.column && eventOptions.column.includes('designer')) {
             appcues.track('Column "Designer" added in the product grid');
           }
 
           appcues.track('Column added in the product grid');
-          break;
-        case 'grid:item:selected':
-          if (eventOptions && eventOptions.model && eventOptions.model.attributes) {
-            if (eventOptions.name === 'product-grid' && eventOptions.entityHint === 'product') {
-              if (eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'PLGCHAELK001') {
-                appcues.track('Product "Elka Peacock Armchair" selected');
-              }
-
-              if (eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
-                appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
-              }
-
-              appcues.track('Product selected');
-            }
-
-            if (eventOptions.name === 'export-profile-grid' && eventOptions.entityHint === 'export profile') {
-              if (eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
-                appcues.track('Export profile "Printers for Amazon (weekly)" selected');
-              }
-
-              appcues.track('Export profile selected');
-            }
-
-            if (eventOptions.name === 'family-grid' && eventOptions.entityHint === 'family') {
-              if (eventOptions.model.attributes && eventOptions.model.attributes.label === 'Tires') {
-                appcues.track('Family "Tires" selected');
-              }
-
-              appcues.track('Family selected');
-            }
-          }
-          break;
-        case 'product-grid:completeness:opened':
-          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
-            appcues.track('Completeness badge for product "Elka Peacock Armchair" opened');
-          }
-
-          appcues.track('Completeness badge opened in product edit form');
           break;
         case 'product-grid:attribute-group:selected':
           if (eventOptions && eventOptions.code === 'contentcopy') {
@@ -155,6 +153,13 @@ const AppcuesOnboarding: PimOnboarding = {
           }
 
           appcues.track('Attribute group selected in the product grid');
+          break;
+        case 'product-grid:completeness:opened':
+          if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
+            appcues.track('Completeness badge for product "Elka Peacock Armchair" opened');
+          }
+
+          appcues.track('Completeness badge opened in product edit form');
           break;
         case 'product:attribute-value:updated':
           if (eventOptions && eventOptions.attribute === 'winter_designed_tire' && eventOptions.value) {
@@ -183,11 +188,6 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Product model saved');
           break;
-        case 'grid:item:all-selected':
-          if (eventOptions && eventOptions.inputName === 'product-grid') {
-            appcues.track('All products are selected');
-          }
-          break;
         case 'grid:mass-edit:clicked':
           if (eventOptions && eventOptions.name === 'product-edit') {
             appcues.track('Button "Bulk actions" in product grid clicked');
@@ -197,15 +197,6 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Button "Bulk actions" in family grid clicked');
           }
           break;
-        case 'grid:mass-edit:item-chosen':
-          if (eventOptions && eventOptions.code === 'add_attribute_value') {
-            appcues.track('Bulk action "Add attribute values" selected');
-          }
-
-          if (eventOptions && eventOptions.code === 'set_requirements') {
-            appcues.track('Bulk action "Set attributes requirements" selected');
-          }
-          break;
         case 'grid:mass-edit:action-step':
           if (eventOptions && eventOptions.name === 'configure') {
             appcues.track('Clicked on "Next" after choosing a bulk action');
@@ -213,6 +204,15 @@ const AppcuesOnboarding: PimOnboarding = {
 
           if (eventOptions && eventOptions.name === 'validate') {
             appcues.track('Clicked on "Confirm" after configuring a bulk action');
+          }
+          break;
+        case 'grid:mass-edit:item-chosen':
+          if (eventOptions && eventOptions.code === 'add_attribute_value') {
+            appcues.track('Bulk action "Add attribute values" selected');
+          }
+
+          if (eventOptions && eventOptions.code === 'set_requirements') {
+            appcues.track('Bulk action "Set attributes requirements" selected');
           }
           break;
         case 'grid:mass-edit:attributes-added':
