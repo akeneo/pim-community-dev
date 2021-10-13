@@ -16,7 +16,6 @@ const FieldContainer = styled.div`
     border-bottom: 1px solid ${getColor('grey', 60)};
     color: ${getColor('grey', 140)};
     display: flex;
-    align-items: end;
 `;
 const Level = styled.span`
     color: ${getColor('purple', 100)};
@@ -33,6 +32,11 @@ const LevelContainer = styled.div`
 `;
 const LevelItemsContainer = styled.div`
     width: 390px;
+    line-height: 16px;
+    margin-top: 3px;
+`;
+const StyledSection = styled.div`
+    margin-bottom: 10px;
 `;
 
 type FieldProps = {
@@ -53,12 +57,12 @@ type SectionProps = {
     label: string;
 };
 const PermissionSectionSummary: FC<PropsWithChildren<SectionProps>> = ({label, children}) => (
-    <>
+    <StyledSection>
         <SectionTitle>
             <H3>{translate(label)}</H3>
         </SectionTitle>
         <div>{children}</div>
-    </>
+    </StyledSection>
 );
 
 export {PermissionSectionSummary, LevelSummaryField};

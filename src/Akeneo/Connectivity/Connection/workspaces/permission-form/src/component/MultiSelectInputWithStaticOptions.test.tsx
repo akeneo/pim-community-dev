@@ -115,7 +115,7 @@ test('it has a new value when the corresponding props changes', () => {
 
     const {rerender} = render(
         <ThemeProvider theme={pimTheme}>
-            <MultiSelectInputWithStaticOptions {...props} options={options}/>
+            <MultiSelectInputWithStaticOptions {...props} options={options} />
         </ThemeProvider>
     );
     rerender(

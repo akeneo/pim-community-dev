@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React, {useEffect, useRef} from 'react';
 import {getColor} from 'akeneo-design-system';
-import styled from 'styled-components';
+import styled, {createGlobalStyle} from 'styled-components';
 
 export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context | null) => Params;
 
@@ -28,6 +28,24 @@ type Props = {
     onRemove?: (value: string) => void;
     options: Select2Option[];
 };
+
+const GlobalStyle = createGlobalStyle`
+    .select2-container.select2-container-disabled .select2-choices {
+        background-position: calc(100% - 10px) 15px;
+    }
+    li.select2-search-choice {
+        color: ${getColor('grey', 140)} !important;
+        border: 1px ${getColor('grey', 80)} solid !important;
+        background-color: ${getColor('grey', 20)} !important;
+        align-items: center !important;
+        padding-left: 26px !important;
+    }
+    .select2-search-choice-close {
+        opacity: 0.4 !important;
+        background-size: 16px !important;
+        left: 6px !important;
+    }
+`;
 
 export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, onAdd, onRemove, options}: Props) => {
     const ref = useRef<HTMLSelectElement>(null);
@@ -80,7 +98,10 @@ export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, on
 
         /* istanbul ignore else */
         if (value.toString() !== select2Value.toString()) {
-            $select.select2('data', options.filter(option => value.indexOf(option.id) >= 0));
+            $select.select2(
+                'data',
+                options.filter(option => value.indexOf(option.id) >= 0)
+            );
         }
     }, [options, value]);
 
@@ -95,13 +116,16 @@ export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, on
     }, [disabled]);
 
     return (
-        <select ref={ref} multiple={true} data-testid='select2'>
-            {options &&
-                options.map(option => (
-                    <option key={option.id} value={option.id}>
-                        {option.text}
-                    </option>
-                ))}
-        </select>
+        <>
+            <GlobalStyle />
+            <select ref={ref} multiple={true} data-testid='select2'>
+                {options &&
+                    options.map(option => (
+                        <option key={option.id} value={option.id}>
+                            {option.text}
+                        </option>
+                    ))}
+            </select>
+        </>
     );
 };
