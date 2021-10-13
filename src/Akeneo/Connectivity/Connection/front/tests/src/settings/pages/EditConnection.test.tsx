@@ -115,7 +115,7 @@ describe('testing EditConnection page', () => {
         const saveButton = getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
-            await userEvent.type(labelInput, 'Magento');
+            userEvent.type(labelInput, 'Magento');
 
             userEvent.click(flowTypeSelect);
             userEvent.click(await screen.findByText('akeneo_connectivity.connection.flow_type.data_destination'));
