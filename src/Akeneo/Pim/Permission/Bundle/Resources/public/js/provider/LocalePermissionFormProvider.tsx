@@ -1,13 +1,6 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import styled from 'styled-components';
-import {
-  getColor,
-  Helper,
-  Locale,
-  EditIcon,
-  ViewIcon,
-  SectionTitle,
-} from 'akeneo-design-system';
+import {getColor, Helper, Locale, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
 import {
   PermissionFormProvider,
   PermissionFormReducer,
@@ -81,30 +74,30 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
 
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
         <PermissionFormWidget
-            selection={state.edit.identifiers}
-            onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
-            onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
-            disabled={state.edit.all}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
-            allByDefaultIsSelected={state.edit.all}
-            onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
-            onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
-            onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-            options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
+          selection={state.edit.identifiers}
+          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
+          disabled={state.edit.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
+          allByDefaultIsSelected={state.edit.all}
+          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
+          options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
         />
 
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
-            selection={state.view.identifiers}
-            onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
-            onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
-            disabled={state.view.all}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
-            allByDefaultIsSelected={state.view.all}
-            onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
-            onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
-            onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
-            options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
+          selection={state.view.identifiers}
+          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
+          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
+          disabled={state.view.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
+          allByDefaultIsSelected={state.view.all}
+          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
+          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
+          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
+          options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
         />
       </>
     );

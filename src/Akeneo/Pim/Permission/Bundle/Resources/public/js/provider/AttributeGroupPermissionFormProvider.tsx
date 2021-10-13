@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import styled from 'styled-components';
 import {getColor, Helper, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
@@ -54,7 +54,12 @@ const processAttributeGroups = (data: Response) => ({
   },
 });
 
-const fetchAttributeGroupsByIdentifiers = (identifiers: string[]) => {
+type Option = {
+  id: string;
+  text: string;
+};
+
+const fetchAttributeGroupsByIdentifiers = (identifiers: string[]): Promise<Option[]> => {
   return FetcherRegistry.getFetcher('attribute-group')
     .fetchByIdentifiers(identifiers)
     .then((results: any) =>
@@ -63,6 +68,21 @@ const fetchAttributeGroupsByIdentifiers = (identifiers: string[]) => {
         text: getLabel(attributeGroup.labels, UserContext.get('uiLocale'), `[${attributeGroup.code}]`),
       }))
     );
+};
+
+type SummaryLabels = {
+  edit: string;
+  view: string;
+};
+
+const getLevelSummary = async (state: PermissionFormReducer.State, level: string): Promise<string> => {
+  if (state[level].all) {
+    return translate('pim_permissions.widget.all');
+  }
+
+  const attributeGroups = await fetchAttributeGroupsByIdentifiers(state[level].identifiers);
+
+  return attributeGroups.map(attributeGroup => attributeGroup.text).join(', ');
 };
 
 type PaginationContext = {
@@ -136,10 +156,10 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
           ajax={{
-              ajaxUrl: attributeGroupsAjaxUrl,
-              processAjaxResponse: processAttributeGroups,
-              fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
-              buildQueryParams: buildQueryParams,
+            ajaxUrl: attributeGroupsAjaxUrl,
+            processAjaxResponse: processAttributeGroups,
+            fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
+            buildQueryParams: buildQueryParams,
           }}
         />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
@@ -154,25 +174,41 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
           onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
           ajax={{
-              ajaxUrl: attributeGroupsAjaxUrl,
-              processAjaxResponse: processAttributeGroups,
-              fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
-              buildQueryParams: buildQueryParams,
+            ajaxUrl: attributeGroupsAjaxUrl,
+            processAjaxResponse: processAttributeGroups,
+            fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
+            buildQueryParams: buildQueryParams,
           }}
         />
       </>
     );
   },
-  renderSummary: (state: PermissionFormReducer.State) => (
-    <PermissionSectionSummary label={'pim_permissions.widget.entity.attribute_group.label'}>
-      <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
-        {state.edit.all ? translate('pim_permissions.widget.all') : state.edit.identifiers.join(', ')}
-      </LevelSummaryField>
-      <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
-        {state.view.all ? translate('pim_permissions.widget.all') : state.view.identifiers.join(', ')}
-      </LevelSummaryField>
-    </PermissionSectionSummary>
-  ),
+  renderSummary: (state: PermissionFormReducer.State) => {
+    const [summaries, setSummaries] = useState<SummaryLabels>({
+      edit: '',
+      view: '',
+    });
+
+    useEffect(() => {
+      (async () => {
+        setSummaries({
+          edit: await getLevelSummary(state, 'edit'),
+          view: await getLevelSummary(state, 'view'),
+        });
+      })();
+    }, [state, setSummaries]);
+
+    return (
+      <PermissionSectionSummary label={'pim_permissions.widget.entity.attribute_group.label'}>
+        <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
+          {summaries.edit}
+        </LevelSummaryField>
+        <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
+          {summaries.view}
+        </LevelSummaryField>
+      </PermissionSectionSummary>
+    );
+  },
   save: async (userGroup: string, state: PermissionFormReducer.State) => {
     if (false === securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')) {
       return Promise.resolve();
