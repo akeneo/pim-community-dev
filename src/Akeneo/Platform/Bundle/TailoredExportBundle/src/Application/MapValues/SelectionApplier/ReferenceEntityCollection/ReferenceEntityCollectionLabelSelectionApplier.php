@@ -46,8 +46,13 @@ class ReferenceEntityCollectionLabelSelectionApplier implements SelectionApplier
             $selection->getLocale()
         );
 
-        $selectedData = array_map(static fn ($recordCode) => $recordTranslations[$recordCode] ??
-            sprintf('[%s]', $recordCode), $recordCodes);
+        $selectedData = array_map(static function ($recordCode) use ($value, $recordTranslations) {
+            if ($value->hasMappedValue($recordCode)) {
+                return $value->getMappedValue($recordCode);
+            }
+
+            return $recordTranslations[$recordCode] ?? sprintf('[%s]', $recordCode);
+        }, $recordCodes);
 
         return implode($selection->getSeparator(), $selectedData);
     }

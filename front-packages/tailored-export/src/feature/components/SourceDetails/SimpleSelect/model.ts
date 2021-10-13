@@ -7,10 +7,13 @@ import {
   isCodeLabelSelection,
   DefaultValueOperation,
   isDefaultValueOperation,
+  ReplacementOperation,
+  isReplacementOperation,
 } from '../common';
 
 type SimpleSelectOperations = {
   default_value?: DefaultValueOperation;
+  replacement?: ReplacementOperation;
 };
 
 type SimpleSelectSource = {
@@ -42,6 +45,8 @@ const isSimpleSelectOperations = (operations: Object): operations is SimpleSelec
     switch (type) {
       case 'default_value':
         return isDefaultValueOperation(operation);
+      case 'replacement':
+        return isReplacementOperation(operation);
       default:
         return false;
     }

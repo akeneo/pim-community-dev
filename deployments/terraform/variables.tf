@@ -129,6 +129,16 @@ variable "akeneo_connect_saml_certificate" {
   type    = string
 }
 
+variable "akeneo_connect_saml_sp_certificate_base64" {
+  default = ""
+  type    = string
+}
+
+variable "akeneo_connect_saml_sp_private_key_base64" {
+  default = ""
+  type    = string
+}
+
 variable "akeneo_connect_api_client_secret" {
   default = ""
   type    = string

@@ -4,6 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {
+  AssetFamily,
   AssociationType,
   Attribute,
   FetcherContext,
@@ -15,6 +16,7 @@ const _ = require('underscore');
 const BaseFilter = require('pim/filter/filter');
 const mediator = require('oro/mediator');
 const fetcherRegistry = require('pim/fetcher-registry');
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 
 class FilterQualityScore extends BaseFilter {
   private validationErrors: ValidationError[] = [];
@@ -134,6 +136,16 @@ class FilterQualityScore extends BaseFilter {
                         .fetch(code)
                         .then(resolve)
                     );
+                  },
+                },
+                assetFamily: {
+                  fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
+                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier);
+                    return {
+                      identifier: assetFamily.identifier,
+                      attribute_as_main_media: assetFamily.attributeAsMainMedia,
+                      attributes: assetFamily.attributes,
+                    };
                   },
                 },
               },

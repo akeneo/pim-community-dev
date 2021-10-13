@@ -195,9 +195,6 @@ create-ci-values: $(INSTANCE_DIR)
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
@@ -291,6 +288,18 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	FT_CATALOG_API_BASE_URI=${FT_CATALOG_API_BASE_URI} \
+	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
+	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
+	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
+	FT_CATALOG_API_USERNAME=${FT_CATALOG_API_USERNAME} \
+	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
+	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
+	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
+	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
+	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
+	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
+	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 

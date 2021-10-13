@@ -6,10 +6,13 @@ import {
   isDefaultValueOperation,
   CodeLabelCollectionSelection,
   isCodeLabelCollectionSelection,
+  ReplacementOperation,
+  isReplacementOperation,
 } from '../common';
 
 type MultiSelectOperations = {
   default_value?: DefaultValueOperation;
+  replacement?: ReplacementOperation;
 };
 
 type MultiSelectSource = {
@@ -41,6 +44,8 @@ const isMultiSelectOperations = (operations: Object): operations is MultiSelectO
     switch (type) {
       case 'default_value':
         return isDefaultValueOperation(operation);
+      case 'replacement':
+        return isReplacementOperation(operation);
       default:
         return false;
     }

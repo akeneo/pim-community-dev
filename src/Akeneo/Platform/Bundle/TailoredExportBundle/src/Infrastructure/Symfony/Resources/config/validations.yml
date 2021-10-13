@@ -1,4 +1,5 @@
 services:
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\AssetCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
@@ -69,6 +70,15 @@ services:
       - { name: validator.constraint_validator }
     public: true
 
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSelectionValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api'
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType\QuantifiedAssociationSelectionValidator:
     arguments:
       - [ ',', ';', '|' ]
@@ -103,6 +113,14 @@ services:
       - '@pim_channel.query.cache.channel_exists_with_locale'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttributeValidator:
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api'
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator }
     public: true
 
   akeneo.tailored_export.validation.locale_should_be_active:

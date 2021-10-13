@@ -1,13 +1,22 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
-import {CodeLabelSelector, DefaultValue, Operations} from '../common';
+import {CodeLabelSelector, DefaultValue, Operations, RecordsReplacement} from '../common';
 import {isReferenceEntitySource} from './model';
 import {InvalidAttributeSourceError} from '../error';
 
-const ReferenceEntityConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
+const ReferenceEntityConfigurator = ({
+  attribute,
+  source,
+  validationErrors,
+  onSourceChange,
+}: AttributeConfiguratorProps) => {
   if (!isReferenceEntitySource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for reference entity configurator`);
+  }
+
+  if (undefined === attribute.reference_data_name) {
+    throw new Error(`Reference entity attribute "${attribute.code}" should have a reference_data_name`);
   }
 
   return (
@@ -17,6 +26,14 @@ const ReferenceEntityConfigurator = ({source, validationErrors, onSourceChange}:
         validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <RecordsReplacement
+        operation={source.operations.replacement}
+        referenceEntityCode={attribute.reference_data_name}
+        validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
       <CodeLabelSelector

@@ -20,6 +20,8 @@
           "source": "${BUCKET_PIM_SRC_DIR}//deployments/terraform",
           "akeneo_connect_saml_entity_id": "${AKENEO_CONNECT_SAML_ENTITY_ID}",
           "akeneo_connect_saml_certificate": "${AKENEO_CONNECT_SAML_CERTIFICATE}",
+          "akeneo_connect_saml_sp_certificate_base64": "${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64}",
+          "akeneo_connect_saml_sp_private_key_base64": "${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64}",
           "akeneo_connect_api_client_secret": "${AKENEO_CONNECT_API_CLIENT_SECRET}",
           "akeneo_connect_api_client_password": "${AKENEO_CONNECT_API_CLIENT_PASSWORD}",
           "ft_catalog_api_client_id": "${FT_CATALOG_API_CLIENT_ID}",

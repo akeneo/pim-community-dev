@@ -18,7 +18,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
-        'Twig\Environment',
+        'Twig',
 
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',

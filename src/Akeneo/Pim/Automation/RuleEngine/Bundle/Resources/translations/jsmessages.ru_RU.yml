@@ -2,7 +2,7 @@ pimee_catalog_rule:
   execution_button: Выполнить привила
   popin:
     execute_rules:
-      confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
+      confirm_title: Подтвердить выполнение
   notification:
     launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
   attribute:
@@ -10,7 +10,6 @@ pimee_catalog_rule:
       code.label: Код
       condition.label: Условие
       action.label: Действие
-      no_rule_yet.label: В данный момент правила отсутствуют
   rule:
     condition:
       if.label: Если
@@ -26,52 +25,41 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить правило?
       mass_edit_action:
-        confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
+        confirm_title: Подтвердить расчет
       mass_action:
         execute:
-          confirm_content: Вы уверены, что хотите выполнить выбранные правила?
-          success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
-          error: Произошла ошибка во время выполнения правил.
+          confirm_title: Подтвердить выполнение
+          success: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
           empty_selection: Правила не выбраны.
         delete:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите удалить выбранные правила?
           success: Вы успешно удалили правила.
-          error: Произошла ошибка при удалении правил.
           empty_selection: Правила не выбраны.
   form:
     attribute:
       tab:
         rules:
           title: Правила
-confirmation:
-  remove:
-    rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
-pim_datagrid:
+pim_enrich:
   entity:
     rule:
-      flash:
+      module:
         delete:
-          success: Роль успешно удалена
+          confirm: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
 flash:
   rule:
-    impacted_product_count: Вычисление количества продуктов затрагиваемых правилами начато. Вы будете уведомлены, когда это будет сделано.
-    executed: Начато выполнение правила. Вы будете уведомлены, когда это будет сделано.
+    executed: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Выполнение правил
   default_steps:
     execute_rules: Выполнение правил
-  yml_rule_import:
-    label: Импорт правил из YAML
-    import.label: Импорт правил
-  yml_rule_export:
-    label: Экспорт правил в YAML
-    export.label: Экспорт правил
   rule_impacted_product_count:
-    label: Затрагиваемые продукты для правил
     perform.label: Вычислить затрагиваемые продукты
   csv_product_import_with_rules:
     label: Импорт продуктов из CSV с правилами
@@ -86,8 +74,15 @@ batch_jobs:
 pim_notification:
   types:
     rule: Настройки правил
+    execute_rules: Выполнение правил
 pim_menu:
   item:
     rule: Правила
 pim_title:
   pimee_catalog_rule_rule_index: Правила
+  pimee_catalog_rule_new: Правила
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Выполнение правил

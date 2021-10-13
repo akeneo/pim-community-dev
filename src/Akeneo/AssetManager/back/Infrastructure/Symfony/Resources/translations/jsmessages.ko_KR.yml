@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: 애셋 대량 삭제 실행
     mass_edit_assets: 애셋 대량 편집 실행
     link_assets_to_products: 제품에 애셋 링크 연결
+    compute_transformations: 애셋 변환 계산
 job_execution:
   summary:
     assets: 애셋

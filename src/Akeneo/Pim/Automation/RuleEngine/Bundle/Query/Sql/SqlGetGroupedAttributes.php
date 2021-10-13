@@ -34,8 +34,8 @@ final class SqlGetGroupedAttributes implements GetGroupedAttributes
         string $localeCode,
         int $limit,
         int $offset = 0,
-        array $attributeTypes = null,
-        string $search = null
+        ?array $attributeTypes = null,
+        ?string $search = null
     ): array {
         if (is_array($attributeTypes) && 0 === count($attributeTypes)) {
             return [];

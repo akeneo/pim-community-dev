@@ -14,6 +14,7 @@ services:
   Akeneo\FreeTrial\Infrastructure\AkeneoConnect\APIClient:
     arguments:
       - '@akeneo.free_trial.akeneo_connect.guzzle_client'
+      - '@akeneo.free_trial.akeneo_portal.guzzle_client'
       - '@Akeneo\FreeTrial\Infrastructure\RetrievePimFQDN'
       - '%env(AKENEO_CONNECT_API_CLIENT_ID)%'
       - '%env(AKENEO_CONNECT_API_CLIENT_SECRET)%'
@@ -24,3 +25,8 @@ services:
     class: GuzzleHttp\Client
     arguments:
       - { base_uri: '%env(AKENEO_CONNECT_API_CLIENT_BASE_URI)%' }
+
+  akeneo.free_trial.akeneo_portal.guzzle_client:
+    class: GuzzleHttp\Client
+    arguments:
+      - { base_uri: '%env(AKENEO_PORTAL_API_CLIENT_BASE_URI)%' }

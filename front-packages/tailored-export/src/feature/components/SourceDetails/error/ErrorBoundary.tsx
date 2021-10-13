@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  AssetCollectionMainMediaNotFoundError,
+  AssetCollectionMainMediaNotFoundPlaceholder,
   InvalidAssociationTypeSourceError,
   InvalidAssociationTypeSourcePlaceholder,
   InvalidAttributeSourceError,
@@ -33,6 +35,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, {error: Error | 
         return <InvalidAssociationTypeSourcePlaceholder />;
       case error instanceof InvalidPropertySourceError:
         return <InvalidPropertySourcePlaceholder />;
+      case error instanceof AssetCollectionMainMediaNotFoundError:
+        return <AssetCollectionMainMediaNotFoundPlaceholder />;
       default:
         return <div>{error.message}</div>;
     }

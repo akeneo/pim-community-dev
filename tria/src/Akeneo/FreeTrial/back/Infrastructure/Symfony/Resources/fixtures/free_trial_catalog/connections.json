@@ -1,0 +1,58 @@
+[
+  {
+    "code": "sap",
+    "label": "SAP",
+    "flow_type": "data_source",
+    "auditable": true,
+    "image": "sap.png"
+  },
+  {
+    "code": "globallinkconnect",
+    "label": "Translation services",
+    "flow_type": "data_source",
+    "auditable": true,
+    "image": "global-link-connect.png"
+  },
+  {
+    "code": "magento",
+    "label": "B2B eCom platform",
+    "flow_type": "data_destination",
+    "auditable": true,
+    "image": "magento.png"
+  },
+  {
+    "code": "bigcommerce",
+    "label": "B2C eCom platform",
+    "flow_type": "data_destination",
+    "auditable": true,
+    "image": "bigcommerce.png"
+  },
+  {
+    "code": "shopify",
+    "label": "Online store",
+    "flow_type": "data_destination",
+    "auditable": true,
+    "image": "shopify.png"
+  },
+  {
+    "code": "Productsup",
+    "label": "Marketplaces and Affiliates",
+    "flow_type": "data_destination",
+    "auditable": false,
+    "image": "productsup.png"
+  },
+  {
+    "code": "printcatalog",
+    "label": "Print catalog",
+    "flow_type": "data_destination",
+    "auditable": false,
+    "image": "printcatalog.png"
+  },
+  {
+    "code": "postman",
+    "label": "API Client",
+    "flow_type": "other",
+    "auditable": false,
+    "image": "postman.png"
+  }
+]

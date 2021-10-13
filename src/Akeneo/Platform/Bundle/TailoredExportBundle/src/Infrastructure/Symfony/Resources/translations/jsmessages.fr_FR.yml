@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: Export sur mesure des produits en XLSX
+batch_jobs.xlsx_tailored_product_model_export.label: Export sur mesure des modèles de produits en XLSX
+batch_jobs.csv_tailored_product_export.label: Export sur mesure des produits en CSV
+batch_jobs.csv_tailored_product_model_export.label: Export sur mesure des modèles de produits en CSV
 akeneo.tailored_export:
   filters:
     completeness:
@@ -32,6 +35,7 @@ akeneo.tailored_export:
       source_data: Contenu de la colonne
     column_row:
       target_placeholder: Définissez votre en-tête de colonne ici
+      placeholder_helper: Vous pouvez copier tous les noms de vos colonnes à partir d'une feuille de calcul pour créer automatiquement vos colonnes.
       remove: Supprimer la colonne
       no_source: Définissez la source du contenu de votre colonne
     no_column_selection:
@@ -53,6 +57,7 @@ akeneo.tailored_export:
         attribute: L'attribut utilisé en tant que source a été supprimé et recréé avec un autre type. Veuillez supprimer cette source et l'ajouter à nouveau.
         association_type: Ce type d'association utilisé en tant que source a été supprimé et recréé avec un autre type. Veuillez supprimer cette source et l'ajouter à nouveau.
         property: Cette propriété n'est pas valide, veuillez supprimer cette source et l'ajouter à nouveau.
+        asset_collection_main_media: Le média principal de la collection de ressources utilisée par l'attribut est introuvable, veuillez vérifier les paramètres au sein de la famille de ressources.
       no_source_configuration:
         title: Aucune opération n'est disponible pour cette source. Seule sa valeur sera exportée.
       deleted_attribute:
@@ -74,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Montant
           currency: Devise
+          main_media: Média principal
           key: Clé du fichier
           path: Chemin d'accès
           name: Nom du fichier
+        asset_collection:
+          property: Propriété
+          with_prefix_and_suffix: Ajouter un préfixe et un suffixe
         format: Format
         parent:
           information:
@@ -109,6 +118,10 @@ akeneo.tailored_export:
             channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
       operation:
         header: Opérations
+        measurement_conversion:
+          title: Conversion
+          placeholder: Aucune conversion
+          target_unit_code.label: Convertir en
         replacement:
           title: Remplacer la valeur
           placeholder: Définir la valeur de remplacement
@@ -116,14 +129,41 @@ akeneo.tailored_export:
           disabled: Valeur de remplacement de l'état désactivé
           yes: Valeur de remplacement si vrai
           no: Valeur de remplacement si faux
+          edit_mapping: Modifier les valeurs de remplacement
+          modal:
+            title: Remplacement
+            subtitle: Gérer les options
+            no_result:
+              title: Désolé, il n'y a pas de valeur pour cet attribut
+            empty_result:
+              title: Désolé, il n’y a aucun résultat pour votre recherche.
+              text: Veuillez réessayer avec de nouveaux critères de recherche.
+            filters:
+              mapped:
+                label: Afficher
+                unmapped: Toutes les valeurs sans remplacement
+                mapped: Toutes les valeurs avec remplacement
+                all: Toutes les valeurs
+            table:
+              header:
+                values: Valeurs
+                replacement: Valeurs de remplacement
+              field:
+                to_placeholder: Définir la valeur de remplacement
+            validation_error: Certaines valeurs de remplacement sont erronées. Afin de les corriger, veuillez vous référer aux messages d'erreur sous chaque champ.
         default_value:
           title: Utiliser une valeur par défaut si vide
           label: Valeur par défaut
           placeholder: Définir la valeur
+        clean_html_tags:
+          title: Nettoyer les balises HTML
+          label: Nettoyer automatiquement les balises HTML
     concatenation:
       title: Concaténer
       preview: Aperçu
+      space_between: Ajouter un espace entre les sources
       add_text: Ajouter du texte
+      text_placeholder: Tapez ici votre texte
   column:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
   validation:
@@ -138,6 +178,8 @@ akeneo.tailored_export:
     sources:
       max_source_count_reached: Vous avez atteint la limite de {{ limit }} sources, vous ne pouvez plus ajouter de sources à cette colonne.
       association_type_should_exist: Le type d'association {{ association_type_code }} n'existe pas. Veuillez le créer ou choisissez une source différente.
+    concatenation:
+      max_text_count_reached: Vous avez atteint la limite de {{ limit }} éléments textuels, vous ne pouvez plus en ajouter.
     locale:
       should_be_active: La locale {{ locale_code }} a été désactivée. Réactivez-la ou sélectionnez une autre locale.
       should_be_bound_to_channel: La locale {{ locale_code }} a été désactivée pour le canal {{ channel_code }}. Réactivez-la ou sélectionnez une autre locale.
@@ -150,3 +192,14 @@ akeneo.tailored_export:
       locale_should_be_blank: L'attribut {{ attribute_code }} n'a plus de valeur par locale. Veuillez la créer ou choisissez une source différente.
       channel_should_be_blank: L'attribut {{ attribute_code }} n'a plus de valeur par canal. Veuillez le créer ou choisissez une source différente.
       invalid_specific_locale: L'attribut {{ attribute_code }} est spécifique à une ou plusieurs locales. Veuillez sélectionner une autre locale.
+    asset_collection:
+      locale_should_not_be_blank: L'attribut comme média principal de la famille de ressources {{ asset_family_code }} a maintenant une valeur par locale. Veuillez le créer ou sélectionnez une autre source.
+      channel_should_not_be_blank: L'attribut comme média principal de la famille de ressources {{ asset_family_code }} a maintenant une valeur par canal. Veuillez le créer ou sélectionnez une autre source.
+      locale_should_be_blank: L'attribut comme média principal de la famille de ressources {{ asset_family_code }} n'a maintenant plus de valeur par locale. Veuillez le créer ou sélectionnez une autre source.
+      channel_should_be_blank: L'attribut comme média principal de la famille de ressources {{ asset_family_code }} n'a maintenant plus valeur par canal. Veuillez le créer ou sélectionnez une autre source.
+      invalid_type: L'attribut comme média principal de la famille de ressources {{ asset_family_code }} a changé. Veuillez le créer ou sélectionnez une autre source.
+    measurement:
+      family:
+        does_not_exist: La famille de mesure {{ measurement_family_code }} n'existe pas.
+      unit:
+        does_not_exist: L'unité {{ unit_code }} n'existe pas dans la famille de mesure {{ measurement_family_code }}.

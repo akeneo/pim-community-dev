@@ -41,7 +41,7 @@ final class HandleConcatenateTest extends KernelTestCase
 {
     public const TARGET_NAME = 'test_column';
 
-    private ?MapValuesQueryHandler $mapValuesQueryHandler;
+    private ?MapValuesQueryHandler $mapValuesQueryHandler = null;
 
     public function setUp(): void
     {
