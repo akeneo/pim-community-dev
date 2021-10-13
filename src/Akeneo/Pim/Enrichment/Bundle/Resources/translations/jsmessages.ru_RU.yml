@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Настройки
+    mass_delete: Удаление
 flash:
   comment:
     create:
@@ -25,9 +26,6 @@ pim_enrich.entity.product:
     create:
       success: Продукт успешно создан
       fail: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
-  page_title:
-    product: "]-Inf, 1]{{ count }} товар|]1, Inf[{{ count }} товаров"
-    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Создать продукт
@@ -46,10 +44,6 @@ pim_enrich.entity.product:
       select: Выберите
       all_visible: Все видимые
       copy: Копировать
-    convert_variant_to_simple:
-      label: Преобразовать в простой товар
-      dialog:
-        title: Подтвердите преобразование
     history:
       version: Версия
       author: Автор
@@ -70,10 +64,10 @@ pim_enrich.entity.product:
       locale_specific_unavailable: Это локализуемое поле не доступно для этого языка
       locale_unavailable: Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»
       add_attribute_option: Добавить опцию атрибута
-      add_option: Добавить параметр
+      add_option: Добавить новый элемента списка
     completeness:
       title: Завершенность
-      complete: Завершенность
+      complete: Завершено
       no_family: Семейство не определено. Пожалуйста определите семейство для вычисления степени заполненности этого продукта.
       no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить степень заполненности для нового семейства.
     sequential_edit:
@@ -82,6 +76,7 @@ pim_enrich.entity.product:
       save_and_next: Сохранить и далее
       save_and_finish: Сохранить и завершить
     associations:
+      title: Ассоциации
       none_exist: Типы ассоциаций отсутствуют.
       show_products: Показать продукты
       show_groups: Отображать группы
@@ -89,15 +84,8 @@ pim_enrich.entity.product:
       association_type_selector: Тип связи
       target: Цель
       manage: Добавить {{ associationType }} связи
-      manage_description: Выберите товары, которые вы хотите связать с товаром "{{ productLabel }}"
-      mass_edit_description: Выберите товары, которые вы хотите связать с {{ productCount }} выбранными товарами
+      manage_description: Выберите продукты, которые вы хотите связать с текущим продуктом
       add_associations: Добавить связи
-      quantified:
-        quantity: Кол-во
-      no_result: Поиск не дал результатов.
-      remove: Удалить связь
-      edit: Редактировать товар
-      limit_reached: Вы не можете добавить более {{ maxLimit }} связей к этому товару.
     attribute_filter:
       display: Показать
       all: Все атрибуты
@@ -151,8 +139,6 @@ pim_enrich.entity.product_model:
       create: Добавить новый
       create_label: "Добавить новые {{ axes }}"
       required_label: '(вариант конфигурационного атрибута)'
-    completeness:
-      label: Вариант
     delete:
       confirm: Вы уверены, что вы хотите удалить эту модель продукта? Все дочерние модели и разновидности продуктов будут также удалены.
       confirm_for_products_and_product_models: Вы уверены, что хотите удалить выбранные продукты и модели продуктов? Все дочерние модели продуктов будут также удалены.
@@ -297,8 +283,6 @@ pim_enrich.mass_edit.product:
     add_to_existing_product_model:
       label: Добавить к существующей модели продукта
       description: Выбранная модель продукта объединит продукты и позволит пополнить их общие свойства.
-    convert_to_simple_products:
-      label: Преобразовать в простой товар
     associate_to_product_and_product_model:
       label: Связать
       description: Продукты, выбранные в таблице, будут связаны с выбранными продуктами и моделями продуктов для выбранного типа связи
@@ -321,19 +305,12 @@ pim_datagrid:
       csv_grid_context: CSV (видимые столбцы)
       xlsx_all: Excel (все атрибуты)
       xlsx_grid_context: Excel (видимые столбцы)
-      configurator:
-        subtitle: Быстрый экспорт
-        title: Выберите действие
-        csv: CSV
-        xlsx: XLSX
-        all_attributes: Все атрибуты
-        with_codes: С кодами
-        with_labels: С метками
-        without_media: Без медиа
-        with_media: С медиа
     mass_edit: Массовые действия
     sequential_edit: Последовательное редактирование
     mass_delete: Массовое удаление
+    selected:
+      family: выбранные семейства
+      product: выбранные результаты
   view_selector:
     view: Представления
   actions:
@@ -350,32 +327,6 @@ pim_datagrid:
   filters:
     label: Фильтры
     system: Система
-    product_typology:
-      label: 'Типология товара'
-      simple: 'Простая'
-      variant: 'Вариант'
-    entity_type:
-      label: 'Вариант'
-      grouped: 'Группированные'
-      ungrouped: 'Без группировки'
-    family:
-      label: Семейство
-    groups:
-      label: Группы
-    enabled:
-      label: Статус
-    completeness:
-      label: Завершено
-    created:
-      label: Дата создания
-    updated:
-      label: Дата обновления
-    label_or_identifier:
-      label: Метка или идентификатор
-    parent:
-      label: Родительский
-    identifier:
-      label: Идентификатор
   search: Поиск по {{ label }}
 batch_jobs:
   add_association:
@@ -393,9 +344,6 @@ batch_jobs:
   add_to_existing_product_model:
     label: Добавить к существующей модели продукта
     perform.label: Добавить к существующей модели продукта
-  convert_to_simple_products:
-    label: Преобразовать в простой товар
-    perform.label: Преобразовать в простой товар
   csv_product_grid_context_quick_export:
     quick_export.label: Быстрый экспорт контекста сетки в CSV
     quick_export_product_model.label: Быстрый экспорт в CSV моделей продуктов в виде представления данных в таблице
