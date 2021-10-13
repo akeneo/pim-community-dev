@@ -17,9 +17,7 @@ class GetLocalesAccessesWithHighestLevelIntegration extends TestCase
 {
     private GetLocalesAccessesWithHighestLevel $query;
     private GroupRepositoryInterface $groupRepository;
-    private LocaleRepositoryInterface $localeRepository;
     private LocalePermissionsFixturesLoader $localePermissionsFixturesLoader;
-    private Connection $connection;
 
     /**
      * {@inheritdoc}
@@ -35,9 +33,7 @@ class GetLocalesAccessesWithHighestLevelIntegration extends TestCase
 
         $this->query = $this->get(GetLocalesAccessesWithHighestLevel::class);
         $this->groupRepository = $this->get('pim_user.repository.group');
-        $this->localeRepository = $this->get('pim_catalog.repository.locale');
         $this->localePermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.locale_permissions');
-        $this->connection = $this->get('database_connection');
     }
 
     public function testItFetchesLocalesHighestAccessLevel(): void
