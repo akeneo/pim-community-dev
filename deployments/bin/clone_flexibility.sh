@@ -239,7 +239,7 @@ clean_useless-files()
 big_clean_onerror()
 {
       cd ${PED_DIR}
-      INSTANCE_NAME=${INSTANCE_NAME}  PIM_CONTEXT=deployment  make delete_clone_flexibility
+      INSTANCE_NAME=${INSTANCE_NAME} make -C deployments/ delete_clone_flexibility
 }
 
 main

@@ -262,7 +262,6 @@ jobs:
                 RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                PIM_CONTEXT=deployment
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -271,16 +270,15 @@ jobs:
                 echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Image tag: ${IMAGE_TAG}"
                 echo "Serenity release name: ${RELEASE_NAME}"
           - run:
               name: Build the Serenity Edition prod image
-              command: make php-image-prod
+              command: make -C deployments/ php-image-prod
           - run:
               name: Push the Serenity Edition prod image on docker registry
-              command: make push-php-image-prod
+              command: make -C deployments/ push-php-image-prod
           - run:
               name: Push Terraform modules to GCS
               command: |
@@ -295,7 +293,6 @@ jobs:
                 echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
           - persist_to_workspace:
               root: ~/
               paths:
@@ -361,7 +358,6 @@ jobs:
           RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
-          PIM_CONTEXT=deployment
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -370,7 +366,6 @@ jobs:
           echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-          echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
@@ -382,13 +377,13 @@ jobs:
               docker run --rm -v ${PWD}:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} -w /srv/pim/${TYPE} composer bash -c 'composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
     - run:
         name: Prepare chart values
-        command: make prepare-chart-default-values
+        command: make -C deployments/ prepare-chart-default-values
     - run:
         name: Build the Growth Edition prod image
-        command: make php-image-prod
+        command: make -C deployments/ php-image-prod
     - run:
         name: Push the Growth Edition prod image on docker registry
-        command: make push-php-image-prod
+        command: make -C deployments/ push-php-image-prod
     - run:
         name: Push Terraform modules to GCS
         command: |
@@ -403,7 +398,6 @@ jobs:
           echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-          echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
     - persist_to_workspace:
           root: ~/
           paths:
@@ -465,7 +459,6 @@ jobs:
           RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="pim_trial_instance"
           PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
-          PIM_CONTEXT=deployment
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -474,7 +467,6 @@ jobs:
           echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-          echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
@@ -486,13 +478,13 @@ jobs:
           docker run --rm -v ${PWD}:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} -w /srv/pim/${TYPE} composer bash -c 'composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
     - run:
         name: Prepare chart values
-        command: make prepare-chart-default-values
+        command: make -C deployments/ prepare-chart-default-values
     - run:
         name: Build the Free Trial Edition prod image
-        command: make php-image-prod
+        command: make -C deployments/ php-image-prod
     - run:
         name: Push the Free Trial Edition prod image on docker registry
-        command: make push-php-image-prod
+        command: make -C deployments/ push-php-image-prod
     - run:
         name: Push Terraform modules to GCS
         command: |
@@ -507,7 +499,6 @@ jobs:
           echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-          echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
     - persist_to_workspace:
           root: ~/
           paths:
@@ -1111,7 +1102,7 @@ jobs:
           - run:
                 name: Launch Cypress
                 command: |
-                    CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=10000 CYPRESS_responseTimeout=50000 make smoke-tests
+                    PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=10000 CYPRESS_responseTimeout=50000 CYPRESS_baseUrl=https://${INSTANCE_NAME}.dev.cloud.akeneo.com make end-to-end-front
           - store_artifacts:
                 path: cypress/screenshots
           - store_artifacts:
@@ -1138,20 +1129,18 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
-                PIM_CONTEXT=deployment
                 K8S_CLUSTER_VERSION=<< parameters.VERSION >>
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
-
                 echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
               name: Test Serenity without Onboarder bundle Helm generated yaml files
-              command: make test_helm_generated_k8s_files
+              command: make -C deployments/ test_helm_generated_k8s_files
           - run:
               name: Test Serenity with Onboarder bundle Helm generated yaml files
-              command: WITH_ONBOARDER=1 make test_helm_generated_k8s_files
+              command: WITH_ONBOARDER=1 make -C deployments/ test_helm_generated_k8s_files
 
   test_helm_generated_k8s_files_grth:
       parameters:
@@ -1169,17 +1158,15 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="grth"
-                PIM_CONTEXT=deployment
                 K8S_CLUSTER_VERSION=<< parameters.VERSION >>
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
 
                 echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
               name: Test Growth Edition Helm generated yaml files compliance with current kubernetes Version
-              command: make test_helm_generated_k8s_files
+              command: make -C deployments/ test_helm_generated_k8s_files
 
   test_helm_generated_k8s_files_tria:
       parameters:
@@ -1197,17 +1184,15 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="tria"
-                PIM_CONTEXT=deployment
                 K8S_CLUSTER_VERSION=<< parameters.VERSION >>
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
 
                 echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
               name: Test Free Trial Edition Helm generated yaml files compliance with current kubernetes Version
-              command: make test_helm_generated_k8s_files
+              command: make -C deployments/ test_helm_generated_k8s_files
 
   test_cronjobs_existence_srnt:
       environment:
@@ -1222,7 +1207,7 @@ jobs:
           - install_yq
           - run:
               name: Test Cronjob jobs exists
-              command: make test-helm-cronjob
+              command: make -C deployments/ test-helm-cronjob
 
   test_cronjobs_existence_grth:
       environment:
@@ -1237,7 +1222,7 @@ jobs:
           - install_yq
           - run:
               name: Test Cronjob jobs exists
-              command: make test-helm-cronjob
+              command: make -C deployments/ test-helm-cronjob
 
   test_cronjobs_existence_tria:
       environment:
@@ -1252,7 +1237,7 @@ jobs:
           - install_yq
           - run:
               name: Test Cronjob jobs exists
-              command: make test-helm-cronjob
+              command: make -C deployments/ test-helm-cronjob
 
   ##################
   # Tests deploy   #
@@ -1285,17 +1270,17 @@ jobs:
               name: Deploy PIM on kubernetes
               command: |
                   NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make deploy-instance
+                  make -C deployments/ deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: make test-prod
+              command: make -C deployments/ test-prod
           - run:
               name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1335,17 +1320,17 @@ jobs:
               name: Deploy PIM on kubernetes
               command: |
                   NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make deploy-instance
+                  make -C deployments/ deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: make test-prod
+              command: make -C deployments/ test-prod
           - run:
               name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1385,17 +1370,17 @@ jobs:
               name: Deploy PIM on kubernetes
               command: |
                   NS=${TYPE}-${INSTANCE_NAME} bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make deploy-instance
+                  make -C deployments/ deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: make test-prod
+              command: make -C deployments/ test-prod
           - run:
               name: Display Deployment Errors
               command: cat deployment.log
               when: on_fail
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1455,7 +1440,7 @@ jobs:
                 command: |
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                    IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+                    IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
           - run:
                 name: Persist env vars for next jobs
                 command: |
@@ -1514,7 +1499,7 @@ jobs:
                 command: |
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                    IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+                    IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
           - run:
                 name: Persist env vars for next jobs
                 command: |
@@ -1551,10 +1536,10 @@ jobs:
                 name: Jenkins Upgrade
                 command: |
                     NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                    OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                    OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
           - run:
               name: Production tests on upgraded env
-              command: make test-prod
+              command: make -C deployments/ test-prod
           - run:
               name: Check that upgrader pod ran
               command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
@@ -1568,7 +1553,7 @@ jobs:
               when: on_fail
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1602,10 +1587,10 @@ jobs:
                 name: Jenkins Upgrade
                 command: |
                     NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                    OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                    OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
           - run:
                 name: Production tests on upgraded env
-                command: make test-prod
+                command: make -C deployments/ test-prod
           - run:
               name: Display Deployment Errors
               command: cat deployment.log
@@ -1616,7 +1601,7 @@ jobs:
               when: on_fail
           - run:
                 name: Prepare infrastructure artifacts
-                command: make prepare-infrastructure-artifacts
+                command: make -C deployments/ prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
@@ -1659,16 +1644,16 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Duplicate PROD environment
-              command: make clone_serenity
+              command: make -C deployments/ clone_serenity
           - run:
               name: Upgrade the duplicate environment
               command: |
-                  UPGRADE_STEP_2=true make create-ci-release-files
-                  UPGRADE_STEP_2=true make get_mysql_parameters_disk
-                  UPGRADE_STEP_2=true make deploy
+                  UPGRADE_STEP_2=true make -C deployments/ create-ci-release-files
+                  UPGRADE_STEP_2=true make -C deployments/ get_mysql_parameters_disk
+                  UPGRADE_STEP_2=true make -C deployments/ deploy
           - run:
               name: Production tests on upgraded env
-              command: make test-prod
+              command: make -C deployments/ test-prod
           - run:
               name: Persist env vars for next jobs
               command: |
@@ -1677,7 +1662,7 @@ jobs:
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1708,7 +1693,7 @@ jobs:
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
-                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
 
   release_grth:
       environment:
@@ -1728,7 +1713,7 @@ jobs:
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
-                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
 
   release_tria:
       environment:
@@ -1748,7 +1733,7 @@ jobs:
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
-                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
+                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
 
   ##################
   # Deploy         #
@@ -1770,7 +1755,6 @@ jobs:
                   INSTANCE_NAME="pimci-helpdesk"
                   PRODUCT_REFERENCE_TYPE="serenity_instance"
                   PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                  PIM_CONTEXT=deployment
                   ACTIVATE_MONITORING=true
 
                   echo export TYPE=${TYPE} >> $BASH_ENV
@@ -1778,7 +1762,6 @@ jobs:
                   echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                   echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                   echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                   echo "Instance name: ${INSTANCE_NAME}"
@@ -1797,11 +1780,11 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                 name: Jenkins Upgrade
-                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
             - run:
                 name: Communicate
                 command: |
-                  IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} make -C deployments/ slack_helpdesk
 
   deploy_grth_helpdesk_environment:
       environment:
@@ -1820,7 +1803,6 @@ jobs:
                   INSTANCE_NAME="pimci-helpdesk-ge"
                   PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                   PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
-                  PIM_CONTEXT=deployment
                   ACTIVATE_MONITORING=true
 
                   echo export TYPE=${TYPE} >> $BASH_ENV
@@ -1828,7 +1810,6 @@ jobs:
                   echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                   echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                   echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                   echo "Instance name: ${INSTANCE_NAME}"
@@ -1848,11 +1829,11 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                   name: Jenkins Upgrade
-                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
             - run:
                 name: Communicate
                 command: |
-                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make -C deployments/ slack_helpdesk
 
   deploy_pm_environment:
       environment:
@@ -1871,7 +1852,6 @@ jobs:
                 INSTANCE_NAME="pimci-pm"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                PIM_CONTEXT=deployment
                 ACTIVATE_MONITORING=true
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
@@ -1879,7 +1859,6 @@ jobs:
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Instance name: ${INSTANCE_NAME}"
@@ -1898,7 +1877,7 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
+              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
 
   deploy_pr_srnt_environment:
       environment:
@@ -1936,10 +1915,10 @@ jobs:
                 echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
           - run:
               name: Deploy PR environment
-              command: make deploy-instance
+              command: make -C deployments/ deploy-instance
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -1980,10 +1959,10 @@ jobs:
                 echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
           - run:
               name: Deploy PR environment
-              command: make deploy-instance
+              command: make -C deployments/ deploy-instance
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -2024,10 +2003,10 @@ jobs:
                 echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
           - run:
               name: Deploy PR environment
-              command: make deploy-instance
+              command: make -C deployments/ deploy-instance
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -2047,7 +2026,7 @@ jobs:
                 name: Delete environments
                 no_output_timeout: 30m
                 command:
-                    PIM_CONTEXT=deployment make delete_environments_hourly
+                    make -C deployments/ delete_environments_hourly
 
   delete_expired_uptime_check:
       environment:
@@ -2061,7 +2040,7 @@ jobs:
           - run:
                 name: Delete expired uptime checks
                 command:
-                    PIM_CONTEXT=deployment make delete_expired_uptime_check
+                    make -C deployments/ delete_expired_uptime_check
 
   remove_unused_resources:
       environment:
@@ -2073,8 +2052,8 @@ jobs:
           - set_gcloud_config_dev
           - run:
                 name: Remove unused resources
-                command: |
-                    PIM_CONTEXT=deployment make remove_unused_resources
+                command:
+                    make -C deployments/ remove_unused_resources
 
   zdd_compliancy_diff:
       parameters:

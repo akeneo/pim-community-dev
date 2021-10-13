@@ -79,7 +79,7 @@ if [[ $CI != "true" ]]; then
 fi
 
 echo "- Run terraform & helm."
-cd ${PED_DIR}; PIM_CONTEXT=deployment TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=${SOURCE_PED_TAG} INSTANCE_NAME_PREFIX=pimci-duplic make deploy
+cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=${SOURCE_PED_TAG} INSTANCE_NAME_PREFIX=pimci-duplic make -C deployments/ deploy
 
 echo "- Create disk ES disk (delete before if existing)"
 ES_PVC_MASTER_0=data-elasticsearch-master-0
