@@ -76,6 +76,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: Zasoby
+    transformations: Przekształcenia zasobów
+    skipped: Pominięte
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: Zasoby zostały pomyślnie usunięte z ostrzeżeniami
   success: Usunięto zasoby
