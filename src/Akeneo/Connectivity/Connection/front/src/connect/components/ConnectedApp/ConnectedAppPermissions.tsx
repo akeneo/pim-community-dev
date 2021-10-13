@@ -1,5 +1,10 @@
 import React, {FC} from 'react';
+import {ConnectedApp} from '../../../model/Apps/connected-app';
 
-export const ConnectedAppPermissions: FC = () => {
+type Props = {
+    connectedApp: ConnectedApp;
+};
+
+export const ConnectedAppPermissions: FC<Props> = () => {
     return <>permissions</>;
 };

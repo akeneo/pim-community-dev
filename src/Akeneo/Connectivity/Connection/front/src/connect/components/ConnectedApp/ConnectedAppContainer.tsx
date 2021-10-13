@@ -72,7 +72,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
                 {isCurrent(settingsTabName) && <ConnectedAppSettings connectedApp={connectedApp} />}
 
-                {isCurrent(permissionsTabName) && <ConnectedAppPermissions />}
+                {isCurrent(permissionsTabName) && <ConnectedAppPermissions connectedApp={connectedApp} />}
             </PageContent>
         </>
     );
