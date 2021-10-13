@@ -57,7 +57,7 @@ class ProductValueTableFilter extends AbstractFilter
         return [
             'name' => $this->getName(),
             'label' => ucfirst($this->name),
-            'type' => 'table',
+            FilterUtility::TYPE_KEY => 'table',
             FilterUtility::ENABLED_KEY => true,
         ];
     }

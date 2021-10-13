@@ -30,6 +30,8 @@ $rules = [
             'Symfony\Component\EventDispatcher\GenericEvent',
             'Symfony\Component\HttpFoundation',
             'Symfony\Contracts\Translation\TranslatorInterface',
+            'Symfony\Component\Form\Extension\Core\Type\FormType',
+            'Symfony\Component\Form\FormBuilderInterface',
             'Twig\Environment',
 
             // doctrine
@@ -82,7 +84,9 @@ $rules = [
             'Akeneo\Tool\Component\Batch',
             'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
-            'Oro\Bundle\FilterBundle\Filter\AbstractFilter'
+            'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
+            'Oro\Bundle\FilterBundle\Filter\FilterUtility',
+            'Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

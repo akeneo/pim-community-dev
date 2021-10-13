@@ -69,10 +69,14 @@ abstract class AbstractFilterIntegration extends TestCase
 
     protected function assertFilter(string $attributeCode, array $filter, array $expectedProductIdentifiers): void
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
-        $pqb->addFilter($attributeCode, $this->getTestedOperator(), $filter['value'] ?? null, [
+        $data = array_filter([
+            'value' => $filter['value'] ?? null,
             'column' => $filter['column'] ?? null,
             'row' => $filter['row'] ?? null,
+        ], static fn ($value): bool => null !== $value);
+
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb->addFilter($attributeCode, $this->getTestedOperator(), $data, [
             'locale' => $filter['locale'] ?? null,
             'scope' => $filter['scope'] ?? null,
         ]);
