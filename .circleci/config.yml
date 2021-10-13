@@ -369,7 +369,7 @@ jobs:
           name: Install database
           command: APP_ENV=test make database
       - run:
-          name: Static tests
+          name: Compute code coverage of all tests
           command: PIM_CONTEXT=test make connectivity-connection-coverage
       - store_artifacts:
           path: coverage/Connectivity/Back/Global/
