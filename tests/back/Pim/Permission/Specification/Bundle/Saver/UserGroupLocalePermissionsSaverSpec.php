@@ -17,6 +17,9 @@ use PhpSpec\ObjectBehavior;
 
 class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
 {
+    private const DEFAULT_PERMISSION_EDIT = 'locale_edit';
+    private const DEFAULT_PERMISSION_VIEW = 'locale_view';
+
     function let(
         LocaleAccessManager $localeAccessManager,
         GroupRepository $groupRepository,
@@ -75,9 +78,9 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleInterface $localeB,
         LocaleInterface $localeC
     ) {
-        $group->getDefaultPermissions()->willReturn([]);
-        $group->setDefaultPermission('locale_view', true)->shouldBeCalled();
-        $group->setDefaultPermission('locale_edit', true)->shouldBeCalled();
+        $group->getDefaultPermissions()->willReturn(null);
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, true)->shouldBeCalled();
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, true)->shouldBeCalled();
         $groupSaver->save($group)->shouldBeCalled();
 
         $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
@@ -87,6 +90,42 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         $this->save('Redactor', [
             'edit' => [
                 'all' => true,
+                'identifiers' => [],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     * TO "edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     */
+    public function it_CorrectsGrantedPermissionsOnExistingLocalesWhenTheDefaultOptionIsReducedToViewOnly(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        LocaleInterface $localeB,
+        LocaleInterface $localeC
+    ) {
+        $group->getDefaultPermissions()->willReturn([
+            self::DEFAULT_PERMISSION_VIEW => true,
+            self::DEFAULT_PERMISSION_EDIT => true,
+        ]);
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, true)->shouldBeCalled();
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, false)->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $localeAccessManager->grantAccess($localeB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $localeAccessManager->grantAccess($localeC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
                 'identifiers' => [],
             ],
             'view' => [

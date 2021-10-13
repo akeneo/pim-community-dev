@@ -88,10 +88,6 @@ class UserGroupLocalePermissionsSaver
 
     /**
      * @param array{
-     *      own: array{
-     *          all: bool,
-     *          identifiers: string[],
-     *      },
      *      edit: array{
      *          all: bool,
      *          identifiers: string[],
@@ -132,7 +128,9 @@ class UserGroupLocalePermissionsSaver
     {
         if (true === ($defaultPermissions[self::DEFAULT_PERMISSION_EDIT] ?? null)) {
             return self::PERMISSION_EDIT;
-        } elseif (true === ($defaultPermissions[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
+        }
+
+        if (true === ($defaultPermissions[self::DEFAULT_PERMISSION_VIEW] ?? null)) {
             return self::PERMISSION_VIEW;
         }
 
@@ -155,7 +153,9 @@ class UserGroupLocalePermissionsSaver
     {
         if (true === $permissions['edit']['all']) {
             return self::PERMISSION_EDIT;
-        } elseif (true === $permissions['view']['all']) {
+        }
+
+        if (true === $permissions['view']['all']) {
             return self::PERMISSION_VIEW;
         }
 
@@ -228,9 +228,11 @@ class UserGroupLocalePermissionsSaver
      */
     private function getHighestAccessLevelFromPermissions(string $localeCode, array $permissions): string
     {
-        if (true === $permissions['edit']['all'] || in_array($localeCode, $permissions['edit']['identifiers'])) {
+        if (true === $permissions['edit']['all'] || in_array($localeCode, $permissions['edit']['identifiers'], true)) {
             return self::PERMISSION_EDIT;
-        } elseif (true === $permissions['view']['all'] || in_array($localeCode, $permissions['view']['identifiers'])) {
+        }
+
+        if (true === $permissions['view']['all'] || in_array($localeCode, $permissions['view']['identifiers'], true)) {
             return self::PERMISSION_VIEW;
         }
 
