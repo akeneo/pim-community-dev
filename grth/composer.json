@@ -41,7 +41,7 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-community-dev": "dev-CPM-376",
+        "akeneo/pim-community-dev": "dev-master",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "phpseclib/phpseclib": "2.0.31",
