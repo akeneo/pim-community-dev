@@ -9,7 +9,7 @@ import {
   PendingTableFilterValue,
   TableAttribute,
 } from '../models';
-import {AttributeFetcher, SelectOptionFetcher} from '../fetchers';
+import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';

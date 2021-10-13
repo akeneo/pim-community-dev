@@ -26,11 +26,118 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 
     expect(await screen.findByText('Nutrition')).toBeInTheDocument();
     expect(screen.getByText('pim_common.all')).toBeInTheDocument();
+  });
+
+  it('should display an existing filter', async () => {
+    renderWithProviders(
+      <DatagridTableFilter
+        onChange={jest.fn()}
+        showLabel={true}
+        label={'Nutrition'}
+        attributeCode={'nutrition'}
+        canDisable={true}
+        onDisable={jest.fn()}
+        filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{
+          value: 10000,
+          row: 'salt',
+          operator: '>=',
+          column: 'quantity',
+        }}
+      />
+    );
+
+    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
+    expect(await screen.findByTitle('Salt Quantity pim_common.operators.>= 10000')).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByText('Nutrition'));
+    });
+
+    expect(screen.getByTitle('Quantity')).toBeInTheDocument();
+    expect(await screen.findByTitle('Salt')).toBeInTheDocument();
+    expect(screen.getByTitle('pim_common.operators.>=')).toBeInTheDocument();
+    expect(screen.getByTitle('10000')).toBeInTheDocument();
+  });
+
+  it('should validate on close', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <DatagridTableFilter
+        onChange={handleChange}
+        showLabel={true}
+        label={'Nutrition'}
+        attributeCode={'nutrition'}
+        canDisable={true}
+        onDisable={jest.fn()}
+        filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{
+          value: 10000,
+          row: 'salt',
+          operator: '>=',
+          column: 'quantity',
+        }}
+      />
+    );
+
+    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getByText('Nutrition'));
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByTestId('backdrop'));
+    });
+    expect(handleChange).toBeCalledWith({
+      value: 10000,
+      row: 'salt',
+      operator: '>=',
+      column: 'quantity',
+    });
+  });
+
+  it('should reset filter when invalid', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <DatagridTableFilter
+        onChange={handleChange}
+        showLabel={true}
+        label={'Nutrition'}
+        attributeCode={'nutrition'}
+        canDisable={true}
+        onDisable={jest.fn()}
+        filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{
+          value: 10000,
+          row: 'salt',
+          operator: '>=',
+          column: 'quantity',
+        }}
+      />
+    );
+
+    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getByText('Nutrition'));
+    });
+
+    // Select operator to clear the value and make the filter invalid
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
+    });
+    expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_common.operators.>'));
+
+    act(() => {
+      fireEvent.click(screen.getByTestId('backdrop'));
+    });
+    expect(handleChange).toBeCalledWith({});
   });
 
   it('should callback changes with number', async () => {
@@ -44,6 +151,7 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 
@@ -100,6 +208,7 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 
@@ -154,6 +263,7 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 
@@ -204,6 +314,7 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 
@@ -250,6 +361,7 @@ describe('DatagridTableFilter', () => {
         canDisable={true}
         onDisable={jest.fn()}
         filterValuesMapping={defaultFilterValuesMapping}
+        initialDataFilter={{}}
       />
     );
 

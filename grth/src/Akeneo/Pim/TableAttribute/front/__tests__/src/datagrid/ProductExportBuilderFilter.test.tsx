@@ -26,9 +26,9 @@ describe('ProductExportBuilderFilter', () => {
       />
     );
 
-    expect(await screen.findByPlaceholderText('TODO Fill Operator')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('TODO Fill row (optional)')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('TODO Select a column')).toBeInTheDocument();
+    expect(await screen.findByPlaceholderText('pim_table_attribute.datagrid.select_your_operator')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('pim_table_attribute.datagrid.select_your_row')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('pim_table_attribute.datagrid.select_your_column')).toBeInTheDocument();
 
     // Select column
     act(() => {
