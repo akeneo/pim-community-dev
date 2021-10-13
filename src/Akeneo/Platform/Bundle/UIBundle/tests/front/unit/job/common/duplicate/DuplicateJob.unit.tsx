@@ -67,9 +67,11 @@ test('It automatically sanitize job code', async () => {
   userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicated job');
   expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicatedjob');
 
+  userEvent.clear(screen.getByLabelText('pim_common.code pim_common.required_label'));
   userEvent.type(screen.getByLabelText('pim_common.code pim_common.required_label'), 'duplicated_job');
   expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicated_job');
 
+  userEvent.clear(screen.getByLabelText('pim_common.label pim_common.required_label'));
   userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicate job');
   expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicated_job');
   expect(screen.getByLabelText('pim_common.label pim_common.required_label')).toHaveValue('duplicate job');
