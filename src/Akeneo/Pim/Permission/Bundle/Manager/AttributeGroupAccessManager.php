@@ -15,6 +15,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -35,6 +36,8 @@ class AttributeGroupAccessManager
     /** @var string */
     protected $attGroupAccessClass;
 
+    private BulkRemoverInterface $remover;
+
     /**
      * @param AttributeGroupAccessRepository $repository
      * @param BulkSaverInterface             $saver
@@ -43,11 +46,13 @@ class AttributeGroupAccessManager
     public function __construct(
         AttributeGroupAccessRepository $repository,
         BulkSaverInterface $saver,
-        $attGroupAccessClass
+        $attGroupAccessClass,
+        BulkRemoverInterface $remover
     ) {
         $this->repository = $repository;
         $this->saver = $saver;
         $this->attGroupAccessClass = $attGroupAccessClass;
+        $this->remover = $remover;
     }
 
     /**
@@ -206,5 +211,22 @@ class AttributeGroupAccessManager
             ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
 
         return $access;
+    }
+
+    public function revokeGroupAccess(AttributeGroupInterface $attributeGroup, GroupInterface $group): void
+    {
+        $access = $this->repository
+            ->findOneBy(
+                [
+                    'attributeGroup'  => $attributeGroup,
+                    'userGroup' => $group
+                ]
+            );
+
+        if (null === $access) {
+            return;
+        }
+
+        $this->remover->removeAll([$access]);
     }
 }
