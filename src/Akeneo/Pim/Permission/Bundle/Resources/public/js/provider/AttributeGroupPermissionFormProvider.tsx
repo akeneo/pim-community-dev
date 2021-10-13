@@ -170,6 +170,10 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
     </PermissionSectionSummary>
   ),
   save: async (userGroup: string, state: PermissionFormReducer.State) => {
+    if (false === securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')) {
+      return Promise.resolve();
+    }
+
     const url = routing.generate('pimee_permissions_entities_set_attribute_groups');
     const response = await fetch(url, {
       method: 'POST',
