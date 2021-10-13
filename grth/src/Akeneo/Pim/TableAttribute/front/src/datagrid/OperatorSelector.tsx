@@ -24,7 +24,7 @@ const OperatorSelector: React.FC<OperatorSelectorProps> = ({dataType, value, onC
       clearable
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
-      placeholder='TODO Fill Operator'
+      placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
       value={value || null}
       openLabel={translate('pim_common.open')}
       readOnly={typeof dataType === 'undefined'}>

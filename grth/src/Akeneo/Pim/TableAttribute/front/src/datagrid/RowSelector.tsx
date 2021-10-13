@@ -40,7 +40,7 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
       clearable
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
-      placeholder='TODO Fill row (optional)'
+      placeholder={translate('pim_table_attribute.datagrid.select_your_row')}
       value={value?.code || null}
       openLabel={translate('pim_common.open')}
       onNextPage={() => {

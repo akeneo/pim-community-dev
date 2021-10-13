@@ -34,6 +34,7 @@ const StringFilterValue: TableFilterValueRenderer = ({value, onChange, attribute
       removeLabel={translate('pim_common.remove')}
       onChange={onChange}
       onSearchChange={setSearchValue}
+      placeholder={translate('pim_table_attribute.datagrid.select_your_value')}
       onNextPage={() => setPage(page + 1)}>
       {filteredOptions.map(option => (
         <MultiSelectInput.Option value={option.code} key={option.code}>

@@ -14,6 +14,7 @@ import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-com
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
+import {useFetchOptions} from '../product';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -65,26 +66,36 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({});
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
       const tableAttribute = attribute as TableAttribute;
       setAttribute(tableAttribute);
-
-      const column = tableAttribute.table_configuration.find(column => column.code === initialDataFilter.column);
-      SelectOptionFetcher.fetchFromColumn(router, attribute.code, tableAttribute.table_configuration[0].code).then(options => {
-        const row = (options || []).find(option => option.code === initialDataFilter.row);
-        const pendingFilter = {
-          row,
-          column,
-          value: initialDataFilter.value,
-          operator: initialDataFilter.operator,
-        };
-        setFilterValue(pendingFilter);
-        setInitialFilter(pendingFilter);
-      });
     });
   }, []);
+
+  const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
+
+  React.useEffect(() => {
+    if (!attribute) {
+      return;
+    }
+
+    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
+    if (typeof optionsForFirstColumn === 'undefined') {
+      return;
+    }
+    const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.row);
+    const pendingFilter = {
+      row,
+      column,
+      value: initialDataFilter.value,
+      operator: initialDataFilter.operator,
+    };
+    setFilterValue(pendingFilter);
+    setInitialFilter(pendingFilter);
+  }, [optionsForFirstColumn, attribute]);
 
   const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
   Object.keys(filterValuesMapping).forEach(dataType => {
@@ -129,10 +140,20 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   }
 
+  const handleClose = () => {
+    if (!isFilterValid(filterValue)) {
+      setFilterValue({});
+      onChange({} as BackendTableFilterValue);
+      close();
+      return;
+    }
+    handleValidate();
+  };
+
   return (
     <Dropdown>
       {isOpen && attribute && initialFilter && (
-        <Dropdown.Overlay onClose={close}>
+        <Dropdown.Overlay onClose={handleClose}>
           <FilterContainer>
             <FilterSectionTitle title={label}>
               <FilterSectionTitleTitle>{label}</FilterSectionTitleTitle>

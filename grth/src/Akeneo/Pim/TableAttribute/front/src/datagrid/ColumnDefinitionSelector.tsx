@@ -24,7 +24,7 @@ const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({attr
       clearable
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
-      placeholder='TODO Select a column'
+      placeholder={translate('pim_table_attribute.datagrid.select_your_column')}
       value={value?.code || null}
       openLabel={translate('pim_common.open')}>
       {attribute.table_configuration.map(columnDefinition => {

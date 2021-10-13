@@ -212,6 +212,10 @@ pim_table_attribute:
     datagrid:
         placeholder: Preview unavailable, open the product page to access the table attribute values
         any: Any
+        select_your_column: Select your column
+        select_your_row: Select your row
+        select_your_operator: Select your operator
+        select_your_value: Select your value
 
 pim_enrich:
     entity:

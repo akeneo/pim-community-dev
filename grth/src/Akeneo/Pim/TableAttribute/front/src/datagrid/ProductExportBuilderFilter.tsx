@@ -9,9 +9,8 @@ import {
 } from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
-import {SelectOptionFetcher} from '../fetchers';
-import {useRouter} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {useFetchOptions} from '../product';
 
 type ProductExportBuilderFilterProps = {
   attribute: TableAttribute;
@@ -30,7 +29,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   onChange,
   initialDataFilter,
 }) => {
-  const router = useRouter();
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
@@ -43,19 +42,22 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   };
 
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
+  const optionsForFirstColumn = getOptionsFromColumnCode(attribute.table_configuration[0].code);
 
   React.useEffect(() => {
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    SelectOptionFetcher.fetchFromColumn(router, attribute.code, attribute.table_configuration[0].code).then(options => {
-      const row = (options || []).find(option => option.code === initialDataFilter.row);
-      setInitialFilter({
-        row,
-        column,
-        value: initialDataFilter.value,
-        operator: initialDataFilter.operator,
-      });
+
+    if (typeof optionsForFirstColumn === 'undefined') {
+      return;
+    }
+    const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.row);
+    setInitialFilter({
+      row,
+      column,
+      value: initialDataFilter.value,
+      operator: initialDataFilter.operator,
     });
-  }, []);
+  }, [optionsForFirstColumn]);
 
   return (
     <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
