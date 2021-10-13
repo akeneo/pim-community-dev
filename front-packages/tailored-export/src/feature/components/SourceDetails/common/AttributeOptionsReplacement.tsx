@@ -77,6 +77,7 @@ const AttributeOptionsReplacement = ({
       </EditMappingButton>
       {isModalOpen && (
         <ReplacementModal
+          title={translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.options')}
           replacementValueFilter={replacementValueFilter}
           onReplacementValueFilterChange={setReplacementValueFilter}
           values={attributeOptions}

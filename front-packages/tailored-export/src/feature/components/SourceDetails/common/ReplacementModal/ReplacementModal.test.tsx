@@ -37,6 +37,7 @@ test('it can update a replacement mapping', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{}}
       totalItems={3}
       itemsPerPage={25}
@@ -74,6 +75,7 @@ test('it validates replacement mapping before confirming', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{}}
       totalItems={3}
       itemsPerPage={25}
@@ -106,6 +108,7 @@ test('it can filter search results', async () => {
   const replacementValueFilter = {searchValue: '', page: 2, codesToInclude: null, codesToExclude: null};
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{}}
       totalItems={3}
       itemsPerPage={1}
@@ -138,6 +141,7 @@ test('it can show all results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{
         black: 'Noir',
       }}
@@ -177,6 +181,7 @@ test('it can change page', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{
         black: 'Noir',
       }}
@@ -208,6 +213,7 @@ test('it can show only mapped results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{
         black: 'Noir',
       }}
@@ -247,6 +253,7 @@ test('it can show only unmapped results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{
         black: 'Noir',
       }}
@@ -302,6 +309,7 @@ test('it displays validation errors', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      title="Manage values"
       initialMapping={{}}
       totalItems={3}
       itemsPerPage={25}

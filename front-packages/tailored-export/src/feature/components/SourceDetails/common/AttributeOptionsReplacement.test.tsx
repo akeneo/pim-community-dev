@@ -56,7 +56,7 @@ test('it can open a replacement modal and calls the handler when confirming', as
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
 
   expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.title')
+    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.options')
   ).toBeInTheDocument();
 
   await act(async () => {
@@ -76,7 +76,7 @@ test('it does not change replacement when cancelling', async () => {
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.edit_mapping'));
 
   expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.title')
+    screen.getByText('akeneo.tailored_export.column_details.sources.operation.replacement.modal.options')
   ).toBeInTheDocument();
 
   userEvent.click(screen.getByTitle('pim_common.close'));

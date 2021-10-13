@@ -163,8 +163,7 @@ class FilterLocalizedCompleteness extends BaseFilter {
                 this.setData(newFilter);
                 this.render();
               },
-              // TODO: Find a way to get rid of the [2] part below
-              validationErrors: filterErrors(this.validationErrors, '[filters][data][2]'),
+              validationErrors: filterErrors(this.validationErrors, '[filters][data][completeness]'),
             })
           )
         )
