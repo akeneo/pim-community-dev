@@ -170,7 +170,7 @@ class InvalidPropertyTypeException extends PropertyException
      *
      * @param string $propertyName
      * @param string $className
-     * @param string $propertyValue a value that is not a string
+     * @param mixed $propertyValue a value that is not a string
      *
      * @return InvalidPropertyTypeException
      */
