@@ -199,6 +199,13 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementValueAndUnitLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Null\NullSelectionApplier:
     public: true
     tags:

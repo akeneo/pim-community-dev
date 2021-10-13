@@ -53,7 +53,7 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             openLabel={translate('pim_common.open')}
             value={selection.type}
             onChange={type => {
-              if ('unit_label' === type) {
+              if ('value_and_unit_label' === type || 'unit_label' === type) {
                 onSelectionChange({type, locale: locales[0].code});
               } else if ('unit_code' === type || 'value' === type) {
                 onSelectionChange({type});
@@ -77,6 +77,14 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               value="value"
             >
               {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value')}
+            </SelectInput.Option>
+            <SelectInput.Option
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_label'
+              )}
+              value="value_and_unit_label"
+            >
+              {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_label')}
             </SelectInput.Option>
           </SelectInput>
           <Helper inline={true} level="info">
@@ -127,6 +135,48 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               </Helper>
             ))}
           </Field>
+        )}
+        {'value_and_unit_label' === selection.type && (
+          <>
+            <Field label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}>
+              <SelectInput
+                invalid={0 < decimalSeparatorErrors.length}
+                clearable={false}
+                emptyResultLabel={translate('pim_common.no_result')}
+                openLabel={translate('pim_common.open')}
+                value={selection.decimal_separator ?? '.'}
+                onChange={decimal_separator => {
+                  if (isMeasurementDecimalSeparator(decimal_separator)) {
+                    onSelectionChange({...selection, decimal_separator});
+                  }
+                }}
+              >
+                {Object.entries(availableDecimalSeparators).map(([separator, name]) => (
+                  <SelectInput.Option
+                    key={separator}
+                    title={translate(
+                      `akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`
+                    )}
+                    value={separator}
+                  >
+                    {translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
+                  </SelectInput.Option>
+                ))}
+              </SelectInput>
+              {decimalSeparatorErrors.map((error, index) => (
+                <Helper key={index} inline={true} level="error">
+                  {translate(error.messageTemplate, error.parameters)}
+                </Helper>
+              ))}
+            </Field>
+            <LocaleDropdown
+              label={translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_locale')}
+              value={selection.locale}
+              validationErrors={localeErrors}
+              locales={locales}
+              onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+            />
+          </>
         )}
       </Section>
     </Collapse>

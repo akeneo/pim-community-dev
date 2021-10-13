@@ -18,6 +18,11 @@ type MeasurementSelection =
   | {
       type: 'value';
       decimal_separator?: MeasurementDecimalSeparator;
+    }
+  | {
+      type: 'value_and_unit_label';
+      decimal_separator?: MeasurementDecimalSeparator;
+      locale: LocaleCode;
     };
 
 const isMeasurementDecimalSeparator = (separator?: string): separator is MeasurementDecimalSeparator =>
@@ -29,7 +34,8 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
   return (
     'unit_code' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
-    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator))
+    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator)) ||
+    ('value_and_unit_label' === selection.type && 'locale' in selection && isMeasurementDecimalSeparator(selection.decimal_separator))
   );
 };
 
