@@ -3,7 +3,7 @@ import {NumberInput} from 'akeneo-design-system';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 
 const NumberFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
-  return <NumberInput value={value} onChange={onChange} />;
+  return <NumberInput value={value || ''} onChange={onChange} />;
 };
 
 const useValueRenderer: FilteredValueRenderer = () => {
