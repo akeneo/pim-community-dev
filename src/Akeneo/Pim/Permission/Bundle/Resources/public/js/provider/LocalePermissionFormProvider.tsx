@@ -21,11 +21,6 @@ const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
 
-const Field = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
 const StyledLocale = styled(Locale)`
   margin-right: 15px;
 `;
