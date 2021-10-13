@@ -1,41 +1,56 @@
-import {default as BooleanFilterValue} from '../../src/datagrid/FilterValues/BooleanFilterValue';
-import {default as StringFilterValue} from '../../src/datagrid/FilterValues/StringFilterValue';
-import {default as NumberFilterValue} from '../../src/datagrid/FilterValues/NumberFilterValue';
-import {default as MultiSelectFilterValue} from '../../src/datagrid/FilterValues/MultiSelectFilterValue';
-import {default as EmptyFilterValue} from '../../src/datagrid/FilterValues/EmptyFilterValue';
+import {
+  default as BooleanFilterValue,
+  useValueRenderer as BooleanUseValueRenderer,
+} from '../../src/datagrid/FilterValues/BooleanFilterValue';
+import {
+  default as StringFilterValue,
+  useValueRenderer as StringUseValueRenderer,
+} from '../../src/datagrid/FilterValues/StringFilterValue';
+import {
+  default as NumberFilterValue,
+  useValueRenderer as NumberUseValueRenderer,
+} from '../../src/datagrid/FilterValues/NumberFilterValue';
+import {
+  default as MultiSelectFilterValue,
+  useValueRenderer as MultiSelectUseValueRenderer,
+} from '../../src/datagrid/FilterValues/MultiSelectFilterValue';
+import {
+  default as EmptyFilterValue,
+  useValueRenderer as EmptyUseValueRenderer,
+} from '../../src/datagrid/FilterValues/EmptyFilterValue';
 import {FilterValuesMapping} from '../../src/datagrid';
 
 export const defaultFilterValuesMapping: FilterValuesMapping = {
   text: {
-    'STARTS WITH': {default: StringFilterValue},
-    'ENDS WITH': {default: StringFilterValue},
-    CONTAINS: {default: StringFilterValue},
-    'DOES NOT CONTAIN': {default: StringFilterValue},
-    '=': {default: StringFilterValue},
-    '!=': {default: StringFilterValue},
-    EMPTY: {default: EmptyFilterValue},
-    'NOT EMPTY': {default: EmptyFilterValue},
+    'STARTS WITH': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    'ENDS WITH': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    CONTAINS: {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    'DOES NOT CONTAIN': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    '=': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    '!=': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
   },
   number: {
-    '>': {default: NumberFilterValue},
-    '>=': {default: NumberFilterValue},
-    '<': {default: NumberFilterValue},
-    '<=': {default: NumberFilterValue},
-    '=': {default: NumberFilterValue},
-    '!=': {default: NumberFilterValue},
-    EMPTY: {default: EmptyFilterValue},
-    'NOT EMPTY': {default: EmptyFilterValue},
+    '>': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    '>=': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    '<': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    '<=': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    '=': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    '!=': {default: NumberFilterValue, useValueRenderer: NumberUseValueRenderer},
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
   },
   boolean: {
-    '=': {default: BooleanFilterValue},
-    '!=': {default: BooleanFilterValue},
-    EMPTY: {default: BooleanFilterValue},
-    'NOT EMPTY': {default: BooleanFilterValue},
+    '=': {default: BooleanFilterValue, useValueRenderer: BooleanUseValueRenderer},
+    '!=': {default: BooleanFilterValue, useValueRenderer: BooleanUseValueRenderer},
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
   },
   select: {
-    EMPTY: {default: EmptyFilterValue},
-    'NOT EMPTY': {default: EmptyFilterValue},
-    IN: {default: MultiSelectFilterValue},
-    'NOT IN': {default: MultiSelectFilterValue},
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
+    'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
   },
 };

@@ -1,8 +1,15 @@
 import React from 'react';
-import {DatagridTableFilterValueRenderer} from './index';
+import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 
-const EmptyFilterValue: DatagridTableFilterValueRenderer = () => {
+const EmptyFilterValue: TableFilterValueRenderer = () => {
   return <></>;
 };
 
+const useValueRenderer: FilteredValueRenderer = () => {
+  return () => {
+    return '';
+  };
+};
+
+export {useValueRenderer};
 export default EmptyFilterValue;

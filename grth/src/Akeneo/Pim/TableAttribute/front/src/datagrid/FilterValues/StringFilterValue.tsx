@@ -1,9 +1,16 @@
 import React from 'react';
 import {TextInput} from 'akeneo-design-system';
-import {DatagridTableFilterValueRenderer} from './index';
+import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 
-const StringFilterValue: DatagridTableFilterValueRenderer = ({value, onChange}) => {
+const StringFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   return <TextInput value={value} onChange={onChange} />;
 };
 
+const useValueRenderer: FilteredValueRenderer = () => {
+  return value => {
+    return `"${value || ''}"`;
+  };
+};
+
+export {useValueRenderer};
 export default StringFilterValue;

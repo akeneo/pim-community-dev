@@ -1,9 +1,9 @@
 import React from 'react';
-import {DatagridTableFilterValueRenderer} from './index';
+import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
-const BooleanFilterValue: DatagridTableFilterValueRenderer = ({value, onChange}) => {
+const BooleanFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   const translate = useTranslate();
   const stringValue = typeof value === 'undefined' || value === null ? null : value ? 'yes' : 'no';
   const handleChange = (stringValue: string | null) => {
@@ -27,4 +27,13 @@ const BooleanFilterValue: DatagridTableFilterValueRenderer = ({value, onChange})
   );
 };
 
+const useValueRenderer: FilteredValueRenderer = () => {
+  const translate = useTranslate();
+
+  return value => {
+    return typeof value === 'undefined' ? '' : translate(`pim_common.${value ? 'yes' : 'no'}`);
+  };
+};
+
+export {useValueRenderer};
 export default BooleanFilterValue;

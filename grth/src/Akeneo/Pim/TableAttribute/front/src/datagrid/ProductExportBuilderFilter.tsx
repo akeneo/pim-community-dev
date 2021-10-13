@@ -1,15 +1,17 @@
 import React from 'react';
-import {TableAttribute} from '../models';
 import {
   BackendTableFilterValue,
-  FilterSelectorList,
+  ColumnCode,
+  isFilterValid,
   PendingBackendTableFilterValue,
   PendingTableFilterValue,
-} from './FilterSelectorList';
+  TableAttribute,
+} from '../models';
+import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
 import {SelectOptionFetcher} from '../fetchers';
 import {useRouter} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 type ProductExportBuilderFilterProps = {
   attribute: TableAttribute;
@@ -20,7 +22,7 @@ type ProductExportBuilderFilterProps = {
 
 const FieldContainer = styled.div`
   margin-bottom: 0;
-`
+`;
 
 const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   attribute,
@@ -30,13 +32,10 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
 }) => {
   const router = useRouter();
   const handleChange = (filter: PendingTableFilterValue) => {
-    if (
-      typeof filter.operator !== 'undefined' &&
-      typeof filter.column !== 'undefined'
-    ) {
+    if (isFilterValid(filter)) {
       onChange({
-        operator: filter.operator,
-        column: filter.column?.code,
+        operator: filter.operator as string,
+        column: filter.column?.code as ColumnCode,
         value: filter.value,
         row: filter.row?.code,
       });

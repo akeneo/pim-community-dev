@@ -210,7 +210,8 @@ pim_table_attribute:
         add_rows: Add rows
         search: Search
     datagrid:
-        placeholder: This value can not be displayed in the product list
+        placeholder: Preview unavailable, open the product page to access the table attribute values
+        any: Any
 
 pim_enrich:
     entity:

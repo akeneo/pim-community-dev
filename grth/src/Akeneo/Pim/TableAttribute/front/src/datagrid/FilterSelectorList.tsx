@@ -4,7 +4,7 @@ import {OperatorSelector} from './OperatorSelector';
 import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
-import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {ColumnDefinition, PendingTableFilterValue, SelectOption, TableAttribute} from '../models';
 import {FilterValuesMapping} from './FilterValues';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
@@ -15,14 +15,16 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
           display: flex;
           width: 100%;
           & > div:not(:last-child) {
-            input, ul {
+            input,
+            ul {
               border-right-width: 0;
               border-top-right-radius: 0;
               border-bottom-right-radius: 0;
             }
           }
           & > div:not(:first-child) {
-            input, ul {
+            input,
+            ul {
               border-top-left-radius: 0;
               border-bottom-left-radius: 0;
             }
@@ -36,38 +38,10 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
         `}
 `;
 
-export type BackendTableFilterValue = {
-  row?: SelectOptionCode;
-  column: ColumnCode;
-  operator: string;
-  value: any;
-};
-
-export type PendingBackendTableFilterValue = {
-  row?: SelectOptionCode;
-  column?: ColumnCode;
-  operator?: string;
-  value?: any;
-};
-
-export type PendingTableFilterValue = {
-  row?: SelectOption;
-  column?: ColumnDefinition;
-  operator?: string;
-  value?: any;
-};
-
-export type ValidTableFilterValue = {
-  row?: SelectOption;
-  column: ColumnDefinition;
-  operator: string;
-  value: any;
-};
-
 type FilterSelectorListProps = {
   attribute: TableAttribute;
   filterValuesMapping: FilterValuesMapping;
-  onChange: (value: ValidTableFilterValue) => void;
+  onChange: (value: PendingTableFilterValue) => void;
   inline?: boolean;
   initialFilter: PendingTableFilterValue;
 };
@@ -83,16 +57,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
 
   const updateFilter = (newFilter: PendingTableFilterValue) => {
     setFilter(newFilter);
-    if (isValid(newFilter)) {
-      onChange(newFilter as ValidTableFilterValue);
-    }
-  };
-
-  const isValid = (newFilter: PendingTableFilterValue) => {
-    return (
-      typeof newFilter.column !== 'undefined' &&
-      typeof newFilter.operator !== 'undefined'
-    );
+    onChange(newFilter);
   };
 
   const handleColumnChange = (column: ColumnDefinition | undefined) => {

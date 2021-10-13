@@ -1,16 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {ColumnDefinition, TableAttribute} from '../models';
+import {
+  BackendTableFilterValue,
+  ColumnCode,
+  ColumnDefinition,
+  isFilterValid,
+  PendingTableFilterValue,
+  TableAttribute,
+} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
-import {BackendTableFilterValue, FilterSelectorList, PendingTableFilterValue} from './FilterSelectorList';
+import {FilterSelectorList} from './FilterSelectorList';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
   width: 200px;
-`
+`;
 
 const FilterSectionTitleTitle = styled(SectionTitle.Title)`
   color: ${getColor('brand', 100)};
@@ -61,12 +68,16 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }, []);
 
-  const isValid =
-    typeof filterValue.column !== 'undefined' &&
-    typeof filterValue.operator !== 'undefined';
+  const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
+  Object.keys(filterValuesMapping).forEach(dataType => {
+    valueRenderers[dataType] = {};
+    Object.keys(filterValuesMapping[dataType]).forEach(operator => {
+      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer(attributeCode);
+    });
+  });
 
   const handleValidate = () => {
-    if (isValid) {
+    if (isFilterValid(filterValue)) {
       close();
       onChange({
         row: filterValue.row?.code,
@@ -77,20 +88,27 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   };
 
-  // TODO Think about wording and translate this CPM-378
-  let criteriaLabel = 'All';
-  if (typeof filterValue.column !== 'undefined') {
-    criteriaLabel = '';
-    criteriaLabel +=
+  let criteriaHint = translate('pim_common.all');
+  if (isFilterValid(filterValue) && attribute) {
+    criteriaHint = '';
+    criteriaHint +=
       typeof filterValue.row === 'undefined'
-        ? 'Any'
+        ? translate('pim_table_attribute.datagrid.any') + ' '
         : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
-    criteriaLabel += getLabel(filterValue.column.labels, catalogLocale, filterValue.column.code) + ' ';
-    criteriaLabel +=
-      typeof filterValue.operator !== 'undefined'
-        ? translate(`pim_common.operators.${filterValue.operator}`) + ' '
-        : '';
-    criteriaLabel += typeof filterValue.value !== 'undefined' ? JSON.stringify(filterValue.value) : '';
+    criteriaHint +=
+      getLabel(
+        (filterValue.column as ColumnDefinition).labels,
+        catalogLocale,
+        (filterValue.column as ColumnDefinition).code
+      ) + ' ';
+    criteriaHint += translate(`pim_common.operators.${filterValue.operator}`) + ' ';
+
+    const valueRenderer = (valueRenderers[(filterValue.column as ColumnDefinition).data_type || ''] || {})[
+      filterValue.operator || ''
+    ];
+    if (valueRenderer) {
+      criteriaHint += valueRenderer(filterValue.value, (filterValue.column as ColumnDefinition).code);
+    }
   }
 
   return (
@@ -105,10 +123,10 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               attribute={attribute}
               filterValuesMapping={filterValuesMapping}
               onChange={setFilterValue}
-              initialFilter={{}}
+              initialFilter={filterValue}
             />
             <FilterButtonContainer>
-              <Button onClick={handleValidate} disabled={!isValid}>
+              <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
                 {translate('pim_common.update')}
               </Button>
             </FilterButtonContainer>
@@ -117,8 +135,8 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       )}
       <FilterBox className='AknFilterBox-filter' onClick={open}>
         {showLabel && <span className='AknFilterBox-filterLabel'>{label}</span>}
-        <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaLabel}>
-          {criteriaLabel}
+        <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
+          {criteriaHint}
         </span>
         <span className='AknFilterBox-filterCaret' />
       </FilterBox>

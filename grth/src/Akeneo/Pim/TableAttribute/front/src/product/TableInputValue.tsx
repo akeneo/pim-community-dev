@@ -96,7 +96,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const addDirtyCell = (id: string, columnCode: ColumnCode | undefined) => {
     if (typeof columnCode === 'undefined') {
-      attribute.table_configuration.forEach(columnDefinition => dirtyCells.push({id, columnCode: columnDefinition.code}));
+      attribute.table_configuration.forEach(columnDefinition =>
+        dirtyCells.push({id, columnCode: columnDefinition.code})
+      );
     } else {
       dirtyCells.push({id, columnCode});
     }
@@ -147,8 +149,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueData.length, filteredData.length, itemsPerPage, currentPage, setCurrentPage]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
-    return violatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode) &&
-      !dirtyCells.some(dirtyCell => dirtyCell.id === id && dirtyCell.columnCode === columnCode);
+    return (
+      violatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode) &&
+      !dirtyCells.some(dirtyCell => dirtyCell.id === id && dirtyCell.columnCode === columnCode)
+    );
   };
 
   const handleReorder = (indexesFromPage: number[]) => {
