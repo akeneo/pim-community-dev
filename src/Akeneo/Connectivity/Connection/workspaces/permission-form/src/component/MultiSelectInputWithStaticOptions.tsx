@@ -76,13 +76,13 @@ export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, on
         }
 
         const $select = $(ref.current) as any;
-        const select2Value = $select.select2('val');
+        const select2Value = $select.select2('val') || [];
 
         /* istanbul ignore else */
-        if (value !== select2Value) {
-            $select.select2('val', value);
+        if (value.toString() !== select2Value.toString()) {
+            $select.select2('data', options.filter(option => value.indexOf(option.id) >= 0));
         }
-    }, [value]);
+    }, [options, value]);
 
     useEffect(() => {
         /* istanbul ignore next */

@@ -149,10 +149,10 @@ export const MultiSelectInputWithDynamicOptions = ({
         }
 
         const $select = $(ref.current) as any;
-        const select2Value = $select.select2('val');
+        const select2Value = $select.select2('val') || [];
 
         /* istanbul ignore else */
-        if (value !== select2Value) {
+        if (value.toString() !== select2Value.toString()) {
             $select.select2('val', value);
         }
     }, [value]);

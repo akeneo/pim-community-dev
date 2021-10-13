@@ -111,15 +111,17 @@ test('it is disabled when the corresponding props changes', () => {
 });
 
 test('it has a new value when the corresponding props changes', () => {
+    const options = [{id: 'foo', text: 'foo'}];
+
     const {rerender} = render(
         <ThemeProvider theme={pimTheme}>
-            <MultiSelectInputWithStaticOptions {...props} />
+            <MultiSelectInputWithStaticOptions {...props} options={options}/>
         </ThemeProvider>
     );
     rerender(
         <ThemeProvider theme={pimTheme}>
-            <MultiSelectInputWithStaticOptions {...props} value={['foo']} />
+            <MultiSelectInputWithStaticOptions {...props} options={options} value={['foo']} />
         </ThemeProvider>
     );
-    expect(select2).toBeCalledWith('val', ['foo']);
+    expect(select2).toBeCalledWith('data', [{id: 'foo', text: 'foo'}]);
 });
