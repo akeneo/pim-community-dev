@@ -1,0 +1,37 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Менеджер активов
+  acl:
+    asset_family:
+      create: Создать семейство активов
+      edit: Редактировать свойства семейства активов
+      delete: Удалить семейство активов
+      manage_permission: Управление разрешениями семейства активов
+      manage_transformation: Управление преобразованиями семейства активов
+    asset:
+      create: Создать актив
+      edit: Редактировать активы
+      list_product: Список связанных продуктов с активом
+    attribute:
+      create: Добавить атрибут в семейство активов
+      edit: Редактировать атрибут семейства активов
+      delete: Удалить атрибут семейства активов
+    option:
+      edit: Изменить варианты
+      delete: Удалить вариант
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_link_assets_to_products: "Связать активы с продуктами"
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Коллекция активов
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_link_assets_to_products: Связать активы с продуктами
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Связать активы с продуктами

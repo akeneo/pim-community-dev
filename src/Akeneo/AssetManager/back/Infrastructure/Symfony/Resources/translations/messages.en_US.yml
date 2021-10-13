@@ -80,6 +80,8 @@ batch_jobs:
 job_execution:
     summary:
         assets: Assets
+        transformations: Asset transformations
+        skipped: Skipped
 
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
     warning: Assets successfully deleted with warnings

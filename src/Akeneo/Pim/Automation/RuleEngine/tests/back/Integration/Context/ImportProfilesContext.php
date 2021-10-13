@@ -34,35 +34,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 final class ImportProfilesContext implements Context
 {
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var SaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var JobLauncher */
-    protected $jobLauncherTest;
-
-    /** @var JobLauncherInterface */
-    protected $jobLauncher;
-
-    /** @var JobInstanceRepository */
-    private $jobInstanceRepository;
-
-    /** @var UserProviderInterface */
-    private $userProvider;
-
-    /** @var EntityManagerClearerInterface */
-    private $entityManagerClearer;
-
-    /** @var string */
-    private $kernelRootDir;
+    private JobRegistry $jobRegistry;
+    private JobParametersFactory $jobParametersFactory;
+    private JobParametersValidator $jobParametersValidator;
+    private SaverInterface $jobInstanceSaver;
+    protected JobLauncher $jobLauncherTest;
+    protected JobLauncherInterface $jobLauncher;
+    private JobInstanceRepository $jobInstanceRepository;
+    private UserProviderInterface $userProvider;
+    private EntityManagerClearerInterface $entityManagerClearer;
+    private string $kernelProjectDir;
 
     /** @var null|string */
     private $filenameToImport = null;
@@ -77,7 +58,7 @@ final class ImportProfilesContext implements Context
         JobInstanceRepository $jobInstanceRepository,
         UserProviderInterface $userProvider,
         EntityManagerClearerInterface $entityManagerClearer,
-        string $kernelRootDir
+        string $kernelProjectDir
     ) {
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersFactory = $jobParametersFactory;
@@ -88,7 +69,7 @@ final class ImportProfilesContext implements Context
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->userProvider = $userProvider;
         $this->entityManagerClearer = $entityManagerClearer;
-        $this->kernelRootDir = $kernelRootDir;
+        $this->kernelProjectDir = $kernelProjectDir;
     }
 
     /**
@@ -193,8 +174,8 @@ final class ImportProfilesContext implements Context
     {
         return strtr($string, [
             '%tmp%' => $this->getTmpDirectory(),
-            '%fixtures%' => $this->kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
-            '%web%' => $this->kernelRootDir . '/../public/',
+            '%fixtures%' => $this->kernelProjectDir . '/tests/legacy/features/Context/fixtures/',
+            '%web%' => $this->kernelProjectDir . '/public/',
             '%file to import%' => $this->filenameToImport,
         ]);
     }

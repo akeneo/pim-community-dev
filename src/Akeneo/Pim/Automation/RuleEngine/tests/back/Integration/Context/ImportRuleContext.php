@@ -33,24 +33,12 @@ final class ImportRuleContext implements Context
 {
     /** @var null|array */
     private static $importedRules = null;
-
-    /** @var RuleDefinitionProcessor */
-    private $ruleDefinitionProcessor;
-
-    /** @var RuleDefinitionRepositoryInterface */
-    private $ruleDefinitionRepository;
-
-    /** @var RuleDefinitionSaver */
-    private $ruleDefinitionSaver;
-
-    /** @var NormalizationRuleDefinitionProcessor */
-    private $normalizationRuleDefinitionProcessor;
-
-    /** @var EntityManagerClearerInterface */
-    private $entityManagerClearer;
-
-    /** @var string */
-    private $kernelRootDir;
+    private RuleDefinitionProcessor $ruleDefinitionProcessor;
+    private RuleDefinitionRepositoryInterface $ruleDefinitionRepository;
+    private RuleDefinitionSaver $ruleDefinitionSaver;
+    private NormalizationRuleDefinitionProcessor $normalizationRuleDefinitionProcessor;
+    private EntityManagerClearerInterface $entityManagerClearer;
+    private string $kernelProjectDir;
 
     public function __construct(
         RuleDefinitionProcessor $ruleDefinitionProcessor,
@@ -58,14 +46,14 @@ final class ImportRuleContext implements Context
         RuleDefinitionSaver $ruleDefinitionSaver,
         NormalizationRuleDefinitionProcessor $normalizationRuleDefinitionProcessor,
         EntityManagerClearerInterface $entityManagerClearer,
-        string $kernelRootDir
+        string $kernelProjectDir
     ) {
         $this->ruleDefinitionProcessor = $ruleDefinitionProcessor;
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
         $this->normalizationRuleDefinitionProcessor = $normalizationRuleDefinitionProcessor;
         $this->entityManagerClearer = $entityManagerClearer;
-        $this->kernelRootDir = $kernelRootDir;
+        $this->kernelProjectDir = $kernelProjectDir;
     }
 
     /**
@@ -182,8 +170,8 @@ final class ImportRuleContext implements Context
     {
         return strtr($string, [
             '%tmp%' => !empty($_ENV['BEHAT_TMPDIR'] ?? '') ? $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat',
-            '%fixtures%' => $this->kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
-            '%web%' => $this->kernelRootDir . '/../public/',
+            '%fixtures%' => $this->kernelProjectDir . '/tests/legacy/features/Context/fixtures/',
+            '%web%' => $this->kernelProjectDir . '/public/',
         ]);
     }
 

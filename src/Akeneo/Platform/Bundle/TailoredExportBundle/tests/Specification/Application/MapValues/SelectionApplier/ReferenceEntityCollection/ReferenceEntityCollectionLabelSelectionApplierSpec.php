@@ -49,6 +49,26 @@ class ReferenceEntityCollectionLabelSelectionApplierSpec extends ObjectBehavior
             ->shouldReturn('[record_code1]/label2/label...');
     }
 
+    public function it_applies_the_selection_with_mapped_replacement_values(FindRecordLabelsInterface $findRecordLabels)
+    {
+        $selection = new ReferenceEntityCollectionLabelSelection('/', 'fr_FR', 'a_reference_entity_code');
+        $value = new ReferenceEntityCollectionValue(
+            ['record_code1', 'record_code2', 'record_code3'],
+            ['record_code2' => 'replacement_record']
+        );
+
+        $findRecordLabels->byReferenceEntityCodeAndRecordCodes(
+            'a_reference_entity_code',
+            ['record_code1', 'record_code2', 'record_code3'],
+            'fr_FR'
+        )->willReturn([
+            'record_code1' => 'Record 1',
+        ]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('Record 1/replacement_record/[record_code3]');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

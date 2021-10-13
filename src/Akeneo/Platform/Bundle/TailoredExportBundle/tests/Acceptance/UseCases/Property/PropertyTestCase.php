@@ -53,7 +53,7 @@ abstract class PropertyTestCase extends KernelTestCase
             )
         ]);
 
-        $columnCollection = ColumnCollection::create([
+        return ColumnCollection::create([
             new Column(
                 self::TARGET_NAME,
                 $sourceCollection,
@@ -63,8 +63,6 @@ abstract class PropertyTestCase extends KernelTestCase
                 )
             )
         ]);
-
-        return $columnCollection;
     }
 
     protected function createSingleValueValueCollection(SourceValueInterface $value): ValueCollection

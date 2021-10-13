@@ -30,7 +30,17 @@ class MultiSelectCodeSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply Multi Select selection on this entity');
         }
 
-        return implode($selection->getSeparator(), $value->getOptionCodes());
+        $optionsCodes = $value->getOptionCodes();
+
+        $selectedData = array_map(static function ($optionCode) use ($value) {
+            if ($value->hasMappedValue($optionCode)) {
+                return $value->getMappedValue($optionCode);
+            }
+
+            return $optionCode;
+        }, $optionsCodes);
+
+        return implode($selection->getSeparator(), $selectedData);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

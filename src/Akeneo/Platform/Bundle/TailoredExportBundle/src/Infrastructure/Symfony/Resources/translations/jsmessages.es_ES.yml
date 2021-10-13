@@ -57,6 +57,7 @@ akeneo.tailored_export:
         attribute: Este atributo ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
         association_type: Este tipo de asociación ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
         property: Esta propiedad no es válida. Elimine esta fuente y añádala de nuevo.
+        asset_collection_main_media: No se encuentra el medio principal de la colección de recursos utilizados por el atributo no se encuentra. Revise la configuración de la familia de activos.
       no_source_configuration:
         title: No hay operaciones disponibles para esta fuente. Su valor será exportado tal como está.
       deleted_attribute:
@@ -78,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Cantidad
           currency: Moneda
+          main_media: Medios principales
           key: Clave de archivo
           path: Ruta
           name: Nombre de archivo
+        asset_collection:
+          property: Propiedades
+          with_prefix_and_suffix: Añadir prefijo y sufijo
         format: Formato
         parent:
           information:
@@ -124,6 +129,28 @@ akeneo.tailored_export:
           disabled: Valor de reemplazo deshabilitado
           yes: Valor de reemplazo de Sí
           no: Valor de reemplazo de No
+          edit_mapping: Editar valores de reemplazo
+          modal:
+            title: Reemplazo
+            subtitle: Administrar opciones
+            no_result:
+              title: Lo sentimos, no hay ningún valor en este atributo
+            empty_result:
+              title: Lo sentimos, no hay resultados para su búsqueda
+              text: Pruebe con nuevos criterios de búsqueda
+            filters:
+              mapped:
+                label: Presentación
+                unmapped: Todos los valores sin reemplazo
+                mapped: Todos los valores con reemplazo
+                all: Todos los valores
+            table:
+              header:
+                values: Valores
+                replacement: Valores de reemplazo
+              field:
+                to_placeholder: Definir el valor de reemplazo
+            validation_error: Algunos valores de reemplazo no son válidos, consulte los mensajes de error a continuación de cada campo.
         default_value:
           title: Usar valor predeterminado cuando esté vacío
           label: Valor predeterminado
@@ -165,6 +192,12 @@ akeneo.tailored_export:
       locale_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por configuración regional. Cree o elija una fuente diferente.
       channel_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por canal. Cree o elija una fuente diferente.
       invalid_specific_locale: El atributo {{ attribute_code }} es específico de la configuración regional. Seleccione otra configuración regional.
+    asset_collection:
+      locale_should_not_be_blank: El atributo principal de medios de la familia de activos {{ asset_family_code }} ahora tiene un valor por configuración regional. Créelo o elija una fuente diferente.
+      channel_should_not_be_blank: El atributo principal de medios de la familia de activos {{ asset_family_code }} ahora tiene un valor por canal. Créelo o elija una fuente diferente.
+      locale_should_be_blank: El atributo principal de medios de la familia de activos {{ asset_family_code }} ya no tiene un valor por configuración regional. Créelo o elija una fuente diferente.
+      channel_should_be_blank: El atributo principal de medios de la familia de activos {{ asset_family_code }} ya no tiene un valor por canal. Créelo o elija una fuente diferente.
+      invalid_type: El tipo de atributo principal de medios de la familia {{ asset_family_code }} ha cambiado. Créelo o elija una fuente diferente.
     measurement:
       family:
         does_not_exist: La familia de medición {{ measurement_family_code }} no existe.

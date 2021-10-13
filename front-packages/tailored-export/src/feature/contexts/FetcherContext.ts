@@ -1,6 +1,6 @@
 import {createContext, useContext} from 'react';
 import {Channel} from '@akeneo-pim-community/shared';
-import {Attribute, AssociationType, MeasurementFamily} from '../models';
+import {Attribute, AssetFamily, AssociationType, MeasurementFamily} from '../models';
 
 type FetcherValue = {
   attribute: {
@@ -14,6 +14,9 @@ type FetcherValue = {
   };
   measurementFamily: {
     fetchByCode: (code: string) => Promise<MeasurementFamily | undefined>;
+  };
+  assetFamily: {
+    fetchByIdentifier: (identifier: string) => Promise<AssetFamily | undefined>;
   };
 };
 
@@ -36,6 +39,11 @@ const FetcherContext = createContext<FetcherValue>({
   measurementFamily: {
     fetchByCode: () => {
       throw new Error('Fetch measurement family by code needs to be implemented');
+    },
+  },
+  assetFamily: {
+    fetchByIdentifier: () => {
+      throw new Error('Fetch asset family by identifier needs to be implemented');
     },
   },
 });

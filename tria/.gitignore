@@ -19,3 +19,4 @@ yarn-error.log
 .env.dev.local
 .env.local.php
 config/gcp_credentials.json
+src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog/extracted/*

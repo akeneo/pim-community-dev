@@ -19,7 +19,7 @@ for PUBSUB_TOPIC in $(echo $PUBSUB_TOPIC_LIST_JSON | jq -r '.[].name'); do
     PFID=$(echo ${PUBSUB_TOPIC_LIST_JSON} | jq -r ".[] | select(.name==\"${PUBSUB_TOPIC}\").labels.pfid")
     
     if [[ ${PFID} =~ $NAMESPACE_REGEX_FILTER ]] ; then
-        NS_EXIST=$(echo $KUBE_NS_LIST | grep ${PFID} | wc -l)
+        NS_EXIST=$(echo $KUBE_NS_LIST | grep -w ${PFID} | wc -l)
         
         echo "-------------------------------------"
         echo "Topic ${PUBSUB_TOPIC}"

@@ -10,14 +10,14 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader;
 use Doctrine\DBAL\Connection;
 
 class GetLocalesAccessesWithHighestLevelIntegration extends TestCase
 {
     private GetLocalesAccessesWithHighestLevel $query;
     private GroupRepositoryInterface $groupRepository;
-    private LocaleRepositoryInterface $localeRepository;
-    private Connection $connection;
+    private LocalePermissionsFixturesLoader $localePermissionsFixturesLoader;
 
     /**
      * {@inheritdoc}
@@ -33,39 +33,23 @@ class GetLocalesAccessesWithHighestLevelIntegration extends TestCase
 
         $this->query = $this->get(GetLocalesAccessesWithHighestLevel::class);
         $this->groupRepository = $this->get('pim_user.repository.group');
-        $this->localeRepository = $this->get('pim_catalog.repository.locale');
-        $this->connection = $this->get('database_connection');
+        $this->localePermissionsFixturesLoader = $this->get('akeneo_integration_tests.loader.locale_permissions');
     }
 
     public function testItFetchesLocalesHighestAccessLevel(): void
     {
-        $groupId = $this->groupRepository->findOneByIdentifier('redactor')->getId();
+        $group = $this->groupRepository->findOneByIdentifier('redactor');
 
-        $this->grantLocalePermission($groupId, 'fr_FR', Attributes::EDIT_ITEMS);
-        $this->grantLocalePermission($groupId, 'en_US', Attributes::VIEW_ITEMS);
+        $this->localePermissionsFixturesLoader->givenTheRightOnLocaleCodes(Attributes::EDIT_ITEMS, $group, ['fr_FR']);
+        $this->localePermissionsFixturesLoader->givenTheRightOnLocaleCodes(Attributes::VIEW_ITEMS, $group, ['en_US']);
 
         $expected = [
             'fr_FR' => Attributes::EDIT_ITEMS,
             'en_US' => Attributes::VIEW_ITEMS,
         ];
 
-        $results = $this->query->execute($groupId);
+        $results = $this->query->execute($group->getId());
 
         $this->assertEquals($expected, $results);
-    }
-
-    private function grantLocalePermission(int $groupId, string $localeCode, string $permission): void
-    {
-        $localeId = $this->localeRepository->findOneByIdentifier($localeCode)->getId();
-
-        $canView = 1;
-        $canEdit = $permission === Attributes::EDIT_ITEMS ? 1 : 0;
-
-        $this->connection->insert('pimee_security_locale_access', [
-            'user_group_id' => $groupId,
-            'locale_id' => $localeId,
-            'view_products' => $canView,
-            'edit_products' => $canEdit,
-        ]);
     }
 }

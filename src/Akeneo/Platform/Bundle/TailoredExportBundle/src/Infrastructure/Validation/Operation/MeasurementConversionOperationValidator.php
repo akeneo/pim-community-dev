@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Measurement\UnitBelongsToMeasurementFamily;
 use Symfony\Component\Validator\Constraint;
@@ -38,7 +39,7 @@ class MeasurementConversionOperationValidator extends ConstraintValidator
 
         $attribute = $this->getAttributes->forCode($constraint->attributeCode);
 
-        if (null === $attribute) {
+        if (!$attribute instanceof Attribute) {
             return;
         }
 
