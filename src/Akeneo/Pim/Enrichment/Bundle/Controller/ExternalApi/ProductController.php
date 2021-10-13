@@ -910,6 +910,8 @@ class ProductController
                 implode(',', $user->getRoles()),
                 $acl
             ));
+
+            throw new AccessDeniedHttpException(sprintf('Action requires "%s" ACL', $acl));
         }
     }
 }
