@@ -70,12 +70,13 @@ const fetchAttributeGroupsByIdentifiers = (identifiers: string[]): Promise<Optio
     );
 };
 
+type Level = 'edit' | 'view';
+
 type SummaryLabels = {
-  edit: string;
-  view: string;
+  [k in Level]: string;
 };
 
-const getLevelSummary = async (state: PermissionFormReducer.State, level: string): Promise<string> => {
+const getLevelSummary = async (state: PermissionFormReducer.State, level: Level): Promise<string> => {
   if (state[level].all) {
     return translate('pim_permissions.widget.all');
   }
