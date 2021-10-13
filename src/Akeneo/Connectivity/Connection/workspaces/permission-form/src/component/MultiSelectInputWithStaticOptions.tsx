@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React, {useEffect, useRef} from 'react';
 import {getColor} from 'akeneo-design-system';
-import styled, {createGlobalStyle} from 'styled-components';
+import {createGlobalStyle} from 'styled-components';
 
 export type QueryParamsBuilder<Context, Params> = (search: string, page: number, context: Context | null) => Params;
 
