@@ -139,14 +139,12 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   );
 });
 
-export const filter = connect(
-  (state: EditState, ownProps: FilterViewProps): RecordFilterViewProps => {
-    return {
-      ...ownProps,
-      context: {
-        locale: state.user.catalogLocale,
-        channel: state.user.catalogChannel,
-      },
-    };
-  }
-)(RecordFilterView);
+export const filter = connect((state: EditState, ownProps: FilterViewProps): RecordFilterViewProps => {
+  return {
+    ...ownProps,
+    context: {
+      locale: state.user.catalogLocale,
+      channel: state.user.catalogChannel,
+    },
+  };
+})(RecordFilterView);

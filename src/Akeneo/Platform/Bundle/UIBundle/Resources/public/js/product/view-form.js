@@ -14,12 +14,12 @@ define([
   'pim/form',
   'pim/page-title',
   'pim/user-context',
-], function($, _, Backbone, EditForm, BaseForm, PageTitle, UserContext) {
+], function ($, _, Backbone, EditForm, BaseForm, PageTitle, UserContext) {
   return EditForm.extend({
     /**
      * {@inheritdoc}
      */
-    initialize: function(meta) {
+    initialize: function (meta) {
       this.config = meta.config;
 
       if (_.has(this.config, 'forwarded-events')) {
@@ -32,7 +32,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       Backbone.Router.prototype.once('route', this.unbindEvents);
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
@@ -43,7 +43,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       PageTitle.render(this.config.routeKey, {
         'product.label': this.getFormData().meta.label[UserContext.get('catalogLocale')],
       });
@@ -56,7 +56,7 @@ define([
      *
      * @param {Event} event
      */
-    addFieldExtension: function(event) {
+    addFieldExtension: function (event) {
       event.promises.push($.Deferred().resolve(event.field.setEditable(false)));
     },
   });

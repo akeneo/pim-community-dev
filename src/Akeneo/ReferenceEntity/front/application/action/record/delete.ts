@@ -11,30 +11,28 @@ import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmD
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 
-export const deleteRecord = (
-  referenceEntityIdentifier: ReferenceEntityIdentifier,
-  recordCode: RecordCode,
-  updateRecordList: boolean = false
-) => async (dispatch: any): Promise<void> => {
-  try {
-    const errors = await recordRemover.remove(referenceEntityIdentifier, recordCode);
+export const deleteRecord =
+  (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode, updateRecordList: boolean = false) =>
+  async (dispatch: any): Promise<void> => {
+    try {
+      const errors = await recordRemover.remove(referenceEntityIdentifier, recordCode);
 
-    if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccurred(validationErrors));
+      if (errors) {
+        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+        dispatch(notifyRecordDeletionErrorOccurred(validationErrors));
 
-      return;
+        return;
+      }
+
+      dispatch(notifyRecordWellDeleted(recordCode));
+      dispatch(redirectToRecordIndex(referenceEntityIdentifier));
+      dispatch(closeDeleteModal());
+      if (true === updateRecordList) {
+        dispatch(updateRecordResults());
+      }
+    } catch (error) {
+      dispatch(notifyRecordDeleteFailed());
+
+      throw error;
     }
-
-    dispatch(notifyRecordWellDeleted(recordCode));
-    dispatch(redirectToRecordIndex(referenceEntityIdentifier));
-    dispatch(closeDeleteModal());
-    if (true === updateRecordList) {
-      dispatch(updateRecordResults());
-    }
-  } catch (error) {
-    dispatch(notifyRecordDeleteFailed());
-
-    throw error;
-  }
-};
+  };

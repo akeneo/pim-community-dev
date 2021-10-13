@@ -9,7 +9,7 @@ const {
   tools: {answerJson, convertItemTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {When, Then, Given} = cucumber;
   const assert = require('assert');
 
@@ -34,7 +34,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const saveRecord = async function(page) {
+  const saveRecord = async function (page) {
     page.on('request', request => {
       if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
@@ -42,7 +42,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const listRecordUpdated = async function(page, referenceEntityIdentifier, identifier, code, labels) {
+  const listRecordUpdated = async function (page, referenceEntityIdentifier, identifier, code, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
@@ -60,7 +60,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const validationMessageShown = async function(page, message) {
+  const validationMessageShown = async function (page, message) {
     page.on('request', request => {
       if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
         answerJson(
@@ -85,11 +85,11 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const getRecordIdentifier = function(referenceEntityIdentifier, code) {
+  const getRecordIdentifier = function (referenceEntityIdentifier, code) {
     return `${referenceEntityIdentifier}_${code}_123456`;
   };
 
-  When('the user creates a record of {string} with:', async function(referenceEntityIdentifier, updates) {
+  When('the user creates a record of {string} with:', async function (referenceEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
 
     const sidebar = await getElement(this.page, 'Sidebar');
@@ -105,22 +105,22 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Given('the user toggles the sequantial creation', async function() {
+  Given('the user toggles the sequantial creation', async function () {
     const modal = await getElement(this.page, 'Modal');
     await modal.toggleCreateAnother();
   });
 
-  Then('the record creation form should be displayed', async function() {
+  Then('the record creation form should be displayed', async function () {
     await this.page.waitFor(1000);
     await this.page.waitFor('.modal .AknFullPage-content .AknFieldContainer');
   });
 
-  When('the user saves the record', async function() {
+  When('the user saves the record', async function () {
     const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is a record of {string} with:', async function(referenceEntityIdentifier, updates) {
+  Then('there is a record of {string} with:', async function (referenceEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
     const recordIdentifier = getRecordIdentifier(referenceEntityIdentifier, record.code);
 
@@ -135,15 +135,15 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Then('the record validation error will be {string}', async function(expectedMessage) {
+  Then('the record validation error will be {string}', async function (expectedMessage) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the record will be saved', async function() {
+  Then('the record will be saved', async function () {
     await saveRecord(this.page);
   });
 
-  Then('the user cannot create a record', async function() {
+  Then('the user cannot create a record', async function () {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('record');
 

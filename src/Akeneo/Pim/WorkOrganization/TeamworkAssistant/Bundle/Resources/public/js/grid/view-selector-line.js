@@ -19,7 +19,7 @@ define([
   'pim/formatter/date',
   'pim/template/grid/view-selector/line',
   'teamwork-assistant/templates/grid/view-selector/line-project',
-], function($, _, __, i18n, ViewSelectorLine, userContext, DateContext, DateFormatter, templateView, templateProject) {
+], function ($, _, __, i18n, ViewSelectorLine, userContext, DateContext, DateFormatter, templateView, templateProject) {
   return ViewSelectorLine.extend({
     templates: {
       view: _.template(templateView),
@@ -31,7 +31,7 @@ define([
      *
      * Render a different template with different values depending on the view type of this line.
      */
-    render: function() {
+    render: function () {
       var template = this.templates[this.datagridViewType];
       var data = {};
 
@@ -52,7 +52,7 @@ define([
      *
      * @returns {Object}
      */
-    prepareViewData: function() {
+    prepareViewData: function () {
       return {
         view: this.datagridView,
         isCurrent: this.currentViewId === this.datagridView.id,
@@ -64,7 +64,7 @@ define([
      *
      * @returns {Object}
      */
-    prepareProjectData: function() {
+    prepareProjectData: function () {
       var project = this.datagridView;
       var badgeClass = 'AknBadge--warning';
 

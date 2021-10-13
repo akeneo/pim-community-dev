@@ -8,7 +8,8 @@ import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handl
 const routing = require('routing');
 
 export class AttributeRemoverImplementation
-  implements AttributeRemover<ReferenceEntityIdentifier, AttributeIdentifier> {
+  implements AttributeRemover<ReferenceEntityIdentifier, AttributeIdentifier>
+{
   constructor() {
     Object.freeze(this);
   }

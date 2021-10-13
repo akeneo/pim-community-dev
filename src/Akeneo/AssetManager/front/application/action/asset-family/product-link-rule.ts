@@ -8,44 +8,48 @@ import {
   notifyExecuteNamingConventionSucceeded,
 } from 'akeneoassetmanager/application/action/asset-family/notify';
 
-export const executeProductLinkRules = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamily = getState().form.data;
+export const executeProductLinkRules =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const assetFamily = getState().form.data;
 
-  try {
-    const errors = await productLinkRulesExecutor.execute(assetFamily);
+    try {
+      const errors = await productLinkRulesExecutor.execute(assetFamily);
 
-    if (errors) {
-      console.error(errors);
+      if (errors) {
+        console.error(errors);
+        dispatch(notifyExecuteProductLinkRulesFailed());
+        return;
+      }
+    } catch (error) {
+      console.error(error);
       dispatch(notifyExecuteProductLinkRulesFailed());
+
       return;
     }
-  } catch (error) {
-    console.error(error);
-    dispatch(notifyExecuteProductLinkRulesFailed());
 
-    return;
-  }
+    dispatch(notifyExecuteProductLinkRulesSucceeded());
+  };
 
-  dispatch(notifyExecuteProductLinkRulesSucceeded());
-};
+export const executeNamingConvention =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const assetFamily = getState().form.data;
 
-export const executeNamingConvention = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamily = getState().form.data;
+    try {
+      const errors = await namingConventionExecutor.executeAll(assetFamily.identifier);
 
-  try {
-    const errors = await namingConventionExecutor.executeAll(assetFamily.identifier);
-
-    if (errors) {
-      console.error(errors);
+      if (errors) {
+        console.error(errors);
+        dispatch(notifyExecuteNamingConventionFailed());
+        return;
+      }
+    } catch (error) {
+      console.error(error);
       dispatch(notifyExecuteNamingConventionFailed());
+
       return;
     }
-  } catch (error) {
-    console.error(error);
-    dispatch(notifyExecuteNamingConventionFailed());
 
-    return;
-  }
-
-  dispatch(notifyExecuteNamingConventionSucceeded());
-};
+    dispatch(notifyExecuteNamingConventionSucceeded());
+  };
