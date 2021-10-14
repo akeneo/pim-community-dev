@@ -64,17 +64,21 @@ test('It automatically sanitize job code', async () => {
     userEvent.click(screen.getByText('pim_common.duplicate'));
   });
 
-  userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicated job');
-  expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicatedjob');
+  const labelInput = screen.getByLabelText('pim_common.label pim_common.required_label');
+  const codeInput = screen.getByLabelText('pim_common.code pim_common.required_label');
 
-  userEvent.clear(screen.getByLabelText('pim_common.code pim_common.required_label'));
-  userEvent.type(screen.getByLabelText('pim_common.code pim_common.required_label'), 'duplicated_job');
-  expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicated_job');
+  userEvent.clear(labelInput);
+  userEvent.type(labelInput, 'duplicated job');
+  expect(codeInput).toHaveValue('duplicatedjob');
 
-  userEvent.clear(screen.getByLabelText('pim_common.label pim_common.required_label'));
-  userEvent.type(screen.getByLabelText('pim_common.label pim_common.required_label'), 'duplicate job');
-  expect(screen.getByLabelText('pim_common.code pim_common.required_label')).toHaveValue('duplicated_job');
-  expect(screen.getByLabelText('pim_common.label pim_common.required_label')).toHaveValue('duplicate job');
+  userEvent.clear(codeInput);
+  userEvent.type(codeInput, 'duplicated_job');
+  expect(codeInput).toHaveValue('duplicated_job');
+
+  userEvent.clear(labelInput);
+  userEvent.type(labelInput, 'duplicate job');
+  expect(codeInput).toHaveValue('duplicated_job');
+  expect(labelInput).toHaveValue('duplicate job');
 });
 
 test('It clears the code and the label when cancel a duplication', async () => {
