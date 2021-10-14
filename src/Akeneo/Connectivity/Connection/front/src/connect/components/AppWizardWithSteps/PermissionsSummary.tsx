@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
 import {PermissionFormProvider} from '../../../shared/permission-form-registry';
-import {PermissionsType} from './AppWizardWithSteps';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -38,19 +38,19 @@ const Helper = styled.div`
     width: 280px;
 `;
 
-type RowProps = {
+type PermissionsSummarySectionProps = {
     provider: PermissionFormProvider<any>;
-    permissions: PermissionsType;
+    permissions: PermissionsByProviderKey;
 };
 
-const PermissionRow: FC<RowProps> = React.memo(({provider, permissions}) => (
+const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(({provider, permissions}) => (
     <div>{provider.renderSummary(permissions)}</div>
 ));
 
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    permissions: PermissionsType;
+    permissions: PermissionsByProviderKey;
 };
 export const PermissionsSummary: FC<Props> = ({appName, providers, permissions}) => {
     const translate = useTranslate();
@@ -66,7 +66,11 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
                 </Link>
             </Helper>
             {providers.map(provider => (
-                <PermissionRow key={provider.key} provider={provider} permissions={permissions[provider.key]} />
+                <PermissionsSummarySection
+                    key={provider.key}
+                    provider={provider}
+                    permissions={permissions[provider.key]}
+                />
             ))}
         </InfoContainer>
     );

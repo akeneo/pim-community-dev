@@ -11,6 +11,7 @@ import {useTranslate} from '../../../shared/translate';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 const Content = styled.div`
     display: grid;
@@ -44,10 +45,6 @@ const ProgressIndicatorContainer = styled(ProgressIndicator)`
     bottom: 20px;
 `;
 
-export type PermissionsType = {
-    [key: string]: any;
-};
-
 interface Props {
     clientId: string;
 }
@@ -63,7 +60,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
 
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
-    const [permissions, setPermissions] = useState<PermissionsType>({});
+    const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
 
     const confirmAuthorization = useConfirmAuthorization(clientId);
 
