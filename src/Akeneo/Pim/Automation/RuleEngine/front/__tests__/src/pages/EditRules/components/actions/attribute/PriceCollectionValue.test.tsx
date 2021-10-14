@@ -1,6 +1,5 @@
 import 'jest-fetch-mock';
 import {
-  act,
   renderWithProviders,
   screen,
 } from '../../../../../../../test-utils';
@@ -119,9 +118,7 @@ describe('PriceCollectionValue', () => {
       {all: true}
     );
 
-    await act(async () => {
-      userEvent.type(await screen.findByTestId('attribute-value-id-USD'), '42');
-    });
+    userEvent.paste(await screen.findByTestId('attribute-value-id-USD'), '42');
     expect(onChange).toHaveBeenLastCalledWith([
       {amount: 69, currency: 'EUR'},
       {amount: 42, currency: 'USD'},
@@ -152,12 +149,8 @@ describe('PriceCollectionValue', () => {
       {all: true}
     );
 
-    await act(async () => {
-      userEvent.type(
-        await screen.findByTestId('attribute-value-id-EUR'),
-        '{backspace}{backspace}'
-      );
-    });
+    userEvent.clear(await screen.findByTestId('attribute-value-id-EUR'));
+
     expect(onChange).toHaveBeenLastCalledWith([]);
   });
 });
