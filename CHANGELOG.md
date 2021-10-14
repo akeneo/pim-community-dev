@@ -127,6 +127,7 @@
 - PIM-10107: Hide add quantified association button when ACL is not granted
 - PIM-10100: Added a product & product model indexation step for setAttributeRequirements job
 - PIM-10092: Display an error message when trying to delete a category tree linked to a channel
+- PIM-10116: Fix filter bar not being sticky on Measurement & Attribute groups page
 
 ## New features
 
