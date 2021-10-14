@@ -8,7 +8,7 @@ type ProvidersAndSavedPermissions = [
     Dispatch<SetStateAction<PermissionsByProviderKey>>
 ];
 
-const useLoadPermissionsFormProviders = (userGroupName: string): ProvidersAndSavedPermissions => {
+const usePermissionsFormProviders = (userGroupName: string): ProvidersAndSavedPermissions => {
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[] | null>(null);
     const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
@@ -36,4 +36,4 @@ const useLoadPermissionsFormProviders = (userGroupName: string): ProvidersAndSav
     return [providers, permissions, setPermissions];
 };
 
-export default useLoadPermissionsFormProviders;
+export default usePermissionsFormProviders;

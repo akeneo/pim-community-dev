@@ -4,7 +4,7 @@ import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import {PermissionsForm} from '@src/connect/components/PermissionsForm';
-import useLoadPermissionsFormProviders from '@src/connect/hooks/use-load-permissions-form-providers';
+import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form-providers';
 
 const connectedApp = {
     id: '12345',
@@ -19,7 +19,7 @@ const connectedApp = {
     partner: null,
 };
 
-jest.mock('@src/connect/hooks/use-load-permissions-form-providers', () => ({
+jest.mock('@src/connect/hooks/use-permissions-form-providers', () => ({
     __esModule: true,
     default: jest.fn(() => [null, {}, jest.fn()]),
 }));
@@ -35,7 +35,7 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('The connected app permissions renders with providers', () => {
+test('The connected app permissions tab renders with providers', () => {
     const mockedProviders = [
         {
             key: 'providerKey1',
@@ -69,7 +69,7 @@ test('The connected app permissions renders with providers', () => {
         },
     };
 
-    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
         mockedProviders,
         mockedPermissions,
         jest.fn(),
@@ -97,8 +97,8 @@ test('The connected app permissions renders with providers', () => {
     );
 });
 
-test('The connected app permissions renders without providers', () => {
-    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
+test('The connected app permissions tab is not displayed when there is no providers', () => {
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
     renderWithProviders(<ConnectedAppPermissions connectedApp={connectedApp} />);
 

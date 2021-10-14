@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {usePermissionFormRegistry} from '@src/shared/permission-form-registry';
-import useLoadPermissionsFormProviders from '@src/connect/hooks/use-load-permissions-form-providers';
+import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form-providers';
 
 jest.mock('@src/shared/permission-form-registry', () => ({
     ...jest.requireActual('@src/shared/permission-form-registry'),
@@ -34,7 +34,7 @@ test('It fetches providers and saved permissions', async done => {
         all: () => Promise.resolve(providers),
     }));
 
-    const {result, waitForNextUpdate} = renderHook(() => useLoadPermissionsFormProviders('redactor'));
+    const {result, waitForNextUpdate} = renderHook(() => usePermissionsFormProviders('redactor'));
 
     expect(result.current).toEqual([null, {}, expect.any(Function)]);
 

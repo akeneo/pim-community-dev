@@ -1,14 +1,14 @@
 import React, {FC} from 'react';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {PermissionsForm} from '../PermissionsForm';
-import useLoadPermissionsFormProviders from '../../hooks/use-load-permissions-form-providers';
+import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 
 type Props = {
     connectedApp: ConnectedApp;
 };
 
 export const ConnectedAppPermissions: FC<Props> = ({connectedApp}) => {
-    const [providers, permissions, setPermissions] = useLoadPermissionsFormProviders(connectedApp.user_group_name);
+    const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
 
     return (
         <>
