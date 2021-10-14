@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale;
 
 use Doctrine\DBAL\Connection;
 
-class GetAllLocalesCodes
+class GetAllActiveLocalesCodes
 {
     private Connection $connection;
 

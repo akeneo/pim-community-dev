@@ -202,7 +202,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllLocalesCodes:
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes:
         arguments:
             - '@database_connection'
 

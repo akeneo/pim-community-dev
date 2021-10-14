@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM\Locale;
 
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllLocalesCodes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-class GetAllLocalesCodesIntegration extends TestCase
+class GetAllActiveLocalesCodesIntegration extends TestCase
 {
-    private GetAllLocalesCodes $query;
+    private GetAllActiveLocalesCodes $query;
 
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class GetAllLocalesCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = $this->get(GetAllLocalesCodes::class);
+        $this->query = $this->get(GetAllActiveLocalesCodes::class);
     }
 
     public function testItFetchesAllLocales(): void
