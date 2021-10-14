@@ -72,7 +72,6 @@ class UserGroupLocalePermissionsSaver
         $this->revokeAccesses($removedCategoryCodes, $group);
 
         $this->updateAccesses($highestAccessLevelIndexedByLocaleCode, $existingHighestAccessLevelIndexedByLocaleCode, $group);
-
     }
 
     private function getGroup(string $groupName): GroupInterface
