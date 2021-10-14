@@ -53,13 +53,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const deleteCategoryTree = async () => {
     if (categoryTreeToDelete) {
-      const success = await deleteCategory(categoryTreeToDelete.id);
-      success && refreshCategoryTrees();
-      const message = success
+      const response = await deleteCategory(categoryTreeToDelete.id);
+      response.ok && refreshCategoryTrees();
+      const message = response.ok
         ? 'pim_enrich.entity.category.category_tree_deletion.success'
-        : 'pim_enrich.entity.category.category_tree_deletion.error';
+        : response.errorMessage || 'pim_enrich.entity.category.category_tree_deletion.error';
       notify(
-        success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+        response.ok ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
         translate(message, {tree: categoryTreeToDelete.label})
       );
       setCategoryTreeToDelete(null);
