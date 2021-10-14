@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Marketplace;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -16,10 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetAllAppsEndToEnd extends WebTestCase
 {
+    private FakeFeatureFlag $marketplaceActivateFeatureFlag;
+
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->marketplaceActivateFeatureFlag = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->loadAppsFixtures();
     }
 
@@ -84,6 +88,32 @@ class GetAllAppsEndToEnd extends WebTestCase
         Assert::assertEquals(2, $result['total']);
         Assert::assertEquals($expectedApps[0], $result['apps'][0]);
         Assert::assertEquals($expectedApps[1], $result['apps'][1]);
+    }
+
+    /**
+     * @group ce
+     */
+    public function test_it_receive_an_empty_response_when_the_feature_flag_is_disabled(): void
+    {
+        $this->marketplaceActivateFeatureFlag->disable();
+
+        $this->authenticateAsAdmin();
+        $this->client->request(
+            'GET',
+            '/rest/marketplace/apps',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals([
+            'total' => 0,
+            'apps' => [],
+        ], $result);
     }
 
     private function loadAppsFixtures(): void

@@ -70,6 +70,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
             - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
         public: true
