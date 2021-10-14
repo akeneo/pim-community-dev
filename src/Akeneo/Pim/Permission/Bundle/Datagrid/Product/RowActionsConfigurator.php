@@ -161,6 +161,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
             ],
             'type'            => 'navigate-product-and-product-model',
             'label'           => 'View the product',
+            'useDirectLauncherLink' => true,
             'rowAction'       => true,
         ];
         $this->configuration->offsetSetByPath('[actions][show]', $viewAction);
