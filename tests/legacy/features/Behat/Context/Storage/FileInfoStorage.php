@@ -2,7 +2,10 @@
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -28,12 +31,7 @@ class FileInfoStorage extends PimContext
         ));
     }
 
-    /**
-     * @param string $entityClass
-     *
-     * @return FileInfoRepositoryInterface
-     */
-    private function getRepository($entityClass)
+    private function getRepository(string $entityClass): FileInfoRepositoryInterface
     {
         return $this->getMainContext()->getEntityManager()->getRepository($entityClass);
     }

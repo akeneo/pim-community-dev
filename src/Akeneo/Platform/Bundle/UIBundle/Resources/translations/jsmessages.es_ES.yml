@@ -403,3 +403,7 @@ pim_system:
     enabled: SSO activado
     disabled: SSO desactivado
     title: Inicio de sesión único con SAML
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Seleccione una acción

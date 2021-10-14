@@ -16,7 +16,19 @@ define([
   'pim/common/property',
   'pim/fetcher-registry',
   'pim/template/mass-edit/family/set-requirements',
-], function (_, __, Routing, BaseOperation, UserContext, FormBuilder, propertyAccessor, FetcherRegistry, template) {
+  'pim/analytics',
+], function (
+  _,
+  __,
+  Routing,
+  BaseOperation,
+  UserContext,
+  FormBuilder,
+  propertyAccessor,
+  FetcherRegistry,
+  template,
+  analytics
+) {
   return BaseOperation.extend({
     template: _.template(template),
     formPromise: null,
@@ -100,6 +112,10 @@ define([
       var data = this.getFormData();
 
       data.actions = values;
+
+      analytics.track('grid:mass-edit:requirements-checked', {
+        actions: data.actions,
+      });
 
       this.setData(data);
     },

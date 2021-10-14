@@ -7,7 +7,7 @@ import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/Connec
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import userEvent from '@testing-library/user-event';
-import useLoadPermissionsFormProviders from '@src/connect/hooks/use-load-permissions-form-providers';
+import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form-providers';
 
 // to make Tab usable with jest
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
@@ -28,7 +28,7 @@ jest.mock('@src/connect/components/ConnectedApp/ConnectedAppPermissions', () => 
     ConnectedAppPermissions: jest.fn(() => null),
 }));
 
-jest.mock('@src/connect/hooks/use-load-permissions-form-providers', () => ({
+jest.mock('@src/connect/hooks/use-permissions-form-providers', () => ({
     __esModule: true,
     default: jest.fn(() => [null, {}, () => {}]),
 }));
@@ -40,7 +40,7 @@ beforeEach(() => {
 });
 
 test('The connected app container renders without permissions tab', () => {
-    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
         [],
         {},
         () => {},
@@ -108,7 +108,7 @@ test('The connected app container renders with permissions tab', () => {
         }
     };
 
-    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
         mockedProviders,
         mockedPermissions,
         () => {},

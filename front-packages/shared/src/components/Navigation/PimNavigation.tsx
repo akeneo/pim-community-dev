@@ -4,6 +4,7 @@ import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
+import {useAnalytics} from '../../hooks';
 
 type NavigationEntry = {
   code: string;
@@ -26,10 +27,16 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   const translate = useTranslate();
   const router = useRouter();
   const theme = useTheme();
+  const analytics = useAnalytics();
 
   const handleFollowEntry = (event: any, entry: NavigationEntry) => {
     event.stopPropagation();
     event.preventDefault();
+
+    analytics.track('navigation:entry:clicked', {
+      code: entry.code,
+    });
+
     router.redirect(router.generate(entry.route));
   };
 
@@ -79,11 +86,12 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
         <MenuContainer>
           {entries.map(entry => (
             <MainNavigationItem
+              id={entry.code}
               key={entry.code}
               active={entry.code === activeEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
-              onClick={(event) => handleFollowEntry(event, entry)}
+              onClick={event => handleFollowEntry(event, entry)}
               href={`#${router.generate(entry.route)}`}
               role="menuitem"
               data-testid="pim-main-menu-item"
@@ -94,7 +102,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               {entry.disabled && freeTrialEnabled && (
                 <LockIconContainer data-testid="locked-entry">
                   <StyledTag tint="blue">
-                    <StyledLockIcon size={16} color={theme.color.blue100}/>
+                    <StyledLockIcon size={16} color={theme.color.blue100} />
                   </StyledTag>
                 </LockIconContainer>
               )}

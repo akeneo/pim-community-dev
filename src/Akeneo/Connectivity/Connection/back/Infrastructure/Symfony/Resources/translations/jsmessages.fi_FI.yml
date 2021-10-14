@@ -84,7 +84,7 @@ akeneo_connectivity.connection:
           categories: kategoriat
           channel_localization: lokaalit ja valuutat
           channel_settings: kanavat
-          association_types: assosiaatiotyypit
+          association_types: tuoteliitostyypit
           products: tuotteet ja tuotemallit
       error:
         sub_text: Ota yhteyttä sovelluksen kehittäjään tai Akeneo-tukeen

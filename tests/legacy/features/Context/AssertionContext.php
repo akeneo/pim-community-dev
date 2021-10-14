@@ -11,6 +11,7 @@ use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context for assertions
@@ -714,10 +715,7 @@ class AssertionContext extends PimContext
         }, 'Avatar image not found or not default one');
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
     }

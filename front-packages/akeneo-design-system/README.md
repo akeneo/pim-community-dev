@@ -1,21 +1,36 @@
-# Akeneo Design System Repository
+# Akeneo Design System
+
+<p style={{textAlign: "center"}}>
+  <img style={{ width: '75%', margin: '0 auto 2em auto', maxWidth: '450px'}} src="./Introduction.png" alt="Akeneo design system introduction illustration"/>
+</p>
 
 ## What is a design system?
 
+### Meet designer's best friend
+
+Welcome to the Akeneo Design System. This comprehensive guide and resource library contains everything you'll need to design with us. The use of the system reduces design debt, accelerates the design process, and builds bridges between teams working in concert to bring products to life in their best visual form.
+
+But why it's so important?
+
+### Avoid the Tower of Babel of design.
+
+As teams grow, it's common for designers to concentrate on discrete areas of an app and solve problems individually and not systematically. It can lead to a fragmented and not consistent visual language.
+
+### Access to a single source of truth.
+
+We created this library to manage all brand and UX components to keep internal and external Akeneo designers and engineers informed and easier to work processes.
+
+### Design at Scale.
+
+Empower your process to create delightful and consistent user experiences across every product and collaborator - Everyone gets the building blocks to contribute right away on every topic.
 The aim of Akeneo Design System is to help Akeneo designers and developers deliver work faster and better.
-It provides teams with a common language and encourages adherence to design guidelines with compliant components while offering consistent experience to users.
-
-Designers can validate each component independently and have a global view on available components when designing a new view.
-Developers don't need to re-implement components on each bounded contexts/projects.
-
-Because components implemented here are used several times they have to be tested unitary and visually.
 
 ## How to see components and guidelines?
 This project uses Storybook (https://storybook.js.org/) to display components and guidelines.
 
 **Preview**
 
-Latest version is available here: https://akeneo.github.io/akeneo-design-system/
+Latest version is available here: https://dsm.akeneo.com
 
 **Locally**
 
@@ -23,7 +38,7 @@ To build this project, you need to have the following package installed:
 - Yarn (https://classic.yarnpkg.com/docs/install)
 
 You should execute the following commands:
-```bash
+```shell
 $ yarn install
 $ yarn storybook:start
 ```
@@ -34,7 +49,7 @@ You don't have to relaunch the command at each time you create or update a compo
 ## Using Akeneo Design System component in my project
 
 To add Akeneo Design System to your React application, run:
-```bash
+```shell
 $ yarn add akeneo-design-system
 ```
 
@@ -67,25 +82,25 @@ const MyHomePage = () => (
 )
 ```
 
-To know props of each component, visit dedicated page to the component here: https://akeneo.github.io/akeneo-design-system/, at the playground section of each component, you can edit all properties and click on "Show code".
+To know the props of each component, visit the dedicated page of the component here: https://dsm.akeneo.com. You can edit all properties and click on "Show code" in the playground section available for each components.
 
 ## Contribution
 
 This project has been automatically extracted from the following mono-repository: https://github.com/akeneo/pim-community-dev.
 If you want to contribute please create a pull request in this repository.
 
-### What should be in the Akeneo Design System?
+### What can go in the Akeneo Design System?
 
 This repository contains:
-- Simple and complex (composition) components used several times in multiple projects/bounded contexts
-- Illustrations used several times in multiple projects/bounded contexts
+- Simple and complex (composition) components used several times in multiple products
+- Illustrations used several times in multiple products
 - Icons used by components in this repository
 - Basic React hooks
 - Specific themes of Akeneo products (PIM, Onboarder, Shared Catalogs)
 
-### What should not be in Akeneo Design System?
+### What cannot go in the Akeneo Design System?
 
-- Specific view => each project should keep in charge of create her own view logic
+- Specific views: each project can specify specific components for specific UI logic.
 - Code relative to infrastructure (fetchers translation, routing, validation ...)
 - Logic specific to the domain
 
@@ -100,7 +115,7 @@ There is two type of tests, unit and visual tests.
 ### Unit tests
 
 Unit tests can be launched with the following commands:
-```batch
+```shell
 # Launch only one time
 $ yarn test:unit:run
 

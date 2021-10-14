@@ -11,9 +11,9 @@ import * as Icons from '../../icons';
   title="Components/Message bar"
   component={MessageBar}
   argTypes={{
-    level: {control: {type: 'select', options: ['info', 'success', 'warning', 'error']}},
+    level: {control: {type: 'select'}, options: ['info', 'success', 'warning', 'error']},
     icon: {
-      control: {type: 'select', options: Object.keys(Icons)},
+      control: {type: 'select'}, options: Object.keys(Icons),
       table: {type: {summary: 'ReactElement<IconProps>'}},
     },
     children: {control: {type: 'text'}},

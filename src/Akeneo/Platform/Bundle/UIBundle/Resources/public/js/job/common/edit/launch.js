@@ -17,7 +17,8 @@ define([
   'oro/messenger',
   'oro/loading-mask',
   'pim/template/export/common/edit/launch',
-], function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, LoadingMask, template) {
+  'pim/analytics',
+], function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     events: {
@@ -72,6 +73,10 @@ define([
           } else {
             router.reloadPage();
           }
+
+          analytics.track('job-instance:export:launched', {
+            url: this.url,
+          });
         })
         .fail(function () {
           messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));

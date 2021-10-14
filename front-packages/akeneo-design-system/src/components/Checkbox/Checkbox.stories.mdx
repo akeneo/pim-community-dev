@@ -8,7 +8,7 @@ import {useArgs, updateArgs} from '@storybook/client-api';
   component={Checkbox}
   argTypes={{
     readOnly: {control: {type: 'boolean'}},
-    checked: {control: {type: 'select', options: [true, false, 'mixed']}},
+    checked: {control: {type: 'select'}, options: [true, false, 'mixed']},
     onChange: {action: 'Checkbox component onChange'},
   }}
   args={{

@@ -11,7 +11,7 @@ import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
-import useLoadPermissionsFormProviders from '../../hooks/use-load-permissions-form-providers';
+import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -26,7 +26,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const generateMediaUrl = useMediaUrlGenerator();
-    const [providers, permissions, setPermissions] = useLoadPermissionsFormProviders(connectedApp.user_group_name);
+    const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);

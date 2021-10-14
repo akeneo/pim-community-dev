@@ -18,7 +18,8 @@ define([
   'pim/user-context',
   'routing',
   'pim/router',
-], function ($, _, __, BaseSave, messenger, FieldManager, i18n, UserContext, Routing, router) {
+  'pim/analytics',
+], function ($, _, __, BaseSave, messenger, FieldManager, i18n, UserContext, Routing, router, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_import_export.entity.job_instance.flash.update.success'),
     updateFailureMessage: __('pim_import_export.entity.job_instance.flash.update.fail'),
@@ -43,6 +44,11 @@ define([
 
             this.setData(data);
             this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
+
+            analytics.track('job-instance:form-edit:saved', {
+              code: jobInstance.code,
+            });
+
             router.redirectToRoute(this.config.redirectPath, {code: jobInstance.code});
           }.bind(this)
         )
