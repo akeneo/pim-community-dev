@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -77,6 +78,26 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
                 'selection' => new ReferenceEntityCollectionCodeSelection(','),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
                 'expected' => [self::TARGET_NAME => 'blue,black']
+            ],
+            'it applies code selection only on not replaced value' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'red' => 'Rouge de damas',
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionCodeSelection('/'),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'black']),
+                'expected' => [self::TARGET_NAME => 'Rouge de damas/blue/black'],
+            ],
+            'it applies label selection only on not replaced value' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'red' => 'Rouge de damas',
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionLabelSelection('/', 'en_US', 'color'),
+                'value' => new ReferenceEntityCollectionValue(['red', 'blue', 'black']),
+                'expected' => [self::TARGET_NAME => 'Rouge de damas/Blue/[black]'],
             ],
         ];
     }

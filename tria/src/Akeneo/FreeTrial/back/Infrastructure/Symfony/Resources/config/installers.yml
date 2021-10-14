@@ -1,0 +1,198 @@
+services:
+    akeneo.free_trial.installer_registry:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\FixtureInstallerRegistry
+
+    akeneo.free_trial.installer.category:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'category' }
+
+    akeneo.free_trial.installer.channel:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.channel'
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
+            - '@pim_catalog.saver.channel'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'channel' }
+
+    akeneo.free_trial.installer.currency:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.currency'
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
+            - '@validator'
+            - '@pim_catalog.saver.currency'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'currency' }
+
+    akeneo.free_trial.installer.locale:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.locale'
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@validator'
+            - '@pim_catalog.saver.locale'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'locale' }
+
+    akeneo.free_trial.installer.association_type:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.association_type'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+            - '@pim_catalog.saver.association_type'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'association_type' }
+
+    akeneo.free_trial.installer.attribute:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute' }
+
+    akeneo.free_trial.installer.attribute_group:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute_group'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute_group' }
+
+    akeneo.free_trial.installer.attribute_option:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_option'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'attribute_option' }
+
+    akeneo.free_trial.installer.family:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+            - '@pim_catalog.saver.family'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'family' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\FamilyVariantInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@validator'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'family_variant' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.validator.product'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'product' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductAssociationInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.product_association'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'product_association' }
+
+    akeneo.free_trial.installer.product_model:
+        class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
+        arguments:
+            - '@akeneo.free_trial.reader.product_model'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_api.updater.product_model'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'product_model' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductModelAssociationInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.product_model_association'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.saver.product_model'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'product_model_association' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\MediaFileInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.media_file'
+            - '@akeneo_file_storage.saver.file'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'media_file' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\MeasurementFamilyInstaller:
+        arguments:
+            - '@akeneo.free_trial.reader.measurement_family'
+            - '@validator'
+            - '@akeneo_measure.application.save_measurement_family_handler'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+            - '@akeneo_measure.persistence.measurement_family_repository'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'measurement_family' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ConnectionInstaller:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@akeneo_connectivity.connection.application.handler.update_connection'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'connection' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ConnectionDataFlowsInstaller:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'connection_data_flows' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ViewInstaller:
+        arguments:
+            - '@database_connection'
+            - '@logger'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'view' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\DqiDashboardInstaller:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'dqi_dashboard' }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\ReplacementOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
@@ -30,6 +31,7 @@ class ReferenceEntitySourceValidator extends ConstraintValidator
         $sourceConstraintFields['selection'] = new CodeLabelSelectionConstraint();
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
+            'replacement' => new Optional(new ReplacementOperationConstraint()),
         ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));

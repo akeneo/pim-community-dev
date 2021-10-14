@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectLabelSelection;
@@ -82,6 +83,26 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new NullValue(),
                 'expected' => [self::TARGET_NAME => 'n/a'],
+            ],
+            'it applies replacement operation when value is found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new SimpleSelectValue('cotton'),
+                'expected' => [self::TARGET_NAME => 'amazing cotton'],
+            ],
+            'it does not apply replacement operation when value is not found in the mapping' => [
+                'operations' => [
+                    new ReplacementOperation([
+                        'cotton' => 'amazing cotton',
+                    ]),
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new SimpleSelectValue('polyester'),
+                'expected' => [self::TARGET_NAME => 'polyester'],
             ],
         ];
     }

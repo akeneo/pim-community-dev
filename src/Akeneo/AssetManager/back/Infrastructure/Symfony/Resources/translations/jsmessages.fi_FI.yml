@@ -113,6 +113,7 @@ pim_asset_manager:
         link: 'Jos haluat tutustua tarkemmin tuotelinkityssääntöihin, klikkaa tästä'
       execute_rules:
         confirm_title: Vahvista suoritus
+        confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
         execute_rules: Suorita säännöt
       execute_naming_convention:
         confirm_title: Vahvista suoritus
@@ -490,6 +491,7 @@ batch_jobs:
     mass_delete_assets: Suorita assettien massapoisto
     mass_edit_assets: Suorita assettien massamuokkaus
     link_assets_to_products: Linkitä assetit tuotteisiin
+    compute_transformations: Muodosta assetin muunnokset
 job_execution:
   summary:
     assets: Assetit

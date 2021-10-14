@@ -44,6 +44,31 @@ class MultiSelectLabelSelectionApplierSpec extends ObjectBehavior
             ->shouldReturn('Le label en FR/[option_code2]');
     }
 
+    public function it_applies_the_selection_with_mapped_replacement_values(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
+    {
+        $selection = new MultiSelectLabelSelection('/', 'fr_FR', 'an_attribute_code');
+        $value = new MultiSelectValue(
+            [
+                'option_code1',
+                'option_code2'
+            ],
+            [
+                'option_code2' => 'replacement_option',
+            ]
+        );
+
+        $findAttributeOptionLabels->byAttributeCodeAndOptionCodes(
+            'an_attribute_code',
+            ['option_code1', 'option_code2'],
+            'fr_FR'
+        )->willReturn([
+            'option_code1' => 'Le label en FR',
+        ]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('Le label en FR/replacement_option');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

@@ -1,0 +1,27 @@
+services:
+    Akeneo\FreeTrial\Infrastructure\Sso\SamlUserFactory:
+        decorates: akeneo_authentication.sso.user.factory
+        decoration_inner_name: akeneo_authentication.sso.user.factory.base
+        arguments:
+            - '@akeneo_authentication.sso.user.factory.base'
+            - '@akeneo.free_trial.feature'
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@logger'
+
+    Akeneo\FreeTrial\Infrastructure\Sso\SetupCommand:
+        arguments:
+            - '@akeneo_authentication.sso.configuration.create_or_update_handler'
+            - '@validator'
+            - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
+            - '%env(AKENEO_CONNECT_SAML_ENTITY_ID)%'
+            - '%env(AKENEO_CONNECT_SAML_SIGNIN_URL)%'
+            - '%env(AKENEO_CONNECT_SAML_LOGOUT_URL)%'
+            - '%env(AKENEO_CONNECT_SAML_CERTIFICATE)%'
+            - '%env(AKENEO_CONNECT_SAML_SP_CLIENT_ID)%'
+            - '%env(AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64)%'
+            - '%env(AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64)%'
+        tags:
+            - { name: console.command }

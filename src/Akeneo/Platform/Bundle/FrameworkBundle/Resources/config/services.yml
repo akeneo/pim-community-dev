@@ -9,6 +9,14 @@ services:
             - { name: "kernel.event_subscriber" }
             - { name: "monolog.logger", channel: "request" }
 
+    console.error_listener:
+        class: 'Akeneo\Platform\Bundle\FrameworkBundle\Console\EventListener\ErrorListener'
+        arguments:
+            - '@logger'
+        tags:
+            - { name: "kernel.event_subscriber" }
+            - { name: "monolog.logger", channel: "console" }
+
     Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver:
         arguments:
             - '@controller_resolver'

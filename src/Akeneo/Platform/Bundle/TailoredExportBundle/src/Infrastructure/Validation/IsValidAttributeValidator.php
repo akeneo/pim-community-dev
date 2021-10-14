@@ -52,7 +52,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         $attribute = $this->getAttributes->forCode($attributeCode);
-        if (null === $attribute) {
+        if (!$attribute instanceof Attribute) {
             return;
         }
 

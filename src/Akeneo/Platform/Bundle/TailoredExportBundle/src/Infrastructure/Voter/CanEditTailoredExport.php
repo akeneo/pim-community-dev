@@ -56,7 +56,7 @@ class CanEditTailoredExport
             return array_merge($accumulator, $attributeCodes);
         }, []));
 
-        $notDeletedJobAttributeCodes = array_keys($this->getAttributes->forCodes($jobAttributeCodes));
+        $notDeletedJobAttributeCodes = \array_keys(\array_filter($this->getAttributes->forCodes($jobAttributeCodes)));
         $viewableAttributes = $this->getViewableAttributes->forAttributeCodes($notDeletedJobAttributeCodes, $userId);
 
         return empty(array_diff($notDeletedJobAttributeCodes, $viewableAttributes));

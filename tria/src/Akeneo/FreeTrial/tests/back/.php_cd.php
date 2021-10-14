@@ -18,6 +18,7 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message',
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\FetchMode',
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Psr7\Response',
 
@@ -26,6 +27,16 @@ $rules = [
             'Akeneo\Platform\Bundle\UIBundle',
             'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+
+            // Dependencies for the catalog installation
+            'Akeneo\Pim\ApiClient',
+            'Akeneo\Tool',
+            'Akeneo\UserManagement\Component',
+            'Akeneo\Pim\Enrichment\Component',
+            'Akeneo\Pim\Automation\DataQualityInsights',
+            'Akeneo\Connectivity\Connection',
+            'League\Flysystem\FilesystemInterface',
+            'League\Flysystem\MountManager',
         ]
     )->in('Akeneo\FreeTrial\Infrastructure'),
 ];

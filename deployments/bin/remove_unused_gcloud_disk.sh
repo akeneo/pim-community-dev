@@ -4,16 +4,8 @@ GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 LIMIT=100000
 SECONDS_PER_DAY=$((24*60*60))
-CSV_OUTPUT="$(pwd)/logs.csv"
-CMD_OUTPUT="$(pwd)/cmd.sh"
 NAMESPACE_REGEX_FILTER="^(grth|srnt|tria)-pim(ci|up)"
 # NAMESPACE_REGEX_FILTER="^.*"
-
-# CSV Headers
-echo "NAME,CREATION_DATE,AGE (days),KIND,SIZE,STATUS,PV,NAMESPACE,NS EXIST IN KUBE,PVC,USAGE_COUNT" > $CSV_OUTPUT
-
-# BASH file header
-echo "#!/usr/bin/bash" > $CMD_OUTPUT
 
 # List of gcloud physical disk with a description and no usage (users) in ${GOOGLE_PROJECT_ID}
 PD_LIST=$(gcloud compute disks list --limit ${LIMIT} --format json | jq -c '.[] | select(.description != null) | select(.users == null)')
@@ -21,6 +13,7 @@ PD_LIST=$(gcloud compute disks list --limit ${LIMIT} --format json | jq -c '.[] 
 # List of current existing namespace in ${GOOGLE_PROJECT_ID}
 KUBE_NS_LIST=$(kubectl get ns -o json | jq -r '.items[].metadata.name')
 
+COUNT=0
 for PD in $PD_LIST; do
     NAME=$(echo $PD | jq -r '.name')
     CREATION_DATE=$(echo $PD | jq -r '.creationTimestamp')
@@ -42,25 +35,44 @@ for PD in $PD_LIST; do
 
 
     if [[ ${NAMESPACE} =~ $NAMESPACE_REGEX_FILTER ]] ; then
+        echo "-------------------------------------"
+        echo "PD ${NAME}"
+        echo "  Namespace     :     ${NAMESPACE}"
+
+        NS_EXIST=$(echo $KUBE_NS_LIST | grep -w ${NAMESPACE} | wc -l)
+        echo "  NS exists     :     ${NS_EXIST}"
+
+        # Skip if disk is linked to an existing namespace
+        if [[ ${NS_EXIST} -eq 1 ]]; then
+            echo "  Existing namespace : DELETION SKIPPED"
+            continue
+        fi
+
+        echo "  Type          :     ${KIND}"
+        echo "  Size          :     ${SIZE}"
+        echo "  Status        :     ${STATUS}"
+        echo "  PV            :     ${PV}"
+        echo "  PVC           :     ${PVC}"
+        echo "  In use        :     ${USAGE_COUNT}"
+        echo "  Creation date :     ${CREATION_DATE}"
+        
         PD_TS=$(date -u -d ${CREATION_DATE} '+%s')
         CURRENT_TS=$(date -u '+%s')
         DIFF_TS="$((${CURRENT_TS}-${PD_TS}))"    
         DIFF_DAY="$((${DIFF_TS}/${SECONDS_PER_DAY}))"
-        NS_EXIST=$(echo $KUBE_NS_LIST | grep ${NAMESPACE} | wc -l)
+        echo "  Age           :     ${DIFF_DAY}"
 
         # Skip if disk is newer than 1d
         if [[ ${DIFF_DAY} -lt 1 ]]; then
             continue;
         fi
 
-        # Skip if disk is linked to an existing namespace
-        if [[ ${NS_EXIST} -eq 1 ]]; then
-            continue;
-        fi
-
-        # Send disk info into csv file
-        echo "${NAME},${CREATION_DATE},${DIFF_DAY},${KIND},${SIZE},${STATUS},${PV},${NAMESPACE},${NS_EXIST},${PVC},${USAGE_COUNT}" >> ${CSV_OUTPUT}
-        echo "gcloud --quiet compute disks delete ${NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} || true" >> ${CMD_OUTPUT}
-        echo "sleep 2" >> ${CMD_OUTPUT}
+        echo "  Command debug"
+        echo "      gcloud --quiet compute disks delete ${NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} || true"
+        gcloud --quiet compute disks delete ${NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} || true
+        
+        ((COUNT++))
     fi
 done
+
+echo "${COUNT} disk(s) removed"

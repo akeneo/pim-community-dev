@@ -90,6 +90,26 @@ class SimpleSelectSourceValidatorTest extends AbstractValidationTest
                     ],
                 ],
             ],
+            'a valid simple select selection with replacement' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'attribute_code',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'code',
+                    ],
+                    'operations' => [
+                        'replacement' => [
+                            'type' => 'replacement',
+                            'mapping' => [
+                                'blue' => 'Bleu',
+                            ],
+                        ]
+                    ],
+                ],
+            ],
         ];
     }
 

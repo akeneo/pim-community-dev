@@ -183,10 +183,10 @@ extensions:
                     view: akeneo-product-family-filter
                 -
                     field: categories
-                    view: akeneo-all-category-filter
+                    view: akeneo-tailored-export-all-category-filter
                 -
                     field: completeness
-                    view: akeneo-product-model-localized-completeness-filter
+                    view: akeneo-tailored-export-product-model-localized-completeness-filter
                 -
                     field: updated
                     view: akeneo-product-updated-filter

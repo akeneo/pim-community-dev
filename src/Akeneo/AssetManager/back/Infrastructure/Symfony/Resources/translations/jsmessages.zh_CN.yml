@@ -578,6 +578,7 @@ batch_jobs:
     mass_delete_assets: 执行资产批量删除
     mass_edit_assets: 执行资产批量编辑
     link_assets_to_products: 将资产链接到产品
+    compute_transformations: 计算资产转换
 job_execution:
   summary:
     assets: 资产

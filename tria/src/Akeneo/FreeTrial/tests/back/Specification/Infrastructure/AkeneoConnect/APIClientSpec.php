@@ -14,13 +14,14 @@ use Psr\Http\Message\ResponseInterface;
 
 final class APIClientSpec extends ObjectBehavior
 {
-    public function let(ClientInterface $httpClient, RetrievePimFQDN $retrievePimFQDN)
+    public function let(ClientInterface $connectApi, ClientInterface $portalApi, RetrievePimFQDN $retrievePimFQDN)
     {
-        $this->beConstructedWith($httpClient, $retrievePimFQDN, '', '', '', '');
+        $this->beConstructedWith($connectApi, $portalApi, $retrievePimFQDN, '', '', '', '');
     }
 
     public function it_invites_a_user(
-        ClientInterface $httpClient,
+        ClientInterface $connectApi,
+        ClientInterface $portalApi,
         ResponseInterface $tokenResponse,
         ResponseInterface $inviteUserResponse,
         RetrievePimFQDN $retrievePimFQDN,
@@ -28,9 +29,9 @@ final class APIClientSpec extends ObjectBehavior
     )
     {
         $retrievePimFQDN->__invoke()->willReturn('token');
-        $httpClient->request(
+        $connectApi->request(
             'POST',
-            '/auth/realms/connect/protocol/openid-connect/token',
+            APIClient::URI_CONNECT,
             Argument::any()
         )->willReturn($tokenResponse)->shouldBeCalled();
 
@@ -39,7 +40,7 @@ final class APIClientSpec extends ObjectBehavior
             'access_token' => 'token'
         ]));
 
-        $httpClient->request('POST', '/api/v1/console/trial/invite', Argument::withEntry('headers', [
+        $portalApi->request('POST', APIClient::URI_INVITE_USER, Argument::withEntry('headers', [
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer token',
         ]))

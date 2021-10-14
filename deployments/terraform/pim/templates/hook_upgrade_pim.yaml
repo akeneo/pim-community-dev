@@ -31,8 +31,7 @@ spec:
         - name: pim-upgrade
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ["/bin/sh", "-c"]
-          args:
+          command:
             - 'su'
             - 'www-data'
             - '-s'

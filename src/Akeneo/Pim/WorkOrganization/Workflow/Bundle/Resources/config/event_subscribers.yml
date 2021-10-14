@@ -34,6 +34,7 @@ services:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber, priority: 255 }
 

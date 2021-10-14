@@ -15,6 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CodeValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
@@ -54,7 +56,7 @@ class PropertyValueHydrator
             case 'family':
                 $family = $productOrProductModel->getFamily();
 
-                if (null === $family) {
+                if (!$family instanceof FamilyInterface) {
                     return new NullValue();
                 }
 
@@ -62,7 +64,7 @@ class PropertyValueHydrator
             case 'family_variant':
                 $familyVariant = $productOrProductModel->getFamilyVariant();
 
-                if (null === $familyVariant) {
+                if (!$familyVariant instanceof FamilyVariantInterface) {
                     return new NullValue();
                 }
 
@@ -82,7 +84,7 @@ class PropertyValueHydrator
             case 'parent':
                 $parent = $productOrProductModel->getParent();
 
-                if (null === $parent) {
+                if (!$parent instanceof ProductModelInterface) {
                     return new NullValue();
                 }
 

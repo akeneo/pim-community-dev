@@ -20,11 +20,30 @@ class ReferenceEntityCollectionValue implements SourceValueInterface
     /** @var string[] */
     private array $recordCodes;
 
-    public function __construct(array $recordCodes)
+    /** @var string[] */
+    private array $mappedReplacementValues;
+
+    public function __construct(array $recordCodes, array $mappedReplacementValues = [])
     {
         Assert::allString($recordCodes);
+        Assert::allString($mappedReplacementValues);
 
         $this->recordCodes = $recordCodes;
+        $this->mappedReplacementValues = $mappedReplacementValues;
+    }
+
+    public function hasMappedValue(string $optionCode): bool
+    {
+        return array_key_exists($optionCode, $this->mappedReplacementValues);
+    }
+
+    public function getMappedValue(string $recordCode): string
+    {
+        if (!$this->hasMappedValue($recordCode)) {
+            throw new \InvalidArgumentException('This record code is not mapped');
+        }
+
+        return $this->mappedReplacementValues[$recordCode];
     }
 
     public function getRecordCodes(): array

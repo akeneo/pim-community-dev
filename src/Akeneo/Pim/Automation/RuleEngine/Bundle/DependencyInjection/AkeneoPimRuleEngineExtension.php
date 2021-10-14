@@ -61,5 +61,9 @@ class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
         $loader->load('validators.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('steps.yml');
+
+        if (in_array($container->getParameter("kernel.environment"), ['test_fake', 'test'])) {
+            $loader->load('behat_contexts.yml');
+        }
     }
 }

@@ -12,9 +12,8 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute, MeasurementFamily} from './feature/models';
+import {Attribute, AssetFamily, AssociationType, MeasurementFamily} from './feature/models';
 import {FetcherContext} from './feature/contexts';
-import {AssociationType} from './feature/models/AssociationType';
 
 const baseFetcher = async (route: string) => {
   const response = await fetch(route);
@@ -68,6 +67,15 @@ const FetcherProvider: FC = ({children}) => {
           const measurementFamilies = await cachedFetcher(route);
 
           return measurementFamilies.find(({code}) => code === measurementFamilyCode);
+        },
+      },
+      assetFamily: {
+        fetchByIdentifier: async (assetFamilyIdentifier: string): Promise<AssetFamily | undefined> => {
+          const route = router.generate('akeneo_asset_manager_asset_family_get_rest', {
+            identifier: assetFamilyIdentifier,
+          });
+
+          return await cachedFetcher(route);
         },
       },
     }),

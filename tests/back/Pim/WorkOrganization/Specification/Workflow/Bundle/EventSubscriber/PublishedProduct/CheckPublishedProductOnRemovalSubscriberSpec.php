@@ -22,16 +22,26 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductCon
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 {
+    private const PRODUCT_ERROR_MESSAGE = 'Impossible to remove a published product';
+    private const PRODUCT_MODEL_ERROR_MESSAGE = 'This product model has a variant product that has been published. Please, unpublish it and try again';
+    private const ENTITY_ERROR_MESSAGE = 'Entities linked to published products cannot be removed';
+
     function let(
         PublishedProductRepositoryInterface $publishedRepository,
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        TranslatorInterface $translator
     ) {
-        $this->beConstructedWith($publishedRepository, $queryBuilderFactory, $channelRepository, $localeRepository);
+        $translator->trans('pimee_workflow.check_removal.product_model_error')->willReturn(self::PRODUCT_MODEL_ERROR_MESSAGE);
+        $translator->trans('pimee_workflow.check_removal.product_error')->willReturn(self::PRODUCT_ERROR_MESSAGE);
+        $translator->trans('pimee_workflow.check_removal.entity_error')->willReturn(self::ENTITY_ERROR_MESSAGE);
+
+        $this->beConstructedWith($publishedRepository, $queryBuilderFactory, $channelRepository, $localeRepository, $translator);
     }
 
     function it_subscribes_to_pre_remove_events()
@@ -60,7 +70,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->findOneByOriginalProduct($product)->willReturn($published);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))
+            ->shouldThrow(new PublishedProductConsistencyException(self::PRODUCT_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -80,7 +90,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($family);
 
         $this
-            ->shouldNotThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))
+            ->shouldNotThrow(PublishedProductConsistencyException::class)
             ->duringPreRemove($event);
     }
 
@@ -100,9 +110,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($family);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -122,7 +130,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($attribute);
 
         $this
-            ->shouldNotThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))
+            ->shouldNotThrow(PublishedProductConsistencyException::class)
             ->duringPreRemove($event);
     }
 
@@ -142,9 +150,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($attribute);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -164,7 +170,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($attribute);
 
         $this
-            ->shouldNotThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))
+            ->shouldNotThrow(PublishedProductConsistencyException::class)
             ->duringPreRemove($event);
     }
 
@@ -193,9 +199,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($attribute);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -230,9 +234,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($attribute);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -271,7 +273,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
+                new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE)
             )
             ->duringPreRemove($event);
     }
@@ -310,9 +312,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($category);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException('pimee_workflow.entity.removing_error')
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -336,11 +336,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForAssociationType($associationType)->willReturn(1);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException(
-                    'pimee_workflow.entity.removing_error'
-                )
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 
@@ -364,11 +360,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedVariantProductsForProductModel($productModel)->willReturn(1);
 
         $this
-            ->shouldThrow(
-                new PublishedProductConsistencyException(
-                    'pimee_workflow.entity.removing_error'
-                )
-            )
+            ->shouldThrow(new PublishedProductConsistencyException(self::PRODUCT_MODEL_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 }

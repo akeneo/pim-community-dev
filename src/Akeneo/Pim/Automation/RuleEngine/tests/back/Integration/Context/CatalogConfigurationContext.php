@@ -24,14 +24,9 @@ use Behat\Behat\Context\Context;
  */
 final class CatalogConfigurationContext implements Context
 {
-    /** @var CatalogInterface */
-    private $catalog;
-
-    /** @var FixturesLoader */
-    private $fixturesLoader;
-
-    /** @var string */
-    private $projectDir;
+    private CatalogInterface $catalog;
+    private FixturesLoader $fixturesLoader;
+    private string $projectDir;
 
     public function __construct(CatalogInterface $catalog, FixturesLoader $fixturesLoader, string $projectDir)
     {
