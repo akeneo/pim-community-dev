@@ -210,7 +210,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocaleReferenceFromCode:
+    Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode:
         arguments:
             - '@database_connection'
             - '@doctrine'
