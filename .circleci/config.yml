@@ -616,7 +616,7 @@ jobs:
                 command: |
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
                     echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make -C deployments/ delete-serenity
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=master make -C deployments/ delete-instance
 
   test_back_missing_structure_migrations:
       machine:
