@@ -83,11 +83,10 @@ class GetAllAppsEndToEnd extends WebTestCase
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertArrayHasKey('total', $result);
-        Assert::assertArrayHasKey('apps', $result);
-        Assert::assertEquals(2, $result['total']);
-        Assert::assertEquals($expectedApps[0], $result['apps'][0]);
-        Assert::assertEquals($expectedApps[1], $result['apps'][1]);
+        Assert::assertEquals([
+            'total' => 2,
+            'apps' => $expectedApps,
+        ], $result);
     }
 
     /**
