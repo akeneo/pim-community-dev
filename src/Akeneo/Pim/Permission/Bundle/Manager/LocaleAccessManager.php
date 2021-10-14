@@ -132,6 +132,17 @@ class LocaleAccessManager
         return $this->repository->revokeAccess($locale, $excludedUserGroups);
     }
 
+    public function revokeGroupAccess(LocaleInterface $locale, GroupInterface $group): void
+    {
+        $access = $this->repository->findOneBy(['locale' => $locale, 'userGroup' => $group]);
+
+        if (null === $access) {
+            return;
+        }
+
+        $this->remover->removeAll([$access]);
+    }
+
     /**
      * Get LocaleAccess entity for a locale and user group
      *
@@ -177,22 +188,5 @@ class LocaleAccessManager
             ->setEditProducts($accessLevel === Attributes::EDIT_ITEMS);
 
         return $access;
-    }
-
-    public function revokeGroupAccess(LocaleInterface $locale, GroupInterface $group): void
-    {
-        $access = $this->repository
-            ->findOneBy(
-                [
-                    'locale'    => $locale,
-                    'userGroup' => $group
-                ]
-            );
-
-        if (null === $access) {
-            return;
-        }
-
-        $this->remover->removeAll([$access]);
     }
 }

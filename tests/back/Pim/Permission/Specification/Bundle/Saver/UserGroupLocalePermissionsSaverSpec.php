@@ -101,7 +101,7 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
 
     /**
      * FROM {"edit":{"all":true,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
-     * TO "edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
+     * TO {"edit":{"all":false,"identifiers":[]},"view":{"all":true,"identifiers":[]}}
      */
     public function it_CorrectsGrantedPermissionsOnExistingLocalesWhenTheDefaultOptionIsReducedToViewOnly(
         SaverInterface $groupSaver,
@@ -131,6 +131,223 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
             'view' => [
                 'all' => true,
                 'identifiers' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM nothing
+     * TO {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a"]}}
+     */
+    public function it_GrantPermissionsOnExistingLocalesWhenIdentifiersAreSelected(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA
+    ) {
+        $group->getDefaultPermissions()->willReturn(null);
+        $groupSaver->save($group)->shouldNotBeCalled();
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM nothing
+     * TO {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":true,"identifiers":[]}}
+     */
+    public function it_GrantPermissionsOnExistingLocalesWhenIdentifiersAndTheDefaultOptionAreMixed(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        LocaleInterface $localeB,
+        LocaleInterface $localeC
+    ) {
+        $group->getDefaultPermissions()->willReturn(null);
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, true)->shouldBeCalled();
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, false)->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
+        $localeAccessManager->grantAccess($localeB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $localeAccessManager->grantAccess($localeC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+            'view' => [
+                'all' => true,
+                'identifiers' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM nothing
+     * TO {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a", "locale_b"]}}
+     */
+    public function it_GrantPermissionsOnLocalesWhenIdentifiersAreOnDifferentLevels(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        LocaleInterface $localeB
+    ) {
+        $group->getDefaultPermissions()->willReturn(null);
+        $groupSaver->save($group)->shouldNotBeCalled();
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
+        $localeAccessManager->grantAccess($localeB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => ['locale_a', 'locale_b'],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a"]}}
+     * TO {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a"]}}
+     */
+    public function it_doesNothingWhenIdentifiersWereAlreadySelected(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+    ) {
+        $group->getDefaultPermissions()->willReturn(null);
+        $groupSaver->save($group)->shouldNotBeCalled();
+        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldNotBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a"]}}
+     * TO {"edit":{"all":false,"identifiers":[]},"view":{"all":false,"identifiers":[]}}
+     */
+    public function it_removeAccessWhenIdentifiersAreRemoved(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+    ) {
+        $group->getDefaultPermissions()->willReturn([]);
+        $groupSaver->save($group)->shouldNotBeCalled();
+        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+
+        $localeAccessManager->revokeGroupAccess($localeA, $group)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => [],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a"]}}
+     * TO {"edit":{"all":false,"identifiers":[]},"view":{"all":false,"identifiers":["locale_a"]}}
+     */
+    public function it_updatesPermissionsWhenIdentifiersAreRemoved(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+    ) {
+        $group->getDefaultPermissions()->willReturn(null);
+        $groupSaver->save($group)->shouldNotBeCalled();
+        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => [],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+        ]);
+    }
+
+    /**
+     * FROM {"edit":{"all":false,"identifiers":["locale_a", "locale_b"]},"view":{"all":true,"identifiers":[]}}
+     * TO {"edit":{"all":false,"identifiers":["locale_a"]},"view":{"all":false,"identifiers":["locale_a", "locale_b"]}}
+     */
+    public function it_updatesPermissionsWhenSwitchingFromAllByDefaultToSpecificIdentifiers(
+        SaverInterface $groupSaver,
+        LocaleAccessManager $localeAccessManager,
+        GroupInterface $group,
+        LocaleInterface $localeA,
+        LocaleInterface $localeB,
+        LocaleInterface $localeC,
+        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+    ) {
+        $group->getDefaultPermissions()->willReturn([self::DEFAULT_PERMISSION_VIEW => true]);
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, false)->shouldBeCalled();
+        $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, false)->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
+
+        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn([
+            'locale_a' => Attributes::EDIT_ITEMS,
+            'locale_b' => Attributes::EDIT_ITEMS,
+            'locale_c' => Attributes::VIEW_ITEMS,
+        ]);
+
+        $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldNotBeCalled();
+        $localeAccessManager->grantAccess($localeB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+
+        $localeAccessManager->revokeGroupAccess($localeC, $group)->shouldBeCalled();
+
+        $this->save('Redactor', [
+            'edit' => [
+                'all' => false,
+                'identifiers' => ['locale_a'],
+            ],
+            'view' => [
+                'all' => false,
+                'identifiers' => ['locale_a', 'locale_b'],
             ],
         ]);
     }
