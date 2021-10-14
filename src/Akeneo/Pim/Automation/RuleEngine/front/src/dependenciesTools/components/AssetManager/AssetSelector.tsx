@@ -1,5 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const BaseAssetSelector =
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   require('akeneoassetmanager/application/component/app/asset-selector').default;
 import * as React from 'react';
 

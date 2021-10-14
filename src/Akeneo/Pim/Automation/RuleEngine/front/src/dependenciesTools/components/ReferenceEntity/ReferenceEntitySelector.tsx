@@ -1,5 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const RecordSelector =
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   require('akeneoreferenceentity/application/component/app/record-selector').default;
 import * as React from 'react';
 
