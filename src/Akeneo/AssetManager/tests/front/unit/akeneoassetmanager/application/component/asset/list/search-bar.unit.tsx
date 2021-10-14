@@ -49,8 +49,9 @@ test('It triggers the onSearchChange when the search field changes', async () =>
 
   const expectedValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search');
+  userEvent.type(searchInput, expectedValue);
+
   await act(async () => {
-    await userEvent.type(searchInput, expectedValue);
     jest.runAllTimers();
   });
 
