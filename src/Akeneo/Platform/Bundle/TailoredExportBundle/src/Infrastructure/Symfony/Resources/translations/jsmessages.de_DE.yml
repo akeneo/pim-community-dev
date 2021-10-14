@@ -1,4 +1,7 @@
 batch_jobs.xlsx_tailored_product_export.label: Individueller Produktexport in XLSX
+batch_jobs.xlsx_tailored_product_model_export.label: Individueller Produktmodell-Export in XLSX
+batch_jobs.csv_tailored_product_export.label: Individueller Produktexport in CSV
+batch_jobs.csv_tailored_product_model_export.label: Individueller Produktmodell-Export in CSV
 akeneo.tailored_export:
   filters:
     completeness:
@@ -54,6 +57,7 @@ akeneo.tailored_export:
         attribute: Dieses Attribut wurde gelöscht und mit einem anderen Typ erstellt, bitte entferne diese Quelle und füge sie erneut hinzu.
         association_type: Dieser Verbindungstyp wurde gelöscht und mit einem anderen Typ erstellt, bitte entferne diese Quelle und füge sie erneut hinzu.
         property: Diese Eigenschaft ist ungültig. Bitte entfernen Sie diese Quelle und fügen Sie sie erneut hinzu.
+        asset_collection_main_media: Die Hauptmedien der vom Attribut verwendeten Sammlung wurden nicht gefunden, bitte überprüfen Sie die Asset-Familien-Einstellung.
       no_source_configuration:
         title: Für diese Quelle sind keine Operationen verfügbar. Ihr Wert wird wie exportiert.
       deleted_attribute:
@@ -75,9 +79,13 @@ akeneo.tailored_export:
         type:
           amount: Anzahl
           currency: Währung
+          main_media: Hauptmedien
           key: Dateischlüssel
           path: Pfad
           name: Dateiname
+        asset_collection:
+          property: Eigenschaft
+          with_prefix_and_suffix: Präfix & Suffix hinzufügen
         format: Format
         parent:
           information:
@@ -121,10 +129,35 @@ akeneo.tailored_export:
           disabled: Ersetzungswert deaktiviert
           yes: Ersetzungswert für Ja
           no: Ersetzungswert für Nein
+          edit_mapping: Ersetzungswerte bearbeiten
+          modal:
+            title: Ersetzen
+            subtitle: Optionen verwalten
+            no_result:
+              title: Leider gibt es keinen Wert in diesem Attribut
+            empty_result:
+              title: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
+              text: Wiederholen Sie Ihre Suche mit anderen Suchkriterien
+            filters:
+              mapped:
+                label: Ansicht
+                unmapped: Alle Werte ohne Ersatz
+                mapped: Alle Werte mit Ersatz
+                all: Jeden Wert
+            table:
+              header:
+                values: Werte
+                replacement: Ersetzungswerte
+              field:
+                to_placeholder: Ersetzungswert festlegen
+            validation_error: Einige Ersatzwerte sind ungültig, bitte lesen Sie die Fehlermeldungen unter jedem Feld.
         default_value:
           title: Standardwert verwenden, wenn leer
           label: Standardwert
           placeholder: Wert definieren
+        clean_html_tags:
+          title: HTML Tags bereinigen
+          label: HTML-Tags automatisch bereinigen
     concatenation:
       title: Verkettung
       preview: Vorschau
@@ -159,6 +192,12 @@ akeneo.tailored_export:
       locale_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Gebietsschema. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
       channel_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Kanal mehr. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
       invalid_specific_locale: Das Attribut {{ attribute_code }} ist gebietsschemaspezifisch. Bitte wählen Sie ein anderes Gebietsschema.
+    asset_collection:
+      locale_should_not_be_blank: Das Haupt-Medienattribut der Asset-Familie {{ asset_family_code }} hat jetzt einen Wert pro Gebietsschema. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
+      channel_should_not_be_blank: Das Haupt-Medienattribut der Asset-Familie {{ asset_family_code }} hat jetzt einen Wert pro Kanal. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
+      locale_should_be_blank: Das Medienattribut der Asset-Familie {{ asset_family_code }} hat keinen Wert pro Gebietsschema mehr. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
+      channel_should_be_blank: Das Hauptmedien-Attribut der Asset-Familie {{ asset_family_code }} hat keinen Wert pro Kanal mehr. Bitte erstellen Sie es oder wählen Sie eine andere Quelle.
+      invalid_type: Der Medien-Attribut Typ der Assetfamilie {{ asset_family_code }} wurde geändert. Bitte erstellen Sie ihn oder wählen Sie eine andere Quelle.
     measurement:
       family:
         does_not_exist: Die Messfamilie {{ measurement_family_code }} existiert nicht.
