@@ -45,9 +45,8 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
     status: 'PENDING',
     data: [],
   });
-  const [categoryTreeSelected, setCategoryTreeSelected] = useState<
-    CategoryTreeModel
-  >();
+  const [categoryTreeSelected, setCategoryTreeSelected] =
+    useState<CategoryTreeModel>();
   const [categoryTrees, setCategoriesTrees] = useState<
     NetworkLifeCycle<CategoryTreeModel[]>
   >({

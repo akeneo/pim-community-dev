@@ -73,9 +73,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   const [categoryTrees, setCategoriesTrees] = useState<
     NetworkLifeCycle<CategoryTreeModel[]>
   >({status: 'PENDING'});
-  const [currentCategoryTree, setCurrentCategoryTree] = useState<
-    CategoryTreeModel
-  >();
+  const [currentCategoryTree, setCurrentCategoryTree] =
+    useState<CategoryTreeModel>();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
   const [
     categoryTreesWithSelectedCategoriesMap,
@@ -283,12 +282,11 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     setValue(getSelectedCategories());
   };
 
-  const getCategoryCount: (
-    categoryTree: CategoryTreeModel
-  ) => number = categoryTree => {
-    return (categoryTreesWithSelectedCategoriesMap?.get(categoryTree) || [])
-      .length;
-  };
+  const getCategoryCount: (categoryTree: CategoryTreeModel) => number =
+    categoryTree => {
+      return (categoryTreesWithSelectedCategoriesMap?.get(categoryTree) || [])
+        .length;
+    };
 
   return (
     <>
@@ -305,7 +303,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               onClick={e => {
                 e.preventDefault();
                 handleDeleteUnexistingAttributeCode(unexistingCategoryCode);
-              }}>
+              }}
+            >
               {translate(
                 'pimee_catalog_rule.form.edit.actions.category.remove_unknown_category'
               )}
@@ -357,7 +356,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 return (
                   <li
                     key={categoryTree.code}
-                    className={'AknBadgedSelector-item'}>
+                    className={'AknBadgedSelector-item'}
+                  >
                     <button
                       data-testid={`category-tree-selector-${categoryTree.code}`}
                       className={`AknTextField AknBadgedSelector${
@@ -368,7 +368,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                       onClick={e => {
                         e.preventDefault();
                         setCurrentCategoryTree(categoryTree);
-                      }}>
+                      }}
+                    >
                       {categoryTree.labels[currentCatalogLocale] ||
                         `[${categoryTree.code}]`}
                       <span className='AknBadgedSelector-helper'>
@@ -397,7 +398,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   categoryTreesWithSelectedCategoriesMap.size === 0
                     ? 'AknBadgedSelector-new'
                     : 'AknBadgedSelector-item'
-                }>
+                }
+              >
                 <Select2Wrapper
                   data-testid='category-tree-selector-new'
                   multiple={false}
@@ -432,7 +434,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               )
                 ? 'category-container-error'
                 : ''
-            }>
+            }
+          >
             {getCurrentCategoryTreeOrDefault() !== null ? (
               <>
                 <Label
@@ -450,7 +453,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                     return (
                       <li
                         key={category.code}
-                        className={'AknBadgedSelector-item'}>
+                        className={'AknBadgedSelector-item'}
+                      >
                         <CategorySelector
                           data-testid={`category-selector-${category.code}`}
                           locale={currentCatalogLocale}
@@ -462,7 +466,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                             );
                           }}
                           onSelectCategory={categoryCode => {
-                            const categoryTree = getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
+                            const categoryTree =
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
                             if (categoryCode === categoryTree.code) {
                               return;
                             }
@@ -482,7 +487,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   data-testid='category-selector-new'
                   locale={currentCatalogLocale}
                   onSelectCategory={categoryCode => {
-                    const categoryTree = getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
+                    const categoryTree =
+                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
                     if (categoryCode === categoryTree.code) {
                       return;
                     }

@@ -9,9 +9,8 @@ const AddActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
-  const {formName, getFormValue} = useControlledFormInputAction<boolean>(
-    lineNumber
-  );
+  const {formName, getFormValue} =
+    useControlledFormInputAction<boolean>(lineNumber);
   const items = getFormValue('items');
 
   return (
@@ -20,7 +19,8 @@ const AddActionLine: React.FC<ActionLineProps> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}
-      lineNumber={lineNumber}>
+      lineNumber={lineNumber}
+    >
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
           <div className='AknGrid-bodyCell'>

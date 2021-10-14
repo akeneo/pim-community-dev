@@ -18,7 +18,8 @@ const PreviewOption: React.FC<{
   return (
     <div
       className='rdw-inline-wrapper rdw-editor-toolbar-blockType'
-      onClick={togglePreview}>
+      onClick={togglePreview}
+    >
       <div className='rdw-option-wrapper' aria-selected='false'>
         {translate('pimee_catalog_rule.form.edit.preview')}
       </div>

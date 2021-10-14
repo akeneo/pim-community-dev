@@ -47,7 +47,8 @@ const ParentConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pimee_catalog_rule.form.edit.fields.parent')}>
+          title={translate('pimee_catalog_rule.form.edit.fields.parent')}
+        >
           {translate('pimee_catalog_rule.form.edit.fields.parent')}
         </FieldColumn>
         <OperatorColumn>
@@ -65,7 +66,8 @@ const ParentConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
           <ValueColumn
             className={
               isFormFieldInError('value') ? 'select2-container-error' : ''
-            }>
+            }
+          >
             <Controller
               as={IdentifiersSelector}
               id={`edit-rules-input-${lineNumber}-value`}

@@ -161,7 +161,8 @@ const CopyActionLine: React.FC<ActionLineProps> = ({
         helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
         legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
         lineNumber={lineNumber}
-        handleDelete={handleDelete}>
+        handleDelete={handleDelete}
+      >
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

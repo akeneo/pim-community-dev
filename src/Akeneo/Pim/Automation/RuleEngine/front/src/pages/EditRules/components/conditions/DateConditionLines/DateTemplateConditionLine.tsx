@@ -197,7 +197,8 @@ const DateTemplateConditionLine: React.FC<Props> = ({
         <ScopeColumn
           className={
             isFormFieldInError('scope') ? 'select2-container-error' : ''
-          }>
+          }
+        >
           <Controller
             allowClear={!dateAttribute.scopable}
             as={ScopeSelector}
@@ -222,7 +223,8 @@ const DateTemplateConditionLine: React.FC<Props> = ({
         <LocaleColumn
           className={
             isFormFieldInError('scope') ? 'select2-container-error' : ''
-          }>
+          }
+        >
           <Controller
             allowClear={!dateAttribute.localizable}
             as={LocaleSelector}

@@ -54,7 +54,8 @@ const SetQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.set_quantified_associations.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}>
+        lineNumber={lineNumber}
+      >
         <Controller
           as={QuantifiedAssociationTypesSelector}
           name={valueFormName}
@@ -67,16 +68,15 @@ const SetQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
                 return translate('pimee_catalog_rule.exceptions.required');
               }
               if (
-                Object.values(
-                  value || {}
-                ).some((valueForAssociationType: any) =>
-                  Object.values(valueForAssociationType).some((values: any) =>
-                    values.some(
-                      (value: any) =>
-                        typeof value['identifier'] === 'undefined' ||
-                        typeof value['quantity'] === 'undefined'
+                Object.values(value || {}).some(
+                  (valueForAssociationType: any) =>
+                    Object.values(valueForAssociationType).some((values: any) =>
+                      values.some(
+                        (value: any) =>
+                          typeof value['identifier'] === 'undefined' ||
+                          typeof value['quantity'] === 'undefined'
+                      )
                     )
-                  )
                 )
               ) {
                 return translate(

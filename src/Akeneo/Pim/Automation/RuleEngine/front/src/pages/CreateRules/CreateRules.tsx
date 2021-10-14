@@ -125,7 +125,8 @@ const CreateRules: React.FC<Props> = ({originalRuleCode}) => {
       <CrossLink
         data-testid='leave-page-button'
         href={`#${urlRules}`}
-        onClick={handleRulesRoute}>
+        onClick={handleRulesRoute}
+      >
         {translate('pimee_catalog_rule.form.creation.cross_link')}
       </CrossLink>
     </ThemeProvider>

@@ -103,9 +103,9 @@ describe('IdentifierConditionLine', () => {
     expect(
       screen.getByTestId('edit-rules-input-1-value-selector')
     ).toBeInTheDocument();
-    expect(
-      screen.getByTestId('edit-rules-input-1-value-selector')
-    ).toHaveValue(['test123', 'test456']);
+    expect(screen.getByTestId('edit-rules-input-1-value-selector')).toHaveValue(
+      ['test123', 'test456']
+    );
   });
 
   it('should switch between text input and selector according to the selected operator', async () => {

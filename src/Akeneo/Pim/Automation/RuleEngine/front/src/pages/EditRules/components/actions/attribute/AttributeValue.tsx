@@ -156,7 +156,8 @@ const AttributeValue: React.FC<Props> = ({
             id={id}
             label={label || getAttributeLabelIfNotNull(attribute)}
             hiddenLabel={false}
-            value={value}>
+            value={value}
+          >
             <HelperContainer>
               <InlineHelper>
                 {translate(

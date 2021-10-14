@@ -112,10 +112,12 @@ const EditRulesForm: React.FC<Props> = ({
     <form
       id='edit-rules-form'
       data-testid='edit-rules-form'
-      onSubmit={onSubmit}>
+      onSubmit={onSubmit}
+    >
       <StyledTabList
         {...tab}
-        aria-label={translate('pimee_catalog_rule.form.tab.list')}>
+        aria-label={translate('pimee_catalog_rule.form.tab.list')}
+      >
         <TabDiv>
           <StyledTab {...tab} id='rulesBuilderTab' type='button'>
             {translate('pimee_catalog_rule.form.tab.rule_builder')}

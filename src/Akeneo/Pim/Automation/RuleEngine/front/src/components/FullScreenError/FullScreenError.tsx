@@ -19,7 +19,8 @@ const FullScreenError: React.FC<Props> = ({statusCode, message}) => {
       <span
         className={`AknInfoBlock-errorNumber AknInfoBlock-errorNumber--${
           statusCode >= 400 && statusCode < 500 ? '400' : '500'
-        }`}>
+        }`}
+      >
         {statusCode}
       </span>
       <h1>{translate('error.exception', {status_code: statusCode})}</h1>

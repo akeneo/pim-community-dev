@@ -42,9 +42,8 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  const [associationTypes, setAssociationTypes] = React.useState<
-    AssociationType[]
-  >();
+  const [associationTypes, setAssociationTypes] =
+    React.useState<AssociationType[]>();
 
   React.useEffect(() => {
     getAssociationTypesFromQuantified(router, quantified).then(
@@ -85,7 +84,8 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
           return (
             <li
               key={`${associationTarget.associationTypeCode}-${associationTarget.target}`}
-              className={'AknBadgedSelector-item'}>
+              className={'AknBadgedSelector-item'}
+            >
               <button
                 data-testid={`association-type-selector-${associationTarget.associationTypeCode}-${associationTarget.target}`}
                 className={`AknTextField AknBadgedSelector${
@@ -96,7 +96,8 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
                 onClick={e => {
                   e.preventDefault();
                   setCurrentAssociationTarget(associationTarget);
-                }}>
+                }}
+              >
                 {getAssociationTypeLabel(associationTarget.associationTypeCode)}
                 <span className='AknBadgedSelector-helper'>
                   {translate(
@@ -122,7 +123,8 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
       <li
         className={`AknBadgedSelector-item${
           hasError ? ' select2-container-error' : ''
-        }`}>
+        }`}
+      >
         <AddAssociationTypeButton
           onAddAssociationType={handleAddAssociationType}
           selectedTargets={Array.from(associationValues.keys())}

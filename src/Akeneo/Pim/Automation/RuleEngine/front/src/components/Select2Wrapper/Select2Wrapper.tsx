@@ -33,9 +33,7 @@ type Select2Ajax = {
     search: string;
     options?: any;
   } & {[key: string]: any};
-  results: (
-    values: any
-  ) => {
+  results: (values: any) => {
     more: boolean;
     results: Select2Option[] | Select2OptionGroup[];
   };
@@ -164,13 +162,10 @@ const Select2Wrapper: React.FC<Props> = ({
     }
   }, [value]);
 
-  useEffect(() => initSelect2(true), [
-    onSelecting,
-    allowClear,
-    disabled,
-    JSON.stringify(data),
-    select2ref,
-  ]);
+  useEffect(
+    () => initSelect2(true),
+    [onSelecting, allowClear, disabled, JSON.stringify(data), select2ref]
+  );
 
   useEffect(() => {
     if (select2ref.current) {

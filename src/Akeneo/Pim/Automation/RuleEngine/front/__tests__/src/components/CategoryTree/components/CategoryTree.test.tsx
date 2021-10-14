@@ -8,9 +8,8 @@ import {fetchCategoryTreeChildren} from '../../../../../src/fetch/categoryTree.f
 
 describe('SelectCategoriesTrees', () => {
   beforeEach(() => jest.clearAllMocks());
-  const mockFetchCategoryTreeChildren = fetchCategoryTreeChildren as jest.Mock<
-    any
-  >;
+  const mockFetchCategoryTreeChildren =
+    fetchCategoryTreeChildren as jest.Mock<any>;
   it('should render the master tree category opened with some children with one opened in locale en_US', async () => {
     // Given
     const masterChildrenMock = {

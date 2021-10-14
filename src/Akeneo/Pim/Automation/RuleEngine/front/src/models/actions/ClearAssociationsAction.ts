@@ -6,21 +6,23 @@ export type ClearAssociationsAction = {
   field: 'associations';
 };
 
-export const getClearAssociationsActionModule: ActionModuleGuesser = async json => {
-  if (json.type !== 'clear') {
-    return Promise.resolve(null);
-  }
+export const getClearAssociationsActionModule: ActionModuleGuesser =
+  async json => {
+    if (json.type !== 'clear') {
+      return Promise.resolve(null);
+    }
 
-  if (json.field !== 'associations') {
-    return Promise.resolve(null);
-  }
+    if (json.field !== 'associations') {
+      return Promise.resolve(null);
+    }
 
-  return Promise.resolve(ClearAssociationsActionLine);
-};
-
-export const createClearAssociationsAction: () => ClearAssociationsAction = () => {
-  return {
-    type: 'clear',
-    field: 'associations',
+    return Promise.resolve(ClearAssociationsActionLine);
   };
-};
+
+export const createClearAssociationsAction: () => ClearAssociationsAction =
+  () => {
+    return {
+      type: 'clear',
+      field: 'associations',
+    };
+  };
