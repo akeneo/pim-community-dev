@@ -1637,6 +1637,10 @@ jobs:
   # Cleanup        #
   ##################
   delete_environments_hourly:
+      parameters:
+        PRODUCT_TYPE:
+          default: ""
+          type: string
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1648,7 +1652,8 @@ jobs:
                 name: Delete environments
                 no_output_timeout: 30m
                 command:
-                    make -C deployments/ delete_environments_hourly
+                    TYPE="<<parameters.PRODUCT_TYPE>>"
+                    TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
   delete_expired_uptime_check:
       environment:
@@ -1861,7 +1866,7 @@ workflows:
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
-  
+
   on_demand_release:
     jobs:
       - ready_to_build?:
@@ -2211,14 +2216,18 @@ workflows:
      jobs:
          - checkout
          - delete_environments_hourly:
-               requires:
-                   - checkout
+             name: "[<< matrix.PRODUCT_TYPE >>] Delete environments"
+             matrix:
+               parameters:
+                 PRODUCT_TYPE: ["srnt", "grth", "tria"]
+             requires:
+               - checkout
          - remove_unused_resources:
-               requires:
-                   - checkout
+             requires:
+               - checkout
          - delete_expired_uptime_check:
-               requires:
-                   - checkout
+             requires:
+               - checkout
 
   on_demand_compliancy_checker:
     jobs:

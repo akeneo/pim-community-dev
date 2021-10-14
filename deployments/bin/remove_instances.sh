@@ -1,10 +1,37 @@
 #!/bin/bash
 
-# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-NS_LIST=$(kubectl get ns |grep Active| egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth-pimup|tria-pimci' | awk '{print $1}')
+# Check if TYPE is not empty
+if [[ -z "${TYPE}" ]]; then
+    echo "TYPE varibale should not be empty"
+    exit 1
+fi
 
-echo "Namespaces list :"
+# Check if TYPE is in the list of corresponding list
+if [[ ${TYPE} == "srnt" ]] || [[ ${TYPE} == "grth" ]] || [[ ${TYPE} == "tria" ]]; then
+    echo "Stating removal for ${TYPE} environments"
+else
+    echo "TYPE (${TYPE}) variable is not a valid type"
+    exit 1
+fi
+
+# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
+NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+
+echo "${TYPE} namespaces list :"
 echo "${NS_LIST}"
+if [[ ${TYPE} == "srnt" ]] ; then
+    PRODUCT_REFERENCE_TYPE=serenity_instance
+    PRODUCT_REFERENCE_CODE=serenity_${ENV_NAME}
+fi
+if [[ ${TYPE} == "grth" ]] ; then
+    PRODUCT_REFERENCE_TYPE=growth_edition_instance
+    PRODUCT_REFERENCE_CODE=growth_edition_${ENV_NAME}
+fi
+if [[ ${TYPE} == "tria" ]] ; then
+    PRODUCT_REFERENCE_TYPE=pim_trial_instance
+    PRODUCT_REFERENCE_CODE=trial_${ENV_NAME}
+fi
+
 for NAMESPACE in ${NS_LIST}; do
     NS_INFO=($(kubectl get ns | grep ${NAMESPACE}))
     NAMESPACE=$(echo ${NS_INFO[0]})
@@ -16,57 +43,57 @@ for NAMESPACE in ${NS_LIST}; do
     echo "  Status :                ${NS_STATUS}"
     echo "  Age :                   ${NS_AGE}"
     INSTANCE_NAME_PREFIX=pimci
-    if [[ ${NAMESPACE} == srnt* ]] ; then
-        TYPE="srnt"
-        INSTANCE_NAME=$(echo ${NAMESPACE} | sed 's/srnt-//')
-        PRODUCT_REFERENCE_TYPE=serenity_instance
-        PRODUCT_REFERENCE_CODE=serenity_${ENV_NAME}
-    fi
-    if [[ ${NAMESPACE} == grth* ]] ; then
-        TYPE="grth"
-        INSTANCE_NAME=$(echo ${NAMESPACE} | sed 's/grth-//')
-        PRODUCT_REFERENCE_TYPE=growth_edition_instance
-        PRODUCT_REFERENCE_CODE=growth_edition_${ENV_NAME}
-    fi
-    if [[ ${NAMESPACE} == tria* ]] ; then
-        TYPE="tria"
-        INSTANCE_NAME=$(echo ${NAMESPACE} | sed 's/tria-//')
-        PRODUCT_REFERENCE_TYPE=pim_trial_instance
-        PRODUCT_REFERENCE_CODE=trial_${ENV_NAME}
-    fi
-
+    INSTANCE_NAME=$(echo ${NAMESPACE} | sed "s/${TYPE}-//")
     DELETE_INSTANCE=false
 
     # delete environments that failed (not automatically removed by circleCI)
     # Theses environments are upgraded serenity / growth edition (pimup) and aged of 1 hour
-    if [[ ${NAMESPACE} == srnt-pimup* ]] || [[ ${NAMESPACE} == grth-pimup* ]] ; then
+    if [[ ${INSTANCE_NAME} == pimup* ]] ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimup
+        elif [[ ${NS_AGE} == *m* ]] ; then
+            NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
+            if [[ ${NS_AGE} -ge 60 ]] ; then
+                DELETE_INSTANCE=true
+                INSTANCE_NAME_PREFIX=pimup
+            fi
         else
-            echo "  NS younger than 2 hours"
+            echo "  NS younger than 1 hour"
         fi
     fi
     # Theses environments are test deploy duplicate serenity / growth edition (pimci-duplic) and aged of 1 hour
-    if [[ ${NAMESPACE} == srnt-pimci-duplic* ]] || [[ ${NAMESPACE} == grth-pimci-duplic* ]] ; then
+    if [[ ${INSTANCE_NAME} == pimci-duplic* ]] ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-duplic
+        elif [[ ${NS_AGE} == *m* ]] ; then
+            NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
+            if [[ ${NS_AGE} -ge 60 ]] ; then
+                DELETE_INSTANCE=true
+                INSTANCE_NAME_PREFIX=pimci-duplic
+            fi
         else
-            echo "  NS younger than 2 hours"
+            echo "  NS younger than 1 hour"
         fi
     fi
     # Theses environments are test deploy serenity / growth edition (pimci) and aged of 1 hour
-    if [[ ${NAMESPACE} == srnt-pimci* ]] || [[ ${NAMESPACE} == grth-pimci* ]] || [[ ${NAMESPACE} == tria-pimci* ]] && ! ([[ ${NAMESPACE} == srnt-pimci-pr* ]] || [[ ${NAMESPACE} == grth-pimci-pr* ]] || [[ ${NAMESPACE} == tria-pimci-pr* ]]) ; then
+    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
+        elif [[ ${NS_AGE} == *m* ]] ; then
+            NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
+            if [[ ${NS_AGE} -ge 60 ]] ; then
+                DELETE_INSTANCE=true
+                INSTANCE_NAME_PREFIX=pimci
+            fi
         else
-            echo "  NS younger than 2 hours"
+            echo "  NS younger than 1 hour"
         fi
     fi
     # Theses environments are deploy PR serenity / growth edition (pimci-pr) and aged of 1 day after the last deployment
-    if [[ ${NAMESPACE} == srnt-pimci-pr* ]] || [[ ${NAMESPACE} == grth-pimci-pr* ]] || [[ ${NAMESPACE} == tria-pimci-pr* ]] ; then
+    if [[ ${INSTANCE_NAME} == pimci-pr* ]] ; then
         DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
         DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
         echo "  Day diff :              ${DAY_DIFF}"
@@ -91,6 +118,8 @@ for NAMESPACE in ${NS_LIST}; do
             IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
             IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
+        echo "  Command debug"
+        echo "      ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance || true"
         ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make delete-instance || true
     fi
 done

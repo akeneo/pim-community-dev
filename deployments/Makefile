@@ -440,7 +440,7 @@ hourly_cleanup: delete_environments_hourly delete_expired_uptime_check remove_un
 
 .PHONY: delete_environments_hourly
 delete_environments_hourly:
-	ENV_NAME=${ENV_NAME} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+	ENV_NAME=${ENV_NAME} TYPE=${TYPE} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
