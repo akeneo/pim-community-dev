@@ -10,13 +10,7 @@ import {
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {DecimalSeparatorDropdown} from '../../DecimalSeparatorDropdown';
-import {
-  availableDecimalSeparators,
-  isDefaultMeasurementSelection,
-  isMeasurementDecimalSeparator,
-  MeasurementDecimalSeparator,
-  MeasurementSelection,
-} from './model';
+import {availableDecimalSeparators, isDefaultMeasurementSelection, MeasurementSelection} from './model';
 
 type MeasurementSelectorProps = {
   selection: MeasurementSelection;
