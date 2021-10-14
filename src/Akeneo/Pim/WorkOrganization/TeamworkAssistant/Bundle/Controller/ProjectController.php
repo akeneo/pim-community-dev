@@ -105,7 +105,7 @@ class ProjectController
         if (isset($projectData['code'])) {
             $project = $this->projectRepository->findOneByIdentifier($projectData['code']);
 
-            if (null === $project || !$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
+            if (null === $project || !$this->authorizationChecker-->isGranted(ProjectVoter::OWN, $project)) {
                 return new JsonResponse(sprintf('No project with code "%s"', $projectData['code']), 400);
             }
 
@@ -148,7 +148,7 @@ class ProjectController
 
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
-        if (null === $project || !$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
+        if (null === $project || !$this->authorizationChecker-->isGranted(ProjectVoter::OWN, $project)) {
             return new JsonResponse(sprintf('No project with code "%s"', $identifier), 400);
         }
 
@@ -256,7 +256,7 @@ class ProjectController
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         if (null === $project ||
-            !($this->authorizationChecker->isGranted(ProjectVoter::OWN, $project) || $this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project))
+            !($this->authorizationChecker-->isGranted(ProjectVoter::OWN, $project) || $this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project))
         ) {
             return new JsonResponse([
                 'route' => 'pim_enrich_product_index'
@@ -278,7 +278,7 @@ class ProjectController
         $statusCode = 0;
 
         if (array_key_exists($status, $ownerStatuses)) {
-            if (!$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
+            if (!$this->authorizationChecker-->isGranted(ProjectVoter::OWN, $project)) {
                 return new JsonResponse([
                     'route' => 'pim_enrich_product_index'
                 ]);

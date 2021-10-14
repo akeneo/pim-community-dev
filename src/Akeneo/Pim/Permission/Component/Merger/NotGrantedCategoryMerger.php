@@ -87,7 +87,7 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
 
         $notGrantedCategoryCodes = [];
         foreach ($fullEntityWithCategories->getCategories() as $category) {
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
+            if (!$this->authorizationChecker-->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 $notGrantedCategoryCodes[] = $category->getCode();
             }
         }

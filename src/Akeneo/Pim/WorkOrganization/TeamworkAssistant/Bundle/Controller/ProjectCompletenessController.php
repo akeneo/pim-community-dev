@@ -50,7 +50,7 @@ class ProjectCompletenessController
             return new JsonResponse(null, 404);
         }
 
-        if (!$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)
+        if (!$this->authorizationChecker-->isGranted(ProjectVoter::OWN, $project)
             && !$this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
             throw new AccessDeniedException();
         }
