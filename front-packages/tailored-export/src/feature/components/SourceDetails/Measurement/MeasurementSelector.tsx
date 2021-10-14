@@ -53,10 +53,19 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             openLabel={translate('pim_common.open')}
             value={selection.type}
             onChange={type => {
-              if ('value_and_unit_label' === type || 'unit_label' === type) {
-                onSelectionChange({type, locale: locales[0].code});
-              } else if ('unit_code' === type || 'value' === type) {
-                onSelectionChange({type});
+              switch (type) {
+                case 'unit_code':
+                  onSelectionChange({type});
+                  break;
+                case 'unit_label':
+                  onSelectionChange({type, locale: locales[0].code});
+                  break;
+                case 'value':
+                  onSelectionChange({type, decimal_separator: '.'});
+                  break;
+                case 'value_and_unit_label':
+                  onSelectionChange({type, decimal_separator: '.', locale: locales[0].code});
+                  break;
               }
             }}
           >

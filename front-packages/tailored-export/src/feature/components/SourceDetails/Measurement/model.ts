@@ -3,7 +3,7 @@ import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-communi
 import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
+const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'} as const;
 
 type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
 
@@ -35,7 +35,9 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
     'unit_code' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
     ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator)) ||
-    ('value_and_unit_label' === selection.type && 'locale' in selection && isMeasurementDecimalSeparator(selection.decimal_separator))
+    ('value_and_unit_label' === selection.type &&
+      'locale' in selection &&
+      isMeasurementDecimalSeparator(selection.decimal_separator))
   );
 };
 
