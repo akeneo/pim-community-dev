@@ -34,6 +34,10 @@ aliases:
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 jobs:
   checkout:
+    parameters:
+      PRODUCT_TYPE:
+        default: ""
+        type: string
     docker:
       - image: alpine/git
     steps:
@@ -256,6 +260,7 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
+                TYPE_LONG="serenity"
                 IMAGE_TAG=${CIRCLE_SHA1}
                 IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
@@ -264,6 +269,7 @@ jobs:
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
@@ -287,6 +293,7 @@ jobs:
               name: Persist env vars for next jobs
               command: |
                 echo export TYPE=${TYPE} > persisted_env_vars
+                echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
                 echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
@@ -297,10 +304,6 @@ jobs:
               root: ~/
               paths:
                 - project/persisted_env_vars
-
-  ##################
-  # Build          #
-  ##################
 
   build_grth:
     environment:
@@ -352,6 +355,7 @@ jobs:
         name: Define value for next steps
         command: |
           TYPE="grth"
+          TYPE_LONG="growth"
           IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
@@ -360,6 +364,7 @@ jobs:
           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
 
           echo export TYPE=${TYPE} >> $BASH_ENV
+          echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
@@ -392,6 +397,7 @@ jobs:
         name: Persist env vars for next jobs
         command: |
           echo export TYPE=${TYPE} > persisted_env_vars
+          echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
@@ -453,6 +459,7 @@ jobs:
         name: Define value for next steps
         command: |
           TYPE="tria"
+          TYPE_LONG="trial"
           IMAGE_TAG=$(echo trial-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
@@ -461,6 +468,7 @@ jobs:
           PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
 
           echo export TYPE=${TYPE} >> $BASH_ENV
+          echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
@@ -493,6 +501,7 @@ jobs:
         name: Persist env vars for next jobs
         command: |
           echo export TYPE=${TYPE} > persisted_env_vars
+          echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
@@ -1113,11 +1122,14 @@ jobs:
   ##################
   # Helm tests     #
   ##################
-  test_helm_generated_k8s_files_srnt:
+  test_helm_generated_k8s_files:
       parameters:
-          VERSION:
-              type: string
-              default: ""
+        PRODUCT_TYPE:
+          default: "srnt"
+          type: string
+        CLUSTER_VERSION:
+            type: string
+            default: ""
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1128,103 +1140,25 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
-                TYPE="srnt"
-                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
+                TYPE="<<parameters.PRODUCT_TYPE>>"
+                K8S_CLUSTER_VERSION=<< parameters.CLUSTER_VERSION >>
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
                 echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
-              name: Test Serenity without Onboarder bundle Helm generated yaml files
+              name: Test <<parameters.PRODUCT_TYPE>> without Onboarder bundle Helm generated yaml files
               command: make -C deployments/ test_helm_generated_k8s_files
           - run:
-              name: Test Serenity with Onboarder bundle Helm generated yaml files
+              name: Test <<parameters.PRODUCT_TYPE>> with Onboarder bundle Helm generated yaml files
               command: WITH_ONBOARDER=1 make -C deployments/ test_helm_generated_k8s_files
 
-  test_helm_generated_k8s_files_grth:
+  test_cronjobs_existence:
       parameters:
-          VERSION:
-              type: string
-              default: ""
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-              name: Define value for next steps
-              command: |
-                TYPE="grth"
-                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
-
-                echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
-
-                echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
-          - run:
-              name: Test Growth Edition Helm generated yaml files compliance with current kubernetes Version
-              command: make -C deployments/ test_helm_generated_k8s_files
-
-  test_helm_generated_k8s_files_tria:
-      parameters:
-          VERSION:
-              type: string
-              default: ""
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-              name: Define value for next steps
-              command: |
-                TYPE="tria"
-                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
-
-                echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
-
-                echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
-          - run:
-              name: Test Free Trial Edition Helm generated yaml files compliance with current kubernetes Version
-              command: make -C deployments/ test_helm_generated_k8s_files
-
-  test_cronjobs_existence_srnt:
-      environment:
-        <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - install_yq
-          - run:
-              name: Test Cronjob jobs exists
-              command: make -C deployments/ test-helm-cronjob
-
-  test_cronjobs_existence_grth:
-      environment:
-        <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - install_yq
-          - run:
-              name: Test Cronjob jobs exists
-              command: make -C deployments/ test-helm-cronjob
-
-  test_cronjobs_existence_tria:
+        PRODUCT_TYPE:
+          default: "srnt"
+          type: string
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -1242,7 +1176,11 @@ jobs:
   ##################
   # Tests deploy   #
   ##################
-  test_deploy_srnt:
+  test_deploy:
+      parameters:
+        PRODUCT_TYPE:
+          default: "srnt"
+          type: string
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1286,328 +1224,129 @@ jobs:
               path: ~/artifacts/infra
           - store_artifacts:
               path: deployment.log
-              destination: test_deploy_srnt_deployment.log
+              destination: test_deploy_<<parameters.PRODUCT_TYPE>>_deployment.log
           - persist_to_workspace:
               root: ~/
               paths:
                 - upgrades.tfplan.json
 
-  test_deploy_grth:
-      environment:
+  test_deploy_last_release:
+    parameters:
+      PRODUCT_TYPE:
+        default: "srnt"
+        type: string
+    environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Define value for next steps
+    <<: *dockerCloudDeployerCurrent
+    steps:
+        - attach_workspace:
+              at: ~/
+        - add_ssh_keys:
+              fingerprints:
+                  - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+              name: Get latest release & export variables
               command: |
-                INSTANCE_NAME_PREFIX=pimci
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-
-                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Deploy PIM on kubernetes
-              command: |
-                  NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make -C deployments/ deploy-instance
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: make -C deployments/ test-prod
-          - run:
-              name: Display Deployment Errors
-              command: cat deployment.log
-              when: on_fail
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - store_artifacts:
-              path: deployment.log
-              destination: test_deploy_grth_deployment.log
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - upgrades.tfplan.json
-
-  test_deploy_tria:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Define value for next steps
-              command: |
-                INSTANCE_NAME_PREFIX=pimci
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-
-                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Deploy PIM on kubernetes
-              command: |
-                  NS=${TYPE}-${INSTANCE_NAME} bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make -C deployments/ deploy-instance
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: make -C deployments/ test-prod
-          - run:
-              name: Display Deployment Errors
-              command: cat deployment.log
-              when: on_fail
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - store_artifacts:
-              path: deployment.log
-              destination: test_deploy_tria_deployment.log
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - upgrades.tfplan.json
-
-  test_deploy_srnt_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerCurrent
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys:
-                fingerprints:
-                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
-                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Get latest release & export variables
-                command: |
-                    LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
-                    if [[ -z "${LATEST_RELEASE}" ]]; then
-                        echo "Could not retrieve latest deployed release"
-                        exit 1
-                    fi
-                    INSTANCE_NAME_PREFIX=pimup
-                    INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
-
-                    echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                    echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
-
-                    echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                    echo "Instance name: ${INSTANCE_NAME}"
-                    echo "Image tag: ${IMAGE_TAG}"
-                    echo "Latest image tag: ${LATEST_RELEASE}"
-                    echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
-          - run:
-                name: DATADOG deployment Livetail logs page
-                command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-                name: Pull Terraform modules from last release
-                command: |
-                    rm -r ./deployments
-                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${LATEST_RELEASE}/deployments/ .
-          - run:
-                name: Deploy instance with latest release
-                command: |
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                    IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
-          - run:
-                name: Persist env vars for next jobs
-                command: |
-                    echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
-                    echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project/persisted_env_vars
-
-  test_deploy_grth_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerCurrent
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys:
-                fingerprints:
-                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
-                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Get latest release & export variables
-                command: |
-                    LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
-                    if [[ -z "${LATEST_RELEASE}" ]]; then
+                  LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                  if [[ -z "${LATEST_RELEASE}" ]]; then
                       echo "Could not retrieve latest deployed release"
                       exit 1
-                    fi
-                    INSTANCE_NAME_PREFIX=pimup
-                    INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+                  fi
+                  INSTANCE_NAME_PREFIX=pimup
+                  INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                  DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
 
-                    echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                    echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+                  echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                  echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
-                    echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                    echo "Instance name: ${INSTANCE_NAME}"
-                    echo "Image tag: ${IMAGE_TAG}"
-                    echo "Latest image tag: ${LATEST_RELEASE}"
-                    echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
-          - run:
+                  echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Latest image tag: ${LATEST_RELEASE}"
+                  echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
+        - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
+        - run:
               name: Pull Terraform modules from last release
               command: |
                   rm -r ./deployments
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${LATEST_RELEASE}/deployments/ .
-          - run:
-                name: Deploy instance with latest release
-                command: |
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                    IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
-          - run:
-                name: Persist env vars for next jobs
-                command: |
-                    echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
-                    echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project/persisted_env_vars
-
-  test_upgrade_srnt_from_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerJenkinsCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Prepare the environment
-                command: |
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-                name: Jenkins Upgrade
-                command: |
-                    NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                    OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
-          - run:
-              name: Production tests on upgraded env
-              command: make -C deployments/ test-prod
-          - run:
-              name: Check that upgrader pod ran
-              command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
-          - run:
-              name: Display Deployment Errors
-              command: cat deployment.log
-              when: on_fail
-          - run:
-              name: Check if upgrader failed
-              command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
-              when: on_fail
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - store_artifacts:
-              path: deployment.log
-              destination: test_upgrade_srnt_from_last_release_deployment.log
-
-  test_upgrade_grth_from_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerJenkinsCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Prepare the environment
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
+        - run:
+              name: Deploy instance with latest release
               command: |
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-                name: Jenkins Upgrade
-                command: |
-                    NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                    OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
-          - run:
-                name: Production tests on upgraded env
-                command: make -C deployments/ test-prod
-          - run:
-              name: Display Deployment Errors
-              command: cat deployment.log
-              when: on_fail
-          - run:
-              name: Check if upgrader failed
-              command:  kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
-              when: on_fail
-          - run:
-                name: Prepare infrastructure artifacts
-                command: make -C deployments/ prepare-infrastructure-artifacts
-                when: on_fail
-          - store_artifacts:
-                path: ~/artifacts/infra
-          - store_artifacts:
-              path: deployment.log
-              destination: test_upgrade_grth_from_last_release_deployment.log
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  IMAGE_TAG=${LATEST_RELEASE} make -C deployments/ commit-instance
+        - run:
+              name: Persist env vars for next jobs
+              command: |
+                  echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                  echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
+        - persist_to_workspace:
+            root: ~/
+            paths:
+              - project/persisted_env_vars
+
+  test_upgrade_from_last_release:
+    parameters:
+      PRODUCT_TYPE:
+        default: "srnt"
+        type: string
+    environment:
+        <<: *envVarsDeployDev
+    <<: *dockerJenkinsCloudDeployer
+    steps:
+        - attach_workspace:
+            at: ~/
+        - add_ssh_keys
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+            name: Prepare the environment
+            command: |
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+              echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+              REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+              REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+              REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+              REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+        - run:
+            name: DATADOG deployment Livetail logs page
+            command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+        - run:
+            name: Jenkins Upgrade
+            command: |
+              NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+              OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+        - run:
+            name: Production tests on upgraded env
+            command: make -C deployments/ test-prod
+        - run:
+            name: Check that upgrader pod ran
+            command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+        - run:
+            name: Display Deployment Errors
+            command: cat deployment.log
+            when: on_fail
+        - run:
+            name: Check if upgrader failed
+            command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+            when: on_fail
+        - run:
+            name: Prepare infrastructure artifacts
+            command: make -C deployments/ prepare-infrastructure-artifacts
+            when: on_fail
+        - store_artifacts:
+            path: ~/artifacts/infra
+        - store_artifacts:
+            path: deployment.log
+            destination: test_upgrade_from_last_release_deployment.log
 
   test_upgrade_from_srnt_customer_db:
       parameters:
@@ -1671,69 +1410,32 @@ jobs:
               paths:
                 - project/persisted_env_vars
 
-
   ##################
   # Releases       #
   ##################
-  release_srnt:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                  at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Push Terraform modules to GCS
-              command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition-dev/${RELEASE_NAME}
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}
-          - run:
-              name: Tag the Docker image with the definitive tag
-              command: |
-                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
-
-  release_grth:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Push Terraform modules to GCS
-              command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition-dev/${RELEASE_NAME}
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/growth-edition/${RELEASE_NAME}
-          - run:
-              name: Tag the Docker image with the definitive tag
-              command: |
-                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
-
-  release_tria:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Push Terraform modules to GCS
-              command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${RELEASE_NAME}/
-          - run:
-              name: Tag the Docker image with the definitive tag
-              command: |
-                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
+  release:
+    parameters:
+      PRODUCT_TYPE:
+        default: "srnt"
+        type: string
+    environment:
+      <<: *envVarsDeployDev
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - set_gcloud_config_dev
+      - restore_persisted_env_vars
+      - run:
+          name: Push Terraform modules to GCS
+          command: |
+            BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${RELEASE_NAME}
+            BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition/${RELEASE_NAME}
+      - run:
+          name: Tag the Docker image with the definitive tag
+          command: |
+            OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
 
   ##################
   # Deploy         #
@@ -1811,7 +1513,6 @@ jobs:
                   echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                   echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-
                   echo "Instance name: ${INSTANCE_NAME}"
                   echo "Image tag: ${IMAGE_TAG}"
                   echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
@@ -1879,137 +1580,58 @@ jobs:
               name: Jenkins Upgrade
               command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
 
-  deploy_pr_srnt_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Define value for next steps
-              command: |
-                INSTANCE_NAME_PREFIX=pimci-pr
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                ACTIVATE_MONITORING=true
-
-                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-
-                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Check Circle CI PR
-              command: |
-                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
-          - run:
-              name: Deploy PR environment
-              command: make -C deployments/ deploy-instance
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-
-  deploy_pr_grth_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-              at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Define value for next steps
-              command: |
+  deploy_pr_environment:
+    parameters:
+      PRODUCT_TYPE:
+        default: "srnt"
+        type: string
+    environment:
+        <<: *envVarsDeployDev
+    <<: *dockerCloudDeployerNext
+    steps:
+      - attach_workspace:
+          at: ~/
+      - set_gcloud_config_dev
+      - restore_persisted_env_vars
+      - run:
+          name: Define value for next steps
+          command: |
+            TYPE="<<parameters.PRODUCT_TYPE>>"
+            INSTANCE_NAME_PREFIX=pimci-pr
+            if [[ "${TYPE}" == "grth" ]]; then
                 INSTANCE_NAME_PREFIX=pimci-pr-ge
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                ACTIVATE_MONITORING=true
-
-                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-
-                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Check Circle CI PR
-              command: |
-                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
-          - run:
-              name: Deploy PR environment
-              command: make -C deployments/ deploy-instance
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-
-  deploy_pr_tria_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
-      steps:
-          - attach_workspace:
-              at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Define value for next steps
-              command: |
+            fi
+            if [[ "${TYPE}" == "tria" ]]; then
                 INSTANCE_NAME_PREFIX=pimci-pr-ft
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                ACTIVATE_MONITORING=true
-
-                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
-                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-
-                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
-          - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Check Circle CI PR
-              command: |
-                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
-          - run:
-              name: Deploy PR environment
-              command: make -C deployments/ deploy-instance
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
+            fi
+            INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+            ACTIVATE_MONITORING=true
+            echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+            echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+            echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+            echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+            echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+            echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+            echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+            echo "Instance name: ${INSTANCE_NAME}"
+            echo "Image tag: ${IMAGE_TAG}"
+      - run:
+          name: DATADOG deployment Livetail logs page
+          command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+      - run:
+          name: Check Circle CI PR
+          command: |
+            if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+            echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
+      - run:
+          name: Deploy PR environment
+          command: make -C deployments/ deploy-instance
+      - run:
+          name: Prepare infrastructure artifacts
+          command: make -C deployments/ prepare-infrastructure-artifacts
+          when: on_fail
+      - store_artifacts:
+          path: ~/artifacts/infra
 
   ##################
   # Cleanup        #
@@ -2057,7 +1679,7 @@ jobs:
 
   zdd_compliancy_diff:
       parameters:
-        TYPE:
+        PRODUCT_TYPE:
           default: "srnt"
           type: string
       environment:
@@ -2072,7 +1694,7 @@ jobs:
                 command: |
                     VERSIONS_FILE=/tmp/zdd_versions.env
                     touch ${VERSIONS_FILE}
-                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
           - store_artifacts:
               path: /tmp/zdd_versions.env
               destination: versions
@@ -2083,7 +1705,7 @@ jobs:
 
   zdd_compliancy_checker:
       parameters:
-        TYPE:
+        PRODUCT_TYPE:
           default: "srnt"
           type: string
         CONTEXT:
@@ -2098,7 +1720,7 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command:
-                    TYPE=<<parameters.TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
+                    TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
 
 workflows:
   pull_request:
@@ -2112,75 +1734,72 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - test_helm_generated_k8s_files_srnt:
+          - test_helm_generated_k8s_files:
+                name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - checkout
           - build_srnt_prod:
+                name: "[srnt] Build"
                 requires:
-                    - test_helm_generated_k8s_files_srnt
-          - test_cronjobs_existence_srnt:
-                requires:
-                    - build_srnt_prod
-          - test_deploy_srnt:
-                requires:
-                    - test_cronjobs_existence_srnt
-          - test_deploy_srnt_last_release:
-                requires:
-                    - test_cronjobs_existence_srnt
-          - test_upgrade_srnt_from_last_release:
-                requires:
-                    - test_deploy_srnt_last_release
-          - deploy_pr_srnt_environment?:
-                type: approval
-                requires:
-                    - test_cronjobs_existence_srnt
-          - deploy_pr_srnt_environment:
-                requires:
-                    - deploy_pr_srnt_environment?
-          - test_helm_generated_k8s_files_grth:
-                requires:
-                    - checkout
+                    - "[srnt] Test helm generated k8s files"
           - build_grth:
+                name: "[grth] Build"
                 requires:
-                    - test_helm_generated_k8s_files_grth
-          - test_cronjobs_existence_grth:
-                requires:
-                    - build_grth
-          - test_deploy_grth:
-                requires:
-                    - test_cronjobs_existence_grth
-          - test_deploy_grth_last_release:
-                requires:
-                    - test_cronjobs_existence_grth
-          - test_upgrade_grth_from_last_release:
-                requires:
-                    - test_deploy_grth_last_release
-          - deploy_pr_grth_environment?:
-                type: approval
-                requires:
-                    - test_cronjobs_existence_grth
-          - deploy_pr_grth_environment:
-                requires:
-                    - deploy_pr_grth_environment?
-          - test_helm_generated_k8s_files_tria:
-                requires:
-                    - checkout
+                    - "[grth] Test helm generated k8s files"
           - build_tria:
+                name: "[tria] Build"
                 requires:
-                    - test_helm_generated_k8s_files_tria
-          - test_cronjobs_existence_tria:
+                    - "[tria] Test helm generated k8s files"
+          - test_cronjobs_existence:
+                name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
-                    - build_tria
-          - test_deploy_tria:
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
+          - test_deploy:
+                name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
-                    - test_cronjobs_existence_tria
-          - deploy_pr_tria_environment?:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+          - test_deploy_last_release:
+                name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+
+          - test_upgrade_from_last_release:
+                name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+
+          - deploy_pr_environment?:
+                name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                 type: approval
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
-                    - test_cronjobs_existence_tria
-          - deploy_pr_tria_environment:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+
+          - deploy_pr_environment:
+                name: "[<< matrix.PRODUCT_TYPE >>] Deploy pr environment"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
-                    - deploy_pr_tria_environment?
+                    - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+
           - build_srnt_dev:
                 requires:
                     - checkout
@@ -2242,131 +1861,124 @@ workflows:
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
-
-  on_demand_srnt_release:
-      jobs:
-          - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        only: master
-          - checkout:
-                requires:
-                    - ready_to_build?
-          - build_srnt_prod:
-                requires:
-                    - checkout
-          - build_srnt_dev:
-                requires:
-                    - checkout
-          - test_cronjobs_existence_srnt:
-                requires:
-                    - build_srnt_prod
-          - test_deploy_srnt:
-                requires:
-                    - test_cronjobs_existence_srnt
-          - test_deploy_srnt_last_release:
-                requires:
-                    - test_cronjobs_existence_srnt
-          - test_upgrade_srnt_from_last_release:
-                requires:
-                    - test_deploy_srnt_last_release
-          - test_front_code_style:
-                requires:
-                    - build_srnt_dev
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_srnt_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_srnt_dev
-          - test_back_phpunit:
-                requires:
-                    - build_srnt_dev
-          - test_back_integration_bounded_contexts:
-                requires:
-                    - build_srnt_dev
-          - test_back_integration_reference_entities:
-                requires:
-                    - build_srnt_dev
-          - test_back_performance:
-                requires:
-                    - build_srnt_dev
-          - test_onboarder_bundle:
-                requires:
-                    - build_srnt_dev
-          - test_back_behat_legacy:
-                requires:
-                    - build_srnt_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_srnt_dev
-          - release_srnt:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
-                    - test_onboarder_bundle
-                    - test_back_performance
-                    - test_back_behat_legacy
-                    - test_back_data_migrations
-                    - test_deploy_srnt
-                    - test_upgrade_srnt_from_last_release
-
-  on_demand_grth_release:
-      jobs:
-          - ready_to_build?:
-              type: approval
-              filters:
-                  branches:
-                      only: master
-          - checkout:
-              requires:
-                  - ready_to_build?
-          - build_grth:
-              requires:
-                  - checkout
-          - test_cronjobs_existence_grth:
-              requires:
-                  - build_grth
-          - test_deploy_grth:
-              requires:
-                  - test_cronjobs_existence_grth
-          - test_deploy_grth_last_release:
-              requires:
-                  - test_cronjobs_existence_grth
-          - test_upgrade_grth_from_last_release:
-              requires:
-                  - test_deploy_grth_last_release
-          - release_grth:
-              requires:
-                  - test_deploy_grth
-                  - test_upgrade_grth_from_last_release
-
-  on_demand_tria_release:
+  
+  on_demand_release:
     jobs:
       - ready_to_build?:
+          name: "[<< matrix.PRODUCT_TYPE >>] Release ?"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
           type: approval
           filters:
             branches:
               only: master
       - checkout:
+          name: "[<< matrix.PRODUCT_TYPE >>] Checkout"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
           requires:
-            - ready_to_build?
+            - "[<< matrix.PRODUCT_TYPE >>] Release ?"
+      - build_srnt_dev:
+          name: "[srnt] Build dev"
+          requires:
+            - "[srnt] Checkout"
+      - build_srnt_prod:
+          name: "[srnt] Build prod"
+          requires:
+            - "[srnt] Checkout"
+      - build_grth:
+          name: "[grth] Build prod"
+          requires:
+            - "[grth] Checkout"
       - build_tria:
+          name: "[tria] Build prod"
           requires:
-            - checkout
-      - test_cronjobs_existence_tria:
+            - "[tria] Checkout"
+      - test_front_code_style:
           requires:
-            - build_tria
-      - test_deploy_tria:
+            - "[srnt] Build dev"
+      - test_back_static_and_acceptance:
           requires:
-            - test_cronjobs_existence_tria
-      - release_tria:
+            - "[srnt] Build dev"
+      - test_front_static_acceptance_and_integration:
           requires:
-            - test_deploy_tria
+            - "[srnt] Build dev"
+      - test_back_phpunit:
+          requires:
+            - "[srnt] Build dev"
+      - test_back_integration_bounded_contexts:
+          requires:
+            - "[srnt] Build dev"
+      - test_back_integration_reference_entities:
+          requires:
+            - "[srnt] Build dev"
+      - test_back_performance:
+          requires:
+            - "[srnt] Build dev"
+      - test_onboarder_bundle:
+          requires:
+            - "[srnt] Build dev"
+      - test_back_behat_legacy:
+          requires:
+            - "[srnt] Build dev"
+      - test_back_data_migrations:
+          requires:
+            - "[srnt] Build dev"
+      - test_cronjobs_existence:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Build prod"
+      - test_deploy:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+      - test_deploy_last_release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+      - test_upgrade_from_last_release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+      - release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+            - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+            - test_back_static_and_acceptance
+            - test_front_static_acceptance_and_integration
+            - test_back_phpunit
+            - test_back_integration_bounded_contexts
+            - test_back_integration_reference_entities
+            - test_onboarder_bundle
+            - test_back_performance
+            - test_back_behat_legacy
+            - test_back_data_migrations
+      - release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["grth", "tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+            - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
 
   nightly_srnt_release:
       triggers:
@@ -2384,18 +1996,30 @@ workflows:
           - build_srnt_dev:
                 requires:
                     - checkout
-          - test_cronjobs_existence_srnt:
+          - test_cronjobs_existence:
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
                 requires:
                     - build_srnt_prod
-          - test_deploy_srnt:
+          - test_deploy:
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
                 requires:
-                    - test_cronjobs_existence_srnt
-          - test_deploy_srnt_last_release:
+                    - test_cronjobs_existence
+          - test_deploy_last_release:
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
                 requires:
-                    - test_cronjobs_existence_srnt
-          - test_upgrade_srnt_from_last_release:
+                    - test_cronjobs_existence
+          - test_upgrade_from_last_release:
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
                 requires:
-                    - test_deploy_srnt_last_release
+                    - test_deploy_last_release
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
@@ -2426,7 +2050,10 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_srnt_dev
-          - release_srnt:
+          - release:
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -2437,8 +2064,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - test_deploy_srnt
-                    - test_upgrade_srnt_from_last_release
+                    - test_deploy
+                    - test_upgrade_from_last_release
 
   nightly_grth_release:
       triggers:
@@ -2453,22 +2080,37 @@ workflows:
           - build_grth:
                 requires:
                     - checkout
-          - test_cronjobs_existence_grth:
+          - test_cronjobs_existence:
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["grth"]
                 requires:
                     - build_grth
-          - test_deploy_grth:
+          - test_deploy:
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["grth"]
                 requires:
-                    - test_cronjobs_existence_grth
-          - test_deploy_grth_last_release:
+                    - test_cronjobs_existence
+          - test_deploy_last_release:
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["grth"]
                 requires:
-                    - test_cronjobs_existence_grth
-          - test_upgrade_grth_from_last_release:
+                    - test_cronjobs_existence
+          - test_upgrade_from_last_release:
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["grth"]
                 requires:
-                    - test_deploy_grth_last_release
-          - release_grth:
+                    - test_deploy_last_release
+          - release:
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["grth"]
                 requires:
-                    - test_deploy_grth
-                    - test_upgrade_grth_from_last_release
+                    - test_deploy
+                    - test_upgrade_from_last_release
 
   nightly_tria_release:
     triggers:
@@ -2483,15 +2125,24 @@ workflows:
       - build_tria:
           requires:
             - checkout
-      - test_cronjobs_existence_tria:
+      - test_cronjobs_existence:
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["tria"]
           requires:
             - build_tria
-      - test_deploy_tria:
+      - test_deploy:
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["tria"]
           requires:
-            - test_cronjobs_existence_tria
-      - release_tria:
+            - test_cronjobs_existence
+      - release:
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["tria"]
           requires:
-            - test_deploy_tria
+            - test_deploy
 
   nightly_deployments:
       triggers:
@@ -2523,11 +2174,12 @@ workflows:
                             - master
       jobs:
           - checkout
-          - test_helm_generated_k8s_files_srnt:
-                name: test_helm_generated_k8s_files_srnt-<< matrix.VERSION >>
+          - test_helm_generated_k8s_files:
+                name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CLUSTER_VERSION >>] Test helm generated k8s files"
                 matrix:
                     parameters:
-                        VERSION: ["1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]
+                        PRODUCT_TYPE: ["srnt"]
+                        CLUSTER_VERSION: ["1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]
                 requires:
                     - checkout
           - build_srnt_prod:
@@ -2576,20 +2228,20 @@ workflows:
               branches:
                 only: master
         - zdd_compliancy_diff:
-            name: "[<< matrix.TYPE >>] Get ZDD compliancy files"
+            name: "[<< matrix.PRODUCT_TYPE >>] Get ZDD compliancy files"
             matrix:
                 parameters:
-                    TYPE: ["grth", "srnt"]
+                    PRODUCT_TYPE: ["grth", "srnt"]
             requires:
                 - ready_to_build?
         - zdd_compliancy_checker:
-            name: "[<< matrix.TYPE >>] [<< matrix.CONTEXT >>] Check ZDD compliancy"
+            name: "[<< matrix.PRODUCT_TYPE >>] [<< matrix.CONTEXT >>] Check ZDD compliancy"
             matrix:
                 parameters:
-                    TYPE: ["grth", "srnt"]
+                    PRODUCT_TYPE: ["grth", "srnt"]
                     CONTEXT: ["infra", "db"]
             requires:
-                - "[<< matrix.TYPE >>] Get ZDD compliancy files"
+                - "[<< matrix.PRODUCT_TYPE >>] Get ZDD compliancy files"
 
 commands:
   set_gcloud_config_dev:
