@@ -222,7 +222,6 @@ test('The wizard saves app and permissions on confirm', async () => {
     ];
     const registry = {
         all: () => Promise.resolve(providers),
-        countProviders: () => providers.length,
     };
 
     renderWithProviders(
@@ -313,7 +312,6 @@ test('The wizard saves app but have some failing permissions on confirm', async 
     ];
     const registry = {
         all: () => Promise.resolve(providers),
-        countProviders: () => providers.length,
     };
 
     renderWithProviders(

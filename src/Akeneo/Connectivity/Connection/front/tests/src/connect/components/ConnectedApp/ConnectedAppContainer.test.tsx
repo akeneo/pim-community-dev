@@ -7,6 +7,7 @@ import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/Connec
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import userEvent from '@testing-library/user-event';
+import useLoadPermissionsFormProviders from '@src/connect/hooks/use-load-permissions-form-providers';
 
 // to make Tab usable with jest
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
@@ -27,16 +28,9 @@ jest.mock('@src/connect/components/ConnectedApp/ConnectedAppPermissions', () => 
     ConnectedAppPermissions: jest.fn(() => null),
 }));
 
-let countRegistryProviders = 0;
-
-jest.mock('@src/shared/permission-form-registry/use-permission-form-registry', () => ({
-    ...jest.requireActual('@src/shared/permission-form-registry/use-permission-form-registry'),
-    usePermissionFormRegistry: () => {
-        return {
-            all: jest.fn(() => null),
-            countProviders: jest.fn(() => countRegistryProviders),
-        };
-    },
+jest.mock('@src/connect/hooks/use-load-permissions-form-providers', () => ({
+    __esModule: true,
+    default: jest.fn(() => [null, {}, () => {}]),
 }));
 
 beforeEach(() => {
@@ -46,7 +40,11 @@ beforeEach(() => {
 });
 
 test('The connected app container renders without permissions tab', () => {
-    countRegistryProviders = 0;
+    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [
+        [],
+        {},
+        () => {},
+    ]);
 
     const connectedApp = {
         id: '12345',
@@ -77,7 +75,44 @@ test('The connected app container renders without permissions tab', () => {
 });
 
 test('The connected app container renders with permissions tab', () => {
-    countRegistryProviders = 2;
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+        {
+            key: 'providerKey2',
+            label: 'Provider2',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: []
+            }
+        },
+        providerKey2: {
+            view: {
+                all: false,
+                identifiers: ['codeA']
+            }
+        }
+    };
+
+    (useLoadPermissionsFormProviders as jest.Mock).mockImplementation(() => [
+        mockedProviders,
+        mockedPermissions,
+        () => {},
+    ]);
 
     const connectedApp = {
         id: '12345',
@@ -118,9 +153,13 @@ test('The connected app container renders with permissions tab', () => {
     });
 
     expect(ConnectedAppPermissions).toHaveBeenCalledWith(
-        {
-            connectedApp: connectedApp,
-        },
+        expect.objectContaining({
+            providers: mockedProviders,
+            permissions: mockedPermissions,
+        }),
         {}
     );
 });
+
+// @todo : test "unsaved change" message is displayed
+// @todo : test save is called

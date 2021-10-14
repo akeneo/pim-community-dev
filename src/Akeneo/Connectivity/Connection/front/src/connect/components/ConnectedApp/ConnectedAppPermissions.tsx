@@ -1,17 +1,15 @@
-import React, {FC} from 'react';
-import {ConnectedApp} from '../../../model/Apps/connected-app';
+import React, {Dispatch, FC, SetStateAction} from 'react';
 import {PermissionFormProvider} from '../../../shared/permission-form-registry';
 import {PermissionsForm} from '../PermissionsForm';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 type Props = {
-    connectedApp: ConnectedApp;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: any) => void;
+    setPermissions: (state: SetStateAction<PermissionsByProviderKey>) => void;
     permissions: PermissionsByProviderKey;
 };
 
-export const ConnectedAppPermissions: FC<Props> = ({connectedApp, providers, setPermissions, permissions}) => {
+export const ConnectedAppPermissions: FC<Props> = ({providers, setPermissions, permissions}) => {
     return (
         <>
             {providers.map(provider => (
