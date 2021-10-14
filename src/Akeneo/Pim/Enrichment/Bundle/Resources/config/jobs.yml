@@ -287,13 +287,15 @@ services:
             - '@validator'
             - '@akeneo_batch.job_repository'
 
-    pim_connector.tasklet.mass_edit_family.index_family_products:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsTasklet'
+    pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsAndProductModelsTasklet'
         arguments:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.connector.reader.mass_edit.family'
             - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_model_query_builder_factory'
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
             - '@pim_connector.doctrine.cache_clearer'
             - '%pim_job_product_batch_size%'
 

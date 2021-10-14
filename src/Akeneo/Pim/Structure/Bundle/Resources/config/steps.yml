@@ -425,10 +425,10 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products'
 
-    pim_connector.step.mass_edit_family.index_family_products:
+    pim_connector.step.mass_edit_family.index_family_products_and_product_models:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'index_family_products'
+            - 'index_family_products_and_product_models'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.tasklet.mass_edit_family.index_family_products'
+            - '@pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models'
