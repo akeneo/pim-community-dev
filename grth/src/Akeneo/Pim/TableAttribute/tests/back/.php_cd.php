@@ -87,6 +87,7 @@ $rules = [
             'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
             'Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility',
+            'Oro\Bundle\PimFilterBundle\Form\Type\UnstructuredType',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
