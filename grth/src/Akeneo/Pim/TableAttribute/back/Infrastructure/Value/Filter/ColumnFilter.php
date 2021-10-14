@@ -69,6 +69,9 @@ class ColumnFilter implements ColumnTypeFilter
                     ],
                 ];
                 if (null !== $rowCode && !$isFirstColumn) {
+                    // Functional choice: when we want products that have a particular cell empty, we assume
+                    // products have at least the row. In other words, products that don't have the row will not
+                    //  appear in the results.
                     $filterClause['nested']['query']['bool']['filter'][] = [
                         'term' => [
                             \sprintf('%s.row', $attributePath) => $rowCode,
@@ -222,15 +225,15 @@ class ColumnFilter implements ColumnTypeFilter
                     // Table must not be empty
                     $searchQueryBuilder->addFilter($clause);
                 } else {
-                    $filterClause = $clause;
-                    $filterClause['nested']['query']['bool']['filter'][] = [
+                    $clause['nested']['query']['bool']['filter'][] = [
                         'exists' => [
                             'field' => \sprintf('%s.value-%s', $attributePath, $column->dataType()->asString()),
                         ],
                     ];
-                    $searchQueryBuilder->addFilter($filterClause);
+                    $searchQueryBuilder->addFilter($clause);
                 }
 
+                $clause = $this->getColumnRowChannelAndLocaleFilters($attributeCode, $column, $rowCode, $locale, $channel);
                 $clause['nested']['query']['bool']['filter'][] = [
                     'terms' => [
                         \sprintf('%s.value-%s', $attributePath, $column->dataType()->asString()) => $value,
