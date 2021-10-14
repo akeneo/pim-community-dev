@@ -9,7 +9,7 @@ use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReference
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class GetLocaleReferenceFromCodeIntegration extends TestCase
+class GetActiveLocaleReferenceFromCodeIntegration extends TestCase
 {
     private GetActiveLocaleReferenceFromCode $query;
 
