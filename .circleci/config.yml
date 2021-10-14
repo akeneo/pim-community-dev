@@ -32,6 +32,7 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+
 jobs:
   checkout:
     parameters:
@@ -40,6 +41,7 @@ jobs:
         type: string
     docker:
       - image: alpine/git
+    resource_class: small
     steps:
       - checkout
       - run:
@@ -114,6 +116,7 @@ jobs:
   build_srnt_dev:
     machine:
       image: ubuntu-2004:202010-01
+    resource_class: medium
     steps:
       - attach_workspace:
             at: ~/
@@ -247,6 +250,7 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       working_directory: ~/project
       steps:
           - attach_workspace:
@@ -310,6 +314,7 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    resource_class: medium
     working_directory: ~/project
     steps:
     - attach_workspace:
@@ -414,6 +419,7 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    resource_class: medium
     working_directory: ~/project
     steps:
     - attach_workspace:
@@ -519,6 +525,7 @@ jobs:
   test_back_static_and_acceptance:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -556,6 +563,7 @@ jobs:
   test_back_integration_bounded_contexts:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -593,6 +601,7 @@ jobs:
   test_back_integration_reference_entities:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -621,6 +630,7 @@ jobs:
   test_database:
       machine:
           image: ubuntu-1604:201903-01
+      resource_class: medium
       parallelism: 1
       steps:
           - attach_workspace:
@@ -644,6 +654,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       parallelism: 20
       steps:
           - attach_workspace:
@@ -676,6 +687,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202010-01
+    resource_class: medium
     parallelism: 40
     steps:
       - attach_workspace:
@@ -724,6 +736,7 @@ jobs:
   test_front_code_style:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
         - attach_workspace:
             at: ~/
@@ -743,6 +756,7 @@ jobs:
   test_front_static_acceptance_and_integration:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
         - attach_workspace:
             at: ~/
@@ -798,6 +812,7 @@ jobs:
   test_back_performance:
     machine:
         image: ubuntu-2004:202010-01
+    resource_class: medium
     steps:
       - attach_workspace:
           at: ~/
@@ -824,6 +839,7 @@ jobs:
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
         -   attach_workspace:
                 at: ~/
@@ -852,6 +868,7 @@ jobs:
   test_back_data_migrations:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -880,6 +897,7 @@ jobs:
   test_onboarder_bundle:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       environment:
           FLAG_ONBOARDER_ENABLED: 1
       steps:
@@ -962,6 +980,7 @@ jobs:
   test_grth:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
               at: ~/
@@ -1010,6 +1029,7 @@ jobs:
   test_tria:
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
               at: ~/
@@ -1055,6 +1075,7 @@ jobs:
   pull_request_success:
       docker:
           - image: alpine/git
+      resource_class: small
       steps:
           - run:
               name: Success
@@ -1133,6 +1154,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -1163,6 +1185,7 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -1184,6 +1207,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -1238,6 +1262,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerCurrent
+    resource_class: medium
     steps:
         - attach_workspace:
               at: ~/
@@ -1301,6 +1326,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerJenkinsCloudDeployer
+    resource_class: medium
     steps:
         - attach_workspace:
             at: ~/
@@ -1356,6 +1382,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -1422,6 +1449,7 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    resource_class: medium
     steps:
       - attach_workspace:
           at: ~/
@@ -1444,6 +1472,7 @@ jobs:
       environment:
         <<: *envVarsDeployPreprod
       <<: *dockerJenkinsCloudDeployer
+      resource_class: small
       steps:
             - attach_workspace:
                 at: ~/
@@ -1492,6 +1521,7 @@ jobs:
       environment:
         <<: *envVarsDeployPreprod
       <<: *dockerJenkinsCloudDeployer
+      resource_class: small
       steps:
             - attach_workspace:
                 at: ~/
@@ -1540,6 +1570,7 @@ jobs:
       environment:
           <<: *envVarsDeployPreprod
       <<: *dockerJenkinsCloudDeployer
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -1588,6 +1619,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerNext
+    resource_class: small
     steps:
       - attach_workspace:
           at: ~/
@@ -1644,6 +1676,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -1660,6 +1693,7 @@ jobs:
           <<: *envVarsDeployDev
       machine:
           image: ubuntu-1604:201903-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
@@ -1673,6 +1707,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -1691,6 +1726,7 @@ jobs:
           <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - checkout
           - set_gcloud_config_dev
@@ -1718,6 +1754,7 @@ jobs:
           type: string
       machine:
           image: ubuntu-2004:202010-01
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
