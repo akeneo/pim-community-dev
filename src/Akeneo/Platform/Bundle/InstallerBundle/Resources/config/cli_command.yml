@@ -14,7 +14,7 @@ services:
             - '@filesystem'
             - '@event_dispatcher'
             - '%pim_localization.provider.ui_locale.locale_codes%'
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
         tags:
             - { name: 'console.command' }
 
@@ -34,13 +34,12 @@ services:
             - '@database_connection'
             - '@pim_installer.fixture_loader.job_loader'
             - '@event_dispatcher'
-            - '%kernel.environment%'
         tags:
             - { name: console.command }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
         arguments:
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - '%kernel.bundles%'
         tags:
             - { name: console.command }

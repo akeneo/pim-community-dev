@@ -31,6 +31,8 @@ $rules = [
         // TIP-907: Functionnal problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
+        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface',
+
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
         'Akeneo\UserManagement\Component\Model\UserInterface',
@@ -57,6 +59,7 @@ $rules = [
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 

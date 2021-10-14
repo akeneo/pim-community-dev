@@ -35,8 +35,7 @@ Cypress.Commands.add('login', (username, password) => {
 });
 
 Cypress.Commands.add('goToProductsGrid', () => {
-  //We should rework the HTML to have proper role/aria selectors
-  cy.get('a[href="#/dashboard"]').should('have.class', 'AknColumn-navigationLink--active');
+  cy.findByRole('menuitem', {name: 'Activity'}).should('has.class', 'active');
 
   cy.findByText('Products').click();
 
@@ -46,9 +45,20 @@ Cypress.Commands.add('goToProductsGrid', () => {
   cy.wait('@productDatagrid');
 
   // switch to the "ungrouped" view to have only products
-  cy.get('.search-zone').find('div[data-type="grouped-variant"]').click()
-  cy.get('.search-zone').find('span[data-value="product"]').click()
+  cy.get('.search-zone').find('div[data-type="grouped-variant"]').click();
+  cy.get('.search-zone').find('span[data-value="product"]').click();
+
+  // Wait for loading mask
+  cy.get('.AknLoadingMask').should('be.visible');
+
+  // Wait for XHR completion
   cy.wait('@productDatagrid');
+
+  // Wait for loading mask deletion
+  cy.get('.AknLoadingMask').should('not.be.visible');
+
+  // Wait for change in page title to be sure DOM is ready
+  cy.get('.AknTitleContainer-title div').invoke('text').should('not.contains', "product models");
 });
 
 Cypress.Commands.add('selectFirstProductInDatagrid', () => {
@@ -76,6 +86,15 @@ Cypress.Commands.add('saveProduct', () => {
   cy.findByText('Save').click();
 
   cy.wait('@saveProduct');
+});
+
+Cypress.Commands.add('reloadProduct', () => {
+  cy.reload();
+  cy.intercept('GET', /\/enrich\/product\/rest\/.*/).as('getProduct');
+  cy.intercept('GET', /\/configuration\/rest\/.*/).as('configuration');
+  cy.wait('@getProduct');
+  cy.wait('@configuration');
+  cy.findFirstTextField();
 });
 
 Cypress.Commands.add('updateField', (label, value) => {

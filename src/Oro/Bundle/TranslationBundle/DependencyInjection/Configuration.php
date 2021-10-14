@@ -12,8 +12,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('oro_translation')
+        $treeBuilder = new TreeBuilder('oro_translation');
+        $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('js_translation')
                     ->addDefaultsIfNotSet()

@@ -20,3 +20,8 @@ services:
         public: true
         arguments:
             - '@akeneo.pim_ui.query.count_settings_entities_query'
+            -
+    Akeneo\Platform\Bundle\UIBundle\Controller\SystemController:
+        public: true
+        arguments:
+            - '@akeneo.pim_ui.query.count_system_entities_query'

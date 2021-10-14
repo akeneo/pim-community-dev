@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Cap atribut s'ha configurat com identificador del producte o no té permisos per editar-lo.
   page_title:
     index: "]-Inf, 1]{{ count }} resultat|]1, Inf[{{ count }} resultats"
+    product: "]-Inf, 1]{{ count }} producte|]1, Inf[{{ count }} productes"
+    product_model: "]-Inf, 1]{{ count }} model de producte|]1, Inf[{{ count }} models de producte"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Crear producte
@@ -49,6 +52,11 @@ pim_enrich.entity.product:
       select: Seleccionar
       all_visible: Tot visible
       copy: Copiar
+    convert_variant_to_simple:
+      label: Convertir a un producte simple
+      dialog:
+        title: Confirmar conversió
+        content: "Esteu segur de convertir a aquest producte variant en un de simple? Tots els valors, categories i associacions anteriors és desaran."
     history:
       version: Versió
       author: Autor/a
@@ -70,10 +78,10 @@ pim_enrich.entity.product:
       locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
       to_fill_count: "{1}1 atribut requerit falta|]1, Inf[{{ count }} atributs requerits falten"
       add_attribute_option: Afegir opció d'atribut
-      add_option: Afegir una opció
+      add_option: Afegeix una opció
     completeness:
       title: Integritat
-      complete: Complet
+      complete: Integritat
       no_family: No hi ha cap família definida. Si us plau, defineixi una família per calcular la integritat d'aquest producte.
       no_completeness: Tot just ha canviat la família del producte. Deseu-lo per calcular la integritat de la nova família.
       missing_values: "{1}1 falta valor |] 1, Inf [{{ count }} falten valors"
@@ -83,16 +91,25 @@ pim_enrich.entity.product:
       save_and_next: Guardar i seguir
       save_and_finish: Desa i finalitza
     associations:
-      title: Associacions
+      title: Associacions ({{ count }})
       none_exist: No existeix cap tipus d'associació.
       show_products: Mostrar productes
       show_groups: Mostrar els grups
       number_of_associations: "{{ productCount }} producte(s), {{ productModelCount }} model(s) de producte(s) i {{ groupCount }} grup(s)"
+      number_of_quantified_associations: "{{ productCount }} producte(s) y {{ productModelCount }} model(s) de producte(s)"
       association_type_selector: Tipus d'associació
       target: Objectiu
       manage: Afegir {{ associationType }} associacions
-      manage_description: Seleccionar els productes que vol associar amb el producte actual
       add_associations: Afegir associacions
+      variant_products: Variant de productes
+      quantified:
+        quantity: 'Quantitat:'
+      search:
+        placeholder: Cercar etiqueta o identificador
+      no_result: Ho sentim, no hi ha cap resultat de la cerca.
+      no_data: No hi ha productes associats.
+      remove: Treure associació
+      edit: Editar producte
     attribute_filter:
       display: Mostrar
       all: Tots els atributs
@@ -153,6 +170,7 @@ pim_enrich.entity.product_model:
       required_label: '(eix variant)'
     completeness:
       variant_product: "[]-Inf, 1]{{ complete }} / {{ total }} variant de producte |] 1, Inf [{{ complete }} / {{ total }} variants de productes"
+      label: Variant
     delete:
       confirm: Esteu segur que voleu suprimir aquest model de producte? Tots els seus fills, producte models i variants productes, també es suprimiran.
       confirm_for_products_and_product_models: Esteu segur que voleu suprimir els productes seleccionats i models de producte? Tots els fills dels models de producte també seràn suprimits.
@@ -263,7 +281,6 @@ pim_enrich.export.product:
     title: Configuració global
 pim_enrich.mass_edit.product:
   title: Acció en massa dels productes
-  confirm: "{1}Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau.|]1, Inf[ Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho si us plau."
   step:
     select:
       label: Triar productes
@@ -283,57 +300,46 @@ pim_enrich.mass_edit.product:
       select_attributes: Seleccionar atributs
     change_status:
       label: Canviar l'estat
-      label_count: "{1}Canviar l'estat de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar l'estat de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Els productes seleccionats seran activats o desactivats.
       field: Per activar
     edit_common:
       label: Editar valor dels atributs
-      label_count: "{1}Editar valor dels atributs de<span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Editar valor dels atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}productes</span>"
       description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
       no_update: Si us plau, seleccioneu almenys un camp per actualitzar
     add_attribute_value:
       label: Afegir valor dels atributs
-      label_count: "{1}Afegir valors del atributs per <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Afegir valors dels atributs per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes </span>"
       description: Només els atributs multivalor pertanyents a les famílies dels productes s'editaran amb les següents dades per la localització {{ locale }} i el canal {{ scope }}. Els valors d'atributs s'afegeixen, mantenint els valors anteriors.
     change_family:
       label: Canviar família
-      label_count: "{1}Canviar la família de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar la família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: La família dels productes seleccionats es canviarà per la família escollida
     add_to_group:
       label: Afegir a grups
-      label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a grups|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a grups"
       description: Seleccioneu els grups on volgueu afegir els productes seleccionats
       field: Grups
       no_update: Si us plau, seleccioneu un grup abans de continuar
     add_to_category:
       label: Afegir a categories
-      label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a categories"
       description: Els productes es classificaran en les següents categories. Es manté la classificació existent.
     move_to_category:
       label: Moure entre categories
-      label_count: "{1}Moure <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories|]1, Inf[Moure <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
     remove_from_category:
       label: Eliminar de les categories
-      label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
       description: Els productes s'eliminaran de les següents categories.
       no_update: No hi ha cap categoria seleccionada de la que suprimir els productes.
     add_to_existing_product_model:
       label: Afegir a un model de producte existent
-      label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un model de producte existent|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a model de producte existent"
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
       no_update: Si us plau, seleccioneu un model de producte abans de continuar
     associate_to_product_and_product_model:
       label: Associa
-      label_count: "{1}Associar <span class=\"AknFullPage-title--highlight\">1 producte</span> a productes o models de producte|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de productes"
       description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
       validate: Si us plau, afegiu una associació abans de seguir amb el següent pas
     change_parent_product_model:
       label: Canviar el model de producte del pare
-      label_count: "{1}Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
-  search: "Cercar a {{ label }}"
+  no_entities: "No {{ entityHint }} trobat"
   mass_action_group:
     bulk_actions:
       label: Accions massives
@@ -349,12 +355,22 @@ pim_datagrid:
       csv_grid_context: CSV (marc de quadrícula)
       xlsx_all: Excel (tots els atributs)
       xlsx_grid_context: Excel (marc de quadrícula)
+      configurator:
+        subtitle: Exportació ràpida
+        title: Selecciona l'acció
+        csv: CSV
+        xlsx: XLSX
+        all_attributes: Tots els atributs
+        with_codes: Amb codis
+        with_labels: Amb etiquetes
+        without_media: Sense multimèdia
+        with_media: Amb multimèdia
     mass_edit: Accions en bloc
     sequential_edit: Editar seqüencialment
     mass_delete: Esborrat massiu
     selected:
-      family: famílies seleccionades
-      product: resultats seleccionats
+      family: "]-Inf, 1]{{ count }} família seleccionada|]1, Inf[{{ count }} famílies seleccionades"
+      product: "]-Inf, 1]{{ count }} resultat seleccionat|]1, Inf[{{ count }} resultats seleccionats"
   view_selector:
     view: Vistes
   actions:
@@ -371,6 +387,29 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Sistema
+    product_typology:
+      label: 'Tipologia de producte'
+      simple: 'Simple'
+      variant: 'Variant'
+    entity_type:
+      label: 'Variant'
+      grouped: 'Agrupats'
+      ungrouped: 'Des agrupats'
+    family:
+      label: Família
+    groups:
+      label: Grups
+    enabled:
+      label: Estat
+    completeness:
+      label: Complet
+    created:
+      label: Creat el
+    updated:
+      label: Actualitzat el
+    identifier:
+      label: Identificador
+  search: Cercar a {{ label }}
 batch_jobs:
   add_association:
     label: Associa

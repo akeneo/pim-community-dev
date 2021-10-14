@@ -78,6 +78,24 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertCount(0, $productsNotFound);
     }
 
+    public function testAddAnAttributeFilterIsCaseInsensitive(): void
+    {
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
+        $pqb->addFilter('A_FILE', Operators::STARTS_WITH, 'aken');
+        $pqb->addFilter('a_localizable_IMAGE', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
+        $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
+        $pqb->addFilter(
+            'a_SCOPABLE_price',
+            Operators::GREATER_THAN,
+            ['amount' => 13, 'currency' => 'USD'],
+            ['scope' => 'ecommerce']
+        );
+
+        $productsFound = $pqb->execute();
+        $this->assertCount(1, $productsFound);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -178,10 +196,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         );
     }
 
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function createPQBWithoutFamilyFilter()
+    protected function createPQBWithoutFamilyFilter(): ProductQueryBuilderInterface
     {
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
         $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
@@ -203,10 +218,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         return $pqb;
     }
 
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function createPQBWithoutaLocalizedAndScopableTextAreaFilter()
+    protected function createPQBWithoutaLocalizedAndScopableTextAreaFilter(): ProductQueryBuilderInterface
     {
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
@@ -223,10 +235,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         return $pqb;
     }
 
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function createPQBWithoutACategoriesFilter()
+    protected function createPQBWithoutACategoriesFilter(): ProductQueryBuilderInterface
     {
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
         $pqb->addFilter(

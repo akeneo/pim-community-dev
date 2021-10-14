@@ -19,6 +19,9 @@ pim_menu:
     marketplace: 商城
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 商城
+  akeneo_connectivity_connection_connect_marketplace_profile: 商城
+  akeneo_connectivity_connection_connect_apps_activate: 连接
+  akeneo_connectivity_connection_connect_apps_authorize: 连接
   akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: 想要将您的 PIM 连接到另一个应用程序？🤟
       sub_title: 请检查我们的商城以查看哪些应用程序可以与 Akeneo PIM 连接。
       link: 访问商城
+      helper:
+        title: '{0} 没有与您的 PIM 版本兼容的应用或连接器。{1} 有 {{ count }} 个应用或连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个应用和连接器与您的 PIM 版本兼容。'
+        title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
+        description: 这只是概览，还有更多内容，请探索我们的网上商城。
+        link: 前往网上商城
+      card:
+        developed_by: 开发者
+        read_more: 阅读更多
+        more_info: 更多信息
+        connect: 连接
+      extensions:
+        title: 连接器
+        total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
+        empty: 没有与您的版本兼容的连接器
+      apps:
+        title: 应用
+        total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
+        empty: 没有与您的版本兼容的应用
+      unreachable: 无法访问商城，请稍后再试。
+      scroll_to_top: 滚动到顶部
+    apps:
+      wizard:
+        title: 连接
+        action:
+          confirm: 确认
+          cancel: 取消 
+          previous: 上一步
+          next: 下一步
+          allow_and_next: 允许并进入下一步
+        progress:
+          authorizations: 授权
+          permissions: 权限
+          well_done: 做得好！
+        authorize:
+          title: '应用 {{ app_name }} 需要'
+          no_scope_title: '应用 {{ app_name }} 想要访问您的 PIM。'
+          no_scope: 未请求特定的授权。
+          helper: 要了解更多关于应用授权的信息，
+          helper_link: 查看我们的“帮助中心”获取更多信息。
+      title: 连接
+      activate:
+        flash:
+          error: 抱歉，连接应用时发生错误。
+      scope:
+        type:
+          view: '查看 {{ entity }}'
+          edit: '查看和编辑 {{ entities }}'
+          delete: '查看、编辑和删除 {{ entities }}'
+        entities:
+          catalog_structure: 属性、属性组、品类和品类变型
+          attribute_options: 属性选项
+          categories: 类别
+          channel_localization: 区域和货币
+          channel_settings: 渠道
+          association_types: 关联类型
+          products: 产品和产品模型
+      error:
+        sub_text: 请联系应用开发者或 Akeneo 支持
+      constraint:
+        client_id:
+          not_blank: client_id 为必填项。
+          must_be_valid: client_id 与任何已知的客户不匹配。
+        response_type:
+          not_blank: response_type 为必填项。
+          must_be_code: response_type 必须为“代码”。
+        scope:
+          must_be_valid: 范围无效。
+        redirect_uri:
+          not_blank: redirect_uri 为必填项。
+          must_be_url: redirect_uri 不是有效的 URL。
   connections: 连接
   secondary_actions:
     title: 其他操作

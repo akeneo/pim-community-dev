@@ -133,7 +133,7 @@ const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationIte
         onClick={handleClick}
         {...rest}
       >
-        {React.cloneElement(icon, {size: 20})}
+        {React.cloneElement(icon, {size: 24})}
         {tag && <TagContainer>{tag}</TagContainer>}
         <Label>{taglessChildren}</Label>
       </Link>

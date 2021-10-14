@@ -1,12 +1,18 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {useArgs, updateArgs} from '@storybook/client-api';
-import {SubNavigationPanel} from './SubNavigationPanel.tsx';
-import {SpaceContainer} from '../../../storybook/PreviewGallery';
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { SubNavigationPanel } from './SubNavigationPanel.tsx';
+import { SpaceContainer } from '../../../storybook/PreviewGallery';
+import { useBooleanState } from '../../../hooks';
+import { MoreVerticalIcon } from "../../../icons";
+import { Dropdown } from "../../Dropdown/Dropdown";
+import { Link } from "../../Link/Link";
 
 <Meta
   title="Components/Navigation/SubNavigationPanel"
-  component={SubNavigationPanel}
-  args={{children: 'Some content', isOpen: true}}
+  subcomponents={{
+    SubNavigationPanel: SubNavigationPanel,
+    'SubNavigationPanel.Collapsed': SubNavigationPanel.Collapsed,
+  }}
+  args={{ children: 'Some content', isOpen: true, closeTitle: 'Close', openTitle: 'Open' }}
 />
 
 # SubNavigationPanel
@@ -46,6 +52,45 @@ When the panel is collapsed the content is hidden.
       return (
         <SpaceContainer height={200}>
           <SubNavigationPanel {...args} isOpen={false} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+## Panel with collapsed and expanded content
+
+<Canvas>
+  <Story name="CollapsedExpandedContent">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      const [isDropdownOpen, openDropDown, closeDropDown] = useBooleanState(false);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close}>
+            <SubNavigationPanel.Collapsed>
+              <Dropdown>
+                <MoreVerticalIcon title="Collapsed Content" onClick={openDropDown} />
+                {isDropdownOpen && (
+                  <Dropdown.Overlay onClose={closeDropDown}>
+                    <Dropdown.ItemCollection>
+                      <Dropdown.Item>Collapsed Content</Dropdown.Item>
+                    </Dropdown.ItemCollection>
+                  </Dropdown.Overlay>
+                )}
+              </Dropdown>
+            </SubNavigationPanel.Collapsed>
+            <Link>Expanded Content</Link>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+            <div>Expanded Content</div>
+          </SubNavigationPanel>
         </SpaceContainer>
       );
     }}

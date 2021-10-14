@@ -163,38 +163,27 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $consolidationDate = new \DateTimeImmutable(self::CONSOLIDATION_DATE);
 
+        $productIdentifiers = [];
         for ($i = 0; $i < $nbProducts; $i++) {
             $productId = $createProduct();
-            /*
-             * The evaluation date is decremented to have at least one product evaluated the exact day of the consolidation
-             * and the other products evaluated before the consolidation date.
-             */
-            $evaluatedAt = 0 === $i ? $consolidationDate : $consolidationDate->modify(sprintf('-%d DAY', $i));
+            $productIdentifiers[] = 'product_' . $productId;
+
+            $this->get('database_connection')->executeQuery(
+                "DELETE FROM pim_data_quality_insights_product_score WHERE product_id = $productId"
+            );
 
             $this->productScoreRepository->saveAll([
-                // Latest rates compared to the consolidation date
                 new ProductScores(
                     $productId,
-                    $evaluatedAt,
+                    $consolidationDate,
                     (new ChannelLocaleRateCollection())
                         ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank))
                 ),
-                // Too old rates compared to the consolidation date
-                new ProductScores(
-                    $productId,
-                    $evaluatedAt->modify('-1 DAY'),
-                    (new ChannelLocaleRateCollection())
-                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($this->getDifferentRank($rank)))
-                ),
-                // Too young rates compared to the consolidation date
-                new ProductScores(
-                    $productId,
-                    (new \DateTimeImmutable(self::CONSOLIDATION_DATE))->modify('+1 DAY'),
-                    (new ChannelLocaleRateCollection())
-                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($this->getDifferentRank($rank)))
-                ),
             ]);
         }
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers($productIdentifiers);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     private function givenFamily(string $familyCode): void

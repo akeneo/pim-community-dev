@@ -37,7 +37,6 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
         BulkSaverInterface $bulkSaver,
         BulkObjectDetacherInterface $bulkDetacher,
         AttributeGroupRepositoryInterface $attributeGroupRepository
-
     ) {
         $this->bulkSaver = $bulkSaver;
         $this->bulkDetacher = $bulkDetacher;

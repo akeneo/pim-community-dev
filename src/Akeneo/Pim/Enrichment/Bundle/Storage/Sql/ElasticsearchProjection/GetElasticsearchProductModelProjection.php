@@ -40,27 +40,34 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         $this->additionalDataProviders = $additionalDataProviders;
     }
 
-    public function fromProductModelCodes(array $productModelCodes): array
+    public function fromProductModelCodes(array $productModelCodes): iterable
     {
         $valuesAndProperties = $this->getValuesAndPropertiesFromProductModelCodes($productModelCodes);
         $completeFilters = $this->getCompleteFilterFromProductModelCodes($productModelCodes);
         $attributes = $this->getAttributesFromProductModelCodes($productModelCodes);
 
-        $productModelProjections = [];
+        $rowCodes = \array_map(
+            static fn (array $row): string => (string) $row['code'],
+            $valuesAndProperties
+        );
 
-        $rowCodes = array_map(function (array $row) {
-            return $row['code'];
-        }, $valuesAndProperties);
-
-        $diffCodes = array_diff($productModelCodes, $rowCodes);
-        if (count($diffCodes) > 0) {
+        $diffCodes = \array_diff($productModelCodes, $rowCodes);
+        if (\count($diffCodes) > 0) {
             throw new ObjectNotFoundException(
-                sprintf('Product model codes "%s" were not found.', implode(',', $diffCodes))
+                \sprintf('Product model codes "%s" were not found.', \implode(',', $diffCodes))
+            );
+        }
+
+        $additionalDataPerProductModel = [];
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $additionalDataPerProductModel = \array_merge(
+                $additionalDataPerProductModel,
+                $additionalDataProvider->fromProductModelCodes($productModelCodes)
             );
         }
 
         foreach ($productModelCodes as $productModelCode) {
-            $productModelProjections[$productModelCode] = new ElasticsearchProductModelProjection(
+            $productModelProjection = new ElasticsearchProductModelProjection(
                 $valuesAndProperties[$productModelCode]['id'],
                 $valuesAndProperties[$productModelCode]['code'],
                 $valuesAndProperties[$productModelCode]['created'],
@@ -80,16 +87,9 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $attributes[$productModelCode]['ancestor_attribute_codes'],
                 $attributes[$productModelCode]['attributes_for_this_level']
             );
-        }
 
-        foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalDataPerProductModel = $additionalDataProvider->fromProductModelCodes($productModelCodes);
-            foreach ($additionalDataPerProductModel as $productModelCode => $additionalData) {
-                $productModelProjections[$productModelCode] = $productModelProjections[$productModelCode]->addAdditionalData($additionalData);
-            }
+            yield $productModelCode => $productModelProjection->addAdditionalData($additionalDataPerProductModel[$productModelCode] ?? []);
         }
-
-        return $productModelProjections;
     }
 
     private function getValuesAndPropertiesFromProductModelCodes(array $productModelCodes): array

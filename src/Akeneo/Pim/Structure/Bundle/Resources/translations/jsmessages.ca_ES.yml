@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: La variant de família no s'ha pogut actualitzar.
     create:
       success: Variant de família creada correctament
+    delete:
+      success: Variant de família eliminada correctament
   module:
     edit:
       common_attributes: Atributs comuns
@@ -76,8 +78,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: '﻿Cancel·lar la modificació'
       cancel_description: 'Alerta: perdreu les dades no desades. Esteu segur que voleu cancel·lar la modificació d''aquesta nova opció?'
+      options_labels: Opcions d'etiquetes
+      options_settings: Configuració d'opcions
+      options_codes: Opcions codis
+      option_code: Opció de codi
+      new_option_code: nova_opció
+      no_options_msg: Ho sentim, no hi ha opcions!
+      add_option: Feu clic aquí per afegir-ne un
+      delete_confirmation_title_msg: Eliminar "{{ optionCode }}" de les seves opcions?
+      delete_confirmation_subtitle_msg: Esteu segur que voleu eliminar la opció? Aquesta acció no és pot desfer.
 pim_enrich.entity.association_type:
   label: tipus d'associació
+  property:
+    is_two_way: Associació de 2 vies
+    is_quantified: Associació amb quantitat
   flash:
     update:
       success: Tipus d'associació actualitzat correctament.
@@ -92,9 +106,15 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1]{{ count }} tipus d'associació|]1, Inf[{{ count }} tipus d'associació"
   module:
     create:
+      title: Crear un nou tipus d'associació
       button: Crear tipus d'associació
+      is_two_way:
+        message_on_read_only: El tipus d'associació pot ser quantificat o de dos vies, per seleccionar aquest, has de desmarcar l'altre
+      is_quantified:
+        message_on_read_only: El tipus d'associació pot ser quantificat o de dos vies, per seleccionar aquest, has de desmarcar l'altre
     delete:
       confirm: Esteu segur que voleu suprimir aquest tipus d'associació?
+  hint: <a href="{{link}}" target="_blank">En aquest article</a>trobarà tot el que necessita per crear el seu propi tipus d'associació.
 pim_enrich.entity.group_type:
   label: tipus de grup
   flash:
@@ -135,7 +155,7 @@ pim_enrich.entity.attribute:
     date_min: Data mínima
     decimals_allowed: Valors decimals permesos
     default_metric_unit:
-      label: Unitat mètrica per defecte
+      label: Unitat de mètrica per defecte
       choose: Trieu una unitat
     group:
       label: Grup d'atributs
@@ -145,7 +165,7 @@ pim_enrich.entity.attribute:
     max_characters: Màxim de caràcters
     max_file_size: Mida màxima de l'arxiu (MB)
     metric_family:
-      label: Família mètrica
+      label: Família de mètrica
       choose: Trieu una família
     minimum_input_length: Longitud mínima d'auto compleció
     name: Nom
@@ -181,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Expressió regular
       url: URL
     wysiwyg_enabled: Editor de text enriquit habilitat
+    default_value: Valor per defecte
   module:
     add_attribute:
       no_available_attributes: No hi ha més atributs a afegir
@@ -193,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Paràmetres de validació
     delete:
       confirm: Esteu segur que voleu suprimir aquest atribut?
+      product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
+      product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
+      used: actualment hi ha valors establerts per a aquest atribut, seran eliminats.
+      helper:
+        content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
+        link: el guiem a través de diferents passos aquí.
+      type: Escriu "{{ attributeCode }}"
       confirm_from_family: Esteu segur que voleu suprimir aquest atribut de la família?
       confirm_from_group: Esteu segur que voleu suprimir l'atribut {{ attribute }} d'aquest grup d'atributs?
       confirm_from_product: Esteu segur que voleu suprimir aquest atribut del producte?
@@ -200,6 +228,11 @@ pim_enrich.entity.attribute_group:
   label: grup d'atributs
   uppercase_label: Grup d'atributs
   plural_label: Grups d'atribut
+  result_count: '{0}0 grups d''atribut|{1}1 grup d''atributs|]1, Inf[{{ count }} grups d''atributs'
+  show_more_attribute:
+    title: Esta una mica encreuat per aquí. T'ho ensenyem {{ attributeCount }}/{{ totalAttributeCount }} atributs.
+    subtitle: Per descobrir tots els atributs d'aquest grup, cliqueu a continuació!
+    button: Mostrar tots els atributs
   flash:
     update:
       success: Grup d'atributs actualitzat correctament
@@ -215,6 +248,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
+  grid:
+    columns:
+      name: Nom dels grups d'atribut
+    no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
 pim_enrich.mass_edit.family:
   title: Acció en massa de família
   confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."

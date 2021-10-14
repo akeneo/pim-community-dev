@@ -11,10 +11,12 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Feature context for the datagrid related steps
@@ -631,7 +633,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                     && null !== $filterBox
                     && null !== $manageFilters
                 ;
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
         $this->spin(
             function () {
@@ -696,7 +700,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $loadingWrapper = $this->getDatagrid()->getElement('Grid container')->find('css', '.loading-mask');
 
                 return (null === $loadingWrapper || !$loadingWrapper->isVisible());
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
 
         return true;
@@ -1281,9 +1287,10 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldSeeTheDisplayInTheDatagrid($typeLabel)
     {
         return $this->spin(function () use ($typeLabel) {
-            return $this->getCurrentPage()->find('css',
-                 sprintf('.AknGrid--%s', strtolower($typeLabel))
-             );
+            return $this->getCurrentPage()->find(
+                'css',
+                sprintf('.AknGrid--%s', strtolower($typeLabel))
+            );
         }, sprintf('Display type %s is not shown in the datagrid', $typeLabel));
     }
 
@@ -1333,9 +1340,9 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * Wait
      *
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
@@ -1343,15 +1350,12 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
 
-    /**
-     * @return \Behat\Behat\Context\ExtendedContextInterface
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
@@ -1368,10 +1372,7 @@ class DataGridContext extends PimContext implements PageObjectAware
         return $this->datagrid;
     }
 
-    /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }

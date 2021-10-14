@@ -156,6 +156,7 @@ $rules = [
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+            'Akeneo\Channel\Component\Query\PublicApi',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

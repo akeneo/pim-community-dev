@@ -16,7 +16,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
-        'Twig_Environment',
+        'Twig',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
@@ -26,7 +26,9 @@ $rules = [
     ])->in('Akeneo\Channel\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',

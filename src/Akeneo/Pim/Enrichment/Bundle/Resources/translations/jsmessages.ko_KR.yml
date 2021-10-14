@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: 버전 
       author: 작성자
+      logged_at: 날짜/시간
       from: 시작
       modified: 수정됨
       old_value: 이전 값
@@ -108,7 +109,6 @@ pim_enrich.entity.product:
         quantity: 수량
       search:
         placeholder: 레이블 또는 식별자 검색
-      no_result: 죄송합니다. 검색 결과가 없습니다.
       no_data: 연결된 제품이 없습니다.
       remove: 연결 해제
       edit: 제품 정보 편집
@@ -397,7 +397,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>을 단일 제품으로 변환|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 단일 제품으로 변환|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 단일 제품으로 변환"
       description: 이전의 모든 값, 카테고리, 연결이 저장됩니다.
     associate_to_product_and_product_model:
-      label: 연결
+      label: 제품 연결
       label_count: "{0}제품 또는 제품 모델에 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 연결|{1}제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 연결|]1, Inf[제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 연결"
       description: 그리드에서 선택된 제품은 선택된 연결 유형의 선택된 제품 및 제품 모델에 연결됩니다.
       validate: 다음 단계로 이동하기 전에 연결을 추가하십시오.
@@ -489,7 +489,7 @@ pim_datagrid:
       label: 상위
     identifier:
       label: 식별자
-  search: '{{ label }}에서 검색'
+  search: '{{ label }}(으)로 검색'
 batch_jobs:
   add_association:
     label: 연결
@@ -551,6 +551,9 @@ batch_jobs:
     quick_export.label: XLSX 제품의 빠른 내보내기
     quick_export_product_model.label: XLSX 제품 모델의 빠른 내보내기
     perform.label: XLSX 제품의 빠른 내보내기
+  default_steps:
+    delete_products_and_product_models: 제품 및 제품 모델 삭제
+    remove_completeness_for_channel_and_locale: 채널 및 로케일의 완성도 제거
 error:
   removing:
     group: 그룹을 제거할 수 없습니다.

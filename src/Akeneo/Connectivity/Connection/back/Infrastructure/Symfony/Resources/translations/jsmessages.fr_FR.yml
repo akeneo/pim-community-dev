@@ -19,6 +19,9 @@ pim_menu:
     marketplace: Marketplace
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Connecter
+  akeneo_connectivity_connection_connect_apps_authorize: Connecter
   akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: Vous voulez connecter votre PIM avec une autre application ? 🤟
       sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
       link: Accéder à la marketplace
+      helper:
+        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
+        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
+        description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre marché web.
+        link: Aller sur la Marketplace web
+      card:
+        developed_by: Développé par
+        read_more: en savoir plus
+        more_info: Plus d'info
+        connect: Connecter
+      extensions:
+        title: Connecteurs
+        total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
+        empty: Aucun connecteur compatible avec votre version
+      apps:
+        title: Apps
+        total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
+        empty: Aucune app compatible avec votre version
+      unreachable: La marketplace est injoignable, veuillez revenir plus tard.
+      scroll_to_top: Haut de la page
+    apps:
+      wizard:
+        title: Connecter
+        action:
+          confirm: Confirmer
+          cancel: Annuler
+          previous: Précédent
+          next: Suivant
+          allow_and_next: Autoriser et suivant
+        progress:
+          authorizations: Autorisations
+          permissions: Permissions
+          well_done: Bravo!
+        authorize:
+          title: 'L''app {{ app_name }} a besoin de '
+          no_scope_title: 'L''app {{ app_name }} aimerait accéder à votre PIM.'
+          no_scope: Aucune autorisation spécifique n'a été demandée.
+          helper: Pour en savoir plus sur les autorisations accordées à une app,
+          helper_link: consultez notre Help Center.
+      title: Connecter
+      activate:
+        flash:
+          error: Désolé, une erreur s'est produite lors de la connexion avec l'App.
+      scope:
+        type:
+          view: 'Voir {{ entities }}'
+          edit: 'Voir et éditer {{ entities }}'
+          delete: 'Voir, éditer et supprimer {{ entities }}'
+        entities:
+          catalog_structure: les attributs, groupes d'attributs, familles et variantes de famille
+          attribute_options: les options d'attribut
+          categories: les catégories
+          channel_localization: les locales et devises
+          channel_settings: les canaux
+          association_types: les types d'association
+          products: les produits et modèles de produits
+      error:
+        sub_text: Veuillez contacter le développeur de l'application ou le support d'Akeneo
+      constraint:
+        client_id:
+          not_blank: Le client_id est requis.
+          must_be_valid: Le client_id ne correspond à aucun client connu.
+        response_type:
+          not_blank: Le response_type est requis.
+          must_be_code: Le response_type doit être "code".
+        scope:
+          must_be_valid: Les scopes demandés sont invalides.
+        redirect_uri:
+          not_blank: La redirect_uri est requise.
+          must_be_url: Le redirect_uri n'est pas une URL valide.
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -287,7 +360,7 @@ akeneo_connectivity.connection:
         link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
       search_filter:
         placeholder: Rechercher dans les messages d'erreur
-        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
+        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ count }} résultats'
       error_list:
         date_time_column:
           title: Jour et heure

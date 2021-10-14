@@ -15,7 +15,7 @@ pim_catalog_volume:
     count_products: Tuotteet
     average_max_attributes_per_family: Attribuutteja perheellä
     count_channels: Kanavat
-    count_locales: Lokaatioita (aktivoidut)
+    count_locales: Lokaatiot (käytössä)
     count_scopable_attributes: Kanavakohtaisia attribuutteja
     count_localizable_and_scopable_attributes: Lokalisoituja ja kanavakohtaisia attribuutteja
     count_localizable_attributes: Lokalisoituja attribuutteja

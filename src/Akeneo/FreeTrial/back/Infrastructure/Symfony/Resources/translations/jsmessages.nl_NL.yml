@@ -1,0 +1,15 @@
+free_trial:
+  menu:
+    assets: Assets
+    entities: Entiteiten
+    proposals: Voorstellen
+    sso: Eenmalige aanmelding (SSO) op basis van SAML
+    rules: Regels
+    feature_ee_only: Deze functie is alleen voor de Enterprise Edition
+  dqi:
+    dashboard:
+      helper: De Akeneo PIM Enterprise Edition biedt aanvullende krachtige mogelijkheden voor de bestaande functie Inzichten in datakwaliteit. U hebt toegang tot uitgebreide mogelijkheden voor spellingscontrole, een bredere dekking van talen en aanvullende belangrijke indicatoren waarmee u een perfecte productervaring kunt leveren ongeacht waar u verkoopt.
+  activity:
+    dashboard:
+      projects: Projecten
+      helper: Projecten in Akeneo PIM Enterprise Edition helpen u bij het organiseren en bijhouden van de werkzaamheden in alle groepen van medewerkers die betrokken zijn bij het verrijken van productgegevens. In de projecten worden taken gegenereerd en toegewezen aan de juiste gebruiker, zodat iedereen kan bijdragen aan het opbouwen van aantrekkelijke productervaringen. Maak een project aan om de workflow voor de verrijking te structureren en de projectstatus te bewaken. Het vereenvoudigt de communicatie tussen de teamleden die aan de productverrijking werken.

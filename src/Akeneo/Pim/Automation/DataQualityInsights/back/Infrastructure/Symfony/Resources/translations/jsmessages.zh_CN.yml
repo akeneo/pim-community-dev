@@ -150,7 +150,7 @@ akeneo_data_quality_insights:
     filter_value:
       good: 优
       to_improve: 要改善
-      yes: true
-      no: false
+      "yes": "是"
+      "no": "否　"
 pim_title:
   akeneo_data_quality_insights_dashboard: 数据质量洞察

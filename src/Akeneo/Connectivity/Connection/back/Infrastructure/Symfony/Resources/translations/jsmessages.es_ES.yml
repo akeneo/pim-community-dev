@@ -19,6 +19,9 @@ pim_menu:
     marketplace: Mercado
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Mercado
+  akeneo_connectivity_connection_connect_marketplace_profile: Mercado
+  akeneo_connectivity_connection_connect_apps_activate: Conectar
+  akeneo_connectivity_connection_connect_apps_authorize: Conectar
   akeneo_connectivity_connection_settings_index: Ajustes de conexiones
   akeneo_connectivity_connection_settings_edit: Ajustes de conexión
   akeneo_connectivity_connection_settings_any: Ajustes de conexión
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
       sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
       link: Acceder al mercado
+      helper:
+        title: '{0} No hay aplicaciones o conectores compatibles con su versión PIM.{1} Hay {{ count }} aplicación o conector compatible con su versión PIM. [2,Inf] Hay {{ count }} aplicaciones y conectores compatibles con tu versión PIM.'
+        title_without_apps: '{0} No hay conectores compatibles con su versión PIM.|{1} Hay {{ count }} conector compatible con su versión PIM. [2,Inf] Hay {{ count }} conectores compatibles con su versión PIM.'
+        description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro sitio web.
+        link: Ir al mercado web
+      card:
+        developed_by: Desarrollado por
+        read_more: leer más
+        more_info: Más información
+        connect: Conectar
+      extensions:
+        title: Conectores
+        total: '{0} Sin conectores|{1} 1 conector|[2,Inf] {{ total }} conectores'
+        empty: No hay conectores compatibles con su versión
+      apps:
+        title: Aplicaciones
+        total: '{0} Ninguna aplicación|{1} 1 aplicación|[2,Inf] {{ total }} aplicaciones'
+        empty: No hay aplicaciones compatibles con su versión
+      unreachable: No podemos llegar al mercado, vuelva más tarde.
+      scroll_to_top: Desplazar hasta la parte superior
+    apps:
+      wizard:
+        title: Conectar
+        action:
+          confirm: Confirmar
+          cancel: Cancelar
+          previous: Anterior
+          next: Siguiente
+          allow_and_next: Permitir y siguiente
+        progress:
+          authorizations: Autorizaciones
+          permissions: Permisos
+          well_done: '¡Bien hecho!'
+        authorize:
+          title: 'La aplicación {{ app_name }} necesita'
+          no_scope_title: 'La aplicación {{ app_name }} desea acceder a su PIM.'
+          no_scope: No se han solicitado autorizaciones específicas.
+          helper: Para saber más sobre la autorización de aplicaciones,
+          helper_link: consulte nuestro Centro de Ayuda para obtener más información.
+      title: Conectar
+      activate:
+        flash:
+          error: Lo sentimos, se ha producido un error al conectar la aplicación.
+      scope:
+        type:
+          view: 'Ver {{ entities }}'
+          edit: 'Ver y editar {{ entities }}'
+          delete: 'Ver, editar y eliminar {{ entities }}'
+        entities:
+          catalog_structure: atributos, grupos de atributos, familias y variantes de familias
+          attribute_options: opciones de atributo
+          categories: categorías
+          channel_localization: configuraciones regionales y monedas
+          channel_settings: canales
+          association_types: tipos de asociación
+          products: productos y modelos de productos
+      error:
+        sub_text: Póngase en contacto con el desarrollador de la aplicación o con el servicio de asistencia de Akeneo
+      constraint:
+        client_id:
+          not_blank: El client_id es obligatorio.
+          must_be_valid: El client_id no coincide con ningún cliente conocido.
+        response_type:
+          not_blank: El response_type es obligatorio.
+          must_be_code: El response_type debe ser «código».
+        scope:
+          must_be_valid: Los ámbitos no son válidos.
+        redirect_uri:
+          not_blank: El redirect_uri es obligatorio.
+          must_be_url: El redirect_uri no es una url válida.
   connections: Conexiones
   secondary_actions:
     title: Otras acciones

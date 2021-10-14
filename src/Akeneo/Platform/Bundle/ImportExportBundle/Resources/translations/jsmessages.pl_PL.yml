@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Jedna wersja językowa musi zostać wybrana, proszę wybierz wersję językową do eksportu.
 pim_import_export:
+  validation:
+    max_length_reached: 'Ta wartość jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
   entity:
     job_instance:
       label: profil pracy
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Nie można zaktualizować zadania.
         delete:
           success: Zadanie usunięte pomyślnie
+      duplicate:
+        title: Duplikuj profil {{ job_code }}
+        success: Profil zadania został pomyślnie zduplikowany.
+        fail: Nie można zduplikować profilu zadania.
     import_profile:
       uppercase_label: Importuj profil
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: Profil importu {{ job.label }} | Pokaż
   pim_importexport_import_execution_index: Historia wykonanych importów
   pim_importexport_import_execution_show: Wykonane importy | Szczegóły
+

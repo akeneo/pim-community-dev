@@ -15,7 +15,8 @@ define([
   'pim/fetcher-registry',
   'pim/i18n',
   'pim/user-context',
-], function (_, __, BaseForm, template, FetcherRegistry, i18n, UserContext) {
+  'pim/analytics',
+], function (_, __, BaseForm, template, FetcherRegistry, i18n, UserContext, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown AknButtonList-item locale-switcher',
@@ -118,9 +119,17 @@ define([
      * @param {Object} event
      */
     changeLocale: function (event) {
+      const localeCode = event.currentTarget.dataset.locale;
+      const context = this.config.context;
+
       this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
-        localeCode: event.currentTarget.dataset.locale,
-        context: this.config.context,
+        localeCode: localeCode,
+        context: context,
+      });
+
+      analytics.track('product:form:locale-switched', {
+        localeCode: localeCode,
+        context: context,
       });
 
       this.render();

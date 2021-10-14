@@ -23,6 +23,10 @@ pim_api:
       edit: Crea e aggiorna canali
       list: Elenco canali
     locale.list: Elenco formato impostazioni locali
+    product:
+      edit: Crea e aggiorna prodotti
+      list: Elenca prodotti
+      remove: Elimina prodotti
     currency.list: Elenco valute
     association_type:
       edit: Crea e aggiorna i tipi di associazione
@@ -37,6 +41,7 @@ pim_api:
     family_variant: Famiglie varianti
     channel: Canali
     locale: Impostazioni locali
+    product: Prodotti
     currency: Valute
     association_type: Tipi di associazione
 pim_user:

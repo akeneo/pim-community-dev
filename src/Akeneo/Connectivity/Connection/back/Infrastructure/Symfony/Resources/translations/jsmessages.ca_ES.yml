@@ -1,0 +1,219 @@
+pim_menu:
+  navigation_back:
+    connection: Tornar a connexions
+  navigation_block:
+    connection: Navegació de connexió
+  item:
+    connection_audit: Panell de connexions
+    connection_settings: Connexions
+    connection_settings_edit: Configuració de la connexió
+    connection_monitoring: Monitorització
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_settings_edit: Configuració de la connexió
+  akeneo_connectivity_connection_settings_any: Configuració de la connexió
+  akeneo_connectivity_connection_audit_index: Panell de connexions
+  akeneo_connectivity_connection_audit_any: Panell de connexions
+  akeneo_connectivity_connection_error_management_dashboard: Panell de connexions
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitorització de la connexió
+  akeneo_connectivity_connection_webhook_edit: Subscripció d'esdeveniment (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Subscripció d'esdeveniment (BETA)
+akeneo_connectivity.connection:
+  connections: Connexions
+  secondary_actions:
+    title: Altres accions
+  connection:
+    code: Codi
+    label: Etiqueta
+    flow_type: Tipus de flux
+    image: Imatge
+    auditable: Rastreja aquesta connexió en el taulell
+    client_id: ID de client
+    secret: Secret
+    username: Nom d’usuari
+    password: Contrasenya
+    user_role_id: Rol
+    user_group_id: Grup
+    constraint:
+      code:
+        required: El codi de connexió és obligatori.
+        invalid: El codi de connexió només pot contenir lletres, números i guions baixos.
+        too_short: El codi de connexió és massa curt. Hauria de tenir 3 caràcters o més.
+        too_long: El codi de connexió és massa llarg. Hauria de tenir 100 caràcters o menys.
+        must_be_unique: El codi de connexió ha de ser únic.
+      label:
+        required: L'etiqueta de connexió és obligatoria.
+        too_short: L'etiqueta de connexió és massa curta. Hauria de tenir 3 caràcters o més.
+        too_long: L'etiqueta connexió és massa llarga. Hauria de tenir 100 caràcters o menys.
+      flow_type:
+        invalid: El tipus de flux de connexió només pot ser 'data_source', 'data_destination' o 'other'.
+      image:
+        must_exist: No s'ha trobat la imatge. Provi de nou.
+  flow_type:
+    data_source: Font de la dada | Font de les dades
+    data_destination: Destinació de la dada | Destinació de les dades
+    other: Altre | Altres
+  connection_count: '{{ count }} connexió | {{ count }} connexions'
+  no_connection:
+    title: Encara no s'ha declarat cap connexió.
+    message: Afegeix la primera connexió clicant en el botó "Crear" de dalt o
+    message_link: feu clic aquí.
+  create_connection:
+    title: Crear una nova connexió
+    description: Pot crear fins a 50 connexions.
+    flash:
+      success: Connexió creada correctament.
+      error: Ho sentim, s'ha produït un error durant la creació de la connexió.
+  edit_connection:
+    subtitle: Preferències
+    flash:
+      success: Connexió actualitzada correctament.
+      error: Ho sentim, s'ha produït un error durant l'edició de la connexió.
+    image_uploader:
+      extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
+    credentials:
+      title: Credencials
+      helper:
+        message: 'Aquí hi ha les credencials per utilitzar la connexió {{ label }}.'
+        link: Més informació aquí...
+      wrong_credentials_combinations:
+        link: Descobreix el motiu per utilitza-ho.
+      password_helper:
+        message: Si ha oblidat la contrasenya, pot generar una nova aquí.
+        link: Més informació…
+      clear_password_helper:
+        message: Assegura't de guardar la contrasenya en algun lloc, ja que no la mostrarem dos cops.
+        link: Més informació…
+      action:
+        copy: Copiar al porta-retalls
+        regenerate: Regenera
+      flash:
+        copied: '{{ name }} copiat al porta-retalls'
+    permissions:
+      title: Permisos
+      helper:
+        message: 'En aquesta secció, pot definit els permisos per la connexió {{ label }}.'
+        link: Aprendre més sobre els permisos de connexió...
+      user_role_helper:
+        message: El rol predeterminat `{{ role }}` no és la millor opció per la seva connexió. Li recomanem un rol adaptat a les seves necessitats de connexió.
+        link: Més informació aquí...
+      user_group_helper:
+        message: Li recordem que esculli un grup adaptat a les necessitats de connexió.
+        link: Més informació aquí...
+  regenerate_secret:
+    title: Confirmar regeneració
+    description: Esteu segur de voler regenerar el secret de la connexió? No està segur dels impactes?
+    link: Això passarà.
+    action:
+      regenerate: Regenerat
+    flash:
+      success: Secret de connexió regenerada correctament.
+      error: Ho sentim, s'ha produït un error durant la regeneració de la connexió secreta.
+  regenerate_password:
+    title: Confirmar regeneració
+    description: Esteu segur de voler regenerar la contrasenya de la connexió? No està segur dels impactes?
+    link: Això és el que passarà.
+    action:
+      regenerate: Regenerat
+    flash:
+      success: Contrasenya de connexió regenerada correctament.
+      error: Ho sentim, s'ha produït un error durant la regeneració de la contrasenya de connexió.
+  delete_connection:
+    title: Confirmar l'eliminació
+    description: Esteu segur de voler eliminar la connexió? No està segur dels impactes?
+    link: Això és el que passarà.
+    flash:
+      success: Connexió eliminada correctament.
+  helper:
+    title: '👋 Benvingut a la funció que connectarà correctament el seu PIM!'
+    description: Un PIM sense integracions de tercers és inútil, no? Gràcies a les connexions pot indicar tots els fluxos que entraran i sortiran del seu PIM.
+    link: Vol saber més? Descobreix aquí què és una connexió i com treure el màxim partit!
+  flow_type_helper:
+    message: Quin tipus de flux és?
+    link: Et podem ajudar aquí mateix!
+  auditable_helper:
+    link: Més informació…
+  edit_image:
+    upload_helper: Canvia la imatge. Arrosega i deixa anar
+    remove_helper: Eliminar la imatge
+    click_here: clica aquí
+    flash:
+      extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
+  dashboard:
+    helper:
+      title: '👋 Benvingut al panell de connexions!'
+      description: Aquí podrà rastrejar tots els fluxos de dades que recull el seu PIM a través de les connexions, i també tots els fluxos de dades que és distribueixen als seus canals amb les connexions.
+      link: Vol saber més? Aquí tens!
+    user_survey:
+      title: Vols més dades sobre aquest panell?
+      content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
+      button: Som-hi!
+    connection_selector:
+      title:
+        source: Connexions de la font
+      all: Tot
+    charts:
+      number_of_products_created: Productes creats
+      number_of_products_updated: Productes actualitzats
+      number_of_products_sent: Productes enviats
+      legend:
+        during_the_last_seven_days: 'Total en el últims 7 dies:'
+        today: Avui
+    error_management:
+      data_source_error_chart:
+        chart:
+          title: Nombre d'errors al dia
+      widget:
+        over_the_last_seven_days: En els últims 7 dies
+    no_connection:
+      title:
+        default: Vol veure un gràfics sobre les seves connexions?
+      message_with_permission:
+        link: aquí.
+      message_without_permission:
+        message: Demana al teu administrador per crear una.
+        link: Aprendre més sobre les connexions aquí...
+  webhook:
+    title: Subscripció d'esdeveniment (BETA)
+    event_subscription: Subscripció d'esdeveniment (BETA)
+    form:
+      url: URL
+      secret: Secret
+      enabled: Activada la subscripció a l'esdeveniment
+      test: Test
+    error:
+      wrong_url: Aquest valor no és una URL valida.
+      required: Aquest camp és obligatori.
+      not_found: Està intentant actualitzar una connexió que no existeix.
+      limit_reached: Ha arribat al límit de subscripcions a esdeveniment.
+    flash:
+      success: La subscripció a l'esdeveniment s'ha actualitzat.
+      error: Ho sentim, s'ha produït un error a l'editar la subscripció a l'esdeveniment.
+    regenerate_secret:
+      title: Confirmar regeneració
+      action:
+        regenerate: Regenera
+      link: Això passarà.
+  error_management:
+    connection_monitoring:
+      title: Monitoritzant
+      helper:
+        title: '{0} Te {{ count }} error |[1,Inf] Tens {{ count }} errores'
+      search_filter:
+        placeholder: Cercar un missatge d'error
+        result_count: '{0} Cap resultat |[1,Inf] {{ count }} resultats'
+      error_list:
+        date_time_column:
+          title: Dia i hora
+        content_column:
+          product_name: Nom del producte
+          with_id: amb l'ID
+        details_column:
+          title: Detalls
+          locale: Configuració Regional
+          channel: Canal
+          family: Família
+  runtime_error:
+    error_message: Oh vaja! S'ha produït un error...
+    reload_helper: Si us plau, actualitzeu la pàgina i torneu a provar.
+    reload_button: Recarregar

@@ -150,7 +150,7 @@ akeneo_data_quality_insights:
     filter_value:
       good: Goed
       to_improve: Te verbeteren
-      yes: true
-      no: false
+      "yes": "Ja"
+      "no": "Nee"
 pim_title:
   akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten

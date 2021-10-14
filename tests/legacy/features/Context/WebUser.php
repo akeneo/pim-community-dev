@@ -16,8 +16,10 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context of the website
@@ -34,13 +36,13 @@ class WebUser extends PimContext
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page): Page
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($page);
     }
 
     /**
@@ -1424,20 +1426,22 @@ class WebUser extends PimContext
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
-        $this->spin(function () use ($attributes) {
-            $expectedAttributes = $this->listToArray($attributes);
-            $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $this->spin(
+            function () use ($attributes) {
+                $expectedAttributes = $this->listToArray($attributes);
+                $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
-            if (count($expectedAttributes) !== $actual = count($options)) {
-                return false;
-            }
+                if (count($expectedAttributes) !== $actual = count($options)) {
+                    return false;
+                }
 
-            if ($expectedAttributes !== $options) {
-                return false;
-            }
+                if ($expectedAttributes !== $options) {
+                    return false;
+                }
 
-            return true;
-        }, sprintf(
+                return true;
+            },
+            sprintf(
                 'Expected to see eligible attributes as label %s, actually saw %s',
                 json_encode($this->listToArray($attributes)),
                 json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
@@ -1737,9 +1741,10 @@ class WebUser extends PimContext
         $this->spin(function () use ($buttonLabel) {
             $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
             foreach ($buttons as $button) {
-                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                if ((
+                    strtolower(trim($button->getText())) === $buttonLabel ||
                         $button->getAttribute('title') === $buttonLabel
-                    ) && $button->isVisible()
+                ) && $button->isVisible()
                 ) {
                     $button->click();
 
@@ -1982,6 +1987,14 @@ class WebUser extends PimContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
+    }
+
+    /**
+     * @When /^I switch the "([^"]*)" to "(yes|no)"$/
+     */
+    public function iSwitchTheBooleanInputToValue($locator, $value)
+    {
+        $this->getCurrentPage()->switchBooleanToValue($locator, $value);
     }
 
     /**
@@ -2697,10 +2710,7 @@ class WebUser extends PimContext
         return $page;
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -2753,25 +2763,19 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
 
-    /**
-     * @return NavigationContext
-     */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }

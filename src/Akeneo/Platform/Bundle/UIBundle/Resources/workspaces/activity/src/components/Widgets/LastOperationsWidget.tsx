@@ -43,7 +43,7 @@ const LastOperationsWidget = () => {
       {data === null ||
         (data.length === 0 && (
           <NoDataSection style={{marginTop: 0}}>
-            <SettingsIllustration width={128} height={128} />
+            <SettingsIllustration size={128} />
             <NoDataText style={{fontSize: '15px'}}>
               {translate('pim_import_export.widget.last_operations.empty')}
             </NoDataText>

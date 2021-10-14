@@ -19,6 +19,9 @@ pim_menu:
     marketplace: Rynek
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Rynek
+  akeneo_connectivity_connection_connect_marketplace_profile: Rynek
+  akeneo_connectivity_connection_connect_apps_activate: Połącz
+  akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_settings_index: Ustawienia połączeń
   akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
   akeneo_connectivity_connection_settings_any: Ustawienie połączenia
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: Chcesz połączyć PIM z inną aplikacją? 🤟
       sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
       link: Dostęp do rynku
+      helper:
+        title: '{0} Brak aplikacji lub wtyczek kompatybilnych z twoją wersją PIM.|{1} Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}|[2,Inf] Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
+        title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
+        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
+        link: Przejdź do rynku internetowego
+      card:
+        developed_by: 'Opracowane przez:'
+        read_more: czytaj więcej
+        more_info: Więcej informacji
+        connect: Połącz
+      extensions:
+        title: Wtyczki
+        total: '{0} Brak wtyczek|{1} Liczba wtyczek: 1|[2,Inf] Liczba wtyczek: {{ total }} '
+        empty: Brak wtyczek kompatybilnych z twoją wersją
+      apps:
+        title: Aplikacje
+        total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
+        empty: Brak aplikacji kompatybilnych z twoją wersją
+      unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
+      scroll_to_top: Przewiń do początku
+    apps:
+      wizard:
+        title: Połącz
+        action:
+          confirm: Potwierdź
+          cancel: Anuluj
+          previous: Poprzednie
+          next: Następne
+          allow_and_next: Zezwól i przejdź dalej
+        progress:
+          authorizations: Autoryzacje
+          permissions: Uprawnienia
+          well_done: Świetnie!
+        authorize:
+          title: 'Aplikacja {{ app_name }} musi'
+          no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
+          no_scope: Nie zażądano żadnych określonych autoryzacji.
+          helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
+          helper_link: zajrzyj do naszego Centrum Pomocy.
+      title: Połącz
+      activate:
+        flash:
+          error: Przepraszamy, wystąpił błąd podczas łączenia z aplikacją.
+      scope:
+        type:
+          view: 'Zobacz {{ entities }}'
+          edit: 'Zobacz i edytuj {{ entities }}'
+          delete: 'Zobacz, edytuj i usuń {{ entities }}'
+        entities:
+          catalog_structure: atrybuty, grupy atrybutów, rodziny i warianty rodziny
+          attribute_options: opcje atrybutów
+          categories: kategorie
+          channel_localization: wersje językowe i waluty
+          channel_settings: kanały
+          association_types: typy powiązań
+          products: produkty i modele produktów
+      error:
+        sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
+      constraint:
+        client_id:
+          not_blank: Atrybut client_id jest wymagany.
+          must_be_valid: Atrybut client_id nie odpowiada żadnemu znanemu klientowi.
+        response_type:
+          not_blank: Atrybut response_type jest wymagany.
+          must_be_code: Atrybut response_type musi mieć wartość kodową.
+        scope:
+          must_be_valid: Zakresy są nieprawidłowe.
+        redirect_uri:
+          not_blank: Atrybut redirect_uri jest wymagany.
+          must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
   connections: Połączenia
   secondary_actions:
     title: Inne działania

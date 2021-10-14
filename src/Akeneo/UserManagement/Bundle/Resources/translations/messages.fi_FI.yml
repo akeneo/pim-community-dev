@@ -42,7 +42,8 @@ pim_user:
       inactive: Ei aktiivinen
     fields_errors:
       new_password:
-        minimum_length: Salasanan pitää olla vähintään 2 merkkiä
+        minimum_length: Salasanan täytyy olla vähintään 8 merkkiä pitkä
+        maximum_length: Salasanan on oltava lyhempi kuin 4096 merkkiä
       new_password_repeat:
         not_match: Salasanat eivät täsmää
       current_password:
@@ -67,11 +68,13 @@ pim_user:
       username_or_email: Käyttäjänimi tai sähköpostiosoite
       remember_me: Muista minut tässä tietokoneessa
       password_forgotten: Unohditko salasanasi?
+      log_in: Kirjaudu sisään
       forgot_password: Unohdin salasanani
       request: Pyyntö
       password_reset: Salasanan asettaminen
       reset: Tallenna
       password_reset_email_sent: Sähköposti lähetettiin käyttäjälle. Se sisältää linkin salasanan vaihtamiseksi.
+      homepage: Takaisin etusivulle
   group:
     tab:
       general.title: Yleinen

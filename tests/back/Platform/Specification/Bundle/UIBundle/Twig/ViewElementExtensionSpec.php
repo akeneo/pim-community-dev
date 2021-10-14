@@ -8,6 +8,7 @@ use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Twig\Environment;
+use Twig\Node\Node;
 
 class ViewElementExtensionSpec extends ObjectBehavior
 {
@@ -191,7 +192,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
                         return $function instanceof \Twig_SimpleFunction &&
                             $function->getName() === $name &&
                             $function->needsContext() === $needsContext &&
-                            $function->getSafe(new \Twig_Node()) === $safe;
+                            $function->getSafe(new Node()) === $safe;
                     }
                 );
 

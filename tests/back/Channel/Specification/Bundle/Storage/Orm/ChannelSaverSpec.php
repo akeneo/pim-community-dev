@@ -8,7 +8,7 @@ use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Saver\ChannelSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -222,8 +222,7 @@ class ChannelSaverSpec extends ObjectBehavior
                         && $event->previousCategoryCode() === 'previous-category-code'
                         && $event->newCategoryCode() === 'new-category-code';
                 }
-            ),
-            Argument::exact(ChannelCategoryHasBeenUpdated::class)
+            )
         )->shouldBeCalled();
 
         $this->save($channel);

@@ -9,7 +9,7 @@ import {Tag} from '../../Tags/Tags';
   component={MainNavigationItem}
   argTypes={{
     icon: {
-      control: {type: 'select', options: Object.keys(Icons)},
+      control: {type: 'select'}, options: Object.keys(Icons),
       table: {type: {summary: 'ReactElement<IconProps>'}},
     },
     disabled: {control: {type: 'boolean'}},

@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Aantal
       search:
         placeholder: Zoeken op label of ID
-      no_result: Er zijn geen resultaten voor uw zoekopdracht.
       no_data: Er zijn geen gekoppelde producten
       remove: Koppeling verwijderen
       edit: Bewerk product
@@ -331,13 +330,13 @@ pim_enrich.export.product:
   global_settings:
     title: Algemene instellingen
 pim_enrich.mass_edit.product:
-  title: Product bulkactie
+  title: Bulkactie voor producten
   confirm: "{0}U staat op het punt enkele producten bij te werken met de volgende informatie. Gelieve dit te bevestigen.|{1}U staat op het punt een product bij te werken met de volgende informatie. Gelieve dit te bevestigen.|]1, Inf[U staat op het punt {{ itemsCount }} producten bij te werken met de volgende informatie. Gelieve dit te bevestigen."
   step:
     select:
       label: Kies producten
     choose:
-      title: Product bulkacties
+      title: Bulkacties voor producten
       label_count: "]0, Inf[Selecteer uw actie"
     configure:
       label: Configureer
@@ -356,14 +355,14 @@ pim_enrich.mass_edit.product:
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
       field: Om in te schakelen
     edit_common:
-      label: Attribuutwaarden wijzigen
-      label_count: "{0}Bewerk attributenwaarden van sommige <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Bewerk attributenwaarden van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Bewerk attributenwaarden van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      label: Attribuutwaarden bewerken
+      label_count: "{0}Bewerk de attribuutwaarden van enkele <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Bewerk de attribuutwaarden van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Bewerk de attribuutwaarden van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
       description: Alleen de attributen die behoren tot de families van de geselecteerde producten worden gewijzigd met de volgende informatie voor de {{ locale }} lokale en het {{ scope }} kanaal.
       no_update: Selecteer ten minste één veld om te updaten
     add_attribute_value:
       label: Attribuutwaarden toevoegen
-      label_count: "{0}Voeg attributenwaarden toe aan sommige <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Voeg attributenwaarden toe aan <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Voeg attributenwaarden toe aan <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
-      description: Alleen de attributen met meervoudige waarden die tot de families van de producten behoren worden gewijzigd met de volgende gegevens voor de {{ locale }} lokale en het {{ scope }} kanaal. De attribuutwaardes worden toegevoegd, de oude waarden worden bewaard.
+      label_count: "{0}Voeg attribuutwaarden toe voor enkele <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Voeg attribuutwaarden toe voor <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Voeg attribuutwaarden toe voor <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: Alleen de attributen met meerdere waarden die tot de productfamilies behoren, worden bewerkt met de volgende gegevens voor taal {{ locale }} en kanaal {{ scope }}. De attribuutwaarden worden toegevoegd en de eerdere waarden blijven behouden.
     change_family:
       label: Familie wijzigen
       label_count: "{0}Verander de familie van sommigen <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Verander de familie van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[CVerander de familie van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
@@ -398,7 +397,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Converteer een selectie van <span class=\"AknFullPage-title--highlight\">producten</span> naar eenvoudige producten|{1}Converteer <span class=\"AknFullPage-title--highlight\">één product</span> naar een simpel product|]1, Inf[Converteer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> naar eenvoudige producten"
       description: Alle bestaande waarden, categorieën en associaties worden behouden.
     associate_to_product_and_product_model:
-      label: Associëren
+      label: Producten koppelen
       label_count: "{0}Koppel sommige <span class=\"AknFullPage-title--highlight\">producten</span> aan producten of product modellen|{1}Koppel <span class=\"AknFullPage-title--highlight\">1 product</span> aan producten of product modellen|]1, Inf[Koppel <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> aan producten of product modellen"
       description: De geselecteerde producten in het overzicht worden gekoppeld aan de geselecteerde producten en productmodellen voor het gekozen associatietype
       validate: Voeg associatie toe voordat u naar de volgende stap gaat
@@ -552,6 +551,9 @@ batch_jobs:
     quick_export.label: XLSX product snelle export
     quick_export_product_model.label: XLSX product model snelle export
     perform.label: XLSX product snelle export
+  default_steps:
+    delete_products_and_product_models: Producten en productmodellen verwijderen
+    remove_completeness_for_channel_and_locale: Volledigheid verwijderen bij kanaal en taal
 error:
   removing:
     group: Groep kan niet worden verwijderd

@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -63,9 +64,12 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $type,
         $localisable = false,
         $scopable = false,
-        array $localesSpecific = []
+        array $localesSpecific = [],
+        AttributeGroup $group = null
     ) {
-        $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
+        if (null === $group) {
+            $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
+        }
 
         $attributeFactory = $this->get('pim_catalog.factory.attribute');
         $attributeSaver = $this->get('pim_catalog.saver.attribute');
@@ -181,7 +185,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      *
      * @return FamilyInterface
      */
-    private function findOrCreateFamily($code)
+    protected function findOrCreateFamily($code)
     {
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($code);
         if (null === $family) {

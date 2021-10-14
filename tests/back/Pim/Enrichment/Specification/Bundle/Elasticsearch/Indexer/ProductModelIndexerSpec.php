@@ -3,12 +3,13 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
+use Prophecy\Argument;
 
 class ProductModelIndexerSpec extends ObjectBehavior
 {
@@ -34,14 +35,17 @@ class ProductModelIndexerSpec extends ObjectBehavior
         GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
     ) {
         $code = 'foobar';
-        $getElasticsearchProductModelProjection->fromProductModelCodes([$code])->willReturn([
+        $getElasticsearchProductModelProjection->fromProductModelCodes([$code])->willYield([
             $code => $this->getFakeProjection()
         ]);
-        $productAndProductModelClient->bulkIndexes(
-            [$code => $this->getFakeProjection()->toArray()],
-            'id',
-            Refresh::disable()
-        )->shouldBeCalled();
+        $productAndProductModelClient
+            ->bulkIndexes(
+                Argument::that(function ($projections) use ($code) {
+                    return \iterator_to_array($projections) === [$code => $this->getFakeProjection()->toArray()];
+                }),
+                'id',
+                Refresh::disable()
+            )->shouldBeCalled();
 
         $this->indexFromProductModelCode($code);
     }
@@ -52,14 +56,22 @@ class ProductModelIndexerSpec extends ObjectBehavior
     ) {
         $code1 = 'foo';
         $code2 = 'bar';
-        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willReturn([
+        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willYield([
             $code1 => $this->getFakeProjection($code1),
             $code2 => $this->getFakeProjection($code2)
         ]);
-        $productAndProductModelClient->bulkIndexes([
-            $code1 => $this->getFakeProjection($code1)->toArray(),
-            $code2 => $this->getFakeProjection($code2)->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes(
+            Argument::that(
+                function ($projections) use ($code1, $code2) {
+                    return \iterator_to_array($projections) === [
+                        $code1 => $this->getFakeProjection($code1)->toArray(),
+                        $code2 => $this->getFakeProjection($code2)->toArray(),
+                    ];
+                }
+            ),
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2]);
     }
@@ -71,26 +83,19 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $identifiers = $this->getRangeCodes(1, 3002);
 
         $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1, 1000))
-            ->willReturn([$this->getFakeProjection('identifier_1')]);
+            ->willYield([$this->getFakeProjection('identifier_1')]);
         $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1001, 2000))
-            ->willReturn([$this->getFakeProjection('identifier_2')]);
+            ->willYield([$this->getFakeProjection('identifier_2')]);
         $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(2001, 3000))
-            ->willReturn([$this->getFakeProjection('identifier_3')]);
+            ->willYield([$this->getFakeProjection('identifier_3')]);
         $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(3001, 3002))
-            ->willReturn([$this->getFakeProjection('identifier_4')]);
+            ->willYield([$this->getFakeProjection('identifier_4')]);
 
-        $productAndProductModelClient->bulkIndexes([
-            $this->getFakeProjection('identifier_1')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelClient->bulkIndexes([
-            $this->getFakeProjection('identifier_2')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelClient->bulkIndexes([
-            $this->getFakeProjection('identifier_3')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelClient->bulkIndexes([
-            $this->getFakeProjection('identifier_4')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes(
+            Argument::type(\Traversable::class),
+            'id',
+            Refresh::disable()
+        )->shouldBeCalledTimes(4);
 
         $this->indexFromProductModelCodes($identifiers);
     }
@@ -133,14 +138,22 @@ class ProductModelIndexerSpec extends ObjectBehavior
     ) {
         $code1 = 'foo';
         $code2 = 'bar';
-        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willReturn([
+        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willYield([
             $code1 => $this->getFakeProjection($code1),
             $code2 => $this->getFakeProjection($code2)
         ]);
-        $productAndProductModelClient->bulkIndexes([
-            $code1 => $this->getFakeProjection($code1)->toArray(),
-            $code2 => $this->getFakeProjection($code2)->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes(
+            Argument::that(
+                function ($projections) use ($code1, $code2) {
+                    return \iterator_to_array($projections) === [
+                            $code1 => $this->getFakeProjection($code1)->toArray(),
+                            $code2 => $this->getFakeProjection($code2)->toArray(),
+                        ];
+                }
+            ),
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2], ['index_refresh' => Refresh::disable()]);
     }
@@ -151,14 +164,22 @@ class ProductModelIndexerSpec extends ObjectBehavior
     ) {
         $code1 = 'foo';
         $code2 = 'bar';
-        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willReturn([
+        $getElasticsearchProductModelProjection->fromProductModelCodes([$code1, $code2])->willYield([
             $code1 => $this->getFakeProjection($code1),
             $code2 => $this->getFakeProjection($code2)
         ]);
-        $productAndProductModelClient->bulkIndexes([
-            $code1 => $this->getFakeProjection($code1)->toArray(),
-            $code2 => $this->getFakeProjection($code2)->toArray(),
-        ], 'id', Refresh::waitFor())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes(
+            Argument::that(
+                function ($projections) use ($code1, $code2) {
+                    return \iterator_to_array($projections) === [
+                            $code1 => $this->getFakeProjection($code1)->toArray(),
+                            $code2 => $this->getFakeProjection($code2)->toArray(),
+                        ];
+                }
+            ),
+            'id',
+            Refresh::waitFor()
+        )->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2], ['index_refresh' => Refresh::waitFor()]);
     }

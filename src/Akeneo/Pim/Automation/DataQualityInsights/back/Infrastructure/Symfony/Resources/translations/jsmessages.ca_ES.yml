@@ -1,0 +1,93 @@
+akeneo_data_quality_insights:
+  title: Informació de la qualitat de dades
+  dqi_dashboard:
+    menu: Informació de la qualitat de dades
+    helper:
+      title: Introduint la Qualitat de dades a Akeneo
+      description: Amb el panell de qualitat de dades, pot mesurar la qualitat de les dades del seu catàleg. També pot enfocar-se a una categoria o família.
+      help_center: Consulta el teu Centre d'Ajuda per més informació.
+    no_data_title: Ho sentim, encara no tenim suficient informació de dades per mostrar la vista general de la qualitat de dades.
+    no_data_subtitle: Si us plau, torni més tard.
+    time_period:
+      label: Període de temps
+      daily: Diàriament
+      weekly: Setmanalment
+      monthly: Mensualment
+    legend:
+      excellent: Excel·lent
+      good: Bé
+      average: Mitjana
+      below_average: Per sota de la mitjana
+      to_improve: A millorar
+    average_grade: Mitjana de classificació
+    category_modal_filter:
+      subtitle: Filtrar en una categoria
+      message: Escull la categoria per explorar al panell de control
+    widgets:
+      family_modal:
+        subtitle: Afegeix famílies
+        message: Escull les families per afegir al panell de control
+        max_families_msg: Perdona, no pots afegir més de {{ count }} families per seguir en el panell de control
+      category_modal:
+        subtitle: Afegeix categories
+        message: Escull les categories per afegir al panell de control
+        max_categories_msg: Perdona, no pots afegir més de {{ count }} categories per seguir en el panell de control
+      add_families: Afegeix famílies
+      add_categories: Afegeix categories
+      title: Títol
+      score: Puntuació
+      no_family_helper_msg: Selecciona les families per les que vols medir la qualitat de les dades
+      no_category_helper_msg: Selecciona les categories per les que vols medir la qualitat de les dades
+      see_in_grid: Veure a la quadrícula
+    time_axis:
+      day: dia
+    key_indicators:
+      title: Indicadors clau
+      list:
+        has_image:
+          title: Productes sense una imatge
+          messages:
+            first_step:
+              message1: Sense imatges, els seus productes no es veuran com es mereixen.
+            third_step:
+              message2: Es veu bé, queda molt poc.
+              message3: Afegeix uns retocs finals i ho tindrem tot preparat.
+            perfect_score_step:
+              message1: Ben fet! Ja està a punt!
+              message2: Impressionant! Tots els productes són brillants i bonics!
+              message3: Això és perfecte.
+        good_enrichment:
+          messages:
+            perfect_score_step:
+              message4: Enhorabona, està perfecte!
+      no_data_subtitle: Si us plau, torni més tard.
+    quality_score_evolution:
+      current_month_label: Aquest mes
+  product_evaluation:
+    criteria:
+      enrichment_image:
+        recommendation: Falta la imatge
+    axis:
+      enrichment:
+        title: Enriquiment
+        attributes_link: Mostrar tots els atributs que falten
+    messages:
+      success:
+        criterion: Tot va bé.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Tots els atributs que falten
+    back_to_products: Tornar als productes
+  attribute_group:
+    helper_dqi_link: Més informació en el centre d'ajuda.
+    activation: Activat
+    activated: Activat
+    disabled: Deshabilitat
+  product_grid:
+    filter_label:
+      quality_score: Puntuació de qualitat
+      enrichment_quality: Qualitat d'enriquiment
+      images_quality: Qualitat de les imatges
+    filter_value:
+      good: Bé
+      to_improve: A millorar

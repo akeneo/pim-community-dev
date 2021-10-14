@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
@@ -183,6 +184,7 @@ JSON;
             'line_too_long_5' => str_repeat('a', $this->getBufferSize() * 2),
             'line_too_long_6' => str_repeat('a', $this->getBufferSize() * 5),
             'invalid_json_4'  => str_repeat('a', $this->getBufferSize()),
+            'invalid_identifier_datatype' => '{"identifier":123456}'
         ];
 
         $data =
@@ -197,6 +199,7 @@ ${line['line_too_long_4']}
 ${line['line_too_long_5']}
 ${line['line_too_long_6']}
 ${line['invalid_json_4']}
+${line['invalid_identifier_datatype']}
 JSON;
 
         $expectedContent =
@@ -211,6 +214,7 @@ JSON;
 {"line":8,"status_code":413,"message":"Line is too long."}
 {"line":9,"status_code":413,"message":"Line is too long."}
 {"line":10,"status_code":400,"message":"Invalid json message received"}
+{"line":11,"identifier":123456,"status_code":422,"message":"The identifier field requires a string. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -309,6 +313,29 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testAccessDeniedWhenPartialUpdateOnProductsWithoutTheAcl()
+    {
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+{"identifier": "foo"}
+JSON;
+
+        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $result['http_response'];
+
+        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     protected function getBufferSize()

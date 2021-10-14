@@ -87,6 +87,10 @@ pim_enrich.entity.attribute_option:
       add_option: Hier klicken, um eins hinzuzufügen.
       delete_confirmation_title_msg: '"{{ optionCode }}" aus Ihren Optionen löschen?'
       delete_confirmation_subtitle_msg: Sind Sie sicher, dass Sie diese Option löschen möchten? Sie können diese Aktion nicht rückgängig machen.
+      search:
+        placeholder: Auf Label oder Code suchen
+        no_result:
+          title: Es gibt kein Ergebnis für Ihre Suche.
 pim_enrich.entity.association_type:
   label: Verbindungstyp
   property:
@@ -265,7 +269,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Produktfamilien auswählen
     choose:
-      title: Massenbearbeitung Produktfamilien
+      title: Familien-Massenaktionen
       label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren

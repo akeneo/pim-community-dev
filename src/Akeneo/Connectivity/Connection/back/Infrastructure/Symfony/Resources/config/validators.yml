@@ -39,3 +39,15 @@ services:
             - '%env(string:ALLOWED_NETWORK_WHITELIST)%'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustBeValidValidator:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
+        arguments:
+            - '@pim_api.security.scope_mapper'
+        tags:
+            - { name: validator.constraint_validator }

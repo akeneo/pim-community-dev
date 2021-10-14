@@ -221,7 +221,7 @@ const Edit = () => {
           {translate('measurements.family.delete.confirm')}
         </DeleteModal>
       )}
-      <PageHeader>
+      <PageHeader showPlaceholder={null === measurementFamily}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={() => router.redirect(settingsHref)}>
@@ -262,13 +262,7 @@ const Edit = () => {
             <Button onClick={handleSaveMeasurementFamily}>{translate('pim_common.save')}</Button>
           )}
         </PageHeader.Actions>
-        <PageHeader.Title>
-          {null === measurementFamily ? (
-            <div className="AknLoadingPlaceHolder">&nbsp;</div>
-          ) : (
-            <div>{measurementFamilyLabel}</div>
-          )}
-        </PageHeader.Title>
+        <PageHeader.Title>{measurementFamilyLabel ?? measurementFamilyCode}</PageHeader.Title>
         <PageHeader.State>{isModified && <UnsavedChanges />}</PageHeader.State>
       </PageHeader>
       <PageContent>

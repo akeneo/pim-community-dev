@@ -195,6 +195,7 @@ pim_common:
   ok: 确定
   open: 打开
   no_result: 未找到结果
+  no_search_result: 抱歉，找不到与搜索相符的结果。
   other_actions: 其他操作
   permissions: 权限
   previous: 上一步
@@ -238,9 +239,11 @@ pim_common:
   parent: 父级
   groups: 分组
   products: 产品
+  product_models: 产品模型
   more: 更多
+  public_view: 公共视图
 error:
-  exception: 哎呀 ！发生错误 {{ status_code }} ...
+  exception: 发生错误 {{ status_code }}… 
   forbidden: 您无权访问此页面
 alert:
   attribute_option:
@@ -317,6 +320,7 @@ pim_title:
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
   pim_settings_index: 设置 
+  pim_system_index: 系统
 pim_menu:
   tab:
     activity: 活动
@@ -372,3 +376,34 @@ pim_settings:
   settings_menu: 设置菜单
   catalog_settings: 目录设置 
   product_settings: 产品设置
+  count:
+    category_trees: '{0}您有 0 个树 |{1}您有 1 个树 |]1，Inf[您有 {{ count }} 个树'
+    categories: '{0}和 0 个类别 |{1}和 1 个类别 |]1, Inf[和 {{ count }} 个类别'
+    channels: '{0}您有 0 个渠道|{1}您有 1 个渠道|]1，Inf[您有 {{ count }} 渠道]'
+    locales: '{0}您有 0 个已启用区域|{1}您有 1 个已启用区域|]1，Inf[您有 {{ count }} 个已启用区域'
+    currencies: '{0}您有 0 个已启用货币|{1}您有 1 个已启用货币|]1, Inf[您有 {{ count }} 个已启用货币'
+    attribute_groups: '{0}您有 0 个属性组 |{1}您有 1 个属性组 |]1，Inf[您有 {{ count }} 个属性组'
+    attributes: '{0}您有 0 个属性|{1}您有 1 个属性|]1，Inf[您有 {{ count }} 个属性'
+    families: '{0}您有 0 个品类|{1}您有 1 个品类|]1，Inf[您有 {{ count }} 个品类'
+    measurements: '{0}您有 0 个测量|{1}您有 1 个测量|]1, Inf[您有 {{ count }} 个测量'
+    association_types: '{0}您有 0 个关联类型 |{1}您有 1 个关联类型 |]1, Inf[您有 {{ count }} 个关联类型'
+    group_types: '{0}您有 0 个分组类型 |{1}您有 1 个分组类型 |]1，Inf[您有 {{ count }} 个分组类型'
+    groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
+    rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
+pim_system:
+  system_menu: 系统菜单
+  system_navigation: 系统导航
+  users_management_navigation: 用户管理导航
+  count:
+    product_values: '{0}您有 0 个产品值 |{1}您有 1 个产品值 |]1，Inf[您有 {{ count }} 个产品值'
+    users: '{0}您有 0 个用户 |{1}您有 1 个用户 |]1，Inf[您有 {{ count }} 个用户'
+    user_groups: '{0}您有 0 个用户组 |{1}您有 1 个用户组 |]1，Inf[您有 {{ count }} 个用户组'
+    roles: '{0}您有 0 个角色 |{1}您有 1 个角色 |]1，Inf[您有 {{ count }} 个角色'
+  sso:
+    enabled: SSO 已启用
+    disabled: SSO 已禁用
+    title: 基于 SAML 的单点登录
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: 选择操作

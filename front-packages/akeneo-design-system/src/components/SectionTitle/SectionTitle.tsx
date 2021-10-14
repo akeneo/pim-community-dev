@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {HTMLAttributes, ReactNode} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Button, ButtonProps, IconButton, IconButtonProps} from '../../components';
@@ -51,7 +51,7 @@ const Information = styled.div`
 `;
 
 type SectionTitleProps = Override<
-  React.HTMLAttributes<HTMLDivElement>,
+  HTMLAttributes<HTMLDivElement>,
   {
     /**
      * When set, defines the sticky top position of the Section Title.

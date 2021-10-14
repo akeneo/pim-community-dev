@@ -12,9 +12,11 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -66,6 +68,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
+        'marketplace'              => 'Marketplace index',
     ];
 
     /** @var array */
@@ -81,9 +84,9 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct(string $mainContextClass, string $baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl, KernelInterface $kernel)
     {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
         $this->baseUrl = $baseUrl;
     }
 
@@ -246,8 +249,6 @@ class NavigationContext extends PimContext implements PageObjectAware
 
                 return true;
             }
-
-            return false;
         }, sprintf('Can access to the page "%s"', $page));
     }
 
@@ -380,19 +381,19 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page): Page
     {
         if (null === $this->pageFactory) {
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
+        $page = implode('\\', array_map('ucfirst', explode(' ', $page)));
 
-        return $this->pageFactory->createPage($name);
+        return $this->pageFactory->createPage($page);
     }
 
     /**
@@ -497,7 +498,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @return Page
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         $page = $this->getPage($this->currentPage);
 
@@ -562,13 +563,13 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @deprecated This method is deprecated and should be removed avoid its use
-     * @see For more information regarding to deprecation see TIP-442
+     * @param string|null $condition
+     *@see For more information regarding to deprecation see TIP-442
      * @todo Delete method
      *
-     * @param string $condition
+     * @deprecated This method is deprecated and should be removed avoid its use
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }

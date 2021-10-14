@@ -83,8 +83,9 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
         threshold: 0,
       };
 
-      const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting) {
+      const observer = new IntersectionObserver(entries => {
+        const lastEntry = entries[entries.length - 1];
+        if (lastEntry.isIntersecting) {
           onNextPage();
         }
       }, options);

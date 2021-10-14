@@ -32,6 +32,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +80,8 @@ class ProductModelController
     private ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave;
     private WarmupQueryCache $warmupQueryCache;
     private LoggerInterface $logger;
+    private LoggerInterface $apiProductAclLogger;
+    private SecurityFacade $security;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -104,7 +107,9 @@ class ProductModelController
         ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         WarmupQueryCache $warmupQueryCache,
         LoggerInterface $logger,
-        array $apiConfiguration
+        array $apiConfiguration,
+        LoggerInterface $apiProductAclLogger,
+        SecurityFacade $security
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -130,6 +135,8 @@ class ProductModelController
         $this->warmupQueryCache = $warmupQueryCache;
         $this->logger = $logger;
         $this->apiConfiguration = $apiConfiguration;
+        $this->apiProductAclLogger = $apiProductAclLogger;
+        $this->security = $security;
     }
 
     /**
@@ -141,6 +148,8 @@ class ProductModelController
      */
     public function getAction(string $code): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+
         try {
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
@@ -164,10 +173,20 @@ class ProductModelController
      */
     public function createAction(Request $request): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $data = $this->getDecodedContent($request->getContent());
+        if (isset($data['code']) && !\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_product_models',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
+
         $productModel = $this->factory->create();
 
-        $this->updateProductModel($productModel, $data, 'post_product_model');
+        $this->updateProductModel($productModel, $data, 'post_product_models');
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
 
@@ -186,8 +205,18 @@ class ProductModelController
      */
     public function partialUpdateAction(Request $request, $code): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $data = $this->getDecodedContent($request->getContent());
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
+
+        if (!\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_product_models__code_',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         $isCreation = null === $productModel;
@@ -217,6 +246,8 @@ class ProductModelController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
@@ -277,6 +308,8 @@ class ProductModelController
      */
     public function partialUpdateListAction(Request $request): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductModelPostSave->activate();
@@ -486,6 +519,25 @@ class ProductModelController
                 $parameters,
                 null
             );
+        }
+    }
+
+    /**
+     * We don't have the guarantee that the recently introduced ACLs are correctly configured on existing roles.
+     * To avoid unwanted access denied errors, we will log instead, to monitor on production environments.
+     */
+    private function denyAccessUnlessAclIsGranted(string $acl): void
+    {
+        if (!$this->security->isGranted($acl)) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            Assert::isInstanceOf($user, UserInterface::class);
+
+            $this->apiProductAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
         }
     }
 }

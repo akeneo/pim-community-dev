@@ -1,0 +1,21 @@
+services:
+    akeneo_connectivity.connection.service.apps.client_provider:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
+        arguments:
+            - '@session'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
+        arguments:
+            - '@pim_api.security.scope_mapper'
+            - '@pim_user.factory.role'
+            - '@pim_user.saver.role_with_permissions'
+        public: true

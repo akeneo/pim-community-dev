@@ -27,6 +27,11 @@ services:
         arguments:
             - '@database_connection'
 
+    pim_catalog.doctrine.query.find_attribute_code_as_label_for_family:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\FindAttributeCodeAsLabelForFamily'
+        arguments:
+            - '@database_connection'
+
     pim_catalog.doctrine.query.count_products_with_family:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountProductsWithFamily'
         arguments:

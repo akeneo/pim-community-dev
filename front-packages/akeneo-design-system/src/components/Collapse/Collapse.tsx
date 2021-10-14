@@ -16,9 +16,9 @@ const CollapseContainer = styled.div`
   }
 `;
 
-const Content = styled.div<{$height: number; overflow: string; shouldAnimate: boolean}>`
+const Content = styled.div<{$height: number; $overflow: string; shouldAnimate: boolean}>`
   max-height: ${({$height}) => $height}px;
-  overflow: ${({overflow}) => overflow};
+  overflow: ${({$overflow}) => $overflow};
   ${({shouldAnimate}) =>
     shouldAnimate &&
     `
@@ -29,8 +29,10 @@ const Content = styled.div<{$height: number; overflow: string; shouldAnimate: bo
 
 const LabelContainer = styled.div`
   height: 44px;
+  padding-right: 2px; // To manage the outline of the collapse icon being cropped in case of overflow hidden
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Label = styled.div`
@@ -102,20 +104,19 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
-        <LabelContainer>
+        <LabelContainer onClick={handleCollapse}>
           <Label>{label}</Label>
           <IconButton
             size="small"
             level="tertiary"
             ghost="borderless"
-            onClick={handleCollapse}
             title={collapseButtonLabel}
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
         </LabelContainer>
         <Content
           ref={contentRef}
-          overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+          $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
           $height={isOpen ? contentHeight : 0}
           shouldAnimate={shouldAnimate}
         >

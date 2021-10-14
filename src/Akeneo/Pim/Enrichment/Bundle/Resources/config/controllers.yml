@@ -73,6 +73,8 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@monolog.logger.pim_api_product_acl'
+            - '@oro_security.security_facade'
 
     pim_api.controller.product_model:
         public: true
@@ -102,6 +104,8 @@ services:
             - '@pim_api.warmup_query_cache.dummy'
             - '@logger'
             - '%pim_api.configuration%'
+            - '@monolog.logger.pim_api_product_acl'
+            - '@oro_security.security_facade'
 
     pim_api.controller.category:
         public: true
@@ -233,6 +237,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.value:
         public: true

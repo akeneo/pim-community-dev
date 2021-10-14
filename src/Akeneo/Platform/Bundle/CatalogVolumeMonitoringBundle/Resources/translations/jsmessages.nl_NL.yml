@@ -15,7 +15,7 @@ pim_catalog_volume:
     count_products: Producten
     average_max_attributes_per_family: Attributen per familie
     count_channels: Kanalen
-    count_locales: Talen (geactiveerd)
+    count_locales: Talen (ingeschakeld)
     count_scopable_attributes: Scopable attributen
     count_localizable_and_scopable_attributes: Vertaalbare en kanaalafhankelijke attributen
     count_localizable_attributes: Vertaalbare attributen

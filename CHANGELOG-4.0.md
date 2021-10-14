@@ -1,5 +1,21 @@
 # 4.0.x
 
+# 4.0.123 (2021-09-01)
+
+# 4.0.122 (2021-08-31)
+
+# 4.0.121 (2021-07-28)
+
+## Bug fixes
+
+- PIM-9988: Fix quick export with attributes that are scopable, localizable and locale specific 
+
+## Improvements
+
+PIM-9738: transform the hidden `pim:catalog:remove-completeness-for-channel-and-locale` command into a job.
+
+# 4.0.120 (2021-07-26)
+
 # 4.0.119 (2021-07-15)
 
 # 4.0.118 (2021-07-07)

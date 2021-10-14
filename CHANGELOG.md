@@ -94,6 +94,38 @@
 - PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-10009: Fix error being printed in the response of partial update of product models API
 - PIM-10003: Fix translation in setting page are not plurializable
+- PIM-9989: Fix record code of reference entity field is case-sensitive
+- PIM-10026: Avoid session persistance for API
+- PIM-9997: Fix page freezing after deleting a user group
+- PIM-10019: Update product indexation on attribute as label change
+- PIM-10037: Fix family variant query to return correct number of results
+- PIM-10041: Change configuration to apply APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT to assets and references entities
+- PIM-9990: Fix lost of keyup event when tab key is pressed too fast on input field
+- CXP-838: Fix (Not)LocalizableAnd(Not)ScopableAttributeException catches
+- PIM-10029: Added an explicit class named container to inject additional content into sub-navigation panel
+- PIM-10067: Date value in calendar not set when none is selected
+- PIM-10071: Fix fatal error in case of Cursor::getResults is called without been initialized
+- PIM-10077: Fix the "product image" filter display (untranslatable values on languages other than english)
+- PIM-10078: Add sanity check on attribute options to avoid having an empty screen.
+- PIM-10085: Fix product grid filters with multiple selectable values going out of screen when too many values are selected
+- PIM-10074: Add translation key for mass action selection
+- PIM-10062: Suppress PHP warning when missing 'dataScope' value.
+- Bump NodeJS library to fix CVE on tmpl 1.0.4
+- CVE-2021-3777: Bump tmpl from 1.0.4 to 1.0.5
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5
+- PIM-10096: Reload PEF main image on channel switching
+- CVE-2021-23368: Bump postcss from 7.0.35 to 7.0.36
+- CVE-2021-23358: Bump underscore from 1.8.3 to 1.12.1
+- GHSA-6fc8-4gx4-v693: Bump ws from 7.4.5 to 7.5.5 (yarn.lock and front-packages/share/yarn.lock)
+- CVE-2021-23364: Bump browserslist from 4.16.4 to 4.16.6 in /front-packages/shared
+- PIM-10095: Fix API error when providing an integer for the identifier or code when patching products or models
+- CVE-2021-3807: Bump ansi-regex from 5.0.0 to 5.0.1 in /front-packages/shared
+- CVE-2021-23343: Bump path-parse from 1.0.6 to 1.0.7 in /front-packages/shared
+- PIM-10094: Increase product grid filters limit display in user settings
+- PIM-10101: Fix incorrect count of families selection in the family grid
+- PIM-10107: Hide add quantified association button when ACL is not granted
+- PIM-10092: Display an error message when trying to delete a category tree linked to a channel
 
 ## New features
 
@@ -119,6 +151,8 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
 
 - PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled
+- PIM-9877: Optimize DQI dashboard data consolidation
+- PIM-10004: Optimize counting job execution warnings
 
 ## Classes
 
@@ -139,5 +173,7 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
   - add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 
 ### CLI commands
+
+- PIM-9738: Remove command pim:catalog:remove-completeness-for-channel-and-locale
 
 ### Services

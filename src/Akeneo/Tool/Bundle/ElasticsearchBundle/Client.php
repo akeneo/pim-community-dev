@@ -91,8 +91,8 @@ class Client
     }
 
     /**
-     * @param array        $documents
-     * @param ?string      $keyAsId
+     * @param iterable $documents
+     * @param ?string $keyAsId
      * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException

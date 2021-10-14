@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use DateInterval;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -142,7 +142,7 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $stmt->bindValue('id', 1)->shouldBeCalled();
         $stmt->bindValue('status', BatchStatus::FAILED)->shouldBeCalled();
         $stmt->bindValue('exit_code', ExitStatus::FAILED)->shouldBeCalled();
-        $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Type::DATETIME)->shouldBeCalled();
+        $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
         $stmt->execute()->shouldBeCalled();
 
         $this->markAsFailed(1);
@@ -160,8 +160,8 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $jobExecutionMessage->getJobExecutionId()->willReturn(1);
 
         $stmt->bindValue('id', 1)->shouldBeCalled();
-        $stmt->bindValue('health_check_time', Argument::type(\DateTime::class), Type::DATETIME)->shouldBeCalled();
-        $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Type::DATETIME)->shouldBeCalled();
+        $stmt->bindValue('health_check_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
+        $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
         $stmt->execute()->shouldBeCalled();
 
         $this->updateHealthCheck($jobExecutionMessage);

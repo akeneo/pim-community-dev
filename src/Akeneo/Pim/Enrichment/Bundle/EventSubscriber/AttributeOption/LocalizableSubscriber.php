@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Aims to inject selected locale into loaded attribute option
@@ -41,8 +41,6 @@ final class LocalizableSubscriber implements EventSubscriber
 
     /**
      * After load
-     *
-     * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)
     {

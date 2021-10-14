@@ -1,2 +1,3 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Gestisci impostazioni delle connessioni
+  acl.manage_apps: Gestisci app

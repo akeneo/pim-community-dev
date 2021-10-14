@@ -14,12 +14,13 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -34,35 +35,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryTreeController extends Controller
+class CategoryTreeController extends AbstractController
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var SaverInterface */
-    protected $categorySaver;
-
-    /** @var RemoverInterface */
-    protected $categoryRemover;
-
-    /** @var SimpleFactoryInterface */
-    protected $categoryFactory;
-
-    /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
-
-    /** @var array */
-    protected $rawConfiguration;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
+    protected EventDispatcherInterface $eventDispatcher;
+    protected UserContext $userContext;
+    protected SaverInterface $categorySaver;
+    protected RemoverInterface $categoryRemover;
+    protected SimpleFactoryInterface $categoryFactory;
+    protected CategoryRepositoryInterface $categoryRepository;
+    protected array $rawConfiguration;
+    protected SecurityFacade $securityFacade;
+    protected TranslatorInterface $translator;
     private ObjectUpdaterInterface $categoryUpdater;
 
     private NormalizerInterface $normalizer;
@@ -142,7 +125,7 @@ class CategoryTreeController extends Controller
         }
 
         return $this->render(
-            'AkeneoPimEnrichmentBundle:CategoryTree:listTree.json.twig',
+            '@AkeneoPimEnrichment/CategoryTree/listTree.json.twig',
             [
                 'trees'          => $this->categoryRepository->getTrees(),
                 'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
@@ -235,9 +218,9 @@ class CategoryTreeController extends Controller
         $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
-            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children.json.twig';
+            $view = '@AkeneoPimEnrichment/CategoryTree/children.json.twig';
         } else {
-            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children-tree.json.twig';
+            $view = '@AkeneoPimEnrichment/CategoryTree/children-tree.json.twig';
         }
 
         $withItemsCount = (bool) $request->get('with_items_count', false);
@@ -363,7 +346,16 @@ class CategoryTreeController extends Controller
 
         $category = $this->findCategory($id);
 
-        $this->categoryRemover->remove($category);
+        try {
+            $this->categoryRemover->remove($category);
+        } catch (ConflictHttpException $exception) {
+            return new JsonResponse(
+                [
+                    'message' => $exception->getMessage()
+                ],
+                $exception->getStatusCode(),
+            );
+        }
 
         return new Response('', 204);
     }

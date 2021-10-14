@@ -93,7 +93,7 @@ class JobContext extends PimContext
     {
         $page = $this->getCurrentPage();
         $field = $this->spin(function () use ($page) {
-            return $page->find('css', '[data-test-id="job-status"]');
+            return $page->find('css', '[data-testid="job-status"]');
         }, 'Job execution badge was not found.');
 
         Assert::assertEquals($jobStatus, $field->getText());

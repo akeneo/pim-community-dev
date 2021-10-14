@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {InputProps} from '../InputProps';
+import {InputProps} from '../common/InputProps';
 import {ArrowDownIcon, ArrowUpIcon, LockIcon} from '../../../icons';
 import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
@@ -117,7 +117,7 @@ type NumberInputProps = Override<
  * Number input allows the user to enter content and data when the expected user input is only numbers.
  */
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-  ({invalid, onChange, readOnly, step, onSubmit, ...rest}: NumberInputProps, forwardedRef) => {
+  ({invalid, onChange, readOnly, step, value, onSubmit, ...rest}: NumberInputProps, forwardedRef) => {
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;
 
@@ -138,13 +138,13 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         forwardedRef.current.stepUp(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step, readOnly]);
+    }, [forwardedRef, step, readOnly, value]);
     const handleDecrement = useCallback(() => {
       if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && !readOnly && onChange) {
         forwardedRef.current.stepDown(step);
         onChange(forwardedRef.current.value);
       }
-    }, [forwardedRef, step, readOnly]);
+    }, [forwardedRef, step, readOnly, value]);
 
     return (
       <NumberInputContainer>
@@ -157,6 +157,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-invalid={invalid}
           invalid={invalid}
           autoComplete="off"
+          value={value}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}

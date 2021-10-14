@@ -6,6 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Pim\Behat\Context\PimContext;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * A context for initializing catalog configuration
@@ -30,11 +31,12 @@ class CatalogConfigurationContext extends PimContext
 
     public function __construct(
         string $mainContextClass,
+        KernelInterface $kernel,
         FixturesLoaderInterface $fixturesLoader,
         EntityManagerClearerInterface $entityManagerClearer,
         array $extraDirectories = []
     ) {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
 
         $this->fixturesLoader = $fixturesLoader;
         $this->entityManagerClearer = $entityManagerClearer;

@@ -11,6 +11,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -35,7 +37,8 @@ class UserContextSpec extends ObjectBehavior
         CategoryRepositoryInterface $productCategoryRepo,
         RequestStack $requestStack,
         Request $request,
-        SessionInterface $session
+        SessionInterface $session,
+        FirewallMap $firewall
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -60,13 +63,17 @@ class UserContextSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier([])->willReturn($mobile);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
+        $firewallConfig = new FirewallConfig('foo', 'foo', null, true, false);
+        $firewall->getFirewallConfig(Argument::any())->willReturn($firewallConfig);
+
         $this->beConstructedWith(
             $tokenStorage,
             $localeRepository,
             $channelRepository,
             $productCategoryRepo,
             $requestStack,
-            'en_US'
+            'en_US',
+            $firewall
         );
     }
 

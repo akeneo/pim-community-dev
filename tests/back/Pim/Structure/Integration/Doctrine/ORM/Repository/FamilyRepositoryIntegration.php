@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Doctrine\ORM\Repository;
@@ -7,39 +8,24 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use PHPUnit\Framework\Assert;
 
 class FamilyRepositoryIntegration extends TestCase
 {
-    /** @var SimpleFactoryInterface */
-    private $familyFactory;
-
-    /** @var ObjectUpdaterInterface */
-    private $familyUpdater;
-
-    /** @var SaverInterface */
-    private $familySaver;
-
-    /** @var EntityBuilder */
-    private $familyVariantBuilder;
-
-    /** @var SaverInterface */
-    private $familyVariantSaver;
-
-    /** @var EntityBuilder */
-    private $attributeBuilder;
-
-    /** @var SaverInterface */
-    private $attributeSaver;
-
-    /** @var FamilyRepository */
-    private $familyRepository;
+    private SimpleFactoryInterface $familyFactory;
+    private ObjectUpdaterInterface $familyUpdater;
+    private SaverInterface $familySaver;
+    private EntityBuilder $familyVariantBuilder;
+    private SaverInterface $familyVariantSaver;
+    private EntityBuilder $attributeBuilder;
+    private SaverInterface $attributeSaver;
+    private FamilyRepository $familyRepository;
 
     protected function setUp(): void
     {
@@ -90,6 +76,43 @@ class FamilyRepositoryIntegration extends TestCase
         Assert::assertContainsOnlyInstancesOf(FamilyInterface::class, $results);
         Assert::assertSame('jacket', $results[0]->getCode());
         Assert::assertSame('tshirt', $results[1]->getCode());
+    }
+
+    public function test_it_finds_results_with_search_and_returns_distinct_results(): void
+    {
+        $this->loadFixtures();
+        $this->createFamily([
+            'code' => 'large_jacket',
+            'attributes' => ['color', 'size'],
+        ]);
+        $this->createFamilyVariant([
+            'code' => 'blue_large_jacket',
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => [],
+                    'level' => 1,
+                ],
+            ],
+            'family' => 'large_jacket',
+        ]);
+        $this->createFamilyVariant([
+            'code' => 'extra_large_jacket',
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['size'],
+                    'attributes' => [],
+                    'level' => 1,
+                ],
+            ],
+            'family' => 'large_jacket',
+        ]);
+
+        $firstPage = $this->familyRepository->getWithVariants('jacket', ['page' => '1'], 10);
+        Assert::assertCount(2, $firstPage);
+        Assert::assertContainsOnlyInstancesOf(FamilyInterface::class, $firstPage);
+        Assert::assertSame('jacket', $firstPage[0]->getCode());
+        Assert::assertSame('large_jacket', $firstPage[1]->getCode());
     }
 
     private function loadFixtures(): void

@@ -20,6 +20,11 @@ Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
+duration:
+  days: "{0}0 päivää{1}1 päivä|]1, Inf[{{ count }} päivää"
+  hours: "{0}0 tuntia{1}1 tunti|]1, Inf[{{ count }} tuntia"
+  minutes: "{0}0 minuuttia{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
+  seconds: "{0}0 sekuntia{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
 #PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
@@ -153,7 +158,10 @@ pim_common:
   before: Ennen
   by: tehnyt
   cancel: Peruuta
+  clear_value: Tyhjennä arvo
+  close: Sulje
   code: Koodi
+  completeness: Valmistumisaste
   confirm: Vahvista
   confirm_deletion: Vahvista poisto
   confirm_revocation: Vahvista poisto
@@ -161,18 +169,22 @@ pim_common:
   created: Luotu
   delete: Poista
   done: Valmis
+  duplicate: Kopioi
   edit: Muokkaa
   entity_updated: Tallentamattomia muutoksia löytyy.
   export: Vienti
   from: Alkaen
   general_properties: Yleiset ominaisuudet
   history: Historia
+  identifier: Tunniste
+  image: Kuva
   label: Nimike
   label_translations: Nimikkeiden käännökset
   Label or identifier: nimike tai tunniste
   less_than: Vähemmän kuin
   loading: Lataa...
   media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+  more_actions: Lisää toimintoja
   more_than: Enemmän kuin
   next: Seuraava
   "no": "Ei"
@@ -180,11 +192,16 @@ pim_common:
   not_available: Ei mitään
   now: Nyt
   ok: OK
+  open: Avaa
+  no_result: Tuloksia ei löytynyt
+  no_search_result: Valitettavasti haullesi ei löytynyt tuloksia.
+  other_actions: Muut toiminnot
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
   remove: Poista
   required_label: (vaadittu)
+  result_count: "{0}0 tulosta{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
   save: Tallenna
   search: Etsi
   select2:
@@ -195,6 +212,7 @@ pim_common:
   to: mihin
   type: Tyyppi
   update: Päivitä
+  updated: Päivitetty
   "yes": "Kyllä"
   operator: Operaattori
   operators:
@@ -210,8 +228,21 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
+  read_more: Lue lisää
+  channel: Kanava
+  locale: Lokaali
+  categories: Kategoriat
+  family_variant: Varianttiperhe
+  enabled: Käytössä
+  family: Perhe
+  parent: Ylätaso
+  groups: Ryhmät
+  products: Tuotteet
+  product_models: Tuotemallit
+  more: Lisää
+  public_view: Julkinen näkymä
 error:
-  exception: Voi pahus! {{ status_code }} virhe tapahtui...
+  exception: Tapahtui {{ status_code }} virhe...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
 alert:
   attribute_option:
@@ -258,8 +289,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Katalogin koon seuranta
   pim_enrich_categorytree_index: Kategoriahierarkia
   pim_enrich_categorytree_create: Kategoriahierarkia | Luo
-  pim_enrich_categorytree_edit: Kategoriahierarkia {{ category.label }} | Muokkaa
+  pim_enrich_categorytree_edit: Kategoria {{ category.label }} | Muokkaa
   pim_enrich_categorytree_create_tree: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_tree: Kategoriahierarkia {{ category.label }} | Muokkaa
   pim_enrich_attribute_index: Attribuutit
   pim_enrich_attribute_create: Attribuutit | Luo
   pim_enrich_attribute_edit: Attribuutti {{ attribute.label }} | Muokkaa
@@ -286,6 +318,8 @@ pim_title:
   pim_enrich_job_tracker_show: Prosessiseurain | Näytä työ
   pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
+  pim_settings_index: Asetukset
+  pim_system_index: Järjestelmä
 pim_menu:
   tab:
     activity: Tapahtumat
@@ -301,7 +335,7 @@ pim_menu:
     attribute_group: Attribuuttiryhmät
     channel: Kanavat
     currency: Valuutat
-    dashboard: Ohjauspaneeli
+    dashboard: Aktiviteettien yhteenveto
     family: Perheet
     group: Ryhmät
     group_type: Ryhmätyypit
@@ -322,7 +356,10 @@ pim_menu:
     activity: Tapahtumanavigaatio
     system: Järjestelmänavigaatio
     user: Käyttäjähallinnan navigaatio
-    settings: Asetuksien navigaatio
+    settings:
+      product: Tuotteiden asetukset
+      catalog: Katalogin asetukset
+      collapsed_label: Asetuksien navigaatio
     product: Tuotenavigaatio
     product_infos: Tuoteinformaatio
   user:
@@ -334,3 +371,38 @@ pim_notification:
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
+pim_settings:
+  settings_menu: Asetusten valikko
+  catalog_settings: Katalogin asetukset
+  product_settings: Tuotteiden asetukset
+  count:
+    category_trees: '{0}Teillä on 0 kategoriapuuta|{1}Teillä on 1 kategoriapuu |]1, Inf[Teillä on {{ count }} kategoriapuuta '
+    categories: '{0}ja 0 kategoriaa|{1}ja 1 kategoria|]1, Inf[ja {{ count }} kategoriaa'
+    channels: '{0}Teillä on 0 kanavaa|{1}Teillä on 1 kanava|]1, Inf[Teillä on {{ count }} kanavaa'
+    locales: '{0}Teillä on 0 lokaalia käytössä|{1}Teillä on 1 lokaali käytössä|]1, Inf[Teillä on {{ count }} lokaalia käytössä'
+    currencies: '{0}Teillä on 0 valuuttaa käytössä|{1}Teillä on 1 valuutta käytössä|]1, Inf[Teillä on {{ count }} valuuttaa käytössä'
+    attribute_groups: '{0}Teillä on 0 attribuuttiryhmää|{1}Teillä on 1 attribuuttiryhmä|]1, Inf[Teillä on {{ count }} attriibuuttiryhmää'
+    attributes: '{0}Teillä on 0 attribuuttia|{1}Teillä on 1 attribuutti|]1, Inf[Teillä on {{ count }} attribuuttia'
+    families: '{0}Teillä on 0 perhettä|{1}Teillä on 1 perhe|]1, Inf[Teillä on {{ count }} perhettä'
+    measurements: '{0}Teillä on 0 mittaa|{1}Teillä on 1 mitta|]1, Inf[Teillä on {{ count }} mittaa'
+    association_types: '{0}Teillä on 0 tuoteliitostyyppiä|{1}Teillä on 1 tuoteliitostyyppi|]1, Inf[Teillä on {{ count }} tuoteliitostyyppiä'
+    group_types: '{0}Teillä on 0 ryhmätyyppiä|{1}Teillä on 1 ryhmätyyppi|]1, Inf[Teillä on {{ count }} ryhmätyyppiä'
+    groups: '{0}Teillä on 0 ryhmää|{1}Teillä on 1 ryhmä|]1, Inf[Teillä on {{ count }} ryhmää'
+    rules: '{0}Teillä on 0 sääntöä käytössä|{1}Teillä on 1 sääntö käytössä|]1, Inf[Teillä on {{ count }} sääntöä käytössä'
+pim_system:
+  system_menu: Järjestelmävalikko
+  system_navigation: Järjestelmänavigaatio
+  users_management_navigation: Käyttäjähallinnan navigaatio
+  count:
+    product_values: '{0}Teillä on 0 tuotearvoa|{1}Teillä on 1 tuotearvo|]1, Inf[Teillä on {{ count }} tuotearvoa'
+    users: '{0}Teillä on 0 käyttäjää|{1}Teillä on  1 käyttäjä|]1, Inf[Teillä on  {{ count }} käyttäjää'
+    user_groups: '{0}Teillä on 0 käyttäjäryhmää|{1}Teillä on 1 käyttäjäryhmä|]1, Inf[Teillä on {{ count }} käyttäjäryhmää'
+    roles: '{0}Teillä on 0 roolia|{1}Teillä on 1 rooli|]1, Inf[Teillä on {{ count }} roolia'
+  sso:
+    enabled: SSO käytössä
+    disabled: SSO pois käytöstä
+    title: SAML-pohjainen kertakirjautuminen
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Valitse toiminto

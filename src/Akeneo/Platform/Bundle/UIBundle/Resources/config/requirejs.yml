@@ -216,6 +216,8 @@ config:
       controllers:
         pim_settings_index:
           module: pim/controller/settings
+        pim_system_index:
+          module: pim/controller/system-index
         pim_dashboard_index:
           module: pim/controller/dashboard
         pim_enrich_associationtype_edit:
@@ -484,6 +486,7 @@ config:
     pim/saveformstate:         pimui/js/pim-saveformstate
     pim/fileinput:             pimui/js/pim-fileinput
     pim/dialogform:            pimui/js/pim-dialogform
+    pim/analytics:             pimui/js/pim-analytics.ts
 
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
 
@@ -491,13 +494,12 @@ config:
     pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
 
     # Navigation
-    jquery.form:                      pimui/lib/jquery-form/jquery.form
-    pim/app:                            pimui/js/pim-app.ts
-    pim/router:                         pimui/js/router
-    pim/route-matcher:                  pimui/js/route-matcher
-    pim/page-title:                     pimui/js/page-title
-    pim/init-translator:                pimui/js/init-translator
-    pim/onboarding:                     pimui/js/onboarding/pim-onboarding.ts
+    jquery.form:         pimui/lib/jquery-form/jquery.form
+    pim/app:             pimui/js/pim-app.ts
+    pim/router:          pimui/js/router
+    pim/route-matcher:   pimui/js/route-matcher
+    pim/page-title:      pimui/js/page-title
+    pim/init-translator: pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
@@ -538,6 +540,7 @@ config:
     pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
     pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
     pim/controller/settings:               pimui/js/controller/settings.tsx
+    pim/controller/system-index:           pimui/js/controller/system-index.tsx
     pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
@@ -720,7 +723,9 @@ config:
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
+    pim/product/product-grid-view-title-context:                   pimui/js/form/common/product/product-grid-view-title-context.ts
     pim/datagrid/product-gallery-row: pimdatagrid/js/datagrid/ProductGalleryRow.tsx
+    pim/product-edit-form/sub-navigation: pimui/js/product/form/sub-navigation.ts
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
@@ -769,6 +774,8 @@ config:
     pim/job/common/edit/meta:                                    pimui/js/job/common/edit/meta
     pim/job/export/edit/delete:                                  pimui/js/job/export/edit/delete
     pim/job/import/edit/delete:                                  pimui/js/job/import/edit/delete
+    pim/job/common/duplicate/duplicate:                          pimui/js/job/common/duplicate/duplicate
+    pim/job/common/breadcrumb/breadcrumb:                        pimui/js/job/common/breadcrumb/breadcrumb
     pim/job/common/edit/validation:                              pimui/js/job/common/edit/validation
     pim/job/common/edit/launch:                                  pimui/js/job/common/edit/launch
     pim/job/common/edit/upload:                                  pimui/js/job/common/edit/upload
@@ -776,6 +783,7 @@ config:
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
     pim/job/common/grid:                                         pimui/js/job/common/grid
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
+    pim/job/common/edit-button:                                 pimui/js/job/common/edit-button
 
     # Filters
     pim/filter/filter:                     pimui/js/filter/filter
@@ -920,16 +928,16 @@ config:
     pim/form/user/login-details:                         pimui/js/form/user/login-details
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
 
-    pim/menu/menu:                                       pimui/js/menu/menu
-    pim/menu/tab:                                        pimui/js/menu/tab
-    pim/menu/item:                                       pimui/js/menu/item
+    pim/menu/menu:                                       pimui/js/navigation-menu/menu.ts
+    pim/menu/tab:                                        pimui/js/navigation-menu/tab.ts
+    pim/menu/item:                                       pimui/js/navigation-menu/item.ts
     pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
-    pim/menu/navigation-block:                           pimui/js/menu/navigation-block
+    pim/menu/navigation-block:                           pimui/js/navigation-menu/navigation-block.ts
     pim/menu/resizable:                                  pimui/js/menu/resizable
     pim/menu/user-navigation:                            pimui/js/menu/user-navigation
     pim/menu/logo:                                       pimui/js/menu/logo
-    pim/menu/column:                                     pimui/js/menu/column
+    pim/menu/column:                                     pimui/js/navigation-menu/column.ts
 
     # Common fields
     pim/form/common/fields/field:                   pimui/js/form/common/fields/field
@@ -982,6 +990,7 @@ config:
     pim/grid/category-switcher: pimui/js/product/grid/category-switcher
     pim/grid/mass-actions:      pimui/js/grid/mass-actions
     pim/product/grid/mass-actions: pimui/js/product/grid/mass-actions.ts
+    pim/family/grid/mass-actions: pimui/js/family/grid/mass-actions.ts
 
     # Category tree
     pim/grid/category-tree:      pimui/js/product/grid/category-tree

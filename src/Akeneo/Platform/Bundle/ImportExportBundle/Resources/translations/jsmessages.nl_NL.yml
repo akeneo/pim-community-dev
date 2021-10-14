@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Één landinstelling moet worden geselecteerd, kies een landinstelling om te exporteren.
 pim_import_export:
+  validation:
+    max_length_reached: Deze waarde is te lang. Hij mag {{ limit }} tekens of minder bevatten.
   entity:
     job_instance:
       label: functieprofiel
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Het jobprofiel kon niet worden bijgewerkt.
         delete:
           success: Instantie van taak succesvol verwijderd
+      duplicate:
+        title: Profiel van {{ job_code }} dupliceren
+        success: Het taakprofiel is gedupliceerd.
+        fail: Het taakprofiel kon niet worden gedupliceerd.
     import_profile:
       uppercase_label: Profiel importeren
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: Importprofiel {{ job.label }}| Tonen
   pim_importexport_import_execution_index: Importverwerkingen geschiedenis
   pim_importexport_import_execution_show: Importverwerkingen | Details
+

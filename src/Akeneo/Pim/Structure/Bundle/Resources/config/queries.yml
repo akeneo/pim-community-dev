@@ -9,6 +9,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.search_attribute_options:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlSearchAttributeOptions'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LruCachedGetExistingAttributeOptionsWithValues
         arguments:
@@ -141,3 +146,7 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
         arguments:
             - '@database_connection'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser'
+

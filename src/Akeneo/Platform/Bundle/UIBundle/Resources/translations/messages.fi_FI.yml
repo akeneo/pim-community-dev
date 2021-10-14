@@ -61,14 +61,20 @@ pim_common:
   name: Nimi
   remove: Poista
   code: Koodi
+  label: Nimike
+  quantity: Määrä
   products: Tuotteet
   product_models: Tuotemallit
   categories: Kategoriat
-  enabled: Otettu käyttöön
+  family_variant: Varianttiperhe
+  enabled: Käytössä
   family: Perhe
+  parent: Ylätaso
   groups: Ryhmät
+  unit: Yksikkö
   yes: "Kyllä"
   no: "Ei"
+  association_types: Assosiaatiotyypit
 pim_enrich:
   #ACLs
   acl:
@@ -94,11 +100,13 @@ pim_enrich:
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
+      convert_variant_to_simple: Muunna variantti yksittäituotteeksi
     product_model:
       create: Luo tuotemalli
       edit_attributes: Muokkaa tuotemallin attribuutteja
       categories_view: Tarkastele tuotemallin kategorioita
       history: Näytä tuotemallin muutoshistoria
+      remove: Poista tuotemalli (mukaan lukien variantit)
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -161,6 +169,8 @@ pim_enrich:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
       index: Näytä prosessien seuraaja
+      view_all_jobs: Näytä kaikki työt prosessiselaimessa
+      stop_job: Pysäytä käynnissä oleva työ
   acl_group:
     association_type: Assosiaatiotyypit
     attribute: Attribuutit
@@ -240,9 +250,9 @@ info:
     keep attributes: Mitään attribuutteja ei poisteta.
     number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
     enable: Ota käyttöön
-    enabled: Otettu käyttöön
+    enabled: Käytössä
     disable: Poista käytöstä
-    disabled: Poistettu käytöstä
+    disabled: Ei käytössä
   group:
     axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
@@ -352,6 +362,8 @@ Decimals allowed: Salli desimaalit
 Negative allowed: Salli negatiiviset arvot
 Date min: Min päivämäärä
 Date max: Max päivämäärä
+Metric family: Mittaperhe
+Default metric unit: Oletusarvoinen mittayksikkö
 Max file size: Suurin tiedostokoko (Mt)
 Allowed extensions: Sallitut laajennukset
 None: Ei yhtään
@@ -376,6 +388,7 @@ pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
 pim_catalog_boolean: "Kyllä/ei"
 pim_catalog_date: Päivämäärä
+pim_catalog_metric: Mitta
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
 pim_reference_data_multiselect: Viitetiedot monivalinta
 #Locales
@@ -404,7 +417,7 @@ pane.accordion:
   general_parameters: Yleiset parametrit
   validation_parameters: Validaatioparametrit
   label_translations: Nimikkeiden käännökset
-  options: Vaihtoehdot
+  options: Valintalistan arvot
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
@@ -419,11 +432,13 @@ Is associated: Liittyy
 Complete: Valmis
 Created At: Luontiaika
 Updated At: Päivitysaika
-Enabled: Otettu käyttöön
-Disabled: Poistettu käytöstä
+Enabled: Käytössä
+Disabled: Ei käytössä
 Status: Status
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tuoterakenne
     entity_type:
       label: Variantti
     family:
@@ -432,8 +447,18 @@ pim_datagrid:
       label: Ryhmät
     enabled:
       label: Status
+    scope:
+      label: Kanava
     completeness:
       label: Valmis
+    created:
+      label: Luotu
+    updated:
+      label: Päivitetty
+    label_or_identifier:
+      label: Otsikko tai tunniste
+    parent:
+      label: Ylätaso
     identifier:
       label: Tunniste
 #Versioning / history
@@ -500,7 +525,6 @@ pim_mass_edit:
       success: Massapoisto <strong>%label%</strong> päättyi
 job_execution.summary:
   mass_edited: Massamuokattu
-  skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
@@ -521,3 +545,8 @@ job_tracker:
     title: Prosessiseurain
   filter:
     started_at: Alkoi
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo

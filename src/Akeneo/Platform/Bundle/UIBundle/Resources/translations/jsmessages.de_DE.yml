@@ -195,6 +195,7 @@ pim_common:
   ok: OK
   open: Öffnen
   no_result: Kein Ergebnis gefunden
+  no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
   other_actions: Weitere Aktionen
   permissions: Berechtigungen
   previous: Zurück
@@ -238,9 +239,11 @@ pim_common:
   parent: Eltern
   groups: Gruppen
   products: Produkte
+  product_models: Produktmodelle
   more: Mehr
+  public_view: Öffentliche Ansicht
 error:
-  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+  exception: Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
@@ -317,6 +320,7 @@ pim_title:
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
   pim_settings_index: Einstellungen
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Übersicht
@@ -372,3 +376,34 @@ pim_settings:
   settings_menu: Konfigurationsmenü
   catalog_settings: Katalogeinstellungen
   product_settings: Artikel Einstellungen
+  count:
+    category_trees: '{0}Du hast 0 Bäume |{1}Du hast 1 Baum |]1, Inf[Du hast {{ count }} Bäume '
+    categories: '{0}und 0 Kategorien|{1}und 1 Kategorie|]1, Inf[und {{ count }} Kategorien'
+    channels: '{0}Du hast 0 Kanäle|{1}Du hast 1 Kanal|]1, Inf[Du hast {{ count }} Kanäle'
+    locales: '{0}Sie haben 0 Sprachen aktiviert|{1}Sie haben 1 Gebietsschema aktiviert|]1, Inf[Sie haben {{ count }} Gebietsschema aktiviert'
+    currencies: '{0}Sie haben 0 Währungen aktiviert|{1}Sie haben 1 Währung aktiviert|]1, Inf[Sie haben {{ count }} Währungen aktiviert'
+    attribute_groups: '{0}Sie haben 0 Attributgruppen|{1}Sie haben 1 Attributgruppe |]1, Inf[Sie haben {{ count }} Attributgruppen'
+    attributes: '{0}Sie haben 0 Attribute|{1}Sie haben 1 Attribut|]1, Inf[Sie haben {{ count }} Attribute'
+    families: '{0}Sie haben 0 Familien|{1}Sie haben 1 Familie|]1, Inf[Sie haben {{ count }} Familien'
+    measurements: '{0}Sie haben 0 Messungen|{1}Sie haben 1 Messung|]1, Inf[Sie haben {{ count }} Messungen'
+    association_types: '{0}Sie haben 0 Verbindungstypen|{1}Sie haben 1 Verbindungstyp|]1, Inf[Sie haben {{ count }} Verbindungstypen'
+    group_types: '{0}Sie haben 0 Gruppentypen|{1}Sie haben 1 Gruppentyp|]1, Inf[Sie haben {{ count }} Gruppentypen'
+    groups: '{0}Sie haben 0 Gruppen|{1}Sie haben 1 Gruppe|]1, Inf[Sie haben {{ count }} Gruppen'
+    rules: '{0}Sie haben 0 Regeln aktiviert|{1}Sie haben 1 aktivierte Regel|]1, Inf[Sie haben {{ count }} aktivierte Regeln'
+pim_system:
+  system_menu: Systemmenü
+  system_navigation: Navigation System
+  users_management_navigation: Navigation Benutzerverwaltung
+  count:
+    product_values: '{0}Sie haben 0 Produktwerte|{1}Sie haben 1 Produktwert|]1, Inf[Sie haben {{ count }} Produktwerte'
+    users: '{0}Sie haben 0 Benutzer|{1}Sie haben 1 Benutzer|]1, Inf[Sie haben {{ count }} Benutzer'
+    user_groups: '{0}Sie haben 0 Benutzergruppen|{1}Sie haben 1 Benutzergruppe|]1, Inf[Sie haben {{ count }} Benutzergruppen'
+    roles: '{0}Sie haben 0 Rollen|{1}Sie haben 1 Rolle|]1, Inf[Sie haben {{ count }} Rollen'
+  sso:
+    enabled: SSO aktiviert
+    disabled: SSO deaktiviert
+    title: SAML-basiertes Single Sign-On
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Aktion auswählen

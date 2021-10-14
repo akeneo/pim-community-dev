@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: Leider gibt es keine Messfamilie!
       link: Hier klicken, um eins hinzuzufügen.
-    no_result:
-      title: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
     standard_unit: Standardeinheit
     standard_unit_is_not_editable_after_creation: Diese Standardeinheit wird ein für alle Mal eingestellt, um die anderen Einheiten umzuwandeln.
     add_new_measurement_family: Neue Messfamilie hinzufügen

@@ -23,6 +23,10 @@ pim_api:
       edit: 채널 생성 및 업데이트
       list: 채널 나열
     locale.list: 로케일 나열
+    product:
+      edit: 제품 생성 및 업데이트
+      list: 제품 나열
+      remove: 제품 삭제
     currency.list: 통화 나열
     association_type:
       edit: 연결 유형 생성 및 업데이트
@@ -37,6 +41,7 @@ pim_api:
     family_variant: 패밀리 변형
     channel: 채널
     locale: 로케일
+    product: 제품
     currency: 통화
     association_type: 연결 유형
 pim_user:

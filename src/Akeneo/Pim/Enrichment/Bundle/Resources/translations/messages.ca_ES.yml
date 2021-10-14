@@ -70,6 +70,9 @@ pim_enrich:
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Aquest producte "{{ identifier }}" ja és un producte simple sense la necessitat de convertir-lo.
     mass_action:
       quick_export:
         launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
@@ -80,3 +83,4 @@ tree:
   edit: Editar arbre
   remove:
     error_linked: Aquest arbre de categoria no es pot eliminar. Està vinculat a un canal
+  create: Crear un arbre de categories

@@ -1,8 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {
-  SearchBar,
+  MeasurementIllustration,
+  Link,
+  Button,
+  Information,
+  Breadcrumb,
+  useBooleanState,
+} from 'akeneo-design-system';
+import {
   NoDataSection,
   NoDataTitle,
   NoDataText,
@@ -21,6 +27,7 @@ import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
 import {TablePlaceholder} from '../common/Table';
 import {Direction} from '../../model/direction';
+import {MeasurementFamilySearchBar} from "./MeasurementFamilySearchBar";
 
 const useSorting = (
   defaultColumn: string
@@ -76,7 +83,7 @@ const List = () => {
   return (
     <>
       <CreateMeasurementFamily isOpen={isCreateModalOpen} onClose={handleModalClose} />
-      <PageHeader>
+      <PageHeader showPlaceholder={null === filteredMeasurementFamilies}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step href={`#${settingsHref}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -95,20 +102,19 @@ const List = () => {
           )}
         </PageHeader.Actions>
         <PageHeader.Title>
-          {null === filteredMeasurementFamilies ? (
-            <div className="AknLoadingPlaceHolder">&nbsp;</div>
-          ) : (
-            translate(
-              'measurements.family.result_count',
-              {itemsCount: filteredMeasurementFamiliesCount.toString()},
-              filteredMeasurementFamiliesCount
-            )
+          {translate(
+            'measurements.family.result_count',
+            {itemsCount: filteredMeasurementFamiliesCount.toString()},
+            filteredMeasurementFamiliesCount
           )}
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
         {false === featureFlags.isEnabled('free_trial') && (
-          <Information illustration={<MeasurementIllustration />} title={`👋  ${translate('measurements.helper.title')}`}>
+          <Information
+            illustration={<MeasurementIllustration />}
+            title={`👋  ${translate('measurements.helper.title')}`}
+          >
             <p>{translate('measurements.helper.text')}</p>
             <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
               {translate('measurements.helper.link')}
@@ -133,16 +139,15 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
-            <SearchBar
-              placeholder={translate('measurements.search.placeholder')}
-              count={filteredMeasurementFamiliesCount}
+            <MeasurementFamilySearchBar
               searchValue={searchValue}
               onSearchChange={setSearchValue}
+              resultNumber={filteredMeasurementFamiliesCount}
             />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
                 <MeasurementIllustration />
-                <NoDataTitle>{translate('measurements.family.no_result.title')}</NoDataTitle>
+                <NoDataTitle>{translate('pim_common.no_search_result')}</NoDataTitle>
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (

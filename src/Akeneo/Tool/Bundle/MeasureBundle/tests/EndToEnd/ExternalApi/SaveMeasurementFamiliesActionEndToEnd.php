@@ -513,7 +513,8 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                         'message' => 'Object value found, but an array is required',
                     ],
                 ]
-            ], json_decode($response->getContent(), true)
+            ],
+            json_decode($response->getContent(), true)
         );
     }
 

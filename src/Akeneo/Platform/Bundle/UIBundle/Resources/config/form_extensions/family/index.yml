@@ -48,7 +48,7 @@ extensions:
         targetZone: filters
 
     pim-family-index-mass-actions:
-        module: pim/grid/mass-actions
+        module: pim/family/grid/mass-actions
         parent: pim-family-index
         targetZone: bottom-panel
         config:

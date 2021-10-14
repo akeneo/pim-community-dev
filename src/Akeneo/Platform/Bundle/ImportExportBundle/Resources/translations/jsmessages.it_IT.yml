@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Una impostazione internazionale deve essere selezionata, si prega di scegliere una impostazione internazionale per l'esportazione.
 pim_import_export:
+  validation:
+    max_length_reached: Valore troppo lungo. Deve contenere {{ limit }} caratteri o meno.
   entity:
     job_instance:
       label: profilo del job
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Il profilo del job non può essere aggiornato.
         delete:
           success: Istanza di lavoro rimossa correttamente
+      duplicate:
+        title: Duplica profilo {{ job_code }}
+        success: Il profilo del job è stato duplicato con successo.
+        fail: Il profilo del job non può essere duplicato.
     import_profile:
       uppercase_label: Profilo di importazione
       flash:
@@ -220,3 +226,4 @@ pim_title:
   pim_importexport_import_profile_show: Profilo di importazione {{ job.label }} | Visualizza
   pim_importexport_import_execution_index: Importare la cronologia delle esecuzioni
   pim_importexport_import_execution_show: Importare le esecuzioni | Dettagli
+

@@ -195,6 +195,7 @@ pim_common:
   ok: OK
   open: Otwórz
   no_result: Brak wyników
+  no_search_result: Przepraszamy, brak wyników twojego wyszukiwania.
   other_actions: Inne akcje
   permissions: Uprawnienia
   previous: Poprzedni
@@ -238,9 +239,11 @@ pim_common:
   parent: Element nadrzędny
   groups: Grupy
   products: Produkty
+  product_models: Modele produktu
   more: Więcej
+  public_view: Widok publiczny
 error:
-  exception: O rany! Wystąpił błąd {{ status_code }}...
+  exception: Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
 alert:
   attribute_option:
@@ -317,6 +320,7 @@ pim_title:
   pim_enrich_mass_edit_action: Edycja masowa
   pim_analytics_system_info_index: Informacje o systemie
   pim_settings_index: Ustawienia
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Aktywność
@@ -372,3 +376,34 @@ pim_settings:
   settings_menu: Menu ustawień
   catalog_settings: Ustawienia katalogu
   product_settings: Ustawienia produktów
+  count:
+    category_trees: '{0}Liczba drzew: 0 |{1}Liczba drzew: 1 |]1, Inf[Liczba drzew: {{ count }}, '
+    categories: '{0}liczba kategorii: 0|{1}liczba kategorii: 1|]1, Inf[liczba kategorii: {{ count }}'
+    channels: '{0}Liczba kanałów: 0|{1}Liczba kanałów: 1|]1, Inf[Liczba kanałów: {{ count }}'
+    locales: '{0}Liczba włączonych ustawień regionalnych: 0|{1}Liczba włączonych ustawień regionalnych: 1|]1, Inf[Liczba włączonych ustawień regionalnych: {{ count }}'
+    currencies: '{0}Liczba włączonych walut: 0|{1}Liczba włączonych walut: 1|]1, Inf[Liczba włączonych walut: {{ count }}'
+    attribute_groups: '{0}Liczba grup atrybutów: 0|{1}Liczba grup atrybutów: 1|]1, Inf[Liczba grup atrybutów: {{ count }}'
+    attributes: '{0}Liczba atrybutów: 0|{1}Liczba atrybutów: 1|]1, Inf[Liczba atrybutów: {{ count }}'
+    families: '{0}Liczba rodzin: 0|{1}Liczba rodzin: 1|]1, Inf[Liczba rodzin: {{ count }}'
+    measurements: '{0}Liczba pomiarów: 0|{1}Liczba pomiarów: 1|]1, Inf[Liczba pomiarów: {{ count }}'
+    association_types: '{0}Liczba typów powiązań: 0|{1}Liczba typów powiązań: 1|]1, Inf[Liczba typów powiązań: {{ count }}'
+    group_types: '{0}Liczba typów grup: 0|{1}Liczba typów grup: 1|]1, Inf[Liczba typów grup: {{ count }}'
+    groups: '{0}Liczba grup: 0|{1}Liczba grup: 1|]1, Inf[Liczba grup: {{ count }}'
+    rules: '{0}Liczba włączonych reguł: 0|{1}Liczba włączonych reguł: 1|]1, Inf[Liczba włączonych reguł: {{ count }}'
+pim_system:
+  system_menu: Menu systemowe
+  system_navigation: Nawigacja systemu
+  users_management_navigation: Nawigacja zarządzaniem użytkownikami
+  count:
+    product_values: '{0}Liczba wartości produktu: 0|{1}Liczba wartości produktu: 1|]1, Inf[Liczba wartości produktu: {{ count }}'
+    users: '{0}Liczba użytkowników: 0 |{1}Liczba użytkowników: 1 |]1, Inf[Liczba użytkowników: {{ count }} '
+    user_groups: '{0}Liczba grup użytkowników: 0|{1}Liczba grup użytkowników: 1|]1, Inf[Liczba grup użytkowników: {{ count }}'
+    roles: '{0}Liczba ról: 0|{1}Liczba ról: 1|]1, Inf[Liczba ról: {{ count }}'
+  sso:
+    enabled: SSO włączone
+    disabled: SSO wyłączone
+    title: Pojedyncze logowanie oparte na SAML
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Wybierz działanie

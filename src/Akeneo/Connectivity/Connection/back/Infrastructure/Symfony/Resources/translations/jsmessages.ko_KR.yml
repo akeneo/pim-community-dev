@@ -19,6 +19,9 @@ pim_menu:
     marketplace: 마켓플레이스
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 마켓플레이스
+  akeneo_connectivity_connection_connect_marketplace_profile: 마켓플레이스
+  akeneo_connectivity_connection_connect_apps_activate: 연결
+  akeneo_connectivity_connection_connect_apps_authorize: 연결
   akeneo_connectivity_connection_settings_index: 연결 설정
   akeneo_connectivity_connection_settings_edit: 연결 설정
   akeneo_connectivity_connection_settings_any: 연결 설정
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: PIM을 다른 애플리케이션과 연결하시겠습니까? 🤟
       sub_title: Akeneo 마켓플레이스에서 Akeneo PIM에 연결 가능한 애플리케이션을 확인해보십시오.
       link: 마켓플레이스에 액세스
+      helper:
+        title: '{0} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 앱 및 커넥터가 {{ count }}개 있습니다.'
+        title_without_apps: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
+        description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
+        link: 웹 마켓플레이스로 이동
+      card:
+        developed_by: '개발자:'
+        read_more: 더보기
+        more_info: 자세한 정보
+        connect: 연결
+      extensions:
+        title: 커넥터
+        total: '{0} 커넥터 없음|{1} 1개 커넥터|[2,Inf] {{ total }}개 커넥터'
+        empty: 사용 중인 버전과 호환되는 커넥터가 없습니다
+      apps:
+        title: 앱
+        total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
+        empty: 사용 중인 버전과 호환되는 앱이 없습니다
+      unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
+      scroll_to_top: 맨 위로 스크롤
+    apps:
+      wizard:
+        title: 연결
+        action:
+          confirm: 확인
+          cancel: 취소
+          previous: 이전
+          next: 다음
+          allow_and_next: 허용 후 다음
+        progress:
+          authorizations: 권한 부여
+          permissions: 권한
+          well_done: 잘하셨습니다!
+        authorize:
+          title: '{{ app_name }} 앱에서 다음을 요청'
+          no_scope_title: '{{ app_name }} 앱이 PIM에 액세스하려고 합니다.'
+          no_scope: 특정 권한 부여 요청이 없습니다.
+          helper: 앱 권한 부여에 관해 자세히 알아보려면
+          helper_link: 도움말 센터를 확인하십시오.
+      title: 연결
+      activate:
+        flash:
+          error: 죄송합니다. 앱에 연결하는 동안 오류가 발생했습니다.
+      scope:
+        type:
+          view: '{{ entities }} 보기'
+          edit: '{{ entities }} 보기 및 편집'
+          delete: '{{ entities }} 보기, 편집 및 삭제'
+        entities:
+          catalog_structure: 특성, 특성 그룹, 패밀리 및 패밀리 변형
+          attribute_options: 특성 옵션
+          categories: 카테고리
+          channel_localization: 로케일 및 통화
+          channel_settings: 채널
+          association_types: 연결 유형
+          products: 제품 및 제품 모델
+      error:
+        sub_text: 앱 개발자 또는 Akeneo 지원 팀에 문의해주십시오
+      constraint:
+        client_id:
+          not_blank: client_id가 필요합니다.
+          must_be_valid: 알려진 클라이언트 중 이 client_id와 일치하는 것이 없습니다.
+        response_type:
+          not_blank: response_type이 필요합니다.
+          must_be_code: response_type은 '코드'여야 합니다.
+        scope:
+          must_be_valid: 범위가 유효하지 않습니다.
+        redirect_uri:
+          not_blank: redirect_uri가 필요합니다.
+          must_be_url: redirect_uri는 유효한 URL이 아닙니다.
   connections: 연결
   secondary_actions:
     title: 기타 작업

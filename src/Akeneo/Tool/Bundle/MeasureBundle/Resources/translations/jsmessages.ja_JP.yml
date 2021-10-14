@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: 測定ファミリーがありません！
       link: ここをクリックして追加してください
-    no_result:
-      title: 検索結果がありません
     standard_unit: スタンダードユニット
     standard_unit_is_not_editable_after_creation: 最後にスタンダードユニットがに設定されました。 他のユニットを変換する場合に使用されます。
     add_new_measurement_family: 新規測定ファミリーを追加

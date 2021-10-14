@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button, Search, useAutoFocus} from 'akeneo-design-system';
 import {
-  SearchBar,
   NoDataSection,
   NoDataTitle,
   ValidationError,
@@ -11,6 +10,7 @@ import {
   useTranslate,
   useNotify,
   NotificationLevel,
+  useSecurity,
 } from '@akeneo-pim-community/shared';
 import {
   Row,
@@ -80,6 +80,7 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const notify = useNotify();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
@@ -96,6 +97,10 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const shouldDisplayAddButton = !isCompact && isGranted('pim_enrich_associations_edit');
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
@@ -152,13 +157,21 @@ const QuantifiedAssociations = ({
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
         </Helper>
       )}
-      <SearchBar
+      <Search
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
-        count={filteredCollectionWithProducts.length || 0}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-      />
-      {!isCompact && (
+        inputRef={inputRef}
+      >
+        <Search.ResultCount>
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredCollectionWithProducts.length || 0},
+            filteredCollectionWithProducts.length || 0
+          )}
+        </Search.ResultCount>
+      </Search>
+      {shouldDisplayAddButton && (
         <Buttons>
           <Button level="secondary" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}
@@ -172,7 +185,7 @@ const QuantifiedAssociations = ({
             {translate(
               '' === searchValue
                 ? 'pim_enrich.entity.product.module.associations.no_data'
-                : 'pim_enrich.entity.product.module.associations.no_result'
+                : 'pim_common.no_search_result'
             )}
           </NoDataTitle>
         </NoDataSection>

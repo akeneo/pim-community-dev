@@ -1,12 +1,11 @@
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
-import {InputProps} from '../InputProps';
+import {InputProps, Overlay} from '../common';
 import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
-import {Overlay} from './Overlay/Overlay';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -141,7 +140,7 @@ type SelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button
      */
-    openLabel?: string;
+    openLabel: string;
 
     /**
      * Defines if the input is valid on not.
@@ -173,7 +172,7 @@ const SelectInput = ({
   onChange,
   clearable = true,
   clearLabel = '',
-  openLabel = '',
+  openLabel,
   readOnly = false,
   verticalPosition,
   'aria-labelledby': ariaLabelledby,
@@ -262,37 +261,40 @@ const SelectInput = ({
     }
   }, []);
 
-  const handleOptionKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-    if (null !== event.currentTarget) {
-      if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
-        if (event.key === Key.ArrowDown) {
-          const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
-          if (null === nextSibling) {
-            inputRef.current?.focus();
-          } else {
-            nextSibling.focus();
+  const handleOptionKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (null !== event.currentTarget) {
+        if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
+          if (event.key === Key.ArrowDown) {
+            const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
+            if (null === nextSibling) {
+              inputRef.current?.focus();
+            } else {
+              nextSibling.focus();
+            }
+            event.preventDefault();
           }
-          event.preventDefault();
-        }
-        if (event.key === Key.ArrowUp) {
-          const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
-          if (null === previousSibling) {
-            inputRef.current?.focus();
-          } else {
-            previousSibling.focus();
+          if (event.key === Key.ArrowUp) {
+            const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
+            if (null === previousSibling) {
+              inputRef.current?.focus();
+            } else {
+              previousSibling.focus();
+            }
+            event.preventDefault();
           }
-          event.preventDefault();
+          if (event.key === Key.Enter) {
+            const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
+            onChange?.(value);
+            handleBlur();
+          }
+        } else {
+          inputRef.current?.focus();
         }
-        if (event.key === Key.Enter) {
-          const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
-          onChange?.(value);
-          handleBlur();
-        }
-      } else {
-        inputRef.current?.focus();
       }
-    }
-  }, []);
+    },
+    [onChange]
+  );
 
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>

@@ -41,8 +41,8 @@ SQL;
                 'associationTypeId' => $association->getAssociationType()->getId()
             ],
             [
-                'ownerId'           => \PDO:: PARAM_INT,
-                'associationTypeId' => \PDO:: PARAM_INT
+                'ownerId'           => \PDO::PARAM_INT,
+                'associationTypeId' => \PDO::PARAM_INT
             ]
         );
 

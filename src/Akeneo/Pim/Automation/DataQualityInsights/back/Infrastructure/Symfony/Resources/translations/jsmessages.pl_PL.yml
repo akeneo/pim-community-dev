@@ -150,7 +150,7 @@ akeneo_data_quality_insights:
     filter_value:
       good: Dobra
       to_improve: Do poprawy
-      yes: true
-      no: false
+      "yes": "Tak"
+      "no": "Nie"
 pim_title:
   akeneo_data_quality_insights_dashboard: Wgląd w jakość danych

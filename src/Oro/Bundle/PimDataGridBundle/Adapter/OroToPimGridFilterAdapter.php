@@ -51,6 +51,10 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
      */
     protected function adaptDefaultGrid(array $parameters): array
     {
+        if (isset($parameters['inset']) && true === $parameters['inset']) {
+            $parameters['filters'] = [];
+        }
+
         $items = $this->massActionDispatcher->dispatch($parameters);
 
         foreach ($items as &$object) {

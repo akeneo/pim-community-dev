@@ -19,6 +19,9 @@ pim_menu:
     marketplace: Marktplatz
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marktplatz
+  akeneo_connectivity_connection_connect_marketplace_profile: Marktplatz
+  akeneo_connectivity_connection_connect_apps_activate: Verbinde
+  akeneo_connectivity_connection_connect_apps_authorize: Verbinde
   akeneo_connectivity_connection_settings_index: Verbindungseinstellungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
   akeneo_connectivity_connection_settings_any: Verbindungseinstellungen
@@ -36,6 +39,76 @@ akeneo_connectivity.connection:
       title: Möchtest du deinen PIM mit einer anderen Anwendung verbinden? 🤟
       sub_title: Überprüfen Sie unseren Marktplatz, um zu sehen, welche Anwendung mit Akeneo PIM verbunden werden kann.
       link: Zugang zum Marktplatz
+      helper:
+        title: '{0} Es gibt keine Apps oder Konnektoren, die mit Ihrer PIM-Version kompatibel sind.|{1} Es gibt {{ count }} App oder Konnektor, die mit Ihrer PIM-Version kompatibel ist.|[2,Inf] Es gibt {{ count }} Apps und Konnektoren, die mit Ihrer PIM-Version kompatibel sind.'
+        title_without_apps: '{0} Es gibt keine Konnektoren, die mit Ihrer PIM-Version kompatibel sind.|{1} Es gibt {{ count }} Konnektor, die mit Ihrer PIM-Version kompatibel sind.|[2,Inf] Es gibt {{ count }} Konnektoren, die mit Ihrer PIM-Version kompatibel sind.'
+        description: Dies ist nur eine Übersicht. Für weitere Details schauen Sie sich unseren Web-Marktplatz an.
+        link: Zum Web-Marktplatz gehen
+      card:
+        developed_by: Entwickelt von
+        read_more: weiterlesen
+        more_info: Mehr Informationen
+        connect: Verbinde
+      extensions:
+        title: Konnektoren
+        total: '{0} keine Konnektor|{1} 1 Konnektor|[2,Inf] {{ total }} Konnektoren'
+        empty: Keine Konnektoren, die mit Ihrer Version kompatibel sind
+      apps:
+        title: Apps
+        total: '{0} Keine Apps|{1} 1 App|[2,Inf] {{ total }} Apps'
+        empty: Keine Apps, die mit Ihrer Version kompatibel sind
+      unreachable: Wir können den Marktplatz nicht erreichen, bitte kommen Sie später wieder.
+      scroll_to_top: Zum Anfang scrollen
+    apps:
+      wizard:
+        title: Verbinde
+        action:
+          confirm: Bestätigen
+          cancel: Abbrechen
+          previous: Zurück
+          next: Weiter
+          allow_and_next: Erlauben und weiter
+        progress:
+          authorizations: Autorisierungen
+          permissions: Berechtigungen
+          well_done: Gut gemacht!
+        authorize:
+          title: 'App {{ app_name }} muss'
+          no_scope_title: 'Die {{ app_name }} App möchte auf Ihr PIM zugreifen.'
+          no_scope: Es wurden keine spezifischen Genehmigungen angefordert.
+          helper: Um mehr über die App-Autorisierung zu erfahren,
+          helper_link: checke unser Hilfe-Center für weitere Informationen.
+      title: Verbinde
+      activate:
+        flash:
+          error: Beim Verbinden mit der App ist ein Fehler aufgetreten.
+      scope:
+        type:
+          view: '{{ entities }} anzeigen'
+          edit: '{{ entities }} anzeigen und bearbeiten'
+          delete: '{{ entities }} anzeigen, bearbeiten und löschen'
+        entities:
+          catalog_structure: Attribute, Attributgruppen, Familien und Familienvarianten
+          attribute_options: Attributoptionen
+          categories: Kategorien
+          channel_localization: Gebietsschemen und Währungen
+          channel_settings: Kanäle
+          association_types: Verbindungstypen
+          products: Produkte und Produktmodelle
+      error:
+        sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
+      constraint:
+        client_id:
+          not_blank: Die client_id ist erforderlich.
+          must_be_valid: Die client_id entspricht keinem bekannten Client.
+        response_type:
+          not_blank: Der response_type ist erforderlich.
+          must_be_code: Die response_type muss "code" sein.
+        scope:
+          must_be_valid: Der Gültigkeitsbereich ist ungültig.
+        redirect_uri:
+          not_blank: Die redirect_uri ist erforderlich.
+          must_be_url: Die redirect_uri ist keine gültige URL.
   connections: Verbindungen
   secondary_actions:
     title: Weitere Aktionen

@@ -7,7 +7,6 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,34 +35,20 @@ class DatabaseCommand extends Command
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
-    /** @var CommandExecutor */
-    protected $commandExecutor;
+    private EntityManagerInterface $entityManager;
+    private ClientRegistry $clientRegistry;
+    protected Connection $connection;
+    private FixtureJobLoader $fixtureJobLoader;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ClientRegistry */
-    private $clientRegistry;
-
-    /** @var Connection */
-    protected $connection;
-
-    /** @var FixtureJobLoader */
-    private $fixtureJobLoader;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var string */
-    private $env;
+    protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ClientRegistry $clientRegistry,
         Connection $connection,
         FixtureJobLoader $fixtureJobLoader,
-        EventDispatcherInterface $eventDispatcher,
-        string $env
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct();
 
@@ -72,7 +57,6 @@ class DatabaseCommand extends Command
         $this->connection = $connection;
         $this->fixtureJobLoader = $fixtureJobLoader;
         $this->eventDispatcher = $eventDispatcher;
-        $this->env = $env;
     }
 
     /**
@@ -175,7 +159,9 @@ class DatabaseCommand extends Command
         $entityManager->clear();
 
         $this->eventDispatcher->dispatch(
-            new InstallerEvent($this->commandExecutor),
+            new InstallerEvent($this->commandExecutor, null, [
+                'catalog' => $input->getOption('catalog')
+            ]),
             InstallerEvents::POST_DB_CREATE
         );
 
@@ -186,7 +172,9 @@ class DatabaseCommand extends Command
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor),
+                new InstallerEvent($this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog')
+                ]),
                 InstallerEvents::PRE_LOAD_FIXTURES
             );
 
@@ -211,8 +199,6 @@ class DatabaseCommand extends Command
     /**
      * TODO: TIP-613: This should be done with a command.
      * TODO: TIP-613: This command should be able to drop/create indexes, and/or re-index products.
-     *
-     * @param OutputInterface $output
      */
     protected function resetElasticsearchIndex(OutputInterface $output)
     {
@@ -225,13 +211,6 @@ class DatabaseCommand extends Command
         }
     }
 
-    /**
-     * Create tables not mapped to Doctrine entities
-     *
-     * @param OutputInterface $output
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
     protected function createNotMappedTables(OutputInterface $output)
     {
         $output->writeln('<info>Create session table</info>');
@@ -265,17 +244,22 @@ class DatabaseCommand extends Command
                 KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;";
         $this->connection->exec($messengerTableSql);
+
+        $output->writeln('<info>Create one time task table</info>');
+        $oneTimeTaskTableSql = <<<SQL
+            CREATE TABLE IF NOT EXISTS pim_one_time_task (
+                `code` VARCHAR(100) PRIMARY KEY,
+                `status` VARCHAR(100) NOT NULL,
+                `start_time` DATETIME,
+                `end_time` DATETIME,
+                `values` JSON NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        SQL;
+
+        $this->connection->exec($oneTimeTaskTableSql);
     }
 
-    /**
-     * Step where fixtures are loaded
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return DatabaseCommand
-     */
-    protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
+    protected function loadFixturesStep(InputInterface $input, OutputInterface $output): DatabaseCommand
     {
         $catalog = $input->getOption('catalog');
         if ($input->getOption('env') === 'behat') {
@@ -317,6 +301,7 @@ class DatabaseCommand extends Command
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
@@ -333,6 +318,8 @@ class DatabaseCommand extends Command
     private function setLatestKnownMigration(InputInterface $input): void
     {
         $latestMigration = $this->getLatestMigration($input);
+
+        $this->commandExecutor->runCommand('doctrine:migrations:sync-metadata-storage', ['-q' => true]);
 
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
@@ -365,13 +352,8 @@ class DatabaseCommand extends Command
         return $latestMigrationProcess->getOutput();
     }
 
-    /**
-     * Launches all commands needed after fixtures loading
-     */
-    protected function launchCommands()
+    protected function launchCommands(): void
     {
         $this->commandExecutor->runCommand('pim:versioning:refresh');
-
-        return $this;
     }
 }

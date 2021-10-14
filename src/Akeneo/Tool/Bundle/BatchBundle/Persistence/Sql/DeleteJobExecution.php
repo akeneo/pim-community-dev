@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -54,7 +54,7 @@ SQL;
         $numberDeletedJobExecution = $this->connection->executeUpdate(
             $query,
             ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
-            ['create_time' => Type::DATETIME]
+            ['create_time' => Types::DATETIME_MUTABLE]
         );
 
         return $numberDeletedJobExecution;

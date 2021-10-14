@@ -22,32 +22,13 @@ use Symfony\Component\Translation\Translator;
  */
 class ProductGridFilterController
 {
-    /** @var Manager */
-    protected $datagridManager;
+    protected Manager $datagridManager;
+    protected TokenStorageInterface $tokenStorage;
+    protected SearchableRepositoryInterface $attributeSearchRepository;
+    private NormalizerInterface $lightAttributeNormalizer;
+    private UserContext $userContext;
+    private Translator $translator;
 
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var SearchableRepositoryInterface */
-    protected $attributeSearchRepository;
-
-    /** @var NormalizerInterface */
-    private $lightAttributeNormalizer;
-
-    /** @var UserContext */
-    private $userContext;
-
-    /** @var Translator */
-    private $translator;
-
-    /**
-     * @param Manager                       $datagridManager
-     * @param TokenStorageInterface         $tokenStorage
-     * @param SearchableRepositoryInterface $attributeSearchRepository
-     * @param NormalizerInterface           $lightAttributeNormalizer
-     * @param UserContext                   $userContext
-     * @param Translator                    $translator
-     */
     public function __construct(
         Manager $datagridManager,
         TokenStorageInterface $tokenStorage,
@@ -70,12 +51,8 @@ class ProductGridFilterController
      * A product grid filter can be:
      * - a 'system' filter (family, group, created_at, etc)
      * - an attribute useable_as_grid_filter
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $options = $request->get(
             'options',
@@ -83,6 +60,7 @@ class ProductGridFilterController
         );
 
         $options['locale'] = $options['catalogLocale'] ?? null;
+        $options['page'] = $options['page'] ?? 1;
         unset($options['catalogLocale']);
 
         if ($request->get('identifiers', null) !== null) {
@@ -118,20 +96,13 @@ class ProductGridFilterController
 
     /**
      * Return the filter configured in the grid ($datagridName)
-     *
-     * @param string      $locale
-     * @param string|null $search
-     * @param int         $limit
-     * @param int         $page
-     *
-     * @return array
      */
     private function getSystemFilters(
         string $locale,
         ?string $search = '',
         int $limit = SearchableRepositoryInterface::FETCH_LIMIT,
         int $page = 1
-    ) {
+    ): array {
         if (null === $search) {
             $search = '';
         }
@@ -142,9 +113,7 @@ class ProductGridFilterController
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
             $label = $this->translator->trans($systemFilter['label'], [], null, $locale);
-            if (!in_array($code, ['scope', 'locale']) && (
-                    '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
-                )) {
+            if (!in_array($code, ['scope', 'locale']) && ('' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false)) {
                 $formattedSystemFilters[] = [
                     'code' => $code,
                     'labels' => [$locale => $label],
