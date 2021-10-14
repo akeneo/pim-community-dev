@@ -1,0 +1,12 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Это поле может содержать только буквы, цифры и знаки подчеркивания.'
+        limit_reached: 'Вы не можете создать группу единиц измерений "%measurement_family_code%", т. к. вы достигли предела кол-ва групп единиц измерений: %limit%'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'Требуется стандартная единица.'
+    unit:
+      code:
+        must_be_unique: 'Код единицы уже существует.'
