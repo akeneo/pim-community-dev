@@ -353,6 +353,11 @@ const AppcuesOnboarding: PimOnboarding = {
             if (codes.includes('meta_title')) {
               appcues.track('Attribute "Meta title" added as family variant');
             }
+          }
+          break;
+        case 'family:variant:attribute-remove':
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
 
             if (codes.includes('winter_designed_tire')) {
               appcues.track('Attribute "Winter Designed Tire" added as family variant');
