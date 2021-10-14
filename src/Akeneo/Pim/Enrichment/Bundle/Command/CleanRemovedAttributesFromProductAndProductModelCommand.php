@@ -165,10 +165,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         }
 
         $io->text([
-                      'Ok, let\'s go!',
-                      '(If you see warnings appearing in the console output, it\'s totally normal as ',
-                      'the goal of the command is to avoid those warnings in the future)',
-                  ]);
+            'Ok, let\'s go!',
+            '(If you see warnings appearing in the console output, it\'s totally normal as ',
+            'the goal of the command is to avoid those warnings in the future)',
+        ]);
         $io->newLine(2);
 
         $this->cleanAllProductsAndProductModels($output, $input, $io);
