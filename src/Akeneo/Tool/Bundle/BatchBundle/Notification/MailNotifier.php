@@ -6,6 +6,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Email\SenderAddress;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Environment;
 
 /**
  * Notify Job execution result by mail
@@ -16,47 +17,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class MailNotifier implements Notifier
 {
-    /**
-     * @var BatchLogHandler
-     */
-    protected $logger;
+    protected BatchLogHandler $logger;
+    protected TokenStorageInterface $tokenStorage;
+    protected Environment $twig;
+    protected \Swift_Mailer $mailer;
+    protected string $mailerUrl;
+    protected ?string $recipientEmail = null;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
-
-    /**
-     * @var \Swift_Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var string
-     */
-    protected $mailerUrl;
-
-    /**
-     * @var string
-     */
-    protected $recipientEmail;
-
-    /**
-     * @param BatchLogHandler       $logger
-     * @param TokenStorageInterface $tokenStorage
-     * @param \Twig_Environment     $twig
-     * @param \Swift_Mailer         $mailer
-     * @param string                $mailerUrl
-     */
     public function __construct(
         BatchLogHandler $logger,
         TokenStorageInterface $tokenStorage,
-        \Twig_Environment $twig,
+        Environment $twig,
         \Swift_Mailer $mailer,
         string $mailerUrl
     ) {

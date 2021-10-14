@@ -57,7 +57,7 @@ test('it can count the number of registered providers', () => {
         },
     });
 
-    const countProviders = PermissionFormRegistry.countProviders();
+    const count = PermissionFormRegistry.count();
 
-    expect(countProviders).toEqual(4);
+    expect(count).toEqual(4);
 });

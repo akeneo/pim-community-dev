@@ -486,6 +486,7 @@ config:
     pim/saveformstate:         pimui/js/pim-saveformstate
     pim/fileinput:             pimui/js/pim-fileinput
     pim/dialogform:            pimui/js/pim-dialogform
+    pim/analytics:             pimui/js/pim-analytics.ts
 
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
 
@@ -989,6 +990,7 @@ config:
     pim/grid/category-switcher: pimui/js/product/grid/category-switcher
     pim/grid/mass-actions:      pimui/js/grid/mass-actions
     pim/product/grid/mass-actions: pimui/js/product/grid/mass-actions.ts
+    pim/family/grid/mass-actions: pimui/js/family/grid/mass-actions.ts
 
     # Category tree
     pim/grid/category-tree:      pimui/js/product/grid/category-tree

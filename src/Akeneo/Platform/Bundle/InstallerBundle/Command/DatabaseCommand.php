@@ -159,7 +159,9 @@ class DatabaseCommand extends Command
         $entityManager->clear();
 
         $this->eventDispatcher->dispatch(
-            new InstallerEvent($this->commandExecutor),
+            new InstallerEvent($this->commandExecutor, null, [
+                'catalog' => $input->getOption('catalog')
+            ]),
             InstallerEvents::POST_DB_CREATE
         );
 
@@ -170,7 +172,9 @@ class DatabaseCommand extends Command
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor),
+                new InstallerEvent($this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog')
+                ]),
                 InstallerEvents::PRE_LOAD_FIXTURES
             );
 
@@ -297,6 +301,7 @@ class DatabaseCommand extends Command
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE
             );

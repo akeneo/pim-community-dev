@@ -53,6 +53,7 @@ pim_import_export:
         show_profile.title: Mostrar perfil
         download_log.title: Descarregar registre
         download_file.title: Descarregar arxiu generat
+        download_archive.title: Descarregar arxiu generat
       summary:
         fetching: Recollida de dades sobre l'execució del job...
         warning: Avís
@@ -98,6 +99,9 @@ pim_import_export:
           with_header:
             title: Amb capçalera
             help: Si vol imprimir el nom de la columna o no
+          with_media:
+            title: Exportar multimèdia
+            help: Exportar o no multimèdia
           lines_per_file:
             title: Nombre de línies per arxiu
             help: Definir el nombre límit de línies per arxiu
@@ -125,8 +129,17 @@ pim_import_export:
           real_time_versioning:
             title: Actualització de l'historial en temps real
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+          convert_variant_to_simple:
+            title: Convertir productes variants en simples
           family_variant_column:
             title: Columna de la variant familiar
+          with_label:
+            title: Amb etiquetes
+          header_with_label:
+            title: Capçaleres amb etiquetes
+            help: Definir si l'arxiu d'exportació mostra les etiquetes de les capçaleres en comptes del codi de les capçaleres
+          file_locale:
+            title: Local de l'arxiu
       file_path: Ruta de l'arxiu
   widget:
     last_operations:
@@ -135,6 +148,7 @@ pim_import_export:
       profile_name: Nom del perfil
       details: Detalls
       warning_count: Avisos
+      username: Nom d’usuari
       job_type:
         import: Importació
         export: Exportació
@@ -144,6 +158,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
         compute_completeness_of_products_family: Calcular la completesa de la família de productes
         mass_delete: Esborrat massiu de productes
+        clean_removed_attribute_job: Netejant els valors dels atributs eliminats
       header.view_all: Veure tots
   batch_status:
     1: Acabat
@@ -163,6 +178,10 @@ pim_import_export:
     FAILED: Fallit
     ABANDONED: Abandonat
     UNKNOWN: Desconegut
+  tracking:
+    completed: "Temps emprat: {{ duration }}"
+    in_progress: "Temps restant estimat: {{ duration }}"
+    not_started: "Pendent"
 confirmation:
   remove:
     import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?

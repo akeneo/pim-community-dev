@@ -21,7 +21,21 @@ define([
   'pim/user-context',
   'pim/saver/datagrid-view',
   'oro/messenger',
-], function ($, _, __, BaseForm, template, DatagridState, Dialog, Routing, UserContext, DatagridViewSaver, messenger) {
+  'pim/analytics',
+], function (
+  $,
+  _,
+  __,
+  BaseForm,
+  template,
+  DatagridState,
+  Dialog,
+  Routing,
+  UserContext,
+  DatagridViewSaver,
+  messenger,
+  analytics
+) {
   return BaseForm.extend({
     template: _.template(template),
     tagName: 'span',
@@ -95,6 +109,10 @@ define([
         .done(
           function (response) {
             this.getRoot().trigger('grid:view-selector:view-saved', response.id);
+
+            analytics.track('product-grid:view:saved', {
+              name: currentView.label,
+            });
           }.bind(this)
         )
         .fail(function (response) {

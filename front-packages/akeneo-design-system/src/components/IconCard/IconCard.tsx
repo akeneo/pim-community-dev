@@ -1,7 +1,8 @@
-import React, {isValidElement, ReactElement, Ref} from 'react';
+import React, {HTMLAttributes, isValidElement, ReactElement, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IconProps} from '../../icons';
+import {Override} from '../../shared';
 
 const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoThemedProps>`
   min-height: 80px;
@@ -81,32 +82,35 @@ const IconCardGrid = styled.div`
   gap: 20px;
 `;
 
-type IconCardProps = {
-  /**
-   * Define the icon showed at left of the component.
-   */
-  icon: ReactElement<IconProps>;
+type IconCardProps = Override<
+  HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Define the icon showed at left of the component.
+     */
+    icon: ReactElement<IconProps>;
 
-  /**
-   * The title to display
-   */
-  label: string;
+    /**
+     * The title to display
+     */
+    label: string;
 
-  /**
-   * The content to display
-   */
-  content?: string;
+    /**
+     * The content to display
+     */
+    content?: string;
 
-  /**
-   * Define if the component will be displayed as disabled
-   */
-  disabled?: boolean;
+    /**
+     * Define if the component will be displayed as disabled
+     */
+    disabled?: boolean;
 
-  /**
-   * The callback when the user clicks on the card component
-   */
-  onClick?: () => void;
-};
+    /**
+     * The callback when the user clicks on the card component
+     */
+    onClick?: () => void;
+  }
+>;
 
 const IconCard = React.forwardRef<HTMLDivElement, IconCardProps>(
   ({icon, label, content, onClick, disabled = false, ...rest}: IconCardProps, forwardedRef: Ref<HTMLDivElement>) => {

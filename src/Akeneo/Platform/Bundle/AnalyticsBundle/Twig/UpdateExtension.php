@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
 use Akeneo\Platform\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to detect if update notification is enabled and to provide the url to fetch the last patch
@@ -12,7 +13,7 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateExtension extends \Twig_Extension
+class UpdateExtension extends \Twig\Extension\AbstractExtension
 {
     /** @var ConfigManager */
     protected $configManager;
@@ -32,8 +33,8 @@ class UpdateExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
-            new \Twig_SimpleFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
+            new TwigFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
+            new TwigFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
         ];
     }
 

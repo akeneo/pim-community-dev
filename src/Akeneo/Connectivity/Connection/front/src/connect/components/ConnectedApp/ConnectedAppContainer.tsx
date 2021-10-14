@@ -57,7 +57,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    {permissionFormRegistry.countProviders() > 0 && (
+                    {permissionFormRegistry.count() > 0 && (
                         <TabBar.Tab
                             isActive={isCurrent(permissionsTabName)}
                             onClick={() => {

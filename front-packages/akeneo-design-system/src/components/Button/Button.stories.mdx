@@ -9,10 +9,10 @@ import LinkTo from '@storybook/addon-links/react';
   title="Components/Buttons/Button"
   component={Button}
   argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}},
+    level: {control: {type: 'select'}, options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']},
     ghost: {control: {type: 'boolean'}},
     disabled: {control: {type: 'boolean'}},
-    size: {control: {type: 'select', options: ['default', 'small']}},
+    size: {control: {type: 'select'}, options: ['default', 'small']},
     onClick: {action: 'Click on the button'},
     children: {control: {type: 'text'}},
   }}

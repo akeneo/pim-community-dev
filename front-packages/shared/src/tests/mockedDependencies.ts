@@ -43,6 +43,9 @@ const mockedDependencies = {
   featureFlags: {
     isEnabled: (_feature: string) => true,
   },
+  analytics: {
+    track: (event: string) => event,
+  },
 };
 
 export {mockedDependencies};

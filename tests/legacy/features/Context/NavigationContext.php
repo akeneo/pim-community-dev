@@ -11,6 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\Role;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 
 /**
@@ -367,10 +368,7 @@ class NavigationContext extends BaseNavigationContext
         $this->currentPage = 'ProductModel edit';
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

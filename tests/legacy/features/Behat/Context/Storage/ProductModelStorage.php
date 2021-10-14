@@ -179,8 +179,6 @@ class ProductModelStorage extends RawMinkContext
      * @param ProductModelInterface $productModel
      * @param string                $propertyName
      * @param mixed                 $value
-     *
-     * @throws \PHPUnit_Framework_Exception
      */
     private function checkProductModelField(ProductModelInterface $productModel, string $propertyName, $value): void
     {
@@ -206,13 +204,6 @@ class ProductModelStorage extends RawMinkContext
         }
     }
 
-    /**
-     * @param ProductModelInterface $productModel
-     * @param string                $propertyName
-     * @param mixed                 $value
-     *
-     * @throws \PHPUnit_Framework_Exception
-     */
     private function checkProductModelValue(ProductModelInterface $productModel, string $propertyName, $value): void
     {
         $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);

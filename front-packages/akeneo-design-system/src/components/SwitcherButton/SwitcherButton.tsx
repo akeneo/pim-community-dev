@@ -1,8 +1,9 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {Ref, ReactNode, HTMLAttributes, forwardRef} from 'react';
 import styled, {css} from 'styled-components';
 import {ArrowDownIcon, CloseIcon} from '../../icons';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
+import {useId} from '../../hooks';
 
 const SwitcherButtonContainer = styled.div`
   display: flex;
@@ -73,15 +74,15 @@ const CloseButton = styled.button`
 `;
 
 type SwitcherButtonProps = Override<
-  React.HTMLAttributes<HTMLDivElement>,
+  HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * The label of the field
+     * The label of the field.
      */
     label: string;
 
     /**
-     * The callback when the user clicks on the switcher button
+     * The callback when the user clicks on the switcher button.
      */
     onClick?: () => void;
 
@@ -91,12 +92,12 @@ type SwitcherButtonProps = Override<
     inline?: boolean;
 
     /**
-     * If true, the composant will display a second button to remove the component
+     * If true, the composant will display a second button to remove the component.
      */
     deletable?: boolean;
 
     /**
-     * The callback when the user clicks on the delete button
+     * The callback when the user clicks on the delete button.
      */
     onDelete?: () => void;
 
@@ -107,19 +108,21 @@ type SwitcherButtonProps = Override<
 /**
  * Switchers are used to switch the filter on the context or the content of a page or a table.
  */
-const SwitcherButton = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
+const SwitcherButton = forwardRef<HTMLDivElement, SwitcherButtonProps>(
   (
     {label, children, onClick, deletable = false, onDelete, inline = true, ...rest}: SwitcherButtonProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const handleDelete = () => deletable && onDelete?.();
+    const buttonId = useId('button_');
 
-    const handleClick = () => onClick?.();
+    const handleDelete = () => deletable && onDelete?.();
 
     return (
       <SwitcherButtonContainer ref={forwardedRef} {...rest}>
-        <LabelAndValueContainer onClick={handleClick} $inline={inline}>
-          <Label $inline={inline}>{label && `${label}:`}</Label>
+        <LabelAndValueContainer id={buttonId} onClick={onClick} $inline={inline}>
+          <Label htmlFor={buttonId} $inline={inline}>
+            {label && `${label}:`}
+          </Label>
           <LabelAndArrow>
             <Value $inline={inline}>{children}</Value>
             <ArrowDownIcon size={inline ? 16 : 10} />
