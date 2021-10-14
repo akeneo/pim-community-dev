@@ -81,7 +81,7 @@ class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
         if ($total >= $this->recordsLimit) {
             $this->context->buildViolation(ThereShouldBeLessRecordsThanLimit::ERROR_MESSAGE)
                 ->setParameter('%record_label%', current($command->labels))
-                ->setParameter('%limit%', $this->recordsLimit)
+                ->setParameter('%limit%', (string)$this->recordsLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

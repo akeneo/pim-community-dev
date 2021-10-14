@@ -166,7 +166,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
                 '',
                 '',
                 0,
-                0,
+                '0',
                 null,
                 $command->number
             );
