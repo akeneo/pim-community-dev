@@ -448,7 +448,7 @@ delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
-remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials remove_unused_iam
+remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials remove_unused_iam remove_unused_gcloud_logging_metrics
 
 .PHONY: remove_unused_gcloud_dns
 remove_unused_gcloud_dns:
@@ -501,6 +501,13 @@ remove_unused_iam:
 	@echo "=                   Remove unused IAM                    ="
 	@echo "=========================================================="
 	bash $(PWD)/deployments/bin/remove_unused_gcloud_iam.sh
+
+.PHONY: remove_unused_gcloud_logging_metrics
+remove_unused_gcloud_logging_metrics:
+	@echo "=========================================================="
+	@echo "=             Remove unused logging metrics              ="
+	@echo "=========================================================="
+	bash $(PWD)/deployments/bin/remove_unused_gcloud_logging_metrics.sh
 
 .PHONY: clone_serenity
 clone_serenity:
