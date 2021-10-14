@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Doctrine\DBAL\Connection;
 
-class GetLocalesAccessesWithHighestLevel
+class GetActiveLocalesAccessesWithHighestLevel
 {
     private Connection $connection;
 
@@ -29,7 +29,7 @@ SELECT pim_catalog_locale.code,
        pimee_security_locale_access.edit_products as edit
 FROM pim_catalog_locale
 JOIN pimee_security_locale_access on pim_catalog_locale.id = pimee_security_locale_access.locale_id
-WHERE pimee_security_locale_access.user_group_id = :user_group_id
+WHERE pimee_security_locale_access.user_group_id = :user_group_id AND pim_catalog_locale.is_activated = 1
 SQL;
 
         $rows = $this->connection->fetchAll($query, [
