@@ -139,7 +139,7 @@ ifeq ($(UPGRADE_STEP_2),true)
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
 	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
-	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
+	cd $(INSTANCE_DIR) && HELM_DEBUG=true terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates
@@ -389,6 +389,7 @@ upgrade-instance:
 	JENKINS_LIBS_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 \
 	PERRYBOT_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 \
 	DEVTEST=true \
+	HELM_DEBUG=true \
 	DEVTEST_INSTANCE=$(PFID) \
 	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
 	/app/bin/jenkinsfile-runner-launcher -ns -u \
