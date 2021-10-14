@@ -38,8 +38,8 @@ describe('testing CreateConnection page', () => {
         const saveButton = screen.getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
+            await userEvent.clear(labelInput);
             userEvent.type(labelInput, 'Magento');
-            userEvent.type(codeInput, 'magento');
             userEvent.click(flowTypeSelect);
             userEvent.click(await screen.findByText(/akeneo_connectivity\.connection\.flow_type\.data_destination/));
             userEvent.click(saveButton);

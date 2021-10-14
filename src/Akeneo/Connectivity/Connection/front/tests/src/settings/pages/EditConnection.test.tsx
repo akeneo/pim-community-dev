@@ -115,6 +115,7 @@ describe('testing EditConnection page', () => {
         const saveButton = getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
+            await userEvent.clear(labelInput);
             userEvent.type(labelInput, 'Magento');
 
             userEvent.click(flowTypeSelect);
