@@ -117,6 +117,13 @@ const AppcuesOnboarding: PimOnboarding = {
             }
           }
           break;
+        case 'grid:item:number-selected':
+          if (eventOptions && eventOptions.inputName === 'family-grid') {
+            if (eventOptions.count && eventOptions.count === 3) {
+              appcues.track('3 families selected in the grid');
+            }
+          }
+          break;
         case 'grid:item:all-selected':
           if (eventOptions && eventOptions.inputName === 'product-grid') {
             appcues.track('All products are selected');
@@ -153,6 +160,18 @@ const AppcuesOnboarding: PimOnboarding = {
           }
 
           appcues.track('Attribute group selected in the product grid');
+          break;
+        case 'product:form:compare-clicked':
+          appcues.track('Compare button clicked');
+          break;
+        case 'product:form:locale-switched':
+          if (eventOptions && eventOptions.context === 'base_product' && eventOptions.localeCode) {
+            appcues.track('Product\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
+
+          if (eventOptions && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
+            appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
+          }
           break;
         case 'product-grid:completeness:opened':
           if (eventOptions && eventOptions.name === 'PLGCHAELK001') {
@@ -255,16 +274,13 @@ const AppcuesOnboarding: PimOnboarding = {
             });
           }
           break;
-        case 'product:form:compare-clicked':
-          appcues.track('Compare button clicked');
-          break;
-        case 'product:form:locale-switched':
-          if (eventOptions && eventOptions.context === 'base_product' && eventOptions.localeCode) {
-            appcues.track('Product\'s locale switched to "' + eventOptions.localeCode + '"');
-          }
-
-          if (eventOptions && eventOptions.context === 'copy_product' && eventOptions.localeCode) {
-            appcues.track('Compare\'s locale switched to "' + eventOptions.localeCode + '"');
+        case 'grid:mass-edit:requirements-checked':
+          if (eventOptions && eventOptions.actions) {
+            _.each(eventOptions.actions, function (action: Action) {
+              if (action.channel_code === 'marketplaces' && action.is_required) {
+                appcues.track('The information is required for Marketplaces channel');
+              }
+            });
           }
           break;
         case 'settings:attributes:clicked':
@@ -291,22 +307,6 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'common:form:saved':
           if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute-create')) {
             appcues.track('Create attribute form saved');
-          }
-          break;
-        case 'grid:item:number-selected':
-          if (eventOptions && eventOptions.inputName === 'family-grid') {
-            if (eventOptions.count && eventOptions.count === 3) {
-              appcues.track('3 families selected in the grid');
-            }
-          }
-          break;
-        case 'grid:mass-edit:requirements-checked':
-          if (eventOptions && eventOptions.actions) {
-            _.each(eventOptions.actions, function (action: Action) {
-              if (action.channel_code === 'marketplaces' && action.is_required) {
-                appcues.track('The information is required for Marketplaces channel');
-              }
-            });
           }
           break;
         case 'form:edit:opened':

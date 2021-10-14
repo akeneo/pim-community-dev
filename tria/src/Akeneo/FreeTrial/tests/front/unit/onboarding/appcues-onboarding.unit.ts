@@ -119,6 +119,15 @@ describe('Family grid', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Family "Tires" selected');
     expect(mockedAppcues.track).toHaveBeenCalledWith('Family selected');
   });
+
+  test('3 families has been selected', async () => {
+    await AppcuesOnboarding.track('grid:item:number-selected', {
+      inputName: 'family-grid',
+      count: 3
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('3 families selected in the grid');
+  });
 })
 
 describe('Product grid views', () => {
@@ -198,6 +207,30 @@ describe('Product grid attribute groups', () => {
 })
 
 describe('Product page', () => {
+  test('the compare button has been clicked', async () => {
+    await AppcuesOnboarding.track('product:form:compare-clicked');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Compare button clicked');
+  });
+
+  test('the product\'s locale switched to another locale', async () => {
+    await AppcuesOnboarding.track('product:form:locale-switched', {
+      context: 'base_product',
+      localeCode: 'es_ES'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Product\'s locale switched to "es_ES"');
+  });
+
+  test('the compare\'s locale switched to another locale', async () => {
+    await AppcuesOnboarding.track('product:form:locale-switched', {
+      context: 'copy_product',
+      localeCode: 'fr_FR'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Compare\'s locale switched to "fr_FR"');
+  });
+
   test('a completeness badge has been opened', async () => {
     await AppcuesOnboarding.track('product-grid:completeness:opened');
     expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
@@ -237,7 +270,7 @@ describe('Product page', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Product saved');
   });
 
-  test('the product "Elka Peacock Armchair" has been savec', async () => {
+  test('the product "Elka Peacock Armchair" has been saved', async () => {
     await AppcuesOnboarding.track('product:form:saved', {
       name: 'PLGCHAELK001'
     });
@@ -246,7 +279,7 @@ describe('Product page', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Product saved');
   });
 
-  test('the product "Faux leather tote" has been savec', async () => {
+  test('the product "Faux leather tote" has been saved', async () => {
     await AppcuesOnboarding.track('product:form:saved', {
       name: 'PLG513725'
     });
@@ -352,11 +385,150 @@ describe('Bulk actions', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Photo printing" added in a bulk action');
   });
 
-  /*test('from the product grid, the option "Vegan" has been added to the attribute "Certifications"', async () => {
+  test('from the product grid, the option "Vegan" has been added to the attribute "Certifications"', async () => {
     await AppcuesOnboarding.track('product-grid:mass-edit:attributes-added', {
-      values: ['certifications']['0']['data']
+      values: {
+        certifications: {
+          0: {
+            data: ['vegan', 'random_option']
+          }
+        }
+      }
     });
     expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
-    expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Photo printing" added in a bulk action');
-  });*/
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Option "Vegan" added from the attribute "Certifications" in a bulk action');
+  });
+
+  test('from the product grid, the option "Red Tractor" has been added to the attribute "Industry Standards"', async () => {
+    await AppcuesOnboarding.track('product-grid:mass-edit:attributes-added', {
+      values: {
+        food_standard: {
+          0: {
+            data: ['red_tractor', 'random_option']
+          }
+        }
+      }
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Option "Red Tractor" added from the attribute "Industry Standards" in a bulk action');
+  });
+
+  test('from the family grid, the information is required for Marketplaces channel', async () => {
+    await AppcuesOnboarding.track('grid:mass-edit:requirements-checked', {
+      actions: {
+        0: {
+          channel_code: 'marketplaces',
+          is_required: true
+        }
+      }
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('The information is required for Marketplaces channel');
+  });
+})
+
+describe('Settings', () => {
+  test('the attributes settings has been clicked', async () => {
+    await AppcuesOnboarding.track('settings:attributes:clicked');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Settings: "Attributes" clicked');
+  });
+
+  test('the families settings has been clicked', async () => {
+    await AppcuesOnboarding.track('settings:families:clicked');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Settings: "Families" clicked');
+  });
+})
+
+describe('Attribute settings', () => {
+  test('an attribute has been created', async () => {
+    await AppcuesOnboarding.track('attribute:create:type-selected', {
+      type: 'boolean'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute of type "boolean" created');
+  });
+
+  test('on attribute form, a field has been changed', async () => {
+    await AppcuesOnboarding.track('common:form:value-changed', {
+      code: 'pim-attribute',
+      name: 'description'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('On attribute form, the value of field "description" changed');
+  });
+
+  test('on attribute form, a field has been changed', async () => {
+    await AppcuesOnboarding.track('translation:form:value-changed', {
+      code: 'pim-attribute',
+      localeCode: 'en_US'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('On attribute form, the translation label of "en_US" changed');
+  });
+
+  test('the attribute create form has been saved', async () => {
+    await AppcuesOnboarding.track('common:form:saved', {
+      code: 'pim-attribute-create'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Create attribute form saved');
+  });
+})
+
+describe('Export profile', () => {
+  test('an export profile has been opened to be editing', async () => {
+    await AppcuesOnboarding.track('form:edit:opened', {
+      code: 'pim-job-instance-xlsx-product-export-edit'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Edit export profile');
+  });
+
+  test('an export profile has been opened to be editing', async () => {
+    await AppcuesOnboarding.track('form:edit:opened', {
+      code: 'pim-job-instance-xlsx-product-export-edit',
+      model: {
+        attributes: {
+          code: 'printers_amazon'
+        }
+      }
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(2);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Edit export profile "Printers for Amazon (weekly)"');
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Edit export profile');
+  });
+
+  test('on export profile edit, content tab has been opened', async () => {
+    await AppcuesOnboarding.track('export-profile:product:content-tab-opened', {
+      code: 'pim-job-instance-xlsx-product-export-edit-content'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Content tab opened on edit export profile product');
+  });
+
+  test('on export profile edit, the attribute "Automatic Two-Sided Printing" has been added in the content', async () => {
+    await AppcuesOnboarding.track('export-profile:product:attribute-added', {
+      column: 'automatic_two_sided_printing, random_attribute'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
+  });
+
+  test('the edit export profile "Printers for Amazon (weekly)" has been saved', async () => {
+    await AppcuesOnboarding.track('job-instance:form-edit:saved', {
+      code: 'printers_amazon'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Edit export profile "Printers for Amazon (weekly)" saved');
+  });
+
+  test('the export profile "Printers for Amazon (weekly)" has been launched', async () => {
+    await AppcuesOnboarding.track('job-instance:export:launched', {
+      url: 'http://test/spread/export/printers_amazon'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Export profile "Printers for Amazon (weekly)" launched');
+  });
 })
