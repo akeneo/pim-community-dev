@@ -21,7 +21,7 @@ type MeasurementSelection =
     }
   | {
       type: 'value_and_unit_label';
-      decimal_separator?: MeasurementDecimalSeparator;
+      decimal_separator: MeasurementDecimalSeparator;
       locale: LocaleCode;
     };
 
@@ -108,7 +108,7 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
 const isMeasurementSource = (source: Source): source is MeasurementSource =>
   isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
-export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation};
+export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation, MeasurementDecimalSeparator};
 export {
   availableDecimalSeparators,
   getDefaultMeasurementSource,
