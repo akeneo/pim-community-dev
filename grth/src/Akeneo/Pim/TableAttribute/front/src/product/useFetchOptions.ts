@@ -2,6 +2,7 @@ import React from 'react';
 import {ColumnCode, SelectOption, TableCell, TableConfiguration, TableRow} from '../models';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
+import {useIsMounted} from '../shared';
 
 const useFetchOptions: (
   tableConfiguration: TableConfiguration | undefined,
@@ -13,6 +14,7 @@ const useFetchOptions: (
 } = (tableConfiguration, attributeCode, valueData) => {
   const router = useRouter();
   const userContext = useUserContext();
+  const isMounted = useIsMounted();
 
   const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
   const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
@@ -40,6 +42,7 @@ const useFetchOptions: (
             }
           }
         }
+        if (!isMounted()) return;
         setOptions({...options});
         setSelectOptionLabels({...selectOptionLabels});
       };

@@ -15,6 +15,7 @@ import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
+import {useIsMounted} from '../shared';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -67,25 +68,23 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({});
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
-      const tableAttribute = attribute as TableAttribute;
-      setAttribute(tableAttribute);
+      if (isMounted()) {
+        const tableAttribute = attribute as TableAttribute;
+        setAttribute(tableAttribute);
+      }
     });
   }, []);
 
   const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
 
   React.useEffect(() => {
-    if (!attribute) {
-      return;
-    }
+    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined') return;
 
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    if (typeof optionsForFirstColumn === 'undefined') {
-      return;
-    }
     const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.row);
     const pendingFilter = {
       row,

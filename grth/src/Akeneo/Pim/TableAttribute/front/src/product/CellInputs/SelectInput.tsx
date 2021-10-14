@@ -20,6 +20,7 @@ type TableInputSelectProps = {
 
 const FakeInput = styled.div`
   margin: 0 10px;
+  height: 20px;
 `;
 
 const SelectInput: React.FC<TableInputSelectProps> = ({

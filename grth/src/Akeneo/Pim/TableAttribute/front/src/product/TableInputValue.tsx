@@ -46,6 +46,7 @@ const HeaderActionsCell = styled(TableInput.HeaderCell)`
 `;
 
 const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
+  padding-top: 10px;
   & > * {
     height: 20px;
   }
