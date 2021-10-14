@@ -75,7 +75,7 @@ test('It can change the text value', () => {
 
   renderWithProviders(<TextView value={textValue} locale={null} onChange={onChange} canEditData={true} />);
 
-  userEvent.type(screen.getByRole('textbox'), 'pam', {allAtOnce: true});
+  fireEvent.change(screen.getByRole('textbox'), {target: {value: 'pam'}});
   expect(onChange).toHaveBeenCalledWith({...textValue, data: 'pam'});
   expect(onChange).toHaveBeenCalledTimes(1);
 });
@@ -85,7 +85,7 @@ test('It does not call onChange when the text value is the same', () => {
 
   renderWithProviders(<TextView value={textValue} locale={null} onChange={onChange} canEditData={true} />);
 
-  userEvent.type(screen.getByRole('textbox'), 'pim', {allAtOnce: true});
+  fireEvent.change(screen.getByRole('textbox'), {target: {value: 'pim'}});
   expect(onChange).not.toHaveBeenCalled();
 });
 
@@ -95,7 +95,7 @@ test('It can change the text value on a text area attribute', () => {
 
   renderWithProviders(<TextView value={textAreaValue} locale={null} onChange={onChange} canEditData={true} />);
 
-  userEvent.type(screen.getByRole('textbox'), 'pam area', {allAtOnce: true});
+  fireEvent.change(screen.getByRole('textbox'), {target: {value: 'pam area'}});
   expect(onChange).toHaveBeenCalledWith({...textAreaValue, data: 'pam area'});
   expect(onChange).toHaveBeenCalledTimes(1);
 });

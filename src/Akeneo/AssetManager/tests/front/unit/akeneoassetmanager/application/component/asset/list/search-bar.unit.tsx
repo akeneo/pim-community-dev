@@ -78,16 +78,14 @@ test('It triggers the onSearchChange when the search field is emptied', async ()
 
   const expectedValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search');
-  await act(async () => {
-    await userEvent.type(searchInput, expectedValue);
+  userEvent.type(searchInput, expectedValue);
+  act(() => {
     jest.runAllTimers();
   });
 
   expect(actualValue).toEqual(expectedValue);
-
+  userEvent.clear(searchInput);
   await act(async () => {
-    // https://github.com/testing-library/user-event/issues/182
-    await userEvent.type(searchInput, '', {allAtOnce: true});
     jest.runAllTimers();
   });
 
