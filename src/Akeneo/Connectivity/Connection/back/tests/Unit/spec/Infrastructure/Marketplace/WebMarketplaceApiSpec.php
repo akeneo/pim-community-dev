@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
@@ -22,9 +23,12 @@ class WebMarketplaceApiSpec extends ObjectBehavior
     public function let(
         Client $client,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FeatureFlag $fakeAppsFeatureFlag
     ): void {
-        $this->beConstructedWith($client, $webMarketplaceAliases, $logger);
+        $this->beConstructedWith($client, $webMarketplaceAliases, $logger, $fakeAppsFeatureFlag);
+        $this->setFixturePath(__DIR__ . '/fixtures/');
+        $fakeAppsFeatureFlag->isEnabled()->willReturn(false);
     }
 
     public function it_is_initializable(): void
@@ -89,19 +93,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
 
         $extensions = ($this->getExtensions())->getWrappedObject();
 
-        Assert::assertArrayHasKey('total', $extensions);
-        Assert::assertEquals(2, $extensions['total']);
-
-        Assert::assertArrayHasKey('offset', $extensions);
-        Assert::assertEquals(0, $extensions['offset']);
-
-        Assert::assertArrayHasKey('limit', $extensions);
-        Assert::assertEquals(10, $extensions['limit']);
-
-        Assert::assertArrayHasKey('items', $extensions);
-        Assert::assertCount(2, $extensions['items']);
-        Assert::assertEquals($expectedResponse['items'][0], $extensions['items'][0]);
-        Assert::assertEquals($expectedResponse['items'][1], $extensions['items'][1]);
+        Assert::assertEquals($expectedResponse, $extensions);
     }
 
     public function it_returns_true_when_a_code_challenge_is_valid(
@@ -224,20 +216,39 @@ class WebMarketplaceApiSpec extends ObjectBehavior
             ],
         ])->willReturn($response);
 
+        $apps = ($this->getApps())->getWrappedObject();
+
+        Assert::assertEquals($expectedResponse, $apps);
+    }
+
+    public function it_returns_fake_apps(
+        FeatureFlag $fakeAppsFeatureFlag
+    ): void {
+        $fakeAppsFeatureFlag->isEnabled()->willReturn(true);
+
         $extensions = ($this->getApps())->getWrappedObject();
 
-        Assert::assertArrayHasKey('total', $extensions);
-        Assert::assertEquals(2, $extensions['total']);
-
-        Assert::assertArrayHasKey('offset', $extensions);
-        Assert::assertEquals(0, $extensions['offset']);
-
-        Assert::assertArrayHasKey('limit', $extensions);
-        Assert::assertEquals(10, $extensions['limit']);
-
-        Assert::assertArrayHasKey('items', $extensions);
-        Assert::assertCount(2, $extensions['items']);
-        Assert::assertEquals($expectedResponse['items'][0], $extensions['items'][0]);
-        Assert::assertEquals($expectedResponse['items'][1], $extensions['items'][1]);
+        Assert::assertEquals([
+            'total' => 1,
+            'offset' => 0,
+            'limit' => 120,
+            'items' => [
+                [
+                    'id' => '6ff52991-1144-45cf-933a-5c45ae58e71a',
+                    'name' => 'Yell extension',
+                    'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+                    'author' => 'Akeneo connectivity team',
+                    'partner' => 'Akeneo',
+                    'description' => 'Developed by the Akeneo team to demonstrate the different steps of an app activation. You can try it safely!',
+                    'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+                    'categories' => [
+                        'E-commerce',
+                    ],
+                    'certified' => true,
+                    'activate_url' => 'https://yell-extension-t2omu7tdaq-uc.a.run.app/activate',
+                    'callback_url' => 'https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2',
+                ],
+            ],
+        ], $extensions);
     }
 }
