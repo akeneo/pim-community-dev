@@ -1,5 +1,22 @@
 # 5.0.x
 
+# 5.0.50 (2021-10-11)
+
+# 5.0.49 (2021-10-11)
+
+## Bug fixes
+
+- PIM-10099: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset (backport #PIM-10088)
+
+# 5.0.48 (2021-09-21)
+
+# 5.0.47 (2021-09-20)
+
+## Bug fixes
+
+- PIM-10060: Impossible to edit products in a new tab/window from a right click on the product grid
+- PIM-10073: [Backport PIM-9671] DQI de-activation on attribute group is not fully taken into account
+
 # 5.0.46 (2021-09-03)
 
 # 5.0.45 (2021-08-27)
