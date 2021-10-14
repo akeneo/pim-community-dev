@@ -2,7 +2,7 @@ import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 import {UserContext} from '@src/shared/user';
-import {act, fireEvent, screen, waitForElement} from '@testing-library/react';
+import {act, fireEvent, screen, waitFor, waitForElement} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {createMemoryHistory} from 'history';
 import React, {PropsWithChildren} from 'react';
@@ -115,7 +115,8 @@ describe('testing EditConnection page', () => {
         const saveButton = getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
-            await userEvent.clear(labelInput);
+            userEvent.clear(labelInput);
+            await waitFor(() => expect(labelInput.value).toBe(''));
             userEvent.type(labelInput, 'Magento');
 
             userEvent.click(flowTypeSelect);
