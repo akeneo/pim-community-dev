@@ -138,15 +138,6 @@ services:
             - '@database_connection'
 
     akeneo.pim.structure.query.get_all_blacklisted_attribute_codes:
-        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\GetAllBlacklistedAttributeCodes
         arguments:
             - '@database_connection'
-
-    akeneo.pim.structure.query.get_attribute_option_codes:
-        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
-        arguments:
-            - '@database_connection'
-
-    pimee_security.query.get_viewable_attribute_codes_for_user:
-        class: 'Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser'
-

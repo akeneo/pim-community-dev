@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '%kernel.project_dir%/src'
+            - '%kernel.project_dir%'
             - '%pim_job_product_batch_size%'
             - '@event_dispatcher'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
@@ -20,6 +20,7 @@ services:
             - '@router'
             - '%env(AKENEO_PIM_URL)%'
             - '@akeneo.pim.structure.query.get_all_blacklisted_attribute_codes'
+            - '@pim_catalog.manager.attribute_code_blacklister'
         tags:
             - { name: console.command }
 
