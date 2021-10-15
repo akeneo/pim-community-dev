@@ -58,7 +58,7 @@ final class FamilyVariantInstaller implements FixtureInstaller
             if (0 !== $violations->count()) {
                 throw new \Exception(sprintf(
                     'Validation failed on family variant "%s" with message: "%s"',
-                    $familyVariant['code'],
+                    $familyVariantData['code'],
                     iterator_to_array($violations)[0]->getMessage()
                 ));
             }

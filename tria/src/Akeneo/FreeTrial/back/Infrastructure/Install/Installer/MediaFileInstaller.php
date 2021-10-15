@@ -25,12 +25,18 @@ final class MediaFileInstaller implements FixtureInstaller
 
     private BulkSaverInterface $saver;
 
-    private const BATCH_SIZE = 100;
+    private int $batchSize;
 
-    public function __construct(FixtureReader $fixtureReader, BulkSaverInterface $saver)
-    {
+    private const DEFAULT_BATCH_SIZE = 100;
+
+    public function __construct(
+        FixtureReader $fixtureReader,
+        BulkSaverInterface $saver,
+        int $batchSize = self::DEFAULT_BATCH_SIZE
+    ) {
         $this->fixtureReader = $fixtureReader;
         $this->saver = $saver;
+        $this->batchSize = $batchSize;
     }
 
     public function install(): void
@@ -39,7 +45,7 @@ final class MediaFileInstaller implements FixtureInstaller
         foreach ($this->fixtureReader->read() as $mediaFileData) {
             $mediaFiles[] = $this->buildMediaFileFromData($mediaFileData);
 
-            if (count($mediaFiles) % self::BATCH_SIZE === 0) {
+            if (count($mediaFiles) % $this->batchSize === 0) {
                 $this->saver->saveAll($mediaFiles);
                 $mediaFiles = [];
             }

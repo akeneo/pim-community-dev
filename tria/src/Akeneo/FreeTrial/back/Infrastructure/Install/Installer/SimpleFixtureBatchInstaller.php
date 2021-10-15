@@ -31,20 +31,24 @@ final class SimpleFixtureBatchInstaller implements FixtureInstaller
 
     private BulkSaverInterface $saver;
 
-    private const BATCH_SIZE = 100;
+    private int $batchSize;
+
+    private const DEFAULT_BATCH_SIZE = 100;
 
     public function __construct(
         FixtureReader $fixtureReader,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        BulkSaverInterface $saver
+        BulkSaverInterface $saver,
+        int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
         $this->fixtureReader = $fixtureReader;
         $this->factory = $factory;
         $this->updater = $updater;
         $this->validator = $validator;
         $this->saver = $saver;
+        $this->batchSize = $batchSize;
     }
 
     public function install(): void
@@ -65,7 +69,7 @@ final class SimpleFixtureBatchInstaller implements FixtureInstaller
             }
 
             $fixturesBatch[] = $fixture;
-            if (count($fixturesBatch) % self::BATCH_SIZE === 0) {
+            if (count($fixturesBatch) % $this->batchSize === 0) {
                 $this->saver->saveAll($fixturesBatch);
                 $fixturesBatch = [];
             }
