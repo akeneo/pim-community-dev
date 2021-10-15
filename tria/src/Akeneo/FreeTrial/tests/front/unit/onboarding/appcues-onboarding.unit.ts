@@ -20,6 +20,24 @@ beforeEach(() => {
   jest.restoreAllMocks();
 });
 
+describe('Random event', () => {
+  test('a random event has been tracked', async () => {
+    await AppcuesOnboarding.track('random:event');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('random:event');
+  });
+})
+
+describe('Navigation', () => {
+  test('a navigation entry has been clicked', async () => {
+    await AppcuesOnboarding.track('navigation:entry:clicked', {
+      code: 'pim-menu-activity',
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Navigation entry "pim-menu-activity" clicked');
+  });
+})
+
 describe('Product grid', () => {
   test('a product has been selected', async () => {
     await AppcuesOnboarding.track('grid:item:selected', {
@@ -294,13 +312,19 @@ describe('Product page', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Product model saved');
   });
 
-  test('the product model "BFGoodrich - Advantage T/A Sport" has been savec', async () => {
+  test('the product model "BFGoodrich - Advantage T/A Sport" has been saved', async () => {
     await AppcuesOnboarding.track('product-model:form:saved', {
       code: 'BFGoodrich - Advantage T/A Sport'
     });
     expect(mockedAppcues.track).toHaveBeenCalledTimes(2);
     expect(mockedAppcues.track).toHaveBeenCalledWith('Product model "BFGoodrich - Advantage T/A Sport" saved');
     expect(mockedAppcues.track).toHaveBeenCalledWith('Product model saved');
+  });
+
+  test('a variant has been selected from a product model', async () => {
+    await AppcuesOnboarding.track('product-model:form:variant-selected');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Variant selected from product model');
   });
 })
 
@@ -474,6 +498,24 @@ describe('Attribute settings', () => {
     });
     expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
     expect(mockedAppcues.track).toHaveBeenCalledWith('Create attribute form saved');
+  });
+})
+
+describe('Family settings', () => {
+  test('the attribute "Meta title" has been added as a family variant', async () => {
+    await AppcuesOnboarding.track('family:variant:attribute-set', {
+      codes: ['meta_title', 'random_attribute']
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Meta title" added as family variant');
+  });
+
+  test('the tab "Variants" has been opened', async () => {
+    await AppcuesOnboarding.track('family:edit:variant-selected', {
+      code: 'pim-family-edit-form-variant'
+    });
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Tab "Variants" selected in family edit form');
   });
 })
 

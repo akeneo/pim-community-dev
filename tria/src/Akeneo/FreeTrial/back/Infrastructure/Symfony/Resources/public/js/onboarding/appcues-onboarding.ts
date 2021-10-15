@@ -86,6 +86,11 @@ const AppcuesOnboarding: PimOnboarding = {
       }
 
       switch (event) {
+        case 'navigation:entry:clicked':
+          if (eventOptions && eventOptions.code) {
+            appcues.track('Navigation entry "' + eventOptions.code + '" clicked');
+          }
+          break;
         case 'grid:item:selected':
           if (eventOptions) {
             if (eventOptions.name === 'product-grid' && eventOptions.entityHint === 'product') {
@@ -207,6 +212,9 @@ const AppcuesOnboarding: PimOnboarding = {
 
           appcues.track('Product model saved');
           break;
+        case 'product-model:form:variant-selected':
+          appcues.track('Variant selected from product model');
+          break;
         case 'grid:mass-edit:clicked':
           if (eventOptions && eventOptions.name === 'product-edit') {
             appcues.track('Button "Bulk actions" in product grid clicked');
@@ -309,6 +317,20 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Create attribute form saved');
           }
           break;
+        case 'family:variant:attribute-set':
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
+
+            if (codes.includes('meta_title')) {
+              appcues.track('Attribute "Meta title" added as family variant');
+            }
+          }
+          break;
+        case 'family:edit:variant-selected':
+          if (eventOptions && eventOptions.code === 'pim-family-edit-form-variant') {
+            appcues.track('Tab "Variants" selected in family edit form');
+          }
+          break;
         case 'form:edit:opened':
           if (eventOptions && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit') {
             if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
@@ -336,28 +358,6 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'job-instance:export:launched':
           if (eventOptions && eventOptions.url && eventOptions.url.includes('printers_amazon')) {
             appcues.track('Export profile "Printers for Amazon (weekly)" launched');
-          }
-          break;
-        case 'product-model:form:variant-selected':
-          appcues.track('Variant selected from product model');
-          break;
-        case 'family:edit:variant-selected':
-          if (eventOptions && eventOptions.code === 'pim-family-edit-form-variant') {
-            appcues.track('Tab "Variants" selected in family edit form');
-          }
-          break;
-        case 'family:variant:attribute-set':
-          if (eventOptions && eventOptions.codes) {
-            const codes = eventOptions.codes.join(',');
-
-            if (codes.includes('meta_title')) {
-              appcues.track('Attribute "Meta title" added as family variant');
-            }
-          }
-          break;
-        case 'navigation:entry:clicked':
-          if (eventOptions && eventOptions.code) {
-            appcues.track('Navigation entry "' + eventOptions.code + '" clicked');
           }
           break;
         default:
