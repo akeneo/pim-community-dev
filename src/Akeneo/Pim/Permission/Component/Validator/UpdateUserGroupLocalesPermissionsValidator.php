@@ -20,7 +20,6 @@ class UpdateUserGroupLocalesPermissionsValidator extends ConstraintValidator
 
         if ($validations->count() > 0) {
             $this->context->buildViolation($constraint->message)->addViolation();
-
         }
     }
 }

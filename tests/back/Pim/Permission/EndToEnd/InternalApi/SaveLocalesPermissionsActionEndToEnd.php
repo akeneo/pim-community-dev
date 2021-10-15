@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
 {
     private Connection $connection;
+    private LocaleFixturesLoader $localeFixturesLoader;
 
     protected function getConfiguration(): Configuration
     {
@@ -26,12 +28,14 @@ class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->connection = self::$container->get('database_connection');
+        $this->localeFixturesLoader = $this->get('akeneo_integration_tests.loader.locale');
     }
 
-    public function testItSavesAttributeGroupsPermissions(): void
+    public function testItSavesLocalesPermissions(): void
     {
         $this->authenticateAsAdmin();
-        $this->activateLocales(['en_US', 'fr_FR', 'de_DE']);
+
+        $this->localeFixturesLoader->activateLocalesOnChannel(['en_US', 'fr_FR', 'de_DE'], 'ecommerce');
 
         $this->client->request(
             'POST',
@@ -59,35 +63,19 @@ class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
 
         $defaultPermissions = $this->getUserGroupDefaultPermissions('Redactor');
-        assert::assertEquals([
+        Assert::assertEquals([
             'locale_edit' => false,
             'locale_view' => true,
         ], $defaultPermissions);
 
         $enPermissions = $this->getLocaleAccessFor('en_US');
-        assert::assertEquals(['edit' => true, 'view' => true], $enPermissions);
+        Assert::assertEquals(['edit' => true, 'view' => true], $enPermissions);
 
         $frPermissions = $this->getLocaleAccessFor('fr_FR');
-        assert::assertEquals(['edit' => true, 'view' => true], $frPermissions);
+        Assert::assertEquals(['edit' => true, 'view' => true], $frPermissions);
 
         $dePermissions = $this->getLocaleAccessFor('de_DE');
-        assert::assertEquals(['edit' => false, 'view' => true], $dePermissions);
-    }
-
-    private function activateLocales(array $localeCodes): void
-    {
-        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
-        $localeRepository = $this->get('pim_catalog.repository.locale');
-        $localeSaver = $this->get('pim_catalog.saver.locale');
-
-        foreach ($localeCodes as $localeCode) {
-            $locale = $localeRepository->findOneByIdentifier($localeCode);
-            $locale->addChannel($channel);
-
-            $errors = $this->get('validator')->validate($locale);
-            Assert::assertCount(0, $errors);
-            $localeSaver->save($locale);
-        }
+        Assert::assertEquals(['edit' => false, 'view' => true], $dePermissions);
     }
 
     private function getUserGroupDefaultPermissions(string $name): array
