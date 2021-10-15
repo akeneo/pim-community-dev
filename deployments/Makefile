@@ -76,12 +76,6 @@ endif
 executor ?= kubectl
 migrate ?= no
 
-ifneq ($(TYPE), srnt)
-DATABASE_CATALOG_MINIMAL_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-DATABASE_CATALOG_ICECAT_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-
-
 .DEFAULT_GOAL := help
 
 .PHONY: help
