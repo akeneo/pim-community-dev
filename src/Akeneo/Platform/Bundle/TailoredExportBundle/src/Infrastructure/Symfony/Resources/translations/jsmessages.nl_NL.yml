@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Selecteer enkele talen
         remove: Verwijder de taal
     quality_score:
-      quality_score:
-        label: Kwaliteitsscore
-        remove: Kwaliteitsscore verwijderen
       locales:
         label: Geef de talen voor de kwaliteitsscore op
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Geen vervangende waarde
           edit_mapping: Vervangende waarden bewerken
           modal:
-            title: Vervanging
-            subtitle: Opties beheren
             no_result:
               title: Dit attribuut bevat geen waarde
             empty_result:

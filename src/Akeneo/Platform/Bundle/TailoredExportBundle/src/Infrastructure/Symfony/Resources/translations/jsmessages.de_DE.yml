@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Gebietsschema auswählen
         remove: Gebietsschema entfernen
     quality_score:
-      quality_score:
-        label: Qualitätswert
-        remove: Qualitätswert entfernen
       locales:
         label: Definieren Sie die Gebietsschema für die Qualitätswert
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Ersetzungswert für Nein
           edit_mapping: Ersetzungswerte bearbeiten
           modal:
-            title: Ersetzen
-            subtitle: Optionen verwalten
             no_result:
               title: Leider gibt es keinen Wert in diesem Attribut
             empty_result:

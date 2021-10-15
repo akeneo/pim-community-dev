@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Wybierz wersje językowe
         remove: Usuń wersję językową
     quality_score:
-      quality_score:
-        label: Wynik jakości
-        remove: Usuń wynik jakości
       locales:
         label: Zdefiniuj ustawienia regionalne uwzględniane w wyniku jakości
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Brak wartości zastępczej
           edit_mapping: Edytuj wartości zastępcze
           modal:
-            title: Zastąpienie
-            subtitle: Zarządzaj opcjami
             no_result:
               title: Przepraszamy, w tym atrybucie nie ma żadnej wartości.
             empty_result:

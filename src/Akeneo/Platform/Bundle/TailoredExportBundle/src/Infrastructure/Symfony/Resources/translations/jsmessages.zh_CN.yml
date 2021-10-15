@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: 选择一些区域
         remove: 移除区域
     quality_score:
-      quality_score:
-        label: 质量评分
-        remove: 移除质量评分
       locales:
         label: 定义质量评分的区域
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: '“否”替换值'
           edit_mapping: 编辑替换值
           modal:
-            title: 替换
-            subtitle: 管理选项
             no_result:
               title: 抱歉，此属性中没有值
             empty_result:
