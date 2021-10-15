@@ -119,7 +119,6 @@ describe('Test modal component', () => {
 
     const codeInput = screen.getByLabelText('pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
     fireEvent.change(codeInput, {target: {value: 'foobar'}});
-
   });
 
   test('I can drop a file and dispatch a line being removed', async () => {
