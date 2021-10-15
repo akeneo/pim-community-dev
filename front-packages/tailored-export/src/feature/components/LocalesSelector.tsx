@@ -33,6 +33,7 @@ const LocalesSelector = ({
           placeholder={placeholder}
           removeLabel={removeLabel}
           value={value}
+          invalid={0 < validationErrors.length}
         >
           {locales.map((locale: Locale) => (
             <MultiSelectInput.Option key={locale.code} value={locale.code}>
