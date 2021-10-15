@@ -332,6 +332,10 @@ jobs:
       - run:
           name: Install database
           command: APP_ENV=behat make database
+      - install_yq
+      - run:
+          name: Update behat configuration
+          command: yq w -i behat.yml 'legacy.extensions.Behat\MinkExtension.sessions.selenium2.selenium2.capabilities.extra_capabilities."goog:chromeOptions".w3c' false
       - run:
           name: End to end Behat tests
           command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
