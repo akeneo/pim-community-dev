@@ -116,6 +116,6 @@ SQL;
             return null;
         }
 
-        return array_map(fn ($permissionFlag) => (bool) $permissionFlag, $permissions);
+        return array_map(fn (int $permissionFlag): bool => (bool) $permissionFlag, $permissions);
     }
 }
