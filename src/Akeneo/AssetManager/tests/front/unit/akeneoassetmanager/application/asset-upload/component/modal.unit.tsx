@@ -1,8 +1,8 @@
 import React from 'react';
-import {act, fireEvent, screen, waitFor} from '@testing-library/react';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
-import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
+import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -86,19 +86,15 @@ describe('Test modal component', () => {
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
-    await act(async () => {
-      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files}});
+    const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+    fireEvent.change(filesInput, {target: {files}});
 
-      // Wait for the line to be Valid (uploaded & completed)
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.valid'));
 
-      const confirmButton = screen.getByText('pim_asset_manager.asset.upload.confirm');
-      fireEvent.click(confirmButton);
+    const confirmButton = screen.getByText('pim_asset_manager.asset.upload.confirm');
+    fireEvent.click(confirmButton);
 
-      // Wait for the line to be Created
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Created));
-    });
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.created'));
   });
 
   test('I can drop a file and dispatch its code being changed', async () => {
@@ -116,19 +112,14 @@ describe('Test modal component', () => {
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
-    await act(async () => {
-      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files: files}});
+    const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+    fireEvent.change(filesInput, {target: {files: files}});
 
-      // Wait for the line to be Valid (uploaded & completed)
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.valid'));
 
-      const codeInput = screen.getByLabelText('pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
-      fireEvent.change(codeInput, {target: {value: 'foobar'}});
+    const codeInput = screen.getByLabelText('pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
+    fireEvent.change(codeInput, {target: {value: 'foobar'}});
 
-      // There should be a way to test if the dispatch has been called there
-      // or a better way to cover this event
-    });
   });
 
   test('I can drop a file and dispatch a line being removed', async () => {
@@ -146,19 +137,16 @@ describe('Test modal component', () => {
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
-    await act(async () => {
-      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files: files}});
+    const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+    fireEvent.change(filesInput, {target: {files: files}});
 
-      // Wait for the line to be Valid (uploaded & completed)
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.valid'));
 
-      const removeLineButton = screen.getByTitle('pim_asset_manager.asset.upload.remove');
-      fireEvent.click(removeLineButton);
+    const removeLineButton = screen.getByTitle('pim_asset_manager.asset.upload.remove');
+    fireEvent.click(removeLineButton);
 
-      // There should be a way to test if the dispatch has been called there
-      // or a better way to cover this event
-    });
+    // There should be a way to test if the dispatch has been called there
+    // or a better way to cover this event
   });
 
   test('I can drop a file and dispatch all the lines being removed', async () => {
@@ -176,19 +164,16 @@ describe('Test modal component', () => {
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
-    await act(async () => {
-      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files: files}});
+    const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+    fireEvent.change(filesInput, {target: {files: files}});
 
-      // Wait for the line to be Valid (uploaded & completed)
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.valid'));
 
-      const removeAllLinesButton = screen.getByText('pim_asset_manager.asset.upload.remove_all');
-      fireEvent.click(removeAllLinesButton);
+    const removeAllLinesButton = screen.getByText('pim_asset_manager.asset.upload.remove_all');
+    fireEvent.click(removeAllLinesButton);
 
-      // There should be a way to test if the dispatch has been called there
-      // or a better way to cover this event
-    });
+    // There should be a way to test if the dispatch has been called there
+    // or a better way to cover this event
   });
 
   test('I can drop a file and dispatch an upload retry', async () => {
@@ -208,18 +193,16 @@ describe('Test modal component', () => {
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
-    await act(async () => {
-      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files: files}});
+    const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+    fireEvent.change(filesInput, {target: {files: files}});
 
-      // Wait for the line to be Invalid (uploaded failed)
-      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Invalid));
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.invalid'));
 
-      const retryUploadButton = screen.getByTitle('pim_asset_manager.asset.upload.retry');
-      fireEvent.click(retryUploadButton);
+    const retryUploadButton = screen.getByTitle('pim_asset_manager.asset.upload.retry');
+    fireEvent.click(retryUploadButton);
+    await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.valid'));
 
-      // There should be a way to test if the dispatch has been called there
-      // or a better way to cover this event
-    });
+    // There should be a way to test if the dispatch has been called there
+    // or a better way to cover this event
   });
 });
