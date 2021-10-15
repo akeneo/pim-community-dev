@@ -6,7 +6,8 @@ import {
   AkeneoThemedProps,
   getColor,
   SwitcherButton,
-  getFontSize, Pill,
+  getFontSize,
+  Pill,
 } from 'akeneo-design-system';
 import styled, {css} from 'styled-components';
 import {useTranslate} from '../hooks';
@@ -72,7 +73,7 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
                   selected={locale.code === value}
                 />
                 {completeValues && !completeValues.includes(locale.code) && (
-                  <Pill level='warning' data-testid={`LocaleSelector.incomplete.${locale.code}`} />
+                  <Pill level="warning" data-testid={`LocaleSelector.incomplete.${locale.code}`} />
                 )}
               </LocaleDropdownItem>
             ))}
