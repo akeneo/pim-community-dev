@@ -30,30 +30,26 @@ describe('Tests completeness filter', () => {
     container = null;
   });
 
-  it('It displays a completeness filter', async () => {
+  it('It displays a completeness filter', () => {
     const handleChange = jest.fn();
 
-    await act(async () => {
-      ReactDOM.render(
-        <DependenciesProvider>
-          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
-        </DependenciesProvider>,
-        container
-      );
-    });
+    ReactDOM.render(
+      <DependenciesProvider>
+        <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+      </DependenciesProvider>,
+      container
+    );
   });
 
   it('I can change the completeness value', async () => {
     const handleChange = jest.fn();
 
-    await act(async () => {
-      ReactDOM.render(
-        <DependenciesProvider>
-          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
-        </DependenciesProvider>,
-        container
-      );
-    });
+    ReactDOM.render(
+      <DependenciesProvider>
+        <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+      </DependenciesProvider>,
+      container
+    );
 
     const dropdownButton = getDropdownButton(container);
     fireEvent.click(dropdownButton);
@@ -67,14 +63,12 @@ describe('Tests completeness filter', () => {
   it('I can change the completeness value with the keyboard', async () => {
     const handleChange = jest.fn();
 
-    await act(async () => {
-      ReactDOM.render(
-        <DependenciesProvider>
-          <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
-        </DependenciesProvider>,
-        container
-      );
-    });
+    ReactDOM.render(
+      <DependenciesProvider>
+        <CompletenessFilter value={CompletenessValue.All} onChange={handleChange} />
+      </DependenciesProvider>,
+      container
+    );
 
     const dropdownButton = getDropdownButton(container);
     fireEvent.keyPress(dropdownButton, KeyEventSpace);
