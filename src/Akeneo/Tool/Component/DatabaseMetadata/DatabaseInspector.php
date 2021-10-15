@@ -16,6 +16,22 @@ use Doctrine\DBAL\FetchMode;
 
 class DatabaseInspector
 {
+    private const EXCLUDED_TABLES = [
+        'acme_reference_data_color',
+        'acme_reference_data_fabric',
+        'pimee_product_asset_asset',
+        'pimee_product_asset_asset_category',
+        'pimee_product_asset_asset_tag',
+        'pimee_product_asset_category',
+        'pimee_product_asset_category_translation',
+        'pimee_product_asset_channel_variation_configuration',
+        'pimee_product_asset_file_metadata',
+        'pimee_product_asset_reference',
+        'pimee_product_asset_tag',
+        'pimee_product_asset_variation',
+        'pimee_security_asset_category_access'
+    ];
+
     /** @var Connection */
     private $db;
 
@@ -29,15 +45,20 @@ class DatabaseInspector
      */
     public function getTableList(string $db_name): array
     {
-        $sql = <<<"SQL"
-select
+        $sql = <<<SQL
+SELECT
     TABLE_NAME      as  table_name,
     TABLE_TYPE      as table_type
-from information_schema.tables
-where table_schema=?
-order by table_name ASC
+FROM information_schema.tables
+WHERE table_schema = :table_schema
+AND TABLE_NAME NOT IN (:excluded_tables)
+ORDER BY table_name ASC
 SQL;
-        $result = $this->db->executeQuery($sql, [$db_name]);
+        $result = $this->db->executeQuery(
+            $sql,
+            ["table_schema" => $db_name, "excluded_tables" => self::EXCLUDED_TABLES],
+            ["excluded_tables" => Connection::PARAM_STR_ARRAY]
+        );
 
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
@@ -47,19 +68,24 @@ SQL;
      */
     public function getColumnInfo(string $db_name): array
     {
-        $sql = <<<"SQL"
-select
+        $sql = <<<SQL
+SELECT
     TABLE_NAME      as table_name,
     COLUMN_NAME     as column_name,
     IS_NULLABLE     as is_nullable,
     COLUMN_TYPE     as column_type,
     COLUMN_KEY      as column_key
-from information_schema.COLUMNS
-where TABLE_SCHEMA=?
-order by TABLE_NAME asc, ORDINAL_POSITION asc
+FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = :table_schema
+AND TABLE_NAME NOT IN (:excluded_tables)
+ORDER BY TABLE_NAME ASC, ORDINAL_POSITION ASC
 SQL;
 
-        $result = $this->db->executeQuery($sql, [$db_name]);
+        $result = $this->db->executeQuery(
+            $sql,
+            ["table_schema" => $db_name, "excluded_tables" => self::EXCLUDED_TABLES],
+            ["excluded_tables" => Connection::PARAM_STR_ARRAY]
+        );
 
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }

@@ -19,6 +19,6 @@ SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
 LOG_DIR=${SCRIPT_DIR}/../logs
 mkdir -p ${LOG_DIR}
 for line in $(cat "${FLEXIBILITY_CUSTOMER_LIST}"); do
-      INSTANCE_NAME=clone-${line}  SOURCE_PFID=${line}  PED_TAG=${PED_TAG} PIM_CONTEXT=deployment  make clone_flexibility > ${LOG_DIR}/${line}-test_migrate.log 2>&1 || true 
-      TYPE=srnt INSTANCE_NAME=clone-${line}  PIM_CONTEXT=deployment  make delete_clone_flexibility > ${LOG_DIR}/${line}-remove_test.log 2>&1  || true 
+      INSTANCE_NAME=clone-${line}  SOURCE_PFID=${line}  PED_TAG=${PED_TAG} make -C deployments/ clone_flexibility > ${LOG_DIR}/${line}-test_migrate.log 2>&1 || true 
+      TYPE=srnt INSTANCE_NAME=clone-${line} make -C deployments/ delete_clone_flexibility > ${LOG_DIR}/${line}-remove_test.log 2>&1  || true 
 done

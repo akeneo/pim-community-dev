@@ -3,7 +3,7 @@ import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-communi
 import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
+const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'} as const;
 
 type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
 
@@ -18,6 +18,11 @@ type MeasurementSelection =
   | {
       type: 'value';
       decimal_separator?: MeasurementDecimalSeparator;
+    }
+  | {
+      type: 'value_and_unit_label';
+      decimal_separator: MeasurementDecimalSeparator;
+      locale: LocaleCode;
     };
 
 const isMeasurementDecimalSeparator = (separator?: string): separator is MeasurementDecimalSeparator =>
@@ -29,7 +34,10 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
   return (
     'unit_code' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
-    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator))
+    ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator)) ||
+    ('value_and_unit_label' === selection.type &&
+      'locale' in selection &&
+      isMeasurementDecimalSeparator(selection.decimal_separator))
   );
 };
 
@@ -100,7 +108,7 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
 const isMeasurementSource = (source: Source): source is MeasurementSource =>
   isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
-export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation};
+export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation, MeasurementDecimalSeparator};
 export {
   availableDecimalSeparators,
   getDefaultMeasurementSource,

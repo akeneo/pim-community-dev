@@ -54,28 +54,26 @@ if [[ ${PFID} =~ "tria" ]]; then
   gsutil cp gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}/default.tfstate ${PWD}/
   TRIA_VAR=$(cat ${PWD}/default.tfstate | grep "akeneo_connect_saml_entity_id" || echo "")
 
-  if [[ -z "${TRIA_VAR}" ]]; then
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
-  fi
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
 fi
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 export TF_VAR_force_destroy_storage=true
-terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket
-terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket
+terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
+terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
@@ -84,13 +82,23 @@ export KUBECONFIG=.kubeconfig
 # grep -v mysql because the mysql disk is manage by terraform process
 LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
 
-helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID}
+if helm3 list -n "${PFID}" | grep "${PFID}"; then
+  helm3 uninstall ${PFID} -n ${PFID}
+fi
 
-echo "Wait MySQL deletion"
-POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
-kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+echo "Remove Deployments"
+# Quick fix and to remove after actual fix
+LIST_DEPLOYMENTS=$(kubectl get deployment --no-headers --namespace=${PFID} | awk '{print $1}')
+if [[ ! -z "${LIST_DEPLOYMENTS}" ]]; then
+  kubectl delete deployment --grace-period=0 --namespace ${PFID} --ignore-not-found=true ${LIST_DEPLOYMENTS}
+fi
 
-terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
+echo "Remove Statefulset"
+# Quick fix and to remove after actual fix
+LIST_STATEFULSET=$(kubectl get statefulset --no-headers --namespace=${PFID} | awk '{print $1}')
+if [[ ! -z "${LIST_STATEFULSET}" ]]; then
+  kubectl delete statefulset --grace-period=0 --namespace ${PFID} --ignore-not-found=true ${LIST_STATEFULSET}
+fi
 
 echo "Remove PODS"
 # Quick fix and to remove after actual fix
@@ -98,6 +106,15 @@ LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} | awk '{print $1}'
 if [[ ! -z "${LIST_PODS}" ]]; then
   kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_PODS}
 fi
+
+echo "Wait MySQL deletion"
+POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+if [[ ! -z "${POD_MYSQL}" ]]; then
+  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+fi
+
+echo "Running terraform destroy"
+terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "3 - Removing shared state files"
 # I'm sorry for that, but it's the max time communicate by google to apply consistent between list and delete operation on versionning bucket. See: https://cloud.google.com/storage/docs/object-versioning

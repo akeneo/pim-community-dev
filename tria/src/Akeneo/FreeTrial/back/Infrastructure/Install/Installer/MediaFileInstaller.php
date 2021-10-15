@@ -17,15 +17,17 @@ use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 final class MediaFileInstaller implements FixtureInstaller
 {
     private FixtureReader $fixtureReader;
 
-    private SaverInterface $saver;
+    private BulkSaverInterface $saver;
 
-    public function __construct(FixtureReader $fixtureReader, SaverInterface $saver)
+    private const BATCH_SIZE = 100;
+
+    public function __construct(FixtureReader $fixtureReader, BulkSaverInterface $saver)
     {
         $this->fixtureReader = $fixtureReader;
         $this->saver = $saver;
@@ -33,9 +35,18 @@ final class MediaFileInstaller implements FixtureInstaller
 
     public function install(): void
     {
+        $mediaFiles = [];
         foreach ($this->fixtureReader->read() as $mediaFileData) {
-            $mediaFile = $this->buildMediaFileFromData($mediaFileData);
-            $this->saver->save($mediaFile);
+            $mediaFiles[] = $this->buildMediaFileFromData($mediaFileData);
+
+            if (count($mediaFiles) % self::BATCH_SIZE === 0) {
+                $this->saver->saveAll($mediaFiles);
+                $mediaFiles = [];
+            }
+        }
+
+        if (!empty($mediaFiles)) {
+            $this->saver->saveAll($mediaFiles);
         }
     }
 

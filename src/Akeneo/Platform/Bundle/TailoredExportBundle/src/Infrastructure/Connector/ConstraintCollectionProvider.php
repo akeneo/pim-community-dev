@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Columns;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ProductFilters;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,35 +54,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         );
 
         $constraintFields['filters'] = new Assert\Collection([
-            'fields' => [
-                'data' => [
-                    new Assert\Type('array'),
-                    new Assert\All(['constraints' => [
-                        new Assert\Collection([
-                            'fields' => [
-                                'field' => new Assert\NotBlank(),
-                                'operator' => new Assert\NotBlank(),
-                                'context' => new Assert\Optional([
-                                    new Assert\Collection([
-                                        'fields' => [
-                                            'scope' => new Assert\Optional(new ChannelShouldExist()),
-                                            'locale' => new Assert\Optional(),
-                                            'locales' => new Assert\Optional(
-                                                [
-                                                    new Assert\All(new LocaleShouldBeActive()),
-                                                    new Assert\NotBlank(),
-                                                ]
-                                            ),
-                                            'channel' => new Assert\Optional(new ChannelShouldExist())
-                                        ],
-                                    ]),
-                                ]),
-                            ],
-                            'allowExtraFields' => true,
-                        ])
-                    ]])
-                ]
-            ]
+            'fields' => ['data' => new ProductFilters()],
         ]);
 
         return new Assert\Collection(['fields' => $constraintFields]);

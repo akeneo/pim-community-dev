@@ -76,6 +76,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: 애셋
+    transformations: 애셋 변환
+    skipped: 건너뜀
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: 애셋이 경고와 함께 삭제되었습니다.
   success: 애셋이 삭제되었습니다.

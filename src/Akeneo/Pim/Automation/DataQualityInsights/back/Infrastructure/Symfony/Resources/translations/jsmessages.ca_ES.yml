@@ -19,3 +19,15 @@ akeneo_data_quality_insights:
     quality:
       to_improve: A millorar
       good: Bé
+      in_progress: Processant
+      n_a: N/A
+  dqi_dashboard:
+    key_indicators:
+      list:
+        values_perfect_spelling:
+          messages:
+            second_step:
+              message3: Alguns productes necessiten una mica d'ajuda per ser perfectes. Vigila amb els errors!
+  product_grid:
+    filter_label:
+      spelling_quality: Qualitat ortogràfica

@@ -7,9 +7,6 @@ PIM_SRC_PATH ?= .
 ifneq ($(TYPE),srnt)
 PIM_SRC_PATH = $(TYPE)
 endif
-ifeq ($(PIM_CONTEXT),deployment)
-PIM_SRC_PATH = .
-endif
 
 COMPOSER_OVERRIDE ?= $(shell [ -f "$(PIM_SRC_PATH)/docker-compose.override.yml" ] && echo "-f $(PIM_SRC_PATH)/docker-compose.override.yml")
 COMPOSER_TARGET ?= -f $(PIM_SRC_PATH)/docker-compose.yml $(COMPOSER_OVERRIDE)

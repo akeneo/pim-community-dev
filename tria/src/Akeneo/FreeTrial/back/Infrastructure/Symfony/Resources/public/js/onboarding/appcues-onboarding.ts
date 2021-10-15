@@ -360,6 +360,15 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Export profile "Printers for Amazon (weekly)" launched');
           }
           break;
+        case 'family:variant:attribute-remove':
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
+
+            if (codes.includes('winter_designed_tire')) {
+              appcues.track('Attribute "Winter Designed Tire" added as family variant');
+            }
+          }
+          break;
         default:
           appcues.track(event);
       }

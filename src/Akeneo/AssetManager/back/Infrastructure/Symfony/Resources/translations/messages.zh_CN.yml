@@ -76,6 +76,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: 资产
+    transformations: 资产转换
+    skipped: 已跳过
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: 成功删除资产，但显示警告
   success: 资产已成功删除

@@ -27,6 +27,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCod
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
@@ -186,6 +187,12 @@ class SelectionHydrator
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitLabelSelection::TYPE:
                 return new MeasurementUnitLabelSelection(
+                    $attribute->metricFamily(),
+                    $selectionConfiguration['locale']
+                );
+            case MeasurementValueAndUnitLabelSelection::TYPE:
+                return new MeasurementValueAndUnitLabelSelection(
+                    $selectionConfiguration['decimal_separator'] ?? '.',
                     $attribute->metricFamily(),
                     $selectionConfiguration['locale']
                 );

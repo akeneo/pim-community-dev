@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: ロケールをいくつか選択
         remove: ロケールを削除
     quality_score:
-      quality_score:
-        label: 品質スコア
-        remove: 品質スコアを削除
       locales:
         label: 品質スコアのロケールを定義する
   form:
@@ -57,6 +54,7 @@ akeneo.tailored_export:
         attribute: この属性は削除され、別のタイプで再作成されました。このソースを削除して、もう一度追加してください。
         association_type: この属性タイプは削除され、別のタイプで再作成されました。このソースを削除して、もう一度追加してください。
         property: このプロパティは無効です。このソースを削除して、もう一度追加してください。
+        asset_collection_main_media: 属性により使用されるアセットコレクションの主要メディアが見つかりません。アセットファミリーの設定を確認してください。
       no_source_configuration:
         title: このソースで利用できる操作はありません。値がそのままエクスポートされます。
       deleted_attribute:
@@ -78,9 +76,13 @@ akeneo.tailored_export:
         type:
           amount: 数量
           currency: 通貨
+          main_media: 主要メディア
           key: ファイルキー
           path: パス
           name: ファイル名
+        asset_collection:
+          property: プロパティ
+          with_prefix_and_suffix: 接頭辞と接尾辞を追加
         format: フォーマット
         parent:
           information:
@@ -124,6 +126,26 @@ akeneo.tailored_export:
           disabled: 無効な置換値
           yes: Yesの置換値
           no: Noの置換値
+          edit_mapping: 置換値を編集
+          modal:
+            no_result:
+              title: この属性には値がありません
+            empty_result:
+              title: 検索結果はありません
+              text: 新しい検索条件で再試行してください
+            filters:
+              mapped:
+                label: 表示
+                unmapped: 置換なしのすべての値
+                mapped: 置換されたすべての値
+                all: すべての値
+            table:
+              header:
+                values: 値
+                replacement: 置換値
+              field:
+                to_placeholder: 置換値を定義する
+            validation_error: 置換値で無効のものがあります。各フィールドの下にあるエラーメッセージを参照してください。
         default_value:
           title: 空のときに既定値を使用
           label: 既定値
@@ -165,6 +187,12 @@ akeneo.tailored_export:
       locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。作成するか、別のソースを選択してください。
       channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。作成するか、別のソースを選択してください。
       invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
+    asset_collection:
+      locale_should_not_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、ロケールごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      channel_should_not_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、チャンネルごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      locale_should_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、ロケールごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      channel_should_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、チャンネルごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      invalid_type: アセットファミリー{{ asset_family_code }}の主要メディア属性タイプが変更されました。作成するか、別のソースを選択してください。
     measurement:
       family:
         does_not_exist: '{{ measurement_family_code }}測定ファミリーは存在しません。'

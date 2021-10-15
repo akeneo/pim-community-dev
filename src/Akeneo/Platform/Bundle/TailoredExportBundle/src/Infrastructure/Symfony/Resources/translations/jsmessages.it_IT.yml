@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Seleziona alcune impostazioni locali
         remove: Rimuovi l'impostazione locale
     quality_score:
-      quality_score:
-        label: Punteggio qualità
-        remove: Rimuovi punteggio qualità
       locales:
         label: Definisci le impostazioni locali per il punteggio qualità
   form:
@@ -57,6 +54,7 @@ akeneo.tailored_export:
         attribute: Questo attributo è stato eliminato e ricreato con un altro tipo; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
         association_type: Questo tipo di associazione è stato eliminato e ricreato con un altro tipo; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
         property: Questa proprietà non è valida; ti invitiamo a eliminare questa origine e ad aggiungerla nuovamente.
+        asset_collection_main_media: Il media principale della raccolta asset utilizzato dall'attributo non è stato trovato. Controlla l'impostazione della famiglia di asset.
       no_source_configuration:
         title: Non sono presenti operazioni disponibili per questa origine. Il suo valore verrà esportato così com'è.
       deleted_attribute:
@@ -78,9 +76,13 @@ akeneo.tailored_export:
         type:
           amount: Importo
           currency: Valuta
+          main_media: Media principale
           key: Chiave di file
           path: Percorso
           name: Nome file
+        asset_collection:
+          property: Proprietà
+          with_prefix_and_suffix: Aggiungi prefisso e suffisso
         format: Formato
         parent:
           information:
@@ -124,6 +126,26 @@ akeneo.tailored_export:
           disabled: Valore di sostituzione disabilitato
           yes: Testo alternativo per il valore "Sì"
           no: Testo alternativo per il valore "No"
+          edit_mapping: Modifica valori di sostituzione
+          modal:
+            no_result:
+              title: Spiacenti, non è presente alcun valore in questo attributo
+            empty_result:
+              title: Spiacenti, la tua ricerca non ha restituito risultati
+              text: Riprova con nuovi criteri di ricerca
+            filters:
+              mapped:
+                label: Mostra
+                unmapped: Tutti i valori senza sostituzione
+                mapped: Tutti i valori con sostituzione
+                all: Tutti i valori
+            table:
+              header:
+                values: Valori
+                replacement: Valori di sostituzione
+              field:
+                to_placeholder: Definisci il valore di sostituzione
+            validation_error: Alcuni valori di sostituzione non sono validi, fai riferimento ai messaggi di errore sotto ogni campo.
         default_value:
           title: Se vuoto, utilizza il valore predefinito
           label: Valore predefinito
@@ -165,6 +187,12 @@ akeneo.tailored_export:
       locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per impostazione locale. Crealo o scegli un'altra origine.
       channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per canale. Crealo o scegli un'altra origine.
       invalid_specific_locale: L'attributo {{ attribute_code }} è specifico per impostazioni locali. Seleziona un'altra impostazione locale.
+    asset_collection:
+      locale_should_not_be_blank: L'attributo del media principale della famiglia di asset {{ asset_family_code }} ora ha un valore per impostazione locale. Crealo o scegli un'altra origine.
+      channel_should_not_be_blank: L'attributo del media principale della famiglia di asset {{ asset_family_code }} ora ha un valore per canale. Crealo o scegli un'altra origine.
+      locale_should_be_blank: L'attributo del media principale della famiglia di asset {{ asset_family_code }} non ha più un valore per impostazione locale. Crealo o scegli un'altra origine.
+      channel_should_be_blank: L'attributo del media principale della famiglia di asset {{ asset_family_code }} non ha più un valore per canale. Crealo o scegli un'altra origine.
+      invalid_type: Il tipo attributo del media principale della famiglia di asset {{ asset_family_code }} è stato modificato. Crealo o scegli un'altra origine.
     measurement:
       family:
         does_not_exist: La famiglia di unità di misura {{ measurement_family_code }} non esiste.

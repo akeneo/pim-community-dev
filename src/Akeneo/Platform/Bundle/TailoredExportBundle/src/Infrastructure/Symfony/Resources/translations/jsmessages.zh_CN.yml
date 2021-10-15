@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: 选择一些区域
         remove: 移除区域
     quality_score:
-      quality_score:
-        label: 质量评分
-        remove: 移除质量评分
       locales:
         label: 定义质量评分的区域
   form:
@@ -57,6 +54,7 @@ akeneo.tailored_export:
         attribute: 该属性已被删除并采用另一种类型重新创建，请移除此源并重新添加。
         association_type: 此关联类型已被删除并采用另一种类型重新创建，请移除此源并重新添加。
         property: 此属性无效，请移除此源并再次添加。
+        asset_collection_main_media: 找不到该属性所使用的资源集合的主媒体，请检查资产品类设置。
       no_source_configuration:
         title: 此源没有可用的运算。其值将原样导出。
       deleted_attribute:
@@ -78,9 +76,13 @@ akeneo.tailored_export:
         type:
           amount: 金额
           currency: 货币
+          main_media: 主媒体
           key: 文件密钥
           path: 路径
           name: 文件名
+        asset_collection:
+          property: 属性
+          with_prefix_and_suffix: 添加前缀和后缀
         format: 格式
         parent:
           information:
@@ -124,6 +126,26 @@ akeneo.tailored_export:
           disabled: 已禁用替换值
           yes: '“是”替换值'
           no: '“否”替换值'
+          edit_mapping: 编辑替换值
+          modal:
+            no_result:
+              title: 抱歉，此属性中没有值
+            empty_result:
+              title: 抱歉，找不到与搜索相符的结果
+              text: 请用新的搜索条件再进行搜索
+            filters:
+              mapped:
+                label: 显示
+                unmapped: 所有未替换值
+                mapped: 所有替换值
+                all: 所有值
+            table:
+              header:
+                values: 值
+                replacement: 替换值
+              field:
+                to_placeholder: 定义替换值
+            validation_error: 有些替换值无效，请参阅每个字段下面的错误消息。
         default_value:
           title: 空时使用默认值
           label: 默认值
@@ -165,6 +187,12 @@ akeneo.tailored_export:
       locale_should_be_blank: 属性 {{ attribute_code }} 不再针对每个区域提供值。请进行创建或选择其他的源。
       channel_should_be_blank: 属性 {{ attribute_code }} 不再针对每个渠道提供值。请进行创建或选择其他的源。
       invalid_specific_locale: 属性 {{ attribute_code }} 为区域特定。请选择其他的区域。
+    asset_collection:
+      locale_should_not_be_blank: 资产品类 {{ asset_family_code }} 的主媒体属性现在针对每个区域都有一个值。请进行创建或选择其他的源。
+      channel_should_not_be_blank: 资产品类 {{ asset_family_code }} 的主媒体属性现在针对每个渠道都有一个值。请进行创建或选择其他的源。
+      locale_should_be_blank: 资产品类 {{ asset_family_code }} 的主媒体属性不再针对每个区域提供值。请进行创建或选择其他的源。
+      channel_should_be_blank: 资产品类 {{ asset_family_code }} 的主媒体属性不再针对每个渠道提供值。请进行创建或选择其他的源。
+      invalid_type: 资产品类 {{ asset_family_code }} 的主媒体属性类型已更改。请进行创建或选择其他的源。
     measurement:
       family:
         does_not_exist: 测量单位群 {{ measurement_family_code }} 不存在。

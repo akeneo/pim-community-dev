@@ -16,7 +16,6 @@ namespace Akeneo\FreeTrial\Infrastructure\Sso;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +27,6 @@ final class SetupCommand extends Command
 {
     private CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler;
     private ValidatorInterface $validator;
-    private ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration;
     private string $samlIdpEntityId;
     private string $samlIdpLoginUrl;
     private string $samlIdpLogoutUrl;
@@ -40,7 +38,6 @@ final class SetupCommand extends Command
     public function __construct(
         CreateOrUpdateConfigurationHandler  $createOrUpdateConfigHandler,
         ValidatorInterface $validator,
-        ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
         string $samlIdpEntityId,
         string $samlIdpLoginUrl,
         string $samlIdpLogoutUrl,
@@ -53,7 +50,6 @@ final class SetupCommand extends Command
 
         $this->createOrUpdateConfigHandler = $createOrUpdateConfigHandler;
         $this->validator = $validator;
-        $this->serviceProviderDefaultConfiguration = $serviceProviderDefaultConfiguration;
         $this->samlIdpEntityId = $samlIdpEntityId;
         $this->samlIdpLoginUrl = $samlIdpLoginUrl;
         $this->samlIdpLogoutUrl = $samlIdpLogoutUrl;
@@ -74,9 +70,8 @@ final class SetupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $serviceProvider = $this->serviceProviderDefaultConfiguration->getServiceProvider()->toArray();
-        $samlSpCertificate = base64_decode($this->samlSpCertificateBase64);
-        $samlSpPrivateKey = base64_decode($this->samlSpPrivateKeyBase64);
+        $samlSpCertificate = base64_decode($this->samlSpCertificateBase64, true);
+        $samlSpPrivateKey = base64_decode($this->samlSpPrivateKeyBase64, true);
 
         if ($samlSpCertificate === false || $samlSpPrivateKey === false) {
             $io->error([

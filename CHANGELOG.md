@@ -98,6 +98,8 @@
 - PIM-10093: Fix tailored export access when an attribute used as source is deleted
 - PIM-10091: Add translation keys for the "Computation of asset transformations" job
 - PIM-10097: Fix error message when checking removal of an entity related to a published product 
+- PIM-10103: Fix JS error on attribute options when DQI is disabled
+- PIM-10106: Fix Red underlines for spelling mistakes are moving
 
 ## Improvements
 
