@@ -72,7 +72,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     public function setFieldData($entityWithCategories, $field, $data, array $options = [])
     {
         $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
-        $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $entityWithCategories);
+        $wasOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithCategories);
         if ($entityWithCategories instanceof ProductModelInterface &&
             $this->authorizationChecker->isGranted(Attributes::EDIT, $entityWithCategories)
         ) {
@@ -89,7 +89,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
             $entityWithCategories->getCategoriesForVariation() : $entityWithCategories->getCategories();
 
         foreach ($categories as $category) {
-            if (!$this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $category)) {
+            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
                     'category code',
@@ -105,7 +105,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
                 $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $category)
             ) {
                 $isOwner = true;
-            } elseif ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
+            } elseif ($this->authorizationChecker->isGranted(Attributes::OWN_PRODUCTS, $category)) {
                 $isOwner = true;
             }
         }

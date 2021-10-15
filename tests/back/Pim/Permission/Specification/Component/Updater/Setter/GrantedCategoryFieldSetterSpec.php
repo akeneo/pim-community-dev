@@ -69,9 +69,9 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, [])->willReturn(true);
 
         $product->getCategoriesForVariation()->willReturn([$categoryA, $categoryB]);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
 
         $this->shouldNotThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -121,7 +121,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $categories = new ArrayCollection();
         $product->getCategoriesForVariation()->willReturn($categories);
         $product->getCategories()->willReturn($categories);
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $this->shouldThrow(
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')
@@ -160,10 +160,10 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $categories->add($categoryB->getWrappedObject());
         $product->getCategoriesForVariation()->willReturn($categories);
         $product->getCategories()->willReturn($categories);
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $categoryA)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN_PRODUCTS, $categoryA)->willReturn(true);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -209,11 +209,11 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $categories->add($categoryB->getWrappedObject());
         $product->getCategoriesForVariation()->willReturn($categories);
         $product->getCategories()->willReturn($categories);
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $categoryA)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $categoryB)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN_PRODUCTS, $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN_PRODUCTS, $categoryB)->willReturn(false);
 
         $this->shouldThrow(
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')
@@ -245,7 +245,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(1);
         $productModel->getCategories()->willReturn([]);
-        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(false);
 
         $this->shouldNotThrow(
