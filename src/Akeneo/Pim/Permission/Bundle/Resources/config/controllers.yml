@@ -184,3 +184,10 @@ services:
             - '@oro_security.security_facade'
             - '@validator'
             - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveLocalesPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver'
