@@ -169,9 +169,44 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       </LevelSummaryField>
     </PermissionSectionSummary>
   ),
-  save: (_userGroup: string, _state: PermissionFormReducer.State) => {
-    // @todo
+  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+    if (false === securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')) {
+      return Promise.resolve();
+    }
+
+    const url = routing.generate('pimee_permissions_entities_set_attribute_groups');
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+      body: JSON.stringify({
+        user_group: userGroup,
+        permissions: {
+          edit: state.edit,
+          view: state.view,
+        },
+      }),
+    });
+
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
+
     return Promise.resolve();
+  },
+  loadPermissions: async (userGroupName: string) => {
+    const url = routing.generate('pimee_permissions_entities_get_user_group_attribute_groups', {
+      userGroupName: userGroupName,
+    });
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    });
+
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
   },
 };
 
