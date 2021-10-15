@@ -14,7 +14,7 @@ define([
   'pim/template/export/product/edit/content',
   'pim/form',
   'pim/analytics',
-  '@akeneo-pim-community/shared'
+  '@akeneo-pim-community/shared',
 ], function (_, __, Backbone, template, BaseForm, analytics, {filterErrors}) {
   return BaseForm.extend({
     template: _.template(template),
