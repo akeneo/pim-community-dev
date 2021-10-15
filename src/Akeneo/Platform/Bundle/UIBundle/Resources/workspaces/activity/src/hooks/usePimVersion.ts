@@ -1,6 +1,6 @@
+import {useRouter} from '@akeneo-pim-community/shared';
 import {useEffect, useState} from 'react';
 
-const Routing = require('routing');
 const DataCollector = require('pim/data-collector');
 
 type PimVersion = {
@@ -16,10 +16,11 @@ const usePimVersion = () => {
   const [isAnalyticsWanted, setIsAnalyticsWanted] = useState<boolean>(false);
   const [analyticsUrl, setAnalyticsUrl] = useState<string>('');
   const [lastPatch, setLastPatch] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const result = await fetch(Routing.generate('pim_dashboard_version_data'), {
+      const result = await fetch(router.generate('pim_dashboard_version_data'), {
         method: 'GET',
       });
       const pimVersion: PimVersion = await result.json();

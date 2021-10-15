@@ -1,12 +1,10 @@
 import React from 'react';
-import {PageContent, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {Header} from './Header';
 import {CompletenessWidget, LastOperationsWidget} from './Widgets';
 import styled from 'styled-components';
 import {PimVersion} from './PimVersion';
 import {Helper, LockIcon, SectionTitle, useTheme} from 'akeneo-design-system';
-
-const featureFlags = require('pim/feature-flags');
 
 const StyledPageContent = styled(PageContent)`
   height: calc(100vh - 202px);
@@ -15,6 +13,7 @@ const StyledPageContent = styled(PageContent)`
 
 const DashboardIndex = () => {
   const translate = useTranslate();
+  const featureFlags = useFeatureFlags();
   const theme = useTheme();
 
   return (
