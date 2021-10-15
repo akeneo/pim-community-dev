@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Sélectionnez une ou plusieurs locales
         remove: Retirer la locale
     quality_score:
-      quality_score:
-        label: Score de qualité
-        remove: Retirer le score de qualité
       locales:
         label: Définir les locales pour le score de qualité
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Valeur de remplacement si faux
           edit_mapping: Modifier les valeurs de remplacement
           modal:
-            title: Remplacement
-            subtitle: Gérer les options
             no_result:
               title: Désolé, il n'y a pas de valeur pour cet attribut
             empty_result:

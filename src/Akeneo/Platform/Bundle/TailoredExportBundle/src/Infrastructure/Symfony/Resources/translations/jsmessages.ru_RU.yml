@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Выберите локали
         remove: Удалить локаль
     quality_score:
-      quality_score:
-        label: Оценка качества
-        remove: Удалить оценку качества
       locales:
         label: Определите локали для оценки качества
   form:

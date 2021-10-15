@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: ロケールをいくつか選択
         remove: ロケールを削除
     quality_score:
-      quality_score:
-        label: 品質スコア
-        remove: 品質スコアを削除
       locales:
         label: 品質スコアのロケールを定義する
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Noの置換値
           edit_mapping: 置換値を編集
           modal:
-            title: 置換
-            subtitle: オプションの管理
             no_result:
               title: この属性には値がありません
             empty_result:

@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Seleccionar algunas configuraciones regionales
         remove: Eliminar la configuración regional
     quality_score:
-      quality_score:
-        label: Puntuación de calidad
-        remove: Quitar puntuación de calidad
       locales:
         label: Definir las configuraciones regionales para la puntuación de calidad
   form:
@@ -131,8 +128,6 @@ akeneo.tailored_export:
           no: Valor de reemplazo de No
           edit_mapping: Editar valores de reemplazo
           modal:
-            title: Reemplazo
-            subtitle: Administrar opciones
             no_result:
               title: Lo sentimos, no hay ningún valor en este atributo
             empty_result:
