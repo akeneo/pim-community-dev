@@ -61,20 +61,20 @@ class UserGroupLocalePermissionsSaver
      */
     public function save(string $groupName, array $permissions): void
     {
-        $group = $this->getGroup($groupName);
+        $group = $this->getUserGroup($groupName);
         $this->updateDefaultPermissions($group, $permissions);
 
         $affectedLocalesCodes = $this->getAffectedLocalesCodes($permissions);
         $highestAccessLevelIndexedByLocaleCode = $this->getHighestAccessLevelIndexedByLocaleCode($affectedLocalesCodes, $permissions);
         $existingHighestAccessLevelIndexedByLocaleCode = $this->getActiveLocalesAccessesWithHighestLevel->execute($group->getId());
 
-        $removedCategoryCodes = array_diff(array_keys($existingHighestAccessLevelIndexedByLocaleCode), $affectedLocalesCodes);
-        $this->revokeAccesses($removedCategoryCodes, $group);
+        $removedLocaleCodes = array_diff(array_keys($existingHighestAccessLevelIndexedByLocaleCode), $affectedLocalesCodes);
+        $this->revokeAccesses($removedLocaleCodes, $group);
 
         $this->updateAccesses($highestAccessLevelIndexedByLocaleCode, $existingHighestAccessLevelIndexedByLocaleCode, $group);
     }
 
-    private function getGroup(string $groupName): GroupInterface
+    private function getUserGroup(string $groupName): GroupInterface
     {
         $group = $this->groupRepository->findOneByIdentifier($groupName);
 
