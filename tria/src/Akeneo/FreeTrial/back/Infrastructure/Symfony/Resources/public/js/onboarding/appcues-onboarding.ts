@@ -355,6 +355,15 @@ const AppcuesOnboarding: PimOnboarding = {
             }
           }
           break;
+        case 'family:variant:attribute-remove':
+          if (eventOptions && eventOptions.codes) {
+            const codes = eventOptions.codes.join(',');
+
+            if (codes.includes('winter_designed_tire')) {
+              appcues.track('Attribute "Winter Designed Tire" added as family variant');
+            }
+          }
+          break;
         case 'navigation:entry:clicked':
           if (eventOptions && eventOptions.code) {
             appcues.track('Navigation entry "' + eventOptions.code + '" clicked');
