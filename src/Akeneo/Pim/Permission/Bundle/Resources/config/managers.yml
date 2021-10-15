@@ -39,6 +39,7 @@ services:
             - '@pimee_security.repository.locale_access'
             - '@pimee_security.saver.locale_access'
             - '%pimee_security.entity.locale_access.class%'
+            - '@pimee_security.remover.locale_access'
 
     pimee_security.manager.datagtrid_view_access:
         class: '%pimee_security.manager.datagtrid_view_access.class%'
