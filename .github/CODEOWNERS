@@ -2,3 +2,7 @@
 
 ## Product Database Migrations
 upgrades/schema/ @akeneo/squad-chipmunks
+
+# Octopus features
+/src/Akeneo/Connectivity @akeneo/squad-octopus
+/components/catalogs @akeneo/squad-octopus
