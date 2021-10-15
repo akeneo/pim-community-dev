@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measur
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
@@ -47,6 +48,8 @@ class MeasurementSelectionValidator extends ConstraintValidator
                                 MeasurementUnitCodeSelection::TYPE,
                                 MeasurementUnitLabelSelection::TYPE,
                                 MeasurementValueSelection::TYPE,
+                                MeasurementValueSelection::TYPE,
+                                MeasurementValueAndUnitLabelSelection::TYPE,
                             ],
                         ]
                     ),

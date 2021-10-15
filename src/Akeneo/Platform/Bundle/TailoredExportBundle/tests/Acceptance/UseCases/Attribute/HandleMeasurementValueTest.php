@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
@@ -74,6 +75,18 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'selection' => new MeasurementUnitLabelSelection('Weight', 'fr_FR'),
                 'value' => new MeasurementValue('10', 'GRAM'),
                 'expected' => [self::TARGET_NAME => '[GRAM]'],
+            ],
+            'it selects the value and unit label then applies the provided decimal separator and locale' => [
+                'operations' => [],
+                'selection' => new MeasurementValueAndUnitLabelSelection(',', 'Weight', 'fr_FR'),
+                'value' => new MeasurementValue('10.5', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,5 Kilogramme'],
+            ],
+            'it selects the value and unit label then applies the provided decimal separator and fallbacks on unit code if label is not found' => [
+                'operations' => [],
+                'selection' => new MeasurementValueAndUnitLabelSelection(',', 'Weight', 'fr_FR'),
+                'value' => new MeasurementValue('8.4', 'GRAM'),
+                'expected' => [self::TARGET_NAME => '8,4 [GRAM]'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
