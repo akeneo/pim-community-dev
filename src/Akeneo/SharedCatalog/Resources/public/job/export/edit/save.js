@@ -1,6 +1,6 @@
 'use strict';
 
-define(['oro/translator', 'jquery', 'pim/job-instance-edit-form/save', 'pim/saver/job-instance-export'], function(
+define(['oro/translator', 'jquery', 'pim/job-instance-edit-form/save', 'pim/saver/job-instance-export'], function (
   __,
   $,
   BaseSave,
@@ -8,7 +8,7 @@ define(['oro/translator', 'jquery', 'pim/job-instance-edit-form/save', 'pim/save
 ) {
   return BaseSave.extend({
     label: __('shared_catalog.button.save'),
-    save: function() {
+    save: function () {
       let jobInstance = $.extend(true, {}, this.getFormData());
 
       delete jobInstance.meta;
@@ -20,7 +20,7 @@ define(['oro/translator', 'jquery', 'pim/job-instance-edit-form/save', 'pim/save
       return this.getJobInstanceSaver()
         .save(jobInstance.code, jobInstance)
         .then(
-          function(data) {
+          function (data) {
             this.postSave();
 
             this.setData(data);
@@ -30,7 +30,7 @@ define(['oro/translator', 'jquery', 'pim/job-instance-edit-form/save', 'pim/save
         .fail(this.fail.bind(this))
         .always(this.hideLoadingMask.bind(this));
     },
-    getJobInstanceSaver: function() {
+    getJobInstanceSaver: function () {
       return JobInstanceSaver;
     },
   });

@@ -19,10 +19,11 @@ export const getRemoveCategoriesModule: ActionModuleGuesser = json => {
   return Promise.resolve(RemoveCategoriesActionLine);
 };
 
-export const createRemoveCategoriesAction: () => RemoveCategoriesAction = () => {
-  return {
-    type: 'remove',
-    field: 'categories',
-    items: [],
+export const createRemoveCategoriesAction: () => RemoveCategoriesAction =
+  () => {
+    return {
+      type: 'remove',
+      field: 'categories',
+      items: [],
+    };
   };
-};

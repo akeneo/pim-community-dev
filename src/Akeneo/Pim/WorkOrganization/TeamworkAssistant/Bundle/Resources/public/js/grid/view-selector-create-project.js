@@ -14,7 +14,7 @@ define([
   'pim/form',
   'teamwork-assistant/templates/grid/view-selector/create-project',
   'teamwork-assistant/project/create-form',
-], function($, _, __, Backbone, BaseForm, template, CreateForm) {
+], function ($, _, __, Backbone, BaseForm, template, CreateForm) {
   return BaseForm.extend({
     template: _.template(template),
     tagName: 'span',
@@ -28,7 +28,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       if (!_.contains(this.getRoot().config.viewTypes, 'project')) {
         return this;
       }
@@ -51,7 +51,7 @@ define([
     /**
      * Prompt the create project modal
      */
-    promptCreateProject: function() {
+    promptCreateProject: function () {
       this.form = new CreateForm();
       this.form.configure();
       this.form.on('teamwork-assistant:edit-project:field-validated', this.onFieldValueValidated.bind(this));
@@ -69,19 +69,19 @@ define([
 
       modal.on(
         'cancel',
-        function() {
+        function () {
           modal.remove();
         }.bind(this)
       );
 
       modal.on(
         'ok',
-        function() {
+        function () {
           if ($('.modal .ok').hasClass('AknButton--disabled')) {
             return;
           }
 
-          this.form.save().done(function() {
+          this.form.save().done(function () {
             modal.close();
             modal.remove();
           });
@@ -93,7 +93,7 @@ define([
      * Method called on update field value of the modal.
      * It receives the field and the valid status of it to toggle button for example.
      */
-    onFieldValueValidated: function(field, isValid) {
+    onFieldValueValidated: function (field, isValid) {
       this.fieldsStatuses[field] = isValid;
 
       if (_.every(_.values(this.fieldsStatuses))) {

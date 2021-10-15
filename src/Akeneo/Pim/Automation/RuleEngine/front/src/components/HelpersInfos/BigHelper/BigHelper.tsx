@@ -28,7 +28,8 @@ const BigHelper: React.FC<Props> = ({
     <div className='AknDescriptionHeader'>
       <div
         className='AknDescriptionHeader-icon'
-        style={{backgroundImage: `url('${illustrationUrl}')`}}></div>
+        style={{backgroundImage: `url('${illustrationUrl}')`}}
+      ></div>
       <div className='AknDescriptionHeader-title'>
         {titleChildren}
         <div className='AknDescriptionHeader-description'>

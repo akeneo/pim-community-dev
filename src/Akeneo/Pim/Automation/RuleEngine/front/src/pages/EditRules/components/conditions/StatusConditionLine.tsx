@@ -40,7 +40,8 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pim_common.status')}>
+          title={translate('pim_common.status')}
+        >
           {translate('pim_common.status')}
         </FieldColumn>
         <OperatorColumn>
@@ -57,7 +58,8 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
         <ValueColumn
           className={
             isFormFieldInError('value') ? 'select2-container-error' : ''
-          }>
+          }
+        >
           <Controller
             name={valueFormName}
             as={StatusSelector}

@@ -17,7 +17,7 @@ define([
   'pim/fetcher-registry',
   'teamwork-assistant/remover/project',
   'oro/messenger',
-], function($, _, __, BaseForm, template, Dialog, UserContext, FetcherRegistry, ProjectRemover, messenger) {
+], function ($, _, __, BaseForm, template, Dialog, UserContext, FetcherRegistry, ProjectRemover, messenger) {
   return BaseForm.extend({
     template: _.template(template),
     tagName: 'span',
@@ -31,7 +31,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       var isProject = 'project' === this.getRoot().currentViewType;
       var isOwner = UserContext.get('meta').id === this.getRoot().currentView.owner_id;
 
@@ -55,13 +55,13 @@ define([
     /**
      * Prompt the datagrid project deletion modal.
      */
-    promptDeletion: function(event) {
+    promptDeletion: function (event) {
       event.stopPropagation();
 
       Dialog.confirmDelete(
         __('teamwork_assistant.grid.view_selector.confirmation.remove'),
         __('pim_common.confirm_deletion'),
-        function() {
+        function () {
           this.removeCurrentProject();
         }.bind(this),
         __('pim_datagrid.view_selector.project')
@@ -71,18 +71,18 @@ define([
     /**
      * Remove the current Project.
      */
-    removeCurrentProject: function() {
+    removeCurrentProject: function () {
       FetcherRegistry.getFetcher('project')
         .fetch(this.getRoot().currentView.label)
         .then(
-          function(project) {
+          function (project) {
             ProjectRemover.remove(project)
               .done(
-                function() {
+                function () {
                   this.getRoot().trigger('grid:view-selector:project-removed');
                 }.bind(this)
               )
-              .fail(function(response) {
+              .fail(function (response) {
                 messenger.notify('error', response.responseJSON);
               });
           }.bind(this)

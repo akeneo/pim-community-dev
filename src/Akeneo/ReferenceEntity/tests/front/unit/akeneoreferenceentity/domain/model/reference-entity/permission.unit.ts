@@ -67,11 +67,7 @@ describe('akeneo > reference entity > domain > model > reference entity --- perm
   });
 
   test('I can get a single permission', () => {
-    expect(
-      denormalizePermissionCollection(normalizedPermissions)
-        .getPermission('Manager')
-        .normalize()
-    ).toEqual({
+    expect(denormalizePermissionCollection(normalizedPermissions).getPermission('Manager').normalize()).toEqual({
       user_group_identifier: 1,
       user_group_name: 'Manager',
       right_level: 'view',

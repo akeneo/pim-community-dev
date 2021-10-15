@@ -103,7 +103,8 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pimee_catalog_rule.form.edit.fields.family')}>
+          title={translate('pimee_catalog_rule.form.edit.fields.family')}
+        >
           {translate('pimee_catalog_rule.form.edit.fields.family')}
         </FieldColumn>
         <OperatorColumn>
@@ -121,7 +122,8 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
           <ValueColumn
             className={
               isFormFieldInError('value') ? 'select2-container-error' : ''
-            }>
+            }
+          >
             <Controller
               as={FamiliesSelector}
               currentCatalogLocale={currentCatalogLocale}

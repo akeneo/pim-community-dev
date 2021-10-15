@@ -47,7 +47,8 @@ const AlertDialog: React.FC<Props> = ({
       role='alertdialog'
       aria-label={label}
       aria-describedby='dialog_desc'
-      className='AknFullPage'>
+      className='AknFullPage'
+    >
       <div className='AknFullPage-content AknFullPage-content--withIllustration'>
         <div>
           <div
@@ -65,13 +66,15 @@ const AlertDialog: React.FC<Props> = ({
             <button
               title={cancelLabel ?? translate('pim_common.cancel')}
               className='AknButton AknButton--grey AknButtonList-item'
-              onClick={handleCancel}>
+              onClick={handleCancel}
+            >
               {cancelLabel ?? translate('pim_common.cancel')}
             </button>
             <button
               title={confirmLabel ?? translate('pim_common.confirm')}
               className={`AknButton AknButtonList-item ${validateButtonClassName} ok`}
-              onClick={handleConfirm}>
+              onClick={handleConfirm}
+            >
               {confirmLabel ?? translate('pim_common.confirm')}
             </button>
           </div>

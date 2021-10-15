@@ -241,8 +241,8 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
 
       // Prevent the onSelect event to apply it even when the options are null
       const select2 = this.el.data('select2');
-      select2.onSelect = (function(fn) {
-        return function(_data: any, options: any) {
+      select2.onSelect = (function (fn) {
+        return function (_data: any, options: any) {
           if (null === options || 'A' !== options.target.nodeName) {
             //@ts-ignore Dirty but comming from select2...
             fn.apply(this, arguments);

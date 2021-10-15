@@ -23,7 +23,7 @@ define([
   'teamwork-assistant/templates/grid/create-project-modal-content',
   'teamwork-assistant/templates/field-error',
   'pim/template/form/creation/modal',
-], function(
+], function (
   $,
   _,
   __,
@@ -63,7 +63,7 @@ define([
      *
      * @param {Backbone.Model} model
      */
-    setModel: function(model) {
+    setModel: function (model) {
       this.model = model;
     },
 
@@ -72,7 +72,7 @@ define([
      *
      * @param {String} formType
      */
-    setFormType: function(formType) {
+    setFormType: function (formType) {
       this.formType = formType;
     },
 
@@ -80,7 +80,7 @@ define([
      * When an input occurs, it updates the model, validates fields and partial render form
      * when field values are not valid.
      */
-    onInputField: function() {
+    onInputField: function () {
       var model = this.getFormModel();
 
       this.updateModel(model);
@@ -93,7 +93,7 @@ define([
      *
      * @param {Object} model
      */
-    updateModel: function(model) {
+    updateModel: function (model) {
       var dueDate = this.$('[name="project-due-date"]').val();
 
       if ('' !== dueDate) {
@@ -110,7 +110,7 @@ define([
      *
      * @param {Object} model
      */
-    validateFields: function(model) {
+    validateFields: function (model) {
       this.validationErrors = [];
       this.validateLabel(model.get('label'));
       this.validateDueDate(model.get('due_date'));
@@ -122,7 +122,7 @@ define([
      *
      * @param {string} label
      */
-    validateLabel: function(label) {
+    validateLabel: function (label) {
       var isLabelTooLong = label.length > this.maxLengthLabel;
 
       if (isLabelTooLong) {
@@ -141,7 +141,7 @@ define([
      *
      * @param {string} modelDueDate
      */
-    validateDueDate: function(modelDueDate) {
+    validateDueDate: function (modelDueDate) {
       var isDueDateInPast = false;
       var isCreationMode = 'create' === this.formType;
 
@@ -169,7 +169,7 @@ define([
      *
      * @return {Promise}
      */
-    save: function() {
+    save: function () {
       this.validationErrors = [];
       var loadingMask = new LoadingMask();
       var project = _.defaults(this.getFormData(), {label: null});
@@ -181,12 +181,12 @@ define([
 
       return ProjectSaver.save(project)
         .done(
-          function() {
+          function () {
             messenger.notify('success', __('teamwork_assistant.' + this.formType + '_project_modal.saved'));
           }.bind(this)
         )
         .fail(
-          function(response) {
+          function (response) {
             if (_.isArray(response.responseJSON)) {
               this.validationErrors = response.responseJSON;
             } else {
@@ -205,7 +205,7 @@ define([
             this.render();
           }.bind(this)
         )
-        .always(function() {
+        .always(function () {
           loadingMask.remove();
         });
     },
@@ -213,7 +213,7 @@ define([
     /**
      * Partial render validation part of the form.
      */
-    partialRender: function() {
+    partialRender: function () {
       $('.bootstrap-datetimepicker-widget:visible').hide();
       this.$('.label-errors').empty();
       this.$('.dueDate-errors').empty();
@@ -221,7 +221,7 @@ define([
       if (0 < this.validationErrors.length) {
         _.each(
           this.validationErrors,
-          function(error) {
+          function (error) {
             var selector = '.' + error.field + '-errors';
 
             this.$(selector).append(
@@ -237,9 +237,9 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       $.when(this.getLocaleLabel(), this.getChannelLabel()).then(
-        function(localeValue, channelValue) {
+        function (localeValue, channelValue) {
           var model = this.getFormModel();
 
           if ('edit' === this.formType) {
@@ -281,12 +281,12 @@ define([
      *
      * @return {Promise}
      */
-    getLocaleLabel: function() {
+    getLocaleLabel: function () {
       var catalogLocale = UserContext.get('catalogLocale');
 
       return FetcherRegistry.getFetcher('locale')
         .fetch(catalogLocale)
-        .then(function(locale) {
+        .then(function (locale) {
           return locale.label;
         });
     },
@@ -296,13 +296,13 @@ define([
      *
      * @return {Promise}
      */
-    getChannelLabel: function() {
+    getChannelLabel: function () {
       var catalogChannel = UserContext.get('catalogScope');
       var catalogLocale = UserContext.get('catalogLocale');
 
       return FetcherRegistry.getFetcher('channel')
         .fetch(catalogChannel, {force_list_method: true})
-        .then(function(channel) {
+        .then(function (channel) {
           return i18n.getLabel(channel.labels, catalogLocale, catalogChannel);
         });
     },
@@ -310,9 +310,9 @@ define([
     /**
      * Initialize the datepicker component on the "Due date" input of the project.
      */
-    initializeDatepicker: function() {
+    initializeDatepicker: function () {
       Datepicker.init(this.$('.date-wrapper'), this.datetimepickerOptions)
-        .on('show', function() {
+        .on('show', function () {
           $('.bootstrap-datetimepicker-widget:visible').css('zIndex', 9999);
         })
         .on('changeDate', this.onInputField.bind(this));

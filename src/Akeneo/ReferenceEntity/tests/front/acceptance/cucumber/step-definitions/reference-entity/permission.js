@@ -8,7 +8,7 @@ const {
   tools: {convertItemTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {When, Then} = cucumber;
   const assert = require('assert');
 
@@ -24,7 +24,7 @@ module.exports = async function(cucumber) {
   };
   const getElement = createElementDecorator(config);
 
-  When('a reference entity', async function() {
+  When('a reference entity', async function () {
     const permissionRequestContract = getRequestContract('ReferenceEntityPermission/show.json');
     await listenRequest(this.page, permissionRequestContract);
 
@@ -34,7 +34,7 @@ module.exports = async function(cucumber) {
     await askForReferenceEntity.apply(this, ['designer']);
   });
 
-  When('the user sets the following permissions for the reference entity:', async function(permissions) {
+  When('the user sets the following permissions for the reference entity:', async function (permissions) {
     const editView = await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
 
@@ -46,7 +46,7 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, editRequestContract);
   });
 
-  When('the user ask for a reference entity without any user groups', async function() {
+  When('the user ask for a reference entity without any user groups', async function () {
     const showRequestContract = getRequestContract('ReferenceEntityPermission/show_empty.json');
     await listenRequest(this.page, showRequestContract);
     const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
@@ -57,7 +57,7 @@ module.exports = async function(cucumber) {
 
   Then(
     'there should be a {string} permission right for the user group {string} on the reference entity',
-    async function(rightLevel, groupName) {
+    async function (rightLevel, groupName) {
       const editView = await getElement(this.page, 'Edit');
       const permissionView = await editView.getPermission();
       const actualRightLevel = await permissionView.getRightLevel(groupName);
@@ -66,7 +66,7 @@ module.exports = async function(cucumber) {
     }
   );
 
-  Then('the user should be warned that he needs to create user groups first', async function() {
+  Then('the user should be warned that he needs to create user groups first', async function () {
     const editView = await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
     await permissionView.isEmpty();

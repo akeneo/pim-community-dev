@@ -12,15 +12,15 @@ define([
   'routing',
   'pimee/product-edit-form/publish',
   'pim/router',
-], function(_, template, Routing, Publish, router) {
+], function (_, template, Routing, Publish, router) {
   return Publish.extend({
     className: 'AknButtonList-item',
     template: _.template(template),
-    getProductId: function() {
+    getProductId: function () {
       return this.getFormData().meta.original_product_id;
     },
-    togglePublished: function() {
-      Publish.prototype.togglePublished.apply(this, arguments).then(function() {
+    togglePublished: function () {
+      Publish.prototype.togglePublished.apply(this, arguments).then(function () {
         router.redirectToRoute('pimee_workflow_published_product_index');
       });
     },

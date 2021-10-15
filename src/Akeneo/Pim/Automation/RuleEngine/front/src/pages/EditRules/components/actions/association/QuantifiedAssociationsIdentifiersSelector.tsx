@@ -52,7 +52,8 @@ const QuantifiedAssociationsIdentifiersSelector: React.FC<Props> = ({
             key={identifier}
             className={
               'AknBadgedSelector-item AknBadgedSelector-item--quantified'
-            }>
+            }
+          >
             <IdentifiersSelector
               entityType={entityType}
               value={identifier}

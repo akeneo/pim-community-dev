@@ -18,9 +18,8 @@ type ApplicationDependenciesContextProps = {
   viewBuilder?: ViewBuilder;
 };
 
-const ApplicationDependenciesContext = createContext<
-  ApplicationDependenciesContextProps
->({});
+const ApplicationDependenciesContext =
+  createContext<ApplicationDependenciesContextProps>({});
 
 const ApplicationDependenciesProvider: React.FC = ({children}) => {
   const value = {

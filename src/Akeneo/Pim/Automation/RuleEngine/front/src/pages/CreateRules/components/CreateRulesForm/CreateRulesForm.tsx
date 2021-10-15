@@ -48,9 +48,8 @@ const initialCustomErrors: CustomErrors = {
 
 const CreateRulesForm: React.FC<Props> = ({locale, onSubmit, translate}) => {
   const inputCodeRef = useRef<HTMLInputElement>();
-  const [customErrors, setCustomErrors] = React.useState<CustomErrors>(
-    initialCustomErrors
-  );
+  const [customErrors, setCustomErrors] =
+    React.useState<CustomErrors>(initialCustomErrors);
   const formMethods = useForm<FormDataInput>({
     mode: 'onChange',
   });
@@ -113,7 +112,8 @@ const CreateRulesForm: React.FC<Props> = ({locale, onSubmit, translate}) => {
       <form
         className='AknFormContainer'
         data-testid='form-create-rules'
-        onSubmit={handleSubmit(manageSubmitError)}>
+        onSubmit={handleSubmit(manageSubmitError)}
+      >
         <fieldset>
           <LegendSrOnly>
             {translate('pimee_catalog_rule.form.creation.title')}
@@ -170,7 +170,8 @@ const CreateRulesForm: React.FC<Props> = ({locale, onSubmit, translate}) => {
                     customErrors.label.map(message => (
                       <InputErrorMsg
                         key={`label-${message}`}
-                        id={inputLabelErrorMsgId}>
+                        id={inputLabelErrorMsgId}
+                      >
                         {translate(message)}
                       </InputErrorMsg>
                     ))}
@@ -182,7 +183,8 @@ const CreateRulesForm: React.FC<Props> = ({locale, onSubmit, translate}) => {
                     )}
                   </ErrorMessage>
                 </div>
-              }>
+              }
+            >
               <FlagLabel
                 htmlFor='label-input'
                 locale={locale}

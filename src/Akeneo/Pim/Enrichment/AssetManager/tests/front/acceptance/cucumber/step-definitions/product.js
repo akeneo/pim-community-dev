@@ -1,4 +1,4 @@
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {Given, Then, When} = cucumber;
   const assert = require('assert');
   const {
@@ -55,7 +55,7 @@ module.exports = async function(cucumber) {
     assert.deepEqual(assetCodes, expectedAssetCodes);
   };
 
-  Given('an asset collection with three assets', async function() {
+  Given('an asset collection with three assets', async function () {
     answerChannelList(this.page);
     answerRuleRelationList(this.page);
     answerAttributeGroup(this.page);
@@ -75,7 +75,7 @@ module.exports = async function(cucumber) {
     ];
   });
 
-  Given('an asset collection with two assets', async function() {
+  Given('an asset collection with two assets', async function () {
     answerChannelList(this.page);
     answerRuleRelationList(this.page);
     answerAttributeGroup(this.page);
@@ -95,61 +95,61 @@ module.exports = async function(cucumber) {
     ];
   });
 
-  When('the user go to the asset tab', async function() {
+  When('the user go to the asset tab', async function () {
     await renderView(this.page, 'pim-product-edit-form-assets', product);
   });
 
-  When('remove an asset', async function() {
+  When('remove an asset', async function () {
     const assetCollection = await getAssetCollection(this.page);
     const coco = await assetCollection.getAsset('coco');
 
     await coco.remove();
   });
 
-  When('remove all assets', async function() {
+  When('remove all assets', async function () {
     const assetCollection = await getAssetCollection(this.page);
 
     await assetCollection.removeAll();
   });
 
-  When('move an asset', async function() {
+  When('move an asset', async function () {
     const assetCollection = await getAssetCollection(this.page);
     const coco = await assetCollection.getAsset('coco');
 
     await coco.move('right');
   });
 
-  When('the user open the first asset preview', async function() {
+  When('the user open the first asset preview', async function () {
     const assetCollection = await getAssetCollection(this.page);
     const starck = await assetCollection.getAsset('starck');
 
     await starck.preview();
   });
 
-  Then('the preview should be displayed', async function() {
+  Then('the preview should be displayed', async function () {
     await getElement(this.page, 'Asset preview');
   });
 
-  Then('the first asset should be displayed', async function() {
+  Then('the first asset should be displayed', async function () {
     const assetPreview = await getElement(this.page, 'Asset preview');
     const image = await assetPreview.getImagePreviewed();
 
     assert.strictEqual(await image.getCode(), 'Starck');
   });
 
-  Then('the three assets in the collection should be displayed', async function() {
+  Then('the three assets in the collection should be displayed', async function () {
     await assertAssetCodesToBe(this.page, ['starck', 'coco', 'dyson']);
   });
 
-  Then('I should only see two remaining assets', async function() {
+  Then('I should only see two remaining assets', async function () {
     await assertAssetCodesToBe(this.page, ['starck', 'dyson']);
   });
 
-  Then('I should only see the reordered assets', async function() {
+  Then('I should only see the reordered assets', async function () {
     await assertAssetCodesToBe(this.page, ['starck', 'dyson', 'coco']);
   });
 
-  Then('there should be no asset in the collection', async function() {
+  Then('there should be no asset in the collection', async function () {
     await assertAssetCodesToBe(this.page, []);
   });
 };
