@@ -6,6 +6,10 @@ const selectOptionsCalls: {[key: string]: Promise<SelectOption[] | undefined>} =
 const selectOptionsCache: {[key: string]: SelectOption[] | null} = {};
 
 const clearCacheSelectOptions: () => void = () => {
+  for (const key in selectOptionsCalls) {
+    delete selectOptionsCalls[key];
+  }
+
   for (const key in selectOptionsCache) {
     delete selectOptionsCache[key];
   }
