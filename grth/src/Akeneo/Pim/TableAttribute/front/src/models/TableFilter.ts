@@ -34,7 +34,7 @@ const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {
     typeof filter.operator !== 'undefined' &&
     (['EMPTY', 'NOT EMPTY'].includes(filter.operator) ||
       (Array.isArray(filter.value) && filter.value.length > 0) ||
-      (filter.value !== '' && typeof filter.value !== 'undefined'))
+      (!Array.isArray(filter.value) && filter.value !== '' && typeof filter.value !== 'undefined'))
   );
 };
 
