@@ -6,9 +6,9 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllLocalesCodes;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocaleReferenceFromCode;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocalesAccessesWithHighestLevel;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocalesAccessesWithHighestLevel;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
@@ -24,9 +24,9 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleAccessManager $localeAccessManager,
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
-        GetAllLocalesCodes $getAllLocalesCodes,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel,
-        GetLocaleReferenceFromCode $getLocaleReferenceFromCode,
+        GetAllActiveLocalesCodes $getAllActiveLocalesCodes,
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel,
+        GetActiveLocaleReferenceFromCode $getActiveLocaleReferenceFromCode,
         GroupInterface $group,
         LocaleInterface $localeA,
         LocaleInterface $localeB,
@@ -42,21 +42,21 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         $localeC->getId()->willReturn(3);
         $localeC->getCode()->willReturn('locale_c');
 
-        $getAllLocalesCodes->execute()->willReturn(['locale_a', 'locale_b', 'locale_c']);
+        $getAllActiveLocalesCodes->execute()->willReturn(['locale_a', 'locale_b', 'locale_c']);
 
-        $getLocaleReferenceFromCode->execute('locale_a')->willReturn($localeA);
-        $getLocaleReferenceFromCode->execute('locale_b')->willReturn($localeB);
-        $getLocaleReferenceFromCode->execute('locale_c')->willReturn($localeC);
+        $getActiveLocaleReferenceFromCode->execute('locale_a')->willReturn($localeA);
+        $getActiveLocaleReferenceFromCode->execute('locale_b')->willReturn($localeB);
+        $getActiveLocaleReferenceFromCode->execute('locale_c')->willReturn($localeC);
 
-        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn([]);
+        $getActiveLocalesAccessesWithHighestLevel->execute(42)->willReturn([]);
 
         $this->beConstructedWith(
             $localeAccessManager,
             $groupRepository,
             $groupSaver,
-            $getAllLocalesCodes,
-            $getLocalesAccessesWithHighestLevel,
-            $getLocaleReferenceFromCode,
+            $getAllActiveLocalesCodes,
+            $getActiveLocalesAccessesWithHighestLevel,
+            $getActiveLocaleReferenceFromCode,
         );
     }
 
@@ -233,11 +233,11 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleAccessManager $localeAccessManager,
         GroupInterface $group,
         LocaleInterface $localeA,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel
     ) {
         $group->getDefaultPermissions()->willReturn(null);
         $groupSaver->save($group)->shouldNotBeCalled();
-        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+        $getActiveLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
 
         $localeAccessManager->grantAccess($localeA, $group, Attributes::EDIT_ITEMS)->shouldNotBeCalled();
 
@@ -262,11 +262,11 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleAccessManager $localeAccessManager,
         GroupInterface $group,
         LocaleInterface $localeA,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel
     ) {
         $group->getDefaultPermissions()->willReturn([]);
         $groupSaver->save($group)->shouldNotBeCalled();
-        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+        $getActiveLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
 
         $localeAccessManager->revokeGroupAccess($localeA, $group)->shouldBeCalled();
 
@@ -291,11 +291,11 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleAccessManager $localeAccessManager,
         GroupInterface $group,
         LocaleInterface $localeA,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel
     ) {
         $group->getDefaultPermissions()->willReturn(null);
         $groupSaver->save($group)->shouldNotBeCalled();
-        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
+        $getActiveLocalesAccessesWithHighestLevel->execute(42)->willReturn(['locale_a' => Attributes::EDIT_ITEMS]);
 
         $localeAccessManager->grantAccess($localeA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
 
@@ -322,14 +322,14 @@ class UserGroupLocalePermissionsSaverSpec extends ObjectBehavior
         LocaleInterface $localeA,
         LocaleInterface $localeB,
         LocaleInterface $localeC,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel
     ) {
         $group->getDefaultPermissions()->willReturn([self::DEFAULT_PERMISSION_VIEW => true]);
         $group->setDefaultPermission(self::DEFAULT_PERMISSION_VIEW, false)->shouldBeCalled();
         $group->setDefaultPermission(self::DEFAULT_PERMISSION_EDIT, false)->shouldBeCalled();
         $groupSaver->save($group)->shouldBeCalled();
 
-        $getLocalesAccessesWithHighestLevel->execute(42)->willReturn([
+        $getActiveLocalesAccessesWithHighestLevel->execute(42)->willReturn([
             'locale_a' => Attributes::EDIT_ITEMS,
             'locale_b' => Attributes::EDIT_ITEMS,
             'locale_c' => Attributes::VIEW_ITEMS,

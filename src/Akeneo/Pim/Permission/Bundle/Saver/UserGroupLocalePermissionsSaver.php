@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllLocalesCodes;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocaleReferenceFromCode;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocalesAccessesWithHighestLevel;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocalesAccessesWithHighestLevel;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
@@ -24,24 +24,24 @@ class UserGroupLocalePermissionsSaver
     private LocaleAccessManager $localeAccessManager;
     private GroupRepository $groupRepository;
     private SaverInterface $groupSaver;
-    private GetAllLocalesCodes $getAllLocalesCodes;
-    private GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel;
-    private GetLocaleReferenceFromCode $getLocaleReferenceFromCode;
+    private GetAllActiveLocalesCodes $getAllActiveLocalesCodes;
+    private GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel;
+    private GetActiveLocaleReferenceFromCode $getActiveLocaleReferenceFromCode;
 
     public function __construct(
         LocaleAccessManager $localeAccessManager,
         GroupRepository $groupRepository,
         SaverInterface $groupSaver,
-        GetAllLocalesCodes $getAllLocalesCodes,
-        GetLocalesAccessesWithHighestLevel $getLocalesAccessesWithHighestLevel,
-        GetLocaleReferenceFromCode $getLocaleReferenceFromCode
+        GetAllActiveLocalesCodes $getAllActiveLocalesCodes,
+        GetActiveLocalesAccessesWithHighestLevel $getActiveLocalesAccessesWithHighestLevel,
+        GetActiveLocaleReferenceFromCode $getActiveLocaleReferenceFromCode
     ) {
         $this->groupRepository = $groupRepository;
         $this->groupSaver = $groupSaver;
         $this->localeAccessManager = $localeAccessManager;
-        $this->getAllLocalesCodes = $getAllLocalesCodes;
-        $this->getLocalesAccessesWithHighestLevel = $getLocalesAccessesWithHighestLevel;
-        $this->getLocaleReferenceFromCode = $getLocaleReferenceFromCode;
+        $this->getAllActiveLocalesCodes = $getAllActiveLocalesCodes;
+        $this->getActiveLocalesAccessesWithHighestLevel = $getActiveLocalesAccessesWithHighestLevel;
+        $this->getActiveLocaleReferenceFromCode = $getActiveLocaleReferenceFromCode;
     }
 
     /**
@@ -66,7 +66,7 @@ class UserGroupLocalePermissionsSaver
 
         $affectedLocalesCodes = $this->getAffectedLocalesCodes($permissions);
         $highestAccessLevelIndexedByLocaleCode = $this->getHighestAccessLevelIndexedByLocaleCode($affectedLocalesCodes, $permissions);
-        $existingHighestAccessLevelIndexedByLocaleCode = $this->getLocalesAccessesWithHighestLevel->execute($group->getId());
+        $existingHighestAccessLevelIndexedByLocaleCode = $this->getActiveLocalesAccessesWithHighestLevel->execute($group->getId());
 
         $removedCategoryCodes = array_diff(array_keys($existingHighestAccessLevelIndexedByLocaleCode), $affectedLocalesCodes);
         $this->revokeAccesses($removedCategoryCodes, $group);
@@ -178,7 +178,7 @@ class UserGroupLocalePermissionsSaver
     private function getAffectedLocalesCodes(array $permissions): array
     {
         if ($permissions['edit']['all'] || $permissions['view']['all']) {
-            return $this->getAllLocalesCodes->execute();
+            return $this->getAllActiveLocalesCodes->execute();
         }
 
         return array_values(array_unique(array_merge(
@@ -245,7 +245,7 @@ class UserGroupLocalePermissionsSaver
     private function revokeAccesses(array $removedLocaleCodes, GroupInterface $group): void
     {
         foreach ($removedLocaleCodes as $localeCode) {
-            $locale = $this->getLocaleReferenceFromCode->execute($localeCode);
+            $locale = $this->getActiveLocaleReferenceFromCode->execute($localeCode);
             if (null === $locale) {
                 continue;
             }
@@ -266,7 +266,7 @@ class UserGroupLocalePermissionsSaver
             $existingLevel = $existingHighestAccessLevelIndexedByLocaleCode[$localeCode] ?? null;
 
             if ($existingLevel !== $newLevel) {
-                $locale = $this->getLocaleReferenceFromCode->execute($localeCode);
+                $locale = $this->getActiveLocaleReferenceFromCode->execute($localeCode);
                 if (null === $locale) {
                     continue;
                 }
