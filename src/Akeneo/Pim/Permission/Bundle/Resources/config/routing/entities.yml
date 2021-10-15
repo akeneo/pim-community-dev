@@ -27,3 +27,8 @@ pimee_permissions_entities_get_user_group_locales:
   path: /rest/permissions/user-group/{userGroupName}/locale
   defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupLocalesPermissionsAction }
   methods: [ GET ]
+
+pimee_permissions_entities_set_attribute_groups:
+  path: /rest/permissions/attribute-group
+  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveAttributeGroupsPermissionsAction }
+  methods: [ POST ]

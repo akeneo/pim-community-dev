@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale;
 
 use Doctrine\DBAL\Connection;
 
-class GetAllLocalesCodes
+class GetAllActiveLocalesCodes
 {
     private Connection $connection;
 
@@ -20,7 +20,7 @@ class GetAllLocalesCodes
      */
     public function execute(): array
     {
-        $query = 'SELECT code FROM pim_catalog_locale';
+        $query = 'SELECT code FROM pim_catalog_locale WHERE is_activated = 1';
 
         $results = $this->connection->fetchAll($query) ?: [];
 

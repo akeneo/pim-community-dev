@@ -9,7 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetLocaleReferenceFromCode
+class GetActiveLocaleReferenceFromCode
 {
     private Connection $connection;
     private Registry $doctrine;
@@ -33,7 +33,7 @@ class GetLocaleReferenceFromCode
         $query = <<<SQL
 SELECT id
 FROM pim_catalog_locale
-WHERE code = :code
+WHERE code = :code AND is_activated = 1
 SQL;
 
         $id = $this->connection->fetchColumn($query, [

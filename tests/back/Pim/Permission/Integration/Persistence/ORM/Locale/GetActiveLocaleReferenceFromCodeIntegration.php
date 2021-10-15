@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM\Locale;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetLocaleReferenceFromCode;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class GetLocaleReferenceFromCodeIntegration extends TestCase
+class GetActiveLocaleReferenceFromCodeIntegration extends TestCase
 {
-    private GetLocaleReferenceFromCode $query;
+    private GetActiveLocaleReferenceFromCode $query;
 
     /**
      * {@inheritdoc}
@@ -25,20 +25,27 @@ class GetLocaleReferenceFromCodeIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = $this->get(GetLocaleReferenceFromCode::class);
+        $this->query = $this->get(GetActiveLocaleReferenceFromCode::class);
     }
 
     public function testItReturnsTheLocaleEntity(): void
     {
-        $entity = $this->query->execute('fr_FR');
+        $entity = $this->query->execute('en_US');
 
         $this->assertNotNull($entity);
         $this->assertInstanceOf(LocaleInterface::class, $entity);
     }
 
+    public function testItReturnsNullWhenTheLocaleIsInactive(): void
+    {
+        $entity = $this->query->execute('fr_FR');
+
+        $this->assertNull($entity);
+    }
+
     public function testItReturnsNullWhenTheLocaleCodeIsUnknown(): void
     {
-        $entity = $this->query->execute('unknown group code');
+        $entity = $this->query->execute('unknown locale code');
 
         $this->assertNull($entity);
     }
