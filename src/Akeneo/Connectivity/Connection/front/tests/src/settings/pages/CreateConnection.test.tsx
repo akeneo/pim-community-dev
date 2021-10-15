@@ -1,6 +1,6 @@
 import {ConnectionsProvider} from '@src/settings/connections-context';
 import {CreateConnection} from '@src/settings/pages/CreateConnection';
-import {act, screen} from '@testing-library/react';
+import {act, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {createMemoryHistory} from 'history';
 import React from 'react';
@@ -38,8 +38,10 @@ describe('testing CreateConnection page', () => {
         const saveButton = screen.getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
+            userEvent.clear(labelInput);
+            await waitFor(() => expect(labelInput.value).toBe(''));
             userEvent.type(labelInput, 'Magento');
-            userEvent.type(codeInput, 'magento');
+
             userEvent.click(flowTypeSelect);
             userEvent.click(await screen.findByText(/akeneo_connectivity\.connection\.flow_type\.data_destination/));
             userEvent.click(saveButton);
