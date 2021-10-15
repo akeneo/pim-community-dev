@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Content form
  *
@@ -13,7 +14,8 @@ define([
   'pim/template/export/product/edit/content',
   'pim/form',
   'pim/analytics',
-], function (_, __, Backbone, template, BaseForm, analytics) {
+  '@akeneo-pim-community/shared',
+], function (_, __, Backbone, template, BaseForm, analytics, {filterErrors}) {
   return BaseForm.extend({
     template: _.template(template),
 
@@ -31,12 +33,26 @@ define([
      */
     configure: function () {
       this.trigger('tab:register', {
-        code: this.config.tabCode ? this.config.tabCode : this.code,
+        code: this.getTabCode(),
         label: __(this.config.tabTitle),
       });
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
+      });
+
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
+        const validationErrors = event.response.normalized_errors;
+        if (filterErrors(validationErrors, '[filters]').length > 0) {
+          this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
+        }
+      });
 
       return BaseForm.prototype.configure.apply(this, arguments);
+    },
+
+    getTabCode: function () {
+      return this.config.tabCode ? this.config.tabCode : this.code;
     },
 
     /**
