@@ -30,14 +30,14 @@ test('it renders its children properly', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.focus(input);
+  fireEvent.click(input);
 
   expect(screen.queryByText('German')).toBeInTheDocument();
 
   fireEvent.click(screen.getByTestId('backdrop'));
   expect(screen.queryByText('German')).not.toBeInTheDocument();
 
-  fireEvent.focus(screen.getByRole('textbox'));
+  fireEvent.click(screen.getByRole('textbox'));
   expect(screen.queryByText('German')).toBeInTheDocument();
 
   const germanOption = screen.getByText('German');
@@ -72,22 +72,26 @@ test('it handles search', () => {
   );
 
   const input = screen.getByRole('textbox');
-  fireEvent.focus(input);
+  fireEvent.click(input);
   fireEvent.change(input, {target: {value: 'Français'}});
 
   const germanOption = screen.queryByText('German');
   expect(germanOption).not.toBeInTheDocument();
   const frenchOption = screen.getByText('Français');
   expect(frenchOption).toBeInTheDocument();
-  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  fireEvent.keyDown(input, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(screen.getByTestId('fr_FR')).toHaveFocus();
+  fireEvent.keyDown(screen.getByTestId('fr_FR'), {key: 'Enter', code: 'Enter'});
   expect(onChange).toHaveBeenCalledWith('fr_FR');
 
-  fireEvent.focus(input);
+  fireEvent.click(input);
   fireEvent.change(input, {target: {value: 'Spain'}});
 
   const spainOption = screen.getByText('Spanish');
   expect(spainOption).toBeInTheDocument();
-  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  fireEvent.keyDown(input, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(screen.getByTestId('es_ES')).toHaveFocus();
+  fireEvent.keyDown(screen.getByTestId('es_ES'), {key: 'Enter', code: 'Enter'});
   expect(onChange).toHaveBeenCalledWith('es_ES');
 });
 
@@ -218,26 +222,43 @@ test('it handles keyboard events', () => {
     </SelectInput>
   );
 
+  // It should clear the field when typing Enter on clear button
   const clearButton = screen.getByTitle('clear');
   userEvent.type(clearButton, '{enter}');
-
   expect(onChange).toHaveBeenCalledWith(null);
 
-  const openButton = screen.getByTitle('open');
-  userEvent.type(openButton, '{enter}');
+  // It should get to the next field and clear search when typing Tab on input
+  const input = screen.getByRole('textbox');
+  fireEvent.focus(input);
+  fireEvent.change(input, {target: {value: 'my search'}});
+  expect(input).toHaveDisplayValue('my search');
+  fireEvent.keyDown(input, {key: 'Tab', code: 'Tab'});
+  expect(input).toHaveDisplayValue('');
 
-  const germanOption = screen.queryByText('German');
-  expect(germanOption).toBeInTheDocument();
+  // It should get to the next field and clear search when typing Tab on an option
+  fireEvent.click(input);
+  let englishOption = screen.queryByTestId('en_US');
+  expect(englishOption).toHaveFocus();
+  fireEvent.keyDown(englishOption as Element, {key: 'Tab', code: 'Tab'});
+  expect(screen.queryByTestId('en_US')).not.toBeInTheDocument();
+
+  // It should close the dropdown when typing on Escape
+  fireEvent.click(input);
+  englishOption = screen.queryByTestId('en_US');
+  expect(englishOption).toHaveFocus();
+  fireEvent.keyDown(englishOption as Element, {key: 'Escape', code: 'Escape'});
+  expect(screen.queryByTestId('en_US')).not.toBeInTheDocument();
+  expect(input).toHaveFocus();
 });
 
-test('it handles keyboard navigation', () => {
+test('it handles keyboard navigation without initial value', () => {
   const handleInputKeyDown = jest.fn();
   const onChange = jest.fn();
   render(
     <SelectInput
       id="localValue"
       data-testid="selectedOpt"
-      value="en_US"
+      value={null}
       onChange={onChange}
       onKeyDown={handleInputKeyDown}
       placeholder="Placeholder"
@@ -254,48 +275,75 @@ test('it handles keyboard navigation', () => {
       <SelectInput.Option value="de_DE" title="German (Germany)">
         <Locale code="de_DE" languageLabel="German" />
       </SelectInput.Option>
-      <SelectInput.Option value="es_ES" title="Spanish (Spain)">
-        <Locale code="es_ES" languageLabel="Spanish" />
-      </SelectInput.Option>
     </SelectInput>
   );
 
   const input = screen.getByRole('textbox');
   fireEvent.focus(input);
   fireEvent.keyDown(input, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(onChange).toBeCalledWith('en_US');
+
+  fireEvent.click(input);
   const englishOption = screen.queryByTestId('en_US');
-  expect(englishOption).toBeInTheDocument();
-  expect(englishOption).toHaveFocus();
-
-  const spanishOption = screen.queryByTestId('es_ES');
-  fireEvent.keyDown(englishOption as Element, {key: 'ArrowUp', code: 'ArrowUp'});
-  expect(input).toHaveFocus();
-
-  fireEvent.keyDown(input, {key: 'ArrowDown', code: 'ArrowDown'});
-  expect(englishOption).toHaveFocus();
-
-  fireEvent.keyDown(englishOption as Element, {key: 'ArrowRight', code: 'ArrowRight'});
-  expect(input).toHaveFocus();
-
-  fireEvent.keyDown(englishOption as Element, {key: 'ArrowDown', code: 'ArrowDown'});
   const frenchOption = screen.queryByTestId('fr_FR');
-  expect(frenchOption).toBeInTheDocument();
-  expect(frenchOption).toHaveFocus();
-
-  fireEvent.keyDown(frenchOption as Element, {key: 'ArrowUp', code: 'ArrowUp'});
+  const germanOption = screen.queryByTestId('de_DE');
   expect(englishOption).toBeInTheDocument();
+  expect(frenchOption).toBeInTheDocument();
+  expect(germanOption).toBeInTheDocument();
   expect(englishOption).toHaveFocus();
 
+  fireEvent.keyDown(englishOption as Element, {key: 'ArrowUp', code: 'ArrowUp'}); // Do nothing
+  expect(englishOption).toHaveFocus();
+  fireEvent.keyDown(englishOption as Element, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(frenchOption).toHaveFocus();
+  fireEvent.keyDown(frenchOption as Element, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(germanOption).toHaveFocus();
+  fireEvent.keyDown(germanOption as Element, {key: 'ArrowDown', code: 'ArrowDown'}); // Do nothing
+  expect(germanOption).toHaveFocus();
+});
+
+test('it handles keyboard navigation with initial value', () => {
+  const handleInputKeyDown = jest.fn();
+  const onChange = jest.fn();
+  render(
+    <SelectInput
+      id="localValue"
+      data-testid="selectedOpt"
+      value={'fr_FR'}
+      onChange={onChange}
+      onKeyDown={handleInputKeyDown}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+      openLabel="open"
+      clearLabel="clear"
+    >
+      <SelectInput.Option value="en_US" title="English (United States)">
+        <Locale code="en_US" languageLabel="English" />
+      </SelectInput.Option>
+      <SelectInput.Option value="fr_FR" title="French (France)">
+        <Locale code="fr_FR" languageLabel="French" />
+      </SelectInput.Option>
+      <SelectInput.Option value="de_DE" title="German (Germany)">
+        <Locale code="de_DE" languageLabel="German" />
+      </SelectInput.Option>
+    </SelectInput>
+  );
+
+  const input = screen.getByRole('textbox');
   fireEvent.focus(input);
   fireEvent.keyDown(input, {key: 'ArrowUp', code: 'ArrowUp'});
-  expect(spanishOption).toBeInTheDocument();
-  expect(spanishOption).toHaveFocus();
+  expect(onChange).toBeCalledWith('en_US');
+  fireEvent.keyDown(input, {key: 'ArrowDown', code: 'ArrowDown'});
+  expect(onChange).toBeCalledWith('de_DE');
 
-  fireEvent.keyDown(spanishOption as Element, {key: 'ArrowDown', code: 'ArrowDown'});
-  expect(input).toHaveFocus();
-
-  fireEvent.keyDown(spanishOption as Element, {key: 'Enter', code: 'Enter'});
-  expect(onChange).toHaveBeenCalledWith('es_ES');
+  fireEvent.click(input);
+  const englishOption = screen.queryByTestId('en_US');
+  const frenchOption = screen.queryByTestId('fr_FR');
+  const germanOption = screen.queryByTestId('de_DE');
+  expect(englishOption).toBeInTheDocument();
+  expect(frenchOption).toBeInTheDocument();
+  expect(germanOption).toBeInTheDocument();
+  expect(frenchOption).toHaveFocus();
 });
 
 test('SelectInput supports ...rest props', () => {

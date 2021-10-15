@@ -8,6 +8,7 @@ enum Key {
   ArrowDown = 'ArrowDown',
   ArrowUp = 'ArrowUp',
   Delete = 'Delete',
+  Tab = 'Tab',
 }
 
 export {Key};
