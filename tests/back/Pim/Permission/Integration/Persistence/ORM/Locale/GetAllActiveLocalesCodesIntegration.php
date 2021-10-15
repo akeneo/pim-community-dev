@@ -7,11 +7,13 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM\Locale
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader;
 use PHPUnit\Framework\Assert;
 
 class GetAllActiveLocalesCodesIntegration extends TestCase
 {
     private GetAllActiveLocalesCodes $query;
+    private LocaleFixturesLoader $localeFixturesLoader;
 
     /**
      * {@inheritdoc}
@@ -26,32 +28,17 @@ class GetAllActiveLocalesCodesIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(GetAllActiveLocalesCodes::class);
+        $this->localeFixturesLoader = $this->get('akeneo_integration_tests.loader.locale');
     }
 
     public function testItFetchesAllLocales(): void
     {
         $expected = ['en_US', 'fr_FR', 'de_DE', 'ru_RU'];
 
-        $this->activateLocales($expected);
+        $this->localeFixturesLoader->activateLocalesOnChannel($expected, 'ecommerce');
 
         $results = $this->query->execute();
 
         $this->assertEqualsCanonicalizing($expected, $results, 'Locales codes are not matched');
-    }
-
-    private function activateLocales(array $localeCodes): void
-    {
-        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
-        $localeRepository = $this->get('pim_catalog.repository.locale');
-        $localeSaver = $this->get('pim_catalog.saver.locale');
-
-        foreach ($localeCodes as $localeCode) {
-            $locale = $localeRepository->findOneByIdentifier($localeCode);
-            $locale->addChannel($channel);
-
-            $errors = $this->get('validator')->validate($locale);
-            Assert::assertCount(0, $errors);
-            $localeSaver->save($locale);
-        }
     }
 }
