@@ -29,7 +29,9 @@ SELECT pim_catalog_locale.code,
        pimee_security_locale_access.edit_products as edit
 FROM pim_catalog_locale
 JOIN pimee_security_locale_access on pim_catalog_locale.id = pimee_security_locale_access.locale_id
-WHERE pimee_security_locale_access.user_group_id = :user_group_id AND pim_catalog_locale.is_activated = 1
+WHERE
+      pimee_security_locale_access.user_group_id = :user_group_id
+  AND pim_catalog_locale.is_activated = 1
 SQL;
 
         $rows = $this->connection->fetchAll($query, [
@@ -45,10 +47,7 @@ SQL;
     }
 
     /**
-     * @param array{
-     *     edit: bool,
-     *     view: bool
-     * } $row
+     * @param array{edit: string, view: string} $row
      *
      * @throws \LogicException
      */
@@ -56,7 +55,9 @@ SQL;
     {
         if ($row['edit']) {
             return Attributes::EDIT_ITEMS;
-        } elseif ($row['view']) {
+        }
+
+        if ($row['view']) {
             return Attributes::VIEW_ITEMS;
         }
 
