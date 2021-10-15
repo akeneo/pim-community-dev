@@ -6,6 +6,8 @@ namespace AkeneoTestEnterprise\Pim\Permission\FixturesLoader;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Channel\Component\Updater\LocaleUpdater;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -17,17 +19,23 @@ class LocaleFixturesLoader
     private LocaleUpdater $localeUpdater;
     private SaverInterface $localeSaver;
     private ValidatorInterface $validator;
+    private LocaleRepositoryInterface $localeRepository;
+    private ChannelRepositoryInterface $channelRepository;
 
     public function __construct(
         SimpleFactoryInterface $localeFactory,
         LocaleUpdater $localeUpdater,
         SaverInterface $localeSaver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->localeFactory = $localeFactory;
         $this->localeUpdater = $localeUpdater;
         $this->localeSaver = $localeSaver;
         $this->validator = $validator;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
     }
 
     public function createLocale(array $data, ?ChannelInterface $channel = null): LocaleInterface
@@ -44,5 +52,18 @@ class LocaleFixturesLoader
         $this->localeSaver->save($locale);
 
         return $locale;
+    }
+
+    public function activateLocalesOnChannel(array $localeCodes, string $channelIdentifier): void
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($channelIdentifier);
+
+        foreach ($localeCodes as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $locale->addChannel($channel);
+
+            $this->validator->validate($locale);
+            $this->localeSaver->save($locale);
+        }
     }
 }

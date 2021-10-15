@@ -131,6 +131,8 @@ services:
             - '@pim_catalog.updater.locale'
             - '@pim_catalog.saver.locale'
             - '@validator'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
 
     akeneo_integration_tests.loader.locale_permissions:
         class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader'
