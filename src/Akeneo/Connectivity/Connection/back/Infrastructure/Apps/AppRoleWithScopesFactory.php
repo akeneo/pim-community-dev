@@ -41,7 +41,9 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
         $role->setLabel($label);
         $role->setType(self::APP_ROLE_TYPE);
 
-        $permissions = [];
+        $permissions = [
+            'action:pim_api_overall_access' => true,
+        ];
 
         foreach ($scopes as $scope) {
             $acls = $this->scopeMapper->getAcls($scope);
