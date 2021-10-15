@@ -371,7 +371,9 @@ commit-instance:
 .PHONY: uncommit-instance
 uncommit-instance:
 	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)/*
-	git clone git@cloud-customers-dev:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)
+	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	make create-ci-release-files
 	make delete
 	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	git config --global user.email "pim_ci@akeneo.com"

@@ -1211,6 +1211,10 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
@@ -1218,13 +1222,16 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
 
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
+                echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1232,7 +1239,9 @@ jobs:
               name: Deploy PIM on kubernetes
               command: |
                   NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                  make -C deployments/ deploy-instance
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  make -C deployments/ commit-instance
           - run:
               name: Test PIM connexion on kubernetes
               command: make -C deployments/ test-prod
@@ -1400,11 +1409,13 @@ jobs:
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
                 echo "Source PFID: ${SOURCE_PFID}"
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
+                echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1623,6 +1634,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
       - set_gcloud_config_dev
       - restore_persisted_env_vars
       - run:
@@ -1638,15 +1653,20 @@ jobs:
             fi
             INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
             ACTIVATE_MONITORING=true
+            DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+
             echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
             echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
             echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
             echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
             echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
             echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+            echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
             echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
             echo "Instance name: ${INSTANCE_NAME}"
             echo "Image tag: ${IMAGE_TAG}"
+            echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
       - run:
           name: DATADOG deployment Livetail logs page
           command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1657,7 +1677,11 @@ jobs:
             echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
       - run:
           name: Deploy PR environment
-          command: make -C deployments/ deploy-instance
+          command: |
+            NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+            export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+            make -C deployments/ commit-instance
       - run:
           name: Prepare infrastructure artifacts
           command: make -C deployments/ prepare-infrastructure-artifacts
@@ -1680,12 +1704,18 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - run:
                 name: Delete environments
                 no_output_timeout: 30m
-                command:
+                command: |
                     TYPE="<<parameters.PRODUCT_TYPE>>"
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                     TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
   delete_expired_uptime_check:
