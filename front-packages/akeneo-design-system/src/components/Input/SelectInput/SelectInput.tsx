@@ -277,29 +277,16 @@ const SelectInput = ({
           setSearchValue('');
           closeOverlay();
         }
-
         if (event.key === Key.ArrowDown) {
           event.preventDefault();
-
-          if (dropdownIsOpen) {
-            (firstOptionRef.current || selectedOptionRef.current)?.focus();
-          } else if (!value) {
-            onChange?.(validChildren[0].props.value);
+          if (!dropdownIsOpen) {
+            openOverlay();
           } else {
-            const indexOfCurrentValue = validChildren.findIndex(child => child.props.value === value);
-            if (indexOfCurrentValue < validChildren.length - 1) {
-              onChange?.(validChildren[indexOfCurrentValue + 1].props.value);
-            }
+            (firstOptionRef.current || selectedOptionRef.current)?.focus();
           }
         } else if (event.key === Key.ArrowUp) {
           event.preventDefault();
-
-          if (!dropdownIsOpen && value) {
-            const indexOfCurrentValue = validChildren.findIndex(child => child.props.value === value);
-            if (indexOfCurrentValue > 0) {
-              onChange?.(validChildren[indexOfCurrentValue - 1].props.value);
-            }
-          }
+          openOverlay();
         } else if (event.key === Key.Enter) {
           event.preventDefault();
           if (!dropdownIsOpen) {
