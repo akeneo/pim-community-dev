@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {getColor} from 'akeneo-design-system';
 import {createGlobalStyle} from 'styled-components';
 
@@ -11,16 +11,7 @@ type Select2Option = {
 };
 
 type Select2Configuration = {
-    multiple: boolean;
     closeOnSelect: boolean;
-    ajax: {
-        url: string;
-        dataType: string;
-        results: (data: any) => {results: Select2Option[]; more: boolean; context?: any};
-        cache?: boolean;
-        quietMillis?: number;
-    };
-    initSelection: (element: JQuery, callback: (data: Select2Option[]) => void) => void;
 };
 
 type Select2Change = {
@@ -30,19 +21,12 @@ type Select2Change = {
 };
 
 type Props = {
-    url: string;
-    fetchByIdentifiers: (identifiers: string[]) => Promise<Select2Option[]>;
-    processResults: (data: any) => {
-        results: Select2Option[];
-        more: boolean;
-        context?: any;
-    };
-    buildQueryParams?: QueryParamsBuilder<any, any>;
     disabled: boolean;
     value: string[];
     onChange?: (value: string[]) => void;
     onAdd?: (value: string) => void;
     onRemove?: (value: string) => void;
+    options: Select2Option[];
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -63,60 +47,18 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-export const MultiSelectInputWithDynamicOptions = ({
-    url,
-    fetchByIdentifiers,
-    processResults,
-    buildQueryParams,
-    disabled,
-    value,
-    onChange,
-    onAdd,
-    onRemove,
-}: Props) => {
-    const ref = useRef<HTMLInputElement>(null);
-
-    /* istanbul ignore next */
-    const handleInitSelection = useCallback(
-        (element, callback) => {
-            const val = element.val().trim();
-
-            if (val.length === 0) {
-                callback([]);
-                return;
-            }
-
-            const identifiers = val.split(',');
-
-            fetchByIdentifiers(identifiers).then(results => {
-                callback(results);
-            });
-        },
-        [fetchByIdentifiers, processResults]
-    );
-
-    const configuration: Select2Configuration = useMemo(
-        () => ({
-            multiple: true,
-            closeOnSelect: true,
-            ajax: {
-                url: url,
-                cache: true,
-                quietMillis: 250,
-                dataType: 'json',
-                data: buildQueryParams || undefined,
-                results: processResults,
-            },
-            initSelection: handleInitSelection,
-        }),
-        [url, processResults]
-    );
+export const MultiSelectInputWithStaticOptions = ({disabled, value, onChange, onAdd, onRemove, options}: Props) => {
+    const ref = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
         /* istanbul ignore next */
         if (null === ref.current) {
             return;
         }
+
+        const configuration: Select2Configuration = {
+            closeOnSelect: true,
+        };
 
         const $select = $(ref.current) as any;
         $select.val(value.join(','));
@@ -143,7 +85,7 @@ export const MultiSelectInputWithDynamicOptions = ({
             /* istanbul ignore next */
             $container && $container.remove();
         };
-    }, [configuration]);
+    }, []);
 
     useEffect(() => {
         /* istanbul ignore next */
@@ -156,9 +98,12 @@ export const MultiSelectInputWithDynamicOptions = ({
 
         /* istanbul ignore else */
         if (value.toString() !== select2Value.toString()) {
-            $select.select2('val', value);
+            $select.select2(
+                'data',
+                options.filter(option => value.indexOf(option.id) >= 0)
+            );
         }
-    }, [value]);
+    }, [options, value]);
 
     useEffect(() => {
         /* istanbul ignore next */
@@ -173,7 +118,14 @@ export const MultiSelectInputWithDynamicOptions = ({
     return (
         <>
             <GlobalStyle />
-            <input type='hidden' ref={ref} data-testid='select2' />
+            <select ref={ref} multiple={true} data-testid='select2'>
+                {options &&
+                    options.map(option => (
+                        <option key={option.id} value={option.id}>
+                            {option.text}
+                        </option>
+                    ))}
+            </select>
         </>
     );
 };

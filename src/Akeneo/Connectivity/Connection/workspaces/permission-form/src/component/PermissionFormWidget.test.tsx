@@ -12,6 +12,9 @@ jest.mock('../dependencies/translate', () => ({
 jest.mock('./MultiSelectInputWithDynamicOptions', () => ({
     MultiSelectInputWithDynamicOptions: () => <input type='hidden' />,
 }));
+jest.mock('./MultiSelectInputWithStaticOptions', () => ({
+    MultiSelectInputWithStaticOptions: () => <select />,
+}));
 
 const props = {
     selection: [],
@@ -23,15 +26,28 @@ const props = {
     onSelectAllByDefault: jest.fn(),
     onDeselectAllByDefault: jest.fn(),
     onClear: jest.fn(),
-    ajaxUrl: '/foo',
-    processAjaxResponse: jest.fn(),
-    fetchByIdentifiers: jest.fn(),
 };
 
-test('it renders without error', () => {
+test('it renders the ajax version without error', () => {
+    const ajax = {
+        ajaxUrl: '/foo',
+        processAjaxResponse: jest.fn(),
+        fetchByIdentifiers: jest.fn(),
+    };
+
     render(
         <ThemeProvider theme={pimTheme}>
-            <PermissionFormWidget {...props} />
+            <PermissionFormWidget {...props} ajax={ajax} />
+        </ThemeProvider>
+    );
+});
+
+test('it renders the select version without error', () => {
+    const options = [{id: 'foo', text: 'foo'}];
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <PermissionFormWidget {...props} options={options} />
         </ThemeProvider>
     );
 });
