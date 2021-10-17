@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: 如果用作标签的属性每个区域都有一个值，则您可以选择特定的区域。
             channel: 如果用作标签的属性每个渠道都有一个值，则您可以选择特定的渠道。
         measurement:
-          information: 对于此属性，您可以导出值、单位代码或单位标签。
           value: 值
           unit_locale: 单位区域
           unit_code: 单位代码

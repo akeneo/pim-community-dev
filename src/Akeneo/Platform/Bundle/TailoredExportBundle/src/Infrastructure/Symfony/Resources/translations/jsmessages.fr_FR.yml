@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Si l'attribut en tant que libellé a une valeur par locale, vous pouvez sélectionner une locale spécifique.
             channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
         measurement:
-          information: Pour cet attribut, vous pouvez exporter la valeur, le code de l'unité ou le libellé de l'unité.
           value: Valeur
           unit_locale: Locale de l'unité
           unit_code: Code de l'unité

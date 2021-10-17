@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Als het attribuut dat gebruikt wordt als label een waarde per locatie heeft, kunt u een specifieke taal selecteren.
             channel: Als het attribuut dat gebruikt wordt als label een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
         measurement:
-          information: Voor dit attribuut kunt u de waarde of de code of het label van de eenheid exporteren.
           value: Waarde
           unit_locale: Taal van eenheid
           unit_code: Code van eenheid

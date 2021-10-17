@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: 레이블로 사용된 특성이 로케일별 값을 가진 경우, 특정 로케일을 선택할 수 있습니다. 
             channel: 레이블로 사용된 특성이 채널별 값을 가진 경우, 특정 채널을 선택할 수 있습니다. 
         measurement:
-          information: 이 특성의 경우 값, 단위 코드 또는 단위 레이블을 내보낼 수 있습니다.
           value: 값
           unit_locale: 단위 로케일
           unit_code: 단위 코드
