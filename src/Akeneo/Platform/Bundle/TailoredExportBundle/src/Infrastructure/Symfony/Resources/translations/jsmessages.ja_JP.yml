@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
             channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
         measurement:
-          information: この属性では、値、ユニットコードまたはユニットラベルのいずれかをエクスポートできます。
           value: 値
           unit_locale: ユニットロケール
           unit_code: ユニットコー​​ド

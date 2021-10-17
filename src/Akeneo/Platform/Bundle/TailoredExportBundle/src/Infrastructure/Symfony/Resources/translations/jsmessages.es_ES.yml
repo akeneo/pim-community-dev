@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Si el atributo usado como etiqueta tiene un valor por configuración regional, puede seleccionar una configuración regional específica.
             channel: Si el atributo utilizado como etiqueta tiene un valor por canal, puede seleccionar un canal específico.
         measurement:
-          information: Para este atributo, puede exportar el valor, el código de la unidad o la etiqueta de la unidad.
           value: Valor
           unit_locale: Configuración regional de unidad
           unit_code: Código de unidad
