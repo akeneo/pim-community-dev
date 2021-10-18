@@ -55,6 +55,7 @@ class PriceCollectionValidatorTest extends AbstractValidationTest
                     'selection' => [
                         'type' => 'currency_code',
                         'separator' => ',',
+                        'currencies' => ['EUR', 'USD'],
                     ],
                     'operations' => [],
                 ],

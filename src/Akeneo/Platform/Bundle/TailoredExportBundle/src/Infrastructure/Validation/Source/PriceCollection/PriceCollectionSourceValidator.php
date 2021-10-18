@@ -26,7 +26,7 @@ class PriceCollectionSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new PriceCollectionSelectionConstraint();
+        $sourceConstraintFields['selection'] = new PriceCollectionSelectionConstraint(['channelReference' => $source['channel']]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);

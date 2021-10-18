@@ -38,9 +38,18 @@ class PriceCollectionCurrencyLabelSelectionApplier implements SelectionApplierIn
         }
 
         $priceCollection = $value->getPriceCollection();
+
+        $isFilteredOnCurrencies = [] !== $selection->getCurrencies();
+
+        if ($isFilteredOnCurrencies) {
+            $priceCollection = array_filter($priceCollection, static fn (Price $price) => in_array($price->getCurrency(), $selection->getCurrencies()));
+        }
+
         $currencyCodes = array_map(static fn (Price $price) => $price->getCurrency(), $priceCollection);
 
-        $currencyLabels = $this->findCurrencyLabels->byCodes($currencyCodes, $selection->getLocale());
+        dump($currencyCodes);
+
+        $currencyLabels = $this->findCurrencyLabels->byCodes(array_values($currencyCodes), $selection->getLocale());
 
         $selectedData = array_map(static fn ($currencyCode) => $currencyLabels[$currencyCode] ?? sprintf('[%s]', $currencyCode), $currencyCodes);
 

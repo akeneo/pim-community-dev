@@ -17,8 +17,15 @@ use Symfony\Component\Validator\Constraint;
 
 class PriceCollectionSelectionConstraint extends Constraint
 {
+    public ?string $channelReference;
+
     public function validatedBy(): string
     {
         return PriceCollectionSelectionValidator::class;
+    }
+
+    public function getRequiredOptions(): array
+    {
+        return ['channelReference'];
     }
 }

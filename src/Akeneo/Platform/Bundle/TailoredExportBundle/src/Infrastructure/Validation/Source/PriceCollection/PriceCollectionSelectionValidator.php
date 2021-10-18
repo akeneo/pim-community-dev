@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection;
 
+use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
@@ -28,10 +29,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 class PriceCollectionSelectionValidator extends ConstraintValidator
 {
     private array $availableCollectionSeparator;
+    private FindActivatedCurrenciesInterface $findActivatedCurrencies;
 
-    public function __construct(array $availableCollectionSeparator)
-    {
+    public function __construct(
+        array $availableCollectionSeparator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
+    ) {
         $this->availableCollectionSeparator = $availableCollectionSeparator;
+        $this->findActivatedCurrencies = $findActivatedCurrencies;
     }
 
     public function validate($selection, Constraint $constraint)
@@ -54,6 +59,9 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                         [
                             'choices' => $this->availableCollectionSeparator,
                         ]
+                    ),
+                    'currencies' => new Optional(
+                        new Choice(['choices' => $this->getAvailableCurrencies($constraint->channelReference)])
                     ),
                 ],
             ]
@@ -82,5 +90,14 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+    }
+
+    private function getAvailableCurrencies(?string $channelReference): array
+    {
+        if (null === $channelReference) {
+            return $this->findActivatedCurrencies->forAllChannels();
+        }
+
+        return $this->findActivatedCurrencies->forChannel($channelReference);
     }
 }

@@ -13,17 +13,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection;
 
+use Webmozart\Assert\Assert;
+
 final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSelectionInterface
 {
     public const TYPE = 'currency_label';
 
     private string $separator;
     private string $locale;
+    private array $currencies;
 
-    public function __construct(string $separator, string $locale)
+    public function __construct(string $separator, string $locale, array $currencies)
     {
+        Assert::allString($currencies);
+
         $this->separator = $separator;
         $this->locale = $locale;
+        $this->currencies = $currencies;
     }
 
     public function getSeparator(): string
@@ -34,5 +40,10 @@ final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSele
     public function getLocale(): string
     {
         return $this->locale;
+    }
+
+    public function getCurrencies(): array
+    {
+        return $this->currencies;
     }
 }

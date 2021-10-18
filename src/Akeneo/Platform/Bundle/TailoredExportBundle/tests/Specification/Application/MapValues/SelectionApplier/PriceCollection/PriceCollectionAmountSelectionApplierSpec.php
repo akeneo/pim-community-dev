@@ -24,7 +24,16 @@ class PriceCollectionAmountSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new PriceCollectionAmountSelection('/');
+        $selection = new PriceCollectionAmountSelection('/', ['EUR', 'DKK']);
+        $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('102/104');
+    }
+
+    public function it_applies_the_selection_with_all_currencies()
+    {
+        $selection = new PriceCollectionAmountSelection('/', []);
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
 
         $this->applySelection($selection, $value)
@@ -43,7 +52,7 @@ class PriceCollectionAmountSelectionApplierSpec extends ObjectBehavior
 
     public function it_supports_price_collection_code_selection_with_price_collection_value()
     {
-        $selection = new PriceCollectionAmountSelection('/');
+        $selection = new PriceCollectionAmountSelection('/', []);
         $value = new PriceCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);
