@@ -1,4 +1,4 @@
-import React, {FC, SetStateAction, useCallback} from 'react';
+import React, {FC} from 'react';
 import {PermissionFormProvider} from '../../../shared/permission-form-registry';
 import {PermissionsForm} from '../PermissionsForm';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
@@ -15,10 +15,11 @@ export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermis
             {null !== providers &&
                 providers.map(provider => {
                     const readOnly = false === permissions[provider.key];
-                    const providerPermissions = false !== permissions[provider.key] ? permissions[provider.key] : undefined;
-                    const handlePermissionsChange = useCallback((providerPermissions: object) => {
+                    const providerPermissions =
+                        false !== permissions[provider.key] ? permissions[provider.key] : undefined;
+                    const handlePermissionsChange = (providerPermissions: object) => {
                         setProviderPermissions(provider.key, providerPermissions);
-                    }, [setProviderPermissions, provider.key]);
+                    };
 
                     return (
                         <PermissionsForm
@@ -28,9 +29,8 @@ export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermis
                             permissions={providerPermissions}
                             readOnly={readOnly}
                         />
-                    )
-                }
-            )}
+                    );
+                })}
         </>
     );
 };

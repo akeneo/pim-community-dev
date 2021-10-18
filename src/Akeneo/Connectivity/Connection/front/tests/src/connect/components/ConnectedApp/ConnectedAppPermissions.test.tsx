@@ -5,19 +5,6 @@ import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import {PermissionsForm} from '@src/connect/components/PermissionsForm';
 
-const connectedApp = {
-    id: '12345',
-    name: 'App A',
-    scopes: ['scope 1'],
-    connection_code: 'some_connection_code',
-    logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
-    author: 'Author A',
-    user_group_name: 'app_123456abcde',
-    categories: ['e-commerce', 'print'],
-    certified: false,
-    partner: null,
-};
-
 jest.mock('@src/connect/components/PermissionsForm', () => ({
     ...jest.requireActual('@src/connect/components/PermissionsForm'),
     PermissionsForm: jest.fn(() => null),
@@ -63,7 +50,13 @@ test('The connected app permissions tab renders with providers', () => {
         },
     };
 
-    renderWithProviders(<ConnectedAppPermissions providers={mockedProviders} permissions={mockedPermissions} setPermissions={jest.fn()} />);
+    renderWithProviders(
+        <ConnectedAppPermissions
+            providers={mockedProviders}
+            permissions={mockedPermissions}
+            setProviderPermissions={jest.fn()}
+        />
+    );
 
     expect(PermissionsForm).toHaveBeenCalledTimes(2);
 
@@ -86,7 +79,7 @@ test('The connected app permissions tab renders with providers', () => {
 });
 
 test('The connected app permissions tab is not displayed when there is no providers', () => {
-    renderWithProviders(<ConnectedAppPermissions providers={[]} permissions={{}} setPermissions={jest.fn()} />);
+    renderWithProviders(<ConnectedAppPermissions providers={[]} permissions={{}} setProviderPermissions={jest.fn()} />);
 
     expect(PermissionsForm).not.toHaveBeenCalled();
 });

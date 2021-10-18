@@ -30,7 +30,7 @@ jest.mock('@src/connect/components/ConnectedApp/ConnectedAppPermissions', () => 
 
 jest.mock('@src/connect/hooks/use-permissions-form-providers', () => ({
     __esModule: true,
-    default: jest.fn(() => [null, {}, () => {}]),
+    default: jest.fn(() => [null, {}, jest.fn()]),
 }));
 
 beforeEach(() => {
@@ -40,11 +40,7 @@ beforeEach(() => {
 });
 
 test('The connected app container renders without permissions tab', () => {
-    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
-        [],
-        {},
-        () => {},
-    ]);
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
     const connectedApp = {
         id: '12345',
@@ -97,21 +93,21 @@ test('The connected app container renders with permissions tab', () => {
         providerKey1: {
             view: {
                 all: true,
-                identifiers: []
-            }
+                identifiers: [],
+            },
         },
         providerKey2: {
             view: {
                 all: false,
-                identifiers: ['codeA']
-            }
-        }
+                identifiers: ['codeA'],
+            },
+        },
     };
 
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
         mockedProviders,
         mockedPermissions,
-        () => {},
+        jest.fn(),
     ]);
 
     const connectedApp = {

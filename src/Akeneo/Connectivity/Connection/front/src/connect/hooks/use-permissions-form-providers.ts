@@ -20,11 +20,16 @@ const usePermissionsFormProviders = (userGroupName: string): ProvidersAndSavedPe
     const notifyPermissionProviderError = (entity: string): void => {
         notify(
             NotificationLevel.ERROR,
-            translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.load_permissions_error.description'),
+            translate(
+                'akeneo_connectivity.connection.connect.connected_apps.edit.flash.load_permissions_error.description'
+            ),
             {
-                titleMessage: translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.load_permissions_error.title', {
-                    entity: entity,
-                }),
+                titleMessage: translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.flash.load_permissions_error.title',
+                    {
+                        entity: entity,
+                    }
+                ),
             }
         );
     };
@@ -34,10 +39,10 @@ const usePermissionsFormProviders = (userGroupName: string): ProvidersAndSavedPe
             const providers = await permissionFormRegistry.all();
 
             for (const provider of providers) {
+                let providerPermissions = false;
                 try {
-                    const providerPermissions = await provider.loadPermissions(userGroupName);
+                    providerPermissions = await provider.loadPermissions(userGroupName);
                 } catch {
-                    const providerPermissions = false;
                     notifyPermissionProviderError(provider.label);
                 }
 

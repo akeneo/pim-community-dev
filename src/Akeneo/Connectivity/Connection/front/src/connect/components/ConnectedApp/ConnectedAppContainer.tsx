@@ -1,4 +1,4 @@
-import React, {FC, SetStateAction, useCallback, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
@@ -10,7 +10,6 @@ import {ConnectedAppSettings} from './ConnectedAppSettings';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
-import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 
 type Props = {
@@ -42,11 +41,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
     const SaveButton = () => {
         return (
-            <ApplyButton
-                onClick={handleSave}
-                disabled={!hasUnsavedChanges}
-                classNames={['AknButtonList-item']}
-            >
+            <ApplyButton onClick={handleSave} disabled={!hasUnsavedChanges} classNames={['AknButtonList-item']}>
                 <Translate id='pim_common.save' />
             </ApplyButton>
         );
@@ -68,11 +63,16 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const notifyPermissionProviderError = (entity: string): void => {
         notify(
             NotificationLevel.ERROR,
-            translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.description'),
+            translate(
+                'akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.description'
+            ),
             {
-                titleMessage: translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.title', {
-                    entity: entity,
-                }),
+                titleMessage: translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.title',
+                    {
+                        entity: entity,
+                    }
+                ),
             }
         );
     };
@@ -98,21 +98,24 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         );
     };
 
-    const handleSetProviderPermissions = useCallback((providerKey: string, providerPermissions: object) => {
-        // early return when the state has not changed
-        if (JSON.stringify(permissions[providerKey]) === JSON.stringify(providerPermissions)) {
-            return;
-        }
+    const handleSetProviderPermissions = useCallback(
+        (providerKey: string, providerPermissions: object) => {
+            // early return when the state has not changed
+            if (JSON.stringify(permissions[providerKey]) === JSON.stringify(providerPermissions)) {
+                return;
+            }
 
-        setPermissions(state => ({...state, [providerKey]: providerPermissions}));
-        setHasUnsavedChanges(true);
-    }, [setPermissions, setHasUnsavedChanges, permissions]);
+            setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+            setHasUnsavedChanges(true);
+        },
+        [setPermissions, setHasUnsavedChanges, permissions]
+    );
 
     return (
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<SaveButton />]}
+                buttons={[<SaveButton key={0} />]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={generateMediaUrl(connectedApp.logo, 'thumbnail')}

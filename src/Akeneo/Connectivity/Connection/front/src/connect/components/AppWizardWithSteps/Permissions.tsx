@@ -1,4 +1,4 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
@@ -60,16 +60,19 @@ export const Permissions: FC<Props> = ({appName, providers, setProviderPermissio
                 </Link>
             </Helper>
             {providers.map(provider => {
-                const handlePermissionsChange = useCallback((providerPermissions: object) => {
+                const readOnly = false === permissions[provider.key];
+                const providerPermissions = false === permissions[provider.key] ? undefined : permissions[provider.key];
+                const handlePermissionsChange = (providerPermissions: object) => {
                     setProviderPermissions(provider.key, providerPermissions);
-                }, [setProviderPermissions, provider.key]);
+                };
 
                 return (
                     <PermissionsForm
                         key={provider.key}
                         provider={provider}
                         onPermissionsChange={handlePermissionsChange}
-                        permissions={permissions[provider.key]}
+                        permissions={providerPermissions}
+                        readOnly={readOnly}
                     />
                 );
             })}

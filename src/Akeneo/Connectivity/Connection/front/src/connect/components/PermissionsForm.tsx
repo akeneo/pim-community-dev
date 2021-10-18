@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {PermissionsByProviderKey} from '../../model/Apps/permissions-by-provider-key';
 import {PermissionFormProvider} from '../../shared/permission-form-registry';
 import {PermissionFormReducer} from '../../../../workspaces/permission-form';
 
@@ -15,6 +14,8 @@ type PermissionsFormProps<T> = {
     readOnly: boolean | undefined;
 };
 
-export const PermissionsForm: FC<PermissionsFormProps<PermissionFormReducer.State>> = React.memo(({provider, onPermissionsChange, permissions, readOnly}) => {
-    return <FormContainer>{provider.renderForm(onPermissionsChange, permissions, readOnly)}</FormContainer>;
-});
+export const PermissionsForm: FC<PermissionsFormProps<PermissionFormReducer.State>> = React.memo(
+    ({provider, onPermissionsChange, permissions, readOnly}) => {
+        return <FormContainer>{provider.renderForm(onPermissionsChange, permissions, readOnly)}</FormContainer>;
+    }
+);
