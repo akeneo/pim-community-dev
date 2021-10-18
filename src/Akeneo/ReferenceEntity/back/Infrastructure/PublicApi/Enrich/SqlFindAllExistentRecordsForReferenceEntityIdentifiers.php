@@ -63,8 +63,8 @@ SQL;
             $queryParams
         )->fetchAll();
 
-        return array_reduce($rawResults, function (array $results, array $item) {
-            $results[$item['reference_entity_identifier']] = json_decode($item['record_code'], true);
+        return array_reduce($rawResults, static function (array $results, array $item) {
+            $results[strtolower($item['reference_entity_identifier'])] = json_decode($item['record_code'], true);
 
             return $results;
         }, []);

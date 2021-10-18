@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -111,6 +112,90 @@ final class NonExistingReferenceEntitiesMultiSelectFilterSpec extends ObjectBeha
                             ],
                             'properties' => [
                                 'reference_data_name' => 'color'
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        );
+    }
+
+    public function it_filters_multiple_reference_entity_links_ignoring_case(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION => [
+                    'colors' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['Blue', 'Green'],
+                                ],
+                                'tablet' => [
+                                    'en_US' => ['Red', 'Yellow', 'Purple', 'Orange'],
+                                    'fr_FR' => ['Black', 'Grey'],
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'CoLoR'
+                            ]
+                        ]
+                    ]
+                ],
+                AttributeTypes::TEXTAREA => [
+                    'a_description' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'plop'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $recordCodesIndexedByReferenceEntityIdentifiers = [
+            'CoLoR' => [
+                'Blue',
+                'Green',
+                'Red',
+                'Yellow',
+                'Purple',
+                'Orange',
+                'Black',
+                'Grey'
+            ]
+        ];
+
+        $findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($recordCodesIndexedByReferenceEntityIdentifiers)->willReturn(
+            [
+                'color' => ['BlUe', 'GrEy']
+            ]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION => [
+                    'colors' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['Blue'],
+                                ],
+                                'tablet' => [
+                                    'en_US' => [],
+                                    'fr_FR' => [0 => 'Grey'],
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'CoLoR'
                             ]
                         ]
                     ]

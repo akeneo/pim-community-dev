@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -23,8 +24,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindAllExistentRecords
  */
 final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExistentValuesFilter
 {
-    /** @var FindAllExistentRecordsForReferenceEntityIdentifiers */
-    private $findAllExistentRecordsForReferenceEntityIdentifiers;
+    private FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers;
 
     public function __construct(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
     {
@@ -55,7 +55,7 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
         foreach ($singleRecordLinkValues as $attributeCode => $productData) {
             foreach ($productData as $productValues) {
                 $singleLinkValues = [];
-                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                $referenceEntityIdentifier = strtolower($productValues['properties']['reference_data_name']);
 
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
@@ -91,7 +91,7 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
 
         foreach ($singleRecordLinkValues as $attributeCode => $productData) {
             foreach ($productData as $productValues) {
-                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                $referenceEntityIdentifier = strtolower($productValues['properties']['reference_data_name']);
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (!is_array($value) && $value !== null) {
