@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.51 (2021-10-18)
+
 ## Bug fixes
 
 - PIM-10118: Fix attribute option with numeric code not being translated when exported
