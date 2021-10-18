@@ -5,7 +5,8 @@ import {
   filterErrors,
   useTranslate,
   getAllLocalesFromChannels,
-  ValidationError, ChannelReference,
+  ValidationError,
+  ChannelReference,
 } from '@akeneo-pim-community/shared';
 import {
   PriceCollectionSelection,
@@ -15,7 +16,7 @@ import {
 } from './model';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {useChannels} from '../../../hooks';
-import {CurrenciesSelector} from "./CurrenciesSelector";
+import {CurrenciesSelector} from './CurrenciesSelector';
 
 type PriceCollectionSelectorProps = {
   channelReference: ChannelReference;
@@ -24,7 +25,12 @@ type PriceCollectionSelectorProps = {
   onSelectionChange: (updatedSelection: PriceCollectionSelection) => void;
 };
 
-const PriceCollectionSelector = ({channelReference, selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
+const PriceCollectionSelector = ({
+  channelReference,
+  selection,
+  validationErrors,
+  onSelectionChange,
+}: PriceCollectionSelectorProps) => {
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();

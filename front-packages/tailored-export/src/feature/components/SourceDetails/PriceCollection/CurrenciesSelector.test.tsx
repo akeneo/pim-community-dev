@@ -1,20 +1,15 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {CurrenciesSelector} from "./CurrenciesSelector";
-import {renderWithProviders} from "../../../tests";
-import {ValidationError} from "@akeneo-pim-community/shared";
+import {CurrenciesSelector} from './CurrenciesSelector';
+import {renderWithProviders} from '../../../tests';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 test('it displays all currencies when source is not scopable', async () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(
-    <CurrenciesSelector
-      value={['EUR']}
-      validationErrors={[]}
-      onChange={onSourceChange}
-      channelReference={null}
-    />
+    <CurrenciesSelector value={['EUR']} validationErrors={[]} onChange={onSourceChange} channelReference={null} />
   );
 
   await userEvent.click(screen.getByTitle('pim_common.open'));
@@ -30,12 +25,7 @@ test('it displays the currencies related to the channel when source is scopable'
   const onSourceChange = jest.fn();
 
   renderWithProviders(
-    <CurrenciesSelector
-      value={['EUR']}
-      validationErrors={[]}
-      onChange={onSourceChange}
-      channelReference='ecommerce'
-    />
+    <CurrenciesSelector value={['EUR']} validationErrors={[]} onChange={onSourceChange} channelReference="ecommerce" />
   );
 
   await userEvent.click(screen.getByTitle('pim_common.open'));
@@ -47,12 +37,7 @@ test('it can remove a currency', async () => {
   const onSourceChange = jest.fn();
 
   renderWithProviders(
-    <CurrenciesSelector
-      value={['EUR']}
-      validationErrors={[]}
-      onChange={onSourceChange}
-      channelReference='ecommerce'
-    />
+    <CurrenciesSelector value={['EUR']} validationErrors={[]} onChange={onSourceChange} channelReference="ecommerce" />
   );
 
   await userEvent.click(screen.getByTitle('pim_common.open'));
@@ -77,10 +62,9 @@ test('it displays validation errors', async () => {
       value={['EUR']}
       validationErrors={validationErrors}
       onChange={jest.fn()}
-      channelReference='ecommerce'
+      channelReference="ecommerce"
     />
   );
 
   expect(screen.getByText('error.key.currencies')).toBeInTheDocument();
 });
-

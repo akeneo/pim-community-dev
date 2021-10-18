@@ -27,22 +27,21 @@ type PriceCollectionSelection = {
 );
 
 const isPriceCollectionSelection = (selection: any): selection is PriceCollectionSelection =>
-    selection.separator in availableSeparators &&
-    (!('currencies' in selection) || isValidCurrenciesSelection(selection.currencies)) &&
-    'type' in selection &&
-    (
-      ('currency_code' === selection.type || 'amount' === selection.type) ||
-      ('currency_label' === selection.type && 'locale' in selection)
-    )
-  ;
-
+  selection.separator in availableSeparators &&
+  (!('currencies' in selection) || isValidCurrenciesSelection(selection.currencies)) &&
+  'type' in selection &&
+  ('currency_code' === selection.type ||
+    'amount' === selection.type ||
+    ('currency_label' === selection.type && 'locale' in selection));
 const isValidCurrenciesSelection = (currencies: any): boolean =>
-  Array.isArray(currencies) && currencies.every((currency) => typeof currency === 'string');
+  Array.isArray(currencies) && currencies.every(currency => typeof currency === 'string');
 
 const getDefaultPriceCollectionSelection = (): PriceCollectionSelection => ({type: 'amount', separator: ','});
 
 const isDefaultPriceCollectionSelection = (selection?: PriceCollectionSelection): boolean =>
-  'amount' === selection?.type && ',' === selection?.separator && (undefined === selection?.currencies || selection?.currencies?.length === 0);
+  'amount' === selection?.type &&
+  ',' === selection?.separator &&
+  (undefined === selection?.currencies || selection?.currencies?.length === 0);
 
 type PriceCollectionOperations = {
   default_value?: DefaultValueOperation;

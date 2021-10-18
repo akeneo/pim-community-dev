@@ -1,24 +1,24 @@
 import React from 'react';
-import {Field, Helper, MultiSelectInput} from "akeneo-design-system";
+import {Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import {
   ChannelReference,
   getCurrencyCodesFromChannelReference,
   useTranslate,
-  ValidationError
-} from "@akeneo-pim-community/shared";
-import {useChannels} from "../../../hooks";
+  ValidationError,
+} from '@akeneo-pim-community/shared';
+import {useChannels} from '../../../hooks';
 
 type CurrencySelectorProps = {
-  value: string[],
-  onChange: (newCurrencies: string[]) => void,
-  channelReference: ChannelReference,
-  validationErrors: ValidationError[],
+  value: string[];
+  onChange: (newCurrencies: string[]) => void;
+  channelReference: ChannelReference;
+  validationErrors: ValidationError[];
 };
 
 const CurrenciesSelector = ({value, onChange, channelReference, validationErrors}: CurrencySelectorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
-  const currencyCodes = getCurrencyCodesFromChannelReference(channels, channelReference)
+  const currencyCodes = getCurrencyCodesFromChannelReference(channels, channelReference);
 
   return (
     <Field label={translate('akeneo.tailored_export.column_details.sources.selection.price.currencies')}>
@@ -44,6 +44,6 @@ const CurrenciesSelector = ({value, onChange, channelReference, validationErrors
       ))}
     </Field>
   );
-}
+};
 
 export {CurrenciesSelector};
