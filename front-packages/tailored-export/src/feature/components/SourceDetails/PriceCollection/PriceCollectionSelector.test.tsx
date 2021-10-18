@@ -10,6 +10,7 @@ test('it displays a type dropdown when the selection type is amount', async () =
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       selection={{type: 'amount', separator: ','}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
@@ -25,6 +26,7 @@ test('it can select a currency selection type', async () => {
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       selection={{type: 'amount', separator: ','}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
@@ -42,6 +44,7 @@ test('it can select a currency label along with a default selected locale', asyn
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       selection={{type: 'amount', separator: ','}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
@@ -59,6 +62,7 @@ test('it can select a currency label locale', async () => {
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       selection={{type: 'currency_label', locale: 'en_US', separator: ','}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
@@ -72,11 +76,30 @@ test('it can select a currency label locale', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'fr_FR', separator: ','});
 });
 
+test('it can select the currencies to export', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      channelReference={null}
+      selection={{type: 'amount', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  await userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.price.currencies'));
+  userEvent.click(screen.getByText('USD'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ',', currencies: ['USD']});
+});
+
 test('it can select a price collection separator', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       validationErrors={[]}
       selection={{type: 'amount', separator: ','}}
       onSelectionChange={onSelectionChange}
@@ -121,6 +144,7 @@ test('it displays validation errors', async () => {
 
   await renderWithProviders(
     <PriceCollectionSelector
+      channelReference={null}
       selection={{type: 'currency_label', locale: 'en_US', separator: ','}}
       validationErrors={validationErrors}
       onSelectionChange={onSelectionChange}

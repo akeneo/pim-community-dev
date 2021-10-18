@@ -108,6 +108,8 @@ akeneo.tailored_export:
           currency_label: Currency label
           currency_locale: Currency locale
           information: For this attribute, you can export either the currency code, the currency label or the amount.
+          currencies: Currencies to select
+          all_currencies: All
         file:
           information: For this attribute, you can export either the path, the filekey or the filename.
         decimal_separator:

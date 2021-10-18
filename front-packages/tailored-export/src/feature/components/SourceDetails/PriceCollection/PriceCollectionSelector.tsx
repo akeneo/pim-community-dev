@@ -5,7 +5,7 @@ import {
   filterErrors,
   useTranslate,
   getAllLocalesFromChannels,
-  ValidationError,
+  ValidationError, ChannelReference,
 } from '@akeneo-pim-community/shared';
 import {
   PriceCollectionSelection,
@@ -15,14 +15,16 @@ import {
 } from './model';
 import {LocaleDropdown} from '../../LocaleDropdown';
 import {useChannels} from '../../../hooks';
+import {CurrenciesSelector} from "./CurrenciesSelector";
 
 type PriceCollectionSelectorProps = {
+  channelReference: ChannelReference;
   selection: PriceCollectionSelection;
   validationErrors: ValidationError[];
   onSelectionChange: (updatedSelection: PriceCollectionSelection) => void;
 };
 
-const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
+const PriceCollectionSelector = ({channelReference, selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const channels = useChannels();
@@ -30,6 +32,7 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const typeErrors = filterErrors(validationErrors, '[type]');
   const separatorErrors = filterErrors(validationErrors, '[separator]');
+  const currenciesErrors = filterErrors(validationErrors, '[currencies]');
 
   return (
     <Collapse
@@ -97,6 +100,12 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
           />
         )}
+        <CurrenciesSelector
+          value={selection.currencies ?? []}
+          onChange={updatedValue => onSelectionChange({...selection, currencies: updatedValue})}
+          channelReference={channelReference}
+          validationErrors={currenciesErrors}
+        />
         <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
           <SelectInput
             invalid={0 < separatorErrors.length}
