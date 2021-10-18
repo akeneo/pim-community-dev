@@ -41,8 +41,8 @@ if [[ ${PFID} =~ "grth" ]]; then
   # if //deployments doesn't exist we change it to /terraform/deployments
   echo "Source path : ${SOURCE_PATH}"
   echo "Check if bucket path \"${BUCKET_PATH}\" exists"
-  BUCKET_EXIST=$(gsutil ls ${BUCKET_PATH} && echo "1" || echo "0")
-  if [[ ${BUCKET_EXIST} -eq 0 ]]; then
+  BUCKET_EXIST=$(gsutil ls ${BUCKET_PATH})
+  if [[ $? -ne 0 ]]; then
     echo "Bucket path \"${BUCKET_PATH}\" doesn't exist"
     echo "Change //deployments to /terraform/deployment"
     sed -i 's/\/deployments\/terraform/\/terraform\/deployments\/terraform/g' ${PWD}/main.tf.json
