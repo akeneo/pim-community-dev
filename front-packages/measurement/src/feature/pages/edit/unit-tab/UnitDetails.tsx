@@ -61,9 +61,8 @@ const UnitDetails = ({
   const locales = useUiLocales();
   const locale = useUserContext().get('uiLocale');
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
-  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useBooleanState(
-    false
-  );
+  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] =
+    useBooleanState(false);
 
   const handleRemoveUnit = useCallback(() => {
     onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
