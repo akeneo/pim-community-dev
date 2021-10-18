@@ -4,14 +4,16 @@ import {getAppcuesAgent} from '../../../../back/Infrastructure/Symfony/Resources
 
 jest.mock('../../../../back/Infrastructure/Symfony/Resources/public/js/onboarding/appcues-agent');
 
-const FeatureFlags = require('pim/feature-flags');
-FeatureFlags.isEnabled.mockImplementation(() => true);
-
 const mockedAppcues = {
+  identify: jest.fn(),
+  page: jest.fn(),
   track: jest.fn(),
+  on: jest.fn(),
+  loadLaunchpad: jest.fn(),
 };
 
 beforeAll(() => {
+  // @ts-ignore;
   getAppcuesAgent.mockResolvedValue(mockedAppcues);
 });
 
@@ -19,6 +21,37 @@ beforeEach(() => {
   jest.clearAllMocks();
   jest.restoreAllMocks();
 });
+
+describe('Appcues init', () => {
+  test('it throws an error when appcues is not initialized', async () => {
+    // @ts-ignore;
+    getAppcuesAgent.mockResolvedValue(null);
+
+    await expect(AppcuesOnboarding.init()).rejects.toEqual(new Error('Appcues should be initialized'));
+  });
+
+  test('it set up appcues onboarding when appcues is initialized', async () => {
+    const Mediator = require('oro/mediator');
+
+    // @ts-ignore;
+    getAppcuesAgent.mockResolvedValue(mockedAppcues);
+
+    await AppcuesOnboarding.init();
+
+    expect(Mediator.on).toHaveBeenCalledWith('route_complete', async () => {
+      mockedAppcues.page();
+    });
+
+    expect(mockedAppcues.identify).toHaveBeenCalledWith('julia', {
+      email: 'julia@akeneo.com',
+      first_name: 'julia',
+      last_name: 'Stark'
+    });
+    expect(mockedAppcues.identify).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.loadLaunchpad).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.on).toHaveBeenCalledTimes(3);
+  });
+})
 
 describe('Random event', () => {
   test('a random event has been tracked', async () => {
