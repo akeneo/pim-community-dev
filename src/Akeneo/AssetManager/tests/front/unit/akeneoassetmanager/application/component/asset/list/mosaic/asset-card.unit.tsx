@@ -85,41 +85,34 @@ describe('Test Asset create modal component', () => {
   });
 
   test('it can be selected when clicking on the checkbox', async () => {
-    let isSelected = false;
-    let selectedCode = null;
+    const handleSelectionChange = jest.fn();
+
     renderWithProviders(
       <AssetCard
         asset={asset}
         context={{locale: 'en_US', channel: 'ecommerce'}}
-        isSelected={isSelected}
-        onSelectionChange={(code, value) => {
-          isSelected = value;
-          selectedCode = code;
-        }}
+        isSelected={false}
+        onSelectionChange={handleSelectionChange}
       />
     );
 
     await act(async () => {
       await flushPromises();
-      fireEvent.click(screen.getByRole('checkbox'));
     });
 
-    expect(isSelected).toEqual(true);
-    expect(selectedCode).toEqual(asset.code);
+    fireEvent.click(screen.getByRole('checkbox'));
+
+    expect(handleSelectionChange).toHaveBeenCalledWith(asset.code, true);
   });
 
   test('it can be selected when clicking on the asset card', async () => {
-    let isSelected = false;
-    let selectedCode = null;
+    const handleSelectionChange = jest.fn();
     renderWithProviders(
       <AssetCard
         asset={asset}
         context={{locale: 'en_US', channel: 'ecommerce'}}
-        isSelected={isSelected}
-        onSelectionChange={(code, value) => {
-          isSelected = value;
-          selectedCode = code;
-        }}
+        isSelected={false}
+        onSelectionChange={handleSelectionChange}
       />
     );
 
@@ -128,27 +121,20 @@ describe('Test Asset create modal component', () => {
       fireEvent.click(screen.getByRole('img'));
     });
 
-    expect(isSelected).toEqual(true);
-    expect(selectedCode).toEqual(asset.code);
+    expect(handleSelectionChange).toHaveBeenCalledWith(asset.code, true);
   });
 
   test('it calls onClick when clicking on the image', async () => {
-    let isSelected = false;
-    let selectedCode = null;
-    let assetCode = '';
-    const onClick = jest.fn().mockImplementation((code: string) => {
-      assetCode = code;
-    });
+    const handleSelectionChange = jest.fn();
+    const handleClick = jest.fn();
+
     renderWithProviders(
       <AssetCard
         asset={asset}
         context={{locale: 'en_US', channel: 'ecommerce'}}
-        isSelected={isSelected}
-        onClick={onClick}
-        onSelectionChange={(code, value) => {
-          isSelected = value;
-          selectedCode = code;
-        }}
+        isSelected={false}
+        onClick={handleClick}
+        onSelectionChange={handleSelectionChange}
       />
     );
 
@@ -157,10 +143,8 @@ describe('Test Asset create modal component', () => {
       fireEvent.click(screen.getByRole('img'));
     });
 
-    expect(isSelected).toEqual(false);
-    expect(selectedCode).toEqual(null);
-    expect(onClick).toBeCalled();
-    expect(assetCode).toEqual(asset.code);
+    expect(handleSelectionChange).not.toBeCalled();
+    expect(handleClick).toBeCalledWith(asset.code);
   });
 
   test('It displays nothing if the asset fetch failed', async () => {

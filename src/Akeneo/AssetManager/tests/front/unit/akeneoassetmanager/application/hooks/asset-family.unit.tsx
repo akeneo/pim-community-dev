@@ -56,12 +56,10 @@ const assetFamily = {
 
 const getDataProvider = (edit: boolean) => ({
   assetFamilyFetcher: {
-    fetch: assetFamilyIdentifier =>
-      new Promise(resolve => {
-        act(() => {
-          setTimeout(() => resolve({assetFamily, permission: {assetFamilyIdentifier: 'packshot', edit}}), 100);
-        });
-      }),
+    fetch: () =>
+      new Promise(resolve =>
+        setTimeout(() => resolve({assetFamily, permission: {assetFamilyIdentifier: 'packshot', edit}}), 100)
+      ),
   },
 });
 

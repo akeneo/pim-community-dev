@@ -38,12 +38,8 @@ const attributes = [
 ];
 const dataProvider = {
   assetAttributeFetcher: {
-    fetchAll: assetFamilyIdentifier => {
-      return new Promise(resolve => {
-        act(() => {
-          resolve(attributes);
-        });
-      });
+    fetchAll: () => {
+      return new Promise(resolve => resolve(attributes));
     },
   },
 };
@@ -67,10 +63,8 @@ describe('Tests filter collection', () => {
       />
     );
 
-    await act(async () => {
-      const filters = [].slice.call(container.querySelectorAll('[data-code]'));
-      expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
-    });
+    const filters = [].slice.call(container.querySelectorAll('[data-code]'));
+    expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
   });
 
   it('It displays an empty filter collection', async () => {
@@ -86,9 +80,7 @@ describe('Tests filter collection', () => {
       />
     );
 
-    await act(async () => {
-      expect(container.childNodes[0].childNodes.length).toEqual(0);
-    });
+    expect(container.childNodes[0].childNodes.length).toEqual(0);
   });
 
   it('It updates the filter collection', async () => {
@@ -106,21 +98,19 @@ describe('Tests filter collection', () => {
     );
 
     let actualFilterCollection = [{field: attributes[0].code, operator: 'IN', value: []}];
-    await act(async () => {
-      renderWithProviders(
-        <FilterCollection
-          orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
-          dataProvider={dataProvider}
-          filterViewsProvider={{}}
-          filterCollection={actualFilterCollection}
-          assetFamilyIdentifier={'packshot'}
-          context={{channel: 'ecommerce', locale: 'locale'}}
-          onFilterCollectionChange={filterCollection => {
-            actualFilterCollection = filterCollection;
-          }}
-        />
-      );
-    });
+    renderWithProviders(
+      <FilterCollection
+        orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
+        dataProvider={dataProvider}
+        filterViewsProvider={{}}
+        filterCollection={actualFilterCollection}
+        assetFamilyIdentifier={'packshot'}
+        context={{channel: 'ecommerce', locale: 'locale'}}
+        onFilterCollectionChange={filterCollection => {
+          actualFilterCollection = filterCollection;
+        }}
+      />
+    );
 
     fireEvent.click(screen.getByTestId('my-filter'));
 
@@ -131,10 +121,7 @@ describe('Tests filter collection', () => {
     const {result, waitForNextUpdate} = renderHook(() =>
       useFilterViews('notice', {
         assetAttributeFetcher: {
-          fetchAll: () =>
-            new Promise(async resolve => {
-              act(() => resolve([]));
-            }),
+          fetchAll: () => new Promise(resolve => resolve([])),
         },
       })
     );
