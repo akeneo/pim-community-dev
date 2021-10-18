@@ -71,5 +71,21 @@ const getLocales = (channels: Channel[], channelCode: ChannelCode) => {
   return undefined === channel ? [] : channel.locales;
 };
 
-export {getChannelLabel, denormalizeChannel, getAllLocalesFromChannels, getLocaleFromChannel, getLocalesFromChannel};
+const getCurrencyCodesFromChannelReference = (channels: Channel[], channelReference: ChannelReference): string[] =>
+  null === channelReference ? getAllCurrencyCodesFromChannels(channels) : getCurrencyCodesFromChannel(channels, channelReference);
+
+const getAllCurrencyCodesFromChannels = (channels: Channel[]): string[] => {
+  return channels.reduce<string[]>(
+    (currencies, channel) => arrayUnique([...currencies, ...channel.currencies]),
+    []
+  );
+}
+
+const getCurrencyCodesFromChannel = (channels: Channel[], channelCode: ChannelCode): string[] => {
+  const channel = channels.find(({code}) => code === channelCode);
+
+  return undefined === channel ? [] : channel.currencies;
+};
+
+export {getChannelLabel, denormalizeChannel, getAllLocalesFromChannels, getLocaleFromChannel, getLocalesFromChannel, getCurrencyCodesFromChannelReference};
 export type {ChannelCode, Channel, ChannelReference};
