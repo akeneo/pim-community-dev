@@ -219,6 +219,9 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommandValidator
         arguments:
             - '%allowed_media_link_protocols%'
+            - '@Akeneo\AssetManager\Infrastructure\Network\DnsLookup'
+            - '@Akeneo\AssetManager\Infrastructure\Network\IpMatcher'
+            - '%env(string:ALLOWED_NETWORK_WHITELIST)%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_link_value_command' }
 

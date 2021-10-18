@@ -103,6 +103,7 @@
 - PIM-10106: Fix Red underlines for spelling mistakes are moving
 - PIM-10087: Fix storage errors HTTP code to return 500 instead of 422
 - PIM-10048: fix memory leak in search product models by family variant query
+- PIM-10115: Blacklist domains for asset media links
 
 ## Improvements
 
