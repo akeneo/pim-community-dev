@@ -8,7 +8,7 @@ const StringFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
 
   return (
     <TextInput
-      value={value || ''}
+      value={(value as string | undefined) || ''}
       onChange={onChange}
       placeholder={translate('pim_table_attribute.datagrid.select_your_value')}
     />

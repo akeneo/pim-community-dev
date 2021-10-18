@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
+  AttributeCode,
   BackendTableFilterValue,
   ColumnCode,
   ColumnDefinition,
@@ -43,7 +44,7 @@ type DatagridTableFilterProps = {
   label: string;
   canDisable: boolean;
   onDisable: () => void;
-  attributeCode: string;
+  attributeCode: AttributeCode;
   onChange: (value: BackendTableFilterValue) => void;
   filterValuesMapping: FilterValuesMapping;
   initialDataFilter: PendingBackendTableFilterValue;
@@ -110,7 +111,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       onChange({
         row: filterValue.row?.code,
         column: (filterValue.column as ColumnDefinition).code,
-        operator: filterValue.operator as string,
+        operator: filterValue.operator,
         value: filterValue.value,
       });
     }
@@ -142,7 +143,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const handleClose = () => {
     if (!isFilterValid(filterValue)) {
       setFilterValue({});
-      onChange({} as BackendTableFilterValue);
+      onChange({});
       close();
       return;
     }

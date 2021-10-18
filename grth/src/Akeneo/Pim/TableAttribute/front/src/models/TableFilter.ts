@@ -1,24 +1,44 @@
 import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode} from './TableConfiguration';
 
-export type BackendTableFilterValue = {
-  row?: SelectOptionCode;
-  column: ColumnCode;
-  operator: string;
-  value: any;
-};
+export type FilterOperator =
+  | 'STARTS WITH'
+  | 'ENDS WITH'
+  | 'CONTAINS'
+  | 'DOES NOT CONTAIN'
+  | '='
+  | '!='
+  | 'EMPTY'
+  | 'NOT EMPTY'
+  | '>'
+  | '>='
+  | '<'
+  | '<='
+  | 'IN'
+  | 'NOT IN';
+
+export type FilterValue = string | string[] | number | boolean;
+
+export type BackendTableFilterValue =
+  | {}
+  | {
+      row?: SelectOptionCode;
+      column: ColumnCode;
+      operator: FilterOperator;
+      value: FilterValue;
+    };
 
 export type PendingBackendTableFilterValue = {
   row?: SelectOptionCode;
   column?: ColumnCode;
-  operator?: string;
-  value?: any;
+  operator?: FilterOperator;
+  value?: FilterValue;
 };
 
 export type PendingTableFilterValue = {
   row?: SelectOption;
   column?: ColumnDefinition;
-  operator?: string;
-  value?: any;
+  operator?: FilterOperator;
+  value?: FilterValue;
 };
 
 const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {

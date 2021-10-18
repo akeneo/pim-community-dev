@@ -1,12 +1,12 @@
 import React from 'react';
-import {FilterValuesMapping} from './FilterValues';
-import {ColumnCode, TableAttribute} from '../models';
+import {FilterValuesMapping, TableFilterValueRenderer} from './FilterValues';
+import {ColumnCode, DataType, FilterOperator, FilterValue, TableAttribute} from '../models';
 
 type ValueSelectorProps = {
-  dataType?: string;
-  operator: string;
-  value?: string;
-  onChange: (value: string | null) => void;
+  dataType?: DataType;
+  operator: FilterOperator;
+  value?: FilterValue;
+  onChange: (value?: FilterValue) => void;
   filterValuesMapping: FilterValuesMapping;
   attribute: TableAttribute;
   columnCode: ColumnCode;
@@ -21,7 +21,7 @@ const ValueSelector: React.FC<ValueSelectorProps> = ({
   columnCode,
   filterValuesMapping,
 }) => {
-  const Renderer = (filterValuesMapping[dataType || ''] || {})[operator || '']?.default;
+  const Renderer: TableFilterValueRenderer = (filterValuesMapping[dataType || ''] || {})[operator || '']?.default;
 
   return Renderer ? (
     <Renderer value={value} onChange={onChange} attribute={attribute} columnCode={columnCode} />

@@ -2,6 +2,7 @@ import {ColumnCode, SelectOptionCode} from '../models';
 import {TableRowWithId, TableValueWithId} from './TableFieldApp';
 import {uuid} from 'akeneo-design-system';
 import React from 'react';
+import {UNIQUE_ID_KEY} from './useUniqueIds';
 
 const useToggleRow: (
   tableValue: TableValueWithId,
@@ -24,7 +25,7 @@ const useToggleRow: (
       if (typeof removedRows[optionCode.toLowerCase()] !== 'undefined') {
         tableValue.push(removedRows[optionCode.toLowerCase()]);
       } else {
-        const newRow: TableRowWithId = {'unique id': uuid()};
+        const newRow: TableRowWithId = {[UNIQUE_ID_KEY]: uuid()};
         newRow[firstColumnCode] = optionCode;
         tableValue.push(newRow);
       }

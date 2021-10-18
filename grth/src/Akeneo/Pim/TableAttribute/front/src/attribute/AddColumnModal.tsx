@@ -1,6 +1,6 @@
 import {AttributesIllustration, Button, Field, Helper, Modal, SelectInput, TextInput} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnCode, ColumnDefinition, ColumnType} from '../models';
+import {ColumnCode, ColumnDefinition, DataType} from '../models';
 import {LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import {FieldsList} from '../shared';
@@ -21,7 +21,7 @@ type AddColumnModalProps = {
 type UndefinedColumnDefinition = {
   code: ColumnCode;
   label: string;
-  data_type: ColumnType | null;
+  data_type: DataType | null;
 };
 
 type ErrorValidations = {
@@ -75,7 +75,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     setDirtyCode(code !== '');
   };
 
-  const handleDataTypeChange = (data_type: ColumnType | null) => {
+  const handleDataTypeChange = (data_type: DataType | null) => {
     setColumnDefinition({...columnDefinition, data_type});
     validateDataType(data_type, false);
   };
@@ -100,7 +100,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     return validations.length;
   };
 
-  const validateDataType = (dataType: ColumnType | null, silent: boolean): number => {
+  const validateDataType = (dataType: DataType | null, silent: boolean): number => {
     const validations: string[] = [];
     if (dataType === null)
       validations.push(translate('pim_table_attribute.validations.column_data_type_must_be_filled'));
@@ -123,14 +123,16 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     onCreate({
       code: columnDefinition.code,
       labels: labels,
-      data_type: columnDefinition.data_type as ColumnType,
+      data_type: columnDefinition.data_type,
       validations: {},
     } as ColumnDefinition);
   };
 
-  const dataTypes = existingColumnCodes.length
+  const dataTypes: DataType[] = (existingColumnCodes.length
     ? Object.keys(dataTypesMapping)
-    : Object.keys(dataTypesMapping).filter(dataType => dataTypesMapping[dataType].useable_as_first_column);
+    : Object.keys(dataTypesMapping).filter(
+        (dataType: string) => dataTypesMapping[dataType].useable_as_first_column
+      )) as DataType[];
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={close} illustration={<AttributesIllustration />}>
@@ -175,11 +177,11 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
           <SelectInput
             emptyResultLabel={translate('pim_common.select2.no_match')}
             onChange={(value: string | null) => {
-              handleDataTypeChange((value || null) as ColumnType);
+              handleDataTypeChange((value || null) as DataType);
             }}
             openLabel={translate('pim_common.open')}
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
-            value={columnDefinition.data_type as string}
+            value={columnDefinition.data_type as DataType}
             clearable={false}>
             {dataTypes.map(dataType => (
               <SelectInput.Option
@@ -193,7 +195,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
         </Field>
       </FieldsList>
       <Modal.BottomButtons>
-        <Button level='primary' onClick={handleCreate} disabled={!isValid(true)}>
+        <Button level='primary' onClick={handleCreate} disabled={!isValid(true)} tabIndex={0}>
           {translate('pim_common.create')}
         </Button>
       </Modal.BottomButtons>

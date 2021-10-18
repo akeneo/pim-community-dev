@@ -1,6 +1,6 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
-export type ColumnType = 'text' | 'number' | 'boolean' | 'select';
+export type DataType = 'text' | 'number' | 'boolean' | 'select';
 export type ColumnCode = string;
 
 export type TextColumnValidation = {

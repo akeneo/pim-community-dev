@@ -1,7 +1,9 @@
 import {TableConfiguration} from './TableConfiguration';
 
+export type AttributeCode = string;
+
 export type Attribute = {
-  code: string;
+  code: AttributeCode;
   type: string;
   group: string;
   unique: boolean;

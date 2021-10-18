@@ -1,9 +1,9 @@
 import React from 'react';
 import {Button} from 'akeneo-design-system';
-import {ColumnCode, SelectOptionCode} from '../../models';
+import {AttributeCode, ColumnCode, SelectOptionCode} from '../../models';
 
 type AddRowsButtonProps = {
-  attributeCode: string;
+  attributeCode: AttributeCode;
   columnCode: ColumnCode;
   checkedOptionCodes: SelectOptionCode[];
   toggleChange: (optionCode: SelectOptionCode) => void;

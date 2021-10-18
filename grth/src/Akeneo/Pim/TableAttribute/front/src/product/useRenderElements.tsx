@@ -1,5 +1,6 @@
 import React from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {AttributeCode} from '../models';
 
 type BackboneFieldElement = {
   render: () => {
@@ -12,7 +13,7 @@ type jQueryFieldElement = HTMLElement[];
 export type ProductFieldElement = BackboneFieldElement | HTMLFieldElement | jQueryFieldElement;
 
 const useRenderElements = (
-  attributeCode: string,
+  attributeCode: AttributeCode,
   elements: {[position: string]: {[elementKey: string]: ProductFieldElement}}
 ) => {
   const isBackboneModule = (element: ProductFieldElement) =>

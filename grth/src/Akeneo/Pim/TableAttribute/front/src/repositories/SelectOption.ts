@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../models';
+import {AttributeCode, ColumnCode, SelectOption} from '../models';
 import {SelectOptionFetcher} from '../fetchers';
 
 const selectOptionsCalls: {[key: string]: Promise<SelectOption[] | undefined>} = {};
@@ -17,7 +17,7 @@ const clearCacheSelectOptions: () => void = () => {
 
 const getSelectOptions = async (
   router: Router,
-  attributeCode: string,
+  attributeCode: AttributeCode,
   columnCode: ColumnCode
 ): Promise<SelectOption[] | null> => {
   const key = `${attributeCode}-${columnCode}`;
@@ -32,7 +32,7 @@ const getSelectOptions = async (
 
 const getSelectOption = async (
   router: Router,
-  attributeCode: string,
+  attributeCode: AttributeCode,
   columnCode: ColumnCode,
   selectOptionCode: string
 ): Promise<SelectOption | null> => {

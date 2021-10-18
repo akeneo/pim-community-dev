@@ -1,12 +1,12 @@
 import React from 'react';
-import {ColumnCode, SelectOption, TableCell, TableConfiguration, TableRow} from '../models';
+import {AttributeCode, ColumnCode, SelectOption, TableCell, TableConfiguration, TableRow} from '../models';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
 import {useIsMounted} from '../shared';
 
 const useFetchOptions: (
   tableConfiguration: TableConfiguration | undefined,
-  attributeCode: string,
+  attributeCode: AttributeCode,
   valueData: TableRow[]
 ) => {
   getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined;

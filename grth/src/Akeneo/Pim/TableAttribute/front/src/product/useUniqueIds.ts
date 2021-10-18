@@ -1,6 +1,9 @@
 import {TableRow, TableValue} from '../models';
 import {uuid} from 'akeneo-design-system';
-import {TableValueWithId} from './TableFieldApp';
+import {TableRowWithId, TableValueWithId} from './TableFieldApp';
+
+// As we can't have space, the 'unique id' can not be used as column
+export const UNIQUE_ID_KEY = 'unique id';
 
 const useUniqueIds: () => {
   addUniqueIds: (value: TableValue) => TableValueWithId;
@@ -9,12 +12,12 @@ const useUniqueIds: () => {
   const addUniqueIds = (value: TableValue) => {
     return value.map(row => {
       return Object.keys(row).reduce(
-        (previousRow: TableRow & {'unique id': string}, columnCode) => {
+        (previousRow: TableRowWithId, columnCode) => {
           previousRow[columnCode] = row[columnCode];
 
           return previousRow;
         },
-        {'unique id': uuid()}
+        {[UNIQUE_ID_KEY]: uuid()}
       );
     });
   };
@@ -22,7 +25,7 @@ const useUniqueIds: () => {
   const removeUniqueIds = (value: TableValueWithId) => {
     return value.map(row => {
       return Object.keys(row)
-        .filter(columnCode => columnCode !== 'unique id')
+        .filter(columnCode => columnCode !== UNIQUE_ID_KEY)
         .reduce((newRow: TableRow, columnCode) => {
           newRow[columnCode] = row[columnCode];
           return newRow;

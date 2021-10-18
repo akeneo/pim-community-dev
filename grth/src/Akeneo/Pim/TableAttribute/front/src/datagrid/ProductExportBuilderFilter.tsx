@@ -44,12 +44,12 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
-        operator: filter.operator as string,
+        operator: filter.operator,
         value: {
           column: filter.column?.code as ColumnCode,
           value: filter.value,
           row: filter.row?.code,
-        },
+        }
       });
     }
   };

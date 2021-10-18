@@ -1,14 +1,16 @@
-import {ColumnCode, TableAttribute} from '../../models';
+import {AttributeCode, ColumnCode, FilterValue, TableAttribute} from '../../models';
 
 type DatagridTableFilterValueProps = {
-  value: any;
-  onChange: (value: any) => void;
+  value?: FilterValue;
+  onChange: (value?: FilterValue) => void;
   attribute: TableAttribute;
   columnCode: ColumnCode;
 };
 
 export type TableFilterValueRenderer = React.FC<DatagridTableFilterValueProps>;
-export type FilteredValueRenderer = (attributeCode: string) => (value: any, columnCode: ColumnCode) => string;
+export type FilteredValueRenderer = (
+  attributeCode: AttributeCode
+) => (value: FilterValue, columnCode: ColumnCode) => string;
 
 export type FilterValuesMapping = {
   [data_type: string]: {

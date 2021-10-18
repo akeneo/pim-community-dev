@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../../models';
+import {AttributeCode, ColumnCode, SelectOption} from '../../models';
 
 const ingredientsSelectOptions = [
   {code: 'salt', labels: {en_US: 'Salt', de_DE: 'Achtzergüntlich'}},
@@ -34,7 +34,7 @@ const nutritionScoreSelectOptions = [
 
 const fetchSelectOptions = async (
   _router: Router,
-  _attributeCode: string,
+  _attributeCode: AttributeCode,
   columnCode: ColumnCode
 ): Promise<SelectOption[] | undefined> => {
   const options: {[columnCode: string]: SelectOption[] | undefined} = {

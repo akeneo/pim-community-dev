@@ -1,9 +1,9 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption} from '../models';
+import {AttributeCode, ColumnCode, SelectOption} from '../models';
 
 const fetchSelectOptions = async (
   router: Router,
-  attributeCode: string,
+  attributeCode: AttributeCode,
   columnCode: ColumnCode
 ): Promise<SelectOption[] | undefined> => {
   const url = router.generate('pim_table_attribute_get_select_options', {

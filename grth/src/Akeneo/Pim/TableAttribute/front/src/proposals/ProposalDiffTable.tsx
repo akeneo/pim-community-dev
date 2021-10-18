@@ -3,7 +3,7 @@ import {Badge, LoaderIcon, TableInput} from 'akeneo-design-system';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {diffChars} from 'diff';
 import styled from 'styled-components';
-import {ColumnCode, ColumnDefinition, TableAttribute, TableValue} from '../models';
+import {AttributeCode, ColumnCode, ColumnDefinition, TableAttribute, TableValue} from '../models';
 import {TableRowWithId, useFetchOptions} from '../product';
 import {AttributeRepository} from '../repositories';
 
@@ -18,7 +18,7 @@ const StretchedBodyCell = styled(TableInput.Cell)`
 type ProposalDiffTableProps = {
   accessor: 'before' | 'after';
   change: {
-    attributeCode: string;
+    attributeCode: AttributeCode;
     before: TableValue | null;
     after: TableValue | null;
   };

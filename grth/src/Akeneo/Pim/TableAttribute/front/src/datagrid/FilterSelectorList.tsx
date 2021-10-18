@@ -4,7 +4,14 @@ import {OperatorSelector} from './OperatorSelector';
 import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
-import {ColumnDefinition, PendingTableFilterValue, SelectOption, TableAttribute} from '../models';
+import {
+  ColumnDefinition,
+  FilterOperator,
+  FilterValue,
+  PendingTableFilterValue,
+  SelectOption,
+  TableAttribute,
+} from '../models';
 import {FilterValuesMapping} from './FilterValues';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
@@ -64,7 +71,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
     updateFilter({...filter, column, operator: undefined, value: undefined});
   };
 
-  const handleOperatorChange = (operator: string | undefined) => {
+  const handleOperatorChange = (operator: FilterOperator | undefined) => {
     updateFilter({...filter, operator, value: undefined});
   };
 
@@ -72,7 +79,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
     updateFilter({...filter, row});
   };
 
-  const handleValueChange = (value: any) => {
+  const handleValueChange = (value?: FilterValue) => {
     updateFilter({...filter, value});
   };
 

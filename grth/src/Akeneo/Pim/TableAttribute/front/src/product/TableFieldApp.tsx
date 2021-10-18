@@ -7,7 +7,7 @@ import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
-import {useUniqueIds} from './useUniqueIds';
+import {UNIQUE_ID_KEY, useUniqueIds} from './useUniqueIds';
 import {useToggleRow} from './useToggleRow';
 import {SelectOptionRepository} from '../repositories';
 import {CellMatchersMapping} from './CellMatchers';
@@ -73,8 +73,7 @@ type TableFieldAppProps = TemplateContext & {
   cellMatchersMapping: CellMatchersMapping;
 };
 
-export type TableRowWithId = TableRow & {'unique id': string};
-// As we can't have space, the 'unique id' can not be used as column
+export type TableRowWithId = TableRow & {[UNIQUE_ID_KEY]: string};
 export type TableValueWithId = TableRowWithId[];
 
 export type ViolatedCell = {
@@ -125,7 +124,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         const results = /^\[(\d+)\]\.(.+)$/.exec(realPath);
         if (results) {
           old.push({
-            id: tableValue[parseInt(results[1])]['unique id'],
+            id: tableValue[parseInt(results[1])][UNIQUE_ID_KEY],
             columnCode: results[2],
           });
         }

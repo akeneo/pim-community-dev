@@ -29,7 +29,7 @@ const StringFilterValue: TableFilterValueRenderer = ({value, onChange, attribute
 
   return (
     <MultiSelectInput
-      value={value || []}
+      value={(value as string[] | undefined) || []}
       openLabel={translate('pim_common.open')}
       emptyResultLabel={translate('pim_common.no_result')}
       removeLabel={translate('pim_common.remove')}
@@ -66,7 +66,7 @@ const useValueRenderer: FilteredValueRenderer = attributeCode => {
     const options = getOptionsFromColumnCode(columnCode) || [];
     const catalogLocale = userContext.get('catalogLocale');
 
-    return value
+    return ((value as string[] | undefined) || [])
       .map((subValue: SelectOptionCode) => {
         const option = options.find(option => option.code === subValue);
         return getLabel(option?.labels || {}, catalogLocale, option?.code || subValue);

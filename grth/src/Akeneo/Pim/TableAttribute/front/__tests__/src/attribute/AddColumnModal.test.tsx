@@ -89,7 +89,7 @@ describe('AddColumnModal', () => {
 
     fireEvent.change(labelInput, {target: {value: 'Ingredients'}});
     fireEvent.change(codeInput, {target: {value: 'ingredient'}});
-    fireEvent.focus(dataTypeInput);
+    fireEvent.click(dataTypeInput);
     expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
@@ -122,7 +122,7 @@ describe('AddColumnModal', () => {
       />
     );
     const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
-    fireEvent.focus(dataTypeInput);
+    fireEvent.click(dataTypeInput);
 
     expect(await screen.findByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.text')).toBeNull();
@@ -145,7 +145,7 @@ describe('AddColumnModal', () => {
     const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
-    fireEvent.focus(dataTypeInput);
+    fireEvent.click(dataTypeInput);
     expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 

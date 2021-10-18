@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -123,7 +124,11 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     }
     const attribute: Attribute = this.getFormData();
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const columnDefinitionPropertiesMapping = __moduleConfig.column_definition_properties as ColumnDefinitionPropertiesMapping;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const dataTypes = __moduleConfig.data_types as DataTypesMapping;
 
     this.getTableConfiguration(initialTableConfiguration).then(tableConfiguration => {

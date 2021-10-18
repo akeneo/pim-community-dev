@@ -2,20 +2,21 @@ import React from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {FilterValuesMapping} from './FilterValues';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {DataType, FilterOperator, FilterValue} from '../models';
 
 type OperatorSelectorProps = {
-  dataType?: string;
-  value?: string;
-  onChange: (operator: string | undefined) => void;
+  dataType?: DataType;
+  value?: FilterValue;
+  onChange: (operator?: FilterOperator) => void;
   filterValuesMapping: FilterValuesMapping;
 };
 
 const OperatorSelector: React.FC<OperatorSelectorProps> = ({dataType, value, onChange, filterValuesMapping}) => {
   const translate = useTranslate();
-  const operators = Object.keys(filterValuesMapping[dataType || ''] || {});
+  const operators = Object.keys(filterValuesMapping[dataType || ''] || {}) as FilterOperator[];
 
-  const handleChange = (value: string | null) => {
-    onChange(null === value ? undefined : value);
+  const handleChange = (operator: string | null) => {
+    onChange(null === operator ? undefined : (operator as FilterOperator));
   };
 
   return (
@@ -25,7 +26,7 @@ const OperatorSelector: React.FC<OperatorSelectorProps> = ({dataType, value, onC
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
       placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
-      value={value || null}
+      value={(value as string) || null}
       openLabel={translate('pim_common.open')}
       readOnly={typeof dataType === 'undefined'}>
       {(operators || []).map(operator => {

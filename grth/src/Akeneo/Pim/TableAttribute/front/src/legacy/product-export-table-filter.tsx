@@ -22,10 +22,10 @@ class ProductExportTableFilter extends AbstractFilter {
   private updateState(value: BackendTableFilterValue) {
     const data = {
       field: this.getField(),
-      operator: value.operator,
-      value: value.value,
-      row: value.row,
-      column: value.column,
+      operator: 'operator' in value ? value.operator : undefined,
+      value: 'value' in value ? value.value : undefined,
+      row: 'row' in value ? value.row : undefined,
+      column: 'column' in value ? value.column : undefined,
     };
 
     this.setData(data);

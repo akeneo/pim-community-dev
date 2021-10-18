@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {TableAttribute, TableValue} from '../models';
+import {AttributeCode, TableAttribute, TableValue} from '../models';
 import {CellInputsMapping, CellMatchersMapping, TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -53,7 +53,7 @@ class TableField extends (Field as {new (config: any): any}) {
     this.violations = [];
   }
 
-  setFilteredViolations(event: {response: {values: Violations[]}}, attributeCode: string) {
+  setFilteredViolations(event: {response: {values: Violations[]}}, attributeCode: AttributeCode) {
     this.violations = event.response.values.filter(violation => {
       return violation.attribute === attributeCode;
     });

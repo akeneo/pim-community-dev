@@ -17,6 +17,7 @@ import {useFetchOptions} from './useFetchOptions';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CellInputsMapping} from './CellInputs';
 import {CellMatchersMapping} from './CellMatchers';
+import {UNIQUE_ID_KEY} from './useUniqueIds';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -107,7 +108,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   };
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
-    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    const rowIndex = valueData.findIndex(row => row[UNIQUE_ID_KEY] === uniqueId);
     addDirtyCell(uniqueId, columnCode);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
@@ -175,16 +176,16 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const handleDeleteRow = (uniqueId: string) => {
     addDirtyCell(uniqueId, undefined);
-    onChange?.(valueData.filter(row => row['unique id'] !== uniqueId));
+    onChange?.(valueData.filter(row => row[UNIQUE_ID_KEY] !== uniqueId));
   };
 
   const handleClearRow = (uniqueId: string) => {
     closeActions();
     addDirtyCell(uniqueId, undefined);
-    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    const rowIndex = valueData.findIndex(row => row[UNIQUE_ID_KEY] === uniqueId);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
-      const newRow: TableRowWithId = {'unique id': row['unique id']};
+      const newRow: TableRowWithId = {[UNIQUE_ID_KEY]: row[UNIQUE_ID_KEY]};
       newRow[firstColumn.code] = row[firstColumn.code];
 
       valueData[rowIndex] = newRow;
@@ -196,7 +197,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const handleMoveFirst = (uniqueId: string) => {
     closeActions();
-    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    const rowIndex = valueData.findIndex(row => row[UNIQUE_ID_KEY] === uniqueId);
     if (rowIndex >= 0) {
       const indexes = [rowIndex];
       for (let i = 0; i < valueData.length; i++) {
@@ -209,7 +210,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const handleMoveLast = (uniqueId: string) => {
     closeActions();
-    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    const rowIndex = valueData.findIndex(row => row[UNIQUE_ID_KEY] === uniqueId);
     if (rowIndex >= 0) {
       const indexes = [];
       for (let i = 0; i < valueData.length; i++) {
@@ -233,9 +234,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         <CellInput
           row={row}
           columnDefinition={columnDefinition}
-          onChange={value => handleChange(row['unique id'], columnCode, value)}
-          data-testid={`input-${row['unique id']}-${columnCode}`}
-          inError={isInErrorFromBackend(row['unique id'], columnCode)}
+          onChange={value => handleChange(row[UNIQUE_ID_KEY], columnCode, value)}
+          data-testid={`input-${row[UNIQUE_ID_KEY]}-${columnCode}`}
+          inError={isInErrorFromBackend(row[UNIQUE_ID_KEY], columnCode)}
           attribute={attribute}
           highlighted={matchSearch(cell, searchText, columnCode)}
         />
@@ -262,13 +263,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         <TableInputValueBody>
           {valueDataPage.map(row => {
             return (
-              <TableInput.Row key={row['unique id']} highlighted={isOpenActions(row['unique id'])}>
+              <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
                 <TableInput.Cell>
                   <TableInput.CellContent
                     rowTitle={true}
                     highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
                     inError={
-                      isInErrorFromBackend(row['unique id'], firstColumn.code) ||
+                      isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
                       getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
                     }>
                     {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
@@ -282,7 +283,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
                   return (
-                    <TableInput.Cell key={`${row['unique id']}-${columnDefinition.code}`}>
+                    <TableInput.Cell key={`${row[UNIQUE_ID_KEY]}-${columnDefinition.code}`}>
                       {tableInputCell(row, columnDefinition)}
                     </TableInput.Cell>
                   );
@@ -293,23 +294,23 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       <IconButton
                         icon={<MoreVerticalIcon size={16} />}
                         title={translate('pim_common.actions')}
-                        onClick={() => openActions(row['unique id'])}
+                        onClick={() => openActions(row[UNIQUE_ID_KEY])}
                         ghost='borderless'
                         level='tertiary'
                       />
-                      {isOpenActions(row['unique id']) && (
+                      {isOpenActions(row[UNIQUE_ID_KEY]) && (
                         <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
                           <Dropdown.ItemCollection>
-                            <Dropdown.Item onClick={() => handleDeleteRow(row['unique id'])}>
+                            <Dropdown.Item onClick={() => handleDeleteRow(row[UNIQUE_ID_KEY])}>
                               {translate('pim_table_attribute.form.product.actions.delete_row')}
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleClearRow(row['unique id'])}>
+                            <Dropdown.Item onClick={() => handleClearRow(row[UNIQUE_ID_KEY])}>
                               {translate('pim_table_attribute.form.product.actions.clear_row')}
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleMoveFirst(row['unique id'])}>
+                            <Dropdown.Item onClick={() => handleMoveFirst(row[UNIQUE_ID_KEY])}>
                               {translate('pim_table_attribute.form.product.actions.move_first')}
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleMoveLast(row['unique id'])}>
+                            <Dropdown.Item onClick={() => handleMoveLast(row[UNIQUE_ID_KEY])}>
                               {translate('pim_table_attribute.form.product.actions.move_last')}
                             </Dropdown.Item>
                           </Dropdown.ItemCollection>
