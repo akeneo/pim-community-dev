@@ -70,11 +70,6 @@ class ConfirmAuthorizationAction
             return new RedirectResponse('/');
         }
 
-        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
-        if (null !== $connectedAppIdAndUserGroup) {
-            return new JsonResponse($connectedAppIdAndUserGroup);
-        }
-
         try {
             $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
         } catch (InvalidAppAuthorizationRequest $exception) {
