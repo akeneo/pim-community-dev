@@ -52,14 +52,7 @@ final class EventDispatcherMock implements Context, EventDispatcherInterface
      */
     public function dispatch(object $event, string $eventName = null): object
     {
-        $eventName = null;
-        if (1 < \func_num_args()) {
-            $eventName = func_get_arg(1);
-            $this->eventDispatcher->dispatch($event, $eventName);
-        } else {
-            $this->eventDispatcher->dispatch($event);
-        }
-
+        $this->eventDispatcher->dispatch($event, $eventName);
         $eventName = $eventName ?? \get_class($event);
         $this->events[] = ['name' => $eventName, 'event' => $event];
 
