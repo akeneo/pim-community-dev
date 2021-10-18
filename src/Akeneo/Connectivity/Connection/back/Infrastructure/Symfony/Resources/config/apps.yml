@@ -45,7 +45,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery:
         arguments:
             - '@database_connection'
 

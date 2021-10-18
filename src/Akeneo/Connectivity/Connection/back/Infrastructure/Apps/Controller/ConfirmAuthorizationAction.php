@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -27,7 +27,7 @@ class ConfirmAuthorizationAction
 {
     private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
     private FeatureFlag $featureFlag;
-    private GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery;
+    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private SecurityFacade $security;
     private ViolationListNormalizer $violationListNormalizer;
     private LoggerInterface $logger;
@@ -35,14 +35,14 @@ class ConfirmAuthorizationAction
     public function __construct(
         CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
-        GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
         SecurityFacade $security,
         LoggerInterface $logger
     ) {
         $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
         $this->featureFlag = $featureFlag;
-        $this->getConnectedAppIdAndUserGroupQuery = $getConnectedAppIdAndUserGroupQuery;
+        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->violationListNormalizer = $violationListNormalizer;
         $this->security = $security;
         $this->logger = $logger;
@@ -77,11 +77,14 @@ class ConfirmAuthorizationAction
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
-        if (null === $connectedAppIdAndUserGroup) {
-            throw new \LogicException('The CreateApp handler was executed without error but the resulting App cannot be found');
+        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+        if (null === $appConfirmation) {
+            throw new \LogicException('The connected app should have been created');
         }
 
-        return new JsonResponse($connectedAppIdAndUserGroup);
+        return new JsonResponse([
+            'appId' => $appConfirmation->getAppId(),
+            'userGroup' => $appConfirmation->getUserGroup(),
+        ]);
     }
 }

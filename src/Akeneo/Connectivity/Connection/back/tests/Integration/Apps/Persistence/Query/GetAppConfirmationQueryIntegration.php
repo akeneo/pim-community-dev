@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence\Query;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUserGroup;
 use Akeneo\Test\Integration\Configuration;
@@ -20,10 +21,10 @@ use Akeneo\Test\Integration\TestCase;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetConnectedAppIdAndUserGroupQueryIntegration extends TestCase
+class GetAppConfirmationQueryIntegration extends TestCase
 {
     private DbalConnectedAppRepository $repository;
-    private GetConnectedAppIdAndUserGroupQuery $query;
+    private GetAppConfirmationQuery $query;
     private CreateConnection $createConnection;
     private ClientProvider $clientProvider;
     private CreateUserGroup $createUserGroup;
@@ -39,14 +40,11 @@ class GetConnectedAppIdAndUserGroupQueryIntegration extends TestCase
         parent::setUp();
 
         $this->repository = $this->get(DbalConnectedAppRepository::class);
-        $this->query = $this->get(GetConnectedAppIdAndUserGroupQuery::class);
+        $this->query = $this->get(GetAppConfirmationQuery::class);
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
         $this->createUserGroup = $this->get('akeneo_connectivity.connection.service.user.create_user_group');
         $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
-
-        $this->createConnectedApp('appA');
-        $this->createConnectedApp('appB');
     }
 
     private function createConnectedApp(string $appPublicId): void
@@ -60,16 +58,18 @@ class GetConnectedAppIdAndUserGroupQueryIntegration extends TestCase
             [$group->getName()]
         );
 
-        $client = $this->clientProvider->findOrCreateClient(App::fromWebMarketplaceValues([
-            'id' => $appPublicId,
-            'name' => 'testName',
-            'logo' => 'testLogo',
-            'author' => 'testAuthor',
-            'url' => 'testUrl',
-            'categories' => [],
-            'activate_url' => 'testUrl',
-            'callback_url' => 'testUrl',
-        ]));
+        $client = $this->clientProvider->findOrCreateClient(
+            App::fromWebMarketplaceValues([
+                'id' => $appPublicId,
+                'name' => 'testName',
+                'logo' => 'testLogo',
+                'author' => 'testAuthor',
+                'url' => 'testUrl',
+                'categories' => [],
+                'activate_url' => 'testUrl',
+                'callback_url' => 'testUrl',
+            ])
+        );
 
         $this->createConnection->execute(
             'connectionCode_' . $appPublicId,
@@ -79,51 +79,41 @@ class GetConnectedAppIdAndUserGroupQueryIntegration extends TestCase
             $user->id()
         );
 
-        $this->repository->create(new ConnectedApp(
-            'connectedAppId_' . $appPublicId,
-            'App',
-            [],
-            'connectionCode_' . $appPublicId,
-            'http://www.example.com/path/to/logo',
-            'author',
-            'userGroup_' . $appPublicId,
-            [],
-            false,
-            'partner'
-        ));
+        $this->repository->create(
+            new ConnectedApp(
+                'connectedAppId_' . $appPublicId,
+                'App',
+                [],
+                'connectionCode_' . $appPublicId,
+                'http://www.example.com/path/to/logo',
+                'author',
+                'userGroup_' . $appPublicId,
+                [],
+                false,
+                'partner'
+            )
+        );
     }
 
-    public function connectedAppIdAndUserGroupDataProvider(): array
+    public function test_it_returns_an_app_confirmation_for_a_valid_id()
     {
-        return [
-            'appA id and user group is returned ' => [
-                'expected' => [
-                    'appId' => 'connectedAppId_appA',
-                    'userGroup' => 'userGroup_appA'
-                ],
-                'publicAppId' => 'appA',
-            ],
-            'appB id and user group is returned ' => [
-                'expected' => [
-                    'appId' => 'connectedAppId_appB',
-                    'userGroup' => 'userGroup_appB'
-                ],
-                'publicAppId' => 'appB',
-            ],
-            'null returned on an unknown public app id' => [
-                'expected' => null,
-                'publicAppId' => 'unknown app id',
-            ],
-        ];
+        $this->createConnectedApp('foo');
+
+        $result = $this->query->execute('foo');
+
+        $this->assertInstanceOf(AppConfirmation::class, $result);
+
+        $normalized = $result->normalize();
+        $this->assertEquals('connectedAppId_foo', $normalized['app_id']);
+        $this->assertIsInt($normalized['user_id']);
+        $this->assertEquals('userGroup_foo', $normalized['user_group']);
+        $this->assertIsInt($normalized['fos_client_id']);
     }
 
-    /**
-     * @dataProvider connectedAppIdAndUserGroupDataProvider
-     */
-    public function test_it_returns_connected_app_id_and_its_user_group(?array $expected, string $publicAppId)
+    public function test_it_returns_null_for_an_invalid_id()
     {
-        $appIdAndCode = $this->query->execute($publicAppId);
+        $result = $this->query->execute('bar');
 
-        $this->assertEquals($expected, $appIdAndCode);
+        $this->assertNull($result);
     }
 }
