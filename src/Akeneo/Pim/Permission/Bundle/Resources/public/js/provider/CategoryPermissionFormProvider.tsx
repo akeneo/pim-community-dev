@@ -100,15 +100,15 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'categories',
   label: translate('pim_permissions.widget.entity.category.label'),
-  renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
+  renderForm: (onPermissionsChange, initialState: PermissionFormReducer.State | undefined, readOnly: boolean | undefined) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
       initialState ?? PermissionFormReducer.initialState
     );
 
     useEffect(() => {
-      onChange(state);
-    }, [state]);
+      readOnly !== true && onPermissionsChange(state);
+    }, [readOnly, state]);
 
     return (
       <>
@@ -130,7 +130,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
           disabled={state.own.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
           allByDefaultIsSelected={state.own.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
@@ -146,7 +146,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
           disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
           allByDefaultIsSelected={state.edit.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -162,7 +162,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}

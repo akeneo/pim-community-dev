@@ -56,7 +56,7 @@ type LocaleType = {
 const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'locales',
   label: translate('pim_permissions.widget.entity.locale.label'),
-  renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
+  renderForm: (onPermissionsChange, initialState: PermissionFormReducer.State | undefined, readOnly: boolean | undefined) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
       initialState ?? PermissionFormReducer.initialState
@@ -64,8 +64,9 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
     useEffect(() => {
-      onChange(state);
-    }, [state]);
+      readOnly !== true && onPermissionsChange(state);
+    }, [readOnly, state]);
+
     useEffect(() => {
       FetcherRegistry.getFetcher('locale')
         .fetchActivated({filter_locales: false})
@@ -129,7 +130,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
             onChange={handleEditChange}
             removeLabel=""
             value={state.edit.identifiers}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || state.edit.all}
+            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || state.edit.all || readOnly}
           >
             {activatedLocales.map((locale: LocaleType) => (
               <MultiSelectInput.Option key={locale.code} value={locale.code}>
@@ -139,7 +140,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
           </MultiSelectInput>
           <Checkbox
             checked={state.edit.all}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
+            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
             onChange={checked =>
               checked ? dispatch({type: Actions.ENABLE_ALL_EDIT}) : dispatch({type: Actions.DISABLE_ALL_EDIT})
             }
