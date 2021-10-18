@@ -9,27 +9,26 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 import {attributeEditionCancel} from 'akeneoassetmanager/domain/event/attribute/edit';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
 
-export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
-  dispatch(attributeEditionCancel());
-  dispatch(attributeDeleted(attributeIdentifier));
-  try {
-    const assetFamilyIdentifier = getState().form.data.identifier;
-    const errors = await attributeRemover.remove(assetFamilyIdentifier, attributeIdentifier);
+export const deleteAttribute =
+  (attributeIdentifier: AttributeIdentifier) =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    dispatch(attributeEditionCancel());
+    dispatch(attributeDeleted(attributeIdentifier));
+    try {
+      const assetFamilyIdentifier = getState().form.data.identifier;
+      const errors = await attributeRemover.remove(assetFamilyIdentifier, attributeIdentifier);
 
-    if (errors) {
+      if (errors) {
+        dispatch(notifyAttributeDeletionFailed());
+        return;
+      }
+
+      dispatch(notifyAttributeWellDeleted());
+    } catch (error) {
       dispatch(notifyAttributeDeletionFailed());
-      return;
+
+      throw error;
+    } finally {
+      dispatch(updateAttributeList());
     }
-
-    dispatch(notifyAttributeWellDeleted());
-  } catch (error) {
-    dispatch(notifyAttributeDeletionFailed());
-
-    throw error;
-  } finally {
-    dispatch(updateAttributeList());
-  }
-};
+  };

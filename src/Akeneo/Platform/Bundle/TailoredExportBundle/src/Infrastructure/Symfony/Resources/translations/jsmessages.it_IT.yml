@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
             channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
         measurement:
-          information: Per questo attributo, puoi esportare il valore, il codice unità o l'etichetta unità.
           value: Valore
           unit_locale: Impostazione locale unità
           unit_code: Codice unità

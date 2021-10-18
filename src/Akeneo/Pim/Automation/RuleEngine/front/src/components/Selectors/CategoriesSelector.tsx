@@ -107,7 +107,8 @@ const CategoriesSelector: React.FC<Props> = ({
         {...popover}
         aria-label={translate('pimee_catalog_rule.category.tree')}
         hideOnEsc
-        hideOnClickOutside>
+        hideOnClickOutside
+      >
         <CategoryTreeFilter
           categoryTrees={categoryTrees}
           categoryTreeSelected={categoryTreeSelected}
@@ -124,7 +125,8 @@ const CategoriesSelector: React.FC<Props> = ({
             return (
               <CategoryArtifact
                 className='select2-search-choice'
-                key={category.code}>
+                key={category.code}
+              >
                 {getCategoryLabel(category, locale)}
                 <CategoryArtifactDelete
                   tabIndex={0}

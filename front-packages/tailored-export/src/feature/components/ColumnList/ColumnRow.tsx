@@ -27,13 +27,13 @@ const SourceListPlaceholder = styled.span`
   width: 100%;
 `;
 
+const RemoveCell = styled(Table.Cell)`
+  width: 50px;
+`;
+
 const TargetCell = styled(Table.Cell)`
   width: 300px;
   max-width: unset;
-`;
-
-const RemoveCell = styled(Table.Cell)`
-  width: 50px;
 `;
 
 const Spacer = styled.div`
@@ -165,4 +165,4 @@ const ColumnRow = memo(
   )
 );
 
-export {ColumnRow, TargetCell};
+export {ColumnRow};

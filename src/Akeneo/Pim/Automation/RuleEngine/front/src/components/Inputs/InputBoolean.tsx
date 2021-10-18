@@ -53,7 +53,8 @@ const InputBoolean: React.FC<Props> = ({
           if ([' '].includes(event.key) && !readOnly && onChange) {
             onChange(!value);
           }
-        }}>
+        }}
+      >
         <input
           data-testid={id}
           type='checkbox'

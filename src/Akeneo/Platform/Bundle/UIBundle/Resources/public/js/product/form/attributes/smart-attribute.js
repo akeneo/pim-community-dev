@@ -11,13 +11,13 @@ define([
   'pim/router',
   'pim/security-context',
   'pimee/template/product/tab/attribute/smart-attribute',
-], function($, _, __, Backbone, BaseForm, UserContext, RuleManager, Routing, SecurityContext, smartAttributeTemplate) {
+], function ($, _, __, Backbone, BaseForm, UserContext, RuleManager, Routing, SecurityContext, smartAttributeTemplate) {
   return BaseForm.extend({
     template: _.template(smartAttributeTemplate),
-    configure: function() {
+    configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
     },
-    addFieldExtension: function(event) {
+    addFieldExtension: function (event) {
       let attributeCodes = Object.keys(this.getFormData().values);
       if (this.getFormData().meta.model_type === 'product_model') {
         this.getFormData().meta.family_variant.variant_attribute_sets.forEach(attributeSets => {

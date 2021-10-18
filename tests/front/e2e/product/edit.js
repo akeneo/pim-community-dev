@@ -3,9 +3,7 @@ describe('edit product sanity check', () => {
     cy.login('adminakeneo', 'adminakeneo');
     cy.goToProductsGrid();
     cy.selectFirstProductInDatagrid();
-    cy.findFirstTextField()
-      .clear()
-      .type('updated value');
+    cy.findFirstTextField().clear().type('updated value');
     cy.saveProduct();
     cy.reloadProduct();
     cy.findFirstTextField().should('have.value', 'updated value');

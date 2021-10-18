@@ -38,16 +38,15 @@ const AssociationTypesSelector: React.FC<Props> = ({
   const currentCatalogLocale = useUserCatalogLocale();
   const translate = useTranslate();
 
-  const [associationValues, setAssociationValues] = React.useState<
-    Map<
-      AssociationTarget,
-      ProductIdentifier[] | GroupCode[] | ProductModelCode[]
-    >
-  >();
-  const [
-    currentAssociationTarget,
-    setCurrentAssociationTarget,
-  ] = React.useState<AssociationTarget>();
+  const [associationValues, setAssociationValues] =
+    React.useState<
+      Map<
+        AssociationTarget,
+        ProductIdentifier[] | GroupCode[] | ProductModelCode[]
+      >
+    >();
+  const [currentAssociationTarget, setCurrentAssociationTarget] =
+    React.useState<AssociationTarget>();
 
   React.useEffect(() => {
     const associationValuesArray: any = [];
@@ -78,24 +77,23 @@ const AssociationTypesSelector: React.FC<Props> = ({
     );
   }
 
-  const currentAssociationTargetOrDefault: () =>
-    | AssociationTarget
-    | undefined = () => {
-    if (!currentAssociationTarget) {
+  const currentAssociationTargetOrDefault: () => AssociationTarget | undefined =
+    () => {
+      if (!currentAssociationTarget) {
+        return Array.from(associationValues.keys())[0];
+      }
+      if (
+        Array.from(associationValues.keys()).some(
+          associationTarget =>
+            associationTarget.associationTypeCode ===
+              currentAssociationTarget.associationTypeCode &&
+            associationTarget.target === currentAssociationTarget.target
+        )
+      ) {
+        return currentAssociationTarget;
+      }
       return Array.from(associationValues.keys())[0];
-    }
-    if (
-      Array.from(associationValues.keys()).some(
-        associationTarget =>
-          associationTarget.associationTypeCode ===
-            currentAssociationTarget.associationTypeCode &&
-          associationTarget.target === currentAssociationTarget.target
-      )
-    ) {
-      return currentAssociationTarget;
-    }
-    return Array.from(associationValues.keys())[0];
-  };
+    };
 
   const formatAssociationValues = () => {
     return Array.from(associationValues.entries()).reduce(

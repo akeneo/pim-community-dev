@@ -95,7 +95,8 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.remove_attribute_value.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}>
+        lineNumber={lineNumber}
+      >
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

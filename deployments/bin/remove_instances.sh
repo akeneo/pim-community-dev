@@ -52,7 +52,7 @@ for NAMESPACE in ${NS_LIST}; do
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimup
-        elif [[ ${NS_AGE} == *m* ]] ; then
+        elif [[ ${NS_AGE} == *m* ]] && ! ([[ ${NS_AGE} == *s* ]]) ; then
             NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
             if [[ ${NS_AGE} -ge 60 ]] ; then
                 DELETE_INSTANCE=true
@@ -67,7 +67,7 @@ for NAMESPACE in ${NS_LIST}; do
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-duplic
-        elif [[ ${NS_AGE} == *m* ]] ; then
+        elif [[ ${NS_AGE} == *m* ]] && ! ([[ ${NS_AGE} == *s* ]]) ; then
             NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
             if [[ ${NS_AGE} -ge 60 ]] ; then
                 DELETE_INSTANCE=true
@@ -82,7 +82,7 @@ for NAMESPACE in ${NS_LIST}; do
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
-        elif [[ ${NS_AGE} == *m* ]] ; then
+        elif [[ ${NS_AGE} == *m* ]] && ! ([[ ${NS_AGE} == *s* ]]) ; then
             NS_AGE=$(echo ${NS_AGE} | sed 's/m//')
             if [[ ${NS_AGE} -ge 60 ]] ; then
                 DELETE_INSTANCE=true

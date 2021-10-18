@@ -6,7 +6,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', 'pim/fetcher-registry'], function(
+define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', 'pim/fetcher-registry'], function (
   _,
   __,
   BaseLaunch,
@@ -16,7 +16,7 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       this.isVisible().then(isVisible => {
         this.$el.html(
           this.template({
@@ -32,7 +32,7 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
       return this;
     },
 
-    launch: function() {
+    launch: function () {
       this.isVisible().then(isVisible => {
         isVisible && BaseLaunch.prototype.launch.apply(this);
       });
@@ -41,7 +41,7 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
     /**
      * {@inheritdoc}
      */
-    isVisible: function() {
+    isVisible: function () {
       return FetcherRegistry.getFetcher('permission')
         .fetchAll()
         .then(permissions => {

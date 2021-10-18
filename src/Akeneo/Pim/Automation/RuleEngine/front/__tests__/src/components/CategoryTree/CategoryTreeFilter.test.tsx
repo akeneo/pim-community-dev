@@ -47,7 +47,9 @@ describe('CategoryTreeFilter', () => {
       },
       id: 1,
     };
-    const initCategoryTreeOpenBranch: NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]> = {
+    const initCategoryTreeOpenBranch: NetworkLifeCycle<
+      CategoryTreeModelWithOpenBranch[]
+    > = {
       status: 'COMPLETE',
       data: [],
     };
@@ -90,7 +92,9 @@ describe('CategoryTreeFilter', () => {
       },
       id: 1,
     };
-    const initCategoryTreeOpenBranch: NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]> = {
+    const initCategoryTreeOpenBranch: NetworkLifeCycle<
+      CategoryTreeModelWithOpenBranch[]
+    > = {
       status: 'COMPLETE',
       data: [],
     };
@@ -153,7 +157,9 @@ describe('CategoryTreeFilter', () => {
       },
       id: 1,
     };
-    const initCategoryTreeOpenBranch: NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]> = {
+    const initCategoryTreeOpenBranch: NetworkLifeCycle<
+      CategoryTreeModelWithOpenBranch[]
+    > = {
       status: 'PENDING',
       data: [],
     };
@@ -218,7 +224,9 @@ describe('CategoryTreeFilter', () => {
       },
       id: 1,
     };
-    const initCategoryTreeOpenBranch: NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]> = {
+    const initCategoryTreeOpenBranch: NetworkLifeCycle<
+      CategoryTreeModelWithOpenBranch[]
+    > = {
       status: 'COMPLETE',
       data: [],
     };

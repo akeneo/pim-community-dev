@@ -21,6 +21,7 @@ const OperatorSelector = ({availableOperators, operator, onChange, validationErr
           openLabel={translate('pim_common.open')}
           value={operator}
           onChange={onChange}
+          invalid={0 < validationErrors.length}
         >
           {availableOperators.map((operator: Operator) => (
             <SelectInput.Option

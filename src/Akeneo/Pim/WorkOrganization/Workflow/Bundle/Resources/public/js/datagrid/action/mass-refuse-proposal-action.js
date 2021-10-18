@@ -6,7 +6,7 @@
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'pim/form-modal'], function(
+define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'pim/form-modal'], function (
   $,
   _,
   __,
@@ -22,14 +22,14 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'p
     /**
      * {@inheritdoc}
      */
-    getMethod: function() {
+    getMethod: function () {
       return 'POST';
     },
 
     /**
      * Override the default execute to trigger the popin to add comment
      */
-    execute: function() {
+    execute: function () {
       var modalParameters = {
         title: __('pimee_enrich.entity.product_draft.module.proposal.reject_selected'),
         okText: __('pimee_enrich.entity.product_draft.module.proposal.confirm'),
@@ -44,7 +44,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'p
       );
 
       formModal.open().then(
-        function() {
+        function () {
           MassAction.prototype.execute.apply(this, arguments);
         }.bind(this)
       );
@@ -57,7 +57,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'p
      *
      * @return {Promise}
      */
-    validateForm: function(form) {
+    validateForm: function (form) {
       var comment = form.getFormData().comment;
       this.comment = _.isUndefined(comment) ? null : comment;
 
@@ -67,7 +67,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/mass-action', 'p
     /**
      * {@inheritdoc}
      */
-    getActionParameters: function() {
+    getActionParameters: function () {
       var massActionParam = MassAction.prototype.getActionParameters.apply(this, arguments);
 
       return _.extend(massActionParam, {comment: this.comment});

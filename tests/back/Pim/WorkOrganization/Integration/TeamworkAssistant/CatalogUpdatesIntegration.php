@@ -36,7 +36,7 @@ class CatalogUpdatesIntegration extends TeamworkAssistantTestCase
         $channelRemover->remove($tabletChannel);
 
         $result = $projectRepository->findOneByIdentifier($projectCode);
-        $this->assertTrue(null === $result, 'Project not removed after its channel has been removed.');
+        $this->assertNull($result, 'Project not removed after its channel has been removed.');
     }
 
     /**

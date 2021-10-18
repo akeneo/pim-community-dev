@@ -1,4 +1,4 @@
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {Given, Then, When, Before} = cucumber;
   const assert = require('assert');
   const path = require('path');
@@ -24,7 +24,7 @@ module.exports = async function(cucumber) {
 
   getElement = createElementDecorator(config);
 
-  Given('a catalog with {int} asset categories', async function(int) {
+  Given('a catalog with {int} asset categories', async function (int) {
     this.page.on('request', request => {
       if (request.url().includes('/security')) {
         request.respond({
@@ -38,7 +38,7 @@ module.exports = async function(cucumber) {
     assert(int);
   });
 
-  Then('the report returns that the number of asset categories is {int}', async function(int) {
+  Then('the report returns that the number of asset categories is {int}', async function (int) {
     const report = await await getElement(this.page, 'Catalog volume report');
     const volume = await report.getVolumeByType('count_asset_categories');
     const value = await volume.getValue();

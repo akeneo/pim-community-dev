@@ -49,9 +49,9 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
 
         $categoryA->getCode()->willReturn('category_a');
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryC)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryC)->willReturn(true);
 
         $categorySetter->setFieldData($fullProduct, 'categories', ['category_b', 'category_a'])->shouldBeCalled();
 
@@ -70,7 +70,7 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
 
         $categoryA->getCode()->willReturn('category_a');
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
 
         $categorySetter->setFieldData($fullProduct, 'categories', ['category_b', 'category_a'])->shouldBeCalled();
 
@@ -104,9 +104,9 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
 
         $categoryA->getCode()->willReturn('category_a');
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryC)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryC)->willReturn(true);
 
         $categorySetter->setFieldData($fullProduct, 'categories', ['category_a'])->shouldBeCalled();
 

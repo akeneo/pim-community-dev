@@ -94,10 +94,11 @@
 - PIM-10072: Fix difference on the migration Serenity > Flexibility
 - PIM-10083: Increase the limit of default values displayed in reference entities and assets filters in the product grid
 - PIM-10089: Add missing validation check on rule import
-- PIM-10088: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset 
+- PIM-10088: Fix "upload assets" button being displayed in asset families with a media link as main media when the user doesn't have the permission to create an asset
 - PIM-10093: Fix tailored export access when an attribute used as source is deleted
 - PIM-10091: Add translation keys for the "Computation of asset transformations" job
-- PIM-10097: Fix error message when checking removal of an entity related to a published product 
+- PIM-10097: Fix error message when checking removal of an entity related to a published product
+- PIM-10109: Fix query to get reference entity records to be case insensitive
 - PIM-10103: Fix JS error on attribute options when DQI is disabled
 - PIM-10106: Fix Red underlines for spelling mistakes are moving
 

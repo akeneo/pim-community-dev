@@ -91,7 +91,8 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.add_attribute_value.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}>
+        lineNumber={lineNumber}
+      >
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

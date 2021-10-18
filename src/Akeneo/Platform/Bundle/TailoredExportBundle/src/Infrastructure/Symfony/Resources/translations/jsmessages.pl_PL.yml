@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Jeśli atrybut używany jako etykieta ma wartość na wersję językową, możesz wybrać określoną wersję językową.
             channel: Jeśli atrybut używany jako etykieta ma wartość na kanał, możesz wybrać określony kanał.
         measurement:
-          information: Dla tego atrybutu możesz wyeksportować wartość, kod jednostki lub etykietę jednostkową.
           value: Wartość
           unit_locale: Wersja językowa jednostki
           unit_code: Kod jednostki

@@ -139,7 +139,8 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           <ScopeColumn
             className={
               isFormFieldInError('scope') ? 'select2-container-error' : ''
-            }>
+            }
+          >
             <Controller
               allowClear={!attribute.scopable}
               as={ScopeSelector}
@@ -163,7 +164,8 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           <LocaleColumn
             className={
               isFormFieldInError('locale') ? 'select2-container-error' : ''
-            }>
+            }
+          >
             <Controller
               as={LocaleSelector}
               data-testid={`edit-rules-input-${lineNumber}-locale`}

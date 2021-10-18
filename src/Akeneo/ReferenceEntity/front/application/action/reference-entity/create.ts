@@ -13,27 +13,29 @@ import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/actio
 import {denormalizeReferenceEntityCreation} from 'akeneoreferenceentity/domain/model/reference-entity/creation';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
-export const createReferenceEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
-  const referenceEntity = denormalizeReferenceEntityCreation(getState().create.data);
+export const createReferenceEntity =
+  () =>
+  async (dispatch: any, getState: () => IndexState): Promise<void> => {
+    const referenceEntity = denormalizeReferenceEntityCreation(getState().create.data);
 
-  try {
-    let errors = await referenceEntitySaver.create(referenceEntity);
+    try {
+      let errors = await referenceEntitySaver.create(referenceEntity);
 
-    if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityCreationErrorOccurred(validationErrors));
+      if (errors) {
+        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+        dispatch(referenceEntityCreationErrorOccurred(validationErrors));
+
+        return;
+      }
+    } catch (error) {
+      dispatch(notifyReferenceEntityCreateFailed());
 
       return;
     }
-  } catch (error) {
-    dispatch(notifyReferenceEntityCreateFailed());
+
+    dispatch(referenceEntityCreationSucceeded());
+    dispatch(notifyReferenceEntityWellCreated());
+    dispatch(redirectToReferenceEntity(createIdentifier(referenceEntity.getCode().stringValue()), 'attribute'));
 
     return;
-  }
-
-  dispatch(referenceEntityCreationSucceeded());
-  dispatch(notifyReferenceEntityWellCreated());
-  dispatch(redirectToReferenceEntity(createIdentifier(referenceEntity.getCode().stringValue()), 'attribute'));
-
-  return;
-};
+  };

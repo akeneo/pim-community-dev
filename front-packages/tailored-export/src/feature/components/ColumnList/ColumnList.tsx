@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration, ColumnsState, filterColumns, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
-import {ColumnRow, TargetCell} from './ColumnRow';
+import {ColumnRow} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
 
 const Container = styled.div`
@@ -40,6 +40,11 @@ const CellPlaceholder = styled(Table.Cell)`
 
 const SpacedSearch = styled(Search)`
   margin: 20px 0;
+`;
+
+const TargetCell = styled(Table.Cell)`
+  width: 300px;
+  max-width: unset;
 `;
 
 type ColumnListProps = {

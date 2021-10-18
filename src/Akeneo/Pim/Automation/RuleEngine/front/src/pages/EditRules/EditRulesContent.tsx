@@ -173,7 +173,8 @@ const EditRulesContent: React.FC<Props> = ({
           <Dropdown title={translate('pim_common.other_actions')}>
             <DialogDisclosure
               {...deleteDialog}
-              className='AknDropdown-menuLink'>
+              className='AknDropdown-menuLink'
+            >
               {translate('pim_common.delete')}
             </DialogDisclosure>
             <AlertDialog
@@ -190,7 +191,8 @@ const EditRulesContent: React.FC<Props> = ({
               <>
                 <DialogDisclosure
                   {...saveAndExecuteDialog}
-                  className='AknDropdown-menuLink'>
+                  className='AknDropdown-menuLink'
+                >
                   {translate('pimee_catalog_rule.form.edit.execute.button')}
                 </DialogDisclosure>
                 <AlertDialog
@@ -219,12 +221,14 @@ const EditRulesContent: React.FC<Props> = ({
                 onSubmit().then(() => {
                   formMethods.unregister('duplicate_on_save');
                 });
-              }}>
+              }}
+            >
               {translate('pimee_catalog_rule.form.edit.duplicate.button')}
             </button>
           </Dropdown>
         }
-        secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
+        secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}
+      >
         <Breadcrumb>
           <Breadcrumb.Step href={`#${urlSettings}`}>
             {translate('pim_menu.tab.settings')}
@@ -247,7 +251,8 @@ const EditRulesContent: React.FC<Props> = ({
                 href='https://help.akeneo.com/pim/serenity/articles/manage-your-rules.html'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='AknDescriptionHeader-link'>
+                className='AknDescriptionHeader-link'
+              >
                 {translate(
                   'pimee_catalog_rule.form.edit.header.documentation_link'
                 )}

@@ -21,14 +21,8 @@ type LocaleSelectionProviderProps = {
 const LocaleSelectionProvider: FC<LocaleSelectionProviderProps> = ({locales, children}) => {
   const [totalLocalesCount, updateTotalLocalesCount] = useState(locales.length);
 
-  const [
-    selectionCollection,
-    selectionState,
-    isItemSelected,
-    onSelectionChange,
-    onSelectAllChange,
-    selectedCount,
-  ] = useSelection(totalLocalesCount);
+  const [selectionCollection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection(totalLocalesCount);
 
   const state = {
     selectedLocales: selectionCollection.collection,

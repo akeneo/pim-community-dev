@@ -20,7 +20,8 @@ const InputNumberWithHelper = React.forwardRef<
       <span
         className={`AknPriceList-currency${
           hasError ? ' AknPriceList-currency--error' : ''
-        }`}>
+        }`}
+      >
         {helper}
       </span>
     </>

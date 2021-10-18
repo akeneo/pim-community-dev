@@ -8,7 +8,7 @@ const {
   tools: {answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {Given, Then, When} = cucumber;
   const assert = require('assert');
 
@@ -21,8 +21,8 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const givenAssetFamilies = function(assetFamilies) {
-    const assetFamilyResponse = assetFamilies.hashes().map(function(assetFamily) {
+  const givenAssetFamilies = function (assetFamilies) {
+    const assetFamilyResponse = assetFamilies.hashes().map(function (assetFamily) {
       const assetFamilyBuilder = new AssetFamilyBuilder();
 
       if (undefined !== assetFamily.identifier) {
@@ -62,13 +62,13 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const givenValidAssetFamily = async function() {
+  const givenValidAssetFamily = async function () {
     const requestContract = getRequestContract('AssetFamily/AssetFamilyDetails/ok.json');
 
     await listenRequest(this.page, requestContract);
   };
 
-  const givenValidBrandAssetFamily = async function() {
+  const givenValidBrandAssetFamily = async function () {
     const requestContract = getRequestContract('AssetFamily/AssetFamilyDetails/brand_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -78,7 +78,7 @@ module.exports = async function(cucumber) {
   Given('the following asset families to show:', givenAssetFamilies);
   Given('a valid asset family', givenValidAssetFamily);
   Given('a valid brand asset family', givenValidBrandAssetFamily);
-  When('the user asks for the asset family list', async function() {
+  When('the user asks for the asset family list', async function () {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/asset-family/list');
       const controller = new Controller();
@@ -92,7 +92,7 @@ module.exports = async function(cucumber) {
     assert.equal(isLoaded, true);
   });
 
-  Then('the user gets a selection of {int} items out of {int} items in total', async function(count, total) {
+  Then('the user gets a selection of {int} items out of {int} items in total', async function (count, total) {
     const grid = await await getElement(this.page, 'Grid');
     const rows = await grid.getRowsAfterLoading();
     assert.equal(rows.length, count);
@@ -101,18 +101,18 @@ module.exports = async function(cucumber) {
     assert.equal(title.trim(), `${total} Asset Famil${total > 1 ? 'ies' : 'y'}`);
   });
 
-  Then('the user gets an asset family {string}', async function(identifier) {
+  Then('the user gets an asset family {string}', async function (identifier) {
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
   });
 
-  Then('there is no asset family', async function() {
+  Then('there is no asset family', async function () {
     const grid = await await getElement(this.page, 'Grid');
     const rows = await grid.getRows();
     assert.equal(rows.length, 0);
   });
 
-  Then('the user asks for the next asset families', async function() {
+  Then('the user asks for the next asset families', async function () {
     this.page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });

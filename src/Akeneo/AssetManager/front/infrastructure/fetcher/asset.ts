@@ -29,20 +29,22 @@ export type AssetResult = {
   permission: AssetFamilyPermission;
 };
 
-const denormalizeEditionAsset = (assetFamily: AssetFamily) => (backendAsset: BackendEditionAsset): EditionAsset => {
-  return {
-    identifier: backendAsset.identifier,
-    code: backendAsset.code,
-    createdAt: backendAsset.created_at,
-    updatedAt: backendAsset.updated_at,
-    labels: denormalizeLabelCollection(backendAsset.labels),
-    assetFamily,
-    values: backendAsset.values.map(backendEditionValue => ({
-      ...backendEditionValue,
-      attribute: denormalizeAttribute(backendEditionValue.attribute),
-    })),
+const denormalizeEditionAsset =
+  (assetFamily: AssetFamily) =>
+  (backendAsset: BackendEditionAsset): EditionAsset => {
+    return {
+      identifier: backendAsset.identifier,
+      code: backendAsset.code,
+      createdAt: backendAsset.created_at,
+      updatedAt: backendAsset.updated_at,
+      labels: denormalizeLabelCollection(backendAsset.labels),
+      assetFamily,
+      values: backendAsset.values.map(backendEditionValue => ({
+        ...backendEditionValue,
+        attribute: denormalizeAttribute(backendEditionValue.attribute),
+      })),
+    };
   };
-};
 
 const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
   return {

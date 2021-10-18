@@ -4,19 +4,19 @@
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-define(['pim/product-edit-form/associations', 'pim/security-context'], function(Associations, SecurityContext) {
+define(['pim/product-edit-form/associations', 'pim/security-context'], function (Associations, SecurityContext) {
   return Associations.extend({
     /**
      * {@inheritdoc}
      */
-    isVisible: function() {
+    isVisible: function () {
       return true;
     },
 
     /**
      * {@inheritdoc}
      */
-    isAddAssociationsVisible: function() {
+    isAddAssociationsVisible: function () {
       const isProductOwner = this.getFormData().meta.is_owner;
       const isAddAssociationsAclGranted = SecurityContext.isGranted(this.config.aclAddAssociations);
 

@@ -13,28 +13,30 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edi
 import {denormalizePermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {refreshAssetFamily} from 'akeneoassetmanager/application/action/asset-family/edit';
 
-export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamilyIdentifier = getState().form.data.identifier;
-  const permission = denormalizePermissionCollection(getState().permission.data);
+export const savePermission =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const assetFamilyIdentifier = getState().form.data.identifier;
+    const permission = denormalizePermissionCollection(getState().permission.data);
 
-  try {
-    const errors = await permissionSaver.save(assetFamilyIdentifier, permission);
-    if (errors) {
-      dispatch(permissionEditionErrorOccured(errors));
+    try {
+      const errors = await permissionSaver.save(assetFamilyIdentifier, permission);
+      if (errors) {
+        dispatch(permissionEditionErrorOccured(errors));
+        dispatch(notifyPermissionSaveFailed());
+
+        return;
+      }
+    } catch (error) {
       dispatch(notifyPermissionSaveFailed());
 
       return;
     }
-  } catch (error) {
-    dispatch(notifyPermissionSaveFailed());
 
-    return;
-  }
+    dispatch(permissionEditionSucceeded());
+    dispatch(notifyPermissionWellSaved());
 
-  dispatch(permissionEditionSucceeded());
-  dispatch(notifyPermissionWellSaved());
-
-  const updatedPermission = await permissionFetcher.fetch(assetFamilyIdentifier);
-  dispatch(permissionEditionReceived(updatedPermission));
-  dispatch(refreshAssetFamily(assetFamilyIdentifier, false));
-};
+    const updatedPermission = await permissionFetcher.fetch(assetFamilyIdentifier);
+    dispatch(permissionEditionReceived(updatedPermission));
+    dispatch(refreshAssetFamily(assetFamilyIdentifier, false));
+  };

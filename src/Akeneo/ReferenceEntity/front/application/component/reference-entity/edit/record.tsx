@@ -121,9 +121,8 @@ const Records = ({
   const [filterViews, setFilterViews] = useState<FilterViews>({});
   const translate = useTranslate();
 
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
-    string
-  >(grid.matchesCount);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection<string>(grid.matchesCount);
 
   const searchValue = getFilter(grid.filters, 'full_text')?.value ?? '';
 

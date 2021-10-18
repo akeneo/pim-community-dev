@@ -42,11 +42,10 @@ test('It display the correct value only after the delay', async () => {
   const button = getByTestId(container, 'button');
 
   expect(value.textContent).toBe('0');
-  await act(async () => {
-    await fireEvent.click(button);
-    await fireEvent.click(button);
-    await fireEvent.click(button);
-  });
+  fireEvent.click(button);
+  fireEvent.click(button);
+  fireEvent.click(button);
+
   expect(value.textContent).toBe('0');
   act(() => {
     jest.runAllTimers();

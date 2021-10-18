@@ -89,7 +89,6 @@ akeneo.tailored_export:
             locale: Wenn das Attribut als Label einen Wert pro Gebietsschema hat, können Sie ein bestimmtes Gebietsschema auswählen.
             channel: Wenn das Attribut als Label einen Wert pro Kanal hat, können Sie einen bestimmten Kanal auswählen.
         measurement:
-          information: Für dieses Attribut können Sie entweder den Wert, den Einheitencode oder das Label exportieren.
           value: Wert
           unit_locale: Gebietsschema
           unit_code: Einheit

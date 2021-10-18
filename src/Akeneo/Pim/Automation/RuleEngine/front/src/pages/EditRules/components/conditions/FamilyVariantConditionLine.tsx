@@ -39,10 +39,8 @@ const FamilyVariantConditionLine: React.FC<ConditionLineProps> = ({
     isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
-  const [
-    unexistingFamilyVariantCodes,
-    setUnexistingFamilyVariantCodes,
-  ] = React.useState<FamilyVariantCode[]>([]);
+  const [unexistingFamilyVariantCodes, setUnexistingFamilyVariantCodes] =
+    React.useState<FamilyVariantCode[]>([]);
 
   React.useEffect(() => {
     // This method stores the unexisting family variants at the loading of the line.
@@ -56,15 +54,14 @@ const FamilyVariantConditionLine: React.FC<ConditionLineProps> = ({
     ) {
       setUnexistingFamilyVariantCodes([]);
     } else {
-      getFamilyVariantsByIdentifiers(
-        selectedFamilyVariantCodes,
-        router
-      ).then(existingFamilyVariants =>
-        setUnexistingFamilyVariantCodes(
-          selectedFamilyVariantCodes.filter(
-            familyVariantCode => !(familyVariantCode in existingFamilyVariants)
+      getFamilyVariantsByIdentifiers(selectedFamilyVariantCodes, router).then(
+        existingFamilyVariants =>
+          setUnexistingFamilyVariantCodes(
+            selectedFamilyVariantCodes.filter(
+              familyVariantCode =>
+                !(familyVariantCode in existingFamilyVariants)
+            )
           )
-        )
       );
     }
   }, []);
@@ -82,10 +79,10 @@ const FamilyVariantConditionLine: React.FC<ConditionLineProps> = ({
       return translate('pimee_catalog_rule.exceptions.required');
     }
     if (familyVariantCodes && unexistingFamilyVariantCodes.length) {
-      const unknownFamilyVariantCodes: FamilyVariantCode[] = familyVariantCodes.filter(
-        familyVariantCode =>
+      const unknownFamilyVariantCodes: FamilyVariantCode[] =
+        familyVariantCodes.filter(familyVariantCode =>
           unexistingFamilyVariantCodes.includes(familyVariantCode)
-      );
+        );
       if (unknownFamilyVariantCodes.length) {
         return translate(
           'pimee_catalog_rule.exceptions.unknown_family_variants',
@@ -110,7 +107,8 @@ const FamilyVariantConditionLine: React.FC<ConditionLineProps> = ({
           className={'AknGrid-bodyCell--highlight'}
           title={translate(
             'pimee_catalog_rule.form.edit.fields.family_variant'
-          )}>
+          )}
+        >
           {translate('pimee_catalog_rule.form.edit.fields.family_variant')}
         </FieldColumn>
         <OperatorColumn>
@@ -128,7 +126,8 @@ const FamilyVariantConditionLine: React.FC<ConditionLineProps> = ({
           <ValueColumn
             className={
               isFormFieldInError('value') ? 'select2-container-error' : ''
-            }>
+            }
+          >
             <Controller
               as={FamilyVariantsSelector}
               currentCatalogLocale={currentCatalogLocale}

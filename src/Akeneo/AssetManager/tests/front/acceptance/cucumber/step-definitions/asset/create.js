@@ -9,7 +9,7 @@ const {
   tools: {answerJson, convertItemTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {When, Then, Given} = cucumber;
   const assert = require('assert');
 
@@ -34,7 +34,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const saveAsset = async function(page) {
+  const saveAsset = async function (page) {
     page.on('request', request => {
       if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
@@ -42,7 +42,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const listAssetUpdated = async function(page, assetFamilyIdentifier, identifier, code, labels) {
+  const listAssetUpdated = async function (page, assetFamilyIdentifier, identifier, code, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
@@ -60,7 +60,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const validationMessageShown = async function(page, message) {
+  const validationMessageShown = async function (page, message) {
     page.on('request', request => {
       if ('http://pim.com/rest/asset_manager/designer/asset' === request.url() && 'POST' === request.method()) {
         answerJson(
@@ -85,11 +85,11 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const getAssetIdentifier = function(assetFamilyIdentifier, code) {
+  const getAssetIdentifier = function (assetFamilyIdentifier, code) {
     return `${assetFamilyIdentifier}_${code}_123456`;
   };
 
-  When('the user creates a asset of {string} with:', async function(assetFamilyIdentifier, updates) {
+  When('the user creates a asset of {string} with:', async function (assetFamilyIdentifier, updates) {
     const asset = convertItemTable(updates)[0];
 
     const sidebar = await await getElement(this.page, 'Sidebar');
@@ -105,22 +105,22 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Given('the user toggles the sequantial creation', async function() {
+  Given('the user toggles the sequantial creation', async function () {
     const modal = await await getElement(this.page, 'Modal');
     await modal.toggleCreateAnother();
   });
 
-  Then('the asset creation form should be displayed', async function() {
+  Then('the asset creation form should be displayed', async function () {
     await this.page.waitFor(1000);
     await this.page.waitFor('.modal .AknFullPage-content .AknFieldContainer');
   });
 
-  When('the user saves the asset', async function() {
+  When('the user saves the asset', async function () {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is a asset of {string} with:', async function(assetFamilyIdentifier, updates) {
+  Then('there is a asset of {string} with:', async function (assetFamilyIdentifier, updates) {
     const asset = convertItemTable(updates)[0];
     const assetIdentifier = getAssetIdentifier(assetFamilyIdentifier, asset.code);
 
@@ -135,15 +135,15 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Then('the asset validation error will be {string}', async function(expectedMessage) {
+  Then('the asset validation error will be {string}', async function (expectedMessage) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the asset will be saved', async function() {
+  Then('the asset will be saved', async function () {
     await saveAsset(this.page);
   });
 
-  Then('the user cannot create a asset', async function() {
+  Then('the user cannot create a asset', async function () {
     const sidebar = await await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('asset');
 

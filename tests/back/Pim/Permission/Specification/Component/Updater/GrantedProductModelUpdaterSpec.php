@@ -60,7 +60,7 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(null);
 
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->shouldNotBeCalled();
+        $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->shouldNotBeCalled();
         $productModelUpdater->update($productModel, $data, [])->shouldBeCalled();
 
         $this->update($productModel, $data);
@@ -83,8 +83,8 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         $productModel->getId()->willReturn(1);
         $productModel->getCode()->willReturn('product_model');
 
-        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFilter->filter($productModel, [
             'values' =>  [
                 'a_text' => [
@@ -112,8 +112,8 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         ];
         $productModel->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFilter->filter($productModel, $data)->shouldNotBeCalled();
 
         $productModelUpdater->update($productModel, $data, [])->shouldBeCalled();

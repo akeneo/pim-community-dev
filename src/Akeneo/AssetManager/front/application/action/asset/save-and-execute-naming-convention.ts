@@ -18,22 +18,21 @@ async function fetchUpdatedAsset(assetFamilyIdentifier: string, assetCode: strin
   dispatch(assetEditionReceived(savedAsset.asset));
 }
 
-export const saveAndExecuteNamingConvention = (
-  assetFamilyIdentifier: AssetFamilyIdentifier,
-  assetCode: AssetCode
-) => async (dispatch: any): Promise<void> => {
-  const isSaved = await dispatch(saveAsset());
-  if (!isSaved) {
-    dispatch(notifyExecuteNamingConventionFailed());
+export const saveAndExecuteNamingConvention =
+  (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
+  async (dispatch: any): Promise<void> => {
+    const isSaved = await dispatch(saveAsset());
+    if (!isSaved) {
+      dispatch(notifyExecuteNamingConventionFailed());
 
-    return;
-  }
-  const isExecuted = await executeNamingConvention(assetFamilyIdentifier, assetCode, dispatch);
-  if (!isExecuted) {
-    return;
-  }
-  await fetchUpdatedAsset(assetFamilyIdentifier, assetCode, dispatch);
-};
+      return;
+    }
+    const isExecuted = await executeNamingConvention(assetFamilyIdentifier, assetCode, dispatch);
+    if (!isExecuted) {
+      return;
+    }
+    await fetchUpdatedAsset(assetFamilyIdentifier, assetCode, dispatch);
+  };
 
 async function executeNamingConvention(
   assetFamilyIdentifier: string,

@@ -40,68 +40,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProjectController
 {
-    /** @var FilterConverter */
-    protected $filterConverter;
+    protected FilterConverter $filterConverter;
+    protected ValidatorInterface $validator;
+    protected ProjectFactoryInterface $projectFactory;
+    protected SaverInterface $projectSaver;
+    protected ObjectUpdaterInterface $projectUpdater;
+    protected RemoverInterface $projectRemover;
+    protected ProjectCalculationJobLauncher $projectCalculationJobLauncher;
+    protected NormalizerInterface $projectNormalizer;
+    protected ProjectRepositoryInterface $projectRepository;
+    protected SearchableRepositoryInterface $userRepository;
+    protected TokenStorageInterface $tokenStorage;
+    protected ProjectCompletenessRepositoryInterface $projectCompletenessRepository;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected RouterInterface $router;
+    protected NormalizerInterface $projectCompletenessNormalizer;
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ProjectFactoryInterface */
-    protected $projectFactory;
-
-    /** @var SaverInterface */
-    protected $projectSaver;
-
-    /** @var ObjectUpdaterInterface */
-    protected $projectUpdater;
-
-    /** @var RemoverInterface */
-    protected $projectRemover;
-
-    /** @var ProjectCalculationJobLauncher*/
-    protected $projectCalculationJobLauncher;
-
-    /** @var NormalizerInterface */
-    protected $projectNormalizer;
-
-    /** @var ProjectRepositoryInterface */
-    protected $projectRepository;
-
-    /** @var SearchableRepositoryInterface */
-    protected $userRepository;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var ProjectCompletenessRepositoryInterface */
-    protected $projectCompletenessRepository;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var NormalizerInterface */
-    protected $projectCompletenessNormalizer;
-
-    /**
-     * @param FilterConverter                        $filterConverter
-     * @param ProjectFactoryInterface                $projectFactory
-     * @param SaverInterface                         $projectSaver
-     * @param ObjectUpdaterInterface                 $projectUpdater
-     * @param RemoverInterface                       $projectRemover
-     * @param ValidatorInterface                     $validator
-     * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
-     * @param NormalizerInterface                    $projectNormalizer
-     * @param ProjectRepositoryInterface             $projectRepository
-     * @param SearchableRepositoryInterface          $userRepository
-     * @param TokenStorageInterface                  $tokenStorage
-     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param AuthorizationCheckerInterface          $authorizationChecker
-     * @param RouterInterface                        $router
-     * @param NormalizerInterface                    $projectCompletenessNormalizer
-     */
     public function __construct(
         FilterConverter $filterConverter,
         ProjectFactoryInterface $projectFactory,
@@ -136,12 +90,7 @@ class ProjectController
         $this->projectRemover = $projectRemover;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -156,7 +105,7 @@ class ProjectController
         if (isset($projectData['code'])) {
             $project = $this->projectRepository->findOneByIdentifier($projectData['code']);
 
-            if (null === $project || !$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
+            if (null === $project || !$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
                 return new JsonResponse(sprintf('No project with code "%s"', $projectData['code']), 400);
             }
 
@@ -191,13 +140,7 @@ class ProjectController
         return new JsonResponse($errors, 400);
     }
 
-    /**
-     * @param Request $request
-     * @param string  $identifier
-     *
-     * @return Response
-     */
-    public function removeAction(Request $request, $identifier)
+    public function removeAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -205,7 +148,7 @@ class ProjectController
 
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
-        if (null === $project || !$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
+        if (null === $project || !$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
             return new JsonResponse(sprintf('No project with code "%s"', $identifier), 400);
         }
 
@@ -217,12 +160,8 @@ class ProjectController
     /**
      * Returns Projects in terms of search and options.
      * Options accept 'limit' => (int) and 'page' => (int) and 'user' => UserInterface.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): JsonResponse
     {
         $options = ['limit' => 20, 'page' => 1, 'completeness' => '1'];
         $options = array_merge($options, $request->query->get('options', []));
@@ -260,12 +199,7 @@ class ProjectController
         return new JsonResponse($normalizedProjects, 200);
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
         $project = $this->projectRepository->findOneByIdentifier($identifier);
@@ -285,15 +219,7 @@ class ProjectController
         return new JsonResponse($normalizedProject, 200);
     }
 
-    /**
-     * Returns users that belong to the project.
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
-     * @return JsonResponse
-     */
-    public function searchContributorsAction($identifier, Request $request)
+    public function searchContributorsAction(string $identifier, Request $request): JsonResponse
     {
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
@@ -321,19 +247,16 @@ class ProjectController
      * The "show" action of a project means redirecting the user on the datagrid filtered with the Project's view.
      * If a "status" is specified, we fill in the project completeness filter depending on the user permissions.
      *
-     * @param string $identifier
-     * @param string $status
-     *
      * @Template("@AkeneoPimTeamworkAssistant/Project/filter-grid.html.twig")
      *
      * @return array|RedirectResponse|JsonResponse
      */
-    public function showAction($identifier, $status)
+    public function showAction(string $identifier, string $status)
     {
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         if (null === $project ||
-            !$this->authorizationChecker->isGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project)
+            !($this->authorizationChecker->isGranted(ProjectVoter::OWN, $project) || $this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project))
         ) {
             return new JsonResponse([
                 'route' => 'pim_enrich_product_index'
@@ -355,7 +278,7 @@ class ProjectController
         $statusCode = 0;
 
         if (array_key_exists($status, $ownerStatuses)) {
-            if (!$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
+            if (!$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
                 return new JsonResponse([
                     'route' => 'pim_enrich_product_index'
                 ]);

@@ -86,10 +86,10 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
 
         $locale = null !== $localeCode ? $this->localeRepository->findOneByIdentifier($localeCode) : null;
         $permissions = [
-            'view_attribute' => $this->authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute),
-            'edit_attribute' => $this->authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute),
-            'view_locale' => null !== $locale ? $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale) : null,
-            'edit_locale' => null !== $locale ? $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale) : null,
+            'view_attribute' => $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute),
+            'edit_attribute' => $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute),
+            'view_locale' => null !== $locale ? $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale) : null,
+            'edit_locale' => null !== $locale ? $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale) : null,
         ];
 
         $this->checkViewableAttributeGroup($attribute, $permissions);

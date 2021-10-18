@@ -11,28 +11,27 @@ import {attributeEditionCancel} from 'akeneoreferenceentity/domain/event/attribu
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
-export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
-  dispatch(attributeEditionCancel());
-  dispatch(attributeDeleted(attributeIdentifier));
-  try {
-    const referenceEntityIdentifier = createIdentifier(getState().form.data.identifier);
-    const errors = await attributeRemover.remove(referenceEntityIdentifier, attributeIdentifier);
+export const deleteAttribute =
+  (attributeIdentifier: AttributeIdentifier) =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    dispatch(attributeEditionCancel());
+    dispatch(attributeDeleted(attributeIdentifier));
+    try {
+      const referenceEntityIdentifier = createIdentifier(getState().form.data.identifier);
+      const errors = await attributeRemover.remove(referenceEntityIdentifier, attributeIdentifier);
 
-    if (errors) {
+      if (errors) {
+        dispatch(notifyAttributeDeletionFailed());
+        return;
+      }
+
+      dispatch(notifyAttributeWellDeleted());
+      dispatch(closeDeleteModal());
+    } catch (error) {
       dispatch(notifyAttributeDeletionFailed());
-      return;
+
+      throw error;
+    } finally {
+      dispatch(updateAttributeList());
     }
-
-    dispatch(notifyAttributeWellDeleted());
-    dispatch(closeDeleteModal());
-  } catch (error) {
-    dispatch(notifyAttributeDeletionFailed());
-
-    throw error;
-  } finally {
-    dispatch(updateAttributeList());
-  }
-};
+  };

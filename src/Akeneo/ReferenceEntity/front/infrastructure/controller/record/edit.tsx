@@ -91,7 +91,7 @@ class RecordEditController extends BaseController {
 
         promise.resolve();
       })
-      .catch(function(error: any) {
+      .catch(function (error: any) {
         if (error.request) {
           promise.reject(error.request);
         }

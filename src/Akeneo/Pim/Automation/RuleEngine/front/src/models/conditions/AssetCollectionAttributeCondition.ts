@@ -35,18 +35,16 @@ const createAssetCollectionAttributeCondition: ConditionFactory = async (
   );
 };
 
-const getAssetCollectionAttributeConditionModule: ConditionModuleGuesser = async (
-  json,
-  router
-) => {
-  return getAttributeConditionModule(
-    json,
-    router,
-    AssetCollectionAttributeOperators,
-    [AttributeType.ASSET_COLLECTION],
-    AssetCollectionAttributeConditionLine
-  );
-};
+const getAssetCollectionAttributeConditionModule: ConditionModuleGuesser =
+  async (json, router) => {
+    return getAttributeConditionModule(
+      json,
+      router,
+      AssetCollectionAttributeOperators,
+      [AttributeType.ASSET_COLLECTION],
+      AssetCollectionAttributeConditionLine
+    );
+  };
 
 export {
   AssetCollectionAttributeOperators,

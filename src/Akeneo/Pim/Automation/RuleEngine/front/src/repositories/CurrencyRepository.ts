@@ -9,15 +9,14 @@ const clearCurrencyRepositoryCache = () => {
   cachedCurrencies = undefined;
 };
 
-const getAllCurrencies: (
-  router: Router
-) => Promise<IndexedCurrencies> = async router => {
-  if (!cachedCurrencies) {
-    cachedCurrencies = await fetchAllCurrencies(router);
-  }
+const getAllCurrencies: (router: Router) => Promise<IndexedCurrencies> =
+  async router => {
+    if (!cachedCurrencies) {
+      cachedCurrencies = await fetchAllCurrencies(router);
+    }
 
-  return cachedCurrencies;
-};
+    return cachedCurrencies;
+  };
 
 const getCurrenciesByCode: (
   currencyCodes: CurrencyCode[],

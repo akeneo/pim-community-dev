@@ -60,9 +60,9 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         ];
         $product->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
         $productFieldFilter->filter($product, ['enabled' => true])->willReturn([]);
         $productAssociationFilter->filter($product, [
             'associations' => [
@@ -93,9 +93,9 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         ];
         $product->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
         $productFilter->filter($product, ['enabled' => true])->willReturn([]);
         $productAssociationFilter->filter($product, [
             'associations' => [
@@ -126,9 +126,9 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         ];
         $product->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
         $productFieldFilter->filter($product, ['enabled' => false])->willReturn(['enabled' => false]);
         $productAssociationFilter->filter($product, [
             'associations' => [
@@ -161,9 +161,9 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         $product->getId()->willReturn(1);
         $product->getIdentifier()->willReturn('product');
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
         $productFilter->filter($product, ['enabled' => false])->willReturn(['enabled' => false]);
         $productAssociationFilter->filter($product, [
             'associations' => [
@@ -188,9 +188,9 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         $data = ['enabled' => true];
         $product->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
         $productFieldFilter->filter($product, $data)->shouldNotBeCalled();
         $productAssociationFilter->filter($product, [])->shouldNotBeCalled();
 
@@ -206,8 +206,8 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         $data = ['enabled' => true];
         $product->getId()->willReturn(null);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $product)->shouldNotBeCalled();
-        $authorizationChecker->isGranted([Attributes::EDIT], $product)->shouldNotBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->shouldNotBeCalled();
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->shouldNotBeCalled();
 
         $productUpdater->update($product, $data, [])->shouldBeCalled();
         $this->update($product, $data, []);

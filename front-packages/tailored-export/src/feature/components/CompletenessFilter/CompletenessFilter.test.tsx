@@ -99,8 +99,10 @@ test.each(operatorsAndVisibility)(
     expect(screen.getByText(`pim_enrich.export.product.filter.completeness.operators.${operator}`)).toBeInTheDocument();
 
     if (shouldAppear) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(screen.getByText('akeneo.tailored_export.filters.completeness.locales.label')).toBeInTheDocument();
     } else {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(screen.queryByText('akeneo.tailored_export.filters.completeness.locales.label')).not.toBeInTheDocument();
     }
   }

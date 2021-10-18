@@ -118,7 +118,7 @@ define([
         });
     },
 
-    getChoiceUrl: function(attribute) {
+    getChoiceUrl: function (attribute) {
       return Routing.generate(this.config.url, {assetFamilyIdentifier: attribute.reference_data_name});
     },
 

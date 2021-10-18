@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {screen, within} from '@testing-library/react';
+import {screen, within, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {UpdaterRow} from './UpdaterRow';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
@@ -149,8 +149,7 @@ test('it calls onChange handler when the user changes input', () => {
   );
 
   const textInput = screen.getByLabelText('Description attribute');
-  userEvent.type(textInput, 'New value', {allAtOnce: true});
-  expect(handleChange).toHaveBeenCalledTimes(1);
+  fireEvent.change(textInput, {target: {value: 'New value'}});
   expect(handleChange).toHaveBeenCalledWith({...updater, data: 'New value'});
 });
 

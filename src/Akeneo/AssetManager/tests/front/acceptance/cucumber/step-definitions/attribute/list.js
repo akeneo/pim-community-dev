@@ -9,7 +9,7 @@ const {
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 const attributeIdentifierSuffix = '123456';
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {Given, Then, When} = cucumber;
   const assert = require('assert');
 
@@ -26,12 +26,12 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const showAttributesTab = async function(page) {
+  const showAttributesTab = async function (page) {
     const sidebar = await await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('attribute');
   };
 
-  Given('the following attributes for the asset family {string}:', async function(assetFamilyIdentifier, attributes) {
+  Given('the following attributes for the asset family {string}:', async function (assetFamilyIdentifier, attributes) {
     const attributesSaved = attributes.hashes().map(normalizedAttribute => {
       if ('text' === normalizedAttribute.type) {
         return {
@@ -105,7 +105,7 @@ module.exports = async function(cucumber) {
     });
   });
 
-  Then('there should be the following attributes:', async function(expectedAttributes) {
+  Then('there should be the following attributes:', async function (expectedAttributes) {
     await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
@@ -118,7 +118,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasAllAttribute, true);
   });
 
-  const editAttribute = async function(page, attributeIdentifier, editMode) {
+  const editAttribute = async function (page, attributeIdentifier, editMode) {
     await showAttributesTab(page);
 
     const attributes = await await getElement(page, 'Attributes');
@@ -130,15 +130,15 @@ module.exports = async function(cucumber) {
     }
   };
 
-  Then('the user edit the attribute {string}', async function(attributeIdentifier) {
+  Then('the user edit the attribute {string}', async function (attributeIdentifier) {
     await editAttribute(this.page, attributeIdentifier, true);
   });
 
-  Then('the user looks at the attribute {string}', async function(attributeIdentifier) {
+  Then('the user looks at the attribute {string}', async function (attributeIdentifier) {
     await editAttribute(this.page, attributeIdentifier, false);
   });
 
-  Then('the list of attributes should be empty', async function() {
+  Then('the list of attributes should be empty', async function () {
     await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
@@ -147,33 +147,33 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isEmpty, true);
   });
 
-  When('the user deletes the attribute {string} linked to the asset family {string}', async function(
-    attributeIdentifier,
-    assetFamilyIdentifier
-  ) {
-    await showAttributesTab(this.page);
-    const attributes = await await getElement(this.page, 'Attributes');
+  When(
+    'the user deletes the attribute {string} linked to the asset family {string}',
+    async function (attributeIdentifier, assetFamilyIdentifier) {
+      await showAttributesTab(this.page);
+      const attributes = await await getElement(this.page, 'Attributes');
 
-    await editAttribute(this.page, attributeIdentifier, true);
-    this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/asset_manager';
-      const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
-      if (deleteUrl === request.url() && 'DELETE' === request.method()) {
-        answerJson(request, {}, 204);
-      }
+      await editAttribute(this.page, attributeIdentifier, true);
+      this.page.on('request', request => {
+        const baseUrl = 'http://pim.com/rest/asset_manager';
+        const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+        const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
+        if (deleteUrl === request.url() && 'DELETE' === request.method()) {
+          answerJson(request, {}, 204);
+        }
 
-      return request;
-    });
+        return request;
+      });
 
-    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
+      const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
 
-    await listenRequest(this.page, requestContract);
+      await listenRequest(this.page, requestContract);
 
-    await attributes.remove(attributeIdentifier);
-  });
+      await attributes.remove(attributeIdentifier);
+    }
+  );
 
-  When('the user cancel the deletion of attribute {string}', async function(attributeIdentifier) {
+  When('the user cancel the deletion of attribute {string}', async function (attributeIdentifier) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
     await editAttribute(this.page, attributeIdentifier, true);
@@ -181,34 +181,34 @@ module.exports = async function(cucumber) {
     await attributes.cancelDeletion();
   });
 
-  When('the user cannot delete the attribute {string} linked to the asset family {string}', async function(
-    attributeIdentifier,
-    assetFamilyIdentifier
-  ) {
-    await showAttributesTab(this.page);
-    const attributes = await await getElement(this.page, 'Attributes');
+  When(
+    'the user cannot delete the attribute {string} linked to the asset family {string}',
+    async function (attributeIdentifier, assetFamilyIdentifier) {
+      await showAttributesTab(this.page);
+      const attributes = await await getElement(this.page, 'Attributes');
 
-    await editAttribute(this.page, attributeIdentifier, true);
+      await editAttribute(this.page, attributeIdentifier, true);
 
-    this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/asset_manager';
-      const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
-      if (deleteUrl === request.url() && 'DELETE' === request.method()) {
-        answerJson(request, {}, 404);
-      }
+      this.page.on('request', request => {
+        const baseUrl = 'http://pim.com/rest/asset_manager';
+        const identifier = `${assetFamilyIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+        const deleteUrl = `${baseUrl}/${assetFamilyIdentifier}/attribute/${identifier}`;
+        if (deleteUrl === request.url() && 'DELETE' === request.method()) {
+          answerJson(request, {}, 404);
+        }
 
-      return request;
-    });
+        return request;
+      });
 
-    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_bio_portrait.json');
+      const requestContract = getRequestContract('Attribute/ListDetails/ok/name_bio_portrait.json');
 
-    await listenRequest(this.page, requestContract);
+      await listenRequest(this.page, requestContract);
 
-    await attributes.remove(attributeIdentifier);
-  });
+      await attributes.remove(attributeIdentifier);
+    }
+  );
 
-  Then('the user cannot delete the attribute {string}', async function(attributeIdentifier) {
+  Then('the user cannot delete the attribute {string}', async function (attributeIdentifier) {
     await showAttributesTab(this.page);
     await editAttribute(this.page, attributeIdentifier, false);
 
@@ -218,7 +218,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasRemoveButton, false);
   });
 
-  Then('there should not be the following attributes:', async function(expectedAttributes) {
+  Then('there should not be the following attributes:', async function (expectedAttributes) {
     const attributes = await await getElement(this.page, 'Attributes');
     const isValid = await expectedAttributes.hashes().reduce(async (isValid, expectedAttribute) => {
       return (await isValid) && !(await attributes.hasAttribute(expectedAttribute.code, expectedAttribute.type));

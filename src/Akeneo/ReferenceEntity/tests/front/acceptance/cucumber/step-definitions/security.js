@@ -4,10 +4,10 @@ const {
   tools: {answerJson, convertDataTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {Given} = cucumber;
 
-  const listAcls = function(page, acls) {
+  const listAcls = function (page, acls) {
     page.on('request', request => {
       if ('http://pim.com/rest/security/' === request.url()) {
         answerJson(request, acls, 200);
@@ -15,7 +15,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  Given('the user has the following rights:', async function(aclsTable) {
+  Given('the user has the following rights:', async function (aclsTable) {
     const acls = convertDataTable(aclsTable);
     listAcls(this.page, acls);
     await this.page.evaluate(() => {
@@ -25,7 +25,7 @@ module.exports = async function(cucumber) {
     });
   });
 
-  Given('the user does not have any rights', async function() {
+  Given('the user does not have any rights', async function () {
     listAcls(this.page, []);
   });
 };

@@ -16,7 +16,8 @@ const InputErrorMsg: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
     <DivErrMsg
       className='AknFieldContainer-validationError'
       id={id}
-      role='alert'>
+      role='alert'
+    >
       {children}
     </DivErrMsg>
   );

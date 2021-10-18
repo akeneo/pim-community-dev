@@ -52,8 +52,8 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
         $marketingGroup->getCode()->willReturn('marketing');
         $propertySetter->setData($entityWithValues, 'a_name', $data, $options);
 
-        $authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attributeName)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attributeName)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attributeName)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeName)->willReturn(true);
 
         $this->shouldNotThrow(
             new ResourceAccessDeniedException(
@@ -75,8 +75,8 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('a_name')->willReturn($attribute);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute)->willReturn(false);
 
         $options = ['locale' => null, 'scope' => null];
         $data = [
@@ -109,11 +109,11 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('a_name')->willReturn($attribute);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute)->willReturn(true);
 
-        $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(false);
 
         $options = ['locale' => 'fr_FR', 'scope' => null];
         $data = [

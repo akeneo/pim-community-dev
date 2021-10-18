@@ -18,14 +18,14 @@ define([
   'pim/date-context',
   'pim/formatter/date',
   'oro/mediator',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
+], function ($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
   return ViewSelector.extend({
     hasNoProject: false,
 
     /**
      * {@inheritdoc}
      */
-    configure: function(gridAlias) {
+    configure: function (gridAlias) {
       this.gridAlias = gridAlias;
 
       if ('product-grid' !== this.gridAlias) {
@@ -38,7 +38,7 @@ define([
       return ViewSelector.prototype.configure.apply(this, arguments);
     },
 
-    initializeSelection: function() {
+    initializeSelection: function () {
       return ViewSelector.prototype.initializeSelection.apply(this, arguments).then(view => {
         if ('project' === view.type && view.label) {
           return FetcherRegistry.getFetcher('project')
@@ -67,7 +67,7 @@ define([
      *
      * We define the default view type if the current user has a project as current view.
      */
-    initializeViewTypes: function() {
+    initializeViewTypes: function () {
       if (null === this.currentViewType) {
         if (null !== this.currentView) {
           this.currentViewType = 'project' === this.currentView.type ? 'project' : 'view';
@@ -82,7 +82,7 @@ define([
      *
      * Override to handle teamwork assistant projects.
      */
-    switchViewType: function(event) {
+    switchViewType: function (event) {
       const viewType = $(event.target).data('value');
 
       if (this.currentViewType === viewType) {
@@ -100,7 +100,7 @@ define([
         FetcherRegistry.getFetcher('project')
           .search({search: null, options: {limit: 1, page: 1}})
           .then(
-            function(projects) {
+            function (projects) {
               var project = _.first(projects);
               this.hasNoProject = undefined === project;
 
@@ -116,7 +116,7 @@ define([
 
       if ('view' === this.currentViewType) {
         this.initializeSelection().then(
-          function(view) {
+          function (view) {
             this.selectView(view);
           }.bind(this)
         );
@@ -128,7 +128,7 @@ define([
     /**
      * Method called when a project has been edited.
      */
-    onProjectEdited: function() {
+    onProjectEdited: function () {
       FetcherRegistry.getFetcher('datagrid-view').clear();
       FetcherRegistry.getFetcher('project').clear();
 
@@ -138,7 +138,7 @@ define([
     /**
      * Method called when a project has been removed.
      */
-    onProjectRemoved: function() {
+    onProjectRemoved: function () {
       FetcherRegistry.getFetcher('project').clear();
       this.currentViewType = 'view';
 
@@ -150,7 +150,7 @@ define([
      *
      * Override to handle teamwork assistant projects view.
      */
-    selectView: function(view) {
+    selectView: function (view) {
       if ('project' === this.currentViewType) {
         var project = view;
         view = project.datagridView;
@@ -187,7 +187,7 @@ define([
      *
      * Override to fetch the project label of a view
      */
-    postFetchDatagridView: function(view) {
+    postFetchDatagridView: function (view) {
       if ('project' === view.type) {
         return FetcherRegistry.getFetcher('project')
           .fetch(view.label)
@@ -205,7 +205,7 @@ define([
     /**
      * Disable the View Selector select2 and display a message to create a new project
      */
-    disableSelect2: function() {
+    disableSelect2: function () {
       this.$('.select2-selection-label-view .current').html(
         __('teamwork_assistant.grid.view_selector.start_new_project')
       );
@@ -218,7 +218,7 @@ define([
      *
      * Override to disable the select2 if there is no project to display
      */
-    initializeSelectWidget: function() {
+    initializeSelectWidget: function () {
       ViewSelector.prototype.initializeSelectWidget.apply(this, arguments);
 
       if ('project' === this.currentViewType && this.hasNoProject) {
@@ -231,7 +231,7 @@ define([
      *
      * Override to set a limit of 3 to fetch projects
      */
-    getResultsPerPage: function() {
+    getResultsPerPage: function () {
       if ('project' === this.currentViewType) {
         return this.config.maxProjectFetching;
       }
@@ -239,7 +239,7 @@ define([
       return ViewSelector.prototype.getResultsPerPage.apply(this, arguments);
     },
 
-    getDefaultView: function() {
+    getDefaultView: function () {
       if ('project' === this.currentViewType) {
         return {
           id: 0,
