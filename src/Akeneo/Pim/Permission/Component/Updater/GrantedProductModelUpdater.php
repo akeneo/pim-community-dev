@@ -85,8 +85,8 @@ class GrantedProductModelUpdater implements ObjectUpdaterInterface
      */
     private function checkGrantedFieldsForViewableProductModel(ProductModelInterface $productModel, array $data): void
     {
-        $canView = $this->authorizationChecker-->isGranted(Attributes::VIEW, $productModel);
-        $canEdit = $this->authorizationChecker-->isGranted(Attributes::EDIT, $productModel);
+        $canView = $this->authorizationChecker->isGranted(Attributes::VIEW, $productModel);
+        $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $productModel);
 
         if ($canView && !$canEdit) {
             $fields = array_filter($data, function ($code) {

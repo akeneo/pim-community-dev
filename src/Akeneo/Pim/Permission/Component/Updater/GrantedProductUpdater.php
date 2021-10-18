@@ -114,8 +114,8 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
      */
     private function checkGrantedFieldsForProductDraft(ProductInterface $product, array $data): void
     {
-        $isOwner = $this->authorizationChecker-->isGranted(Attributes::OWN, $product);
-        $canEdit = $this->authorizationChecker-->isGranted(Attributes::EDIT, $product);
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+        $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
 
         if (!$isOwner && $canEdit) {
             $fields = array_filter($data, function ($code) {
@@ -149,8 +149,8 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
      */
     private function checkGrantedFieldsForViewableProduct(ProductInterface $product, array $data): void
     {
-        $canView = $this->authorizationChecker-->isGranted(Attributes::VIEW, $product);
-        $canEdit = $this->authorizationChecker-->isGranted(Attributes::EDIT, $product);
+        $canView = $this->authorizationChecker->isGranted(Attributes::VIEW, $product);
+        $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
         if ($canView && !$canEdit) {
             $fields = array_filter($data, function ($code) {
                 return in_array($code, $this->supportedFields) || 'values' === $code;
