@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {Button, Modal, useProgress, ProgressIndicator} from 'akeneo-design-system';
 import styled from 'styled-components';
@@ -75,11 +75,11 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
-    const redirectToMarketplace = () => {
+    const redirectToMarketplace = useCallback(() => {
         history.push('/connect/marketplace');
-    };
+    }, [history]);
 
-    const notifyPermissionProviderError = (entity: string): void => {
+    const notifyPermissionProviderError = useCallback((entity: string): void => {
         notify(
             NotificationLevel.ERROR,
             translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
@@ -89,13 +89,13 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 }),
             }
         );
-    };
+    }, [notify, translate]);
 
-    const handleConfirm = async () => {
-        let userGroup = null;
+    const handleConfirm = useCallback(async () => {
+        let userGroup, redirectUrl;
+
         try {
-            const confirmResult = await confirmAuthorization();
-            userGroup = confirmResult.userGroup;
+            ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
             notify(
                 NotificationLevel.ERROR,
@@ -117,8 +117,8 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
             translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
         );
 
-        redirectToMarketplace();
-    };
+        window.location.href = redirectUrl;
+    }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
 
     if (wizardData === null) {
         return null;

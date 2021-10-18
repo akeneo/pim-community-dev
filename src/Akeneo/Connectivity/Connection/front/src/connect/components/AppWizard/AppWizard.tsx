@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import {useHistory} from 'react-router';
@@ -70,26 +70,25 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
-    const redirectToMarketplace = () => {
+    const redirectToMarketplace = useCallback(() => {
         history.push('/connect/marketplace');
-    };
+    }, [history]);
 
-    const handleConfirm = () => {
-        confirmAuthorization()
-            .then(() => {
-                notify(
-                    NotificationLevel.SUCCESS,
-                    translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
-                );
-                history.push('/connect/marketplace');
-            })
-            .catch(() => {
-                notify(
-                    NotificationLevel.ERROR,
-                    translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
-                );
-            });
-    };
+    const handleConfirm = useCallback(async () => {
+        try {
+            const {redirectUrl} = await confirmAuthorization();
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+            );
+            window.location.href = redirectUrl;
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+        }
+    }, [confirmAuthorization, notify, translate]);
 
     if (wizardData === null) {
         return null;
