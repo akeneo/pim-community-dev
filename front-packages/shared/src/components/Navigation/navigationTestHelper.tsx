@@ -21,7 +21,7 @@ const subNavigationEntries: SubNavigationEntry[] = [
     sectionCode: 'section2',
     title: 'Sub entry 3',
     route: 'subentry3_route',
-    disabled: true
+    disabled: true,
   },
 ];
 
@@ -33,7 +33,7 @@ const sections: SubNavigationSection[] = [
   {
     code: 'section2',
     title: 'Section 2',
-  }
+  },
 ];
 
 const aSubNavigationMenu = () => {
@@ -41,7 +41,7 @@ const aSubNavigationMenu = () => {
     subNavigationEntries,
     sections,
   };
-}
+};
 
 const aMainNavigation = (): NavigationEntry[] => {
   return [
@@ -49,12 +49,12 @@ const aMainNavigation = (): NavigationEntry[] => {
       code: 'entry1',
       title: 'Entry 1',
       route: 'entry1_route',
-      icon: <CardIcon/>,
+      icon: <CardIcon />,
       subNavigations: [
         {
           entries: subNavigationEntries,
           sections: sections,
-        }
+        },
       ],
       align: 'bottom',
       isLandingSectionPage: false,
@@ -63,7 +63,7 @@ const aMainNavigation = (): NavigationEntry[] => {
       code: 'entry2',
       title: 'Entry 2',
       route: 'entry2_route',
-      icon: <CardIcon/>,
+      icon: <CardIcon />,
       subNavigations: [],
       isLandingSectionPage: true,
     },
@@ -71,11 +71,11 @@ const aMainNavigation = (): NavigationEntry[] => {
       code: 'entry3',
       title: 'Entry 3',
       route: 'entry3_route',
-      icon: <CardIcon/>,
+      icon: <CardIcon />,
       subNavigations: [],
       isLandingSectionPage: false,
-      disabled: true
-    }
+      disabled: true,
+    },
   ];
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../tests';
 import {LocaleSelector} from './LocaleSelector';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 
 const locales = [
   {

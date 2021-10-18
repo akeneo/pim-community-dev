@@ -15,11 +15,11 @@ test('it should render secondary action dropdown', () => {
 
   expect(queryByText('First item')).not.toBeInTheDocument();
 
-  userEvent.click(getByTitle('pim_common.other_actions'))
+  userEvent.click(getByTitle('pim_common.other_actions'));
 
   expect(getByText('First item')).toBeInTheDocument();
 
-  userEvent.click(getByText('First item'))
+  userEvent.click(getByText('First item'));
 
   expect(queryByText('First item')).not.toBeInTheDocument();
   expect(handleClick).toHaveBeenCalled();

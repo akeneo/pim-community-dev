@@ -8,7 +8,7 @@ import {
   ViewBuilder,
   Mediator,
   FeatureFlags,
-  Analytics
+  Analytics,
 } from './DependenciesProvider.type';
 
 type DependenciesContextProps = {

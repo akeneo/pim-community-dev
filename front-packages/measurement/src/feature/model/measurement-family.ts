@@ -104,38 +104,36 @@ const getStandardUnit = (measurementFamily: MeasurementFamily): Unit => {
 const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
   getUnitLabel(getStandardUnit(measurementFamily), locale);
 
-const filterOnLabelOrCode = (searchValue: string, locale: LocaleCode) => (entity: {
-  code: string;
-  labels: LabelCollection;
-}): boolean =>
-  -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
-  (undefined !== entity.labels[locale] &&
-    -1 !== entity.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
+const filterOnLabelOrCode =
+  (searchValue: string, locale: LocaleCode) =>
+  (entity: {code: string; labels: LabelCollection}): boolean =>
+    -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
+    (undefined !== entity.labels[locale] &&
+      -1 !== entity.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
 
-const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sortColumn: string) => (
-  first: MeasurementFamily,
-  second: MeasurementFamily
-) => {
-  const directionInverter = sortDirection === Direction.Descending ? -1 : 1;
+const sortMeasurementFamily =
+  (sortDirection: Direction, locale: LocaleCode, sortColumn: string) =>
+  (first: MeasurementFamily, second: MeasurementFamily) => {
+    const directionInverter = sortDirection === Direction.Descending ? -1 : 1;
 
-  switch (sortColumn) {
-    case 'label':
-      return (
-        directionInverter *
-        getMeasurementFamilyLabel(first, locale).localeCompare(getMeasurementFamilyLabel(second, locale))
-      );
-    case 'code':
-      return directionInverter * first.code.localeCompare(second.code);
-    case 'standard_unit':
-      return (
-        directionInverter * getStandardUnitLabel(first, locale).localeCompare(getStandardUnitLabel(second, locale))
-      );
-    case 'unit_count':
-      return directionInverter * (first.units.length - second.units.length);
-    default:
-      return 0;
-  }
-};
+    switch (sortColumn) {
+      case 'label':
+        return (
+          directionInverter *
+          getMeasurementFamilyLabel(first, locale).localeCompare(getMeasurementFamilyLabel(second, locale))
+        );
+      case 'code':
+        return directionInverter * first.code.localeCompare(second.code);
+      case 'standard_unit':
+        return (
+          directionInverter * getStandardUnitLabel(first, locale).localeCompare(getStandardUnitLabel(second, locale))
+        );
+      case 'unit_count':
+        return directionInverter * (first.units.length - second.units.length);
+      default:
+        return 0;
+    }
+  };
 
 export {
   getMeasurementFamilyLabel,

@@ -15,7 +15,7 @@ type RouteParams = {[param: string]: any};
 type Router = {
   generate: (route: string, parameters?: RouteParams) => string;
   redirect: (fragment: string, options?: object) => void;
-  redirectToRoute: (route: string, parameters?: RouteParams) => void
+  redirectToRoute: (route: string, parameters?: RouteParams) => void;
 };
 
 type Security = {isGranted: (acl: string) => boolean};
@@ -49,7 +49,19 @@ type FeatureFlags = {
 
 type Analytics = {
   track(event: string, properties?: object): void;
-}
+};
 
 export {NotificationLevel};
-export type {Notify, RouteParams, Router, Security, Translate, UserContext, View, ViewBuilder, Mediator, FeatureFlags, Analytics};
+export type {
+  Notify,
+  RouteParams,
+  Router,
+  Security,
+  Translate,
+  UserContext,
+  View,
+  ViewBuilder,
+  Mediator,
+  FeatureFlags,
+  Analytics,
+};
