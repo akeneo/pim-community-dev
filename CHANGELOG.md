@@ -129,6 +129,7 @@
 - PIM-10092: Display an error message when trying to delete a category tree linked to a channel
 - PIM-10116: Fix filter bar not being sticky on Measurement & Attribute groups page
 - PIM-10030: use POST method to fetch product data grid data to avoid http 414 error
+- EXB-1046: Don't delete a channel used in an "Export to Shared Catalogs" export profile
 
 ## New features
 
