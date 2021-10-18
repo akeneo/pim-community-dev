@@ -78,4 +78,14 @@ class AppAuthorization
     {
         return empty($this->scope) ? [] : explode(' ', $this->scope);
     }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function getRedirectUri(): string
+    {
+        return $this->redirectUri;
+    }
 }
