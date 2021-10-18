@@ -29,6 +29,7 @@ class UserNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizerTwo
     )
     {
+        $securityFacade->isGranted(Argument::type('string'), Argument::any())->willReturn(false);
         $this->beConstructedWith(
             $dateTimeNormalizer,
             $fileNormalizer,
