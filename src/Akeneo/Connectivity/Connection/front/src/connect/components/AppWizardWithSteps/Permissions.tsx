@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
@@ -42,11 +42,11 @@ const Helper = styled.div`
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: PermissionsByProviderKey) => void;
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setPermissions, permissions}) => {
+export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -59,14 +59,20 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions, perm
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper_link')}
                 </Link>
             </Helper>
-            {providers.map(provider => (
-                <PermissionsForm
-                    key={provider.key}
-                    provider={provider}
-                    setPermissions={setPermissions}
-                    permissions={permissions[provider.key]}
-                />
-            ))}
+            {providers.map(provider => {
+                const handlePermissionsChange = useCallback((providerPermissions: object) => {
+                    setProviderPermissions(provider.key, providerPermissions);
+                }, [setProviderPermissions, provider.key]);
+
+                return (
+                    <PermissionsForm
+                        key={provider.key}
+                        provider={provider}
+                        onPermissionsChange={handlePermissionsChange}
+                        permissions={permissions[provider.key]}
+                    />
+                );
+            })}
         </InfoContainer>
     );
 };

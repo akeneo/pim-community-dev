@@ -161,5 +161,8 @@ test('The connected app container renders with permissions tab', () => {
     );
 });
 
-// @todo : test "unsaved change" message is displayed
+// @todo : test "unsaved changes" message is displayed
 // @todo : test save is called
+// @todo : test notify (save ok, save error, load error)
+// @todo : revamp wizards test
+// @todo : revamp PermissionForm tests

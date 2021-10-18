@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {Button, Modal, useProgress, ProgressIndicator} from 'akeneo-design-system';
 import styled from 'styled-components';
@@ -75,6 +75,10 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const redirectToMarketplace = () => {
         history.push('/connect/marketplace');
     };
+
+    const handleSetProviderPermissions = useCallback((providerKey: string, providerPermissions: object) => {
+        setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+    }, [setPermissions]);
 
     const notifyPermissionProviderError = (entity: string): void => {
         notify(
@@ -159,7 +163,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                     <Permissions
                         appName={wizardData.appName}
                         providers={providers}
-                        setPermissions={setPermissions}
+                        setProviderPermissions={handleSetProviderPermissions}
                         permissions={permissions}
                     />
                 )}
