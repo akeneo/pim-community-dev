@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueComman
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
 {
@@ -53,6 +54,22 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $this->validate($command, new Constraint());
+    }
+
+    function it_denies_an_ip_in_private_range(
+        ExecutionContextInterface $context,
+        DnsLookup $dnsLookup,
+        IpMatcher $ipMatcher,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('192.168.15.5');
+        $ipMatcher->match('192.168.15.5', ['127.0.0.1'])->shouldBeCalled()->willReturn(false);
+        $mediaLinkAttribute = $this->mediaLinkAttribute();
+        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
+        $context->buildViolation(Constraint::DOMAIN_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('name')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
         $this->validate($command, new Constraint());
     }
 
