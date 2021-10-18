@@ -84,7 +84,7 @@ Akeneo\UserManagement\Component\Model\User:
                 timestampable:
                     on: update
         productGridFilters:
-            type: json_array
+            type: json
             nullable: true
             column: product_grid_filters
         emailNotifications:
@@ -107,7 +107,7 @@ Akeneo\UserManagement\Component\Model\User:
             options:
                 default: user
         properties:
-            type: json_array
+            type: json
     manyToMany:
         roles:
             targetEntity: Akeneo\UserManagement\Component\Model\Role
