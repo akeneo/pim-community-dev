@@ -25,10 +25,19 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantV
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
 
 class PropertyValueHydrator
 {
+    private FindQualityScoresInterface $findQualityScores;
+
+    public function __construct(FindQualityScoresInterface $findQualityScores)
+    {
+        $this->findQualityScores = $findQualityScores;
+    }
+
     public function hydrate(string $propertyName, $productOrProductModel): SourceValueInterface
     {
         if (
@@ -89,6 +98,16 @@ class PropertyValueHydrator
                 }
 
                 return new ParentValue($parent->getCode());
+            case 'quality_score':
+                if (!$productOrProductModel instanceof ProductInterface) {
+                    throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
+                }
+
+                $qualityScores = $this->findQualityScores->forProduct($productOrProductModel->getIdentifier());
+
+                //TODO check if we should return null value in case of empty array
+
+                return new QualityScoreValue($qualityScores);
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }

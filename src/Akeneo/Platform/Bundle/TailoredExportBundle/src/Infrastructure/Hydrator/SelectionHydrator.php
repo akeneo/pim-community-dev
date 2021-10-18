@@ -6,6 +6,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Platform\Bundle\TailoredExportBundle\src\Application\Common\Selection\QualityScore\QualityScoreSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionMediaFileSelection;
@@ -72,6 +73,8 @@ class SelectionHydrator
                 return $this->createGroupsSelection($selectionConfiguration);
             case 'parent':
                 return $this->createParentSelection($selectionConfiguration);
+            case 'quality_score':
+                return new QualityScoreSelection($selectionConfiguration['channel'], $selectionConfiguration['locale']);
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }

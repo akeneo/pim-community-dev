@@ -26,6 +26,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantV
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 
 class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
@@ -36,6 +37,8 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
      */
     public function it_returns_value_properties_from_product(string $propertyName, SourceValueInterface $expectedValue)
     {
+        $this->loadQualityScores();
+
         $parentCategory = new Category();
         $parentCategory->setCode('a_parent_category_code');
 
@@ -62,6 +65,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $anotherGroup->setCode('another_group_code');
 
         $product = new Product();
+        $product->setIdentifier('product_code');
         $product->setParent($parentProductModel);
         $product->addCategory($category);
         $product->addCategory($anotherCategory);
@@ -102,6 +106,19 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
                 'property_name' => 'categories',
                 'expected_value' => new CategoriesValue(['a_category_code', 'a_parent_category_code', 'another_category_code']),
             ],
+            'it_hydrates_quality_score_value' => [
+                'property_name' => 'quality_score',
+                'expected_value' => new QualityScoreValue([
+                    'ecommerce' => [
+                        'fr_FR' => 'A',
+                        'en_US' => 'B'
+                    ],
+                    'print' => [
+                        'fr_FR' => 'B',
+                        'en_US' => 'A'
+                    ]
+                ])
+            ]
         ];
     }
 
@@ -118,5 +135,20 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $this->expectErrorMessage('Unsupported property name "unknown_property"');
 
         $this->getHydrator()->hydrate('unknown_property', new Product());
+    }
+
+    private function loadQualityScores()
+    {
+        $inMemoryFindQualityScores = static::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
+        $inMemoryFindQualityScores->addQualityScore('product_code', [
+            'ecommerce' => [
+                'fr_FR' => 'A',
+                'en_US' => 'B'
+            ],
+            'print' => [
+                'fr_FR' => 'B',
+                'en_US' => 'A'
+            ]
+        ]);
     }
 }

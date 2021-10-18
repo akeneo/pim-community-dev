@@ -9,6 +9,11 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
 
+    Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindQualityScores
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+
     Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindAttributeOptionLabels
         arguments:
@@ -39,6 +44,7 @@ services:
                 - 'parent'
                 - 'groups'
                 - 'family_variant'
+                - 'quality_score'
             - '@translator'
 
     akeneo.tailored_export.query.find_product_model_system_sources:
