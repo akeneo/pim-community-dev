@@ -73,6 +73,16 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
         $this->validate($command, new Constraint());
     }
 
+    function it_allows_an_ip_neither_in_whitelist_nor_private_range(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
+    {
+        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('8.8.8.8');
+        $ipMatcher->match('8.8.8.8', ['127.0.0.1'])->shouldBeCalled()->willReturn(true);
+        $mediaLinkAttribute = $this->mediaLinkAttribute();
+        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $this->validate($command, new Constraint());
+    }
+
     private function mediaLinkAttribute(): MediaLinkAttribute
     {
         return MediaLinkAttribute::create(
