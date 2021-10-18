@@ -106,6 +106,8 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
             - '@oro_security.security_facade'
             - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
         public: true
