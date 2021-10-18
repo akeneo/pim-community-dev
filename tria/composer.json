@@ -48,7 +48,7 @@
         "grpc/grpc": "1.30.0",
         "akeneo/api-php-client": "^6.0",
         "php-http/guzzle6-adapter": "^2.0",
-        "http-interop/http-factory-guzzle": "^1.0"
+        "http-interop/http-factory-guzzle": "^1.0",
         "league/flysystem-google-cloud-storage": "^2.0"
     },
     "require-dev": {
