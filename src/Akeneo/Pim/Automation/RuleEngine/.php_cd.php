@@ -71,7 +71,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         // used for validation
-        'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
+        'Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
 
         // TODO RUL-28: check if we can use another component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
