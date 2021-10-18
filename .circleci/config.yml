@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@3.4.2
+
 aliases:
   - &envVarsDeployDev
       ENV_NAME: "dev"
@@ -13,6 +16,20 @@ aliases:
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+
+  - &slack-fail-post-step
+      post-steps:
+        - slack/status:
+            channel: ci
+            webhook: $SLACK_NIGHTLY_STATUS
+            fail_only: true
+
+  - &slack-post-step
+      post-steps:
+        - slack/status:
+            channel: ci
+            webhook: $SLACK_NIGHTLY_STATUS
+            fail_only: false
 
 jobs:
   checkout_ee:
@@ -916,7 +933,7 @@ workflows:
   nightly:
       triggers:
           - schedule:
-                cron: "0 23 * * *"
+                cron: "0 13,23 * * *"
                 filters:
                     branches:
                         only:
@@ -925,22 +942,28 @@ workflows:
       jobs:
           - checkout_ce
           - build_dev:
+                <<: *slack-fail-post-step
                 is_ee_built: false
                 requires:
                     - checkout_ce
           - test_back_static_and_acceptance:
+                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
+                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_phpunit:
+                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_behat_legacy:
+                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_data_migrations:
+                <<: *slack-fail-post-step
                 requires:
                     - build_dev
 
