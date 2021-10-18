@@ -66,7 +66,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                     ),
                     'currencies' => new Optional(
                         new Choice([
-                            'choices' => $this->getAvailableCurrencies($constraint->channelReference),
+                            'choices' => $this->getActivatedCurrencies($constraint->channelReference),
                             'multiple' => true
                         ])
                     ),
@@ -99,7 +99,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
         }
     }
 
-    private function getAvailableCurrencies(?string $channelReference): array
+    private function getActivatedCurrencies(?string $channelReference): array
     {
         if (null === $channelReference) {
             return $this->findActivatedCurrencies->forAllChannels();
