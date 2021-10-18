@@ -41,6 +41,10 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
 
     public function validate($selection, Constraint $constraint)
     {
+        if (!$constraint instanceof PriceCollectionSelectionConstraint) {
+            throw new \InvalidArgumentException('Invalid constraint');
+        }
+
         $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, new Collection(
             [
@@ -61,7 +65,10 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                         ]
                     ),
                     'currencies' => new Optional(
-                        new Choice(['choices' => $this->getAvailableCurrencies($constraint->channelReference)])
+                        new Choice([
+                            'choices' => $this->getAvailableCurrencies($constraint->channelReference),
+                            'multiple' => true
+                        ])
                     ),
                 ],
             ]
