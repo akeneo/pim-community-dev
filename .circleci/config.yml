@@ -1714,8 +1714,12 @@ jobs:
                 no_output_timeout: 30m
                 command: |
                     TYPE="<<parameters.PRODUCT_TYPE>>"
+                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
                     export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
                     TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
   delete_expired_uptime_check:
