@@ -65,12 +65,12 @@ UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
 
-TF_INPUT_FALSE ?=
-TF_AUTOAPPROVE ?=
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
 endif
+TF_INPUT_FALSE ?=
+TF_AUTOAPPROVE ?=
 
 #Vars for exec_in
 executor ?= kubectl
