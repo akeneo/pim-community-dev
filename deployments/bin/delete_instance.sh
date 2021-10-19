@@ -50,10 +50,6 @@ if [[ ${PFID} =~ "grth" ]]; then
 fi
 
 if [[ ${PFID} =~ "tria" ]]; then
-  echo "${PWD}/"
-  gsutil cp gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}/default.tfstate ${PWD}/
-  TRIA_VAR=$(cat ${PWD}/default.tfstate | grep "akeneo_connect_saml_entity_id" || echo "")
-
   yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
   yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
   yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
@@ -171,4 +167,4 @@ if [[ ${LOGGING_METRIC} != "" ]]; then
 fi
 
 echo "6 - Delete namespace"
-kubectl delete ns ${PFID}
+kubectl get ns ${PFID} && kubectl delete ns ${PFID}
