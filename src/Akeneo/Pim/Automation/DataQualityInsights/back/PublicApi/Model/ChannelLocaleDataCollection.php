@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\LocaleCode;
-
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ChannelLocaleDataCollection implements \IteratorAggregate
+final class ChannelLocaleDataCollection
 {
     private array $channelLocaleData;
 
@@ -35,28 +32,6 @@ final class ChannelLocaleDataCollection implements \IteratorAggregate
         return $channelLocaleDataCollection;
     }
 
-    public function getIterator(): \Iterator
-    {
-        return new \ArrayIterator($this->channelLocaleData);
-    }
-
-    public function toArray(): array
-    {
-        return $this->channelLocaleData;
-    }
-
-    public function getByChannelAndLocale(ChannelCode $channel, LocaleCode $locale)
-    {
-        return $this->channelLocaleData[strval($channel)][strval($locale)] ?? null;
-    }
-
-    public function addToChannelAndLocale(ChannelCode $channel, LocaleCode $locale, $data): self
-    {
-        $this->channelLocaleData[strval($channel)][strval($locale)] = $data;
-
-        return $this;
-    }
-
     public function mapWith(\Closure $callback): array
     {
         $mappedData = [];
@@ -67,10 +42,5 @@ final class ChannelLocaleDataCollection implements \IteratorAggregate
         }
 
         return $mappedData;
-    }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->channelLocaleData);
     }
 }
