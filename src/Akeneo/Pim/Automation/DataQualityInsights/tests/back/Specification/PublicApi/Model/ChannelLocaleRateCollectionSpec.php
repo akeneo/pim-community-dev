@@ -35,7 +35,7 @@ final class ChannelLocaleRateCollectionSpec extends ObjectBehavior
                 'en_US' => new Rate(42),
             ],
         ];
-
-        Assert::eq($expectedRates, $this->toArrayLetter());
+        
+        Assert::eq($expectedRates,  $this->getWrappedObject()->toArrayLetter());
     }
 }
