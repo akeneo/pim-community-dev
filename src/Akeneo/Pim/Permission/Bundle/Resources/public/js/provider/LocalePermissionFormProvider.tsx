@@ -1,35 +1,19 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import styled from 'styled-components';
-import {
-  getColor,
-  Helper,
-  Locale,
-  EditIcon,
-  Checkbox,
-  EraseIcon,
-  IconButton,
-  MultiSelectInput,
-  ViewIcon,
-  SectionTitle,
-} from 'akeneo-design-system';
+import {getColor, Helper, Locale, EditIcon, ViewIcon, SectionTitle} from 'akeneo-design-system';
 import {
   PermissionFormProvider,
   PermissionFormReducer,
   PermissionSectionSummary,
   LevelSummaryField,
+  PermissionFormWidget,
 } from '@akeneo-pim-community/permission-form';
-import {Actions} from '@akeneo-pim-community/permission-form/src/reducer/PermissionFormReducer';
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
 
-const Field = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
 const StyledLocale = styled(Locale)`
   margin-right: 15px;
 `;
@@ -73,40 +57,6 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
         .then(setActivatedLocales);
     }, [setActivatedLocales]);
 
-    const handleDispatchAdd = (
-      localesFromState: string[],
-      localesFromInput: string[],
-      type: Actions.ADD_TO_VIEW | Actions.ADD_TO_EDIT
-    ) => {
-      const localeToAdd = localesFromInput.filter(locales => !localesFromState.includes(locales))[0];
-      dispatch({type: type, identifier: localeToAdd});
-    };
-    const handleDispatchRemove = (
-      localesFromState: string[],
-      localesFromInput: string[],
-      type: Actions.REMOVE_FROM_VIEW | Actions.REMOVE_FROM_EDIT
-    ) => {
-      const localeToRemove = localesFromState.filter(locales => !localesFromInput.includes(locales))[0];
-      dispatch({type: type, identifier: localeToRemove});
-    };
-
-    const handleEditChange = (localesFromInput: string[]) => {
-      if (state.edit.identifiers.length < localesFromInput.length) {
-        handleDispatchAdd(state.edit.identifiers, localesFromInput, Actions.ADD_TO_EDIT);
-      }
-      if (state.edit.identifiers.length > localesFromInput.length) {
-        handleDispatchRemove(state.edit.identifiers, localesFromInput, Actions.REMOVE_FROM_EDIT);
-      }
-    };
-    const handleViewChange = (localesFromInput: string[]) => {
-      if (state.view.identifiers.length < localesFromInput.length) {
-        handleDispatchAdd(state.view.identifiers, localesFromInput, Actions.ADD_TO_VIEW);
-      }
-      if (state.view.identifiers.length > localesFromInput.length) {
-        handleDispatchRemove(state.view.identifiers, localesFromInput, Actions.REMOVE_FROM_VIEW);
-      }
-    };
-
     return (
       <>
         <SectionTitle>
@@ -123,72 +73,32 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
         )}
 
         <Label>{translate('pim_permissions.widget.level.edit')}</Label>
-        <Field>
-          <MultiSelectInput
-            emptyResultLabel={translate('pim_common.no_result')}
-            openLabel={translate('pim_common.open')}
-            onChange={handleEditChange}
-            removeLabel=""
-            value={state.edit.identifiers}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || state.edit.all || readOnly}
-          >
-            {activatedLocales.map((locale: LocaleType) => (
-              <MultiSelectInput.Option key={locale.code} value={locale.code}>
-                {locale.label}
-              </MultiSelectInput.Option>
-            ))}
-          </MultiSelectInput>
-          <Checkbox
-            checked={state.edit.all}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
-            onChange={checked =>
-              checked ? dispatch({type: Actions.ENABLE_ALL_EDIT}) : dispatch({type: Actions.DISABLE_ALL_EDIT})
-            }
-          >
-            {translate('pim_permissions.widget.action.all')}
-          </Checkbox>
-          <IconButton
-            ghost="borderless"
-            level="tertiary"
-            icon={<EraseIcon />}
-            onClick={() => dispatch({type: Actions.CLEAR_EDIT})}
-            title={translate('pim_permissions.widget.action.clear')}
-          />
-        </Field>
+        <PermissionFormWidget
+          selection={state.edit.identifiers}
+          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
+          disabled={state.edit.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
+          allByDefaultIsSelected={state.edit.all}
+          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
+          options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
+        />
 
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
-        <Field>
-          <MultiSelectInput
-            emptyResultLabel={translate('pim_common.no_result')}
-            openLabel={translate('pim_common.open')}
-            onChange={handleViewChange}
-            removeLabel=""
-            value={state.view.identifiers}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || state.view.all}
-          >
-            {activatedLocales.map((locale: LocaleType) => (
-              <MultiSelectInput.Option key={locale.code} value={locale.code}>
-                {locale.label}
-              </MultiSelectInput.Option>
-            ))}
-          </MultiSelectInput>
-          <Checkbox
-            checked={state.view.all}
-            readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
-            onChange={checked =>
-              checked ? dispatch({type: Actions.ENABLE_ALL_VIEW}) : dispatch({type: Actions.DISABLE_ALL_VIEW})
-            }
-          >
-            {translate('pim_permissions.widget.action.all')}
-          </Checkbox>
-          <IconButton
-            ghost="borderless"
-            level="tertiary"
-            icon={<EraseIcon />}
-            onClick={() => dispatch({type: Actions.CLEAR_VIEW})}
-            title={translate('pim_permissions.widget.action.clear')}
-          />
-        </Field>
+        <PermissionFormWidget
+          selection={state.view.identifiers}
+          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
+          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
+          disabled={state.view.all}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
+          allByDefaultIsSelected={state.view.all}
+          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
+          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
+          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_VIEW})}
+          options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
+        />
       </>
     );
   },
@@ -219,8 +129,28 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
       </PermissionSectionSummary>
     );
   },
-  save: (_userGroup: string, _state: PermissionFormReducer.State) => {
-    // @todo
+  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+    if (false === securityContext.isGranted('pimee_enrich_locale_edit_permissions')) {
+      return Promise.resolve();
+    }
+
+    const url = routing.generate('pimee_permissions_entities_set_locales');
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+      body: JSON.stringify({
+        user_group: userGroup,
+        permissions: {
+          edit: state.edit,
+          view: state.view,
+        },
+      }),
+    });
+
+    if (false === response.ok) {
+      return Promise.reject(`${response.status} ${response.statusText}`);
+    }
+
     return Promise.resolve();
   },
   loadPermissions: async (userGroupName: string) => {

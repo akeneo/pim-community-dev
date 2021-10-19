@@ -3,8 +3,9 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Manager;
 
 use Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Persistence\ObjectManager;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -16,12 +17,14 @@ class LocaleAccessManagerSpec extends ObjectBehavior
 {
     function let(
         LocaleAccessRepository $repository,
-        BulkSaverInterface $saver
+        BulkSaverInterface $saver,
+        BulkRemoverInterface $remover
     ) {
         $this->beConstructedWith(
             $repository,
             $saver,
-            LocaleAccess::class
+            LocaleAccess::class,
+            $remover
         );
     }
 
@@ -46,5 +49,32 @@ class LocaleAccessManagerSpec extends ObjectBehavior
         $saver->saveAll(Argument::size(2))->shouldBeCalled();
 
         $this->setAccess($locale, [$manager, $redactor], [$redactor]);
+    }
+
+    function it_revokes_existing_locale_access_for_the_provided_user_group(
+        LocaleAccessRepository $repository,
+        BulkRemoverInterface $remover,
+        LocaleInterface $locale,
+        GroupInterface $group,
+        LocaleAccess $access
+    ) {
+        $repository->findOneBy(['locale' => $locale, 'userGroup' => $group])->willReturn($access);
+
+        $remover->removeAll([$access])->shouldBeCalled();
+
+        $this->revokeGroupAccess($locale, $group);
+    }
+
+    function it_does_nothing_when_it_revokes_non_existing_locale_access_for_the_provided_user_group(
+        LocaleAccessRepository $repository,
+        BulkRemoverInterface $remover,
+        LocaleInterface $locale,
+        GroupInterface $group
+    ) {
+        $repository->findOneBy(['locale' => $locale, 'userGroup' => $group])->willReturn(null);
+
+        $remover->removeAll(Argument::any())->shouldNotBeCalled();
+
+        $this->revokeGroupAccess($locale, $group);
     }
 }
