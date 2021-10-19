@@ -18,7 +18,8 @@ define([
   'pim/i18n',
   'pim/user-context',
   'oro/mediator',
-], function ($, _, __, BaseSave, messenger, FamilyVariantSaver, FieldManager, i18n, UserContext, mediator) {
+  'pim/analytics',
+], function ($, _, __, BaseSave, messenger, FamilyVariantSaver, FieldManager, i18n, UserContext, mediator, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.family_variant.flash.update.success'),
     updateFailureMessage: __('pim_enrich.entity.family_variant.flash.update.fail'),
@@ -57,6 +58,8 @@ define([
             this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
             this.getRoot().trigger('pim_enrich:form:entity:post_save', data);
             mediator.trigger('datagrid:doRefresh:family-variant-grid');
+
+            analytics.track('family:variant:saved');
           }.bind(this)
         )
         .fail(this.fail.bind(this))
