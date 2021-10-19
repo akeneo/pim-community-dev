@@ -28,14 +28,14 @@ final class ChannelLocaleRateCollectionSpec extends ObjectBehavior
 
         $expectedRates = [
             'mobile' => [
-                'en_US' => new Rate(87),
-                'fr_FR' => new Rate(34),
+                'en_US' => 'B',
+                'fr_FR' => 'E',
             ],
             'print' => [
-                'en_US' => new Rate(42),
+                'en_US' => 'E',
             ],
         ];
-        
-        Assert::eq($expectedRates,  $this->getWrappedObject()->toArrayLetter());
+
+        $this->toArrayLetter()->shouldBeLike($expectedRates);
     }
 }
