@@ -67,7 +67,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                     'currencies' => new Optional(
                         new Choice([
                             'choices' => $this->getActivatedCurrencies($constraint->channelReference),
-                            'multiple' => true
+                            'multiple' => true,
                         ])
                     ),
                 ],

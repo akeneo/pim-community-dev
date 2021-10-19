@@ -20,6 +20,8 @@ final class PriceCollectionAmountSelection implements PriceCollectionSelectionIn
     public const TYPE = 'amount';
 
     private string $separator;
+
+    /** @var string[] */
     private array $currencies;
 
     public function __construct(string $separator, array $currencies)
@@ -35,6 +37,9 @@ final class PriceCollectionAmountSelection implements PriceCollectionSelectionIn
         return $this->separator;
     }
 
+    /**
+     * @return string[]
+     */
     public function getCurrencies(): array
     {
         return $this->currencies;
