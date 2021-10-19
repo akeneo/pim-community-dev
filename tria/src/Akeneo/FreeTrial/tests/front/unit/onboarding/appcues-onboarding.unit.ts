@@ -4,6 +4,25 @@ import {getAppcuesAgent} from '../../../../back/Infrastructure/Symfony/Resources
 
 jest.mock('../../../../back/Infrastructure/Symfony/Resources/public/js/onboarding/appcues-agent');
 
+const FeatureFlags = require('pim/feature-flags');
+FeatureFlags.isEnabled.mockImplementation(() => true);
+
+const UserContext = require('pim/user-context');
+UserContext.get.mockImplementation((data: string) => {
+  switch (data) {
+    case 'username':
+      return 'julia';
+    case 'email':
+      return 'julia@akeneo.com';
+    case 'first_name':
+      return 'julia';
+    case 'last_name':
+      return 'Stark';
+    default:
+      return data;
+  }
+});
+
 const mockedAppcues = {
   identify: jest.fn(),
   page: jest.fn(),
@@ -31,16 +50,10 @@ describe('Appcues init', () => {
   });
 
   test('it set up appcues onboarding when appcues is initialized', async () => {
-    const Mediator = require('oro/mediator');
-
     // @ts-ignore;
     getAppcuesAgent.mockResolvedValue(mockedAppcues);
 
     await AppcuesOnboarding.init();
-
-    expect(Mediator.on).toHaveBeenCalledWith('route_complete', async () => {
-      mockedAppcues.page();
-    });
 
     expect(mockedAppcues.identify).toHaveBeenCalledWith('julia', {
       email: 'julia@akeneo.com',

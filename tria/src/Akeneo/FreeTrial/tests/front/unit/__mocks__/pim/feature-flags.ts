@@ -1,5 +1,2 @@
-const FeatureFlags = {
-  isEnabled: () => true,
-}
-
+const FeatureFlags = jest.fn();
 module.exports = FeatureFlags;
