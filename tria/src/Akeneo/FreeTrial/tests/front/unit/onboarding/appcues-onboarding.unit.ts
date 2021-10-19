@@ -566,6 +566,12 @@ describe('Export profile', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
   });
 
+  test('the selection of attributes in the content of an export profile has been applied', async () => {
+    await AppcuesOnboarding.track('export-profile:product:attribute-applied');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Selection of attributes in the content of the export profile applied');
+  });
+
   test('the edit export profile "Printers for Amazon (weekly)" has been saved', async () => {
     await AppcuesOnboarding.track('job-instance:form-edit:saved', {
       code: 'printers_amazon'
