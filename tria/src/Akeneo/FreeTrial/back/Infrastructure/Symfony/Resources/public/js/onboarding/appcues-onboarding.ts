@@ -364,6 +364,9 @@ const AppcuesOnboarding: PimOnboarding = {
             }
           }
           break;
+        case 'family:variant:saved':
+          appcues.track('Family variant saved');
+          break;
         case 'navigation:entry:clicked':
           if (eventOptions && eventOptions.code) {
             appcues.track('Navigation entry "' + eventOptions.code + '" clicked');
