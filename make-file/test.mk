@@ -7,6 +7,7 @@ find-legacy-translations:
 
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
+	PIM_CONTEXT=job $(MAKE) coupling-back
 
 ### Static tests
 static-back: check-pullup check-sf-services
@@ -32,6 +33,7 @@ lint-back:
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	PIM_CONTEXT=job $(MAKE) lint-back
 
 .PHONY: lint-front
 lint-front:
@@ -39,6 +41,7 @@ lint-front:
 	$(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
+### validate the job are launched
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
@@ -59,6 +62,7 @@ acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	$(MAKE) connectivity-connection-acceptance-back
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
+	PIM_CONTEXT=job $(MAKE) acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:
@@ -73,6 +77,7 @@ integration-front:
 pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
+    PIM_CONTEXT=job $(MAKE) integration-back
 else
 	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
 endif
