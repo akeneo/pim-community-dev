@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -13,20 +14,19 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
-        CurrencyRepositoryInterface $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $currencyRepository,
+            $findActivatedCurrencies,
             $entityWithValuesBuilder,
             ['pim_catalog_price_collection']
         );
@@ -49,7 +49,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     }
 
     function it_removes_an_attribute_data_price_collection_value_from_an_entity_with_values(
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         $entityWithValuesBuilder,
         AttributeInterface $attribute,
         EntityWithValuesInterface $pen,
@@ -64,7 +64,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = [['amount' => 123.2, 'currency' => 'EUR'], ['amount' => null, 'currency' => 'USD']];
 
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -165,13 +165,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $attribute,
         EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $data = [['amount' => 123, 'currency' => 'invalid currency']];
 
