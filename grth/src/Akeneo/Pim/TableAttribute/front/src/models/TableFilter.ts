@@ -21,13 +21,6 @@ export type PendingTableFilterValue = {
   value?: any;
 };
 
-export type ValidTableFilterValue = {
-  row?: SelectOption;
-  column: ColumnDefinition;
-  operator: string;
-  value: any;
-};
-
 const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {
   return (
     typeof filter.column !== 'undefined' &&

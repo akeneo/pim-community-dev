@@ -55,10 +55,12 @@ describe('ProductExportBuilderFilter', () => {
     fireEvent.change(screen.getByRole('spinbutton'), {target: {value: '4000'}});
 
     expect(handleChange).toBeCalledWith({
-      column: 'quantity',
       operator: '>',
-      row: 'pepper',
-      value: '4000',
+      value: {
+        row: 'pepper',
+        value: '4000',
+        column: 'quantity',
+      },
     });
   });
 });
