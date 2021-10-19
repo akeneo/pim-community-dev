@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Saver;
 
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
-use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocalesAccessesWithHighestLevel;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
