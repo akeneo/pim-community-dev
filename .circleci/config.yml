@@ -92,6 +92,10 @@ jobs:
   checkout_job:
       machine:
           image: ubuntu-2004:202101-01
+      parameters:
+          path_to_front_packages:
+              type: string
+              default: front-packages
       steps:
           - checkout
           - install_yq
