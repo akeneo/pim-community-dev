@@ -13,7 +13,7 @@ import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
 
-type BackendTableProductExportFilterValue = {
+export type BackendTableProductExportFilterValue = {
   operator: FilterOperator;
   value: {
     row?: SelectOptionCode;
@@ -22,7 +22,7 @@ type BackendTableProductExportFilterValue = {
   };
 };
 
-type PendingTableProductExportFilterValue = {
+export type PendingTableProductExportFilterValue = {
   operator?: FilterOperator;
   value?: {
     row?: SelectOptionCode;
@@ -57,7 +57,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
           column: filter.column?.code as ColumnCode,
           value: filter.value as FilterValue,
           row: filter.row?.code,
-        }
+        },
       });
     }
   };
