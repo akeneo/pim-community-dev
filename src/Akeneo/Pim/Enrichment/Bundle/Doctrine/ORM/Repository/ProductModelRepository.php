@@ -191,13 +191,19 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         return $qb->getQuery()->execute();
     }
 
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array
-    {
+    public function findProductModelsForFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        ?string $search = null,
+        int $limit = 20,
+        int $page = 1
+    ): array {
         $qb = $this
             ->createQueryBuilder('pm')
             ->where('pm.familyVariant = :familyVariant')
             ->setParameter('familyVariant', $familyVariant->getId())
             ->addOrderBy('pm.parent', 'ASC')
+            ->setFirstResult(($page -1) * $limit)
+            ->setMaxResults($limit)
         ;
 
         if (! empty($search)) {

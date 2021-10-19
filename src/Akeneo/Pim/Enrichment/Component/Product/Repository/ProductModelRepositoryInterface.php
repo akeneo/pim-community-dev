@@ -101,7 +101,12 @@ interface ProductModelRepositoryInterface extends
      *
      * @return array
      */
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array;
+    public function findProductModelsForFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        ?string $search = null,
+        int $limit = 20,
+        int $page = 1
+    ): array;
 
     /**
      * @param FamilyVariantInterface $familyVariant
