@@ -328,6 +328,9 @@ const AppcuesOnboarding: PimOnboarding = {
             appcues.track('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
           }
           break;
+        case 'export-profile:product:attribute-applied':
+          appcues.track('Selection of attributes in the content of the export profile applied');
+          break;
         case 'job-instance:form-edit:saved':
           if (eventOptions && eventOptions.code === 'printers_amazon') {
             appcues.track('Edit export profile "Printers for Amazon (weekly)" saved');
