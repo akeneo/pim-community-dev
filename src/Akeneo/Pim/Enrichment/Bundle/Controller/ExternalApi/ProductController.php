@@ -907,7 +907,21 @@ class ProductController
                 $acl
             ));
 
-            throw new AccessDeniedHttpException(sprintf('Action requires "%s" ACL', $acl));
+            throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
+        }
+    }
+
+    private function deniedAccessMessage(string $acl): string
+    {
+        switch ($acl) {
+            case 'pim_api_product_list':
+                return 'Access forbidden. You are not allowed to list products.';
+            case 'pim_api_product_edit':
+                return 'Access forbidden. You are not allowed to create or update products.';
+            case 'pim_api_product_remove':
+                return 'Access forbidden. You are not allowed to delete products.';
+            default:
+                return 'Access forbidden.';
         }
     }
 }
