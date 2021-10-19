@@ -78,24 +78,31 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     };
 
     const handleSave = async () => {
+        let hasStillUnsavedChanged = false;
+        let hasSavedSomething = false;
+
         if (null !== providers) {
             for (const provider of providers) {
                 if (false !== permissions[provider.key]) {
                     try {
                         await provider.save(connectedApp.user_group_name, permissions[provider.key]);
+                        hasSavedSomething = true;
                     } catch {
                         notifyPermissionProviderError(provider.label);
+                        hasStillUnsavedChanged = true;
                     }
                 }
             }
         }
 
-        setHasUnsavedChanges(false);
+        setHasUnsavedChanges(hasStillUnsavedChanged);
 
-        notify(
-            NotificationLevel.SUCCESS,
-            translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.success')
-        );
+        if (hasSavedSomething) {
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.success')
+            );
+        }
     };
 
     const handleSetProviderPermissions = useCallback(

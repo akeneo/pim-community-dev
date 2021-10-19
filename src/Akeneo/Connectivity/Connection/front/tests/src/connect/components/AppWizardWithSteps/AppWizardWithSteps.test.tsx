@@ -14,8 +14,6 @@ const providerSave = jest.fn();
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
-    notify.mockClear();
-    providerSave.mockClear();
     jest.clearAllMocks();
 });
 
