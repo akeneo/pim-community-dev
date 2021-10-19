@@ -1,0 +1,93 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
+
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\Rank;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\Rate;
+
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class ChannelLocaleRateCollection implements \IteratorAggregate
+{
+    private ChannelLocaleDataCollection $rates;
+
+    public function __construct()
+    {
+        $this->rates = new ChannelLocaleDataCollection();
+    }
+
+    public function addRate(ChannelCode $channelCode, LocaleCode $localeCode, Rate $rate): self
+    {
+        $this->rates = $this->rates->addToChannelAndLocale($channelCode, $localeCode, $rate);
+
+        return $this;
+    }
+
+    public function getByChannelAndLocale(ChannelCode $channel, LocaleCode $locale): ?Rate
+    {
+        return $this->rates->getByChannelAndLocale($channel, $locale);
+    }
+
+    public static function fromArrayInt(array $rawRates): self
+    {
+        $rateCollection = new self();
+
+        $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
+            $rawRates,
+            function ($rawRate) {
+                return new Rate(intval($rawRate));
+            }
+        );
+
+        return $rateCollection;
+    }
+
+    public static function fromNormalizedRates(array $normalizedRates, \Closure $getNormalizedRateValue): self
+    {
+        $rateCollection = new self();
+
+        $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
+            $normalizedRates,
+            function ($normalizedRate) use ($getNormalizedRateValue) {
+                return new Rate(intval($getNormalizedRateValue($normalizedRate)));
+            }
+        );
+
+        return $rateCollection;
+    }
+
+    public function toArrayLetter(): array
+    {
+        return $this->rates->mapWith(function (Rate $rate) {
+            return $rate->toLetter();
+        });
+    }
+
+    public function toArrayInt(): array
+    {
+        return $this->rates->mapWith(function (Rate $rate) {
+            return $rate->toInt();
+        });
+    }
+
+    public function toArrayIntRank(): array
+    {
+        return $this->rates->mapWith(fn (Rate $rate) => Rank::fromRate($rate)->toInt());
+    }
+
+    public function mapWith(\Closure $callback): array
+    {
+        return $this->rates->mapWith($callback);
+    }
+
+    public function getIterator(): \Iterator
+    {
+        return $this->rates->getIterator();
+    }
+}
