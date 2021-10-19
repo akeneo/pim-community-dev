@@ -165,7 +165,6 @@ SQL;
             $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
 
             if ($expectedValue !== $isAllowed) {
-                dump($acl, $expectedValue, $isAllowed);
                 throw new \LogicException(sprintf('ACL is invalid: %s %s', implode(',', $roles), $acl));
             }
         }
