@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\PublicApi\Query\ProductEvaluation;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
