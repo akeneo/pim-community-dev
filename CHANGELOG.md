@@ -131,6 +131,7 @@
 - PIM-10030: use POST method to fetch product data grid data to avoid http 414 error
 - EXB-1046: Don't delete a channel used in an "Export to Shared Catalogs" export profile
 - PIM-10087: Fix storage errors HTTP code to return 500 instead of 422
+- PIM-10048: fix memory leak in search product models by family variant query
 
 ## New features
 
