@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attri
  * file that was distributed with this source code.
  */
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -26,23 +26,20 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
+    private FindActivatedCurrenciesInterface $findActivatedCurrencies;
 
     /**
-     * @param ProposalAttributePathResolver $attributePathResolver
-     * @param CurrencyRepositoryInterface   $currencyRepository
-     * @param string[]                      $supportedAttributeTypes
-     * @param string[]                      $supportedOperators
+     * @param string[] $supportedAttributeTypes
+     * @param string[] $supportedOperators
      */
     public function __construct(
         ProposalAttributePathResolver $attributePathResolver,
-        CurrencyRepositoryInterface $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attributePathResolver = $attributePathResolver;
-        $this->currencyRepository = $currencyRepository;
+        $this->findActivatedCurrencies = $findActivatedCurrencies;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -305,7 +302,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
         if ('' === $data['currency'] ||
             !is_string($data['currency']) ||
-            !in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())
+            !in_array($data['currency'], $this->findActivatedCurrencies->forAllChannels())
         ) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),

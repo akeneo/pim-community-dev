@@ -31,9 +31,6 @@ $rules = [
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
 
-        // TIP-985: Workflow should not be linked to Currency
-        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
-
         // TIP-986: Workflow should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Model\LocaleInterface',
