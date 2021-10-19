@@ -8,7 +8,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\ValueObject;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Rank implements \JsonSerializable
+final class Rank
 {
     public const LETTERS_MAPPING = [
         1 => 'A',
@@ -35,27 +35,9 @@ final class Rank implements \JsonSerializable
         $this->code = $code;
     }
 
-    public static function fromString(string $code): self
-    {
-        $value = intval(str_replace('rank_', '', $code));
-
-        return new self($value, $code);
-    }
-
     public static function fromInt(int $value): self
     {
         return new self($value, sprintf('rank_%d', $value));
-    }
-
-    public static function fromLetter(string $letter): self
-    {
-        $ranksByLetter = array_flip(self::LETTERS_MAPPING);
-
-        if (!isset($ranksByLetter[$letter])) {
-            throw new \InvalidArgumentException(sprintf('The letter "%s" does not match any rank.', $letter));
-        }
-
-        return self::fromInt($ranksByLetter[$letter]);
     }
 
     public static function fromRate(Rate $rate): self
@@ -74,16 +56,6 @@ final class Rank implements \JsonSerializable
             default:
                 return self::fromInt(5);
         }
-    }
-
-    public function __toString()
-    {
-        return $this->code;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->code;
     }
 
     public function toInt(): int

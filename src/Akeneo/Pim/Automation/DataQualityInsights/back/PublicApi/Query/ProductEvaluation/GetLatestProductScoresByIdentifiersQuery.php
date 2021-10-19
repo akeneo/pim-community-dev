@@ -13,24 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection as DqiChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery as DqiGetLatestProductScoresByIdentifiersQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ChannelLocaleRateCollection;
 
 class GetLatestProductScoresByIdentifiersQuery implements GetLatestProductScoresByIdentifiersQueryInterface
 {
-    private GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery;
+    private DqiGetLatestProductScoresByIdentifiersQuery $dqiGetLatestProductScoresByIdentifiersQuery;
 
-    public function __construct(GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery)
+    public function __construct(DqiGetLatestProductScoresByIdentifiersQuery $dqiGetLatestProductScoresByIdentifiersQuery)
     {
-        $this->getLatestProductScoresByIdentifiersQuery = $getLatestProductScoresByIdentifiersQuery;
+        $this->dqiGetLatestProductScoresByIdentifiersQuery = $dqiGetLatestProductScoresByIdentifiersQuery;
     }
 
     public function byProductIdentifiers(array $productIdentifiers): array
     {
-        return $this->getLatestProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        $dqiChannelLocaleRateCollections = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        return array_map(
+            static fn (DqiChannelLocaleRateCollection $dqiChannelLocaleRateCollection) => ChannelLocaleRateCollection::fromArrayInt($dqiChannelLocaleRateCollection->toArrayInt()),
+            $dqiChannelLocaleRateCollections
+        );
     }
 
     public function byProductIdentifier(string $identifier): ChannelLocaleRateCollection
     {
-        return $this->getLatestProductScoresByIdentifiersQuery->byProductIdentifier($identifier);
+        $dqiChannelLocaleRateCollection = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifier($identifier);
+        return ChannelLocaleRateCollection::fromArrayInt($dqiChannelLocaleRateCollection->toArrayInt());
     }
 }
