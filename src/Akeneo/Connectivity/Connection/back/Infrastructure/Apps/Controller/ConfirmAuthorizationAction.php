@@ -90,12 +90,12 @@ class ConfirmAuthorizationAction
             throw new \LogicException('The connected app should have been created');
         }
 
-        $redirectUri = $this->redirectUriWithAuthorizationCodeGenerator->generate($appAuthorization, $appConfirmation);
+        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate($appAuthorization, $appConfirmation);
 
         return new JsonResponse([
             'appId' => $appConfirmation->getAppId(),
             'userGroup' => $appConfirmation->getUserGroup(),
-            'redirectUrl' => $redirectUri,
+            'redirectUrl' => $redirectUrl,
         ]);
     }
 }
