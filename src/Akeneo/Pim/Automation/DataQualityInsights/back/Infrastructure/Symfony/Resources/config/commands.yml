@@ -4,7 +4,7 @@ services:
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: 'console.command' }
 

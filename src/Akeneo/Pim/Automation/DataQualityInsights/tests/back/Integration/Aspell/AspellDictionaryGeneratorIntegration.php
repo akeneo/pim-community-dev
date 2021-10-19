@@ -20,10 +20,10 @@ final class AspellDictionaryGeneratorIntegration extends TestCase
         $this->get(AspellDictionaryGenerator::class)
             ->generate($dictionarySource);
 
-        $fs = $this->get('oneup_flysystem.mount_manager')
+        $fs = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
             ->getFilesystem('dataQualityInsightsSharedAdapter');
 
-        $this->assertTrue($fs->has('consistency/text_checker/aspell/custom-dictionary-en.pws'));
+        $this->assertTrue($fs->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws'));
 
         /**
          * Only en_US catalog locale is activated in the minimal catalog so we only expected the 3 following words
@@ -39,8 +39,8 @@ DICTIONARY;
         $actual = $fs->read('consistency/text_checker/aspell/custom-dictionary-en.pws');
         $this->assertSame($expected, $actual);
 
-        $this->assertFalse($fs->has('consistency/text_checker/aspell/custom-dictionary-fr.pws'));
-        $this->assertFalse($fs->has('consistency/text_checker/aspell/custom-dictionary-es.pws'));
+        $this->assertFalse($fs->fileExists('consistency/text_checker/aspell/custom-dictionary-fr.pws'));
+        $this->assertFalse($fs->fileExists('consistency/text_checker/aspell/custom-dictionary-es.pws'));
     }
 
     private function createValidProducts(): void
@@ -155,7 +155,7 @@ DICTIONARY;
 
     private function ensureDictionariesAreRemoved()
     {
-        $fs = $this->get('oneup_flysystem.mount_manager')
+        $fs = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
             ->getFilesystem('dataQualityInsightsSharedAdapter');
 
         $files = $fs->listContents('consistency/text_checker/aspell');

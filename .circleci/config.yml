@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
 aliases:
   - &envVarsDeployDev
       ENV_NAME: "dev"
@@ -11,6 +15,20 @@ aliases:
       GOOGLE_PROJECT_ID: "akecld-saas-preprod"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
+
+  - &slack-fail-post-step
+      post-steps:
+        - slack/status:
+            channel: ci
+            webhook: $SLACK_NIGHTLY_STATUS
+            fail_only: true
+
+  - &slack-post-step
+      post-steps:
+        - slack/status:
+            channel: ci
+            webhook: $SLACK_NIGHTLY_STATUS
+            fail_only: false
 
   - &dockerCloudDeployerCurrent   # cloudDeployer version used in prod (used for lastest release deployement)
       docker:
@@ -1714,8 +1732,12 @@ jobs:
                 no_output_timeout: 30m
                 command: |
                     TYPE="<<parameters.PRODUCT_TYPE>>"
+                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
                     export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
                     TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
   delete_expired_uptime_check:
@@ -2055,7 +2077,7 @@ workflows:
   nightly_srnt_release:
       triggers:
           - schedule:
-                cron: "0 2 * * *"
+                cron: "0 2,13 * * *"
                 filters:
                     branches:
                         only:
@@ -2063,66 +2085,83 @@ workflows:
       jobs:
           - checkout
           - build_srnt_prod:
+                <<: *slack-fail-post-step
                 requires:
                     - checkout
           - build_srnt_dev:
+                <<: *slack-fail-post-step
                 requires:
                     - checkout
           - test_cronjobs_existence:
+                <<: *slack-fail-post-step
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
                 requires:
                     - build_srnt_prod
           - test_deploy:
+                <<: *slack-fail-post-step
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
                 requires:
                     - test_cronjobs_existence
           - test_deploy_last_release:
+                <<: *slack-fail-post-step
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
                 requires:
                     - test_cronjobs_existence
           - test_upgrade_from_last_release:
+                <<: *slack-fail-post-step
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
                 requires:
                     - test_deploy_last_release
           - test_front_code_style:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_static_and_acceptance:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_front_static_acceptance_and_integration:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_phpunit:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_integration_bounded_contexts:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_integration_reference_entities:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_performance:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_onboarder_bundle:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_behat_legacy:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - test_back_data_migrations:
+                <<: *slack-fail-post-step
                 requires:
                     - build_srnt_dev
           - release:
+                <<: *slack-post-step
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
@@ -2142,7 +2181,7 @@ workflows:
   nightly_grth_release:
       triggers:
           - schedule:
-                cron: "0 3 * * *"
+                cron: "0 3,13 * * *"
                 filters:
                     branches:
                         only:
@@ -2150,33 +2189,39 @@ workflows:
       jobs:
           - checkout
           - build_grth:
+                <<: *slack-fail-post-step
                 requires:
                     - checkout
           - test_cronjobs_existence:
+                <<: *slack-fail-post-step
                 matrix:
                   parameters:
                     PRODUCT_TYPE: ["grth"]
                 requires:
                     - build_grth
           - test_deploy:
+                <<: *slack-fail-post-step
                 matrix:
                   parameters:
                     PRODUCT_TYPE: ["grth"]
                 requires:
                     - test_cronjobs_existence
           - test_deploy_last_release:
+                <<: *slack-fail-post-step
                 matrix:
                   parameters:
                     PRODUCT_TYPE: ["grth"]
                 requires:
                     - test_cronjobs_existence
           - test_upgrade_from_last_release:
+                <<: *slack-fail-post-step
                 matrix:
                   parameters:
                     PRODUCT_TYPE: ["grth"]
                 requires:
                     - test_deploy_last_release
           - release:
+                <<: *slack-post-step
                 matrix:
                   parameters:
                     PRODUCT_TYPE: ["grth"]
@@ -2187,7 +2232,7 @@ workflows:
   nightly_tria_release:
     triggers:
       - schedule:
-          cron: "0 4 * * *"
+          cron: "0 4,13 * * *"
           filters:
             branches:
               only:
@@ -2195,21 +2240,25 @@ workflows:
     jobs:
       - checkout
       - build_tria:
+          <<: *slack-fail-post-step
           requires:
             - checkout
       - test_cronjobs_existence:
+          <<: *slack-fail-post-step
           matrix:
             parameters:
               PRODUCT_TYPE: ["tria"]
           requires:
             - build_tria
       - test_deploy:
+          <<: *slack-fail-post-step
           matrix:
             parameters:
               PRODUCT_TYPE: ["tria"]
           requires:
             - test_cronjobs_existence
       - release:
+          <<: *slack-post-step
           matrix:
             parameters:
               PRODUCT_TYPE: ["tria"]

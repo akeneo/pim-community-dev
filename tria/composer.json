@@ -45,40 +45,29 @@
         "akeneo/pim-community-dev": "dev-master",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
-        "superbalist/flysystem-google-storage": "7.2.2",
         "grpc/grpc": "1.30.0",
         "akeneo/api-php-client": "^6.0",
         "php-http/guzzle6-adapter": "^2.0",
-        "http-interop/http-factory-guzzle": "^1.0"
+        "http-interop/http-factory-guzzle": "^1.0",
+        "league/flysystem-google-cloud-storage": "^2.0"
     },
     "require-dev": {
-        "akeneo/php-coupling-detector": "0.3.*",
-        "symfony/debug-bundle": "4.4.7",
-        "symfony/web-profiler-bundle": "4.4.7",
-        "symfony/web-server-bundle": "4.4.7",
-        "behat/behat": "3.8.1",
-        "behat/gherkin": "4.6.2",
-        "behat/mink": "1.7.1",
-        "behat/mink-browserkit-driver": "1.3.3",
-        "behat/mink-extension": "2.3.1",
-        "behat/mink-selenium2-driver": "^1.3.1",
-        "behat/symfony2-extension": "2.1.5",
-        "behat/transliterator": "1.3.0",
-        "blackfire/php-sdk": "^1.18",
-        "league/flysystem-memory": "^1.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "akeneo/php-coupling-detector": "^0.7.0",
+        "blackfire/php-sdk": "^1.25",
+        "jfcherng/php-diff": "^6.10",
+        "league/flysystem-aws-s3-v3": "^2.0",
+        "league/flysystem-memory": "^2.0",
+        "liuggio/fastest": "1.8.*",
+        "mcustiel/phiremock": "2.1.1",
         "phpspec/phpspec": "~7.0.0",
         "phpspec/prophecy": "v1.12.1",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-symfony": "^0.12.44",
+        "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
-        "sensiolabs/behat-page-object-extension": "2.1.0",
-        "friends-of-behat/symfony-extension": "^2.0",
-        "liuggio/fastest": "1.8.*",
-        "phpstan/phpstan": "^0.12.25",
-        "phpstan/phpstan-symfony": "^0.12.6",
-        "mcustiel/phiremock": "2.1.1",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7",
-        "jfcherng/php-diff": "^6.10"
+        "symfony/debug-bundle": "4.4.18",
+        "symfony/web-profiler-bundle": "4.4.18"
     },
     "repositories": {
         "grth": {
@@ -86,5 +75,8 @@
             "url": "../grth/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    }
 }
