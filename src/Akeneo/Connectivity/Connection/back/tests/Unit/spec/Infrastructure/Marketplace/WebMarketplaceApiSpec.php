@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -20,9 +21,10 @@ class WebMarketplaceApiSpec extends ObjectBehavior
 {
     public function let(
         Client $client,
-        WebMarketplaceAliasesInterface $webMarketplaceAliases
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        LoggerInterface $logger
     ): void {
-        $this->beConstructedWith($client, $webMarketplaceAliases);
+        $this->beConstructedWith($client, $webMarketplaceAliases, $logger);
     }
 
     public function it_is_initializable(): void
@@ -99,5 +101,71 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         Assert::assertCount(2, $extensions['items']);
         Assert::assertEquals($expectedResponse['items'][0], $extensions['items'][0]);
         Assert::assertEquals($expectedResponse['items'][1], $extensions['items'][1]);
+    }
+
+    public function it_returns_true_when_a_code_challenge_is_valid(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ) {
+        $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
+        $codeIdentifier = '2DkpkyHfgm';
+        $codeChallenge = 'JN2eVHPP4F';
+
+        $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
+            'query' => [
+                'code_identifier' => $codeIdentifier,
+                'code_challenge' => $codeChallenge,
+            ],
+        ])->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn(json_encode(['valid' => true]));
+
+        $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(true);
+    }
+
+    public function it_returns_false_when_a_code_challenge_is_invalid(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ) {
+        $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
+        $codeIdentifier = '2DkpkyHfgm';
+        $codeChallenge = 'JN2eVHPP4F';
+
+        $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
+            'query' => [
+                'code_identifier' => $codeIdentifier,
+                'code_challenge' => $codeChallenge,
+            ],
+        ])->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn(json_encode(['valid' => false]));
+
+        $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(false);
+    }
+
+    public function it_returns_false_when_a_code_challenge_request_fails(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ) {
+        $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
+        $codeIdentifier = '2DkpkyHfgm';
+        $codeChallenge = 'JN2eVHPP4F';
+
+        $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
+            'query' => [
+                'code_identifier' => $codeIdentifier,
+                'code_challenge' => $codeChallenge,
+            ],
+        ])->willReturn($response);
+        $response->getStatusCode()->willReturn(404);
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn(json_encode(['error' => 'Not found.']));
+
+        $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(false);
     }
 }

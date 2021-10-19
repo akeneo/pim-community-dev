@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use GuzzleHttp\ClientInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -14,14 +16,17 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private ClientInterface $client;
     private WebMarketplaceAliasesInterface $webMarketplaceAliases;
+    private LoggerInterface $logger;
     private string $fixturePath;
 
     public function __construct(
         ClientInterface $client,
-        WebMarketplaceAliasesInterface $webMarketplaceAliases
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        LoggerInterface $logger
     ) {
         $this->client = $client;
         $this->webMarketplaceAliases = $webMarketplaceAliases;
+        $this->logger = $logger;
     }
 
     public function getExtensions(int $offset = 0, int $limit = 10): array
@@ -62,6 +67,47 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         } while (count($result['items']) > 0);
 
         return null;
+    }
+
+    public function validateCodeChallenge(string $appId, string $codeIdentifier, string $codeChallenge): bool
+    {
+        try {
+            $response = $this->client->request('POST', sprintf('/api/1.0/app/%s/challenge', $appId), [
+                'query' => [
+                    'code_identifier' => $codeIdentifier,
+                    'code_challenge' => $codeChallenge,
+                ],
+            ]);
+
+            $payload = json_decode($response->getBody()->getContents(), true);
+
+            if ($response->getStatusCode() !== Response::HTTP_OK) {
+                $this->logger->warning(
+                    'Marketplace rejected a code challenge request.',
+                    ['response' => $response->getBody()->getContents()],
+                );
+
+                return false;
+            }
+
+            if (false === isset($payload['valid'])) {
+                $this->logger->warning(
+                    'Marketplace responded to a code challenge with an invalid payload.',
+                    ['response' => $response->getBody()->getContents()],
+                );
+
+                return false;
+            }
+
+            return (bool) $payload['valid'];
+        } catch (\Exception $e) {
+            $this->logger->error(
+                sprintf('Exception thrown when validating a code challenge: %s', $e->getMessage()),
+                ['exception' => $e]
+            );
+
+            return false;
+        }
     }
 
     public function setFixturePath(string $fixturePath)

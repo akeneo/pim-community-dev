@@ -68,4 +68,6 @@ interface WebMarketplaceApiInterface
      * }
      */
     public function getApp(string $id): ?array;
+
+    public function validateCodeChallenge(string $appId, string $codeIdentifier, string $codeChallenge): bool;
 }

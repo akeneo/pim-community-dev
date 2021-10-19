@@ -63,3 +63,9 @@ services:
             - '@pim_api.security.scope_mapper'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+        tags:
+            - { name: validator.constraint_validator }

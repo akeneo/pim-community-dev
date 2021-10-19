@@ -1,4 +1,6 @@
 Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest:
+    constraints:
+        - Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValid: ~
     properties:
         clientId:
             - NotBlank:
