@@ -312,8 +312,8 @@
     "league/flysystem-aws-s3-v3": {
         "version": "1.0.23"
     },
-    "league/flysystem-ziparchive": {
-        "version": "1.0.3"
+    "league/flysystem-memory": {
+        "version": "2.0.5"
     },
     "league/mime-type-detection": {
         "version": "1.5.0"

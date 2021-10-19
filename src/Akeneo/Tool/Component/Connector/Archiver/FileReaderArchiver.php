@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemOperator;
 
 /**
  * Archive files read by job execution to provide them through a download button
@@ -20,7 +20,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
 {
     protected JobRegistry $jobRegistry;
 
-    public function __construct(Filesystem $filesystem, JobRegistry $jobRegistry)
+    public function __construct(FilesystemOperator $filesystem, JobRegistry $jobRegistry)
     {
         $this->filesystem = $filesystem;
         $this->jobRegistry = $jobRegistry;
@@ -50,7 +50,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
 
                 if (is_readable($filePath)) {
                     $fileResource = fopen($filePath, 'r');
-                    $this->filesystem->putStream($archivePath, $fileResource);
+                    $this->filesystem->writeStream($archivePath, $fileResource);
 
                     if (is_resource($fileResource)) {
                         fclose($fileResource);

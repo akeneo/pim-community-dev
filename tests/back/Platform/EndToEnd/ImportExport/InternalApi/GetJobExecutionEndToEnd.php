@@ -2,32 +2,16 @@
 
 namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Platform\EndToEnd\InternalApiTestCase;
 use Doctrine\DBAL\Connection;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemWriter;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetJobExecutionEndToEnd extends InternalApiTestCase
 {
     private Connection $sqlConnection;
-    private Filesystem $archivistFilesystem;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return $this->catalog->useTechnicalCatalog();
-    }
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->archivistFilesystem = $this->get('oneup_flysystem.archivist_filesystem');
-        $this->sqlConnection = $this->get('database_connection');
-        $this->authenticate($this->getAdminUser());
-    }
+    private FilesystemWriter $archivistFilesystem;
 
     public function testGetJobExecution()
     {
@@ -48,7 +32,7 @@ class GetJobExecutionEndToEnd extends InternalApiTestCase
         $this->assertSame($this->getExpectedContent($jobExecutionId), json_decode($response->getContent(), true));
     }
 
-    private function thereIsAJobTerminated()
+    private function thereIsAJobTerminated(): int
     {
         $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
         $insertJobExecution = <<<SQL
@@ -72,6 +56,23 @@ SQL;
         $this->archivistFilesystem->write("import/csv_product_import/$jobExecutionId/log/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log", 'content');
 
         return $jobExecutionId;
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->archivistFilesystem = $this->get('oneup_flysystem.archivist_filesystem');
+        $this->sqlConnection = $this->get('database_connection');
+        $this->authenticate($this->getAdminUser());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 
     private function getExpectedContent($jobExecutionId): array
