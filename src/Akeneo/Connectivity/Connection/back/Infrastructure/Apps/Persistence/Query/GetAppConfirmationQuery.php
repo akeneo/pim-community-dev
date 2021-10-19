@@ -42,7 +42,7 @@ SQL;
         ]);
 
         if (count($rows) > 1) {
-            throw new \LogicException('There is should be only one connected app by marketplace id');
+            throw new \LogicException('There should be only one connected app by marketplace id');
         }
 
         if (empty($rows)) {
