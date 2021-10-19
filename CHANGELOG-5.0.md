@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10053: Changed category tree to open node on label click on Product Export
+
 # 5.0.51 (2021-10-18)
 
 ## Bug fixes

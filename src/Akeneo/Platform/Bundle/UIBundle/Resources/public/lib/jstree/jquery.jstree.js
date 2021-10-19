@@ -1788,7 +1788,6 @@
             ? $(context).find('a.jstree-clicked').parent()
             : this.get_container().find('a.jstree-clicked').parent();
           ret.children('a.jstree-clicked').removeClass('jstree-clicked');
-          ret.removeClass('jstree-checked');
           this.data.ui.selected = $([]);
           this.data.ui.last_selected = false;
           this.__callback({obj: ret});

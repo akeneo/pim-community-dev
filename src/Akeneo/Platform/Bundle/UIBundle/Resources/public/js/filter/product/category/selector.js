@@ -134,6 +134,18 @@ define([
     },
 
     /**
+     * Callback called when a node is selected in jstree (click on label or icon)
+     *
+     * @param {Object} data
+     */
+    selectNode: function (data) {
+      const node = data.rslt.obj;
+      const instance = data.inst;
+
+      instance.toggle_node(node);
+    },
+
+    /**
      * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
      */
     render: function () {
@@ -201,6 +213,12 @@ define([
                         'uncheck_node.jstree',
                         function (event, data) {
                           this.uncheckNode(data);
+                        }.bind(this)
+                      )
+                      .on(
+                        'select_node.jstree',
+                        function (event, data) {
+                          this.selectNode(data);
                         }.bind(this)
                       )
                       .on(
