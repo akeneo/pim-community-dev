@@ -135,7 +135,7 @@ pim:
           memory: "128Mi"
   api:
     ratelimit:
-      enabled: false
+      enabled: true
       average: 200
       burst: 50
     replicas: 2
