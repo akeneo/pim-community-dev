@@ -1,25 +1,33 @@
 import React from 'react';
-import {ColumnCode, isFilterValid, PendingTableFilterValue, TableAttribute, SelectOptionCode} from '../models';
+import {
+  ColumnCode,
+  isFilterValid,
+  PendingTableFilterValue,
+  TableAttribute,
+  SelectOptionCode,
+  FilterOperator,
+  FilterValue,
+} from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
 
 type BackendTableProductExportFilterValue = {
-  operator: string;
+  operator: FilterOperator;
   value: {
     row?: SelectOptionCode;
     column: ColumnCode;
-    value: any;
+    value: FilterValue;
   };
 };
 
 type PendingTableProductExportFilterValue = {
-  operator?: string;
+  operator?: FilterOperator;
   value?: {
     row?: SelectOptionCode;
     column?: ColumnCode;
-    value?: any;
+    value?: FilterValue;
   };
 };
 
@@ -44,10 +52,10 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
-        operator: filter.operator,
+        operator: filter.operator as FilterOperator,
         value: {
           column: filter.column?.code as ColumnCode,
-          value: filter.value,
+          value: filter.value as FilterValue,
           row: filter.row?.code,
         }
       });
