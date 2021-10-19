@@ -448,6 +448,14 @@ hourly_cleanup: delete_environments_hourly delete_expired_uptime_check remove_un
 delete_environments_hourly:
 	ENV_NAME=${ENV_NAME} TYPE=${TYPE} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
+.PHONY: delete_environment_manually
+delete_environment_manually:
+	if [[ -z "${NS}" ]]; then
+		@echo "ERR : You must choose a namespace to delete"
+		exit 1
+	fi
+	NS=${NS} ENV_NAME=${ENV_NAME:-dev} TYPE=${TYPE:-srnt} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && docker-compose run --rm composer composer install
