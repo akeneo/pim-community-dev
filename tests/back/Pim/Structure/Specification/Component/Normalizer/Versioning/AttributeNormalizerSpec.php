@@ -87,7 +87,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'sort_order' => 1,
                 'localizable' => true,
                 'scopable' => true,
-                'required' => false
+                'required' => false,
+                'guidelines' => ['en_US' => 'Guidelines in english', 'fr_FR' => 'Guidelines in french'],
             ]);
 
         $this->normalize($attribute, 'flat', [])->shouldReturn(
@@ -118,6 +119,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'sort_order' => 1,
                 'localizable' => true,
                 'required' => false,
+                'guidelines-en_US' => 'Guidelines in english',
+                'guidelines-fr_FR' => 'Guidelines in french',
                 'options' => 'Code:size',
                 'scope' => 'Channel',
             ]
