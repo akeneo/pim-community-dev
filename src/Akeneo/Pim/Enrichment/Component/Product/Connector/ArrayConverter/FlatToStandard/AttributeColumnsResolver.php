@@ -92,7 +92,7 @@ class AttributeColumnsResolver
      *  name-ecommerce
      *  weight
      */
-    public function resolveFlatAttributeName(string $attributeCode, string $localeCode, string $scopeCode): string
+    public function resolveFlatAttributeName(string $attributeCode, ?string $localeCode, ?string $scopeCode): string
     {
         $field = $attributeCode;
 

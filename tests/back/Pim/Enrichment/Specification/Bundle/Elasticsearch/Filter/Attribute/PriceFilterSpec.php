@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -11,16 +12,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(ElasticsearchFilterValidator $filterValidator, CurrencyRepositoryInterface $currencyRepository)
+    function let(ElasticsearchFilterValidator $filterValidator, FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
         $this->beConstructedWith(
             $filterValidator,
-            $currencyRepository,
+            $findActivatedCurrencies,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -70,12 +70,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -102,12 +102,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_or_equal_than(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -134,12 +134,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -166,12 +166,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -206,12 +206,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_or_equal_than(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -238,12 +238,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -270,7 +270,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty_on_all_currencies(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -305,12 +305,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty_for_currency(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -337,7 +337,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty_on_at_least_one_currency(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -362,12 +362,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty_for_currency(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
@@ -395,7 +395,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_value_is_not_an_array(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -420,7 +420,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_if_the_value_array_is_not_expected(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -468,12 +468,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_if_the_currency_is_not_supported(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
 
         $filterValidator->validateLocaleForAttribute('a_price', 'en_US')->shouldBeCalled();
@@ -548,7 +548,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_currency_is_provided_for_operator_empty_for_currency(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -574,7 +574,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_currency_is_provided_for_operator_not_empty_for_currency(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -600,12 +600,12 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $filterValidator,
-        $currencyRepository,
+        ElasticsearchFilterValidator $filterValidator,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -626,7 +626,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
@@ -653,7 +653,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
