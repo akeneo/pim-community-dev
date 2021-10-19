@@ -178,7 +178,7 @@ jobs:
           command: make front-packages
       - run:
           name: Build Javascript
-          command: make javascript-dev
+          command: make javascript-dev-strict
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project ~/.cache ~/.composer

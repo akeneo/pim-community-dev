@@ -9,7 +9,7 @@ const AppTitle = styled.h2`
     color: ${getColor('grey', 140)};
     font-size: 28px;
     font-weight: normal;
-    line-height: 28px;
+    line-height: 40px;
     margin: 0;
 `;
 
@@ -18,7 +18,7 @@ const Helper = styled.div`
     font-size: ${getFontSize('default')};
     font-weight: normal;
     line-height: 18px;
-    margin: 17px 0 19px 0;
+    margin: 10px 0 20px 0;
     width: 280px;
 `;
 

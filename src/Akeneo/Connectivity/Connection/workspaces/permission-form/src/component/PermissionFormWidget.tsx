@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Checkbox, EraseIcon, IconButton} from 'akeneo-design-system';
 import {MultiSelectInputWithDynamicOptions, QueryParamsBuilder} from './MultiSelectInputWithDynamicOptions';
+import {MultiSelectInputWithStaticOptions} from './MultiSelectInputWithStaticOptions';
 import translate from '../dependencies/translate';
 
 const Field = styled.div`
@@ -25,14 +26,17 @@ type Props = {
     onSelectAllByDefault: () => void;
     onDeselectAllByDefault: () => void;
     onClear: () => void;
-    ajaxUrl: string;
-    processAjaxResponse: (response: any) => {
-        results: Option[];
-        more: boolean;
-        context: any;
+    ajax?: {
+        ajaxUrl: string;
+        fetchByIdentifiers: (identifiers: string[]) => Promise<Option[]>;
+        processAjaxResponse: (response: any) => {
+            results: Option[];
+            more: boolean;
+            context: any;
+        };
+        buildQueryParams?: QueryParamsBuilder<any, any>;
     };
-    buildQueryParams?: QueryParamsBuilder<any, any>;
-    fetchByIdentifiers: (identifiers: string[]) => Promise<Option[]>;
+    options?: Option[];
 };
 
 export const PermissionFormWidget: FC<Props> = ({
@@ -45,23 +49,32 @@ export const PermissionFormWidget: FC<Props> = ({
     onSelectAllByDefault,
     onDeselectAllByDefault,
     onClear,
-    ajaxUrl,
-    processAjaxResponse,
-    buildQueryParams,
-    fetchByIdentifiers,
+    ajax,
+    options,
 }: Props) => {
     return (
         <Field>
-            <MultiSelectInputWithDynamicOptions
-                value={selection}
-                onAdd={onAdd}
-                onRemove={onRemove}
-                disabled={disabled || readOnly}
-                url={ajaxUrl}
-                processResults={processAjaxResponse}
-                fetchByIdentifiers={fetchByIdentifiers}
-                buildQueryParams={buildQueryParams}
-            />
+            {undefined !== ajax && (
+                <MultiSelectInputWithDynamicOptions
+                    value={selection}
+                    onAdd={onAdd}
+                    onRemove={onRemove}
+                    disabled={disabled || readOnly}
+                    url={ajax.ajaxUrl}
+                    processResults={ajax.processAjaxResponse}
+                    fetchByIdentifiers={ajax.fetchByIdentifiers}
+                    buildQueryParams={ajax.buildQueryParams}
+                />
+            )}
+            {undefined !== options && (
+                <MultiSelectInputWithStaticOptions
+                    value={selection}
+                    onAdd={onAdd}
+                    onRemove={onRemove}
+                    disabled={disabled || readOnly}
+                    options={options}
+                />
+            )}
             <Checkbox
                 checked={allByDefaultIsSelected}
                 readOnly={readOnly}
