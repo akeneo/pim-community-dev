@@ -16,6 +16,7 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
+$finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
