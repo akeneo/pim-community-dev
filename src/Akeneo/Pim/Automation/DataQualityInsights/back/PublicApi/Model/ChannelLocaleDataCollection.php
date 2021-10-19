@@ -10,12 +10,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
  */
 final class ChannelLocaleDataCollection
 {
-    private array $channelLocaleData;
-
-    public function __construct()
-    {
-        $this->channelLocaleData = [];
-    }
+    private array $channelLocaleData = [];
 
     public static function fromNormalizedChannelLocaleData(array $normalizedChannelLocaleData, \Closure $callback): self
     {
