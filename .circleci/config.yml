@@ -2077,7 +2077,7 @@ workflows:
   nightly_srnt_release:
       triggers:
           - schedule:
-                cron: "0 2,13 * * *"
+                cron: "0 2,11 * * *"
                 filters:
                     branches:
                         only:
@@ -2181,7 +2181,7 @@ workflows:
   nightly_grth_release:
       triggers:
           - schedule:
-                cron: "0 3,13 * * *"
+                cron: "0 3,11 * * *"
                 filters:
                     branches:
                         only:
@@ -2232,7 +2232,7 @@ workflows:
   nightly_tria_release:
     triggers:
       - schedule:
-          cron: "0 4,13 * * *"
+          cron: "0 4,11 * * *"
           filters:
             branches:
               only:
