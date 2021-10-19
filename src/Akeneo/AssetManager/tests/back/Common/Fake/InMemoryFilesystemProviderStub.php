@@ -15,9 +15,8 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\Memory\MemoryAdapter;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -25,16 +24,15 @@ use League\Flysystem\MountManager;
  */
 class InMemoryFilesystemProviderStub extends FilesystemProvider
 {
-    private FilesystemInterface $fileSystem;
+    private FilesystemOperator $fileSystem;
 
-    public function __construct(MountManager $mountManager)
+    public function __construct()
     {
-        parent::__construct($mountManager);
-
-        $this->fileSystem = new Filesystem(new MemoryAdapter());
+        parent::__construct([]);
+        $this->fileSystem = new Filesystem(new InMemoryFilesystemAdapter());
     }
 
-    public function getFileSystem($name): FilesystemInterface
+    public function getFileSystem($name): FilesystemOperator
     {
         return $this->fileSystem;
     }

@@ -65,12 +65,12 @@ UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
 
-TF_INPUT_FALSE ?=
-TF_AUTOAPPROVE ?=
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
 endif
+TF_INPUT_FALSE ?=
+TF_AUTOAPPROVE ?=
 
 #Vars for exec_in
 executor ?= kubectl
@@ -367,7 +367,16 @@ uncommit-instance:
 	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)/*
 	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)
 	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
+	# Not using commit yet, so the files are not present
 	make create-ci-release-files
+endif
+ifeq ($(TYPE),srnt)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform/monitoring"
+endif
+endif
 	make delete
 	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	git config --global user.email "pim_ci@akeneo.com"

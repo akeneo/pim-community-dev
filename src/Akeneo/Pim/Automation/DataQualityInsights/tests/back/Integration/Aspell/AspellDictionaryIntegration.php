@@ -21,10 +21,10 @@ final class AspellDictionaryIntegration extends TestCase
                 new LanguageCode('en')
             );
 
-        $fs = $this->get('oneup_flysystem.mount_manager')
+        $fs = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
             ->getFilesystem('dataQualityInsightsSharedAdapter');
 
-        $this->assertTrue($fs->has('consistency/text_checker/aspell/custom-dictionary-en.pws'));
+        $this->assertTrue($fs->fileExists('consistency/text_checker/aspell/custom-dictionary-en.pws'));
 
         $expected = <<<DICTIONARY
 personal_ws-1.1 en 3
@@ -55,7 +55,7 @@ DICTIONARY;
 
     private function ensureDictionariesAreRemoved()
     {
-        $fs = $this->get('oneup_flysystem.mount_manager')
+        $fs = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
             ->getFilesystem('dataQualityInsightsSharedAdapter');
 
         $files = $fs->listContents('consistency/text_checker/aspell');

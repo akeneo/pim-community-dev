@@ -141,7 +141,6 @@ $rules = [
             'Doctrine\Common\Persistence\ObjectRepository',
             'Doctrine\ORM\Query\Expr',
             'Doctrine\ORM\QueryBuilder',
-            'League\Flysystem\MountManager',
             'Psr\Log\LoggerInterface',
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\Console',
@@ -162,6 +161,7 @@ $rules = [
             'League\Flysystem',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

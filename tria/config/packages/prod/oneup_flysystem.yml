@@ -1,20 +1,11 @@
 oneup_flysystem:
     adapters:
-        asset_storage_adapter:
-            local:
-                directory: '%kernel.project_dir%/var/file_storage/asset'
         catalog_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'catalog_storage'
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.catalog_storage_adapter'
         jobs_storage_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'jobs_storage'
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.jobs_storage_adapter'
         archivist_adapter:
-            googlecloudstorage:
-                client: 'Google\Cloud\Storage\StorageClient'
-                bucket: 'Google\Cloud\Storage\Bucket'
-                prefix: 'archivist'
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.archivist_adapter'

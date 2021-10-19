@@ -2,26 +2,14 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Media;
 
-use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
 {
-    /** @var array */
-    private $files = [];
-
-    /** @var ApiResourceRepositoryInterface */
-    private $fileRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /*** @var FilesystemInterface */
-    private $fileSystem;
+    private array $files = [];
+    private ApiResourceRepositoryInterface $fileRepository;
 
     public function testCreateAMediaFile()
     {
@@ -183,8 +171,6 @@ JSON;
         parent::setUp();
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
-        $this->productRepository = $this->get('pim_api.repository.product');
-
         $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
@@ -194,8 +180,5 @@ JSON;
 
         $this->files['file'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.txt';
         copy($this->getFixturePath('akeneo.txt'), $this->files['file']);
-
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $this->fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
     }
 }

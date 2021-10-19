@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -27,7 +28,7 @@ class InMemoryFileStorer implements FileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false): FileInfoInterface
     {
         $file = new FileInfo();
         $file->setKey(self::FILES_PATH . $rawFile->getFilename());

@@ -5,8 +5,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystemInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Doctrine\DBAL\Connection;
-use League\Flysystem\MountManager;
+use League\Flysystem\StorageAttributes;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,18 +22,18 @@ final class HealthCheckCommand extends Command
 
     private AspellDictionaryLocalFilesystemInterface $aspellDictionaryLocalFilesystem;
 
-    private MountManager $mountManager;
+    private FilesystemProvider $filesystemProvider;
 
     public function __construct(
         Connection $db,
         FeatureFlag $featureFlag,
         AspellDictionaryLocalFilesystemInterface $aspellDictionaryLocalFilesystem,
-        MountManager $mountManager
+        FilesystemProvider $filesystemProvider
     ) {
         $this->db = $db;
         $this->featureFlag = $featureFlag;
         $this->aspellDictionaryLocalFilesystem = $aspellDictionaryLocalFilesystem;
-        $this->mountManager = $mountManager;
+        $this->filesystemProvider = $filesystemProvider;
 
         parent::__construct();
     }
@@ -331,7 +332,10 @@ SQL
     {
         $io->section('Dictionaries generated on shared FS');
 
-        $dictionaries = $this->mountManager->getFilesystem('dataQualityInsightsSharedAdapter')->listContents('/consistency', true);
+        $dictionaries = $this->filesystemProvider->getFilesystem('dataQualityInsightsSharedAdapter')
+                             ->listContents('/consistency', true)
+                             ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
+                             ->toArray();
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
@@ -343,7 +347,10 @@ SQL
 
         $io->section('Dictionaries generated on local FS');
 
-        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()->listContents('/consistency', true);
+        $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()
+                             ->listContents('/consistency', true)
+                             ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
+                             ->toArray();
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
