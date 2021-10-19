@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -16,40 +16,23 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class AttributeColumnsResolver
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected FindActivatedCurrenciesInterface $findActivatedCurrenciesInterface;
+    protected AttributeValuesResolverInterface $valuesResolver;
+    protected array $attributesFields = [];
+    protected string $identifierField = '';
 
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var AttributeValuesResolverInterface */
-    protected $valuesResolver;
-
-    /** @var array */
-    protected $attributesFields = [];
-
-    /** @var string */
-    protected $identifierField;
-
-    /**
-     * @param AttributeRepositoryInterface     $attributeRepository
-     * @param CurrencyRepositoryInterface      $currencyRepository
-     * @param AttributeValuesResolverInterface $valuesResolver
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        CurrencyRepositoryInterface $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrenciesInterface,
         AttributeValuesResolverInterface $valuesResolver
     ) {
-        $this->currencyRepository = $currencyRepository;
+        $this->findActivatedCurrenciesInterface = $findActivatedCurrenciesInterface;
         $this->attributeRepository = $attributeRepository;
         $this->valuesResolver = $valuesResolver;
     }
 
-    /**
-     * @return string
-     */
-    public function resolveIdentifierField()
+    public function resolveIdentifierField(): string
     {
         if (empty($this->identifierField)) {
             $this->identifierField = $this->attributeRepository->getIdentifierCode();
@@ -58,15 +41,12 @@ class AttributeColumnsResolver
         return $this->identifierField;
     }
 
-    /**
-     * @return array
-     */
-    public function resolveAttributeColumns()
+    public function resolveAttributeColumns(): array
     {
         if (empty($this->attributesFields)) {
             // TODO: Put a Cursor to avoid a findAll on attributes (╯°□°)╯︵ ┻━┻
             $attributes = $this->attributeRepository->findAll();
-            $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+            $currencyCodes = $this->findActivatedCurrenciesInterface->forAllChannels();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
                 $fields = $this->resolveAttributeField($value, $currencyCodes);
@@ -81,13 +61,8 @@ class AttributeColumnsResolver
 
     /**
      * Resolves the attribute field name
-     *
-     * @param array $value
-     * @param array $currencyCodes
-     *
-     * @return array
      */
-    protected function resolveAttributeField(array $value, array $currencyCodes)
+    protected function resolveAttributeField(array $value, array $currencyCodes): array
     {
         $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
@@ -116,14 +91,8 @@ class AttributeColumnsResolver
      *  description-en_US-mobile
      *  name-ecommerce
      *  weight
-     *
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
-     *
-     * @return string
      */
-    public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
+    public function resolveFlatAttributeName(string $attributeCode, string $localeCode, string $scopeCode): string
     {
         $field = $attributeCode;
 

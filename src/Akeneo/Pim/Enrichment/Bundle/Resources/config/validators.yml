@@ -145,7 +145,7 @@ services:
     pim_catalog.validator.constraint.currency:
         class: '%pim_catalog.validator.constraint.currency.class%'
         arguments:
-            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.query.find_activated_currencies'
         tags:
             - { name: validator.constraint_validator, alias: pim_currency_validator }
 
