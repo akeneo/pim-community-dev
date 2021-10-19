@@ -23,13 +23,17 @@ const NumberProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
     <>
       <Field label={translate('pim_table_attribute.validations.min')}>
         <NumberInput
-          value={`${numberSelectedColumn.validations.min}`}
+          value={
+            typeof numberSelectedColumn.validations.min === 'undefined' ? '' : `${numberSelectedColumn.validations.min}`
+          }
           onChange={value => handleValidationChange({min: value === '' ? undefined : parseFloat(value)})}
         />
       </Field>
       <Field label={translate('pim_table_attribute.validations.max')}>
         <NumberInput
-          value={`${numberSelectedColumn.validations.max}`}
+          value={
+            typeof numberSelectedColumn.validations.max === 'undefined' ? '' : `${numberSelectedColumn.validations.max}`
+          }
           onChange={value => handleValidationChange({max: value === '' ? undefined : parseFloat(value)})}
         />
         {isMinGreaterThanMax && (

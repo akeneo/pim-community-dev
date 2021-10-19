@@ -23,7 +23,11 @@ const TextProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
     <Field label={translate('pim_table_attribute.validations.max_length')}>
       <NumberInput
         invalid={isMaxLengthInvalid}
-        value={`${textSelectedColumn.validations.max_length}`}
+        value={
+          typeof textSelectedColumn.validations.max_length === 'undefined'
+            ? ''
+            : `${textSelectedColumn.validations.max_length}`
+        }
         onChange={value => handleValidationChange({max_length: value === '' ? undefined : parseInt(value)})}
         min={1}
         max={TABLE_STRING_MAX_LENGTH}
