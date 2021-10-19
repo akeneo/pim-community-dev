@@ -88,6 +88,10 @@ services:
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
+    akeneo_connectivity.connection.public.controller.apps.token:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetTokenAction
+
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetWizardDataAction
