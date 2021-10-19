@@ -1,0 +1,4 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\PublicAPi\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery:
+        arguments:
+            - '@database_connection'
