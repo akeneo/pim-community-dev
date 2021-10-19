@@ -153,7 +153,7 @@ test('it calls onChange handler when the user changes input', () => {
   expect(handleChange).toHaveBeenCalledWith({...updater, data: 'New value'});
 });
 
-test('it calls onChange handler when the user changes the channel', () => {
+test('it calls onChange handler when the user changes the channel', async () => {
   const handleChange = jest.fn();
 
   renderUpdaterRow(
@@ -169,12 +169,12 @@ test('it calls onChange handler when the user changes the channel', () => {
 
   const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
   userEvent.click(within(channelSelect).getByRole('textbox'));
-  userEvent.click(screen.getByText('Mobile'));
+  userEvent.click(await screen.findByText('Mobile'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile'});
 });
 
-test('it calls onChange handler when the user changes the locale', () => {
+test('it calls onChange handler when the user changes the locale', async () => {
   const handleChange = jest.fn();
 
   renderUpdaterRow(
@@ -190,12 +190,12 @@ test('it calls onChange handler when the user changes the locale', () => {
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
   userEvent.click(within(localeSelect).getByRole('textbox'));
-  userEvent.click(screen.getByText('French'));
+  userEvent.click(await screen.findByText('French'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, locale: 'fr_FR'});
 });
 
-test('it calls onChange handler when the user changes the action on an option collection attribute', () => {
+test('it calls onChange handler when the user changes the action on an option collection attribute', async () => {
   const handleChange = jest.fn();
   const optionCollectionUpdater = {
     ...updater,
@@ -222,7 +222,7 @@ test('it calls onChange handler when the user changes the action on an option co
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.action');
   userEvent.click(within(localeSelect).getByRole('textbox'));
-  userEvent.click(screen.getByText('pim_asset_manager.asset.mass_edit.action.append'));
+  userEvent.click(await screen.findByText('pim_asset_manager.asset.mass_edit.action.append'));
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...optionCollectionUpdater, action: 'append'});
 });
@@ -310,7 +310,7 @@ test('it does not display the channel and locale dropdown when attribute is not 
   expect(screen.queryByTitle('pim_asset_manager.asset.mass_edit.select.locale')).not.toBeInTheDocument();
 });
 
-test('it displays all locales when attribute is not scopable', () => {
+test('it displays all locales when attribute is not scopable', async () => {
   renderUpdaterRow(
     <UpdaterRow
       updater={{...updater, channel: null}}
@@ -323,14 +323,14 @@ test('it displays all locales when attribute is not scopable', () => {
   );
 
   const localeSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.locale');
-  userEvent.click(within(localeSelect).getByRole('textbox'));
+  userEvent.click(within(localeSelect).getByRole('button'));
 
-  expect(screen.getByText('German')).toBeInTheDocument();
+  expect(await screen.findByText('German')).toBeInTheDocument();
   expect(screen.getByText('French')).toBeInTheDocument();
   expect(screen.getAllByText('English')).toHaveLength(2);
 });
 
-test('it changes the locale if selected channel does not contain the current locale', () => {
+test('it changes the locale if selected channel does not contain the current locale', async () => {
   const handleChange = jest.fn();
 
   renderUpdaterRow(
@@ -346,7 +346,7 @@ test('it changes the locale if selected channel does not contain the current loc
 
   const channelSelect = screen.getByTitle('pim_asset_manager.asset.mass_edit.select.channel');
   userEvent.click(within(channelSelect).getByRole('textbox'));
-  userEvent.click(screen.getByText('Mobile'));
+  userEvent.click(await screen.findByText('Mobile'));
 
   expect(handleChange).toHaveBeenCalledTimes(1);
   expect(handleChange).toHaveBeenCalledWith({...updater, channel: 'mobile', locale: 'de_DE'});

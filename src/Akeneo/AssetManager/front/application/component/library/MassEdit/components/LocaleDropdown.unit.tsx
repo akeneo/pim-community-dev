@@ -32,15 +32,15 @@ test('it renders its children properly', () => {
   expect(screen.getByText('English')).toBeInTheDocument();
 });
 
-test('it displays all locales when opening the dropdown', () => {
+test('it displays all locales when opening the dropdown', async () => {
   const handleOnChange = jest.fn();
   renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
   userEvent.click(screen.getByRole('textbox'));
 
-  expect(screen.getAllByText('English')).toHaveLength(2);
-  expect(screen.getByText('German')).toBeInTheDocument();
+  expect(await screen.findByText('German')).toBeInTheDocument();
   expect(screen.getByText('French')).toBeInTheDocument();
+  expect(screen.getAllByText('English')).toHaveLength(2);
 });
 
 test('it does not display the dropdown when read only', () => {
@@ -53,12 +53,12 @@ test('it does not display the dropdown when read only', () => {
   expect(screen.queryByText('French')).not.toBeInTheDocument();
 });
 
-test('it calls onChange handler when selecting another locale', () => {
+test('it calls onChange handler when selecting another locale', async () => {
   const handleOnChange = jest.fn();
   renderWithProviders(<LocaleDropdown locales={locales} locale="en_US" onChange={handleOnChange} />);
 
   userEvent.click(screen.getByRole('textbox'));
-  userEvent.click(screen.getByText('German'));
+  userEvent.click(await screen.findByText('German'));
 
   expect(handleOnChange).toHaveBeenCalledWith('de_DE');
 });
