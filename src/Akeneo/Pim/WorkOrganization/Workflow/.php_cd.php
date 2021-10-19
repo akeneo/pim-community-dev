@@ -20,6 +20,8 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Twig',
 
+        'Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
+
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
 
