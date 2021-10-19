@@ -14,7 +14,7 @@ job-unit-back: #Doc: launch PHPSpec for job bounded context
 .PHONY: job-integration-back
 job-integration-back: #Doc: launch PHPUnit integration tests for job bounded context
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/Platform/Job/back/tests vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Job_Integration_Test
+	.circleci/run_phpunit.sh src/Akeneo/Platform/Job/back/tests .circleci/find_phpunit.php Job_Integration_Test
 else
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Platform/Job/back/tests --testsuite Job_Integration_Test $(O)
 endif
