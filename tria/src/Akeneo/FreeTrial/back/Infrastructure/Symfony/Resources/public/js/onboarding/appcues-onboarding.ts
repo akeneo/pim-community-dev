@@ -335,6 +335,9 @@ const AppcuesOnboarding: PimOnboarding = {
             }
           }
           break;
+        case 'family:variant:saved':
+          appcues.track('Family variant saved');
+          break;
         case 'family:edit:variant-selected':
           if (eventOptions && eventOptions.code === 'pim-family-edit-form-variant') {
             appcues.track('Tab "Variants" selected in family edit form');
@@ -368,9 +371,6 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.url && eventOptions.url.includes('printers_amazon')) {
             appcues.track('Export profile "Printers for Amazon (weekly)" launched');
           }
-          break;
-        case 'family:variant:saved':
-          appcues.track('Family variant saved');
           break;
         default:
           appcues.track(event);
