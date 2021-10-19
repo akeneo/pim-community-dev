@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\TailoredExportBundle\src\Application\Common\Selection\QualityScore;
+namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 
