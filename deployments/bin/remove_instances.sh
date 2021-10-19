@@ -2,7 +2,7 @@
 
 # Check if TYPE is not empty
 if [[ -z "${TYPE}" ]]; then
-    echo "TYPE varibale should not be empty"
+    echo "TYPE variable should not be empty"
     exit 1
 fi
 
@@ -14,8 +14,24 @@ else
     exit 1
 fi
 
-# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+CONTAINER_FILTER="v202"
+if [[ "${TYPE}" == "grth" ]]; then
+    CONTAINER_FILTER="growth-"
+fi
+if [[ "${TYPE}" == "tria" ]]; then
+    CONTAINER_FILTER="trial-"
+fi
+
+echo "Get last release version for ${TYPE}"
+LAST_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="${CONTAINER_FILTER}" --sort-by="~tags" --format="value(tags)" | head -n1)
+
+NS_LIST=${NS}
+DELETE_INSTANCE=true
+if [[ -z "${NS_LIST}" ]]; then
+    # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
+    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+    DELETE_INSTANCE=false
+fi
 
 echo "${TYPE} namespaces list :"
 echo "${NS_LIST}"
@@ -44,7 +60,6 @@ for NAMESPACE in ${NS_LIST}; do
     echo "  Age :                   ${NS_AGE}"
     INSTANCE_NAME_PREFIX=pimci
     INSTANCE_NAME=$(echo ${NAMESPACE} | sed "s/${TYPE}-//")
-    DELETE_INSTANCE=false
 
     # delete environments that failed (not automatically removed by circleCI)
     # Theses environments are upgraded serenity / growth edition (pimup) and aged of 1 hour
@@ -112,8 +127,11 @@ for NAMESPACE in ${NS_LIST}; do
         POD=$(kubectl get pods --no-headers --namespace=${NAMESPACE} -l 'component in (pim-web,pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' | awk 'NR==1{print $1}')
         if [[ -z "$POD" ]]
         then
-            kubectl delete ns ${NAMESPACE} || true
-            continue
+            # If no helm release exists then we can't delete helm/tf resources and we can delete namespace
+            IMAGE_TAG=$(helm3 get values ${NAMESPACE} -n ${NAMESPACE} | yq r - 'image.pim.tag')
+            if [[ -z "${IMAGE_TAG}" ]]; then
+                IMAGE_TAG=${LAST_RELEASE}
+            fi
         else
             IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
             IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
