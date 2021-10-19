@@ -3,10 +3,10 @@ oneup_flysystem:
         asset_storage_adapter:
             memory: ~
         catalog_storage_adapter:
-            nulladapter: ~
+            memory: ~
         jobs_storage_adapter:
-            nulladapter: ~
+            memory: ~
         archivist_adapter:
-            nulladapter: ~
+            memory: ~
         data_quality_insights_shared_adapter:
-            nulladapter: ~
+            memory: ~

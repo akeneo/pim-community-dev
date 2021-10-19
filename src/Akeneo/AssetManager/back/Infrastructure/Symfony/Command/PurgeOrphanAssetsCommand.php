@@ -13,7 +13,7 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command;
 
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Doctrine\DBAL\Connection;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -184,7 +184,7 @@ class PurgeOrphanAssetsCommand extends Command
         while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
             try {
                 $fs->delete($result['file_key']);
-            } catch (FileNotFoundException $exception) {
+            } catch (FilesystemException $exception) {
                 $output->writeln(sprintf('File "%s" not found in storage', $exception->getMessage()), OutputInterface::VERBOSITY_DEBUG);
             }
 
