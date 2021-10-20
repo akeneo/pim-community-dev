@@ -89,13 +89,9 @@ jobs:
           paths:
               - project
 
-  checkout_job:
+  test_job_bounded_context:
       machine:
           image: ubuntu-2004:202101-01
-      parameters:
-          path_to_front_packages:
-              type: string
-              default: front-packages
       steps:
           - checkout
           - install_yq
@@ -144,13 +140,13 @@ jobs:
               name: Create hash for front packages
               # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
               command: |
-                find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-                find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
-                find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
-                echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash
+                find front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+                find front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+                find front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+                echo "$(date +%F) front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash
           - run:
               name: Set front package directories owner to circleci
-              command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
+              command: sudo chown -R 1001:1001 front-packages
           - restore_cache:
               name: Restore front package DSM cache
               key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
@@ -162,7 +158,7 @@ jobs:
               key: front-packages-shared-{{ checksum "~/shared.hash" }}
           - run:
               name: Set font package directories owner to docker
-              command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
+              command: sudo chown -R 1000:1000 front-packages
           - run:
               name: Build front-packages
               command: make front-packages
@@ -186,21 +182,20 @@ jobs:
               name: Save front package DSM cache
               key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
               paths:
-                - << parameters.path_to_front_packages >>/akeneo-design-system/
+                - front-packages/akeneo-design-system/
           - save_cache:
               name: Save front package measurement cache
               key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
               paths:
-                - << parameters.path_to_front_packages >>/measurement/
+                - front-packages/measurement/
           - save_cache:
               name: Save front package Shared cache
               key: front-packages-shared-{{ checksum "~/shared.hash" }}
               paths:
-                - << parameters.path_to_front_packages >>/shared/
+                - front-packages/shared/
           - run:
               name: Run tests
               command: make job-ci-back
-
 
   build_dev:
     parameters:
@@ -993,15 +988,15 @@ workflows:
           - checkout_ce:
                 requires:
                     - ready_to_build_only_ce?
-          - ready_to_build_only_job?:
+          - ready_to_build_only_job_bounded_context?:
               type: approval
               filters:
                   branches:
                       ignore:
                           - master
-          - checkout_job:
+          - test_job_bounded_context:
               requires:
-                  - ready_to_build_only_job?
+                  - ready_to_build_only_job_bounded_context?
           - build_dev:
                 name: build_dev_ce
                 is_ee_built: false
