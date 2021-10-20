@@ -111,11 +111,11 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
                 type:  navigate-product-and-product-model
-                useDirectLauncherLink: false
+                useDirectLauncherLink: true
                 label: pim_datagrid.actions.classify_product
-                tabRedirects:
-                    product: pim-product-edit-form-categories
-                    product_model: pim-product-edit-form-categories
+                links:
+                    product: pim_enrich_product_edit_categories
+                    product_model: pim_enrich_product_model_edit_categories
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
