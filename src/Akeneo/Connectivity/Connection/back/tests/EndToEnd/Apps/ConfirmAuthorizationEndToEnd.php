@@ -13,10 +13,8 @@ use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -139,6 +137,8 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         Assert::assertIsString($responseContent['appId']);
         Assert::assertArrayHasKey('userGroup', $responseContent, 'Response missing userGroup');
         Assert::assertIsString($responseContent['userGroup']);
+        Assert::assertArrayHasKey('redirectUrl', $responseContent);
+        Assert::assertIsString($responseContent['redirectUrl']);
     }
 
     private function loadAppsFixtures(): void

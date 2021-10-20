@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
+
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetConnectedAppIdAndUserGroupQueryInterface
+interface GetAppConfirmationQueryInterface
 {
-    /**
-     * @return array{appId:string, userGroup:string}|null $marketplaceAppId
-     */
-    public function execute(string $marketplaceAppId): ?array;
+    public function execute(string $marketplaceAppId): ?AppConfirmation;
 }

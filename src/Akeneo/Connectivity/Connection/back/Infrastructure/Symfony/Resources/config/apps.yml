@@ -45,8 +45,22 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery:
         arguments:
             - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\AuthorizationCodeGenerator:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@pim_user.repository.user'
+            - '@fos_oauth_server.storage.default'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
+            - '@akeneo_connectivity.connection.clock'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\AuthorizationCodeGenerator'

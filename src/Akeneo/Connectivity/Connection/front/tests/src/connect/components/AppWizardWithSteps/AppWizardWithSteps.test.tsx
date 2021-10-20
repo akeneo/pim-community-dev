@@ -8,6 +8,16 @@ import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
 
+/*eslint-disable */
+declare global {
+    namespace NodeJS {
+        interface Global {
+            window: any;
+        }
+    }
+}
+/*eslint-enable */
+
 const notify = jest.fn();
 const providerSave = jest.fn();
 const providerLoadPermissions = jest.fn();
@@ -18,6 +28,12 @@ beforeEach(() => {
     notify.mockClear();
     providerSave.mockClear();
     providerLoadPermissions.mockClear();
+
+    delete global.window.location;
+    global.window = Object.create(window);
+    global.window.location = {
+        assign: jest.fn(),
+    };
 });
 
 jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
@@ -198,6 +214,7 @@ test('The wizard saves app and permissions on confirm', async () => {
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
             json: {
                 userGroup: appUserGroup,
+                redirectUrl: 'http://foo.example.com/oauth2/callback',
             },
         },
     });
@@ -247,6 +264,8 @@ test('The wizard saves app and permissions on confirm', async () => {
 
     expect(providerSave).toHaveBeenNthCalledWith(1, appUserGroup, 'formProviderData1');
     expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, 'formProviderData2');
+
+    expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
 });
 
 test('The wizard saves app but have some failing permissions on confirm', async () => {
