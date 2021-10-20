@@ -1,11 +1,12 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {PermissionFormProvider} from '../../shared/permission-form-registry';
-import {PermissionFormReducer} from '../../../../workspaces/permission-form';
 
 const FormContainer = styled.div`
     padding-bottom: 10px;
 `;
+
+type PermissionsFormState = any;
 
 type PermissionsFormProps<T> = {
     provider: PermissionFormProvider<T>;
@@ -14,7 +15,7 @@ type PermissionsFormProps<T> = {
     readOnly: boolean | undefined;
 };
 
-export const PermissionsForm: FC<PermissionsFormProps<PermissionFormReducer.State>> = React.memo(
+export const PermissionsForm: FC<PermissionsFormProps<PermissionsFormState>> = React.memo(
     ({provider, onPermissionsChange, permissions, readOnly}) => {
         return <FormContainer>{provider.renderForm(onPermissionsChange, permissions, readOnly)}</FormContainer>;
     }
