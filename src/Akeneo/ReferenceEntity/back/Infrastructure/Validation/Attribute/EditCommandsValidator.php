@@ -47,13 +47,15 @@ class EditCommandsValidator extends ConstraintValidator
         foreach ($editCommand->editCommands as $command) {
             $violations = $this->validator->validate($command);
             foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
+                $violationBuilder = $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath((string)$violation->getPropertyPath())
                     ->setCode($violation->getCode())
-                    ->setPlural((int)$violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
+                    ->setInvalidValue($violation->getInvalidValue());
+                if ($violation->getPlural()) {
+                    $violationBuilder->setPlural((int)$violation->getPlural());
+                }
+                $violationBuilder->addViolation();
             }
         }
     }
