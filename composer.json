@@ -79,7 +79,6 @@
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
-        "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",
         "liip/imagine-bundle": "^2.6.0",
         "monolog/monolog": "1.25.5",
@@ -138,9 +137,11 @@
         "friends-of-phpspec/phpspec-code-coverage": "^6.0",
         "friendsofphp/php-cs-fixer": "^3.0",
         "instaclick/php-webdriver": "1.4.7",
+        "league/flysystem": "^2.3",
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
+        "nunomaduro/phpinsights": "^2.0",
         "phpspec/phpspec": "~7.0.0",
         "phpspec/prophecy": "~1.12.1",
         "phpstan/phpstan": "^0.12.97",
@@ -153,7 +154,6 @@
         "symfony/debug-bundle": "4.4.18",
         "symfony/web-profiler-bundle": "4.4.18",
         "symfony/web-server-bundle": "4.4.18",
-        "nunomaduro/phpinsights": "^2.0",
         "vimeo/psalm": "^4.10"
     },
     "conflict": {
