@@ -450,11 +450,12 @@ delete_environments_hourly:
 
 .PHONY: delete_environment_manually
 delete_environment_manually:
-	if [[ -z "${NS}" ]]; then
-		@echo "ERR : You must choose a namespace to delete"
-		exit 1
-	fi
-	NS=${NS} ENV_NAME=${ENV_NAME:-dev} TYPE=${TYPE:-srnt} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+ifeq ($(NS),)
+	@echo "ERR : You must choose a namespace to delete"
+	exit 1
+endif
+	mkdir -p /tmp/cloud-customers-dev
+	CLOUD_CUSTOMERS_DEV_DIR=/tmp/cloud-customers-dev NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
