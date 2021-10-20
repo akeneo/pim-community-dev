@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
 
-interface GetLatestProductScoresByIdentifiersQueryInterface
+interface GetLatestProductScoresQueryInterface
 {
     public function byProductIdentifiers(array $productIdentifiers): array;
 
-    public function byProductIdentifier(string $identifier): ChannelLocaleRateCollection;
+    public function byProductIdentifier(string $productIdentifier): ProductScoreCollection;
 }
