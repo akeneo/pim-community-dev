@@ -74,7 +74,7 @@ class SelectionHydrator
             case 'parent':
                 return $this->createParentSelection($selectionConfiguration);
             case 'quality_score':
-                return new QualityScoreSelection($selectionConfiguration['channel'], $selectionConfiguration['locale']);
+                return new QualityScoreSelection();
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }

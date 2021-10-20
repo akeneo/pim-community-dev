@@ -156,12 +156,12 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $inMemoryFindQualityScores->addQualityScore('product_code', [
             'ecommerce' => [
                 'fr_FR' => 'A',
-                'en_US' => 'B'
+                'en_US' => 'B',
             ],
             'print' => [
                 'fr_FR' => 'B',
-                'en_US' => 'A'
-            ]
+                'en_US' => 'A',
+            ],
         ]);
     }
 }
