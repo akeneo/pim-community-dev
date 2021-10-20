@@ -11,10 +11,11 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../models';
 import styled from 'styled-components';
 import {CenteredHelper} from '../shared';
 import {SelectOptionRepository} from '../repositories';
+import {ManageOptionsModal} from "../attribute";
 
 const BATCH_SIZE = 20;
 
@@ -32,6 +33,11 @@ const NoEditPermission = styled(Badge)`
   right: 20px;
   top: 24px;
 `;
+
+const EditOptionsContainer = styled.div`
+  margin: 10px;
+  text-align: center;
+`
 
 type Option = {
   code: string;
@@ -51,6 +57,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   const userContext = useUserContext();
 
   const [isOpen, open, close] = useBooleanState(false);
+  const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState<Option[] | undefined>(undefined);
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
@@ -59,6 +66,17 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   const lowercaseCheckedOptionCodes = checkedOptionCodes.map(code => code.toLowerCase());
 
   const searchRef = React.createRef<HTMLInputElement>();
+
+  const setItemsFromOptions = (selectOptions: SelectOption[] | null) => {
+    setItems(
+      (selectOptions ?? []).map((option: SelectOption) => {
+        return {
+          code: option.code,
+          label: getLabel(option.labels, userContext.get('catalogLocale'), option.code),
+        };
+      })
+    );
+  }
 
   const focus = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.focus();
@@ -73,15 +91,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   React.useEffect(() => {
     if (isOpen && typeof items === 'undefined') {
       SelectOptionRepository.findFromColumn(router, attribute.code, columnCode).then(selectOptions => {
-        setItems(
-          (selectOptions ?? []).map((option: SelectOption) => {
-            return {
-              code: option.code,
-              label: getLabel(option.labels, userContext.get('catalogLocale'), option.code),
-              checked: false,
-            };
-          })
-        );
+        setItemsFromOptions(selectOptions);
       });
     }
   }, [router, isOpen]);
@@ -109,6 +119,14 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
     router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
   };
 
+  const handleSaveOptions = (selectOptions: SelectOption[]) => {
+    SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
+      if (result) {
+        setItemsFromOptions(selectOptions);
+      }
+    })
+  }
+
   return (
     <Dropdown>
       <Button onClick={open} level='secondary' size='small' ghost>
@@ -116,7 +134,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
         <ArrowDownIcon />
       </Button>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition='down' onClose={close}>
+        <Dropdown.Overlay horizontalPosition='left' onClose={close}>
           <Dropdown.Header>
             {searchValue === '' && itemsToDisplay.length === 0 && !hasEditPermission && (
               <NoEditPermission level='danger'>
@@ -180,6 +198,15 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
               </CenteredHelper.Container>
             )}
           </Dropdown.ItemCollection>
+          {hasEditPermission && <EditOptionsContainer>
+            <Button onClick={openManageOptions}>Edit options</Button>
+            {isManageOptionsOpen && <ManageOptionsModal
+              onClose={closeManageOptions}
+              attribute={attribute}
+              columnDefinition={attribute.table_configuration[0] as SelectColumnDefinition}
+              onChange={handleSaveOptions}
+            />}
+          </EditOptionsContainer>}
         </Dropdown.Overlay>
       )}
     </Dropdown>

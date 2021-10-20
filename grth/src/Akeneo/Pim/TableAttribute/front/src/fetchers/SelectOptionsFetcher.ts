@@ -10,6 +10,7 @@ const fetchSelectOptions = async (
     attributeCode,
     columnCode,
   });
+
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
