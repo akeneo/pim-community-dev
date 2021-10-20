@@ -211,6 +211,7 @@ pim_common:
     permissions: Permissions
     previous: Previous
     properties: Properties
+    quality_score: Quality score
     remove: Remove
     required_label: (required)
     result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
