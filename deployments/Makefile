@@ -242,7 +242,6 @@ ifeq (${USE_ONBOARDER_CATALOG},true)
 endif
 
 ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.ft_catalog_api_base_uri "https://plg-catalog.demo.cloud.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
