@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\PublicApi\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection as DqiChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -19,7 +20,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
+final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
     public function test_it_returns_the_latest_scores_by_product_identifiers()
     {
@@ -38,35 +39,35 @@ final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQual
             'product_A_latest_scores' => new ProductScores(
                 new ProductId($productA->getId()),
                 new \DateTimeImmutable('2020-01-08'),
-                (new DqiChannelLocaleRateCollection())
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
             'product_A_previous_scores' => new ProductScores(
                 new ProductId($productA->getId()),
                 new \DateTimeImmutable('2020-01-07'),
-                (new DqiChannelLocaleRateCollection())
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(76))
                     ->addRate($channelMobile, $localeFr, new Rate(67))
             ),
             'product_B_latest_scores' => new ProductScores(
                 new ProductId($productB->getId()),
                 new \DateTimeImmutable('2020-01-09'),
-                (new DqiChannelLocaleRateCollection())
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'product_B_previous_scores' => new ProductScores(
                 new ProductId($productB->getId()),
                 new \DateTimeImmutable('2020-01-08'),
-                (new DqiChannelLocaleRateCollection())
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(81))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_scores' => new ProductScores(
                 new ProductId($productC->getId()),
                 new \DateTimeImmutable('2020-01-08'),
-                (new DqiChannelLocaleRateCollection())
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
@@ -74,27 +75,22 @@ final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQual
 
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
-        $expectedProductsScores = [
-            $productA->getIdentifier() => $productsScores['product_A_latest_scores']->getScores(),
-            $productB->getIdentifier() => $productsScores['product_B_latest_scores']->getScores(),
+        $expectedProductsScoreCollections = [
+            $productA->getIdentifier() => $this->makeProductScoreCollection($productsScores['product_A_latest_scores']->getScores()),
+            $productB->getIdentifier() => $this->makeProductScoreCollection($productsScores['product_B_latest_scores']->getScores()),
         ];
 
-        $productScores = $this->get(GetLatestProductScoresByIdentifiersQuery::class)->byProductIdentifiers([
+        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
             $productA->getIdentifier(),
             $productB->getIdentifier(),
             $productD->getIdentifier(),
         ]);
 
-        $this->assertEquals(
-            $this->mapProductScoresForAssertion($expectedProductsScores),
-            $this->mapProductScoresForAssertion($productScores)
-        );
+        $this->assertEqualsCanonicalizing($expectedProductsScoreCollections, $productScoreCollections);
     }
 
-    /**
-     * @param DqiChannelLocaleRateCollection[]|ChannelLocaleRateCollection[] $productScores
-     */
-    private function mapProductScoresForAssertion(array $productScores): array {
-        return array_map(static fn ($productScore) => $productScore->toArrayLetter(), $productScores);
+    private function makeProductScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): ProductScoreCollection {
+        $productScores = $channelLocaleRateCollection->mapWith(static fn (Rate $rate) => new ProductScore($rate->toLetter(), $rate->toInt()));
+        return new ProductScoreCollection($productScores);
     }
 }
