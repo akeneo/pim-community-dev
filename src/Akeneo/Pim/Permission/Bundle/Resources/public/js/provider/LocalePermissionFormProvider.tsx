@@ -47,6 +47,8 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
     );
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
+    readOnly = readOnly ?? false;
+
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
     }, [readOnly, state]);

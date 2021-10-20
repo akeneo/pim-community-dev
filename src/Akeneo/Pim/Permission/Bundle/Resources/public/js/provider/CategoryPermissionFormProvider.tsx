@@ -127,6 +127,8 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
       initialState ?? PermissionFormReducer.initialState
     );
 
+    readOnly = readOnly ?? false;
+
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
     }, [readOnly, state]);

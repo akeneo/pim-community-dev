@@ -127,6 +127,8 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       initialState ?? PermissionFormReducer.initialState
     );
 
+    readOnly = readOnly ?? false;
+
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
     }, [readOnly, state]);
