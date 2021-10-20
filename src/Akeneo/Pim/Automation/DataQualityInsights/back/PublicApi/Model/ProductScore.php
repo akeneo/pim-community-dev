@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
 
 class ProductScore
 {
-    public string $letter;
-    public int $rate;
+    private string $letter;
+    private int $rate;
 
     public function __construct(string $letter, int $rate)
     {
