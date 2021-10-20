@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\QualitySco
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 
-class QualityScoreSelection implements SelectionInterface
+class QualityScoreCodeSelection implements SelectionInterface
 {
-    public const TYPE = 'quality_score';
+    public const TYPE = 'code';
 }

@@ -101,7 +101,7 @@ class PropertyValueHydrator
                 return new ParentValue($parent->getCode());
             case 'quality_score':
                 if (!$productOrProductModel instanceof ProductInterface) {
-                    throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
+                    throw new \InvalidArgumentException('Cannot hydrate Quality Score value on ProductModel entity');
                 }
 
                 $qualityScore = $this->findQualityScores->forProduct(

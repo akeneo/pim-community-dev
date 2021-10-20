@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
@@ -48,7 +48,7 @@ final class HandleQualityScoreValueTest extends PropertyTestCase
         return [
             'it can select quality score value' => [
                 'operations' => [],
-                'selection' => new QualityScoreSelection(),
+                'selection' => new QualityScoreCodeSelection(),
                 'value' => new QualityScoreValue('B'),
                 'expected' => [self::TARGET_NAME => 'B']
             ],

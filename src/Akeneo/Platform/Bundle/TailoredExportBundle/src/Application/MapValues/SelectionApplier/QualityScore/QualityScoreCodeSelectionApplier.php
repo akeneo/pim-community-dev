@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\QualityScore;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 
-class QualityScoreSelectionApplier implements SelectionApplierInterface
+class QualityScoreCodeSelectionApplier implements SelectionApplierInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof QualityScoreSelection
+            !$selection instanceof QualityScoreCodeSelection
             || !$value instanceof QualityScoreValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Quality Score selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Quality Score code selection on this entity');
         }
 
         return $value->getScore();
@@ -35,7 +35,7 @@ class QualityScoreSelectionApplier implements SelectionApplierInterface
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof QualityScoreSelection
+        return $selection instanceof QualityScoreCodeSelection
             && $value instanceof QualityScoreValue;
     }
 }

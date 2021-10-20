@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\QualityScore;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use PhpSpec\ObjectBehavior;
 
-class QualityScoreSelectionApplierSpec extends ObjectBehavior
+class QualityScoreCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new QualityScoreSelection('ecommerce', 'fr_FR');
+        $selection = new QualityScoreCodeSelection('ecommerce', 'fr_FR');
         $value = new QualityScoreValue('B');
 
         $this->applySelection($selection, $value)
@@ -42,7 +42,7 @@ class QualityScoreSelectionApplierSpec extends ObjectBehavior
 
     public function it_supports_quality_score_selection_with_quality_score_value()
     {
-        $selection = new QualityScoreSelection('ecommerce', 'en_US');
+        $selection = new QualityScoreCodeSelection('ecommerce', 'en_US');
         $value = new QualityScoreValue('B');
 
         $this->supports($selection, $value)->shouldReturn(true);
