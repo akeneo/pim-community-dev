@@ -66,8 +66,8 @@
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
-        "symfony/debug-bundle": "4.4.18",
-        "symfony/web-profiler-bundle": "4.4.18"
+        "symfony/debug-bundle": "^5.3",
+        "symfony/web-profiler-bundle": "^5.3"
     },
     "repositories": {
         "grth": {
