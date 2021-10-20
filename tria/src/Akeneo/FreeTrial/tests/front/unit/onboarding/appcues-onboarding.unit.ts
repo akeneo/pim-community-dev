@@ -518,6 +518,12 @@ describe('Family settings', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Winter Designed Tire" added as family variant');
   });
 
+  test('a family variant has been saved', async () => {
+    await AppcuesOnboarding.track('family:variant:saved');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Family variant saved');
+  });
+
   test('the tab "Variants" has been opened', async () => {
     await AppcuesOnboarding.track('family:edit:variant-selected', {
       code: 'pim-family-edit-form-variant'
