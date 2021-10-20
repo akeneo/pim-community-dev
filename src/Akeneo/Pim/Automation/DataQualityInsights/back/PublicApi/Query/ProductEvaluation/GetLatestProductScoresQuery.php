@@ -32,7 +32,7 @@ class GetLatestProductScoresQuery implements GetLatestProductScoresQueryInterfac
     {
         $channelLocaleRateCollections = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
         return array_map(
-            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->makeProductScoreCollection($channelLocaleRateCollection),
+            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->productScoreCollection($channelLocaleRateCollection),
             $channelLocaleRateCollections
         );
     }
@@ -40,10 +40,10 @@ class GetLatestProductScoresQuery implements GetLatestProductScoresQueryInterfac
     public function byProductIdentifier(string $productIdentifier): ProductScoreCollection
     {
         $channelLocaleRateCollection = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
-        return $this->makeProductScoreCollection($channelLocaleRateCollection);
+        return $this->productScoreCollection($channelLocaleRateCollection);
     }
 
-    private function makeProductScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): ProductScoreCollection
+    private function productScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): ProductScoreCollection
     {
         $productScores = $channelLocaleRateCollection->mapWith(static fn (Rate $rate) => new ProductScore($rate->toLetter(), $rate->toInt()));
         return new ProductScoreCollection($productScores);

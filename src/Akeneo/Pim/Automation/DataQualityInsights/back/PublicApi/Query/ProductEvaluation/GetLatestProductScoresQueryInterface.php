@@ -17,6 +17,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollec
 
 interface GetLatestProductScoresQueryInterface
 {
+    /**
+     * @param string[] $productIdentifiers
+     * @return ProductScoreCollection[]
+     */
     public function byProductIdentifiers(array $productIdentifiers): array;
 
     public function byProductIdentifier(string $productIdentifier): ProductScoreCollection;

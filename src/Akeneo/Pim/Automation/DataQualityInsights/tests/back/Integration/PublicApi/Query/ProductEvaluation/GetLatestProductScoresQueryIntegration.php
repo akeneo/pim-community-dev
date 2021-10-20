@@ -22,6 +22,12 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
+    /**
+     * https://github.com/akeneo/pim-community-dev/pull/15486#discussion_r732547768
+     * FYI, the good practice would be to emit the event that DQI listen to create a DQI product score. This way, the coupling is done on event (which is a contract).
+     * By creating a whole product, it makes DQI completely coupled by the tests to the enrichment context, and on a big part of the application.
+     * This test can be broken by a change in enrichment, even if it does not break DQI itself.
+     */
     public function test_it_returns_the_latest_scores_by_product_identifiers()
     {
         $channelMobile = new ChannelCode('mobile');
