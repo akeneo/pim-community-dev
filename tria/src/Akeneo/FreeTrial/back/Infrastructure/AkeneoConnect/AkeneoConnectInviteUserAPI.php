@@ -17,6 +17,7 @@ use Akeneo\FreeTrial\Domain\API\InviteUserAPI;
 use Akeneo\FreeTrial\Domain\Exception\InvalidEmailException;
 use Akeneo\FreeTrial\Domain\Exception\InvitationAlreadySentException;
 use Akeneo\FreeTrial\Domain\Exception\InvitationFailedException;
+use Akeneo\FreeTrial\Domain\Exception\UnauthorizedEmailException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +26,7 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
     public const INVITATION_ALREADY_SENT = 'user_is_already_invited_invitation';
     public const INVALID_REQUEST_BODY = 'invalid_request_invitation';
     public const INTERNAL_ERROR = 'internal_server_error_invitation';
+    public const UNAUTHORIZED_EMAIL = 'user_has_unauthorized_email_address';
 
     private APIClient $client;
 
@@ -65,6 +67,8 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
             case self::INVALID_REQUEST_BODY:
                 $this->logger->error('Error while calling Akeneo Connect : invalid request', $responseContentError);
                 throw new InvalidEmailException();
+            case self::UNAUTHORIZED_EMAIL:
+                throw new UnauthorizedEmailException();
             default:
                 $this->logger->error('Error while calling Akeneo Connect', $responseContentError);
                 throw new InvitationFailedException();
