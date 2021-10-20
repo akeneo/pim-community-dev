@@ -24,8 +24,8 @@ final class InMemoryFindQualityScores implements FindQualityScoresInterface
         $this->qualityScores[$productIdentifier] = $qualityScore;
     }
 
-    public function forProduct(string $productIdentifier): array
+    public function forProduct(string $productIdentifier, string $channel, string $locale): ?string
     {
-        return array_key_exists($productIdentifier, $this->qualityScores) ? $this->qualityScores[$productIdentifier] : [];
+        return $this->qualityScores[$productIdentifier][$channel][$locale] ?? null;
     }
 }

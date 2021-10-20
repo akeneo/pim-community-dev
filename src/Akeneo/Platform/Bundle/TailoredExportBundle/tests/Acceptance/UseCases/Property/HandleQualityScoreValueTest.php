@@ -48,7 +48,7 @@ final class HandleQualityScoreValueTest extends PropertyTestCase
         return [
             'it can select quality score value' => [
                 'operations' => [],
-                'selection' => new QualityScoreSelection('ecommerce', 'en_US'),
+                'selection' => new QualityScoreSelection(),
                 'value' => new QualityScoreValue('B'),
                 'expected' => [self::TARGET_NAME => 'B']
             ],
