@@ -2453,8 +2453,7 @@ commands:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
                       command: |
-                          #TODO Retrieve last tagged version for production
-                          CONNECTOR_BC_BRANCH=v0
+                          CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:

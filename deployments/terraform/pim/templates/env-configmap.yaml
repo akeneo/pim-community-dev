@@ -13,6 +13,7 @@ data:
   PAPO_PROJECT_CODE_TRUNCATED: {{ .Values.global.extraLabels.papo_project_code_truncated}}
   PAPO_PROJECT_CODE_HASHED: {{ .Values.global.extraLabels.papo_project_code_hashed}}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
+  FIRESTORE_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8
@@ -58,6 +59,10 @@ data:
   PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
   PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
   PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+
+  PUBSUB_TOPIC_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.topic_name }}
+  PUBSUB_SUBSCRIPTION_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.subscription_name }}
+
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
   FLAG_FREE_TRIAL_ENABLED: "1"

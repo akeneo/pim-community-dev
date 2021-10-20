@@ -2,6 +2,13 @@ image:
   pim:
     tag: ${pimVersion}
 
+connectors:
+  bigcommerce:
+    enabled: ${bigcommerce_connector_enabled}
+    pubsub:
+      topic_name: ${bigcommerce_connector_topic}
+      subscription_name: ${bigcommerce_connector_subscription}
+
 elasticsearch:
   cluster:
     env:
