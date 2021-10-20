@@ -27,14 +27,10 @@ class QualityScoreSelectionApplier implements SelectionApplierInterface
             !$selection instanceof QualityScoreSelection
             || !$value instanceof QualityScoreValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply QualityScore selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Quality Score selection on this entity');
         }
 
-        $scores = $value->getScores();
-        $channel = $selection->getChannel();
-        $locale = $selection->getLocale();
-
-        return $scores[$channel][$locale] ?? '';
+        return $value->getScore();
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

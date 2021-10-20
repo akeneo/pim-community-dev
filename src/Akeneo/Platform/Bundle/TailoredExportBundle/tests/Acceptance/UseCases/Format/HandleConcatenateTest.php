@@ -67,6 +67,8 @@ final class HandleConcatenateTest extends KernelTestCase
                     new PropertySource(
                         'enabled-uuid',
                         'enabled',
+                        null,
+                        null,
                         OperationCollection::create([]),
                         new EnabledSelection(),
                     ),
@@ -137,6 +139,8 @@ final class HandleConcatenateTest extends KernelTestCase
                     new PropertySource(
                         'parent-uuid',
                         'parent',
+                        null,
+                        null,
                         OperationCollection::create([]),
                         new ParentCodeSelection(),
                     ),
@@ -176,6 +180,8 @@ final class HandleConcatenateTest extends KernelTestCase
                     new PropertySource(
                         'parent-uuid',
                         'parent',
+                        null,
+                        null,
                         OperationCollection::create([]),
                         new ParentCodeSelection(),
                     ),

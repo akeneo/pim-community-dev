@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\QualityScore;
 
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Application\Common\Selection\QualityScore\QualityScoreSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use PhpSpec\ObjectBehavior;
@@ -24,11 +24,7 @@ class QualityScoreSelectionApplierSpec extends ObjectBehavior
     public function it_applies_the_selection()
     {
         $selection = new QualityScoreSelection('ecommerce', 'fr_FR');
-        $value = new QualityScoreValue([
-            'ecommerce' => [
-                'fr_FR' => 'B'
-            ]
-        ]);
+        $value = new QualityScoreValue('B');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('B');
@@ -40,18 +36,14 @@ class QualityScoreSelectionApplierSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply QualityScore selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Quality Score selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
     public function it_supports_quality_score_selection_with_quality_score_value()
     {
         $selection = new QualityScoreSelection('ecommerce', 'en_US');
-        $value = new QualityScoreValue([
-            'ecommerce' => [
-                'fr_FR' => 'B'
-            ]
-        ]);
+        $value = new QualityScoreValue('B');
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

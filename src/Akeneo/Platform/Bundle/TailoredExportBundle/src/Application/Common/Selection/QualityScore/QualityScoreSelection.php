@@ -18,23 +18,4 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 class QualityScoreSelection implements SelectionInterface
 {
     public const TYPE = 'quality_score';
-
-    private string $channel;
-    private string $locale;
-
-    public function __construct(string $channel, string $locale)
-    {
-        $this->channel = $channel;
-        $this->locale = $locale;
-    }
-
-    public function getChannel(): string
-    {
-        return $this->channel;
-    }
-
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
 }

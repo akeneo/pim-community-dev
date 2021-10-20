@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CodeValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
@@ -38,7 +39,7 @@ class PropertyValueHydrator
         $this->findQualityScores = $findQualityScores;
     }
 
-    public function hydrate(string $propertyName, $productOrProductModel): SourceValueInterface
+    public function hydrate(PropertySource $source, $productOrProductModel): SourceValueInterface
     {
         if (
             !$productOrProductModel instanceof ProductInterface
@@ -47,7 +48,7 @@ class PropertyValueHydrator
             throw new \InvalidArgumentException('Cannot hydrate this entity');
         }
 
-        switch ($propertyName) {
+        switch ($source->getName()) {
             case 'code':
                 if (!$productOrProductModel instanceof ProductModelInterface) {
                     throw new \InvalidArgumentException('Cannot hydrate enabled value on Product entity');
@@ -103,13 +104,13 @@ class PropertyValueHydrator
                     throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
                 }
 
-                $qualityScores = $this->findQualityScores->forProduct($productOrProductModel->getIdentifier());
+                $qualityScore = $this->findQualityScores->forProduct($productOrProductModel->getIdentifier());
 
                 //TODO check if we should return null value in case of empty array
 
-                return new QualityScoreValue($qualityScores);
+                return new QualityScoreValue($qualityScore[$source->getChannel()][$source->getLocale()]);
             default:
-                throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
+                throw new \LogicException(sprintf('Unsupported property name "%s"', $source->getName()));
         }
     }
 }
