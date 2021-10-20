@@ -313,6 +313,9 @@ const AppcuesOnboarding: PimOnboarding = {
             }
           }
           break;
+        case 'family:variant:saved':
+          appcues.track('Family variant saved');
+          break;
         case 'family:edit:variant-selected':
           if (eventOptions && eventOptions.code === 'pim-family-edit-form-variant') {
             appcues.track('Tab "Variants" selected in family edit form');
@@ -336,6 +339,9 @@ const AppcuesOnboarding: PimOnboarding = {
           if (eventOptions && eventOptions.column && eventOptions.column.includes('automatic_two_sided_printing')) {
             appcues.track('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
           }
+          break;
+        case 'export-profile:product:attribute-applied':
+          appcues.track('Selection of attributes in the content of the export profile applied');
           break;
         case 'job-instance:form-edit:saved':
           if (eventOptions && eventOptions.code === 'printers_amazon') {

@@ -564,6 +564,12 @@ describe('Family settings', () => {
     expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Winter Designed Tire" added as family variant');
   });
 
+  test('a family variant has been saved', async () => {
+    await AppcuesOnboarding.track('family:variant:saved');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Family variant saved');
+  });
+
   test('the tab "Variants" has been opened', async () => {
     await AppcuesOnboarding.track('family:edit:variant-selected', {
       code: 'pim-family-edit-form-variant'
@@ -610,6 +616,12 @@ describe('Export profile', () => {
     });
     expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
     expect(mockedAppcues.track).toHaveBeenCalledWith('Attribute "Automatic Two-Sided Printing" added in the content of the export profile');
+  });
+
+  test('the selection of attributes in the content of an export profile has been applied', async () => {
+    await AppcuesOnboarding.track('export-profile:product:attribute-applied');
+    expect(mockedAppcues.track).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.track).toHaveBeenCalledWith('Selection of attributes in the content of the export profile applied');
   });
 
   test('the edit export profile "Printers for Amazon (weekly)" has been saved', async () => {

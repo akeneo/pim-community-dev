@@ -26,11 +26,11 @@ echo "Get last release version for ${TYPE}"
 LAST_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="${CONTAINER_FILTER}" --sort-by="~tags" --format="value(tags)" | head -n1)
 
 NS_LIST=${NS}
-DELETE_INSTANCE=true
+FORCE_DELETE=true
 if [[ -z "${NS_LIST}" ]]; then
     # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
     NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
-    DELETE_INSTANCE=false
+    FORCE_DELETE=false
 fi
 
 echo "${TYPE} namespaces list :"
@@ -53,6 +53,7 @@ for NAMESPACE in ${NS_LIST}; do
     NAMESPACE=$(echo ${NS_INFO[0]})
     NS_STATUS=$(echo ${NS_INFO[1]})
     NS_AGE=$(echo ${NS_INFO[2]})
+    DELETE_INSTANCE=${FORCE_DELETE:-false}
 
     echo "-------------------------------------------"
     echo "Namespace : ${NAMESPACE}"
