@@ -8,6 +8,7 @@
 - PIM-10131: [Backport] PIM-9740: Prevent to delete a channel used in a product export job
 - PIM-10133: [Backport EXB-1046]: Prevent to delete a channel used in shared catalog export job
 - PIM-10134: Prevent to delete a channel used in a published product export job
+- PIM-10075: Impossible to classify products in a new tab/window from a right click on the product grid
 
 # 5.0.54 (2021-10-29)
 
