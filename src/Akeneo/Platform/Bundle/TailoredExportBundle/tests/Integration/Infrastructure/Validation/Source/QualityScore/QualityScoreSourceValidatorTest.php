@@ -50,12 +50,10 @@ class QualityScoreSourceValidatorTest extends AbstractValidationTest
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
                     'code' => 'quality_score',
                     'type' => 'property',
-                    'channel' => null,
-                    'locale' => null,
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                     'selection' => [
-                        'type' => 'quality_score',
-                        'channel' => 'ecommerce',
-                        'locale' => 'en_US',
+                        'type' => 'code',
                     ],
                     'operations' => [],
                 ],
@@ -67,16 +65,46 @@ class QualityScoreSourceValidatorTest extends AbstractValidationTest
     {
         return [
             'an invalid selection type' => [
-                'This value should be equal to "quality_score".',
+                'This value should be equal to "code".',
                 '[selection][type]',
                 [
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
                     'code' => 'quality_score',
                     'type' => 'property',
-                    'channel' => null,
-                    'locale' => null,
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
                     'selection' => [
                         'type' => 'invalid_type',
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a null channel' => [
+                'This value should not be blank.',
+                '[channel]',
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'quality_score',
+                    'type' => 'property',
+                    'channel' => null,
+                    'locale' => 'en_US',
+                    'selection' => [
+                        'type' => 'code',
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a null locale' => [
+                'This value should not be blank.',
+                '[locale]',
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'quality_score',
+                    'type' => 'property',
+                    'channel' => 'ecommerce',
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'code',
                     ],
                     'operations' => [],
                 ],
