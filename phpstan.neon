@@ -8,6 +8,3 @@ parameters:
         - %currentWorkingDirectory%/vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/KernelDevDebugContainer.xml
-    ignoreErrors:
-        # TIP-1526: don't ignore error
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\).#'
