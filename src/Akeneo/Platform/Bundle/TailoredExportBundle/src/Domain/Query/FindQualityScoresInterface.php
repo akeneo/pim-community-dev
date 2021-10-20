@@ -15,8 +15,5 @@ namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
 interface FindQualityScoresInterface
 {
-    /**
-     * @return string[][]
-     */
-    public function forProduct(string $productIdentifier): array;
+    public function forProduct(string $productIdentifier, string $channel, string $locale): ?string;
 }

@@ -104,11 +104,13 @@ class PropertyValueHydrator
                     throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
                 }
 
-                $qualityScore = $this->findQualityScores->forProduct($productOrProductModel->getIdentifier());
+                $qualityScore = $this->findQualityScores->forProduct($productOrProductModel->getIdentifier(), $source->getChannel(), $source->getLocale());
 
-                //TODO check if we should return null value in case of empty array
+                if (null === $qualityScore) {
+                    return new NullValue();
+                }
 
-                return new QualityScoreValue($qualityScore[$source->getChannel()][$source->getLocale()]);
+                return new QualityScoreValue($qualityScore);
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $source->getName()));
         }
