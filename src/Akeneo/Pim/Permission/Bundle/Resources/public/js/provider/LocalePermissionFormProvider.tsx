@@ -40,7 +40,11 @@ type LocaleType = {
 const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'locales',
   label: translate('pim_permissions.widget.entity.locale.label'),
-  renderForm: (onPermissionsChange, initialState: PermissionFormReducer.State | undefined, readOnly: boolean | undefined) => {
+  renderForm: (
+    onPermissionsChange,
+    initialState: PermissionFormReducer.State | undefined,
+    readOnly: boolean | undefined
+  ) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
       initialState ?? PermissionFormReducer.initialState

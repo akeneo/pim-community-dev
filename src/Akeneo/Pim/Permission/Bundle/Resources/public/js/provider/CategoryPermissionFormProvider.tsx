@@ -121,7 +121,11 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
 const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'categories',
   label: translate('pim_permissions.widget.entity.category.label'),
-  renderForm: (onPermissionsChange, initialState: PermissionFormReducer.State | undefined, readOnly: boolean | undefined) => {
+  renderForm: (
+    onPermissionsChange,
+    initialState: PermissionFormReducer.State | undefined,
+    readOnly: boolean | undefined
+  ) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
       initialState ?? PermissionFormReducer.initialState
