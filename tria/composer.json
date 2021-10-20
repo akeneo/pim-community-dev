@@ -43,7 +43,7 @@
         "ext-json": "*",
         "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-master",
-        "hslavich/oneloginsaml-bundle": "1.5.1",
+        "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",
         "grpc/grpc": "1.30.0",
         "akeneo/api-php-client": "^6.0",
