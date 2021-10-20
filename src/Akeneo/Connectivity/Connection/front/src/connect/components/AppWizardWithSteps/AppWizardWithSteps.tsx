@@ -79,20 +79,27 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         history.push('/connect/marketplace');
     }, [history]);
 
-    const notifyPermissionProviderError = useCallback((entity: string): void => {
-        notify(
-            NotificationLevel.ERROR,
-            translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
-            {
-                titleMessage: translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.title', {
-                    entity: entity,
-                }),
-            }
-        );
-    }, [notify, translate]);
+    const notifyPermissionProviderError = useCallback(
+        (entity: string): void => {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
+                {
+                    titleMessage: translate(
+                        'akeneo_connectivity.connection.connect.apps.flash.permissions_error.title',
+                        {
+                            entity: entity,
+                        }
+                    ),
+                }
+            );
+        },
+        [notify, translate]
+    );
 
     const handleConfirm = useCallback(async () => {
-        let userGroup, redirectUrl;
+        let userGroup;
+        let redirectUrl;
 
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
@@ -117,7 +124,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
             translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
         );
 
-        window.location.href = redirectUrl;
+        window.location.assign(redirectUrl);
     }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
 
     if (wizardData === null) {

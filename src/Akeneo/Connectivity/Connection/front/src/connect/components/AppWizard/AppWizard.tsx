@@ -81,7 +81,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 NotificationLevel.SUCCESS,
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
             );
-            window.location.href = redirectUrl;
+            window.location.assign(redirectUrl);
         } catch (e) {
             notify(
                 NotificationLevel.ERROR,
