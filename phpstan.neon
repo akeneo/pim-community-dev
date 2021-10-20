@@ -5,13 +5,9 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
-        - %currentWorkingDirectory%/src/Akeneo/Platform/Bundle/TailoredExportBundle
         - %currentWorkingDirectory%/vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/KernelDevDebugContainer.xml
     ignoreErrors:
-        - '#Unsafe usage of new static\(\)\.#'
-        # TIP-1525: don't ignore error
-        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface\:\:dispatch\(\) invoked with 2 parameters, 1 required\.#'
         # TIP-1526: don't ignore error
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\).#'
