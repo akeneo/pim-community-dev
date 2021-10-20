@@ -3,6 +3,9 @@ batch_jobs.xlsx_tailored_product_model_export.label: Tailored product model expo
 batch_jobs.csv_tailored_product_export.label: Tailored product export in CSV
 batch_jobs.csv_tailored_product_model_export.label: Tailored product model export in CSV
 
+pim_common:
+  quality_score: Quality Score
+
 akeneo.tailored_export:
   filters:
     completeness:
