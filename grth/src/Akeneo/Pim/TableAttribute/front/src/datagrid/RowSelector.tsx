@@ -27,9 +27,7 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
     .filter(option => {
       return (
         option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
-        getLabel(option.labels, catalogLocale, option.code)
-          .toLowerCase()
-          .includes(searchValue.toLowerCase())
+        getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase())
       );
     })
     .slice(0, (page + 1) * 20);
@@ -46,7 +44,8 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
       onNextPage={() => {
         setPage(page + 1);
       }}
-      onSearchChange={setSearchValue}>
+      onSearchChange={setSearchValue}
+    >
       {filteredOptions.map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
         return (

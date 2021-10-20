@@ -126,7 +126,8 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const columnDefinitionPropertiesMapping = __moduleConfig.column_definition_properties as ColumnDefinitionPropertiesMapping;
+    const columnDefinitionPropertiesMapping =
+      __moduleConfig.column_definition_properties as ColumnDefinitionPropertiesMapping;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const dataTypes = __moduleConfig.data_types as DataTypesMapping;

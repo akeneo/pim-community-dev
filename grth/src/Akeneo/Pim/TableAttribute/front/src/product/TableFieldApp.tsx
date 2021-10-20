@@ -166,7 +166,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     <>
       <TableInputContainer
         isCompareTranslate={isCompareTranslate}
-        className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}>
+        className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}
+      >
         <TableFieldHeader className='AknFieldContainer-header' isCompareTranslate={isCompareTranslate}>
           <TableFieldLabel className='AknFieldContainer-label' htmlFor={fieldId}>
             <span className='AknFieldContainer-labelAnnotation badge-elements-container'>

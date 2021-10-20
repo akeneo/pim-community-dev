@@ -251,7 +251,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       <TableInput
         readOnly={readOnly}
         isDragAndDroppable={isDragAndDroppable}
-        onReorder={isDragAndDroppable ? handleReorder : undefined}>
+        onReorder={isDragAndDroppable ? handleReorder : undefined}
+      >
         <TableInput.Header>
           {attribute.table_configuration.map(columnDefinition => (
             <TableInput.HeaderCell key={columnDefinition.code}>
@@ -271,7 +272,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     inError={
                       isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
                       getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
-                    }>
+                    }
+                  >
                     {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
                       <FirstCellLoadingPlaceholderContainer>
                         <div>{translate('pim_common.loading')}</div>

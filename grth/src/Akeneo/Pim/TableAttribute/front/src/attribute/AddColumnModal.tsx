@@ -128,11 +128,11 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     } as ColumnDefinition);
   };
 
-  const dataTypes: DataType[] = (existingColumnCodes.length
-    ? Object.keys(dataTypesMapping)
-    : Object.keys(dataTypesMapping).filter(
-        (dataType: string) => dataTypesMapping[dataType].useable_as_first_column
-      )) as DataType[];
+  const dataTypes: DataType[] = (
+    existingColumnCodes.length
+      ? Object.keys(dataTypesMapping)
+      : Object.keys(dataTypesMapping).filter((dataType: string) => dataTypesMapping[dataType].useable_as_first_column)
+  ) as DataType[];
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={close} illustration={<AttributesIllustration />}>
@@ -173,7 +173,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <SelectInput
             emptyResultLabel={translate('pim_common.select2.no_match')}
             onChange={(value: string | null) => {
@@ -182,12 +183,14 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             openLabel={translate('pim_common.open')}
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
             value={columnDefinition.data_type as DataType}
-            clearable={false}>
+            clearable={false}
+          >
             {dataTypes.map(dataType => (
               <SelectInput.Option
                 key={dataType}
                 title={translate(`pim_table_attribute.properties.data_type.${dataType}`)}
-                value={dataType}>
+                value={dataType}
+              >
                 {translate(`pim_table_attribute.properties.data_type.${dataType}`)}
               </SelectInput.Option>
             ))}

@@ -108,7 +108,8 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
       onSearchChange={handleSearchValue}
       inError={inError || notFoundOption}
       closeTick={closeTick}
-      {...rest}>
+      {...rest}
+    >
       {itemsToDisplay.map(option => {
         return (
           <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>

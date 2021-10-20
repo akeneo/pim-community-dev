@@ -135,11 +135,13 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
             {itemsToDisplay.map((item, index) => (
               <Dropdown.Item
                 key={item.code}
-                disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}>
+                disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}
+              >
                 <Checkbox
                   checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                   onChange={() => toggleChange(item.code)}
-                  data-testid={`checkbox-${index}`}>
+                  data-testid={`checkbox-${index}`}
+                >
                   {item.label}
                 </Checkbox>
               </Dropdown.Item>

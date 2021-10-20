@@ -42,7 +42,8 @@ const NumberProperties: ColumnProperties = ({selectedColumn, handleChange}) => {
       </Field>
       <Checkbox
         checked={numberSelectedColumn.validations.decimals_allowed ?? false}
-        onChange={event => handleValidationChange({decimals_allowed: event.target.checked})}>
+        onChange={event => handleValidationChange({decimals_allowed: event.target.checked})}
+      >
         {translate('pim_table_attribute.validations.decimals_allowed')}
       </Checkbox>
     </>
