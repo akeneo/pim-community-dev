@@ -8,6 +8,6 @@ class RedeemCodeForToken implements RedeemCodeForTokenInterface
 {
     public function redeem(string $code): string
     {
-        // TODO: Implement redeem() method.
+        return 'a_random_token';
     }
 }

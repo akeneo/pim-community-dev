@@ -15,4 +15,9 @@ class RedeemCodeForTokenSpec extends ObjectBehavior
         $this->shouldHaveType(RedeemCodeForToken::class);
         $this->shouldImplement(RedeemCodeForTokenInterface::class);
     }
+
+    public function it_redeems_a_code_for_a_token(): void
+    {
+        $this->redeem('ETH42MTG')->shouldReturn('a_random_token');
+    }
 }
