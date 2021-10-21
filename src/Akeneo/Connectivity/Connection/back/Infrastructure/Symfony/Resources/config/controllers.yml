@@ -93,6 +93,8 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RedeemCodeForTokenAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
 
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true

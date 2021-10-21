@@ -10,6 +10,8 @@ interface CreateAccessTokenInterface
      * @param string $clientId
      * @param string $authCode
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      *
      * TODO PHPSTAN
