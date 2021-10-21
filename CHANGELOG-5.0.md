@@ -6,6 +6,7 @@
 
 - PIM-10040: Fix longtext types instead of json type in old catalogs
 - PIM-10053: Changed category tree to open node on label click on Product Export
+- PIM-10121: Fix metric to string converter to remove trailing 0
 
 # 5.0.51 (2021-10-18)
 
