@@ -90,6 +90,7 @@ export const PermissionFormWidget: FC<Props> = ({
                 icon={<EraseIcon />}
                 onClick={onClear}
                 title={translate('pim_permissions.widget.action.clear')}
+                disabled={readOnly}
             />
         </Field>
     );
