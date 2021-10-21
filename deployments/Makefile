@@ -454,7 +454,9 @@ ifeq ($(NS),)
 	exit 1
 endif
 	mkdir -p /tmp/cloud-customers-dev
-	CLOUD_CUSTOMERS_DEV_DIR=/tmp/cloud-customers-dev NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+	DEPLOYMENTS_INSTANCES_DIR=/tmp/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_NAME}/releases \
+	CLOUD_CUSTOMERS_DEV_DIR=/tmp/cloud-customers-dev NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) \
+	bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
