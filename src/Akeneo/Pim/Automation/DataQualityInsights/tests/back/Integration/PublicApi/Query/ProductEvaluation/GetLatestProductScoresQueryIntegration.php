@@ -82,8 +82,18 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
         $expectedProductsScoreCollections = [
-            $productA->getIdentifier() => $this->makeProductScoreCollection($productsScores['product_A_latest_scores']->getScores()),
-            $productB->getIdentifier() => $this->makeProductScoreCollection($productsScores['product_B_latest_scores']->getScores()),
+            $productA->getIdentifier() => new ProductScoreCollection([
+                'mobile' => [
+                    'en_US' => new ProductScore('A', 96),
+                    'fr_FR' => new ProductScore('E', 36),
+                ],
+            ]),
+            $productB->getIdentifier() => new ProductScoreCollection([
+                'mobile' => [
+                    'en_US' => new ProductScore('A', 100),
+                    'fr_FR' => new ProductScore('A', 95),
+                ],
+            ]),
         ];
 
         $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
