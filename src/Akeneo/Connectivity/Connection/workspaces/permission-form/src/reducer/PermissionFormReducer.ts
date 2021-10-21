@@ -7,7 +7,7 @@ const remove = <T>(entries: T[], entryToRemove: T): T[] => {
 };
 
 export type State = {
-    own: {
+    own?: {
         all: boolean;
         identifiers: string[];
     };
@@ -115,13 +115,15 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.DISABLE_ALL_EDIT:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: [...state.own.identifiers],
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: [...state.own.identifiers],
+                    },
+                }),
                 edit: {
                     all: false,
-                    identifiers: [...state.own.identifiers],
+                    identifiers: [...(state.own?.identifiers || [])],
                 },
             };
 
@@ -137,10 +139,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.DISABLE_ALL_VIEW:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: [...state.own.identifiers],
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: [...state.own.identifiers],
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: [...state.edit.identifiers],
@@ -195,7 +199,7 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: unique([...state.own.identifiers, action.identifier]),
+                    identifiers: unique([...(state.own?.identifiers || []), action.identifier]),
                 },
                 edit: {
                     ...state.edit,
@@ -234,17 +238,19 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
+                    identifiers: remove(state.own?.identifiers || [], action.identifier),
                 },
             };
 
         case Actions.REMOVE_FROM_EDIT:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: remove(state.own.identifiers, action.identifier),
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: remove(state.edit.identifiers, action.identifier),
@@ -254,10 +260,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.REMOVE_FROM_VIEW:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: remove(state.own.identifiers, action.identifier),
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: remove(state.edit.identifiers, action.identifier),

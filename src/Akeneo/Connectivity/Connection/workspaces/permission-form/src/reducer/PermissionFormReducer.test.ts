@@ -588,3 +588,149 @@ test("it doesn't override view:all when adding an identifier in edit", () => {
         },
     });
 });
+
+test('it can use the action DISABLE_ALL_EDIT on a partial state', () => {
+    const state = {
+        edit: {
+            all: true,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.DISABLE_ALL_EDIT})).toEqual({
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    });
+});
+
+test('it can use the action DISABLE_ALL_VIEW on a partial state', () => {
+    const state = {
+        edit: {
+            all: true,
+            identifiers: [],
+        },
+        view: {
+            all: true,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.DISABLE_ALL_VIEW})).toEqual({
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    });
+});
+
+test('it can use the action REMOVE_FROM_EDIT on a partial state', () => {
+    const state = {
+        edit: {
+            all: false,
+            identifiers: ['a', 'b'],
+        },
+        view: {
+            all: false,
+            identifiers: ['a', 'b', 'c'],
+        },
+    };
+    expect(reducer(state, {type: Actions.REMOVE_FROM_EDIT, identifier: 'a'})).toEqual({
+        edit: {
+            all: false,
+            identifiers: ['b'],
+        },
+        view: {
+            all: false,
+            identifiers: ['a', 'b', 'c'],
+        },
+    });
+});
+
+test('it can use the action REMOVE_FROM_VIEW on a partial state', () => {
+    const state = {
+        edit: {
+            all: false,
+            identifiers: ['a', 'b'],
+        },
+        view: {
+            all: false,
+            identifiers: ['a', 'b', 'c'],
+        },
+    };
+    expect(reducer(state, {type: Actions.REMOVE_FROM_VIEW, identifier: 'a'})).toEqual({
+        edit: {
+            all: false,
+            identifiers: ['b'],
+        },
+        view: {
+            all: false,
+            identifiers: ['b', 'c'],
+        },
+    });
+});
+
+test('it can use the action ADD_TO_OWN on a partial state', () => {
+    const state = {
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.ADD_TO_OWN, identifier: 'a'})).toEqual({
+        own: {
+            all: false,
+            identifiers: ['a'],
+        },
+        edit: {
+            all: false,
+            identifiers: ['a'],
+        },
+        view: {
+            all: false,
+            identifiers: ['a'],
+        },
+    });
+});
+
+test('it can use the action REMOVE_FROM_OWN on a partial state', () => {
+    const state = {
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    };
+    expect(reducer(state, {type: Actions.REMOVE_FROM_OWN, identifier: 'a'})).toEqual({
+        own: {
+            all: false,
+            identifiers: [],
+        },
+        edit: {
+            all: false,
+            identifiers: [],
+        },
+        view: {
+            all: false,
+            identifiers: [],
+        },
+    });
+});
