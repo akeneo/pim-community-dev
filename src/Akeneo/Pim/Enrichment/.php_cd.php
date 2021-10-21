@@ -126,6 +126,7 @@ $rules = [
 
         'Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface',
         'Elasticsearch\Common\Exceptions\ElasticsearchException',
+        'Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister'
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

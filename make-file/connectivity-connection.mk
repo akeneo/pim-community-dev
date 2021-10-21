@@ -53,7 +53,6 @@
 #
 
 _CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
-_PERMISSION_FORM_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/workspaces/permission-form/
 
 # Tests Back
 
@@ -89,6 +88,36 @@ else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
 endif
 
+connectivity-connection-back:
+	$(MAKE) connectivity-connection-coupling-back
+	$(MAKE) connectivity-connection-lint-back
+	$(MAKE) connectivity-connection-unit-back
+	$(MAKE) connectivity-connection-acceptance-back
+	$(MAKE) connectivity-connection-integration-back
+	$(MAKE) connectivity-connection-e2e-back
+
+# Tests Front
+
+connectivity-connection-unit-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
+
+connectivity-connection-lint-front:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
+
+# Development
+
+connectivity-connection-unit-front_coverage:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --coverage
+
+connectivity-connection-unit-front_watch:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll
+
+connectivity-connection-lint-front_fix:
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write
+
+# Analysis tools
 connectivity-connection-coverage:
 	# run the backend application unit tests on scope connectivity
 	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
@@ -108,13 +137,14 @@ connectivity-connection-coverage:
 		--coverage-php coverage/Connectivity/Back/EndToEnd/coverage.php \
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
+
 	# run the backend application acceptance tests on scope connectivity
+	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p var/tests/behat/connectivity/connection
 	XDEBUG_MODE=coverage $(PHP_RUN) -d memory_limit=-1 vendor/bin/behat \
 			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
 			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 	# download phpcov binary
-	$(DOCKER_COMPOSE) run -u www-data --rm php test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && \
-		php phpcov.phar --version
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
 	# create a coverage global folder
 	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "\
 		if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi && \
@@ -129,36 +159,8 @@ connectivity-connection-coverage:
 		--html coverage/Connectivity/Back/Global/ \
 		coverage/Connectivity/Back/Global/
 
-connectivity-connection-back:
-	$(MAKE) connectivity-connection-coupling-back
-	$(MAKE) connectivity-connection-lint-back
-	$(MAKE) connectivity-connection-unit-back
-	$(MAKE) connectivity-connection-acceptance-back
-	$(MAKE) connectivity-connection-integration-back
-	$(MAKE) connectivity-connection-e2e-back
+connectivity-connection-insight:
+	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction ${O}
 
-# Tests Front
-
-connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
-
-connectivity-connection-lint-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
-	$(_PERMISSION_FORM_YARN_RUN) eslint
-	$(_PERMISSION_FORM_YARN_RUN) prettier --check
-
-# Development
-
-connectivity-connection-unit-front_coverage:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --coverage
-
-connectivity-connection-unit-front_watch:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --watchAll
-
-connectivity-connection-lint-front_fix:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint --fix
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --write
-	$(_PERMISSION_FORM_YARN_RUN) eslint --fix
-	$(_PERMISSION_FORM_YARN_RUN) prettier --write
+connectivity-connection-psalm:
+	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml

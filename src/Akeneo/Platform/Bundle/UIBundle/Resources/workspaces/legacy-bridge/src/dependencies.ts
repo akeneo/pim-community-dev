@@ -1,3 +1,5 @@
+import {DependenciesContextProps} from '@akeneo-pim-community/shared';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const router = require('pim/router');
 const translate = require('oro/translator');
@@ -9,7 +11,7 @@ const mediator = require('oro/mediator');
 const featureFlags = require('pim/feature-flags');
 const analytics = require('pim/analytics');
 
-const dependencies = {
+const dependencies: DependenciesContextProps = {
   router,
   translate,
   viewBuilder,

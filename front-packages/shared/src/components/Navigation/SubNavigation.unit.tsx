@@ -13,7 +13,7 @@ const {sections, subNavigationEntries} = aSubNavigationMenu();
 
 test('It displays the sub navigation', () => {
   renderWithProviders(
-    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections}/>
+    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} />
   );
 
   expect(screen.getByText('Section 1')).toBeInTheDocument();
@@ -24,7 +24,12 @@ test('It displays the sub navigation', () => {
 test('It can display a collapsed menu by default', () => {
   sessionStorage.setItem('collapsedColumn_menu', '0');
   renderWithProviders(
-    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} stateCode={'menu'}/>
+    <SubNavigation
+      entries={subNavigationEntries}
+      activeSubEntryCode={'subentry2'}
+      sections={sections}
+      stateCode={'menu'}
+    />
   );
 
   expect(screen.queryAllByRole('menuitem')).toHaveLength(0);
@@ -33,7 +38,12 @@ test('It can display a collapsed menu by default', () => {
 test('The menu can be collapsed manually', () => {
   sessionStorage.setItem('collapsedColumn_menu', '1');
   renderWithProviders(
-    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} stateCode={'menu'}/>
+    <SubNavigation
+      entries={subNavigationEntries}
+      activeSubEntryCode={'subentry2'}
+      sections={sections}
+      stateCode={'menu'}
+    />
   );
   expect(screen.queryAllByRole('menuitem')).toHaveLength(3);
 
@@ -45,7 +55,7 @@ test('The menu can be collapsed manually', () => {
 
 test('It redirects the user to the clicked entry route', () => {
   renderWithProviders(
-    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections}/>
+    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} />
   );
 
   mockedDependencies.router.redirect = jest.fn();
@@ -55,7 +65,12 @@ test('It redirects the user to the clicked entry route', () => {
 
 test('It handles back link', () => {
   renderWithProviders(
-    <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} backLink={{route: 'pim_catalog_product', title: 'Back link'}}/>
+    <SubNavigation
+      entries={subNavigationEntries}
+      activeSubEntryCode={'subentry2'}
+      sections={sections}
+      backLink={{route: 'pim_catalog_product', title: 'Back link'}}
+    />
   );
 
   expect(screen.getByText('Back link')).toBeInTheDocument();

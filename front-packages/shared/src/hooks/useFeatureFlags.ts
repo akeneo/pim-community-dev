@@ -1,5 +1,5 @@
 import {useDependenciesContext} from './useDependenciesContext';
-import {FeatureFlags} from "../DependenciesProvider.type";
+import {FeatureFlags} from '../DependenciesProvider.type';
 
 const useFeatureFlags = (): FeatureFlags => {
   const {featureFlags} = useDependenciesContext();

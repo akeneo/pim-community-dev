@@ -2,6 +2,6 @@ services:
     Akeneo\Tool\Bundle\FileStorageBundle\Command\StoreFileCommand:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: console.command }

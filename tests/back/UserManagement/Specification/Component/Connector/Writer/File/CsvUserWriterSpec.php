@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\UserManagement\Component\Connector\Writer\File\CsvUserWriter;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 
 class CsvUserWriterSpec extends ObjectBehavior
@@ -81,7 +81,7 @@ class CsvUserWriterSpec extends ObjectBehavior
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $catalogFilesystem
+        FilesystemOperator $catalogFilesystem
     ) {
         $item = [
             'username' => 'julia',
@@ -102,7 +102,7 @@ class CsvUserWriterSpec extends ObjectBehavior
             ['code' => 'avatar', 'identifier' => 'julia']
         )->shouldBeCalled()->willReturn('files/julia/avatar/');
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
-        $catalogFilesystem->has('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn(true);
+        $catalogFilesystem->fileExists('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn(true);
 
         $flatItem = [
             'username' => 'julia',

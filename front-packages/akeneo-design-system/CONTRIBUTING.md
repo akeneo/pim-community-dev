@@ -78,7 +78,7 @@ Github Action will deploy a new version of the storybook give the url to designe
 ## Story template
 
 ```mdx
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {ComponentName} from './ComponentName';
 
 <Meta

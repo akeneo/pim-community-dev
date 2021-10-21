@@ -7,8 +7,8 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Connector\LogKey;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
+use League\Flysystem\UnableToReadFile;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,29 +25,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class JobExecutionController
 {
-    /** @var JobExecutionArchivist */
-    protected $archivist;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected JobExecutionArchivist $archivist;
+    protected JobExecutionRepository $jobExecutionRepo;
+    private FilesystemReader $logFileSystem;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var FilesystemInterface */
-    private $logFileSystem;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobExecutionArchivist    $archivist
-     * @param JobExecutionRepository   $jobExecutionRepo
-     * @param FilesystemInterface      $logFileSystem
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         JobExecutionArchivist $archivist,
         JobExecutionRepository $jobExecutionRepo,
-        FilesystemInterface $logFileSystem
+        FilesystemReader $logFileSystem
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->archivist = $archivist;
@@ -61,7 +48,7 @@ class JobExecutionController
      * @param int $id
      *
      * @return Response
-     * @throws FileNotFoundException
+     * @throws UnableToReadFile
      */
     public function downloadLogFileAction($id)
     {

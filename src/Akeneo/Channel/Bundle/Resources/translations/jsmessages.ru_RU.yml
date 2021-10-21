@@ -18,8 +18,10 @@ batch_jobs:
     label: Импорт локалей из CSV
     import.label: Импорт локалей
   xlsx_locale_export:
+    label: Экспорт локали в XLSX
     export.label: Экспорт локалей
   xlsx_locale_import:
+    label: Импорт локали в XLSX
     import.label: Импорт локалей
   csv_channel_export:
     label: Экспорт каналов в CSV
@@ -49,7 +51,8 @@ pim_enrich.entity.channel:
   property:
     category_tree: Дерево категорий
     do_not_convert: Не преобразовывать
-    label_conversion_units: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
+    measurement: Настройки единиц измерений
+    label_conversion_units: Выберите единицу преобразования для каждого атрибута измерения, который будет использоваться во время экспорта продукции
   module:
     create:
       button: Создать канал
@@ -59,5 +62,19 @@ pim_enrich.entity.locale:
   label: локаль
   uppercase_label: Локаль
   plural_label: Локали
+  page_title:
+    index: "]-Inf, 1]{{ count }} активированная локаль|]1, Inf[{{ count }} активированных локали"
+  helper: "Чтобы активировать или деактивировать локаль, перейдите к одному из <a href={{ href }}>ваших каналов</a> и добавьте или удалите локаль."
+  grid:
+    columns:
+      code: Активированные локали
+    filters:
+      search_placeholder: Поиск по активированной локали
+    no_search_result: К сожалению, для вашего поиска нет результатов.
 pim_enrich.entity.currency:
   plural_label: Валюты
+flash:
+  currency:
+    error:
+      linked_to_channel: Вы не можете отключить валюту, связанную с каналом
+    updated: Валюта успешно обновлена

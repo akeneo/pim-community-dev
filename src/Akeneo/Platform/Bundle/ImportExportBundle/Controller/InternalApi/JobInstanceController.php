@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -47,88 +47,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobInstanceController
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $repository;
+    protected IdentifiableObjectRepositoryInterface $repository;
+    protected JobRegistry $jobRegistry;
+    protected NormalizerInterface $jobInstanceNormalizer;
+    protected ObjectUpdaterInterface $updater;
+    protected SaverInterface $saver;
+    protected RemoverInterface $remover;
+    protected ValidatorInterface $validator;
+    protected JobParametersValidator $jobParameterValidator;
+    protected JobParametersFactory $jobParamsFactory;
+    protected JobLauncherInterface $jobLauncher;
+    protected TokenStorageInterface $tokenStorage;
+    protected RouterInterface $router;
+    protected FormProviderInterface $formProvider;
+    protected ObjectFilterInterface $objectFilter;
+    protected NormalizerInterface $constraintViolationNormalizer;
+    protected JobInstanceFactory $jobInstanceFactory;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected CollectionFilterInterface $inputFilter;
+    protected FilesystemOperator $filesystem;
+    protected SecurityFacade $securityFacade;
 
-    /** @var JobRegistry */
-    protected $jobRegistry;
-
-    /** @var NormalizerInterface */
-    protected $jobInstanceNormalizer;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var JobParametersValidator */
-    protected $jobParameterValidator;
-
-    /** @var JobParametersFactory */
-    protected $jobParamsFactory;
-
-    /** @var JobLauncherInterface */
-    protected $jobLauncher;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var FormProviderInterface */
-    protected $formProvider;
-
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
-
-    /** @var NormalizerInterface */
-    protected $constraintViolationNormalizer;
-
-    /** @var JobInstanceFactory */
-    protected $jobInstanceFactory;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var CollectionFilterInterface */
-    protected $inputFilter;
-
-    /** @var FilesystemInterface */
-    protected $filesystem;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param JobRegistry                           $jobRegistry
-     * @param NormalizerInterface                   $jobInstanceNormalizer
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param RemoverInterface                      $remover
-     * @param ValidatorInterface                    $validator
-     * @param JobParametersValidator                $jobParameterValidator
-     * @param JobParametersFactory                  $jobParamsFactory
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param RouterInterface                       $router
-     * @param FormProviderInterface                 $formProvider
-     * @param ObjectFilterInterface                 $objectFilter
-     * @param NormalizerInterface                   $constraintViolationNormalizer
-     * @param JobInstanceFactory                    $jobInstanceFactory
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param CollectionFilterInterface             $inputFilter
-     * @param string                                $uploadTmpDir
-     * @param SecurityFacade                        $securityFacade
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
@@ -148,29 +87,29 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         SecurityFacade $securityFacade
     ) {
-        $this->repository            = $repository;
-        $this->jobRegistry           = $jobRegistry;
+        $this->repository = $repository;
+        $this->jobRegistry = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
-        $this->updater               = $updater;
-        $this->saver                 = $saver;
-        $this->remover               = $remover;
-        $this->validator             = $validator;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->remover = $remover;
+        $this->validator = $validator;
         $this->jobParameterValidator = $jobParameterValidator;
-        $this->jobParamsFactory      = $jobParamsFactory;
-        $this->jobLauncher           = $jobLauncher;
-        $this->tokenStorage          = $tokenStorage;
-        $this->router                = $router;
-        $this->formProvider          = $formProvider;
-        $this->objectFilter          = $objectFilter;
+        $this->jobParamsFactory = $jobParamsFactory;
+        $this->jobLauncher = $jobLauncher;
+        $this->tokenStorage = $tokenStorage;
+        $this->router = $router;
+        $this->formProvider = $formProvider;
+        $this->objectFilter = $objectFilter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->jobInstanceFactory    = $jobInstanceFactory;
-        $this->eventDispatcher       = $eventDispatcher;
-        $this->inputFilter           = $inputFilter;
-        $this->filesystem            = $filesystem;
-        $this->securityFacade        = $securityFacade;
+        $this->jobInstanceFactory = $jobInstanceFactory;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->inputFilter = $inputFilter;
+        $this->filesystem = $filesystem;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -448,7 +387,7 @@ class JobInstanceController
 
             $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
 
-            if ($this->filesystem->has($jobFileLocation->path())) {
+            if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
             }
 
