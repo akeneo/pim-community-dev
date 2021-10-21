@@ -60,6 +60,6 @@ class MetricToStringDataConverterSpec extends ObjectBehavior
             new Metric('weight', 'GRAM', 23.55, 'KILOGRAM', .02355)
         );
 
-        $this->convert($sourceValue, new Attribute())->shouldReturn('23.5500 GRAM');
+        $this->convert($sourceValue, new Attribute())->shouldReturn('23.55 GRAM');
     }
 }

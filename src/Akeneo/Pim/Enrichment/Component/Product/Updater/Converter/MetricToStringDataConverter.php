@@ -30,8 +30,10 @@ final class MetricToStringDataConverter implements ValueDataConverter
      */
     public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
     {
-        Assert::isInstanceOf($sourceValue->getData(), MetricInterface::class);
+        $metric = $sourceValue->getData();
+        Assert::isInstanceOf($metric, MetricInterface::class);
 
-        return (string) $sourceValue->getData();
+        // Do not "%F" to render the float because it adds some unexpected 0. "%s" fixes that
+        return \sprintf('%s %s', $metric->getData(), $metric->getUnit());
     }
 }
