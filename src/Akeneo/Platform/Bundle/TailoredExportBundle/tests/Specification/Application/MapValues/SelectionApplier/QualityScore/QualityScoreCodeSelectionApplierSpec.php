@@ -36,7 +36,7 @@ class QualityScoreCodeSelectionApplierSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Quality Score selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Quality Score code selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
