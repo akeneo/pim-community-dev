@@ -21,7 +21,18 @@ define([
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
   'pim/feature-flags',
-], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template, FeatureFlags) {
+], function (
+  _,
+  __,
+  BaseForm,
+  router,
+  UserContext,
+  Notifications,
+  CommunicationChannel,
+  MediaUrlGenerator,
+  template,
+  FeatureFlags
+) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
     template: _.template(template),
