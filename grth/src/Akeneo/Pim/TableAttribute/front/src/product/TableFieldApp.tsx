@@ -71,6 +71,7 @@ type TableFieldAppProps = TemplateContext & {
   copyCheckboxChecked?: boolean;
   cellInputsMapping: CellInputsMapping;
   cellMatchersMapping: CellMatchersMapping;
+  isDisplayedForCurrentLocale?: boolean;
 };
 
 export type TableRowWithId = TableRow & {[UNIQUE_ID_KEY]: string};
@@ -99,6 +100,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   violations = [],
   cellInputsMapping,
   cellMatchersMapping,
+  isDisplayedForCurrentLocale = true,
 }) => {
   const translate = useTranslate();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
@@ -106,8 +108,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
-  // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
-  const displayField = !elements['field-input'] || !elements['field-input']['input_placeholder'];
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
@@ -181,7 +181,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             </span>
           </TableFieldLabel>
           <FieldInfo>
-            {!copyContext && displayField && (
+            {!copyContext && isDisplayedForCurrentLocale && (
               <div>
                 <TableFieldSearch
                   onSearchChange={setSearchText}
@@ -192,7 +192,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               </div>
             )}
             {getLocaleScopeInfo(locale, scope)}
-            {isEditable && displayField && (
+            {isEditable && isDisplayedForCurrentLocale && (
               <AddRowsButton
                 attribute={attribute}
                 columnCode={firstColumnCode}
@@ -211,7 +211,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           )}
         </TableFieldHeader>
         <div className='AknFieldContainer-inputContainer field-input'>
-          {displayField && (
+          {isDisplayedForCurrentLocale && (
             <TableInputValue
               attribute={attribute}
               valueData={tableValue}

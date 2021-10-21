@@ -135,6 +135,10 @@ class TableField extends (Field as {new (config: any): any}) {
             copyCheckboxChecked={this.selected}
             cellInputsMapping={cellInputsMapping}
             cellMatchersMapping={cellMatchersMapping}
+            isDisplayedForCurrentLocale={
+              // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
+              !this.elements['field-input'] || !this.elements['field-input']['input_placeholder']
+            }
           />
         </ThemeProvider>
       </DependenciesProvider>,
