@@ -70,13 +70,46 @@ const fetchCategoriesByIdentifiers = (identifiers: string[]): Promise<Option[]> 
     );
 };
 
-type Level = 'own' | 'edit' | 'view';
+type CategoryPermissionState = {
+  own: {
+    all: boolean;
+    identifiers: string[];
+  };
+  edit: {
+    all: boolean;
+    identifiers: string[];
+  };
+  view: {
+    all: boolean;
+    identifiers: string[];
+  };
+};
+
+const CategoryPermissionReducer = (state: CategoryPermissionState, action: PermissionFormReducer.Action) =>
+  PermissionFormReducer.reducer<CategoryPermissionState>(state, action);
+
+const defaultState: CategoryPermissionState = {
+  own: {
+    all: false,
+    identifiers: [],
+  },
+  edit: {
+    all: false,
+    identifiers: [],
+  },
+  view: {
+    all: false,
+    identifiers: [],
+  },
+};
+
+type Level = keyof CategoryPermissionState;
 
 type SummaryLabels = {
   [k in Level]: string;
 };
 
-const getLevelSummary = async (state: PermissionFormReducer.State, level: Level): Promise<string> => {
+const getLevelSummary = async (state: CategoryPermissionState, level: Level): Promise<string> => {
   if (state[level].all) {
     return translate('pim_permissions.widget.all');
   }
@@ -118,20 +151,18 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
   return params;
 };
 
-const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
+const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionState> = {
   key: 'categories',
   label: translate('pim_permissions.widget.entity.category.label'),
   renderForm: (
     onPermissionsChange,
-    initialState: PermissionFormReducer.State | undefined,
-    readOnly: boolean | undefined
+    initialState: CategoryPermissionState | undefined = defaultState,
+    readOnly: boolean = false
   ) => {
     const [state, dispatch] = useReducer(
-      PermissionFormReducer.reducer,
-      initialState ?? PermissionFormReducer.initialState
+      CategoryPermissionReducer,
+      initialState
     );
-
-    readOnly = readOnly ?? false;
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -208,7 +239,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
       </>
     );
   },
-  renderSummary: (state: PermissionFormReducer.State) => {
+  renderSummary: (state: CategoryPermissionState) => {
     const [summaries, setSummaries] = useState<SummaryLabels>({
       own: '',
       edit: '',
@@ -239,7 +270,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<PermissionFormReduc
       </PermissionSectionSummary>
     );
   },
-  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+  save: async (userGroup: string, state: CategoryPermissionState) => {
     if (!securityContext.isGranted('pimee_enrich_category_edit_permissions')) {
       return Promise.resolve();
     }

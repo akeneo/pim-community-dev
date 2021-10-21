@@ -70,13 +70,38 @@ const fetchAttributeGroupsByIdentifiers = (identifiers: string[]): Promise<Optio
     );
 };
 
-type Level = 'edit' | 'view';
+type AttributeGroupPermissionState = {
+  edit: {
+    all: boolean;
+    identifiers: string[];
+  };
+  view: {
+    all: boolean;
+    identifiers: string[];
+  };
+};
+
+const AttributeGroupPermissionReducer = (state: AttributeGroupPermissionState, action: PermissionFormReducer.Action) =>
+  PermissionFormReducer.reducer<AttributeGroupPermissionState>(state, action);
+
+const defaultState: AttributeGroupPermissionState = {
+  edit: {
+    all: false,
+    identifiers: [],
+  },
+  view: {
+    all: false,
+    identifiers: [],
+  },
+};
+
+type Level = keyof AttributeGroupPermissionState;
 
 type SummaryLabels = {
   [k in Level]: string;
 };
 
-const getLevelSummary = async (state: PermissionFormReducer.State, level: Level): Promise<string> => {
+const getLevelSummary = async (state: AttributeGroupPermissionState, level: Level): Promise<string> => {
   if (state[level].all) {
     return translate('pim_permissions.widget.all');
   }
@@ -118,20 +143,18 @@ const buildQueryParams: QueryParamsBuilder<PaginationContext, PaginationParams> 
   return params;
 };
 
-const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
+const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGroupPermissionState> = {
   key: 'attribute-groups',
   label: translate('pim_permissions.widget.entity.attribute_group.label'),
   renderForm: (
     onPermissionsChange,
-    initialState: PermissionFormReducer.State | undefined,
-    readOnly: boolean | undefined
+    initialState: AttributeGroupPermissionState | undefined = defaultState,
+    readOnly: boolean = false
   ) => {
     const [state, dispatch] = useReducer(
-      PermissionFormReducer.reducer,
-      initialState ?? PermissionFormReducer.initialState
+      AttributeGroupPermissionReducer,
+      initialState
     );
-
-    readOnly = readOnly ?? false;
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -190,7 +213,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       </>
     );
   },
-  renderSummary: (state: PermissionFormReducer.State) => {
+  renderSummary: (state: AttributeGroupPermissionState) => {
     const [summaries, setSummaries] = useState<SummaryLabels>({
       edit: '',
       view: '',
@@ -216,7 +239,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<PermissionFor
       </PermissionSectionSummary>
     );
   },
-  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+  save: async (userGroup: string, state: AttributeGroupPermissionState) => {
     if (false === securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')) {
       return Promise.resolve();
     }
