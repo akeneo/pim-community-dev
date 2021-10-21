@@ -11,7 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  * Catalogs created in 3.0 (and older ones) have columns created with longtext type. See PIM-10040.
  * To be consistent with new catalogs we migrate them in json.
  */
-final class Version_6_0_20211018134301_migrate_longtext_to_json extends AbstractMigration
+final class Version_5_0_20211018134301_migrate_longtext_to_json extends AbstractMigration
 {
     private array $columnsToMigrate = [
         [

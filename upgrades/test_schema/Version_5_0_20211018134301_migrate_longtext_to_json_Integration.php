@@ -18,7 +18,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-final class Version_6_0_20211018134301_migrate_longtext_to_json_Integration extends TestCase
+final class Version_5_0_20211018134301_migrate_longtext_to_json_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
