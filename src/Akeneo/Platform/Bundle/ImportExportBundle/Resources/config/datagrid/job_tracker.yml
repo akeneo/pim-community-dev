@@ -2,6 +2,7 @@ datagrid:
     job-tracker-grid:
         options:
             manageFilters: false
+            entityHint: job
         source:
             type: pim_datasource_job_tracker
         columns:

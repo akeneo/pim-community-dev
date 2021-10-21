@@ -287,7 +287,7 @@ pim_enrich.entity.fallback:
 
 pim_enrich.entity.job_execution:
     page_title:
-        index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+        index: "]-Inf, 1]{{ count }} job|]1, Inf[{{ count }} jobs"
     module:
         create:
             upload: Drop your {{ type }} file here, or click to browse disk
