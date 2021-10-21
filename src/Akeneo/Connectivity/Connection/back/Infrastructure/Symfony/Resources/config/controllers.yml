@@ -90,7 +90,7 @@ services:
 
     akeneo_connectivity.connection.public.controller.apps.token:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetTokenAction
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RedeemCodeForTokenAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
