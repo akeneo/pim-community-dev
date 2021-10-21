@@ -30,6 +30,49 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
      */
     public function test_it_returns_the_latest_scores_by_product_identifiers()
     {
+        [$productA, $productB, $productC, $productD] = $this->loadProductScores();
+
+        $expectedProductsScoreCollections = [
+            $productA->getIdentifier() => new ProductScoreCollection([
+                'mobile' => [
+                    'en_US' => new ProductScore('A', 96),
+                    'fr_FR' => new ProductScore('E', 36),
+                ],
+            ]),
+            $productB->getIdentifier() => new ProductScoreCollection([
+                'mobile' => [
+                    'en_US' => new ProductScore('A', 100),
+                    'fr_FR' => new ProductScore('A', 95),
+                ],
+            ]),
+        ];
+
+        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
+            $productA->getIdentifier(),
+            $productB->getIdentifier(),
+            $productD->getIdentifier(),
+        ]);
+
+        $this->assertEqualsCanonicalizing($expectedProductsScoreCollections, $productScoreCollections);
+    }
+
+    public function test_it_returns_the_latest_scores_by_product_identifier()
+    {
+        [$productA] = $this->loadProductScores();
+
+        $expectedProductsScoreCollection = new ProductScoreCollection([
+                'mobile' => [
+                    'en_US' => new ProductScore('A', 96),
+                    'fr_FR' => new ProductScore('E', 36),
+                ],
+        ]);
+
+        $productScoreCollection = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
+
+        $this->assertEqualsCanonicalizing($expectedProductsScoreCollection, $productScoreCollection);
+    }
+
+    private function loadProductScores() {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
@@ -81,32 +124,6 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
 
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
-        $expectedProductsScoreCollections = [
-            $productA->getIdentifier() => new ProductScoreCollection([
-                'mobile' => [
-                    'en_US' => new ProductScore('A', 96),
-                    'fr_FR' => new ProductScore('E', 36),
-                ],
-            ]),
-            $productB->getIdentifier() => new ProductScoreCollection([
-                'mobile' => [
-                    'en_US' => new ProductScore('A', 100),
-                    'fr_FR' => new ProductScore('A', 95),
-                ],
-            ]),
-        ];
-
-        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
-            $productA->getIdentifier(),
-            $productB->getIdentifier(),
-            $productD->getIdentifier(),
-        ]);
-
-        $this->assertEqualsCanonicalizing($expectedProductsScoreCollections, $productScoreCollections);
-    }
-
-    private function makeProductScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): ProductScoreCollection {
-        $productScores = $channelLocaleRateCollection->mapWith(static fn (Rate $rate) => new ProductScore($rate->toLetter(), $rate->toInt()));
-        return new ProductScoreCollection($productScores);
+        return [$productA, $productB, $productC, $productD];
     }
 }
