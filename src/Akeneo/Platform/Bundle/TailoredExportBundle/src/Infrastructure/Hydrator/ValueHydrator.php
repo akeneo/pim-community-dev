@@ -56,7 +56,7 @@ class ValueHydrator
                 $value = $productOrProductModel->getValue($source->getCode(), $source->getLocale(), $source->getChannel());
                 return $this->attributeValueHydrator->hydrate($value, $source->getAttributeType(), $productOrProductModel);
             case $source instanceof PropertySource:
-                return $this->propertyValueHydrator->hydrate($source->getName(), $productOrProductModel);
+                return $this->propertyValueHydrator->hydrate($source, $productOrProductModel);
             case $source instanceof AssociationTypeSource:
                 return $this->associationTypeValueHydrator->hydrate($productOrProductModel, $source->getCode(), $source->isQuantified());
             default:

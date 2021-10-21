@@ -37,6 +37,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLab
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
@@ -72,6 +73,8 @@ class SelectionHydrator
                 return $this->createGroupsSelection($selectionConfiguration);
             case 'parent':
                 return $this->createParentSelection($selectionConfiguration);
+            case 'quality_score':
+                return new QualityScoreCodeSelection();
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }

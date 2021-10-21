@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {PropertyConfiguratorProps, Source} from '../../models';
+import {PropertyConfiguratorProps, PropertySource} from '../../models';
 import {EnabledConfigurator} from './Enabled/EnabledConfigurator';
 import {GroupsConfigurator} from './Groups/GroupsConfigurator';
 import {ParentConfigurator} from './Parent/ParentConfigurator';
@@ -8,6 +8,7 @@ import {FamilyVariantConfigurator} from './FamilyVariant/FamilyVariantConfigurat
 import {FamilyConfigurator} from './Family/FamilyConfigurator';
 import {CategoriesConfigurator} from './Categories/CategoriesConfigurator';
 import {CodeConfigurator} from './Code/CodeConfigurator';
+import {QualityScoreConfigurator} from './QualityScore/QualityScoreConfigurator';
 import {ErrorBoundary} from './error';
 
 const configurators: {[propertyName: string]: FunctionComponent<PropertyConfiguratorProps>} = {
@@ -18,12 +19,13 @@ const configurators: {[propertyName: string]: FunctionComponent<PropertyConfigur
   categories: CategoriesConfigurator,
   family: FamilyConfigurator,
   family_variant: FamilyVariantConfigurator,
+  quality_score: QualityScoreConfigurator,
 };
 
 type PropertySourceConfiguratorProps = {
-  source: Source;
+  source: PropertySource;
   validationErrors: ValidationError[];
-  onSourceChange: (updatedSource: Source) => void;
+  onSourceChange: (updatedSource: PropertySource) => void;
 };
 
 const PropertySourceConfigurator = ({source, validationErrors, onSourceChange}: PropertySourceConfiguratorProps) => {

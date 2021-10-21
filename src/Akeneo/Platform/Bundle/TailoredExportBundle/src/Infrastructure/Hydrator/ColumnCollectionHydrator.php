@@ -78,6 +78,8 @@ class ColumnCollectionHydrator
                 return new PropertySource(
                     $source['uuid'],
                     $source['code'],
+                    $source['channel'],
+                    $source['locale'],
                     $operations,
                     $selection,
                 );
