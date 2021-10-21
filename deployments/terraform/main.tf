@@ -83,7 +83,6 @@ EOF
           echo "!!! ERROR - Mailgun credentials destroy failed - http_response: $${http_response} !!!"
           cat curl_mailgun_deletion_response.txt
           rm curl_mailgun_deletion_response.txt
-          exit 22
       else
           echo "Mailgun credentials creation is OK - http_response: $${http_response} "
           cat curl_mailgun_deletion_response.txt

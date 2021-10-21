@@ -363,17 +363,17 @@ commit-instance:
 
 .PHONY: uncommit-instance
 uncommit-instance:
-	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)/*
 	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)
 	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
-ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
-	# Not using commit yet, so the files are not present
+	# Check if files were previously commited
+ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
-endif
+else
 ifeq ($(TYPE),srnt)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform/monitoring"
+endif
 endif
 endif
 	make delete

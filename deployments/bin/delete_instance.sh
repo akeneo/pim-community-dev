@@ -26,7 +26,7 @@ fi
 PFID="${TYPE}-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
-NAMESPACE_PATH=$(pwd)
+DEPLOYMENT_DIR=$(realpath $(dirname $0)/..)
 #
 
 echo "1 - initializing terraform in $(pwd)"
@@ -65,7 +65,7 @@ if [[ ${PFID} =~ "tria" ]]; then
 fi
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
-find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
+find ${DEPLOYMENT_DIR} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 export TF_VAR_force_destroy_storage=true
 terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
