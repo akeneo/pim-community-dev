@@ -102,10 +102,12 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 }) => {
   const translate = useTranslate();
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
-  const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value.data || []));
+  const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value?.data || []));
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
+  // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
+  const displayField = !elements['field-input'] || !elements['field-input']['input_placeholder'];
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
@@ -179,7 +181,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             </span>
           </TableFieldLabel>
           <FieldInfo>
-            {!copyContext && (
+            {!copyContext && displayField && (
               <div>
                 <TableFieldSearch
                   onSearchChange={setSearchText}
@@ -190,7 +192,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               </div>
             )}
             {getLocaleScopeInfo(locale, scope)}
-            {isEditable && (
+            {isEditable && displayField && (
               <AddRowsButton
                 attribute={attribute}
                 columnCode={firstColumnCode}
@@ -209,17 +211,19 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           )}
         </TableFieldHeader>
         <div className='AknFieldContainer-inputContainer field-input'>
-          <TableInputValue
-            attribute={attribute}
-            valueData={tableValue}
-            onChange={handleChange}
-            searchText={copyContext ? '' : searchText}
-            readOnly={!isEditable}
-            violatedCells={violatedCellsById}
-            isCopying={!!copyContext}
-            cellInputsMapping={cellInputsMapping}
-            cellMatchersMapping={cellMatchersMapping}
-          />
+          {displayField && (
+            <TableInputValue
+              attribute={attribute}
+              valueData={tableValue}
+              onChange={handleChange}
+              searchText={copyContext ? '' : searchText}
+              readOnly={!isEditable}
+              violatedCells={violatedCellsById}
+              isCopying={!!copyContext}
+              cellInputsMapping={cellInputsMapping}
+              cellMatchersMapping={cellMatchersMapping}
+            />
+          )}
           {renderElements('field-input')}
         </div>
         <footer>
