@@ -1,5 +1,3 @@
-'use strict';
-
 import * as $ from 'jquery';
 
 const BaseController = require('pim/controller/base');
@@ -10,7 +8,7 @@ class EntityCategoriesWithFamilyVariant extends BaseController {
     sessionStorage.setItem('redirectTab', '#' + this.options.config.redirectTabName);
     sessionStorage.setItem('current_column_tab', this.options.config.redirectTabName);
 
-    Router.redirectToRoute(this.options.config.redirectRouteName, {id : route.params.id});
+    Router.redirectToRoute(this.options.config.redirectRouteName, {id: route.params.id});
 
     return $.Deferred().resolve();
   }
