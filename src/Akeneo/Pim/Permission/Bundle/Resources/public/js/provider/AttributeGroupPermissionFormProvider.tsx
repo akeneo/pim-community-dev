@@ -151,10 +151,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
     initialState: AttributeGroupPermissionState | undefined = defaultState,
     readOnly: boolean = false
   ) => {
-    const [state, dispatch] = useReducer(
-      AttributeGroupPermissionReducer,
-      initialState
-    );
+    const [state, dispatch] = useReducer(AttributeGroupPermissionReducer, initialState);
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);

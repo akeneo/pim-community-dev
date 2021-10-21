@@ -159,10 +159,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     initialState: CategoryPermissionState | undefined = defaultState,
     readOnly: boolean = false
   ) => {
-    const [state, dispatch] = useReducer(
-      CategoryPermissionReducer,
-      initialState
-    );
+    const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
