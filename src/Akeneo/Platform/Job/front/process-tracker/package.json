@@ -1,5 +1,5 @@
 {
-  "name": "process-tracker",
+  "name": "@akeneo-pim-community/process-tracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
