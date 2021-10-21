@@ -108,7 +108,8 @@ const CalculateOperationList: React.FC<Props> = ({
         className={`AknRuleOperation${
           isFormFieldInError('type') ? ' AknRuleOperation--error' : ''
         }`}
-        ref={dragulaDecorator}>
+        ref={dragulaDecorator}
+      >
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
@@ -136,7 +137,8 @@ const CalculateOperationList: React.FC<Props> = ({
             }
             handleAddValue();
           }}
-          className={'AknButtonList-item'}>
+          className={'AknButtonList-item'}
+        >
           {translate(
             'pimee_catalog_rule.form.edit.actions.calculate.add_value'
           )}

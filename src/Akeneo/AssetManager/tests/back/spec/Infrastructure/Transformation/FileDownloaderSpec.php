@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
@@ -18,7 +18,7 @@ class FileDownloaderSpec extends ObjectBehavior
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
         Filesystem $filesystem,
-        FilesystemInterface $storageFilesystem
+        FilesystemOperator $storageFilesystem
     ) {
         $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS)->willReturn($storageFilesystem);
         $this->beConstructedWith($filesystemProvider, $fileFetcher, $filesystem);
@@ -31,7 +31,7 @@ class FileDownloaderSpec extends ObjectBehavior
 
     function it_downloads_a_file_and_returns_a_copy_of_the_downloaded_file(
         FileFetcherInterface $fileFetcher,
-        FilesystemInterface $storageFilesystem,
+        FilesystemOperator $storageFilesystem,
         Filesystem $filesystem
     ) {
         $fileFetcher->fetch(
@@ -48,7 +48,7 @@ class FileDownloaderSpec extends ObjectBehavior
 
     function it_does_not_download_a_file_if_it_is_cached(
         FileFetcherInterface $fileFetcher,
-        FilesystemInterface $storageFilesystem,
+        FilesystemOperator $storageFilesystem,
         Filesystem $filesystem
     ) {
         $fileFetcher->fetch(
@@ -69,7 +69,7 @@ class FileDownloaderSpec extends ObjectBehavior
 
     function it_deletes_old_files_when_there_are_more_than_limit(
         FileFetcherInterface $fileFetcher,
-        FilesystemInterface $storageFilesystem,
+        FilesystemOperator $storageFilesystem,
         Filesystem $filesystem
     ) {
         $fileFetcher->fetch($storageFilesystem, Argument::cetera())->shouldBeCalledTimes(11)->will(

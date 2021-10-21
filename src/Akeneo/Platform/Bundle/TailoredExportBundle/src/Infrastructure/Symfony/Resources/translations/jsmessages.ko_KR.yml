@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: 일부 로케일 선택
         remove: 로케일 제거
     quality_score:
-      quality_score:
-        label: 품질 점수
-        remove: 품질 점수 제거
       locales:
         label: 품질 점수 관련 로케일 정의
   form:
@@ -57,6 +54,7 @@ akeneo.tailored_export:
         attribute: 이 특성은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
         association_type: 이 연결 유형은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
         property: 이 속성은 유효하지 않습니다. 이 소스를 제거하고 다시 추가하십시오.
+        asset_collection_main_media: 특성에서 사용된 애셋 컬렉션의 주요 미디어를 찾을 수 없습니다. 애셋 패밀리 설정을 확인하십시오.
       no_source_configuration:
         title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값이 그대로 내보내집니다.
       deleted_attribute:
@@ -78,16 +76,19 @@ akeneo.tailored_export:
         type:
           amount: 총계
           currency: 통화
+          main_media: 주요 미디어
           key: 파일 키
           path: 경로
           name: 파일 이름
+        asset_collection:
+          property: 속성
+          with_prefix_and_suffix: 접두사 및 접미사 추가
         format: 형식
         parent:
           information:
             locale: 레이블로 사용된 특성이 로케일별 값을 가진 경우, 특정 로케일을 선택할 수 있습니다. 
             channel: 레이블로 사용된 특성이 채널별 값을 가진 경우, 특정 채널을 선택할 수 있습니다. 
         measurement:
-          information: 이 특성의 경우 값, 단위 코드 또는 단위 레이블을 내보낼 수 있습니다.
           value: 값
           unit_locale: 단위 로케일
           unit_code: 단위 코드
@@ -124,6 +125,26 @@ akeneo.tailored_export:
           disabled: 비활성화된 대체 값
           yes: '''예'' 대체 값'
           no: '''아니요'' 대체 값'
+          edit_mapping: 대체 값 편집
+          modal:
+            no_result:
+              title: 죄송합니다. 이 특성에 대한 값이 없습니다
+            empty_result:
+              title: 죄송합니다. 검색 결과가 없습니다
+              text: 새 검색 조건으로 다시 시도하십시오
+            filters:
+              mapped:
+                label: 표시
+                unmapped: 대체 값이 없는 모든 값
+                mapped: 대체 값이 있는 모든 값
+                all: 모든 값
+            table:
+              header:
+                values: 값
+                replacement: 대체 값
+              field:
+                to_placeholder: 대체 값 정의
+            validation_error: 일부 대체 값이 유효하지 않습니다. 각 필드 아래에 표시된 오류 메시지를 참조하십시오.
         default_value:
           title: 비어 있을 경우 기본값 사용
           label: 기본값
@@ -165,6 +186,12 @@ akeneo.tailored_export:
       locale_should_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 더 이상 없습니다. 생성하거나 다른 소스를 선택하십시오.
       channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 생성하거나 다른 소스를 선택하십시오.
       invalid_specific_locale: 특성 {{ attribute_code }}은(는) 특정 로케일에 한정됩니다. 다른 로케일을 선택하십시오.
+    asset_collection:
+      locale_should_not_be_blank: 애셋 패밀리 {{ asset_family_code }}의 주요 미디어 특성에 로케일별 값이 있습니다. 생성하거나 다른 소스를 선택하십시오.
+      channel_should_not_be_blank: 애셋 패밀리 {{ asset_family_code }}의 주요 미디어 특성에 채널별 값이 있습니다. 생성하거나 다른 소스를 선택하십시오.
+      locale_should_be_blank: 애셋 패밀리 {{ asset_family_code }}의 주요 미디어 특성에 로케일별 값이 없습니다. 생성하거나 다른 소스를 선택하십시오.
+      channel_should_be_blank: 애셋 패밀리 {{ asset_family_code }}의 주요 미디어 특성에 채널별 값이 없습니다. 생성하거나 다른 소스를 선택하십시오.
+      invalid_type: 애셋 패밀리 {{ asset_family_code }}의 주요 미디어 특성 유형이 변경되었습니다. 생성하거나 다른 소스를 선택하십시오.
     measurement:
       family:
         does_not_exist: '{{ measurement_family_code }} 측정 패밀리가 없습니다.'

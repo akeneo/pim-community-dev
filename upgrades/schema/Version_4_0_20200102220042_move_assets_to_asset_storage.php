@@ -79,15 +79,15 @@ SQL;
 
     private function copyFileFromCatalogToAssetStorage(string $filePath)
     {
-        $mountManager = $this->container->get('oneup_flysystem.mount_manager');
+        $filesystemProvider = $this->container->get('akeneo_file_storage.file_storage.filesystem_provider');
 
-        $catalogStorage = $mountManager->getFilesystem('catalogStorage');
-        $assetStorage = $mountManager->getFilesystem('assetStorage');
+        $catalogStorage = $filesystemProvider->getFilesystem('catalogStorage');
+        $assetStorage = $filesystemProvider->getFilesystem('assetStorage');
 
-        if ($catalogStorage->has($filePath)) {
+        if ($catalogStorage->fileExists($filePath)) {
             $stream = $catalogStorage->readStream($filePath);
 
-            $assetStorage->putStream($filePath, $stream);
+            $assetStorage->writeStream($filePath, $stream);
 
             if (is_resource($stream)) {
                 fclose($stream);

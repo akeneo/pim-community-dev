@@ -12,7 +12,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
-import {AttributeConfiguratorProps, Source} from '../../models';
+import {AttributeConfiguratorProps, AttributeSource} from '../../models';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {LocaleDropdown} from '../LocaleDropdown';
 import {MeasurementConfigurator} from './Measurement/MeasurementConfigurator';
@@ -56,9 +56,9 @@ const configurators: {[attributeType: string]: FunctionComponent<AttributeConfig
 };
 
 type AttributeSourceConfiguratorProps = {
-  source: Source;
+  source: AttributeSource;
   validationErrors: ValidationError[];
-  onSourceChange: (updatedSource: Source) => void;
+  onSourceChange: (updatedSource: AttributeSource) => void;
 };
 
 const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}: AttributeSourceConfiguratorProps) => {

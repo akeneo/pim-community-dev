@@ -27,6 +27,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCod
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
@@ -36,6 +37,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLab
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QualityScore\QualityScoreCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
@@ -71,6 +73,8 @@ class SelectionHydrator
                 return $this->createGroupsSelection($selectionConfiguration);
             case 'parent':
                 return $this->createParentSelection($selectionConfiguration);
+            case 'quality_score':
+                return new QualityScoreCodeSelection();
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }
@@ -186,6 +190,12 @@ class SelectionHydrator
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitLabelSelection::TYPE:
                 return new MeasurementUnitLabelSelection(
+                    $attribute->metricFamily(),
+                    $selectionConfiguration['locale']
+                );
+            case MeasurementValueAndUnitLabelSelection::TYPE:
+                return new MeasurementValueAndUnitLabelSelection(
+                    $selectionConfiguration['decimal_separator'] ?? '.',
                     $attribute->metricFamily(),
                     $selectionConfiguration['locale']
                 );

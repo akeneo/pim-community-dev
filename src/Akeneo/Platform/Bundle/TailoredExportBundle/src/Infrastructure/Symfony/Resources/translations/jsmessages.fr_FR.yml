@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Sélectionnez une ou plusieurs locales
         remove: Retirer la locale
     quality_score:
-      quality_score:
-        label: Score de qualité
-        remove: Retirer le score de qualité
       locales:
         label: Définir les locales pour le score de qualité
   form:
@@ -92,7 +89,6 @@ akeneo.tailored_export:
             locale: Si l'attribut en tant que libellé a une valeur par locale, vous pouvez sélectionner une locale spécifique.
             channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
         measurement:
-          information: Pour cet attribut, vous pouvez exporter la valeur, le code de l'unité ou le libellé de l'unité.
           value: Valeur
           unit_locale: Locale de l'unité
           unit_code: Code de l'unité
@@ -131,8 +127,6 @@ akeneo.tailored_export:
           no: Valeur de remplacement si faux
           edit_mapping: Modifier les valeurs de remplacement
           modal:
-            title: Remplacement
-            subtitle: Gérer les options
             no_result:
               title: Désolé, il n'y a pas de valeur pour cet attribut
             empty_result:

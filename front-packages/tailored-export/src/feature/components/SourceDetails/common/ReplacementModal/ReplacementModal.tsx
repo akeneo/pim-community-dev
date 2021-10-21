@@ -91,6 +91,7 @@ type Value = {
 };
 
 type ReplacementModalProps = {
+  title: string;
   initialMapping: ReplacementValues;
   values: Value[];
   validationErrors: ValidationError[];
@@ -105,6 +106,7 @@ type ReplacementModalProps = {
 };
 
 const ReplacementModal = ({
+  title,
   initialMapping,
   values,
   totalItems,
@@ -199,11 +201,9 @@ const ReplacementModal = ({
       </Modal.TopRightButtons>
       <Container>
         <Modal.SectionTitle color="brand">
-          {translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.title')}
-        </Modal.SectionTitle>
-        <Modal.Title>
           {translate('akeneo.tailored_export.column_details.sources.operation.replacement.modal.subtitle')}
-        </Modal.Title>
+        </Modal.SectionTitle>
+        <Modal.Title>{title}</Modal.Title>
         <Content>
           <TableContainer>
             <Search

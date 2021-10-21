@@ -140,13 +140,11 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   );
 });
 
-export const filter = connect(
-  (state: EditState, ownProps: FilterViewProps): OptionFilterViewProps => {
-    return {
-      ...ownProps,
-      context: {
-        locale: state.user.catalogLocale,
-      },
-    };
-  }
-)(OptionFilterView);
+export const filter = connect((state: EditState, ownProps: FilterViewProps): OptionFilterViewProps => {
+  return {
+    ...ownProps,
+    context: {
+      locale: state.user.catalogLocale,
+    },
+  };
+})(OptionFilterView);

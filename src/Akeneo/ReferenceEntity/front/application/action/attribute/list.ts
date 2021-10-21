@@ -17,29 +17,30 @@ import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/id
 
 export class InvalidArgument extends Error {}
 
-export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
-  try {
-    const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
-    dispatch(attributeListGotUpdated(attributes));
-  } catch (error) {
-    dispatch(notifyAttributeListUpdateFailed());
+export const updateAttributeList =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const referenceEntity = denormalizeReferenceEntity(getState().form.data);
+    try {
+      const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
+      dispatch(attributeListGotUpdated(attributes));
+    } catch (error) {
+      dispatch(notifyAttributeListUpdateFailed());
 
-    throw error;
-  }
-};
+      throw error;
+    }
+  };
 
-export const attributeListGotUpdated = (attributes: Attribute[]) => (
-  dispatch: any,
-  getState: () => EditState
-): void => {
-  dispatch(attributeListUpdated(attributes));
+export const attributeListGotUpdated =
+  (attributes: Attribute[]) =>
+  (dispatch: any, getState: () => EditState): void => {
+    dispatch(attributeListUpdated(attributes));
 
-  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
-  const columnsToExclude = [referenceEntity.getAttributeAsImage(), referenceEntity.getAttributeAsLabel()];
+    const referenceEntity = denormalizeReferenceEntity(getState().form.data);
+    const columnsToExclude = [referenceEntity.getAttributeAsImage(), referenceEntity.getAttributeAsLabel()];
 
-  dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
-};
+    dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
+  };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
   if (channel.isEmpty()) {

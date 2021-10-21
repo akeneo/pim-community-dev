@@ -5,9 +5,8 @@ import {useControlledFormInputCondition} from '../../hooks';
 
 const FallbackConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
   const {watch} = useFormContext();
-  const {formName, getFormValue} = useControlledFormInputCondition<boolean>(
-    lineNumber
-  );
+  const {formName, getFormValue} =
+    useControlledFormInputCondition<boolean>(lineNumber);
   const getConditionValues = () => watch(`content.conditions[${lineNumber}]`);
 
   return (

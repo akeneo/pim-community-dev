@@ -34,9 +34,8 @@ class Version_4_0_20200102220042_move_assets_to_asset_storage_Integration extend
 
     private function createFilesInCatalogStorage()
     {
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-
-        $catalogStorage = $mountManager->getFilesystem('catalogStorage');
+        $filesystemProvider = $this->get('akeneo_file_storage.file_storage.filesystem_provider');
+        $catalogStorage = $filesystemProvider->getFilesystem('catalogStorage');
 
         $catalogStorage->write('m/y/i/m/myimage1.jpg', 'content of myimage1.jpg');
         $catalogStorage->write('m/y/i/m/myimage2.jpg', 'content of myimage2.jpg');
@@ -97,9 +96,9 @@ SQL
 
     private function assertFilesInAssetStorage()
     {
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
+        $filesystemProvider = $this->get('akeneo_file_storage.file_storage.filesystem_provider');
 
-        $assetStorage = $mountManager->getFilesystem('assetStorage');
+        $assetStorage = $filesystemProvider->getFilesystem('assetStorage');
 
         self::assertEquals('content of myimage1.jpg', $assetStorage->read('m/y/i/m/myimage1.jpg'));
         self::assertEquals('content of myimage2.jpg', $assetStorage->read('m/y/i/m/myimage2.jpg'));
@@ -110,17 +109,17 @@ SQL
 
     protected function tearDown(): void
     {
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $assetStorage = $mountManager->getFilesystem('assetStorage');
-        $catalogStorage = $mountManager->getFilesystem('catalogStorage');
+        $filesystemProvider = $this->get('akeneo_file_storage.file_storage.filesystem_provider');
+        $assetStorage = $filesystemProvider->getFilesystem('assetStorage');
+        $catalogStorage = $filesystemProvider->getFilesystem('catalogStorage');
 
         for ($i = 0; $i <= 5; $i ++) {
             $path = "m/y/i/m/myimage$i.jpg";
 
-            if ($assetStorage->has($path)) {
+            if ($assetStorage->fileExists($path)) {
                 $assetStorage->delete($path);
             }
-            if ($catalogStorage->has($path)) {
+            if ($catalogStorage->fileExists($path)) {
                 $catalogStorage->delete($path);
             }
         }

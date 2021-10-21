@@ -283,7 +283,7 @@ test('when the user resets the quality score it removes the context and the oper
   );
 
   userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.title'));
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.filters.quality_score.quality_score.remove'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.filters.quality_score.score.remove'));
 
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',

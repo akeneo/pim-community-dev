@@ -5,21 +5,23 @@ import {
   notifyLaunchComputeTransformationsSucceeded,
 } from 'akeneoassetmanager/application/action/asset-family/notify';
 
-export const launchComputeTransformations = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamily = getState().form.data;
+export const launchComputeTransformations =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const assetFamily = getState().form.data;
 
-  try {
-    const errors = await computeTransformationsLauncher.launch(assetFamily);
+    try {
+      const errors = await computeTransformationsLauncher.launch(assetFamily);
 
-    if (errors) {
+      if (errors) {
+        dispatch(notifyLaunchComputeTransformationsFailed());
+        return;
+      }
+    } catch (error) {
       dispatch(notifyLaunchComputeTransformationsFailed());
+
       return;
     }
-  } catch (error) {
-    dispatch(notifyLaunchComputeTransformationsFailed());
 
-    return;
-  }
-
-  dispatch(notifyLaunchComputeTransformationsSucceeded());
-};
+    dispatch(notifyLaunchComputeTransformationsSucceeded());
+  };

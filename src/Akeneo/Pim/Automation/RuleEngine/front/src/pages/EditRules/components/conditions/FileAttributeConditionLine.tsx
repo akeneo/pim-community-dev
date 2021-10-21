@@ -30,11 +30,8 @@ const FileAttributeConditionLine: React.FC<FileAttributeConditionLineProps> = ({
   const router = useBackboneRouter();
   const translate = useTranslate();
 
-  const {
-    valueFormName,
-    getValueFormValue,
-    isFormFieldInError,
-  } = useControlledFormInputCondition<string[]>(lineNumber);
+  const {valueFormName, getValueFormValue, isFormFieldInError} =
+    useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
 
@@ -49,7 +46,8 @@ const FileAttributeConditionLine: React.FC<FileAttributeConditionLineProps> = ({
       field={condition.field}
       lineNumber={lineNumber}
       locales={locales}
-      scopes={scopes}>
+      scopes={scopes}
+    >
       <Controller
         as={InputText}
         className={

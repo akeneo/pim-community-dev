@@ -17,35 +17,37 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
 
-export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const referenceEntity = getState().form.data;
-  const formData = getState().createAttribute.data;
-  const normalizedAttribute = {
-    ...formData,
-    reference_entity_identifier: referenceEntity.identifier,
-  } as MinimalNormalizedAttribute;
-  const attribute = denormalizeMinimalAttribute(normalizedAttribute);
+export const createAttribute =
+  () =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const referenceEntity = getState().form.data;
+    const formData = getState().createAttribute.data;
+    const normalizedAttribute = {
+      ...formData,
+      reference_entity_identifier: referenceEntity.identifier,
+    } as MinimalNormalizedAttribute;
+    const attribute = denormalizeMinimalAttribute(normalizedAttribute);
 
-  try {
-    let errors = await attributeSaver.create(attribute);
+    try {
+      let errors = await attributeSaver.create(attribute);
 
-    if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeCreationErrorOccurred(validationErrors));
-      dispatch(notifyAttributeCreateValidationError());
+      if (errors) {
+        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+        dispatch(attributeCreationErrorOccurred(validationErrors));
+        dispatch(notifyAttributeCreateValidationError());
+
+        return;
+      }
+    } catch (error) {
+      dispatch(notifyAttributeCreateFailed());
 
       return;
     }
-  } catch (error) {
-    dispatch(notifyAttributeCreateFailed());
+
+    dispatch(attributeCreationSucceeded());
+    dispatch(notifyAttributeWellCreated());
+    await dispatch(updateAttributeList());
+    dispatch(attributeEditionStartByCode(attribute.code));
 
     return;
-  }
-
-  dispatch(attributeCreationSucceeded());
-  dispatch(notifyAttributeWellCreated());
-  await dispatch(updateAttributeList());
-  dispatch(attributeEditionStartByCode(attribute.code));
-
-  return;
-};
+  };

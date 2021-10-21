@@ -133,6 +133,7 @@ pim_reference_entity:
         subtitle: "Per comença a vincular productes a aquesta entitat de referència, pot crear una nova: "
         link: Crear un nou atribut de producte
       not_enough_items:
+        title: Està una mica saturat, us ho mostrem {{ productCount }}/{{ totalCount }} productes.
         subtitle:
           usable_in_grid: Per descobrir tots els productes enllaçats, feu clic a sota!
           not_usable_in_grid: Per descobrir tots els productes enllaçats, l'atribut del producte té que ser configurat com "utilitzable a la grilla".

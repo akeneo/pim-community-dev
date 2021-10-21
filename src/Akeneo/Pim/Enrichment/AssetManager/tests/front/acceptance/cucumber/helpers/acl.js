@@ -2,7 +2,7 @@ const {
   tools: {answerJson},
 } = require('../test-helpers.js');
 
-const listAcls = function(page, acls) {
+const listAcls = function (page, acls) {
   page.on('request', request => {
     if ('http://pim.com/rest/security/' === request.url()) {
       answerJson(request, acls, 200);

@@ -12,7 +12,7 @@ define([
   'oro/mediator',
   'pim/form',
   'pimee/template/product/meta/notification-comment',
-], function($, _, Backbone, mediator, BaseForm, template) {
+], function ($, _, Backbone, mediator, BaseForm, template) {
   return BaseForm.extend({
     template: _.template(template),
     events: {
@@ -27,7 +27,7 @@ define([
     /**
      * Initialize the form and the model
      */
-    initialize: function() {
+    initialize: function () {
       this.model = new Backbone.Model();
 
       BaseForm.prototype.initialize.apply(this, arguments);
@@ -36,7 +36,7 @@ define([
     /**
      * Triggered by change and keyup on textarea to update the remaining characters counter
      */
-    updateCounter: function() {
+    updateCounter: function () {
       var content = this.$('textarea').val();
       var remainingChars = this.charLimit - content.length;
 
@@ -53,34 +53,30 @@ define([
     /**
      * Enable the modal ok button and change the counter color
      */
-    enableOkBtn: function() {
+    enableOkBtn: function () {
       mediator.trigger('pim_enrich:form:modal:ok_button:enable');
-      this.$('.chars-counter')
-        .removeClass('under')
-        .addClass('above');
+      this.$('.chars-counter').removeClass('under').addClass('above');
     },
 
     /**
      * Disable the modal ok button and change the counter color
      */
-    disableOkBtn: function() {
+    disableOkBtn: function () {
       mediator.trigger('pim_enrich:form:modal:ok_button:disable');
-      this.$('.chars-counter')
-        .removeClass('above')
-        .addClass('under');
+      this.$('.chars-counter').removeClass('above').addClass('under');
     },
 
     /**
      * Render the template
      */
-    render: function() {
+    render: function () {
       throw new Error('Must be implemented.');
     },
 
     /**
      * Returns the modal parameters
      */
-    getModalParameters: function() {
+    getModalParameters: function () {
       throw new Error('Must be implemented.');
     },
   });

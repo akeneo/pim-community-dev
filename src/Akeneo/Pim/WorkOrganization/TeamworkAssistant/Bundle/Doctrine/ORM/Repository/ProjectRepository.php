@@ -27,23 +27,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface
 {
-    /** @var CursorFactoryInterface */
-    protected $cursorFactory;
+    protected ?CursorFactoryInterface $cursorFactory;
 
     /**
-     * {@inheritdoc}
+     * @retrun string[]
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return ProjectInterface
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier($identifier): ?ProjectInterface
     {
         return $this->findOneBy(['code' => $identifier]);
     }
@@ -97,10 +94,8 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
      * Returns a cursor with all products
      *
      * @throws \RuntimeException If cursor has not been set
-     *
-     * @return CursorInterface
      */
-    public function findAll()
+    public function findAll(): CursorInterface
     {
         if (null === $this->cursorFactory) {
             throw new \LogicException('The cursor factory is not initialized');
@@ -127,10 +122,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByLocale(LocaleInterface $locale)
+    public function findByLocale(LocaleInterface $locale): CursorInterface
     {
         if (null === $this->cursorFactory) {
             throw new \LogicException('The cursor factory is not initialized');
@@ -142,10 +134,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         return $this->cursorFactory->createCursor($qb);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByChannel(ChannelInterface $channel)
+    public function findByChannel(ChannelInterface $channel): CursorInterface
     {
         if (null === $this->cursorFactory) {
             throw new \LogicException('The cursor factory is not initialized');
@@ -157,9 +146,6 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         return $this->cursorFactory->createCursor($qb);
     }
 
-    /**
-     * @param CursorFactoryInterface $cursorFactory
-     */
     public function setCursorFactory(CursorFactoryInterface $cursorFactory)
     {
         $this->cursorFactory = $cursorFactory;
@@ -167,10 +153,8 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
     /**
      * Initialize, configure and returns an options resolver for findBySearch query.
-     *
-     * @return OptionsResolver
      */
-    protected function configureSearchOptions()
+    protected function configureSearchOptions(): OptionsResolver
     {
         $searchResolver = new OptionsResolver();
 

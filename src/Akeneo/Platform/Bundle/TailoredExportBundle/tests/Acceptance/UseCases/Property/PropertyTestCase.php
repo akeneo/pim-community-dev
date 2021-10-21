@@ -48,6 +48,8 @@ abstract class PropertyTestCase extends KernelTestCase
             new PropertySource(
                 sprintf('%s-uuid', self::PROPERTY_NAME),
                 static::PROPERTY_NAME,
+                null,
+                null,
                 OperationCollection::create($operations),
                 $selection
             )

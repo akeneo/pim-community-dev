@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -29,16 +30,12 @@ interface ProjectRepositoryInterface extends
     CursorableRepositoryInterface
 {
     /**
-     * @param LocaleInterface $locale
-     *
-     * @return CursorInterface
+     * @return iterable<ProjectInterface>
      */
-    public function findByLocale(LocaleInterface $locale);
+    public function findByLocale(LocaleInterface $locale): iterable;
 
     /**
-     * @param ChannelInterface $channel
-     *
-     * @return CursorInterface
+     * @return iterable<ProjectInterface>
      */
-    public function findByChannel(ChannelInterface $channel);
+    public function findByChannel(ChannelInterface $channel): iterable;
 }

@@ -7,18 +7,20 @@ export type RemoveAttributeValueAction = {
   items: string[];
 } & ProductField;
 
-export const getRemoveAttributeValueActionModule: ActionModuleGuesser = json => {
-  if (json.type !== 'remove') {
-    return Promise.resolve(null);
-  }
+export const getRemoveAttributeValueActionModule: ActionModuleGuesser =
+  json => {
+    if (json.type !== 'remove') {
+      return Promise.resolve(null);
+    }
 
-  return Promise.resolve(RemoveAttributeValueActionLine);
-};
-
-export const createRemoveAttributeValueAction: () => RemoveAttributeValueAction = () => {
-  return {
-    type: 'remove',
-    field: '',
-    items: [],
+    return Promise.resolve(RemoveAttributeValueActionLine);
   };
-};
+
+export const createRemoveAttributeValueAction: () => RemoveAttributeValueAction =
+  () => {
+    return {
+      type: 'remove',
+      field: '',
+      items: [],
+    };
+  };

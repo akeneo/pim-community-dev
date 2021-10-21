@@ -94,8 +94,11 @@ const addAssociationTypeSource = (
   associationType: AssociationType
 ): ColumnConfiguration => addSource(columnConfiguration, getDefaultAssociationTypeSource(associationType));
 
-const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration =>
-  addSource(columnConfiguration, getDefaultPropertySource(sourceCode));
+const addPropertySource = (
+  columnConfiguration: ColumnConfiguration,
+  sourceCode: string,
+  channels: Channel[]
+): ColumnConfiguration => addSource(columnConfiguration, getDefaultPropertySource(sourceCode, channels));
 
 const filterEmptyOperations = (operations: object) =>
   Object.keys(operations).reduce((accumulator, key) => {

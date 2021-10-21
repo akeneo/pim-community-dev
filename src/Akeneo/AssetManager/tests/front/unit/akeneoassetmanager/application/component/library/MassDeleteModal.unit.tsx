@@ -35,9 +35,7 @@ test('it does not allow confirmation until the asset family identifier field is 
   const input = screen.getByLabelText('pim_asset_manager.asset.mass_delete.confirm_label') as HTMLInputElement;
   fireEvent.change(input, {target: {value: 'packshot'}});
 
-  await act(async () => {
-    fireEvent.click(screen.getByText('pim_common.delete'));
-  });
+  fireEvent.click(screen.getByText('pim_common.delete'));
 
   expect(onConfirm).toHaveBeenCalled();
 });
@@ -64,9 +62,7 @@ test('it is submitable using the Enter key (when the confirm is valid)', async (
 
   fireEvent.change(input, {target: {value: 'packshot'}});
 
-  await act(async () => {
-    fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
-  });
+  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
 
   expect(onConfirm).toHaveBeenCalled();
 });

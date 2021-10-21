@@ -126,9 +126,8 @@ const InputRelativeDate = React.forwardRef<
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
     const menu = useMenuState({wrap: 'vertical'});
-    const [timePeriodSelected, setTimePeriodSelected] = useState<TimePeriodId>(
-      currentTimePeriod
-    );
+    const [timePeriodSelected, setTimePeriodSelected] =
+      useState<TimePeriodId>(currentTimePeriod);
     const [timeValue, setTimeValue] = useState<string>(currentTimeValue);
 
     const handleOnClick = (timePeriod: TimePeriodId) => () => {
@@ -196,14 +195,16 @@ const InputRelativeDate = React.forwardRef<
           aria-label={translateLabel(
             'pimee_catalog_rule.form.date.label.period'
           )}
-          style={{transform: 'translate3d(0px, 39px, 0px)'}}>
+          style={{transform: 'translate3d(0px, 39px, 0px)'}}
+        >
           <DateOptionsContainer tabIndex={-1} role='listbox'>
             {timePeriodOptions.map(dateTimeOpt => (
               <StyledOptionLi key={dateTimeOpt.id} role='option'>
                 <StyledMenuItem
                   {...menu}
                   as='button'
-                  onClick={handleOnClick(dateTimeOpt.id)}>
+                  onClick={handleOnClick(dateTimeOpt.id)}
+                >
                   {dateTimeOpt.getText(Number.parseInt(timeValue))}
                 </StyledMenuItem>
               </StyledOptionLi>

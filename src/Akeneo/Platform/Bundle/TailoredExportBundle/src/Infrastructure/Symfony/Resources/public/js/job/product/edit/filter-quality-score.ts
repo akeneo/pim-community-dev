@@ -101,41 +101,25 @@ class FilterQualityScore extends BaseFilter {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(identifiers)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('channel')
-                        .fetchAll()
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('association-type')
-                        .fetchByIdentifiers(codes)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
                     );
                   },
                 },
                 measurementFamily: {
                   fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('measure')
-                        .fetch(code)
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
                   },
                 },
                 assetFamily: {
@@ -158,8 +142,7 @@ class FilterQualityScore extends BaseFilter {
                 this.setData(newFilter);
                 this.render();
               },
-              // TODO: Find a way to get rid of the [3] part below
-              validationErrors: filterErrors(this.validationErrors, '[filters][data][3]'),
+              validationErrors: filterErrors(this.validationErrors, '[filters][data][quality_score_multi_locales]'),
             })
           )
         )

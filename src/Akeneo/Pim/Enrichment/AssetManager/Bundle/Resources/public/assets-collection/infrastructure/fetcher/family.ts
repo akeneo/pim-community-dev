@@ -8,11 +8,13 @@ const fetcherRegistry = require('pim/fetcher-registry');
  * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
  */
 export const familyFetcher = () => fetcherRegistry.getFetcher('family');
-export const fetchFamily = (familyFetcher: any) => async (familyCode: FamilyCode): Promise<Family> => {
-  const family = await promisify(familyFetcher.fetch(familyCode));
+export const fetchFamily =
+  (familyFetcher: any) =>
+  async (familyCode: FamilyCode): Promise<Family> => {
+    const family = await promisify(familyFetcher.fetch(familyCode));
 
-  return denormalizeFamily(family);
-};
+    return denormalizeFamily(family);
+  };
 
 const denormalizeFamily = (normalizedFamily: any): Family => {
   if (!isString(normalizedFamily.code)) {

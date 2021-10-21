@@ -20,44 +20,43 @@ import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/v
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
 import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 
-export const createRecord = (createAnother: boolean) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
-  const referenceEntity = getState().form.data;
-  const {code, labels} = getState().createRecord.data;
-  const record = recordFactory(
-    createIdentifier(code),
-    createReferenceEntityIdentifier(referenceEntity.identifier),
-    createCode(code),
-    createLabelCollection(labels),
-    createEmptyFile(),
-    createValueCollection([])
-  );
+export const createRecord =
+  (createAnother: boolean) =>
+  async (dispatch: any, getState: () => EditState): Promise<void> => {
+    const referenceEntity = getState().form.data;
+    const {code, labels} = getState().createRecord.data;
+    const record = recordFactory(
+      createIdentifier(code),
+      createReferenceEntityIdentifier(referenceEntity.identifier),
+      createCode(code),
+      createLabelCollection(labels),
+      createEmptyFile(),
+      createValueCollection([])
+    );
 
-  try {
-    let errors = await recordSaver.create(record);
+    try {
+      let errors = await recordSaver.create(record);
 
-    if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordCreationErrorOccurred(validationErrors));
+      if (errors) {
+        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+        dispatch(recordCreationErrorOccurred(validationErrors));
+
+        return;
+      }
+    } catch (error) {
+      dispatch(notifyRecordCreateFailed());
 
       return;
     }
-  } catch (error) {
-    dispatch(notifyRecordCreateFailed());
+
+    dispatch(notifyRecordWellCreated());
+    if (createAnother) {
+      dispatch(updateRecordResults());
+      dispatch(recordCreationStart());
+    } else {
+      dispatch(recordCreationSucceeded());
+      dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
+    }
 
     return;
-  }
-
-  dispatch(notifyRecordWellCreated());
-  if (createAnother) {
-    dispatch(updateRecordResults());
-    dispatch(recordCreationStart());
-  } else {
-    dispatch(recordCreationSucceeded());
-    dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
-  }
-
-  return;
-};
+  };

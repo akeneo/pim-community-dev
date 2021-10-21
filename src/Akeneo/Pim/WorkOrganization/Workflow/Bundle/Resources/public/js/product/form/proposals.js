@@ -16,7 +16,7 @@ define([
   'pim/user-context',
   'pimee/template/product/tab/proposals',
   'require-context',
-], function($, _, __, Routing, messenger, datagridBuilder, BaseForm, UserContext, template, requireContext) {
+], function ($, _, __, Routing, messenger, datagridBuilder, BaseForm, UserContext, template, requireContext) {
   return BaseForm.extend({
     template: _.template(template),
     datagrid: {},
@@ -24,7 +24,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    initialize: function(config) {
+    initialize: function (config) {
       this.config = _.extend({}, config.config);
     },
 
@@ -33,13 +33,13 @@ define([
      *
      * @return {Promise}
      */
-    configure: function() {
+    configure: function () {
       var root = this.getRoot();
       this.listenTo(root, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
 
       this.trigger('tab:register', {
         code: this.config.tabCode ? this.config.tabCode : this.code,
-        isVisible: function() {
+        isVisible: function () {
           return _.result(_.result(this.getFormData(), 'meta', {}), 'is_owner', false);
         }.bind(this),
         label: __('pim_menu.item.proposal'),
@@ -58,7 +58,7 @@ define([
      *
      * @param {Object} product
      */
-    onPostApproveSuccess: function(product) {
+    onPostApproveSuccess: function (product) {
       this.setData(product);
       this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
     },
@@ -68,14 +68,14 @@ define([
      *
      * @return {number}
      */
-    getProductId: function() {
+    getProductId: function () {
       return this.getFormData().meta.id;
     },
 
     /**
      * Render the main template
      */
-    render: function() {
+    render: function () {
       if (!this.configured) {
         return this;
       }
@@ -89,7 +89,7 @@ define([
     /**
      * Build the grid and render it inside the template
      */
-    renderGrid: function() {
+    renderGrid: function () {
       var urlParams = {
         alias: this.datagrid.name,
         params: {dataLocale: UserContext.get('catalogLocale')},
@@ -98,14 +98,14 @@ define([
       urlParams.params[this.datagrid.paramName] = this.getProductId();
 
       $.get(Routing.generate('pim_datagrid_load', urlParams)).then(
-        function(response) {
+        function (response) {
           this.$('.draft-grid div').data({
             metadata: response.metadata,
             data: JSON.parse(response.data),
           });
 
           var resolvedModules = [];
-          response.metadata.requireJSModules.forEach(function(module) {
+          response.metadata.requireJSModules.forEach(function (module) {
             resolvedModules.push(requireContext(module));
           });
 

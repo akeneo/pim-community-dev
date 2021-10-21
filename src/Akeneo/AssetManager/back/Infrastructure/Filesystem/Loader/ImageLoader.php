@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\Loader;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Exception\InvalidArgumentException;
@@ -28,17 +28,15 @@ use Symfony\Component\Mime\MimeTypesInterface;
  */
 class ImageLoader implements LoaderInterface
 {
-    protected FilesystemInterface $filesystem;
+    protected FilesystemReader $filesystem;
 
     /**
      * @var MimeTypesInterface|DeprecatedExtensionGuesserInterface
      */
     protected $extensionGuesser;
 
-    public function __construct(
-        $extensionGuesser,
-        FilesystemInterface $filesystem
-    ) {
+    public function __construct($extensionGuesser, FilesystemReader $filesystem)
+    {
         if (!$extensionGuesser instanceof MimeTypesInterface && !$extensionGuesser instanceof DeprecatedExtensionGuesserInterface) {
             throw new InvalidArgumentException('$extensionGuesser must be an instance of Symfony\Component\Mime\MimeTypesInterface or Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesserInterface');
         }
@@ -56,11 +54,11 @@ class ImageLoader implements LoaderInterface
      */
     public function find($path)
     {
-        if (!$this->filesystem->has($path)) {
+        if (false === $this->filesystem->fileExists($path)) {
             throw new NotLoadableException(sprintf('Source image "%s" not found.', $path));
         }
 
-        $mimeType = $this->filesystem->getMimetype($path);
+        $mimeType = $this->filesystem->mimeType($path);
         $pathParts = pathinfo($path);
 
         // This is an override here to handle the google bucket case where images without extensions are considered as octet-stream

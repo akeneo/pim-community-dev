@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CodeValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
@@ -25,11 +26,20 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantV
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QualityScoreValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
 
 class PropertyValueHydrator
 {
-    public function hydrate(string $propertyName, $productOrProductModel): SourceValueInterface
+    private FindQualityScoresInterface $findQualityScores;
+
+    public function __construct(FindQualityScoresInterface $findQualityScores)
+    {
+        $this->findQualityScores = $findQualityScores;
+    }
+
+    public function hydrate(PropertySource $source, $productOrProductModel): SourceValueInterface
     {
         if (
             !$productOrProductModel instanceof ProductInterface
@@ -38,7 +48,7 @@ class PropertyValueHydrator
             throw new \InvalidArgumentException('Cannot hydrate this entity');
         }
 
-        switch ($propertyName) {
+        switch ($source->getName()) {
             case 'code':
                 if (!$productOrProductModel instanceof ProductModelInterface) {
                     throw new \InvalidArgumentException('Cannot hydrate enabled value on Product entity');
@@ -89,8 +99,24 @@ class PropertyValueHydrator
                 }
 
                 return new ParentValue($parent->getCode());
+            case 'quality_score':
+                if (!$productOrProductModel instanceof ProductInterface) {
+                    throw new \InvalidArgumentException('Cannot hydrate Quality Score value on ProductModel entity');
+                }
+
+                $qualityScore = $this->findQualityScores->forProduct(
+                    $productOrProductModel->getIdentifier(),
+                    $source->getChannel(),
+                    $source->getLocale(),
+                );
+
+                if (null === $qualityScore) {
+                    return new NullValue();
+                }
+
+                return new QualityScoreValue($qualityScore);
             default:
-                throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
+                throw new \LogicException(sprintf('Unsupported property name "%s"', $source->getName()));
         }
     }
 }

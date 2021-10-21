@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -23,8 +24,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindAllExistentRecords
  */
 final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistentValuesFilter
 {
-    /** @var FindAllExistentRecordsForReferenceEntityIdentifiers */
-    private $findAllExistentRecordsForReferenceEntityIdentifiers;
+    private FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers;
 
     public function __construct(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
     {
@@ -80,11 +80,11 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
         foreach ($multipleRecordLinkValues as $attributeCode => $productListData) {
             foreach ($productListData as $productData) {
                 $multiSelectValues = [];
-                $referenceEntityIdentifier = $productData['properties']['reference_data_name'];
+                $referenceEntityIdentifier = strtolower($productData['properties']['reference_data_name']);
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_values(array_intersect($value, $recordCodes[$referenceEntityIdentifier] ?? []));
+                            $multiSelectValues[$channel][$locale] = array_values(array_uintersect($value, $recordCodes[$referenceEntityIdentifier] ?? [], 'strcasecmp'));
                         }
                     }
                 }

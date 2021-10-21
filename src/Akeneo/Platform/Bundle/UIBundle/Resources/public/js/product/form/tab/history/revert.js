@@ -11,7 +11,7 @@ define([
   'oro/messenger',
   'oro/loading-mask',
   'pim/dialog',
-], function($, _, __, BaseForm, FetcherRegistry, revertTemplate, router, messenger, LoadingMask, Dialog) {
+], function ($, _, __, BaseForm, FetcherRegistry, revertTemplate, router, messenger, LoadingMask, Dialog) {
   return BaseForm.extend({
     template: _.template(revertTemplate),
 
@@ -20,7 +20,7 @@ define([
      *
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       var $revertAction = $(this.template());
       $revertAction.on('click', this.revert.bind(this));
 
@@ -37,34 +37,29 @@ define([
      *
      * @param {Event} event
      */
-    revert: function(event) {
+    revert: function (event) {
       event.stopPropagation();
 
       Dialog.confirm(
         __('pimee_enrich.entity.product.module.revert.content'),
         __('pimee_enrich.entity.product.module.revert.title'),
-        function() {
+        function () {
           var loadingMask = new LoadingMask();
-          loadingMask
-            .render()
-            .$el.appendTo(this.getRoot().$el)
-            .show();
+          loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
           $.get(
             router.generate('pimee_revert_revert_product', {
-              id: $(event.currentTarget)
-                .parents('.entity-version')
-                .data('version-id'),
+              id: $(event.currentTarget).parents('.entity-version').data('version-id'),
             })
           )
             .done(
-              function() {
+              function () {
                 // TODO: We shouldn't force product fetching,
                 // we should use request response (cf. send for approval)
                 FetcherRegistry.getFetcher('product')
                   .fetch(this.getFormData().meta.id)
                   .done(
-                    function(product) {
+                    function (product) {
                       loadingMask.hide().$el.remove();
                       messenger.notify('success', __('pimee_enrich.entity.published_product.flash.revert.success'));
 
@@ -77,14 +72,14 @@ define([
               }.bind(this)
             )
             .fail(
-              function(response) {
+              function (response) {
                 loadingMask.hide().$el.remove();
                 const jsonResponse = response.responseJSON
                   ? response.responseJSON
                   : {error: __('pim_enrich.entity.fallback.generic_error')};
 
                 if (Array.isArray(jsonResponse)) {
-                  this.formatParameters(jsonResponse).forEach(function(error) {
+                  this.formatParameters(jsonResponse).forEach(function (error) {
                     messenger.notify('error', __(error.messageTemplate, error.parameters));
                   });
                 } else {
@@ -99,7 +94,7 @@ define([
         'products'
       );
     },
-    formatParameters: function(errors) {
+    formatParameters: function (errors) {
       return errors.map(error => ({
         ...error,
         parameters: Object.keys(error.parameters).reduce(

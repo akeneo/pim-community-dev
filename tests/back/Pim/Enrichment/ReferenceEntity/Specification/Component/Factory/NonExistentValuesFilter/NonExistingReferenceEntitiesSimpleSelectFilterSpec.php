@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -124,6 +125,95 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
         );
     }
 
+    public function it_filters_simple_reference_entity_links_ignoring_case(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                ReferenceEntityType::REFERENCE_ENTITY => [
+                    'brand1' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'apple'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'bRaNd'
+                            ]
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => 'Dell'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'bRaNd'
+                            ]
+                        ]
+                    ]
+                ],
+                AttributeTypes::TEXTAREA => [
+                    'a_description' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'plop'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $recordCodesIndexedByReferenceEntityIdentifiers = [
+            'brand' => ['apple', 'Dell']
+        ];
+
+        $findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($recordCodesIndexedByReferenceEntityIdentifiers)->willReturn(
+            [
+                'brand' => ['apple']
+            ]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                ReferenceEntityType::REFERENCE_ENTITY => [
+                    'brand1' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'apple'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'bRaNd'
+                            ]
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ''
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'bRaNd'
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        );
+    }
+
     public function it_handles_null_values(FindAllExistentRecordsForReferenceEntityIdentifiers $findAllExistentRecordsForReferenceEntityIdentifiers)
     {
         $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
@@ -197,14 +287,14 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
                             ]
                         ],
                         [
-                            'identifier' => "product_B",
+                            'identifier' => 'product_B',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => "",
+                                    'en_US' => '',
                                 ],
                             ],
                             'properties' => [
-                                'reference_data_name' => "color",
+                                'reference_data_name' => 'color',
                             ],
                         ],
                     ]

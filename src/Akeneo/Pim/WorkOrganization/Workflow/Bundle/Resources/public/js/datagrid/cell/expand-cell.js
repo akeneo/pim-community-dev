@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/html-cell'], function($, _, __, HtmlCell) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/html-cell'], function ($, _, __, HtmlCell) {
   'use strict';
 
   return HtmlCell.extend({
@@ -16,7 +16,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/html-cell'], fun
     collapsed: true,
     expandText: __('pimee_datagrid.cells.expand.expand_text'),
     collapseText: __('pimee_datagrid.cells.expand.collapse_text'),
-    render: function() {
+    render: function () {
       this.$el.html(
         this.template({
           changes: this.model.get(this.column.get('name')),
@@ -26,11 +26,11 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/datagrid/html-cell'], fun
 
       return this;
     },
-    toggle: function() {
+    toggle: function () {
       this.collapsed = !this.collapsed;
       this.$el.children().attr('data-collapsed', this.collapsed ? 'true' : 'false');
     },
-    initialize: function() {
+    initialize: function () {
       return HtmlCell.prototype.initialize.apply(this, arguments);
     },
   });

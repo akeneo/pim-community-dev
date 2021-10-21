@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: ロケールをいくつか選択
         remove: ロケールを削除
     quality_score:
-      quality_score:
-        label: 品質スコア
-        remove: 品質スコアを削除
       locales:
         label: 品質スコアのロケールを定義する
   form:
@@ -92,7 +89,6 @@ akeneo.tailored_export:
             locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
             channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
         measurement:
-          information: この属性では、値、ユニットコードまたはユニットラベルのいずれかをエクスポートできます。
           value: 値
           unit_locale: ユニットロケール
           unit_code: ユニットコー​​ド
@@ -131,8 +127,6 @@ akeneo.tailored_export:
           no: Noの置換値
           edit_mapping: 置換値を編集
           modal:
-            title: 置換
-            subtitle: オプションの管理
             no_result:
               title: この属性には値がありません
             empty_result:
@@ -194,6 +188,10 @@ akeneo.tailored_export:
       invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
     asset_collection:
       locale_should_not_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、ロケールごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      channel_should_not_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、チャンネルごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      locale_should_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、ロケールごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      channel_should_be_blank: アセットファミリー{{ asset_family_code }}の主要メディア属性は、チャンネルごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      invalid_type: アセットファミリー{{ asset_family_code }}の主要メディア属性タイプが変更されました。作成するか、別のソースを選択してください。
     measurement:
       family:
         does_not_exist: '{{ measurement_family_code }}測定ファミリーは存在しません。'

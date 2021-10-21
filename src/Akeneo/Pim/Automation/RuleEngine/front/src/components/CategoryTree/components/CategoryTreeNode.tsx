@@ -86,14 +86,17 @@ const CategoryTreeNode: React.FC<Props> = ({
   return (
     <li
       role={isBranch(nodeType) ? 'treeitem' : 'none'}
-      aria-expanded={nodeOpened}>
+      aria-expanded={nodeOpened}
+    >
       <NodeLineContainer
-        opacity={(categoryChildrenFetch.status === 'PENDING' && 0.5) || 1}>
+        opacity={(categoryChildrenFetch.status === 'PENDING' && 0.5) || 1}
+      >
         {isBranch(nodeType) && (
           <TreeArrowButton
             data-testid={`tree-arrow-button-${categoryCode}`}
             type='button'
-            onClick={() => setNodeOpened(!nodeOpened)}>
+            onClick={() => setNodeOpened(!nodeOpened)}
+          >
             <TreeArrow opened={nodeOpened} translate={translate} />
           </TreeArrowButton>
         )}
@@ -121,10 +124,11 @@ const CategoryTreeNode: React.FC<Props> = ({
               const categoryCode = category.attr['data-code'];
               let nextNodeCategoryTreeOpenBranch = undefined;
               if (initCategoryTreeOpenBranch?.children) {
-                nextNodeCategoryTreeOpenBranch = getNextNodeFromCategoryTreeOpenBranch(
-                  categoryCode,
-                  initCategoryTreeOpenBranch.children
-                );
+                nextNodeCategoryTreeOpenBranch =
+                  getNextNodeFromCategoryTreeOpenBranch(
+                    categoryCode,
+                    initCategoryTreeOpenBranch.children
+                  );
               }
               return (
                 <CategoryTreeNode

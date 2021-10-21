@@ -56,9 +56,10 @@ const RemoveCurrencyFromPriceCollectionValue: React.FC<InputValueProps> = ({
     }
   }, [scopeCode]);
 
-  React.useEffect(() => handleChange(getSelectedCurrencyCodes()), [
-    availableCurrencyCodes,
-  ]);
+  React.useEffect(
+    () => handleChange(getSelectedCurrencyCodes()),
+    [availableCurrencyCodes]
+  );
 
   return (
     <CurrenciesSelector

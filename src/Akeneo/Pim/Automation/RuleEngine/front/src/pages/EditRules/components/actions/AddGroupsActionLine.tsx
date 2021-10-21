@@ -27,12 +27,8 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
   const [unexistingGroupCodes, setUnexistingGroupCodes] = React.useState<
     GroupCode[]
   >([]);
-  const {
-    fieldFormName,
-    typeFormName,
-    itemsFormName,
-    getItemsFormValue,
-  } = useControlledFormInputAction<GroupCode[]>(lineNumber);
+  const {fieldFormName, typeFormName, itemsFormName, getItemsFormValue} =
+    useControlledFormInputAction<GroupCode[]>(lineNumber);
 
   React.useEffect(() => {
     // This method stores the unexisting groups at the loading of the line.
@@ -97,7 +93,8 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.add_groups.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}>
+        lineNumber={lineNumber}
+      >
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

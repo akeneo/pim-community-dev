@@ -120,3 +120,10 @@ free_trial:
   ft_catalog_api_password: "fakeValue"
   ft_catalog_api_secret: "fakeValue"
   ft_catalog_api_username: "fakeValue"
+
+connectors:
+  bigcommerce:
+    enabled: true
+    pubsub:
+      topic_name: "fakeValue"
+      subscription_name: "fakeValue"

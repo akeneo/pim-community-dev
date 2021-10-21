@@ -13,7 +13,7 @@ define([
   'pim/fetcher-registry',
   'pim/common/property',
   'pimee/template/form/tab/permission',
-], function(_, __, BaseForm, FetcherRegistry, propertyAccessor, template) {
+], function (_, __, BaseForm, FetcherRegistry, propertyAccessor, template) {
   return BaseForm.extend({
     className: 'AknTabContainer-content tabbable tabs-left permission',
     template: _.template(template),
@@ -25,14 +25,14 @@ define([
     /**
      * @param {Object} meta
      */
-    initialize: function(meta) {
+    initialize: function (meta) {
       this.config = _.extend({}, meta.config);
     },
 
     /**
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       this.trigger('tab:register', {
         code: this.config.tabCode ? this.config.tabCode : this.code,
         label: __(this.config.title),
@@ -46,11 +46,11 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       FetcherRegistry.getFetcher('user-group')
         .fetchAll()
         .then(
-          function(userGroups) {
+          function (userGroups) {
             this.$el.html(
               this.template({
                 userGroups: userGroups,
@@ -75,9 +75,9 @@ define([
      *
      * @param {event} event
      */
-    permissionUpdated: function(event) {
+    permissionUpdated: function (event) {
       var permission = event.currentTarget.dataset.permission;
-      var value = _.map(_.filter(event.currentTarget.options, {selected: true}), function(option) {
+      var value = _.map(_.filter(event.currentTarget.options, {selected: true}), function (option) {
         return option.value;
       });
 
@@ -97,7 +97,7 @@ define([
     /**
      * Save original permissions
      */
-    updateOriginalPermissions: function() {
+    updateOriginalPermissions: function () {
       this.originalPermissions = this.getFormData().permissions;
     },
 
@@ -113,12 +113,12 @@ define([
      *
      * @return {object} The updated permissions
      */
-    updateRelativePermissions: function(modelPermissions, permissionsOrder, permissionActionToUpdate, newValue) {
+    updateRelativePermissions: function (modelPermissions, permissionsOrder, permissionActionToUpdate, newValue) {
       var result = _.extend({}, modelPermissions);
       if (modelPermissions[permissionActionToUpdate].length > newValue.length) {
         var removed = _.difference(modelPermissions[permissionActionToUpdate], newValue);
 
-        result = _.each(result, function(value, key) {
+        result = _.each(result, function (value, key) {
           result[key] =
             permissionsOrder.indexOf(key) >= permissionsOrder.indexOf(permissionActionToUpdate)
               ? _.difference(value, removed)
@@ -127,7 +127,7 @@ define([
       } else {
         var added = _.difference(newValue, modelPermissions[permissionActionToUpdate]);
 
-        result = _.each(result, function(value, key) {
+        result = _.each(result, function (value, key) {
           result[key] =
             permissionsOrder.indexOf(key) <= permissionsOrder.indexOf(permissionActionToUpdate)
               ? _.union(value, added)
@@ -146,13 +146,13 @@ define([
      *
      * @return {object}
      */
-    computeChanges: function(originalPermissions, newPermissions) {
+    computeChanges: function (originalPermissions, newPermissions) {
       var changes = {added: [], removed: []};
 
-      _.each(originalPermissions, function(value, key) {
+      _.each(originalPermissions, function (value, key) {
         changes.added = _.union(
           changes.added,
-          _.map(_.difference(newPermissions[key], value), function(value) {
+          _.map(_.difference(newPermissions[key], value), function (value) {
             return {
               group: value,
               permission: key,
@@ -161,7 +161,7 @@ define([
         );
         changes.removed = _.union(
           changes.removed,
-          _.map(_.difference(value, newPermissions[key]), function(value) {
+          _.map(_.difference(value, newPermissions[key]), function (value) {
             return {
               group: value,
               permission: key,

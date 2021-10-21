@@ -50,7 +50,7 @@ const Highlight: FunctionComponent<HighlightPros> = ({highlight, editorRect}) =>
   useLayoutEffect(() => {
     const domRect = domRange.getBoundingClientRect();
     setHighlightRect(domRect);
-  }, [domRange]);
+  }, [domRange, editorRect]);
 
   return <div ref={highlightRef} className={classList.join(' ')} style={computeStyle(highlightRect, editorRect)} />;
 };

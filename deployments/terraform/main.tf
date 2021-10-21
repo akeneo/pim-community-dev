@@ -22,6 +22,7 @@ locals {
   mailgun_login_name              = format("%s-%s", local.pfid, var.google_project_id)
   mailgun_login_email             = "${local.mailgun_login_name}@${var.mailgun_domain}"
   monitoring_authentication_token = var.monitoring_authentication_token != "" ? var.monitoring_authentication_token : random_string.monitoring_authentication_token.result
+  bc_enabled_projects             = [ "akecld-saas-dev" ]
 }
 
 resource "random_string" "mailgun_password" {
@@ -82,7 +83,6 @@ EOF
           echo "!!! ERROR - Mailgun credentials destroy failed - http_response: $${http_response} !!!"
           cat curl_mailgun_deletion_response.txt
           rm curl_mailgun_deletion_response.txt
-          exit 22
       else
           echo "Mailgun credentials creation is OK - http_response: $${http_response} "
           cat curl_mailgun_deletion_response.txt

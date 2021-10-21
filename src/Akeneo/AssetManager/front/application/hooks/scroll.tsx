@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const useScroll = function<T extends HTMLElement>(): [React.RefObject<T>, () => void] {
+export const useScroll = function <T extends HTMLElement>(): [React.RefObject<T>, () => void] {
   const ref = React.useRef<null | T>(null);
   const scrollTop = React.useCallback(() => {
     if (ref.current !== null) ref.current.scrollTop = 0;
@@ -11,7 +11,7 @@ export const useScroll = function<T extends HTMLElement>(): [React.RefObject<T>,
   return [ref, scrollTop];
 };
 
-export const useKeepVisibleX = function<T extends HTMLElement>() {
+export const useKeepVisibleX = function <T extends HTMLElement>() {
   const containerRef = React.useRef<T>(null);
   const elementRef = React.useCallback(
     element => {

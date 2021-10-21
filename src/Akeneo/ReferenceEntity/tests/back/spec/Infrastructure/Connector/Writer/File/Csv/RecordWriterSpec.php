@@ -32,7 +32,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -228,7 +228,7 @@ class RecordWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         ImageAttribute $scopableLocalizableAttribute,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $catalogFilesystem
+        FilesystemOperator $catalogFilesystem
     ) {
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
@@ -273,7 +273,7 @@ class RecordWriterSpec extends ObjectBehavior
         $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
 
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
-        $catalogFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
+        $catalogFilesystem->fileExists('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(true);
 
         $arrayConverter->convert(
             [
@@ -313,7 +313,7 @@ class RecordWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         ImageAttribute $scopableLocalizableAttribute,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $catalogFilesystem,
+        FilesystemOperator $catalogFilesystem,
         StepExecution $stepExecution
     ) {
         $jobParameters->has('with_media')->willReturn(true);
@@ -358,7 +358,7 @@ class RecordWriterSpec extends ObjectBehavior
         $fileInfoRepository->findOneByIdentifier('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn($fileInfo);
 
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
-        $catalogFilesystem->has('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
+        $catalogFilesystem->fileExists('1/2/3/jambon987654.jpg')->shouldBeCalled()->willReturn(false);
 
         $stepExecution->addWarning(
             'The media has not been found or is not currently available',

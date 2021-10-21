@@ -13,7 +13,7 @@ const {
 
 let currentRequestContract = {};
 
-module.exports = async function(cucumber) {
+module.exports = async function (cucumber) {
   const {When, Then, Given} = cucumber;
   const assert = require('assert');
 
@@ -42,14 +42,14 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  Given('a valid record', async function() {
+  Given('a valid record', async function () {
     const requestContract = getRequestContract('Record/RecordDetails/ok.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with an option attribute', async function() {
+  Given('a valid record with an option attribute', async function () {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/option.json');
     currentRequestContract = requestContract;
@@ -57,7 +57,7 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with an option collection attribute', async function() {
+  Given('a valid record with an option collection attribute', async function () {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
     currentRequestContract = requestContract;
@@ -65,7 +65,7 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('the user asks for the list of linked product', async function() {
+  Given('the user asks for the list of linked product', async function () {
     await answerLocaleList.apply(this);
     const productRequestContract = getRequestContract('Record/Product/ok.json');
 
@@ -76,7 +76,7 @@ module.exports = async function(cucumber) {
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 
-  Given('the user asks for the list of linked product without any reference entity attribute', async function() {
+  Given('the user asks for the list of linked product without any reference entity attribute', async function () {
     await answerLocaleList.apply(this);
     const productRequestContract = getRequestContract('Record/Product/ok.json');
 
@@ -87,7 +87,7 @@ module.exports = async function(cucumber) {
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 
-  Given('the user asks for the list of linked product without any linked product', async function() {
+  Given('the user asks for the list of linked product without any linked product', async function () {
     await answerLocaleList.apply(this);
     const productRequestContract = getRequestContract('Record/Product/empty.json');
 
@@ -98,7 +98,7 @@ module.exports = async function(cucumber) {
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 
-  Given('the user should see the list of products linked to the record', async function() {
+  Given('the user should see the list of products linked to the record', async function () {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('product');
     const products = await getElement(this.page, 'Product');
@@ -109,7 +109,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(product2, true);
   });
 
-  Given('the user should not see any linked product', async function() {
+  Given('the user should not see any linked product', async function () {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('product');
 
@@ -118,7 +118,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(noLinkedProduct, true);
   });
 
-  Given('the user should not see any linked product attribute', async function() {
+  Given('the user should not see any linked product attribute', async function () {
     const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('product');
 
@@ -127,7 +127,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(noLinkedAttribute, true);
   });
 
-  Given('an invalid record', async function() {
+  Given('an invalid record', async function () {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
     currentRequestContract = requestContract;
@@ -135,7 +135,7 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with a reference entity single link attribute', async function() {
+  Given('a valid record with a reference entity single link attribute', async function () {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/record.json');
     currentRequestContract = requestContract;
@@ -143,7 +143,7 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('a valid record with a reference entity multiple link attribute', async function() {
+  Given('a valid record with a reference entity multiple link attribute', async function () {
     await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/record_collection.json');
     currentRequestContract = requestContract;
@@ -151,13 +151,13 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  Given('the user has the locale permission to edit the record', async function() {
+  Given('the user has the locale permission to edit the record', async function () {
     const requestContract = getRequestContract('Permission/Locale/ok.json');
 
     return await listenRequest(this.page, requestContract);
   });
 
-  const answerMedia = async function() {
+  const answerMedia = async function () {
     await this.page.on('request', request => {
       if ('http://pim.com/rest/media/' === request.url() && 'POST' === request.method()) {
         answerJson(
@@ -172,7 +172,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const askForRecord = async function(recordCode, referenceEntityIdentifier) {
+  const askForRecord = async function (recordCode, referenceEntityIdentifier) {
     await this.page.evaluate(
       async (referenceEntityIdentifier, recordCode) => {
         const Controller = require('pim/controller/record/edit');
@@ -190,7 +190,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isLoaded, true);
   };
 
-  const loadEditRecord = async function(requestContractPath) {
+  const loadEditRecord = async function (requestContractPath) {
     await answerChannelList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
@@ -202,7 +202,7 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
   };
 
-  When('the user ask for the record', async function() {
+  When('the user ask for the record', async function () {
     await answerLocaleList.apply(this);
     await answerChannelList.apply(this);
 
@@ -212,7 +212,7 @@ module.exports = async function(cucumber) {
     ]);
   });
 
-  Then('the record should be:', async function(updates) {
+  Then('the record should be:', async function (updates) {
     const record = convertItemTable(updates)[0];
     const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
@@ -226,7 +226,7 @@ module.exports = async function(cucumber) {
     }
   });
 
-  When('the user saves the valid record', async function() {
+  When('the user saves the valid record', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -235,7 +235,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a simple text value', async function() {
+  When('the user saves the valid record with a simple text value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -244,7 +244,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a number value', async function() {
+  When('the user saves the valid record with a number value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/number_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -253,7 +253,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a number out of range', async function() {
+  When('the user saves the valid record with a number out of range', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_number_out_of_range.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -262,7 +262,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user updates the valid record with an image value', async function() {
+  When('the user updates the valid record with an image value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
@@ -275,7 +275,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a simple option value', async function() {
+  When('the user saves the valid record with a simple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -284,7 +284,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a multiple option value', async function() {
+  When('the user saves the valid record with a multiple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -293,7 +293,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid simple text value', async function() {
+  When('the user saves the valid record with an invalid simple text value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_text_value.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -302,7 +302,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid simple option value', async function() {
+  When('the user saves the valid record with an invalid simple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_option_value.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -311,7 +311,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid multiple option value', async function() {
+  When('the user saves the valid record with an invalid multiple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_option_collection_value.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -320,7 +320,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with an invalid image value', async function() {
+  When('the user saves the valid record with an invalid image value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
@@ -333,7 +333,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user deletes the record', async function() {
+  When('the user deletes the record', async function () {
     await loadEditRecord.apply(this, ['Record/Delete/ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -344,7 +344,7 @@ module.exports = async function(cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user saves the valid record with a single record linked', async function() {
+  When('the user saves the valid record with a single record linked', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -353,7 +353,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user saves the valid record with a multiple record linked', async function() {
+  When('the user saves the valid record with a multiple record linked', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -362,19 +362,19 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  Then('the user should see a success message on the edit page', async function() {
+  Then('the user should see a success message on the edit page', async function () {
     const edit = await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the user should see the validation error on the edit page : {string}', async function(expectedError) {
+  Then('the user should see the validation error on the edit page : {string}', async function (expectedError) {
     const edit = await getElement(this.page, 'Edit');
     const error = await edit.getValidationMessageForCode();
     assert.strictEqual(error, expectedError);
   });
 
-  Then('the user should not see the delete button', async function() {
+  Then('the user should not see the delete button', async function () {
     await answerChannelList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
@@ -388,7 +388,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasDeleteButton, false);
   });
 
-  Then('the user should see a completeness bullet point on the required field: {string}', async function(field) {
+  Then('the user should see a completeness bullet point on the required field: {string}', async function (field) {
     const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
@@ -396,13 +396,13 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isFilled, false);
   });
 
-  When('the user fill the {string} field with: {string}', async function(fieldCode, value) {
+  When('the user fill the {string} field with: {string}', async function (fieldCode, value) {
     const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.' + fieldCode, value);
   });
 
-  Then('the user should not see a completeness bullet point on the required field: {string}', async function(field) {
+  Then('the user should not see a completeness bullet point on the required field: {string}', async function (field) {
     const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
@@ -410,14 +410,14 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isFilled, true);
   });
 
-  Then('the user should see the completeness percentage with a value of {string}', async function(value) {
+  Then('the user should see the completeness percentage with a value of {string}', async function (value) {
     const editPage = await getElement(this.page, 'Edit');
     const completenessValue = await editPage.getCompletenessValue();
 
     assert.strictEqual(completenessValue, 'Complete: ' + value);
   });
 
-  Then('the user cannot save the record', async function() {
+  Then('the user cannot save the record', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
 
     const header = await getElement(this.page, 'Header');
@@ -426,7 +426,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isCreateButtonVisible, false);
   });
 
-  Then('the user cannot update the simple text value', async function() {
+  Then('the user cannot update the simple text value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -436,7 +436,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isDisabledTextField, true);
   });
 
-  Then('the user cannot update the simple option value', async function() {
+  Then('the user cannot update the simple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -446,7 +446,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isDisabledSelectField, true);
   });
 
-  Then('the user cannot update the multiple option value', async function() {
+  Then('the user cannot update the multiple option value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -458,7 +458,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isDisabledSelectField, true);
   });
 
-  Then('the user cannot update the single record linked value', async function() {
+  Then('the user cannot update the single record linked value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');
@@ -470,7 +470,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isDisabledRecordSelectField, true);
   });
 
-  Then('the user cannot update the multiple record linked value', async function() {
+  Then('the user cannot update the multiple record linked value', async function () {
     await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
 
     const editPage = await getElement(this.page, 'Edit');

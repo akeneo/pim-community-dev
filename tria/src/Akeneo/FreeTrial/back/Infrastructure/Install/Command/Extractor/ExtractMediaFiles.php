@@ -16,7 +16,8 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor;
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\Pim\ApiClient\Api\MediaFileApiInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToWriteFile;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExtractMediaFiles
@@ -27,9 +28,9 @@ final class ExtractMediaFiles
 
     private OutputInterface $output;
 
-    private FilesystemInterface $filesystem;
+    private FilesystemOperator $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem, AkeneoPimClientInterface $apiClient, OutputInterface $output)
+    public function __construct(FilesystemOperator $filesystem, AkeneoPimClientInterface $apiClient, OutputInterface $output)
     {
         $this->apiClient = $apiClient;
         $this->output = $output;
@@ -48,7 +49,7 @@ final class ExtractMediaFiles
         foreach ($mediaFilesApi->all() as $mediaFile) {
             unset($mediaFile['_links']);
 
-            if ($this->filesystem->has($mediaFile['code'])) {
+            if ($this->filesystem->fileExists($mediaFile['code'])) {
                 $mediaFileContent = $this->filesystem->read($mediaFile['code']);
             } else {
                 $mediaFileContent = $this->downloadMediaFile($mediaFile, $mediaFilesApi);
@@ -70,8 +71,9 @@ final class ExtractMediaFiles
         $options['ContentType'] = $mediaFileData['mime_type'];
         $options['metadata']['contentType'] = $mediaFileData['mime_type'];
 
-        $isFileWritten = $this->filesystem->put($mediaFileData['code'], strval($mediaFileContent), $options);
-        if (!$isFileWritten) {
+        try {
+            $this->filesystem->write($mediaFileData['code'], strval($mediaFileContent), $options);
+        } catch (UnableToWriteFile $exception) {
             throw new \Exception('Failed to write media-file ' . $mediaFileData['code']);
         }
 

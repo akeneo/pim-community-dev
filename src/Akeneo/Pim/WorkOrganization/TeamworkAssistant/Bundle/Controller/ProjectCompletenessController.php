@@ -13,10 +13,9 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Controller;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Security\ProjectVoter;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -26,26 +25,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProjectCompletenessController
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $projectRepository;
+    protected ProjectRepositoryInterface $projectRepository;
+    protected ProjectCompletenessRepositoryInterface $projectCompletenessRepository;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected NormalizerInterface $projectCompletenessNormalizer;
 
-    /** @var ProjectCompletenessRepositoryInterface */
-    protected $projectCompletenessRepository;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var NormalizerInterface */
-    protected $projectCompletenessNormalizer;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface  $projectRepository
-     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param AuthorizationCheckerInterface          $authorizationChecker
-     * @param NormalizerInterface                    $projectCompletenessNormalizer
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $projectRepository,
+        ProjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         NormalizerInterface $projectCompletenessNormalizer
@@ -56,13 +42,7 @@ class ProjectCompletenessController
         $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
 
-    /**
-     * @param int     $identifier
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function showAction($identifier, Request $request)
+    public function showAction(string $identifier, Request $request): JsonResponse
     {
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
@@ -70,7 +50,8 @@ class ProjectCompletenessController
             return new JsonResponse(null, 404);
         }
 
-        if (!$this->authorizationChecker->isGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project)) {
+        if (!$this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)
+            && !$this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
             throw new AccessDeniedException();
         }
 

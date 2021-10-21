@@ -46,18 +46,16 @@ const createPriceCollectionAttributeCondition: ConditionFactory = async (
   );
 };
 
-const getPriceCollectionAttributeConditionModule: ConditionModuleGuesser = async (
-  json,
-  router
-) => {
-  return getAttributeConditionModule(
-    json,
-    router,
-    PriceCollectionAttributeOperators,
-    [AttributeType.PRICE_COLLECTION],
-    PriceCollectionAttributeConditionLine
-  );
-};
+const getPriceCollectionAttributeConditionModule: ConditionModuleGuesser =
+  async (json, router) => {
+    return getAttributeConditionModule(
+      json,
+      router,
+      PriceCollectionAttributeOperators,
+      [AttributeType.PRICE_COLLECTION],
+      PriceCollectionAttributeConditionLine
+    );
+  };
 
 export {
   PriceCollectionAttributeOperators,

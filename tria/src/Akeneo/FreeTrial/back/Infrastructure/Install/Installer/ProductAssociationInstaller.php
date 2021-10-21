@@ -16,7 +16,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 final class ProductAssociationInstaller implements FixtureInstaller
@@ -27,13 +27,13 @@ final class ProductAssociationInstaller implements FixtureInstaller
 
     private ObjectUpdaterInterface $updater;
 
-    private SaverInterface $saver;
+    private BulkSaverInterface $saver;
 
     public function __construct(
         FixtureReader $fixtureReader,
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $updater,
-        SaverInterface $saver
+        BulkSaverInterface $saver
     ) {
         $this->fixtureReader = $fixtureReader;
         $this->productRepository = $productRepository;
@@ -43,6 +43,7 @@ final class ProductAssociationInstaller implements FixtureInstaller
 
     public function install(): void
     {
+        $products = [];
         foreach ($this->fixtureReader->read() as $productData) {
             $product = $this->productRepository->findOneByIdentifier($productData['identifier']);
 
@@ -51,7 +52,9 @@ final class ProductAssociationInstaller implements FixtureInstaller
             }
 
             $this->updater->update($product, ['associations' => $productData['associations']]);
-            $this->saver->save($product);
+            $products[] = $product;
         }
+
+        $this->saver->saveAll($products);
     }
 }

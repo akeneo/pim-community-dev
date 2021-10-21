@@ -7,7 +7,7 @@ use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTest
 
 abstract class AbstractMediaFileTestCase extends AbstractProductTestCase
 {
-    private $filePaths = [];
+    private array $filePaths = [];
 
     /**
      * @param \SplFileInfo $file
@@ -26,11 +26,12 @@ abstract class AbstractMediaFileTestCase extends AbstractProductTestCase
      */
     protected function tearDown(): void
     {
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $filesystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+        $filesystem = $this->get('akeneo_file_storage.file_storage.filesystem_provider')->getFilesystem(
+            FileStorage::CATALOG_STORAGE_ALIAS
+        );
 
         foreach ($this->filePaths as $pathFile) {
-            if ($filesystem->has($pathFile)) {
+            if ($filesystem->fileExists($pathFile)) {
                 $filesystem->delete($pathFile);
             }
         }

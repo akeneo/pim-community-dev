@@ -22,17 +22,23 @@ class PropertySource implements SourceInterface
 
     private string $uuid;
     private string $name;
+    private ?string $channelReference;
+    private ?string $localeReference;
     private OperationCollection $operations;
     private SelectionInterface $selection;
 
     public function __construct(
         string $uuid,
         string $name,
+        ?string $channelReference,
+        ?string $localeReference,
         OperationCollection $operations,
         SelectionInterface $selection
     ) {
         $this->uuid = $uuid;
         $this->name = $name;
+        $this->channelReference = $channelReference;
+        $this->localeReference = $localeReference;
         $this->operations = $operations;
         $this->selection = $selection;
     }
@@ -45,6 +51,16 @@ class PropertySource implements SourceInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getChannel(): ?string
+    {
+        return $this->channelReference;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->localeReference;
     }
 
     public function getOperationCollection(): OperationCollection

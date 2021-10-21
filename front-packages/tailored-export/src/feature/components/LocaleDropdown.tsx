@@ -24,6 +24,7 @@ const LocaleDropdown = ({label, value, locales, onChange, validationErrors, chil
   return (
     <Field label={label ?? translate('pim_common.locale')}>
       <SelectInput
+        invalid={0 < validationErrors.length}
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}

@@ -1,3 +1,4 @@
+import {Channel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 import {getDefaultAssociationTypeSource, getDefaultPropertySource, getDefaultAttributeSource} from './Source';
 import {getDefaultAssetCollectionSource} from '../components/SourceDetails/AssetCollection/model';
@@ -22,6 +23,31 @@ import {getDefaultTextSource} from '../components/SourceDetails/Text/model';
 import {getDefaultSimpleAssociationTypeSource} from '../components/SourceDetails/SimpleAssociationType/model';
 import {getDefaultQuantifiedAssociationTypeSource} from '../components/SourceDetails/QuantifiedAssociationType/model';
 import {getDefaultCodeSource} from '../components/SourceDetails/Code/model';
+import {getDefaultQualityScoreSource} from '../components/SourceDetails/QualityScore/model';
+
+const channels: Channel[] = [
+  {
+    code: 'ecommerce',
+    labels: {fr_FR: 'Ecommerce'},
+    locales: [
+      {
+        code: 'en_US',
+        label: 'English (United States)',
+        region: 'US',
+        language: 'en',
+      },
+    ],
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
+  },
+];
 
 const getAttribute = (type: string): Attribute => ({
   code: 'nice_attribute',
@@ -38,14 +64,18 @@ jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
 }));
 
 test('it can get the default property source by property name', () => {
-  expect(getDefaultPropertySource('enabled')).toEqual(getDefaultEnabledSource());
-  expect(getDefaultPropertySource('parent')).toEqual(getDefaultParentSource());
-  expect(getDefaultPropertySource('groups')).toEqual(getDefaultGroupsSource());
-  expect(getDefaultPropertySource('code')).toEqual(getDefaultCodeSource());
-  expect(getDefaultPropertySource('categories')).toEqual(getDefaultCategoriesSource());
-  expect(getDefaultPropertySource('family')).toEqual(getDefaultFamilySource());
-  expect(getDefaultPropertySource('family_variant')).toEqual(getDefaultFamilyVariantSource());
-  expect(() => getDefaultPropertySource('unknown')).toThrowError();
+  expect(getDefaultPropertySource('enabled', channels)).toEqual(getDefaultEnabledSource());
+  expect(getDefaultPropertySource('parent', channels)).toEqual(getDefaultParentSource());
+  expect(getDefaultPropertySource('groups', channels)).toEqual(getDefaultGroupsSource());
+  expect(getDefaultPropertySource('code', channels)).toEqual(getDefaultCodeSource());
+  expect(getDefaultPropertySource('categories', channels)).toEqual(getDefaultCategoriesSource());
+  expect(getDefaultPropertySource('family', channels)).toEqual(getDefaultFamilySource());
+  expect(getDefaultPropertySource('family_variant', channels)).toEqual(getDefaultFamilyVariantSource());
+  expect(getDefaultPropertySource('quality_score', channels)).toEqual(
+    getDefaultQualityScoreSource('ecommerce', 'en_US')
+  );
+  expect(() => getDefaultPropertySource('unknown', channels)).toThrowError('Invalid property source "unknown"');
+  expect(() => getDefaultPropertySource('quality_score', [])).toThrowError('Missing channel or locale');
 });
 
 test('it can get the default attribute source by attribute type', () => {

@@ -10,9 +10,6 @@ akeneo.tailored_export:
         placeholder: Seleccionar algunas configuraciones regionales
         remove: Eliminar la configuración regional
     quality_score:
-      quality_score:
-        label: Puntuación de calidad
-        remove: Quitar puntuación de calidad
       locales:
         label: Definir las configuraciones regionales para la puntuación de calidad
   form:
@@ -92,7 +89,6 @@ akeneo.tailored_export:
             locale: Si el atributo usado como etiqueta tiene un valor por configuración regional, puede seleccionar una configuración regional específica.
             channel: Si el atributo utilizado como etiqueta tiene un valor por canal, puede seleccionar un canal específico.
         measurement:
-          information: Para este atributo, puede exportar el valor, el código de la unidad o la etiqueta de la unidad.
           value: Valor
           unit_locale: Configuración regional de unidad
           unit_code: Código de unidad
@@ -131,8 +127,6 @@ akeneo.tailored_export:
           no: Valor de reemplazo de No
           edit_mapping: Editar valores de reemplazo
           modal:
-            title: Reemplazo
-            subtitle: Administrar opciones
             no_result:
               title: Lo sentimos, no hay ningún valor en este atributo
             empty_result:

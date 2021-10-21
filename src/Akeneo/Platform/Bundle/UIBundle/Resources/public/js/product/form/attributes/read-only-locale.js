@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pim/fetcher-registry'], function(
+define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pim/fetcher-registry'], function (
   $,
   _,
   Backbone,
@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pi
     /**
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -23,12 +23,12 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pi
      *
      * @param {object} event
      */
-    addFieldExtension: function(event) {
+    addFieldExtension: function (event) {
       event.promises.push(
         FetcherRegistry.getFetcher('permission')
           .fetchAll()
           .then(
-            function(permissions) {
+            function (permissions) {
               var field = event.field;
 
               if (!this.isAttributeEditable(permissions, field.attribute, field.context.locale)) {
@@ -52,7 +52,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pi
      *
      * @return {Boolean}
      */
-    isAttributeEditable: function(permissions, attribute, locale) {
+    isAttributeEditable: function (permissions, attribute, locale) {
       if (attribute.localizable) {
         var localePermission = _.findWhere(permissions.locales, {code: locale});
 

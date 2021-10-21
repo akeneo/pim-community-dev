@@ -8,90 +8,80 @@ import userEvent from '@testing-library/user-event';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
-const emptyDataProvider = {channelFetcher: {fetchAll: () => new Promise(() => {})}};
+const emptyDataProvider = {channelFetcher: {fetchAll: () => new Promise(jest.fn())}};
 
 test('It displays a search input with an initialized value', async () => {
   const expectedSearchValue = 'SEARCH VALUE';
-  await act(async () => {
-    renderWithProviders(
-      <SearchBar
-        dataProvider={emptyDataProvider}
-        searchValue={expectedSearchValue}
-        context={{}}
-        resultCount={0}
-        onSearchChange={() => {}}
-        onContextChange={() => {}}
-      />
-    );
-  });
+
+  renderWithProviders(
+    <SearchBar
+      dataProvider={emptyDataProvider}
+      searchValue={expectedSearchValue}
+      context={{}}
+      resultCount={0}
+      onSearchChange={jest.fn()}
+      onContextChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByDisplayValue(expectedSearchValue)).toBeInTheDocument();
 });
 
 test('It triggers the onSearchChange when the search field changes', async () => {
   jest.useFakeTimers();
+  const handleSearchChange = jest.fn();
 
-  let actualValue = '';
-  await act(async () => {
-    renderWithProviders(
-      <SearchBar
-        dataProvider={emptyDataProvider}
-        searchValue={''}
-        context={{}}
-        resultCount={0}
-        onSearchChange={newValue => {
-          actualValue = newValue;
-        }}
-        onContextChange={() => {}}
-      />
-    );
-  });
+  renderWithProviders(
+    <SearchBar
+      dataProvider={emptyDataProvider}
+      searchValue={''}
+      context={{}}
+      resultCount={0}
+      onSearchChange={handleSearchChange}
+      onContextChange={jest.fn()}
+    />
+  );
 
   const expectedValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search');
-  await act(async () => {
-    await userEvent.type(searchInput, expectedValue);
+  userEvent.type(searchInput, expectedValue);
+
+  act(() => {
     jest.runAllTimers();
   });
 
-  expect(actualValue).toEqual(expectedValue);
+  expect(handleSearchChange).toHaveBeenCalledWith(expectedValue);
 });
 
 test('It triggers the onSearchChange when the search field is emptied', async () => {
   jest.useFakeTimers();
+  const handleSearchChange = jest.fn();
 
-  let actualValue = '';
-  await act(async () => {
-    renderWithProviders(
-      <SearchBar
-        dataProvider={emptyDataProvider}
-        searchValue={''}
-        context={{}}
-        resultCount={0}
-        onSearchChange={newValue => {
-          actualValue = newValue;
-        }}
-        onContextChange={() => {}}
-      />
-    );
-  });
+  renderWithProviders(
+    <SearchBar
+      dataProvider={emptyDataProvider}
+      searchValue={''}
+      context={{}}
+      resultCount={0}
+      onSearchChange={handleSearchChange}
+      onContextChange={jest.fn()}
+    />
+  );
 
   const expectedValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search');
-  await act(async () => {
-    await userEvent.type(searchInput, expectedValue);
+  userEvent.type(searchInput, expectedValue);
+  act(() => {
     jest.runAllTimers();
   });
 
-  expect(actualValue).toEqual(expectedValue);
-
-  await act(async () => {
-    // https://github.com/testing-library/user-event/issues/182
-    await userEvent.type(searchInput, '', {allAtOnce: true});
+  expect(handleSearchChange).toHaveBeenCalledWith(expectedValue);
+  userEvent.clear(searchInput);
+  act(() => {
     jest.runAllTimers();
   });
 
-  expect(actualValue).toEqual('');
+  expect(handleSearchChange).toBeCalledWith('');
 });
 
 test('It displays a result count', () => {
@@ -102,8 +92,8 @@ test('It displays a result count', () => {
       searchValue=""
       context={{}}
       resultCount={expectedResultCount}
-      onSearchChange={() => {}}
-      onContextChange={() => {}}
+      onSearchChange={jest.fn()}
+      onContextChange={jest.fn()}
     />
   );
 
@@ -111,7 +101,7 @@ test('It displays a result count', () => {
 });
 
 test('It does not load channels on first rendering', () => {
-  const mockedDataProvider = {channelFetcher: {fetchAll: () => new Promise(() => {})}};
+  const mockedDataProvider = {channelFetcher: {fetchAll: () => new Promise(jest.fn())}};
 
   const {result} = renderHook(() => useChannels(mockedDataProvider.channelFetcher));
 

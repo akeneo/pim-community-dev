@@ -128,7 +128,7 @@ define([
         });
     },
 
-    getChoiceUrl: function(attribute) {
+    getChoiceUrl: function (attribute) {
       return Routing.generate(this.config.url, {referenceEntityIdentifier: attribute.reference_data_name});
     },
 

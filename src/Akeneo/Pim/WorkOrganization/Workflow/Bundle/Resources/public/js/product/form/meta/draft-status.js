@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta/draft-status'], function(
+define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta/draft-status'], function (
   _,
   __,
   BaseForm,
@@ -14,7 +14,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
     /**
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -23,7 +23,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       var product = this.getFormData();
       var html = '';
 
@@ -46,7 +46,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
      *
      * @returns {string}
      */
-    getDraftStatus: function(product) {
+    getDraftStatus: function (product) {
       var status;
 
       switch (product.meta.draft_status) {

@@ -35,17 +35,16 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
 
-  const [associationValues, setAssociationValues] = React.useState<
-    Map<
-      QuantifiedAssociationTarget,
-      | {identifier: ProductIdentifier; quantity: number}[]
-      | {identifier: ProductModelCode; quantity: number}[]
-    >
-  >();
-  const [
-    currentAssociationTarget,
-    setCurrentAssociationTarget,
-  ] = React.useState<QuantifiedAssociationTarget>();
+  const [associationValues, setAssociationValues] =
+    React.useState<
+      Map<
+        QuantifiedAssociationTarget,
+        | {identifier: ProductIdentifier; quantity: number}[]
+        | {identifier: ProductModelCode; quantity: number}[]
+      >
+    >();
+  const [currentAssociationTarget, setCurrentAssociationTarget] =
+    React.useState<QuantifiedAssociationTarget>();
 
   React.useEffect(() => {
     const associationValuesArray: any = [];
@@ -188,8 +187,9 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
                 }`
               )} ${required ? translate('pim_common.required_label') : ''}`}
             />
-            {(currentAssociationTargetOrDefault() as QuantifiedAssociationTarget)
-              .target === 'products' && (
+            {(
+              currentAssociationTargetOrDefault() as QuantifiedAssociationTarget
+            ).target === 'products' && (
               <QuantifiedAssociationsIdentifiersSelector
                 entityType='product'
                 value={
@@ -208,8 +208,9 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
                 }
               />
             )}
-            {(currentAssociationTargetOrDefault() as QuantifiedAssociationTarget)
-              .target === 'product_models' && (
+            {(
+              currentAssociationTargetOrDefault() as QuantifiedAssociationTarget
+            ).target === 'product_models' && (
               <QuantifiedAssociationsIdentifiersSelector
                 entityType='product_model'
                 value={

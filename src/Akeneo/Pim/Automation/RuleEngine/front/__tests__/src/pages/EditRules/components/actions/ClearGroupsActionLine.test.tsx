@@ -5,10 +5,7 @@ import {locales, scopes, uiLocales} from '../../../../factories';
 
 describe('ClearGroupsActionLine', () => {
   it('should display the clear groups action line', async () => {
-    const {
-      findByText,
-      findAllByText,
-    } = renderWithProviders(
+    const {findByText, findAllByText} = renderWithProviders(
       <ClearGroupsActionLine
         currentCatalogLocale={'en_US'}
         lineNumber={1}

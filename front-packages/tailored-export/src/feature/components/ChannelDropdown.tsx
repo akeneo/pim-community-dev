@@ -24,6 +24,7 @@ const ChannelDropdown = ({value, children, channels, validationErrors, onChange}
   return (
     <Field label={translate('pim_common.channel')}>
       <SelectInput
+        invalid={0 < validationErrors.length}
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}

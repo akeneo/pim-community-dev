@@ -15,49 +15,66 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 
 use Akeneo\FreeTrial\Infrastructure\Install\Reader\FixtureReader;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductInstaller implements FixtureInstaller
 {
+    private const DEFAULT_BATCH_SIZE = 100;
+
     private ProductBuilderInterface $productBuilder;
 
     private ObjectUpdaterInterface $updater;
 
-    private SaverInterface $saver;
+    private BulkSaverInterface $saver;
 
     private ValidatorInterface $productValidator;
 
     private FixtureReader $fixturesReader;
 
+    private int $batchSize;
+
     public function __construct(
         FixtureReader $fixturesReader,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        ValidatorInterface $productValidator
+        BulkSaverInterface $saver,
+        ValidatorInterface $productValidator,
+        int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
         $this->productBuilder = $productBuilder;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->productValidator = $productValidator;
         $this->fixturesReader = $fixturesReader;
+        $this->batchSize = $batchSize;
     }
 
     public function install(): void
     {
+        $products = [];
         foreach ($this->fixturesReader->read() as $productData) {
             $productData['values']['sku'] = [[
                 'locale' => null,
                 'scope' => null,
                 'data' => $productData['identifier'],
             ]];
-            $this->addProduct($productData);
+            $products[] = $this->createProduct($productData);
+
+            if (count($products) % $this->batchSize === 0) {
+                $this->saver->saveAll($products);
+                $products = [];
+            }
+        }
+
+        if (!empty($products)) {
+            $this->saver->saveAll($products);
         }
     }
 
-    private function addProduct(array $productData): void
+    private function createProduct(array $productData): ProductInterface
     {
         $product = $this->productBuilder->createProduct();
         $this->updater->update($product, $productData);
@@ -71,6 +88,6 @@ final class ProductInstaller implements FixtureInstaller
             ));
         }
 
-        $this->saver->save($product);
+        return $product;
     }
 }

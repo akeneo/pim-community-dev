@@ -26,7 +26,7 @@ fi
 PFID="${TYPE}-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
-NAMESPACE_PATH=$(pwd)
+DEPLOYMENT_DIR=$(realpath $(dirname $0)/..)
 #
 
 echo "1 - initializing terraform in $(pwd)"
@@ -41,8 +41,8 @@ if [[ ${PFID} =~ "grth" ]]; then
   # if //deployments doesn't exist we change it to /terraform/deployments
   echo "Source path : ${SOURCE_PATH}"
   echo "Check if bucket path \"${BUCKET_PATH}\" exists"
-  BUCKET_EXIST=$(gsutil ls ${BUCKET_PATH} && echo "1" || echo "0")
-  if [[ ${BUCKET_EXIST} -eq 0 ]]; then
+  BUCKET_EXIST=$(gsutil ls ${BUCKET_PATH})
+  if [[ $? -ne 0 ]]; then
     echo "Bucket path \"${BUCKET_PATH}\" doesn't exist"
     echo "Change //deployments to /terraform/deployment"
     sed -i 's/\/deployments\/terraform/\/terraform\/deployments\/terraform/g' ${PWD}/main.tf.json
@@ -50,28 +50,22 @@ if [[ ${PFID} =~ "grth" ]]; then
 fi
 
 if [[ ${PFID} =~ "tria" ]]; then
-  echo "${PWD}/"
-  gsutil cp gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}/default.tfstate ${PWD}/
-  TRIA_VAR=$(cat ${PWD}/default.tfstate | grep "akeneo_connect_saml_entity_id" || echo "")
-
-  if [[ -z "${TRIA_VAR}" ]]; then
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
-    yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
-  fi
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_entity_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_certificate
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_client_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_certificate_base64
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_saml_sp_private_key_base64
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_secret
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.akeneo_connect_api_client_password
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_base_uri
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_client_id
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_password
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
+  yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
 fi
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
-find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
+find ${DEPLOYMENT_DIR} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 export TF_VAR_force_destroy_storage=true
 terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
@@ -86,13 +80,21 @@ LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | s
 
 if helm3 list -n "${PFID}" | grep "${PFID}"; then
   helm3 uninstall ${PFID} -n ${PFID}
-
-  echo "Wait MySQL deletion"
-  POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
-  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
 fi
 
-terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
+echo "Remove Deployments"
+# Quick fix and to remove after actual fix
+LIST_DEPLOYMENTS=$(kubectl get deployment --no-headers --namespace=${PFID} | awk '{print $1}')
+if [[ ! -z "${LIST_DEPLOYMENTS}" ]]; then
+  kubectl delete deployment --grace-period=0 --namespace ${PFID} --ignore-not-found=true ${LIST_DEPLOYMENTS}
+fi
+
+echo "Remove Statefulset"
+# Quick fix and to remove after actual fix
+LIST_STATEFULSET=$(kubectl get statefulset --no-headers --namespace=${PFID} | awk '{print $1}')
+if [[ ! -z "${LIST_STATEFULSET}" ]]; then
+  kubectl delete statefulset --grace-period=0 --namespace ${PFID} --ignore-not-found=true ${LIST_STATEFULSET}
+fi
 
 echo "Remove PODS"
 # Quick fix and to remove after actual fix
@@ -100,6 +102,15 @@ LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} | awk '{print $1}'
 if [[ ! -z "${LIST_PODS}" ]]; then
   kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_PODS}
 fi
+
+echo "Wait MySQL deletion"
+POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+if [[ ! -z "${POD_MYSQL}" ]]; then
+  kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete
+fi
+
+echo "Running terraform destroy"
+terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "3 - Removing shared state files"
 # I'm sorry for that, but it's the max time communicate by google to apply consistent between list and delete operation on versionning bucket. See: https://cloud.google.com/storage/docs/object-versioning
@@ -156,4 +167,4 @@ if [[ ${LOGGING_METRIC} != "" ]]; then
 fi
 
 echo "6 - Delete namespace"
-kubectl delete ns ${PFID}
+kubectl get ns ${PFID} && kubectl delete ns ${PFID}

@@ -64,8 +64,8 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
     private function assertRequestContractRespected(): void
     {
         $requestContract = sprintf(
-            '%s/../src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Product/ok.json',
-            $this->getParameter('kernel.root_dir')
+            '%s/src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Product/ok.json',
+            $this->getParameter('kernel.project_dir')
         );
 
         /** @var JsonResponse $response */

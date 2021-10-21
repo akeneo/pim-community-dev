@@ -69,8 +69,10 @@ const AssetFamilyTransformationEditor = ({
         schema={schema}
         ajv={ajv}
       />
-      {getErrorsView(errors, 'transformations', (field: string) => (error: ValidationError) =>
-        error.propertyPath.indexOf(field) === 0
+      {getErrorsView(
+        errors,
+        'transformations',
+        (field: string) => (error: ValidationError) => error.propertyPath.indexOf(field) === 0
       )}
     </div>
   );

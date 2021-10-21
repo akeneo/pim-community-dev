@@ -9,6 +9,7 @@ find-legacy-translations: #Doc: run find_legacy_translations.sh script
 .PHONY: lint-back
 lint-back: #Doc: launch all PHP linter tests
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration=src/Akeneo/FreeTrial/tests/back/phpstan.neon.dist
 
 ### Unit tests
 .PHONY: unit-back
