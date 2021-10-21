@@ -40,16 +40,22 @@ type LocaleType = {
 const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
   key: 'locales',
   label: translate('pim_permissions.widget.entity.locale.label'),
-  renderForm: (onChange, initialState: PermissionFormReducer.State | undefined) => {
+  renderForm: (
+    onPermissionsChange,
+    initialState: PermissionFormReducer.State | undefined,
+    readOnly: boolean | undefined
+  ) => {
     const [state, dispatch] = useReducer(
       PermissionFormReducer.reducer,
       initialState ?? PermissionFormReducer.initialState
     );
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
+    readOnly = readOnly ?? false;
+
     useEffect(() => {
-      onChange(state);
-    }, [state]);
+      readOnly !== true && onPermissionsChange(state);
+    }, [readOnly, state]);
 
     useEffect(() => {
       FetcherRegistry.getFetcher('locale')
@@ -78,7 +84,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
           disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
           allByDefaultIsSelected={state.edit.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -92,7 +98,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions')}
+          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
