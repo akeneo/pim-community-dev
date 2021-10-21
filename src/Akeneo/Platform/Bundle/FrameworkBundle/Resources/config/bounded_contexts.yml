@@ -26,14 +26,16 @@ parameters:
 
         'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
         'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
-        'Akeneo\Platform\CommunicationChannel': 'Connectivity'
+        'Akeneo\Platform\CommunicationChannel': 'CommunicationChannel'
         'Akeneo\Platform\TailoredExport': 'Tailored Export'
         'Akeneo\Platform': 'Platform'
 
         'Akeneo\ReferenceEntity': 'Reference Entity'
         'Akeneo\SharedCatalog': 'Shared Catalogs'
 
-        'Akeneo\Tool\Bundle\ConnectorBundle': 'Connectivity'
+        # Should probably be part of a "Job" context
+        'Akeneo\Tool\Bundle\ConnectorBundle': 'Tool'
+
         'Akeneo\Tool\Bundle\RuleEngineBundle': 'Rule Engine'
         'Akeneo\Tool\Bundle\VersioningBundle': 'Workflow'
         'Akeneo\Tool\Bundle': 'Tool'
