@@ -233,9 +233,9 @@ ifeq ($(INSTANCE_NAME_PREFIX),beta)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.limits.memory "2048Mi"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.memory "2048Mi"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.cpu "200m"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.job-consumer-process.resources.limits.memory "2048Mi"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.job-consumer-process.resources.requests.memory "2048Mi"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.job-consumer-process.resources.requests.cpu "200m"
 endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
