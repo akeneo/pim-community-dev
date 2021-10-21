@@ -7,11 +7,32 @@ jest.mock('../../../../back/Infrastructure/Symfony/Resources/public/js/onboardin
 const FeatureFlags = require('pim/feature-flags');
 FeatureFlags.isEnabled.mockImplementation(() => true);
 
+const UserContext = require('pim/user-context');
+UserContext.get.mockImplementation((data: string) => {
+  switch (data) {
+    case 'username':
+      return 'julia';
+    case 'email':
+      return 'julia@akeneo.com';
+    case 'first_name':
+      return 'julia';
+    case 'last_name':
+      return 'Stark';
+    default:
+      return data;
+  }
+});
+
 const mockedAppcues = {
+  identify: jest.fn(),
+  page: jest.fn(),
   track: jest.fn(),
+  on: jest.fn(),
+  loadLaunchpad: jest.fn(),
 };
 
 beforeAll(() => {
+  // @ts-ignore;
   getAppcuesAgent.mockResolvedValue(mockedAppcues);
 });
 
@@ -19,6 +40,31 @@ beforeEach(() => {
   jest.clearAllMocks();
   jest.restoreAllMocks();
 });
+
+describe('Appcues init', () => {
+  test('it throws an error when appcues is not initialized', async () => {
+    // @ts-ignore;
+    getAppcuesAgent.mockResolvedValue(null);
+
+    await expect(AppcuesOnboarding.init()).rejects.toEqual(new Error('Appcues should be initialized'));
+  });
+
+  test('it set up appcues onboarding when appcues is initialized', async () => {
+    // @ts-ignore;
+    getAppcuesAgent.mockResolvedValue(mockedAppcues);
+
+    await AppcuesOnboarding.init();
+
+    expect(mockedAppcues.identify).toHaveBeenCalledWith('julia', {
+      email: 'julia@akeneo.com',
+      first_name: 'julia',
+      last_name: 'Stark'
+    });
+    expect(mockedAppcues.identify).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.loadLaunchpad).toHaveBeenCalledTimes(1);
+    expect(mockedAppcues.on).toHaveBeenCalledTimes(3);
+  });
+})
 
 describe('Random event', () => {
   test('a random event has been tracked', async () => {

@@ -57,28 +57,6 @@ const FLOW_GUIDED_TOUR_ID = 'd413bbd2-02cf-4664-bcd2-1e799624f639';
 const CATEGORY_PAIN_MANAGEMENT_CODE = '008_1_1';
 
 const AppcuesOnboarding: PimOnboarding = {
-  registerUser: () => {
-    getAppcuesAgent().then(appcues => {
-      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
-        return;
-      }
-
-      appcues.identify(UserContext.get('username'), {
-        'email': UserContext.get('email'),
-        'first_name': UserContext.get('first_name'),
-        'last_name': UserContext.get('last_name'),
-      });
-    });
-  },
-  page: () => {
-    getAppcuesAgent().then(appcues => {
-      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
-        return;
-      }
-
-      appcues.page();
-    });
-  },
   track: (event: string, eventOptions?: EventOptions) => {
     getAppcuesAgent().then(appcues => {
       if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
@@ -380,53 +358,46 @@ const AppcuesOnboarding: PimOnboarding = {
       }
     });
   },
-  on: (eventName: string, _callback: (event: object) => void) => {
-    getAppcuesAgent().then(appcues => {
-      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
-        return;
-      }
+  init: async () => {
+    const appcues = await getAppcuesAgent();
+    if (appcues === null) {
+      throw new Error('Appcues should be initialized');
+    }
 
-      appcues.on(eventName, _callback);
-    });
-  },
-  loadLaunchpad: (element: string) => {
-    getAppcuesAgent().then(appcues => {
-      if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
-        return;
-      }
-
-      appcues.loadLaunchpad(element, {
-        position: "left",
-        header: "<p style='font-size: 18px;'>Tutorials</p>",
-        icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
-      });
-    });
-  },
-  init: () => {
     Mediator.on('route_complete', async () => {
-      AppcuesOnboarding.page();
-
-      AppcuesOnboarding.on('checklist_completed', (event: Event) => {
-        AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
-      });
-
-      AppcuesOnboarding.on('checklist_dismissed', (event: Event) => {
-        AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
-      });
-
-      AppcuesOnboarding.on('flow_started', async (event: Event) => {
-        if (event.flowId === FLOW_GUIDED_TOUR_ID) {
-          // Set the "Pain Management" category id in session in order to deploy it when the user has launched the flow "FT - Guided Tour"
-          const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: CATEGORY_PAIN_MANAGEMENT_CODE});
-          const categoryResponse = await fetch(categoryRoute);
-          const categoryPainManagement: Category = await categoryResponse.json();
-
-          sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id}));
-        }
-      });
+      appcues.page();
     });
-    AppcuesOnboarding.registerUser();
-    AppcuesOnboarding.loadLaunchpad('#appcues-launchpad-btn');
+
+    appcues.identify(UserContext.get('username'), {
+      'email': UserContext.get('email'),
+      'first_name': UserContext.get('first_name'),
+      'last_name': UserContext.get('last_name'),
+    });
+
+    appcues.loadLaunchpad('#appcues-launchpad-btn', {
+      position: 'left',
+      header: "<p style='font-size: 18px;'>Tutorials</p>",
+      icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
+    });
+
+    appcues.on('checklist_completed', (event: Event) => {
+      AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
+    });
+
+    appcues.on('checklist_dismissed', (event: Event) => {
+      AppcuesOnboarding.track(event.name + ': ' + event.checklistName);
+    });
+
+    appcues.on('flow_started', async (event: Event) => {
+      if (event.flowId === FLOW_GUIDED_TOUR_ID) {
+        // Set the "Pain Management" category id in session in order to deploy it when the user has launched the flow "FT - Guided Tour"
+        const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: CATEGORY_PAIN_MANAGEMENT_CODE});
+        const categoryResponse = await fetch(categoryRoute);
+        const categoryPainManagement: Category = await categoryResponse.json();
+
+        sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id}));
+      }
+    });
   },
 };
 
