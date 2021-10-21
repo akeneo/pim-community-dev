@@ -21,21 +21,6 @@ export type State = {
     };
 };
 
-export const initialState = {
-    own: {
-        all: false,
-        identifiers: [],
-    },
-    edit: {
-        all: false,
-        identifiers: [],
-    },
-    view: {
-        all: false,
-        identifiers: [],
-    },
-};
-
 export enum Actions {
     ENABLE_ALL_OWN = 'ENABLE_ALL_OWN',
     DISABLE_ALL_OWN = 'DISABLE_ALL_OWN',
@@ -54,7 +39,7 @@ export enum Actions {
     REMOVE_FROM_VIEW = 'REMOVE_FROM_VIEW',
 }
 
-type PermissionFormAction =
+export type Action =
     | {type: Actions.ENABLE_ALL_OWN}
     | {type: Actions.DISABLE_ALL_OWN}
     | {type: Actions.ENABLE_ALL_EDIT}
@@ -71,7 +56,7 @@ type PermissionFormAction =
     | {type: Actions.REMOVE_FROM_EDIT; identifier: string}
     | {type: Actions.REMOVE_FROM_VIEW; identifier: string};
 
-export const reducer = (state: State, action: PermissionFormAction): State => {
+export const reducer = <T extends State>(state: T, action: Action): T => {
     switch (action.type) {
         case Actions.ENABLE_ALL_OWN:
             return {
