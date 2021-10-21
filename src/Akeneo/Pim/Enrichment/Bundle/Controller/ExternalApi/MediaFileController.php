@@ -11,8 +11,6 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -238,8 +236,6 @@ class MediaFileController
 
         try {
             return $this->fileFetcher->fetch($fs, $filename, $options);
-        } catch (FileTransferException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $filename), $e);
         }
@@ -434,14 +430,7 @@ class MediaFileController
             throw new UnprocessableEntityHttpException('Property "file" is required.');
         }
 
-        try {
-            $fileInfo = $this->fileStorer->store($files->get('file'), FileStorage::CATALOG_STORAGE_ALIAS, true);
-        } catch (FileTransferException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (FileRemovalException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
+        $fileInfo = $this->fileStorer->store($files->get('file'), FileStorage::CATALOG_STORAGE_ALIAS, true);
         $violations = $this->validator->validate($fileInfo);
         if ($violations->count() > 0) {
             throw new ViolationHttpException($violations);
