@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
 {
@@ -45,61 +46,67 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
             throw new \InvalidArgumentException('Invalid constraint');
         }
 
-        $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, new Collection(
-            [
-                'fields' => [
-                    'type' => new Choice(
-                        [
-                            'choices' => [
-                                PriceCollectionCurrencyCodeSelection::TYPE,
-                                PriceCollectionCurrencyLabelSelection::TYPE,
-                                PriceCollectionAmountSelection::TYPE,
-                            ],
-                        ]
-                    ),
-                    'locale' => new Optional([new Type('string')]),
-                    'separator' => new Choice(
-                        [
-                            'choices' => $this->availableCollectionSeparator,
-                        ]
-                    ),
-                    'currencies' => new Optional(
-                        new Choice([
-                            'choices' => $this->getActivatedCurrencies($constraint->channelReference),
-                            'multiple' => true,
-                        ])
-                    ),
-                ],
-            ]
-        ));
-        foreach ($violations as $violation) {
-            $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters()
-            )
-                ->atPath($violation->getPropertyPath())
-                ->addViolation();
-        }
+        $validator = $this->context->getValidator()->inContext($this->context);
+        $validator->validate($selection, new Collection([
+            'fields' => [
+                'type' => new Choice(
+                    [
+                        'choices' => [
+                            PriceCollectionCurrencyCodeSelection::TYPE,
+                            PriceCollectionCurrencyLabelSelection::TYPE,
+                            PriceCollectionAmountSelection::TYPE,
+                        ],
+                    ]
+                ),
+                'locale' => new Optional([new Type('string')]),
+                'separator' => new Choice(
+                    [
+                        'choices' => $this->availableCollectionSeparator,
+                    ]
+                ),
+                'currencies' => new Optional(),
+            ],
+        ]));
 
         if (PriceCollectionCurrencyLabelSelection::TYPE === $selection['type']) {
-            $violations = $validator->validate($selection['locale'], [
+            $validator->atPath('[locale]')->validate($selection['locale'], [
                 new NotBlank(),
                 new LocaleShouldBeActive()
             ]);
+        }
 
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath('[locale]')
-                    ->addViolation();
-            }
+        if (array_key_exists('currencies', $selection)) {
+            Assert::isArray($selection['currencies']);
+
+            $this->validateCurrenciesAreActive($selection['currencies'], $constraint->channelReference);
         }
     }
 
-    private function getActivatedCurrencies(?string $channelReference): array
+    private function validateCurrenciesAreActive(array $currencyCodes, ?string $channelReference): void
+    {
+        $activatedCurrencies = $this->getActivatedCurrencyCodes($channelReference);
+
+        foreach ($currencyCodes as $currencyCode) {
+            if (in_array($currencyCode, $activatedCurrencies)) {
+                continue;
+            }
+
+            $errorMessage = $channelReference ?
+                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_ON_CHANNEL_MESSAGE :
+                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_MESSAGE;
+
+            $this
+                ->context
+                ->buildViolation($errorMessage, [
+                    'channel' => $channelReference,
+                    'currency_code' => $currencyCode
+                ])
+                ->atPath('[currencies]')
+                ->addViolation();
+        }
+    }
+
+    private function getActivatedCurrencyCodes(?string $channelReference): array
     {
         if (null === $channelReference) {
             return $this->findActivatedCurrencies->forAllChannels();
