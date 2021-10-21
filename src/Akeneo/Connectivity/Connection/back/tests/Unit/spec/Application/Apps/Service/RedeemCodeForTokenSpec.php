@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Service;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\RedeemCodeForToken;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\RedeemCodeForTokenInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RedeemCodeForTokenSpec extends ObjectBehavior
 {
-    public function let(ValidatorInterface $validator): void
+    public function let(ValidatorInterface $validator, CreateAccessTokenInterface $createAccessToken): void
     {
         $this->beConstructedWith($validator);
     }
@@ -27,7 +28,8 @@ class RedeemCodeForTokenSpec extends ObjectBehavior
 
     public function it_redeems_a_code_for_a_token(ValidatorInterface $validator): void
     {
-        $accessTokenRequest = new AccessTokenRequest('',
+        $accessTokenRequest = new AccessTokenRequest(
+            '',
             '',
             'authorization_code',
             '1234',
@@ -36,6 +38,7 @@ class RedeemCodeForTokenSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($accessTokenRequest)->willReturn($violations);
 
+        
         $this->redeem($accessTokenRequest)->shouldReturn('a_random_token');
     }
 

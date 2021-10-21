@@ -64,3 +64,8 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\AuthorizationCodeGenerator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken:
+        arguments:
+            - '@fos_oauth_server.server'
+            - '@fos_oauth_server.storage.default'
