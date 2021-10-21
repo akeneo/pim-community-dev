@@ -13,7 +13,11 @@ type ModuleConfig = {
 export interface PermissionFormProvider<T> {
     key: string;
     label: string;
-    renderForm: (onChange: (state: T) => void, initialState: T | undefined) => ReactNode;
+    renderForm: (
+        onPermissionsChange: (state: T) => void,
+        initialState: T | undefined,
+        readOnly: boolean | undefined
+    ) => ReactNode;
     renderSummary: (state: T) => ReactNode;
     save: (userGroup: string, state: T) => Promise<void>;
     loadPermissions: (userGroup: string) => Promise<T>;
@@ -41,11 +45,6 @@ const PermissionFormRegistry = {
                 return (await requireContext(module)).default;
             })
         );
-    },
-    count: (): number => {
-        const providers = _config.providers;
-
-        return Object.keys(providers).length;
     },
 };
 

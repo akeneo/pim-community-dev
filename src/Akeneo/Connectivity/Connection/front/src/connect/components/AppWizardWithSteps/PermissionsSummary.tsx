@@ -65,13 +65,17 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper_link')}
                 </Link>
             </Helper>
-            {providers.map(provider => (
-                <PermissionsSummarySection
-                    key={provider.key}
-                    provider={provider}
-                    permissions={permissions[provider.key]}
-                />
-            ))}
+            {providers.map(provider => {
+                const providerPermissions = false === permissions[provider.key] ? undefined : permissions[provider.key];
+
+                return (
+                    <PermissionsSummarySection
+                        key={provider.key}
+                        provider={provider}
+                        permissions={providerPermissions}
+                    />
+                );
+            })}
         </InfoContainer>
     );
 };

@@ -42,11 +42,11 @@ const Helper = styled.div`
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: PermissionsByProviderKey) => void;
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setPermissions, permissions}) => {
+export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -59,14 +59,23 @@ export const Permissions: FC<Props> = ({appName, providers, setPermissions, perm
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper_link')}
                 </Link>
             </Helper>
-            {providers.map(provider => (
-                <PermissionsForm
-                    key={provider.key}
-                    provider={provider}
-                    setPermissions={setPermissions}
-                    permissions={permissions[provider.key]}
-                />
-            ))}
+            {providers.map(provider => {
+                const readOnly = false === permissions[provider.key];
+                const providerPermissions = false === permissions[provider.key] ? undefined : permissions[provider.key];
+                const handlePermissionsChange = (providerPermissions: object) => {
+                    setProviderPermissions(provider.key, providerPermissions);
+                };
+
+                return (
+                    <PermissionsForm
+                        key={provider.key}
+                        provider={provider}
+                        onPermissionsChange={handlePermissionsChange}
+                        permissions={providerPermissions}
+                        readOnly={readOnly}
+                    />
+                );
+            })}
         </InfoContainer>
     );
 };

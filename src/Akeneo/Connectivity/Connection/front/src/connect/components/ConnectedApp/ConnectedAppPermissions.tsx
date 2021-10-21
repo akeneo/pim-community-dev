@@ -1,26 +1,36 @@
 import React, {FC} from 'react';
-import {ConnectedApp} from '../../../model/Apps/connected-app';
+import {PermissionFormProvider} from '../../../shared/permission-form-registry';
 import {PermissionsForm} from '../PermissionsForm';
-import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 type Props = {
-    connectedApp: ConnectedApp;
+    providers: PermissionFormProvider<any>[];
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
+    permissions: PermissionsByProviderKey;
 };
 
-export const ConnectedAppPermissions: FC<Props> = ({connectedApp}) => {
-    const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
-
+export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermissions, permissions}) => {
     return (
         <>
             {null !== providers &&
-                providers.map(provider => (
-                    <PermissionsForm
-                        key={provider.key}
-                        provider={provider}
-                        setPermissions={setPermissions}
-                        permissions={permissions[provider.key]}
-                    />
-                ))}
+                providers.map(provider => {
+                    const readOnly = false === permissions[provider.key];
+                    const providerPermissions =
+                        false !== permissions[provider.key] ? permissions[provider.key] : undefined;
+                    const handlePermissionsChange = (providerPermissions: object) => {
+                        setProviderPermissions(provider.key, providerPermissions);
+                    };
+
+                    return (
+                        <PermissionsForm
+                            key={provider.key}
+                            provider={provider}
+                            onPermissionsChange={handlePermissionsChange}
+                            permissions={providerPermissions}
+                            readOnly={readOnly}
+                        />
+                    );
+                })}
         </>
     );
 };
