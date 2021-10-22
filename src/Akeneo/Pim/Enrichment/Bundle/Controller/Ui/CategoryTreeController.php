@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -345,7 +346,16 @@ class CategoryTreeController extends AbstractController
 
         $category = $this->findCategory($id);
 
-        $this->categoryRemover->remove($category);
+        try {
+            $this->categoryRemover->remove($category);
+        } catch (ConflictHttpException $exception) {
+            return new JsonResponse(
+                [
+                    'message' => $exception->getMessage()
+                ],
+                $exception->getStatusCode(),
+            );
+        }
 
         return new Response('', 204);
     }

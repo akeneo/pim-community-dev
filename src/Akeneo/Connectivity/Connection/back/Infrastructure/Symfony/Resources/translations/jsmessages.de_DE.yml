@@ -62,11 +62,41 @@ akeneo_connectivity.connection:
     apps:
       wizard:
         title: Verbinde
+        action:
+          confirm: Bestätigen
+          cancel: Abbrechen
+          previous: Zurück
+          next: Weiter
+          allow_and_next: Erlauben und weiter
         progress:
+          authorizations: Autorisierungen
           permissions: Berechtigungen
+          well_done: Gut gemacht!
+        authorize:
+          title: 'App {{ app_name }} muss'
+          no_scope_title: 'Die {{ app_name }} App möchte auf Ihr PIM zugreifen.'
+          no_scope: Es wurden keine spezifischen Genehmigungen angefordert.
+          helper: Um mehr über die App-Autorisierung zu erfahren,
+          helper_link: checke unser Hilfe-Center für weitere Informationen.
+      title: Verbinde
       activate:
         flash:
           error: Beim Verbinden mit der App ist ein Fehler aufgetreten.
+      scope:
+        type:
+          view: '{{ entities }} anzeigen'
+          edit: '{{ entities }} anzeigen und bearbeiten'
+          delete: '{{ entities }} anzeigen, bearbeiten und löschen'
+        entities:
+          catalog_structure: Attribute, Attributgruppen, Familien und Familienvarianten
+          attribute_options: Attributoptionen
+          categories: Kategorien
+          channel_localization: Gebietsschemen und Währungen
+          channel_settings: Kanäle
+          association_types: Verbindungstypen
+          products: Produkte und Produktmodelle
+      error:
+        sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
       constraint:
         client_id:
           not_blank: Die client_id ist erforderlich.

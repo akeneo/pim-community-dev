@@ -13,6 +13,7 @@ datagrid:
             extraKeys:
                 - totalProducts
                 - totalProductModels
+            fetchMethod: POST
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product

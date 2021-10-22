@@ -119,6 +119,8 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
         this.meta = models.meta;
       }
 
+      this.fetchMethod = options.fetchMethod || 'GET';
+
       _.extend(this.queryParams, {
         currentPage: this.inputName + '[_pager][_page]',
         pageSize: this.inputName + '[_pager][_per_page]',
@@ -400,14 +402,17 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
 
       // set up query params
       var url = options.url || _.result(this, 'url') || '';
-      var qsi = url.indexOf('?');
-      if (qsi != -1) {
-        _.extend(data, app.unpackFromQueryString(url.slice(qsi + 1)));
-        url = url.slice(0, qsi);
+      if ('GET' === this.fetchMethod) {
+        var qsi = url.indexOf('?');
+        if (qsi != -1) {
+          _.extend(data, app.unpackFromQueryString(url.slice(qsi + 1)));
+          url = url.slice(0, qsi);
+        }
       }
 
       options.url = url;
       options.data = data;
+      options.type = this.fetchMethod;
 
       data = this.processQueryParams(data, state);
       data = this.processFiltersParams(data, state);

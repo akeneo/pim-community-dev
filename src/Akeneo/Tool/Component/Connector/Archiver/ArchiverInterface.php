@@ -35,11 +35,11 @@ interface ArchiverInterface
      * Get the archives of a job execution
      *
      * @param JobExecution $jobExecution
-     * @param bool $recursive
+     * @param bool $deep whether archives are listed recursively
      *
-     * @return array
+     * @return string[]
      */
-    public function getArchives(JobExecution $jobExecution, bool $recursive = false): array;
+    public function getArchives(JobExecution $jobExecution, bool $deep = false): iterable;
 
     /**
      * Get a specific archive of a job execution
@@ -50,15 +50,6 @@ interface ArchiverInterface
      * @return resource
      */
     public function getArchive(JobExecution $jobExecution, string $key);
-
-    /**
-     * Get the root objects (files + directories) of a job execution
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @return array
-     */
-    public function listContents(JobExecution $jobExecution): array;
 
     /**
      * Get the archiver name

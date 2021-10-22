@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="2"
+    cacheDirectory="../psalmCache"
+>
+    <projectFiles>
+        <directory name="../Domain" />
+        <directory name="../Application" />
+        <directory name="../Infrastructure" />
+    </projectFiles>
+</psalm>

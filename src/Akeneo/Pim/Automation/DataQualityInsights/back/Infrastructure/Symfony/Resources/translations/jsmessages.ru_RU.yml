@@ -1,0 +1,56 @@
+akeneo_data_quality_insights:
+  dqi_dashboard:
+    no_data_subtitle: Пожалуйста, вернитесь позже.
+    time_period:
+      label: Период
+      daily: Ежедневно
+      weekly: Еженедельно
+      monthly: Ежемесячно
+    legend:
+      excellent: Отлично
+      good: Хорошо
+      average: Средне
+      below_average: Ниже среднего
+      to_improve: Для улучшения
+    average_grade: Средняя оценка
+    category_modal_filter:
+      subtitle: Фильтр по категории
+      message: Выберите категорию для исследования на вашем дашборде
+    widgets:
+      category_modal:
+        subtitle: Добавить категории
+        message: Выберите категории для добавления на дашборд
+      add_families: Добавить группы
+      add_categories: Добавить категории
+      title: Заголовок
+      score: Оценка
+    time_axis:
+      day: день
+    key_indicators:
+      title: Ключевые индикаторы
+      list:
+        has_image:
+          title: Товары с изображением
+      no_data_subtitle: Пожалуйста, вернитесь позже.
+    quality_score_evolution:
+      current_month_label: Текущий месяц
+  product_evaluation:
+    messages:
+      success:
+        criterion: Все в порядке.
+  product_edit_form:
+    back_to_products: Назад к товарам
+  attribute_group:
+    activation: Активация
+    activated: Активировано
+    disabled: Деактивировано
+  product_grid:
+    filter_label:
+      quality_score: Оценка качества
+      enrichment_quality: Качество обогащения
+      images_quality: Качество изображений
+    filter_value:
+      good: Хорошо
+      to_improve: Для улучшения
+pim_title:
+  akeneo_data_quality_insights_dashboard: Инсайты качества данных

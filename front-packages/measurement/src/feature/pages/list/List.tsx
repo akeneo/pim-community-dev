@@ -1,13 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {
-  MeasurementIllustration,
-  Link,
-  Button,
-  Information,
-  Breadcrumb,
-  useBooleanState,
-} from 'akeneo-design-system';
+import {MeasurementIllustration, Link, Button, Information, Breadcrumb, useBooleanState} from 'akeneo-design-system';
 import {
   NoDataSection,
   NoDataTitle,
@@ -27,7 +20,7 @@ import {MeasurementFamilyTable} from '../list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from '../create-measurement-family/CreateMeasurementFamily';
 import {TablePlaceholder} from '../common/Table';
 import {Direction} from '../../model/direction';
-import {MeasurementFamilySearchBar} from "./MeasurementFamilySearchBar";
+import {MeasurementFamilySearchBar} from './MeasurementFamilySearchBar';
 
 const useSorting = (
   defaultColumn: string
