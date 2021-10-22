@@ -33,7 +33,7 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_generate_an_authorization_code(
+    public function it_generates_an_authorization_code(
         ClientManagerInterface $clientManager,
         UserRepositoryInterface $userRepository,
         IOAuth2GrantCode $storage,
@@ -64,7 +64,7 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
         $now->getTimestamp()->willReturn($timestamp);
 
         $storage->createAuthCode(
-            Argument::any(),
+            $code,
             $client,
             $user,
             $redirectUri,

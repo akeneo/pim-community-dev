@@ -19,7 +19,7 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_generate_a_redirecturi_with_an_authorization_code(
+    public function it_generates_a_redirect_uri_with_an_authorization_code(
         AuthorizationCodeGeneratorInterface $authorizationCodeGenerator,
         AppAuthorization $appAuthorization,
         AppConfirmation $appConfirmation
@@ -35,7 +35,7 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
             ->shouldReturn('https://foo.example.com/oauth/callback?code=MjE3NTE3Y');
     }
 
-    public function it_generate_a_redirecturi_with_an_authorization_code_and_a_state(
+    public function it_generates_a_redirecturi_with_an_authorization_code_and_a_state(
         AuthorizationCodeGeneratorInterface $authorizationCodeGenerator,
         AppAuthorization $appAuthorization,
         AppConfirmation $appConfirmation

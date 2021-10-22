@@ -9,7 +9,7 @@ use PHPUnit\Framework\Assert;
 
 class RandomCodeGeneratorSpec extends ObjectBehavior
 {
-    public function it_generate_a_random_code(): void
+    public function it_generates_a_random_code(): void
     {
         $code = $this->generate()->getWrappedObject();
 
