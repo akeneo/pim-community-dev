@@ -52,7 +52,7 @@ final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping_Int
         $configFiles = $this->getParameter('elasticsearch_index_configuration_files');
         $config = [];
         foreach ($configFiles as $configFile) {
-            $config = array_merge($config, Yaml::parseFile($configFile));
+            $config = array_merge_recursive($config, Yaml::parseFile($configFile));
         }
 
         self::assertArrayHasKey('mappings', $config);
