@@ -30,7 +30,7 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
         }
 
         if (!$value instanceof AccessTokenRequest) {
-            throw new \LogicException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Expected an instance of %s, got %s',
                     AccessTokenRequest::class,

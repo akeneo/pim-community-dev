@@ -24,7 +24,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    public function it_throw_if_not_the_excepted_constraint(
+    public function it_validates_only_the_correct_constraint(
         Constraint $constraint
     ): void {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
@@ -33,16 +33,16 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_throw_if_not_the_excepted_value_class(
+    public function it_validates_only_an_access_token_request(
         CodeChallengeMustBeValid $constraint
     ): void {
-        $this->shouldThrow(\LogicException::class)->during('validate', [
+        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new \stdClass(),
             $constraint,
         ]);
     }
 
-    public function it_validate_that_the_code_challenge_is_valid(
+    public function it_validates_that_the_code_challenge_is_valid(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,
         WebMarketplaceApiInterface $webMarketplaceApi,
@@ -89,6 +89,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         )->willReturn(false);
 
         $context->buildViolation(Argument::any())->willReturn($violation);
+        $violation->atPath('codeChallenge')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($value, $constraint);

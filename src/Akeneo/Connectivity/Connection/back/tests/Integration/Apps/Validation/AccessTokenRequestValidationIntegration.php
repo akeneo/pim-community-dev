@@ -109,7 +109,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->webMarketplaceApi->setCodeChallengeResult(false);
         $this->createApp();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'wrong_grant_type', '12345', '12345');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'codeChallenge', 'invalid_client');
