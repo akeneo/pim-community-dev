@@ -31,6 +31,7 @@ Feature: Be notified on draft submission
       | product   | author | attribute | original     | new       |
       | Jacket HM | Mary   | sku       | my-jacket-hm | jacket-hm |
 
+  @skip
   Scenario: Successfully be notified when someone sends a proposal for approval with a comment
     Given Mary proposed the following change to "my-jacket":
       | field | value         |
