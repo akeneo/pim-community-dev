@@ -14,6 +14,7 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private array $extensions = [];
     private array $apps = [];
+    private bool $codeChallengeResult = true;
 
     /**
      * @param array<array{
@@ -78,5 +79,15 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
         return array_filter($this->apps, function (array $app) use ($id) {
             return $app['id'] === $id;
         })[0] ?? null;
+    }
+
+    public function validateCodeChallenge(string $appId, string $codeIdentifier, string $codeChallenge): bool
+    {
+        return $this->codeChallengeResult;
+    }
+
+    public function setCodeChallengeResult(bool $valid): void
+    {
+        $this->codeChallengeResult = $valid;
     }
 }

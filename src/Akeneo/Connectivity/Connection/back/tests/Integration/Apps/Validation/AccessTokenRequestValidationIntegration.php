@@ -104,6 +104,17 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->assertHasViolation($violations, 'grantType', 'unsupported_grant_type');
     }
 
+    public function test_it_invalidates_a_wrong_code_challenge(): void
+    {
+        $this->webMarketplaceApi->setCodeChallengeResult(false);
+        $this->createApp();
+
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '12345');
+        $violations = $this->validator->validate($accessTokenRequest);
+
+        $this->assertHasViolation($violations, 'codeChallenge', 'invalid_client');
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
