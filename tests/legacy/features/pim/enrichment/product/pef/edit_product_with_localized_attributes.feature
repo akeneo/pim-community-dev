@@ -47,6 +47,7 @@ Feature: Edit a product with localized attributes
     And the product "foo" should have the following values:
       | price-EUR | 1200.50 |
 
+  @skip
   Scenario: Successfully view and edit localized date
     Given I am on the "foo" product page
     Then the field Date should contain "28/05/2015"
@@ -56,6 +57,7 @@ Feature: Edit a product with localized attributes
     And the product "foo" should have the following values:
       | date | 2015-12-01 |
 
+  @skip
   Scenario: Switching locale should change the displayed format
     When I edit the "Julien" user
     And I visit the "Interfaces" tab
