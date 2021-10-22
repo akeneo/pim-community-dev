@@ -29,3 +29,11 @@ endif
 
 .PHONY: job-ci-back
 job-ci-back: job-lint-back job-coupling-back job-unit-back job-acceptance-back job-integration-back
+
+.PHONY: job-ci-front
+job-ci-front:
+	$(YARN_RUN) workspace @akeneo-pim-community/process-tracker lint:check
+	$(YARN_RUN) workspace @akeneo-pim-community/process-tracker test:unit:run
+
+.PHONY: job-ci
+job-ci: job-ci-back job-ci-front
