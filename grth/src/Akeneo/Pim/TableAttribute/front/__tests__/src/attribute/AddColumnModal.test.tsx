@@ -84,12 +84,11 @@ describe('AddColumnModal', () => {
 
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
-    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
     fireEvent.change(labelInput, {target: {value: 'Ingredients'}});
     fireEvent.change(codeInput, {target: {value: 'ingredient'}});
-    fireEvent.click(dataTypeInput);
+    fireEvent.click(screen.getByTitle('pim_common.open'));
     expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
@@ -121,8 +120,8 @@ describe('AddColumnModal', () => {
         dataTypesMapping={defaultDataTypesMapping}
       />
     );
-    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
-    fireEvent.click(dataTypeInput);
+
+    fireEvent.click(screen.getByTitle('pim_common.open'));
 
     expect(await screen.findByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.text')).toBeNull();
@@ -142,10 +141,9 @@ describe('AddColumnModal', () => {
       />
     );
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
-    const dataTypeInput = screen.getByLabelText(/pim_table_attribute.form.attribute.data_type/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
-    fireEvent.click(dataTypeInput);
+    fireEvent.click(screen.getByTitle('pim_common.open'));
     expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
