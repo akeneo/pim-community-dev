@@ -271,8 +271,6 @@ pim_enrich.entity.fallback:
       discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
       discard_changes_title: よろしいですか?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} 操作|]1, Inf[{{ count }} 操作"
   module:
     create:
       upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'

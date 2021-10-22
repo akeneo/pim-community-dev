@@ -48,34 +48,34 @@ pim_ui.system_config:
     loading_message.title: Messages de chargement
 other_actions: Autres actions
 pim_common:
-  cancel: Annuler
-  save: Enregistrer
-  delete: Supprimer
-  update: Mettre à jour
-  view: Afficher
-  edit: Modifier
-  created: Créé
-  updated: Mis à jour
-  create: Créer
-  permissions: Autorisations
-  properties: Propriétés
-  name: Nom
-  remove: Supprimer
-  code: Code
-  label: Libellé
-  quantity: Quantité
-  products: Produits
-  product_models: Modèles de produits
-  categories: Catégories
-  family_variant: Variante de famille
-  enabled: Activé
-  family: Famille
-  parent: Parent
-  groups: Groupes
-  unit: Unité
-  yes: "Oui"
-  no: "Non"
   association_types: Types d'association
+  cancel: Annuler
+  categories: Catégories
+  code: Code
+  create: Créer
+  created: Créé
+  delete: Supprimer
+  edit: Modifier
+  enabled: Activé
+  family_variant: Variante de famille
+  family: Famille
+  groups: Groupes
+  label: Libellé
+  name: Nom
+  no: "Non"
+  parent: Parent
+  permissions: Autorisations
+  product_models: Modèles de produits
+  products: Produits
+  properties: Propriétés
+  quantity: Quantité
+  remove: Supprimer
+  save: Enregistrer
+  unit: Unité
+  update: Mettre à jour
+  updated: Mis à jour
+  view: Afficher
+  yes: "Oui"
 pim_enrich:
   #ACLs
   acl:

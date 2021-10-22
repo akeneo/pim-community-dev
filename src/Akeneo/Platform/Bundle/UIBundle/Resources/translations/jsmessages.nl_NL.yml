@@ -271,8 +271,6 @@ pim_enrich.entity.fallback:
       discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
       discard_changes_title: Weet u het zeker?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} bewerking|]1, Inf[{{ count }} bewerkingen"
   module:
     create:
       upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken

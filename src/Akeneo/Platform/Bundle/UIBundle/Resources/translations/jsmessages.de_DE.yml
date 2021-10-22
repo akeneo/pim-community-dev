@@ -271,8 +271,6 @@ pim_enrich.entity.fallback:
       discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
       discard_changes_title: Wirklich ganz sicher?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} Operation|]1, Inf[{{ count }} Operationen"
   module:
     create:
       upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
