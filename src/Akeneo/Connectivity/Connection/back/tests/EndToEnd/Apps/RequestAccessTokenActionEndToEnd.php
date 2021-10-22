@@ -15,7 +15,7 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedeemCodeForTokenActionEndToEnd extends WebTestCase
+class RequestAccessTokenActionEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
@@ -40,7 +40,7 @@ class RedeemCodeForTokenActionEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
             'GET',
-            '/connect/apps/v1/token',
+            '/connect/apps/v1/oauth2/token',
             [
                 'client_id' => $this->clientId,
                 'code' => $authCode,
@@ -56,10 +56,7 @@ class RedeemCodeForTokenActionEndToEnd extends WebTestCase
         Assert::assertIsArray($content);
         Assert::assertArrayHasKey('access_token', $content);
         Assert::assertIsString($content['access_token']);
-        Assert::assertArrayHasKey('expires_in', $content);
         Assert::assertArrayHasKey('token_type', $content);
-        Assert::assertArrayHasKey('scope', $content); // TODO
-        Assert::assertSame('write_catalog_structure delete_products read_association_types', $content['scope']);
     }
 
     public function test_to_get_a_bad_request_if_the_request_is_wrong(): void
@@ -70,8 +67,9 @@ class RedeemCodeForTokenActionEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
             'GET',
-            '/connect/apps/v1/token',
+            '/connect/apps/v1/oauth2/token',
             [
+                // No client_id
                 'code' => $authCode,
                 'code_identifier' => 'any_code',
                 'code_challenge' => 'code_challenge_hash',

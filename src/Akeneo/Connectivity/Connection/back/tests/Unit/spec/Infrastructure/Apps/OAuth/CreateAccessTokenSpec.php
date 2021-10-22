@@ -11,7 +11,6 @@ use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use OAuth2\IOAuth2;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
-use OAuth2\Model\IOAuth2Client;
 use OAuth2\OAuth2;
 use PhpSpec\ObjectBehavior;
 
@@ -44,18 +43,10 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $authCode->getScope()->willReturn('delete_products');
         $token = [
             'access_token' => 'generated_token_123',
-            'expires_in' => 1234,
             'token_type' => 'bearer',
-            'scope' => 'delete_products',
         ];
-        $auth2->createAccessToken(
-            $client,
-            [],
-            'delete_products',
-            123,
-            true,
-            456
-        )->willReturn($token);
+        $auth2->createAccessToken($client, [])->willReturn($token);
+        $auth2->setVariable(OAuth2::CONFIG_ACCESS_LIFETIME, null)->shouldBeCalled();
 
         $this->create('client_id_1234', 'auth_code_1234')->shouldReturn($token);
     }

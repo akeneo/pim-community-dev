@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RedeemCodeForTokenAction
+class RequestAccessTokenAction
 {
     private FeatureFlag $featureFlag;
     private ValidatorInterface $validator;
@@ -54,17 +54,10 @@ class RedeemCodeForTokenAction
             );
         }
 
-        try {
-            $token = $this->createAccessToken->create(
-                $accessTokenRequest->getClientId(),
-                $accessTokenRequest->getAuthorizationCode()
-            );
-        } catch (\InvalidArgumentException $e) {
-            return new JsonResponse(
-                ['error' => 'invalid_request'],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
+        $token = $this->createAccessToken->create(
+            $accessTokenRequest->getClientId(),
+            $accessTokenRequest->getAuthorizationCode()
+        );
 
         return new JsonResponse($token, Response::HTTP_OK);
     }

@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use OAuth2\IOAuth2;
 use OAuth2\IOAuth2GrantCode;
+use OAuth2\Model\IOAuth2AuthCode;
 use OAuth2\OAuth2;
 
 /**
@@ -30,24 +31,23 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $this->clientProvider = $clientProvider;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create(string $clientId, string $code): array
     {
         $client = $this->clientProvider->findClientByAppId($clientId);
         if (null === $client) {
             throw new \InvalidArgumentException('No client found with the given client id.');
         }
+
+        /** @var IOAuth2AuthCode|null $authCode */
         $authCode = $this->storage->getAuthCode($code);
         if (null === $authCode) {
             throw new \InvalidArgumentException('Unknown authorization code.');
         }
+        $this->auth2->setVariable(OAuth2::CONFIG_ACCESS_LIFETIME, null);
 
-        return $this->auth2->createAccessToken(
-            $client,
-            $authCode->getData(),
-            $authCode->getScope(),
-            $this->auth2->getVariable(OAuth2::CONFIG_ACCESS_LIFETIME),
-            true,
-            $this->auth2->getVariable(OAuth2::CONFIG_REFRESH_LIFETIME)
-        );
+        return $this->auth2->createAccessToken($client, $authCode->getData());
     }
 }

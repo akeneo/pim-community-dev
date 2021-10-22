@@ -40,7 +40,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
     public function test_it_invalidates_a_not_known_client_id(): void
     {
-        $accessTokenRequest = new AccessTokenRequest('12345', '12345', 'authorization_code', '12345', '12345');
+        $accessTokenRequest = new AccessTokenRequest('unknown_client_id', '12345', 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'clientId', 'invalid_client');
@@ -88,7 +88,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     {
         $this->createApp();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '12345');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, 'unknown_auth_code', 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'authorizationCode', 'invalid_grant');

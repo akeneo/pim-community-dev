@@ -37,7 +37,7 @@ security:
             security:                       false
 
         oauth2_token:
-            pattern:                        ^/connect/apps/v1/token
+            pattern:                        ^/connect/apps/v1/oauth2/token
             security:                       false
 
         api_index:

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use OAuth2\IOAuth2GrantCode;
+use OAuth2\Model\IOAuth2AuthCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -32,6 +33,7 @@ class AuthorizationCodeMustBeValidValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AuthorizationCodeMustBeValid::class);
         }
 
+        /** @var IOAuth2AuthCode|null $authCode */
         $authCode = $this->storage->getAuthCode($value);
         if (null === $authCode || $authCode->hasExpired()) {
             $this->context->buildViolation($constraint->message)->addViolation();
