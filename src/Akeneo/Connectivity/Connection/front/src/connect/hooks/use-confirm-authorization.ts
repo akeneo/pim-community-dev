@@ -4,6 +4,7 @@ import {useCallback} from 'react';
 interface ConfirmReturn {
     appId: string;
     userGroup: string;
+    redirectUrl: string;
 }
 
 type hookType = (clientId: string) => () => Promise<ConfirmReturn>;
@@ -17,7 +18,7 @@ export const useConfirmAuthorization: hookType = clientId => {
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
         if (!response.ok) {
-            throw new Error(`${response.status} ${response.statusText}`);
+            return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
         return response.json();

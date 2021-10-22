@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
+use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
@@ -27,25 +29,31 @@ class ConfirmAuthorizationAction
 {
     private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
     private FeatureFlag $featureFlag;
-    private GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery;
+    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private SecurityFacade $security;
     private ViolationListNormalizer $violationListNormalizer;
     private LoggerInterface $logger;
+    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
+    private AppAuthorizationSessionInterface $appAuthorizationSession;
 
     public function __construct(
         CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
-        GetConnectedAppIdAndUserGroupQueryInterface $getConnectedAppIdAndUserGroupQuery,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
         SecurityFacade $security,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        AppAuthorizationSessionInterface $appAuthorizationSession
     ) {
         $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
         $this->featureFlag = $featureFlag;
-        $this->getConnectedAppIdAndUserGroupQuery = $getConnectedAppIdAndUserGroupQuery;
+        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->violationListNormalizer = $violationListNormalizer;
         $this->security = $security;
         $this->logger = $logger;
+        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
+        $this->appAuthorizationSession = $appAuthorizationSession;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -62,11 +70,6 @@ class ConfirmAuthorizationAction
             return new RedirectResponse('/');
         }
 
-        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
-        if (null !== $connectedAppIdAndUserGroup) {
-            return new JsonResponse($connectedAppIdAndUserGroup);
-        }
-
         try {
             $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
         } catch (InvalidAppAuthorizationRequest $exception) {
@@ -77,11 +80,22 @@ class ConfirmAuthorizationAction
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $connectedAppIdAndUserGroup = $this->getConnectedAppIdAndUserGroupQuery->execute($clientId);
-        if (null === $connectedAppIdAndUserGroup) {
-            throw new \LogicException('The CreateApp handler was executed without error but the resulting App cannot be found');
+        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+        if (null === $appAuthorization) {
+            throw new \LogicException('There is no active app authorization in session');
         }
 
-        return new JsonResponse($connectedAppIdAndUserGroup);
+        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+        if (null === $appConfirmation) {
+            throw new \LogicException('The connected app should have been created');
+        }
+
+        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate($appAuthorization, $appConfirmation);
+
+        return new JsonResponse([
+            'appId' => $appConfirmation->getAppId(),
+            'userGroup' => $appConfirmation->getUserGroup(),
+            'redirectUrl' => $redirectUrl,
+        ]);
     }
 }
