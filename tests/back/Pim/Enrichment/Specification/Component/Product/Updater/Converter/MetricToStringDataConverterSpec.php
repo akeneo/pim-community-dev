@@ -62,4 +62,14 @@ class MetricToStringDataConverterSpec extends ObjectBehavior
 
         $this->convert($sourceValue, new Attribute())->shouldReturn('23.55 GRAM');
     }
+
+    function it_converts_a_metric_to_a_string_when_data_comes_from_db()
+    {
+        $sourceValue = MetricValue::value(
+            'weight_in_grams',
+            new Metric('weight', 'GRAM', "23.550000", 'KILOGRAM', .02355)
+        );
+
+        $this->convert($sourceValue, new Attribute())->shouldReturn('23.55 GRAM');
+    }
 }

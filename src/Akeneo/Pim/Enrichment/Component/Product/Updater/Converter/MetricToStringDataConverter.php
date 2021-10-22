@@ -34,6 +34,6 @@ final class MetricToStringDataConverter implements ValueDataConverter
         Assert::isInstanceOf($metric, MetricInterface::class);
 
         // Do not "%F" to render the float because it adds some unexpected 0. "%s" fixes that
-        return \sprintf('%s %s', $metric->getData(), $metric->getUnit());
+        return \sprintf('%s %s', (float) $metric->getData(), $metric->getUnit());
     }
 }
