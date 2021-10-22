@@ -12,7 +12,6 @@ use Symfony\Component\Yaml\Yaml;
 
 final class Version_6_0_20210927082026_add_table_values_mapping extends AbstractMigration implements ContainerAwareInterface
 {
-    private const TABLE_MAPPING_FILE = __DIR__ . '/../../src/Akeneo/Pim/TableAttribute/back/Infrastructure/Symfony/Resources/config/elasticsearch/table_attribute_mapping.yml';
     private ContainerInterface $container;
 
     public function getDescription(): string
@@ -35,8 +34,7 @@ final class Version_6_0_20210927082026_add_table_values_mapping extends Abstract
             return;
         }
 
-        $tableValuesMapping = Yaml::parseFile(static::TABLE_MAPPING_FILE)['mappings']['dynamic_templates'];
-        $newDynamicTemplate = array_merge($existingDynamicTemplate, $tableValuesMapping);
+        $newDynamicTemplate = array_merge($existingDynamicTemplate, $this->getTableAttributeMappingDynamicTemplates());
 
         $client->putMapping([
             'index' => $this->container->getParameter('product_and_product_model_index_name'),
@@ -70,5 +68,67 @@ final class Version_6_0_20210927082026_add_table_values_mapping extends Abstract
     private function disableMigrationWarning(): void
     {
         $this->addSql('SELECT 1');
+    }
+
+    private function getTableAttributeMappingDynamicTemplates(): array
+    {
+        return Yaml::parse(<<<YAML
+-
+  table_values:
+    path_match: 'table_values.*'
+    path_unmatch: 'table_values.*.*'
+    match_mapping_type: 'object'
+    mapping:
+      type: 'nested'
+-
+  table_values_locale:
+    path_match: 'table_values.*.locale'
+    mapping:
+      type: 'keyword'
+-
+  table_values_channel:
+    path_match: 'table_values.*.channel'
+    mapping:
+      type: 'keyword'
+-
+  table_values_row:
+    path_match: 'table_values.*.row'
+    mapping:
+      type: 'keyword'
+      normalizer: 'identifier_normalizer'
+-
+  table_values_column:
+    path_match: 'table_values.*.column'
+    mapping:
+      type: 'keyword'
+      normalizer: 'identifier_normalizer'
+-
+  table_values_is_column_complete:
+    path_match: 'table_values.*.is_column_complete'
+    mapping:
+      type: 'boolean'
+-
+  table_values_number:
+    path_match: 'table_values.*.value-number'
+    mapping:
+      type: 'double'
+-
+  table_values_text:
+    path_match: 'table_values.*.value-text'
+    mapping:
+      type: 'keyword'
+      normalizer: 'text_normalizer'
+-
+  table_values_boolean:
+    path_match: 'table_values.*.value-boolean'
+    mapping:
+      type: 'boolean'
+-
+  table_values_select:
+    path_match: 'table_values.*.value-select'
+    mapping:
+      type: 'keyword'
+      normalizer: 'attribute_option_normalizer'
+YAML);
     }
 }
