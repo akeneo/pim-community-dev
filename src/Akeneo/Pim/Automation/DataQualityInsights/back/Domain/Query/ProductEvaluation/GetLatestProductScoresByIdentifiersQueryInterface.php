@@ -13,6 +13,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 interface GetLatestProductScoresByIdentifiersQueryInterface
 {
     /**
+     * Returns collections of product scores indexed by their product identifiers
+     *
      * @param string[] $productIdentifiers
      *
      * @return ChannelLocaleRateCollection[]

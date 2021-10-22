@@ -130,6 +130,7 @@
 - PIM-10116: Fix filter bar not being sticky on Measurement & Attribute groups page
 - PIM-10030: use POST method to fetch product data grid data to avoid http 414 error
 - EXB-1046: Don't delete a channel used in an "Export to Shared Catalogs" export profile
+- PIM-10087: Fix storage errors HTTP code to return 500 instead of 422
 - PIM-10090: Fix missing cache clearing during family variant changes computing
 
 ## New features
