@@ -249,7 +249,10 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
 endif
+	@echo "cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml"
 	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
+	@echo "cat $(INSTANCE_DIR)/values.yaml"
+	cat $(INSTANCE_DIR)/values.yaml
 
 .PHONY: prepare-chart-default-values
 prepare-chart-default-values:
@@ -368,12 +371,12 @@ uncommit-instance:
 	# Check if files were previously commited
 ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
-else
+endif
+	make change-terraform-source-version
 ifeq ($(TYPE),srnt)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform/monitoring"
-endif
 endif
 endif
 	make delete
