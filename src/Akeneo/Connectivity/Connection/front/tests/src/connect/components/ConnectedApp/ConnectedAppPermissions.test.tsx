@@ -4,25 +4,6 @@ import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
 import {PermissionsForm} from '@src/connect/components/PermissionsForm';
-import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form-providers';
-
-const connectedApp = {
-    id: '12345',
-    name: 'App A',
-    scopes: ['scope 1'],
-    connection_code: 'some_connection_code',
-    logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
-    author: 'Author A',
-    user_group_name: 'app_123456abcde',
-    categories: ['e-commerce', 'print'],
-    certified: false,
-    partner: null,
-};
-
-jest.mock('@src/connect/hooks/use-permissions-form-providers', () => ({
-    __esModule: true,
-    default: jest.fn(() => [null, {}, jest.fn()]),
-}));
 
 jest.mock('@src/connect/components/PermissionsForm', () => ({
     ...jest.requireActual('@src/connect/components/PermissionsForm'),
@@ -69,13 +50,13 @@ test('The connected app permissions tab renders with providers', () => {
         },
     };
 
-    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
-        mockedProviders,
-        mockedPermissions,
-        jest.fn(),
-    ]);
-
-    renderWithProviders(<ConnectedAppPermissions connectedApp={connectedApp} />);
+    renderWithProviders(
+        <ConnectedAppPermissions
+            providers={mockedProviders}
+            permissions={mockedPermissions}
+            setProviderPermissions={jest.fn()}
+        />
+    );
 
     expect(PermissionsForm).toHaveBeenCalledTimes(2);
 
@@ -98,9 +79,7 @@ test('The connected app permissions tab renders with providers', () => {
 });
 
 test('The connected app permissions tab is not displayed when there is no providers', () => {
-    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
-
-    renderWithProviders(<ConnectedAppPermissions connectedApp={connectedApp} />);
+    renderWithProviders(<ConnectedAppPermissions providers={[]} permissions={{}} setProviderPermissions={jest.fn()} />);
 
     expect(PermissionsForm).not.toHaveBeenCalled();
 });

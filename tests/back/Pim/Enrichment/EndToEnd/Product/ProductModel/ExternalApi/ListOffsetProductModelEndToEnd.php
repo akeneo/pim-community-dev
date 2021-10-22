@@ -205,6 +205,6 @@ JSON;
             'Expected warning not found in the logs.'
         );
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 }

@@ -45,11 +45,14 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel) => string | undefined = category => {
     if (
       isCategorySelected &&
-      isCategorySelected({
-        id: category.id,
-        code: category.code,
-        label: category.label,
-      }, null)
+      isCategorySelected(
+        {
+          id: category.id,
+          code: category.code,
+          label: category.label,
+        },
+        null
+      )
     ) {
       return category.label;
     }

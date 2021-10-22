@@ -1,12 +1,12 @@
 import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '../tests';
-import {DeleteModal} from "./DeleteModal";
+import {DeleteModal} from './DeleteModal';
 
 test('It displays a delete modal', () => {
   renderWithProviders(
     <DeleteModal
-      title='Entity'
+      title="Entity"
       onCancel={jest.fn()}
       onConfirm={jest.fn()}
       cancelButtonLabel={'Cancel'}
@@ -26,7 +26,7 @@ test('It calls on confirm handler when user click on confirm button', () => {
   const handleConfirm = jest.fn();
   renderWithProviders(
     <DeleteModal
-      title='Entity'
+      title="Entity"
       onCancel={jest.fn()}
       onConfirm={handleConfirm}
       cancelButtonLabel={'Cancel'}
@@ -46,7 +46,7 @@ test('It calls on cancel handler when user click on cancel button', () => {
   const handleCancel = jest.fn();
   renderWithProviders(
     <DeleteModal
-      title='Entity'
+      title="Entity"
       onCancel={handleCancel}
       onConfirm={jest.fn()}
       cancelButtonLabel={'Cancel'}
@@ -66,7 +66,7 @@ test('It does not call on confirm handler when user cannot confirm delete', () =
   const handleConfirm = jest.fn();
   renderWithProviders(
     <DeleteModal
-      title='Entity'
+      title="Entity"
       onCancel={jest.fn()}
       onConfirm={handleConfirm}
       canConfirmDelete={false}

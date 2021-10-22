@@ -1,42 +1,81 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen} from '@testing-library/react';
 import {Permissions} from '@src/connect/components/AppWizardWithSteps/Permissions';
-import {pimTheme} from 'akeneo-design-system';
-import {ThemeProvider} from 'styled-components';
+import {renderWithProviders} from '../../../../test-utils';
+import {PermissionsForm} from '@src/connect/components/PermissionsForm';
 
-test('The permissions step renders without error', done => {
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Permissions appName='MyApp' providers={[]} setPermissions={jest.fn()} permissions={{}} />
-        </ThemeProvider>
+jest.mock('@src/connect/components/PermissionsForm', () => ({
+    ...jest.requireActual('@src/connect/components/PermissionsForm'),
+    PermissionsForm: jest.fn(() => null),
+}));
+
+test('The permissions step renders with no providers', () => {
+    renderWithProviders(
+        <Permissions appName='MyApp' providers={[]} setProviderPermissions={jest.fn()} permissions={{}} />
     );
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
-    done();
+
+    expect(PermissionsForm).not.toHaveBeenCalled();
 });
 
-test('The permissions step renders with the providers from the registry', done => {
-    const providers = [
+test('The permissions step renders with providers from the registry', () => {
+    const mockedProviders = [
         {
-            key: 'test',
-            label: 'testLabel',
-            renderForm: (_onChange: any, initialState: any) => <div>test form {initialState.print}</div>,
-            renderSummary: () => null,
-            save: () => Promise.resolve(),
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+        {
+            key: 'providerKey2',
+            label: 'Provider2',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
             loadPermissions: jest.fn(),
         },
     ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+        providerKey2: {
+            view: {
+                all: false,
+                identifiers: ['codeA'],
+            },
+        },
+    };
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Permissions
-                appName='MyApp'
-                providers={providers}
-                setPermissions={jest.fn()}
-                permissions={{test: {print: 'hello world!'}}}
-            />
-        </ThemeProvider>
+    renderWithProviders(
+        <Permissions
+            appName='MyApp'
+            providers={mockedProviders}
+            setProviderPermissions={jest.fn()}
+            permissions={mockedPermissions}
+        />
     );
-    expect(screen.queryByText('test form hello world!')).toBeInTheDocument();
-    done();
+
+    expect(PermissionsForm).toHaveBeenCalledTimes(2);
+
+    expect(PermissionsForm).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+            provider: mockedProviders[0],
+            permissions: mockedPermissions.providerKey1,
+        }),
+        {}
+    );
+    expect(PermissionsForm).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+            provider: mockedProviders[1],
+            permissions: mockedPermissions.providerKey2,
+        }),
+        {}
+    );
 });

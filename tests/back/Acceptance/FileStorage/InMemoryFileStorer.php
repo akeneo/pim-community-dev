@@ -6,6 +6,7 @@ namespace Akeneo\Test\Acceptance\FileStorage;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -16,7 +17,7 @@ class InMemoryFileStorer implements FileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $rawFile, string $destFsAlias, bool $deleteRawFile = false): FileInfoInterface
     {
         $file = new FileInfo();
         $file->setKey($rawFile->getPathname());

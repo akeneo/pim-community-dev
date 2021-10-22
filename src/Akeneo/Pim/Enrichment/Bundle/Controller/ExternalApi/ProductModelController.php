@@ -522,10 +522,6 @@ class ProductModelController
         }
     }
 
-    /**
-     * We don't have the guarantee that the recently introduced ACLs are correctly configured on existing roles.
-     * To avoid unwanted access denied errors, we will log instead, to monitor on production environments.
-     */
     private function denyAccessUnlessAclIsGranted(string $acl): void
     {
         if (!$this->security->isGranted($acl)) {
@@ -538,6 +534,22 @@ class ProductModelController
                 implode(',', $user->getRoles()),
                 $acl
             ));
+
+            throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
+        }
+    }
+
+    private function deniedAccessMessage(string $acl): string
+    {
+        switch ($acl) {
+            case 'pim_api_product_list':
+                return 'Access forbidden. You are not allowed to list products.';
+            case 'pim_api_product_edit':
+                return 'Access forbidden. You are not allowed to create or update products.';
+            case 'pim_api_product_remove':
+                return 'Access forbidden. You are not allowed to delete products.';
+            default:
+                return 'Access forbidden.';
         }
     }
 }

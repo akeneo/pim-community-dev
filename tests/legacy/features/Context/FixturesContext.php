@@ -43,7 +43,6 @@ use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
@@ -1911,33 +1910,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * Unlink all product media
-     *
-     * @param string $productName
-     *
-     * @Given /^I delete "([^"]+)" media from filesystem$/
-     */
-    public function iDeleteProductMediaFromFilesystem($productName)
-    {
-        $product      = $this->getProduct($productName);
-        $mountManager = $this->getMountManager();
-
-        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
-
-        foreach ($product->getValues() as $value) {
-            $attribute = $attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
-            if (in_array($attribute->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
-                $media = $value->getData();
-                if (null !== $media) {
-                    $fs = $mountManager->getFilesystem($media->getStorage());
-                    $fs->delete($media->getKey());
-                }
-            }
-        }
-    }
-
-    /**
      * @param string $attribute
      * @param string $family
      * @param string $channel
@@ -1963,8 +1935,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 
-        Assert::assertNotNull($requirement);
-        Assert::assertFalse($requirement->isRequired());
+        Assert::assertTrue(null === $requirement || false === $requirement->isRequired());
     }
 
     /**
@@ -2031,7 +2002,9 @@ class FixturesContext extends BaseFixturesContext
             ]
         );
 
-        $em->refresh($requirement);
+        if (null !== $requirement) {
+            $em->refresh($requirement);
+        }
 
         return $requirement;
     }
@@ -2495,14 +2468,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
-    }
-
-    /**
-     * @return MountManager
-     */
-    protected function getMountManager()
-    {
-        return $this->getContainer()->get('oneup_flysystem.mount_manager');
     }
 
     /**

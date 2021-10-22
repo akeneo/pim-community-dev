@@ -1,16 +1,11 @@
 oneup_flysystem:
     filesystems:
-        asset_storage:
-            adapter: asset_storage_adapter
-            mount: assetStorage
         catalog_storage:
             adapter: catalog_storage_adapter
             mount: catalogStorage
         archivist:
             adapter: archivist_adapter
             mount: archivist
-            plugins:
-                - oneup_flysystem.plugin.list_files
         jobs_storage:
             adapter: jobs_storage_adapter
             mount: jobsStorage

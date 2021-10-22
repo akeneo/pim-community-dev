@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,6 +26,7 @@ class LastOperationsFetcherSpec extends ObjectBehavior
         GetJobExecutionTracking $getJobExecutionTracking,
         NormalizerInterface $jobExecutionTrackingNormalizer
     ) {
+        $securityFacade->isGranted(Argument::type('string'), Argument::any())->willReturn(false);
         $this->beConstructedWith(
             $query,
             $securityFacade,

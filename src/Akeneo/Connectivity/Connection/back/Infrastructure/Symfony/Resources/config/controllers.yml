@@ -88,6 +88,14 @@ services:
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
+    akeneo_connectivity.connection.public.controller.apps.token:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RequestAccessTokenAction
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
+
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetWizardDataAction
@@ -102,10 +110,12 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppIdAndUserGroupQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
             - '@oro_security.security_facade'
             - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
         public: true

@@ -247,7 +247,7 @@ define([
 
       this.getRoot().trigger('datagrid:getParams', params);
 
-      return $.get(Routing.generate(datagridLoadUrl, params), this.loadDataGrid.bind(this));
+      return $.post(Routing.generate(datagridLoadUrl, {alias: params.alias}), params, this.loadDataGrid.bind(this));
     },
 
     /**

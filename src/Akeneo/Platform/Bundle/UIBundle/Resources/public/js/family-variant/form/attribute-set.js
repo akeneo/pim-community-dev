@@ -296,6 +296,10 @@ define([
             }
           });
 
+          analytics.track('family:variant:attribute-remove', {
+            codes: removedAttributes,
+          });
+
           this.setData(data);
           this.render();
         },
