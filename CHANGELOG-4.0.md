@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.125 (2021-10-22)
+
 ## Bug fixes
 
 - PIM-10007: Do not change status of a draft product when clicking a second time on "Send for approval" 
