@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-10007: Do not change status of a draft product when clicking a second time on "Send for approval" 
+
 # 4.0.124 (2021-09-23)
 
 - RAC-868: Improve the thumbnail cache clear command to clear with an option to clear all caches.

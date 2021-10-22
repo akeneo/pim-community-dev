@@ -30,7 +30,7 @@ define(
         submitSequentialEditTemplate,
         FormModal
     ) {
-        const DraftStatus = { IN_PROGRESS: 0 };
+        const DraftStatus = { IN_PROGRESS: 0, READY: 1 };
 
         return BaseForm.extend({
             className: 'AknButtonList-item',
@@ -120,21 +120,18 @@ define(
              * @return {Promise<void>}
              */
             onSubmitDraft: function () {
-                const submit = this.parent.getExtension('save').save({silent: true, notifyOnSuccess: false});
-
-                if (
-                  DraftStatus.IN_PROGRESS !== this.getDraftStatus() &&
-                  false === this.parent.getExtension('state').hasModelChanged()
+                if (DraftStatus.READY === this.getDraftStatus()
+                    && false === this.parent.getExtension('state').hasModelChanged()
                 ) {
-                  submit.then(() =>
                     messenger.notify(
-                      'warning',
-                      __('pimee_enrich.entity.product_draft.flash.create.skip')
-                    )
-                  );
+                      'success',
+                      __('pimee_enrich.entity.product_draft.flash.create.success')
+                    );
 
-                  return Promise.resolve();
+                    return Promise.resolve();
                 }
+
+                const submit = this.parent.getExtension('save').save({silent: true, notifyOnSuccess: false});
 
                 return new Promise((resolve) => submit
                     .then(() => this.createCommentFormModal().open())
