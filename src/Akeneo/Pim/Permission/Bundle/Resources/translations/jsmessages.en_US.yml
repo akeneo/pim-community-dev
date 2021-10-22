@@ -85,7 +85,7 @@ pim_permissions:
         entity:
             attribute_group:
                 label: Attribute groups
-                help: If you want your app to be able to modify all your product data, choose the all option in the Edit level. Otherwise, select only the attribute groups that your app will be able to see or modify according to the level.
+                help: If you want your app to be able to modify all your product data, choose the All option in the Edit level. Otherwise, select only the attribute groups that your app will be able to see or modify according to the level.
             category:
                 label: Category trees
                 help: If you want your app to be able to modify your products without using PIM proposals, choose the Own level. Otherwise choose the Edit level.

@@ -31,36 +31,54 @@ const Label = styled.label`
   display: block;
 `;
 
+type LocalePermissionState = {
+  edit: {
+    all: boolean;
+    identifiers: string[];
+  };
+  view: {
+    all: boolean;
+    identifiers: string[];
+  };
+};
+
+const LocalePermissionReducer = (state: LocalePermissionState, action: PermissionFormReducer.Action) =>
+  PermissionFormReducer.reducer<LocalePermissionState>(state, action);
+
+const defaultState: LocalePermissionState = {
+  edit: {
+    all: false,
+    identifiers: [],
+  },
+  view: {
+    all: false,
+    identifiers: [],
+  },
+};
+
 type LocaleType = {
   code: string;
   label: string;
   language: string;
 };
 
-const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer.State> = {
+const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState> = {
   key: 'locales',
   label: translate('pim_permissions.widget.entity.locale.label'),
   renderForm: (
     onPermissionsChange,
-    initialState: PermissionFormReducer.State | undefined,
-    readOnly: boolean | undefined
+    initialState: LocalePermissionState | undefined = defaultState,
+    readOnly: boolean = false
   ) => {
-    const [state, dispatch] = useReducer(
-      PermissionFormReducer.reducer,
-      initialState ?? PermissionFormReducer.initialState
-    );
+    const [state, dispatch] = useReducer(LocalePermissionReducer, initialState);
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
-
-    readOnly = readOnly ?? false;
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
     }, [readOnly, state]);
 
     useEffect(() => {
-      FetcherRegistry.getFetcher('locale')
-        .fetchActivated({filter_locales: false})
-        .then(setActivatedLocales);
+      FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false}).then(setActivatedLocales);
     }, [setActivatedLocales]);
 
     return (
@@ -108,13 +126,11 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
       </>
     );
   },
-  renderSummary: (state: PermissionFormReducer.State) => {
+  renderSummary: (state: LocalePermissionState) => {
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
     useEffect(() => {
-      FetcherRegistry.getFetcher('locale')
-        .fetchActivated({filter_locales: false})
-        .then(setActivatedLocales);
+      FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false}).then(setActivatedLocales);
     }, [setActivatedLocales]);
 
     const getLocales = (localesFromState: string[]) =>
@@ -135,7 +151,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<PermissionFormReducer
       </PermissionSectionSummary>
     );
   },
-  save: async (userGroup: string, state: PermissionFormReducer.State) => {
+  save: async (userGroup: string, state: LocalePermissionState) => {
     if (false === securityContext.isGranted('pimee_enrich_locale_edit_permissions')) {
       return Promise.resolve();
     }
