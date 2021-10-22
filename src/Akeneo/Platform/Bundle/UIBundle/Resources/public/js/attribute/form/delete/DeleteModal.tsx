@@ -89,17 +89,13 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
 
   const productText =
     0 < productCount
-      ? translate(
-          'pim_enrich.entity.attribute.module.delete.product_count',
-          {count: productCount.toString()},
-          productCount
-        )
+      ? translate('pim_enrich.entity.attribute.module.delete.product_count', {count: productCount}, productCount)
       : '';
   const productModelText =
     0 < productModelCount
       ? translate(
           'pim_enrich.entity.attribute.module.delete.product_model_count',
-          {count: productModelCount.toString()},
+          {count: productModelCount},
           productModelCount
         )
       : '';
@@ -117,13 +113,12 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       {translate('pim_enrich.entity.attribute.module.delete.confirm')}
       {(0 < productCount || 0 < productModelCount) && (
         <p>
-          <Highlight>{impactedItemsText}</Highlight>
-          &nbsp;
-          {translate('pim_enrich.entity.attribute.module.delete.used')}
+          <Highlight>{impactedItemsText}</Highlight>{' '}
+          {translate('pim_enrich.entity.attribute.module.delete.used', {}, productCount + productModelCount)}
         </p>
       )}
       <SpacedHelper>
-        {translate('pim_enrich.entity.attribute.module.delete.helper.content')}
+        {translate('pim_enrich.entity.attribute.module.delete.helper.content')}{' '}
         <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#delete-an-attribute-and-keep-the-related-data">
           {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
         </Link>

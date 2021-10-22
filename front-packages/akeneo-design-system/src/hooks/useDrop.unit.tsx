@@ -1,20 +1,10 @@
-import React from 'react';
 import {renderHook} from '@testing-library/react-hooks';
-import {TableContext} from '../TableContext';
-import {ReactNode} from 'react';
 import {useDrop} from './useDrop';
 
 const onReorder = jest.fn();
-const wrapper = ({children}: {children: ReactNode}) => (
-  <TableContext.Provider
-    value={{isSelectable: false, displayCheckbox: false, isDragAndDroppable: true, onReorder: onReorder}}
-  >
-    {children}
-  </TableContext.Provider>
-);
 
 test('it does not call on reorder callback when user try to drag and drop to another table', () => {
-  const {result} = renderHook(() => useDrop(10, 1), {wrapper});
+  const {result} = renderHook(() => useDrop(10, 1, onReorder));
 
   const [, handleDrop] = result.current;
   const event = {
@@ -45,7 +35,7 @@ test('it does not call on reorder callback when user try to drag and drop to ano
 test('it does not on reorder callback when user drag and drop', () => {
   const stopPropagation = jest.fn();
   const preventDefault = jest.fn();
-  const {result} = renderHook(() => useDrop(4, 1), {wrapper});
+  const {result} = renderHook(() => useDrop(4, 1, onReorder));
 
   const [tableId, handleDrop] = result.current;
   const event = {
@@ -76,7 +66,7 @@ test('it does not on reorder callback when user drag and drop', () => {
 });
 
 test('it throws an error when it cannot find the target index', () => {
-  const {result} = renderHook(() => useDrop(4, 1), {wrapper});
+  const {result} = renderHook(() => useDrop(4, 1, onReorder));
 
   const [tableId, handleDrop] = result.current;
 
@@ -104,7 +94,7 @@ test('it throws an error when it cannot find the target index', () => {
 test('it does not call on reorder callback on dragover', () => {
   const stopPropagation = jest.fn();
   const preventDefault = jest.fn();
-  const {result} = renderHook(() => useDrop(4, 1), {wrapper});
+  const {result} = renderHook(() => useDrop(4, 1, onReorder));
 
   const [, , handleDragOver] = result.current;
   const event = {

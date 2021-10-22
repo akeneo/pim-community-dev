@@ -76,7 +76,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
             readOnly={true}
             value={null}
             placeholder="Placeholder"
-            emptyResultLabel="Not matches found"
+            emptyResultLabel="No match found"
           >
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
@@ -238,7 +238,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState(null);
       return (
         <>
-          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No match found">
             <SelectInput.Option value="en_US" title="English (United States)">
               <Locale code="en_US" languageLabel="English" />
             </SelectInput.Option>
@@ -289,6 +289,33 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
   </Story>
 </Canvas>
 
+
+## Variation on large options
+
+<Canvas>
+  <Story name="Large Options">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <>
+          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No match found">
+            <SelectInput.Option value="en_US" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.">
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </SelectInput.Option>
+          </SelectInput>
+          <SpaceContainer height={80} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on clearable
 
 <Canvas>
@@ -307,6 +334,27 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
             <SelectInput.Option value="de_DE" title="German (Germany)">
               <Locale code="de_DE" languageLabel="German" />
             </SelectInput.Option>
+          </SelectInput>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Pagination
+
+<Canvas>
+  <Story name="Pagination">
+    {args => {
+      const [items, setItems] = useState([...Array(20).keys()]);
+      const [value, setValue] = useState(null);
+      const onNextPage = () => { setItems([...Array(items.length + 20).keys()]); };
+      return (
+        <SpaceContainer height={170}>
+          <SelectInput {...args} value={value} onChange={setValue} onNextPage={onNextPage}>
+            {items.map(item => <SelectInput.Option value={item} title={item} key={item}>
+              Option {item + 1}
+            </SelectInput.Option>)}
           </SelectInput>
         </SpaceContainer>
       );
