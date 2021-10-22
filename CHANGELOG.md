@@ -134,7 +134,6 @@
 - PIM-10090: Fix missing cache clearing during family variant changes computing
 - PIM-10048: fix memory leak in search product models by family variant query
 
-
 ## New features
 
 - DAPI-1443: Add possibility to export products depending on their Quality Score
