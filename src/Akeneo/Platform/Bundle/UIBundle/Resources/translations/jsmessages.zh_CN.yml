@@ -271,8 +271,6 @@ pim_enrich.entity.fallback:
       discard_changes: 如果离开此页面，将会丢失对 {{ entity }} 的更改。
       discard_changes_title: 是否确定?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} 个操作|]1, Inf[{{ count }} 个操作"
   module:
     create:
       upload: 将您的 {{ type }} 文件拖到此处，或点击浏览磁盘

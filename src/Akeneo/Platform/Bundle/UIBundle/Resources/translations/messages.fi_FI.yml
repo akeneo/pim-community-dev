@@ -47,34 +47,34 @@ pim_ui.system_config:
     loading_message.title: Latausviestit
 other_actions: Muut toiminnot
 pim_common:
-  cancel: Peruuta
-  save: Tallenna
-  delete: Poista
-  update: Päivitä
-  view: Näytä
-  edit: Muokkaa
-  created: Luotu
-  updated: Päivitetty
-  create: Luo
-  permissions: Käyttöoikeudet
-  properties: Ominaisuudet
-  name: Nimi
-  remove: Poista
-  code: Koodi
-  label: Nimike
-  quantity: Määrä
-  products: Tuotteet
-  product_models: Tuotemallit
-  categories: Kategoriat
-  family_variant: Varianttiperhe
-  enabled: Käytössä
-  family: Perhe
-  parent: Ylätaso
-  groups: Ryhmät
-  unit: Yksikkö
-  yes: "Kyllä"
-  no: "Ei"
   association_types: Assosiaatiotyypit
+  cancel: Peruuta
+  categories: Kategoriat
+  code: Koodi
+  create: Luo
+  created: Luotu
+  delete: Poista
+  edit: Muokkaa
+  enabled: Käytössä
+  family_variant: Varianttiperhe
+  family: Perhe
+  groups: Ryhmät
+  label: Nimike
+  name: Nimi
+  no: "Ei"
+  parent: Ylätaso
+  permissions: Käyttöoikeudet
+  product_models: Tuotemallit
+  products: Tuotteet
+  properties: Ominaisuudet
+  quantity: Määrä
+  remove: Poista
+  save: Tallenna
+  unit: Yksikkö
+  update: Päivitä
+  updated: Päivitetty
+  view: Näytä
+  yes: "Kyllä"
 pim_enrich:
   #ACLs
   acl:

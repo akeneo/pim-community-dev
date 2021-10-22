@@ -48,34 +48,34 @@ pim_ui.system_config:
     loading_message.title: Messaggi per "caricamento in corso"
 other_actions: Altre azioni
 pim_common:
-  cancel: Annulla
-  save: Salva
-  delete: Elimina
-  update: Carica
-  view: Visualizzazione
-  edit: Modifica
-  created: Creato
-  updated: Caricato
-  create: Creare
-  permissions: Autorizzazioni
-  properties: Proprietà
-  name: Nome
-  remove: Rimuovere
-  code: Codice
-  label: Etichetta
-  quantity: Quantità
-  products: Prodotti
-  product_models: Modelli di prodotto
-  categories: Categorie
-  family_variant: Famiglia variante
-  enabled: Attivato
-  family: Famiglia
-  parent: Parente
-  groups: Gruppi
-  unit: Unità
-  yes: "Sì"
-  no: "No"
   association_types: Tipi di associazione
+  cancel: Annulla
+  categories: Categorie
+  code: Codice
+  create: Creare
+  created: Creato
+  delete: Elimina
+  edit: Modifica
+  enabled: Attivato
+  family_variant: Famiglia variante
+  family: Famiglia
+  groups: Gruppi
+  label: Etichetta
+  name: Nome
+  no: "No"
+  parent: Parente
+  permissions: Autorizzazioni
+  product_models: Modelli di prodotto
+  products: Prodotti
+  properties: Proprietà
+  quantity: Quantità
+  remove: Rimuovere
+  save: Salva
+  unit: Unità
+  update: Carica
+  updated: Caricato
+  view: Visualizzazione
+  yes: "Sì"
 pim_enrich:
   #ACLs
   acl:

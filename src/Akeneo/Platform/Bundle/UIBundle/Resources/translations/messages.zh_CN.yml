@@ -48,34 +48,34 @@ pim_ui.system_config:
     loading_message.title: 加载消息
 other_actions: 其他操作
 pim_common:
-  cancel: 取消
-  save: 保存
-  delete: 删除
-  update: 更新
-  view: 查看
-  edit: 编辑
-  created: 已创建
-  updated: 已更新
-  create: 创建
-  permissions: 权限
-  properties: 属性
-  name: 名称
-  remove: 移除
-  code: 代码
-  label: 标签
-  quantity: 数量
-  products: 产品
-  product_models: 产品模型
-  categories: 类别
-  family_variant: 品类变型
-  enabled: 已启用
-  family: 品类
-  parent: '父目录:'
-  groups: 分组
-  unit: 单位
-  yes: "是"
-  no: "否　"
   association_types: 关联类型
+  cancel: 取消
+  categories: 类别
+  code: 代码
+  create: 创建
+  created: 已创建
+  delete: 删除
+  edit: 编辑
+  enabled: 已启用
+  family_variant: 品类变型
+  family: 品类
+  groups: 分组
+  label: 标签
+  name: 名称
+  no: "否　"
+  parent: '父目录:'
+  permissions: 权限
+  product_models: 产品模型
+  products: 产品
+  properties: 属性
+  quantity: 数量
+  remove: 移除
+  save: 保存
+  unit: 单位
+  update: 更新
+  updated: 已更新
+  view: 查看
+  yes: "是"
 pim_enrich:
   #ACLs
   acl:

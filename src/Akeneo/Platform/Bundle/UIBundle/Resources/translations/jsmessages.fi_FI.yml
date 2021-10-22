@@ -270,8 +270,6 @@ pim_enrich.entity.fallback:
       discard_changes: Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.
       discard_changes_title: Oletko varma?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operaatio|]1, Inf[{{ count }} operaatiota"
   module:
     create:
       upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja

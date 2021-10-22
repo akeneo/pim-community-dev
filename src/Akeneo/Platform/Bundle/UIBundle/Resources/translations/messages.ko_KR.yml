@@ -48,34 +48,34 @@ pim_ui.system_config:
     loading_message.title: 로딩 메시지
 other_actions: 기타 작업
 pim_common:
-  cancel: 취소
-  save: 저장
-  delete: 삭제
-  update: 업데이트
-  view: 보기
-  edit: 편집
-  created: 생성됨
-  updated: 업데이트됨
-  create: 만들기
-  permissions: 권한
-  properties: 속성
-  name: 이름
-  remove: 제거
-  code: 코드
-  label: 레이블
-  quantity: 수량
-  products: 제품
-  product_models: 제품 모델
-  categories: 카테고리
-  family_variant: 패밀리 변형
-  enabled: 활성화됨
-  family: 패밀리
-  parent: 상위
-  groups: 그룹
-  unit: 단위
-  yes: "예"
-  no: "아니요"
   association_types: 연결 유형
+  cancel: 취소
+  categories: 카테고리
+  code: 코드
+  create: 만들기
+  created: 생성됨
+  delete: 삭제
+  edit: 편집
+  enabled: 활성화됨
+  family_variant: 패밀리 변형
+  family: 패밀리
+  groups: 그룹
+  label: 레이블
+  name: 이름
+  no: "아니요"
+  parent: 상위
+  permissions: 권한
+  product_models: 제품 모델
+  products: 제품
+  properties: 속성
+  quantity: 수량
+  remove: 제거
+  save: 저장
+  unit: 단위
+  update: 업데이트
+  updated: 업데이트됨
+  view: 보기
+  yes: "예"
 pim_enrich:
   #ACLs
   acl:
