@@ -24,6 +24,7 @@ import {getDefaultSimpleAssociationTypeSource} from '../components/SourceDetails
 import {getDefaultQuantifiedAssociationTypeSource} from '../components/SourceDetails/QuantifiedAssociationType/model';
 import {getDefaultCodeSource} from '../components/SourceDetails/Code/model';
 import {getDefaultQualityScoreSource} from '../components/SourceDetails/QualityScore/model';
+import {getDefaultTableSource} from '../components/SourceDetails/Table/model';
 
 const channels: Channel[] = [
   {
@@ -123,6 +124,9 @@ test('it can get the default attribute source by attribute type', () => {
   );
   expect(getDefaultAttributeSource(getAttribute('akeneo_reference_entity'), 'ecommerce', 'br_FR')).toEqual(
     getDefaultReferenceEntitySource(getAttribute('akeneo_reference_entity'), 'ecommerce', 'br_FR')
+  );
+  expect(getDefaultAttributeSource(getAttribute('pim_catalog_table'), 'ecommerce', 'br_FR')).toEqual(
+    getDefaultTableSource(getAttribute('pim_catalog_table'), 'ecommerce', 'br_FR')
   );
   expect(() => getDefaultAttributeSource(getAttribute('unknown_type'), 'ecommerce', 'br_FR')).toThrowError();
 });

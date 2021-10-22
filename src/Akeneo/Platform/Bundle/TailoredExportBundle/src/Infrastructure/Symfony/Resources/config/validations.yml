@@ -24,6 +24,8 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Table\TableSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint: ~
 
   akeneo.tailored_export.validation.source:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\SourcesValidator'
@@ -44,8 +46,9 @@ services:
         pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceConstraint'
         pim_catalog_price_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint'
         pim_catalog_simpleselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint'
-        pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
-        pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_table: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Table\TableSourceConstraint'
+        pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
+        pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
       -
         categories: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint'
         enabled: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint'

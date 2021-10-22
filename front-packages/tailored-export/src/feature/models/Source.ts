@@ -42,6 +42,7 @@ import {
 } from '../components/SourceDetails/QuantifiedAssociationType/model';
 import {CodeSource, getDefaultCodeSource} from '../components/SourceDetails/Code/model';
 import {getDefaultQualityScoreSource, QualityScoreSource} from '../components/SourceDetails/QualityScore/model';
+import {getDefaultTableSource, TableSource} from '../components/SourceDetails/Table/model';
 
 const MAX_SOURCE_COUNT = 4;
 
@@ -68,6 +69,7 @@ type AttributeSource =
   | ReferenceEntitySource
   | ReferenceEntityCollectionSource
   | SimpleSelectSource
+  | TableSource
   | TextSource;
 
 type AssociationTypeSource = SimpleAssociationTypeSource | QuantifiedAssociationTypeSource;
@@ -132,6 +134,8 @@ const getDefaultAttributeSource = (
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
       return getDefaultTextSource(attribute, channel, locale);
+    case 'pim_catalog_table':
+      return getDefaultTableSource(attribute, channel, locale);
     case 'pim_catalog_asset_collection':
       return getDefaultAssetCollectionSource(attribute, channel, locale);
     case 'akeneo_reference_entity_collection':

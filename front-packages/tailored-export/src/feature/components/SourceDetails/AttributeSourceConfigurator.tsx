@@ -28,6 +28,7 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
+import {TableConfigurator} from './Table/TableConfigurator';
 import {ErrorBoundary, DeletedAttributeSourcePlaceholder} from './error';
 
 const Container = styled.div`
@@ -53,6 +54,7 @@ const configurators: {[attributeType: string]: FunctionComponent<AttributeConfig
   pim_catalog_multiselect: MultiSelectConfigurator,
   akeneo_reference_entity: ReferenceEntityConfigurator,
   pim_catalog_asset_collection: AssetCollectionConfigurator,
+  pim_catalog_table: TableConfigurator,
 };
 
 type AttributeSourceConfiguratorProps = {

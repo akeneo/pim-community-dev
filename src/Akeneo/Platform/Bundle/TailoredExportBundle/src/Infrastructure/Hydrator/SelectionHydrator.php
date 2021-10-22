@@ -95,6 +95,7 @@ class SelectionHydrator
             case 'pim_catalog_identifier':
             case 'pim_catalog_textarea':
             case 'pim_catalog_text':
+            case 'pim_catalog_table':
                 return new ScalarSelection();
             case 'pim_catalog_metric':
                 return $this->createMeasurementSelection($selectionConfiguration, $attribute);

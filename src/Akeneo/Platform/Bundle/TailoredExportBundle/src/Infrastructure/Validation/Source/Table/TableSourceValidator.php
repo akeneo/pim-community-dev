@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Table;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
@@ -21,26 +21,17 @@ use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class ScalarSourceValidator extends ConstraintValidator
+class TableSourceValidator extends ConstraintValidator
 {
     public function validate($source, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new Collection(['fields' => ['type' => new EqualTo(['value' => 'code'])]]);
+        $sourceConstraintFields['selection'] = new Collection(['fields' => ['type' => new EqualTo(['value' => 'raw'])]]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);
 
-        $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
-
-        foreach ($violations as $violation) {
-            $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters()
-            )
-                ->atPath($violation->getPropertyPath())
-                ->addViolation();
-        }
+        $validator->inContext($this->context)->validate($source, new Collection(['fields' => $sourceConstraintFields]));
     }
 }
