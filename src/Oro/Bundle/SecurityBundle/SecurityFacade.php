@@ -9,34 +9,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SecurityFacade
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    protected AclAnnotationProvider $annotationProvider;
+    protected ObjectIdentityFactory $objectIdentityFactory;
+    private LoggerInterface $logger;
 
-    /**
-     * @var AclAnnotationProvider
-     */
-    protected $annotationProvider;
-
-    /**
-     * @var ObjectIdentityFactory
-     */
-    protected $objectIdentityFactory;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * Constructor
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AclAnnotationProvider         $annotationProvider
-     * @param ObjectIdentityFactory         $objectIdentityFactory
-     * @param LoggerInterface               $logger
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         AclAnnotationProvider $annotationProvider,
@@ -51,44 +28,33 @@ class SecurityFacade
 
     /**
      * Checks if an access to the given method of the given class is granted to the caller
-     *
-     * @param  string $class
-     * @param  string $method
-     * @return bool
      */
-    public function isClassMethodGranted($class, $method)
+    public function isClassMethodGranted(string $class, ?string $method): bool
     {
-        $isGranted = true;
-
         // check method level ACL
         $annotation = $this->annotationProvider->findAnnotation($class, $method);
         if ($annotation !== null) {
             $this->logger->debug(
                 sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
             );
-            $isGranted = $this->authorizationChecker->isGranted(
+
+            return $this->authorizationChecker->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
         }
 
-        return $isGranted;
+        return true;
     }
 
     /**
      * Get permission for given class and method from the ACL annotation
-     *
-     * @param $class
-     * @param $method
-     * @return string
      */
-    public function getClassMethodAnnotationPermission($class, $method)
+    public function getClassMethodAnnotationPermission(string $class, ?string $method): ?string
     {
         $annotation = $this->annotationProvider->findAnnotation($class, $method);
 
-        if ($annotation) {
-            return $annotation->getPermission();
-        }
+        return $annotation ? $annotation->getPermission() : null;
     }
 
     /**
@@ -96,7 +62,8 @@ class SecurityFacade
      *
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
-     * @param  mixed $object A domain object, object identity or object identity descriptor (id:type)
+     * @param mixed           $object     A domain object, object identity or object identity descriptor (id:type)
+     *
      * @return bool
      */
     public function isGranted($attributes, $object = null)
@@ -106,19 +73,25 @@ class SecurityFacade
             && $annotation = $this->annotationProvider->findAnnotationById($attributes)
         ) {
             $this->logger->debug(sprintf('Check an access using "%s" ACL annotation.', $annotation->getId()));
-            $isGranted = $this->authorizationChecker->isGranted(
+
+            return $this->authorizationChecker->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
-        } elseif (is_string($object)) {
-            $isGranted = $this->authorizationChecker->isGranted(
-                $attributes,
-                $this->objectIdentityFactory->get($object)
-            );
-        } else {
-            $isGranted = $this->authorizationChecker->isGranted($attributes, $object);
         }
 
-        return $isGranted;
+        $subject = is_string($object) ? $this->objectIdentityFactory->get($object) : $object;
+
+        if (is_string($attributes)) {
+            return $this->authorizationChecker->isGranted($attributes, $subject);
+        }
+
+        foreach ($attributes as $attribute) {
+            if ($this->authorizationChecker->isGranted($attribute, $subject)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

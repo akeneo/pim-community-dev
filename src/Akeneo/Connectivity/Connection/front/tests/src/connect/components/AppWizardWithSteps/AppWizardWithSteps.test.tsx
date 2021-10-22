@@ -20,14 +20,11 @@ declare global {
 
 const notify = jest.fn();
 const providerSave = jest.fn();
-const providerLoadPermissions = jest.fn();
 
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
-    notify.mockClear();
-    providerSave.mockClear();
-    providerLoadPermissions.mockClear();
+    jest.clearAllMocks();
 
     delete global.window.location;
     global.window = Object.create(window);
@@ -37,40 +34,45 @@ beforeEach(() => {
 });
 
 jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
+    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/Authorizations'),
     Authorizations: () => <div>authorizations-component</div>,
 }));
 
 type PermissionsProps = {
     appName: string;
     providers: PermissionFormProvider<any>[];
-    setPermissions: (state: PermissionsByProviderKey) => void;
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
 jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
-    Permissions: ({permissions, setPermissions}: PermissionsProps) => {
+    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/Permissions'),
+    Permissions: ({permissions, setProviderPermissions}: PermissionsProps) => {
         const handleClick = () => {
-            setPermissions({
-                data: 'hello world!',
-                formProvider1: 'formProviderData1',
-                formProvider2: 'formProviderData2',
-                formProvider3: 'formProviderData3',
-                formProvider4: 'formProviderData4',
-            });
+            setProviderPermissions('data', {view: 'hello world!'});
+            setProviderPermissions('formProvider1', {view: 'formProviderData1'});
+            setProviderPermissions('formProvider2', {view: 'formProviderData2'});
+            setProviderPermissions('formProvider3', {view: 'formProviderData3'});
+            setProviderPermissions('formProvider4', {view: 'formProviderData4'});
         };
 
         return (
             <div data-testid='set-permissions' onClick={handleClick}>
-                permissions-component {permissions.data}
+                permissions-component {JSON.stringify(permissions.data)}
             </div>
         );
     },
 }));
+
 type SummaryProps = {
     permissions: PermissionsByProviderKey;
 };
 jest.mock('@src/connect/components/AppWizardWithSteps/PermissionsSummary', () => ({
-    PermissionsSummary: ({permissions}: SummaryProps) => <div>permissions-summary-component {permissions.data}</div>,
+    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/PermissionsSummary'),
+    PermissionsSummary: ({permissions}: SummaryProps) => (
+        <div>permissions-summary-component {JSON.stringify(permissions.data)}</div>
+    ),
 }));
+
 test('The step wizard renders without error', async () => {
     const fetchAppWizardDataResponses: MockFetchResponses = {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
@@ -86,6 +88,7 @@ test('The step wizard renders without error', async () => {
         ...fetchAppWizardDataResponses,
     });
     renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+
     await waitForElement(() => screen.getByAltText('MyApp'));
     expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
@@ -141,6 +144,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
     assertPermissionsScreen();
+
     expect(screen.queryByText('permissions-component')).toBeInTheDocument();
     act(() => {
         userEvent.click(screen.getByTestId('set-permissions'));
@@ -155,7 +159,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous'));
     });
     assertPermissionsScreen();
-    expect(screen.queryByText('permissions-component hello world!')).toBeInTheDocument();
+    expect(screen.queryByText('permissions-component {"view":"hello world!"}')).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous'));
@@ -223,23 +227,22 @@ test('The wizard saves app and permissions on confirm', async () => {
         {
             key: 'formProvider1',
             label: 'formProviderLabel1',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
         {
             key: 'formProvider2',
             label: 'formProviderLabel2',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
     ];
     const registry = {
         all: () => Promise.resolve(providers),
-        count: () => providers.length,
     };
 
     renderWithProviders(
@@ -262,8 +265,8 @@ test('The wizard saves app and permissions on confirm', async () => {
         'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
     );
 
-    expect(providerSave).toHaveBeenNthCalledWith(1, appUserGroup, 'formProviderData1');
-    expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, 'formProviderData2');
+    expect(providerSave).toHaveBeenNthCalledWith(1, appUserGroup, {view: 'formProviderData1'});
+    expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, {view: 'formProviderData2'});
 
     expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
 });
@@ -300,39 +303,38 @@ test('The wizard saves app but have some failing permissions on confirm', async 
         {
             key: 'formProvider1',
             label: 'formProviderLabel1',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
         {
             key: 'formProvider2',
             label: 'formProviderLabel2',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
         {
             key: 'formProvider3',
             label: 'formProviderLabel3',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
         {
             key: 'formProvider4',
             label: 'formProviderLabel4',
-            renderForm: () => null,
-            renderSummary: () => null,
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
             save: providerSave,
-            loadPermissions: providerLoadPermissions,
+            loadPermissions: jest.fn(),
         },
     ];
     const registry = {
         all: () => Promise.resolve(providers),
-        count: () => providers.length,
     };
 
     renderWithProviders(
@@ -374,10 +376,10 @@ test('The wizard saves app but have some failing permissions on confirm', async 
         'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
     );
 
-    expect(providerSave).toHaveBeenNthCalledWith(1, appUserGroup, 'formProviderData1');
-    expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, 'formProviderData2');
-    expect(providerSave).toHaveBeenNthCalledWith(3, appUserGroup, 'formProviderData3');
-    expect(providerSave).toHaveBeenNthCalledWith(4, appUserGroup, 'formProviderData4');
+    expect(providerSave).toHaveBeenNthCalledWith(1, appUserGroup, {view: 'formProviderData1'});
+    expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, {view: 'formProviderData2'});
+    expect(providerSave).toHaveBeenNthCalledWith(3, appUserGroup, {view: 'formProviderData3'});
+    expect(providerSave).toHaveBeenNthCalledWith(4, appUserGroup, {view: 'formProviderData4'});
 });
 
 const assertAuthorizationsScreen = () => {
@@ -393,6 +395,7 @@ const assertAuthorizationsScreen = () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
     ).not.toBeInTheDocument();
+
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
     expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
     expect(screen.queryByText('permissions-summary-component', {exact: false})).not.toBeInTheDocument();
@@ -409,7 +412,9 @@ const assertPermissionsScreen = () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')
     ).not.toBeInTheDocument();
+
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-component', {exact: false})).toBeInTheDocument();
     expect(screen.queryByText('permissions-summary-component', {exact: false})).not.toBeInTheDocument();
 };
 
@@ -424,9 +429,10 @@ const assertPermissionsSummaryScreen = () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
     ).toBeInTheDocument();
+
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
     expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
-    expect(screen.queryByText('permissions-summary-component hello world!')).toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component', {exact: false})).toBeInTheDocument();
 };
 
 const navigateToSummaryAndClickConfirm = async () => {

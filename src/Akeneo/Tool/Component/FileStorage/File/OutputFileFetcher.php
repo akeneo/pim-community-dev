@@ -3,7 +3,8 @@
 namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
+use League\Flysystem\UnableToReadFile;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -21,19 +22,23 @@ class OutputFileFetcher implements FileFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = [])
+    public function fetch(FilesystemReader $filesystem, $fileKey, array $options = [])
     {
         if (!isset($options['filePath']) || '' === $options['filePath']) {
             throw new \InvalidArgumentException('Options "filePath" has to be filled');
         }
 
-        if (!$filesystem->has($fileKey)) {
+        if (!$filesystem->fileExists($fileKey)) {
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));
         }
 
-        if (false === $stream = $filesystem->readStream($fileKey)) {
+        try {
+            $stream = $filesystem->readStream($fileKey);
+        } catch (UnableToReadFile $e) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
+                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey),
+                0,
+                $e
             );
         }
 
@@ -44,6 +49,7 @@ class OutputFileFetcher implements FileFetcherInterface
             ? basename($fileKey) : $options['filename'];
 
         $localPathname = $filePath . $filename;
+        // TODO: replace this with a filesystem abstraction
         $localFilesystem = new Filesystem();
 
         try {

@@ -403,3 +403,7 @@ pim_system:
     enabled: SSO 활성화됨
     disabled: SSO 비활성화됨
     title: SAML 기반 Single Sign-On
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: 작업 선택

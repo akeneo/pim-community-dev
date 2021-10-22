@@ -23,6 +23,7 @@ services:
                 - '%pim_connector.job_name.xlsx_product_model_export%'
                 - '%pim_connector.job_name.csv_product_export%'
                 - '%pim_connector.job_name.csv_product_model_export%'
+                - 'akeneo_shared_catalog'
 
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Channel\Bundle\Query\Sql\SqlGetAllViewableLocalesForUser'

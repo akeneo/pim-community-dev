@@ -26,32 +26,13 @@ class FileController
     const DEFAULT_IMAGE_KEY = '__default_image__';
     const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
-    /** @var ImagineController */
-    protected $imagineController;
+    protected ImagineController $imagineController;
+    protected FilesystemProvider $filesystemProvider;
+    protected FileInfoRepositoryInterface $fileInfoRepository;
+    protected FileTypeGuesserInterface $fileTypeGuesser;
+    protected DefaultImageProviderInterface $defaultImageProvider;
+    protected array $filesystemAliases;
 
-    /** @var FilesystemProvider */
-    protected $filesystemProvider;
-
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
-
-    /** @var FileTypeGuesserInterface */
-    protected $fileTypeGuesser;
-
-    /** @var DefaultImageProviderInterface */
-    protected $defaultImageProvider;
-
-    /** @var array */
-    protected $filesystemAliases;
-
-    /**
-     * @param ImagineController             $imagineController
-     * @param FilesystemProvider            $filesystemProvider
-     * @param FileInfoRepositoryInterface   $fileInfoRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param array                         $filesystemAliases
-     */
     public function __construct(
         ImagineController $imagineController,
         FilesystemProvider $filesystemProvider,
@@ -149,7 +130,7 @@ class FileController
 
         foreach ($this->filesystemAliases as $alias) {
             $fs = $this->filesystemProvider->getFilesystem($alias);
-            if ($fs->has($filename)) {
+            if ($fs->fileExists($filename)) {
                 $stream = $fs->readStream($filename);
                 $headers = [];
 

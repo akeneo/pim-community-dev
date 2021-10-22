@@ -133,7 +133,6 @@ $rules = [
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',
             'Doctrine\ORM\Query\Expr',
-            'League\Flysystem\MountManager',
             'Psr\Log\LoggerInterface',
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\Console',

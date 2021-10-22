@@ -76,6 +76,13 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         history.push('/connect/marketplace');
     }, [history]);
 
+    const handleSetProviderPermissions = useCallback(
+        (providerKey: string, providerPermissions: object) => {
+            setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+        },
+        [setPermissions]
+    );
+
     const notifyPermissionProviderError = useCallback(
         (entity: string): void => {
             notify(
@@ -166,7 +173,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                     <Permissions
                         appName={wizardData.appName}
                         providers={providers}
-                        setPermissions={setPermissions}
+                        setProviderPermissions={handleSetProviderPermissions}
                         permissions={permissions}
                     />
                 )}

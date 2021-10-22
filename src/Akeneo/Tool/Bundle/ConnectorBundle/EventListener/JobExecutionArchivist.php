@@ -75,29 +75,31 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @return array
      */
-    public function getArchives(JobExecution $jobExecution, bool $recursive = false)
+    public function getArchives(JobExecution $jobExecution, bool $deep = false): iterable
     {
         $result = [];
 
         if (!$jobExecution->isRunning()) {
             foreach ($this->archivers as $archiver) {
-                if (count($archives = $archiver->getArchives($jobExecution, $recursive)) > 0) {
-                    $result[$archiver->getName()] = $archives;
-                }
+                $result[$archiver->getName()] = $archiver->getArchives($jobExecution, $deep);
             }
         }
 
         return $result;
     }
 
+    /**
+     * Tells if there were at least 2 files archived for a given job execution
+     */
     public function hasAtLeastTwoArchives(JobExecution $jobExecution): bool
     {
-        $count = 0;
         if (!$jobExecution->isRunning()) {
+            $count = 0;
             foreach ($this->archivers as $archiver) {
-                $count += \count($archiver->listContents($jobExecution));
-                if ($count >= 2) {
-                    return true;
+                foreach ($archiver->getArchives($jobExecution, true) as $archive) {
+                    if (++$count >= 2) {
+                        return true;
+                    }
                 }
             }
         }

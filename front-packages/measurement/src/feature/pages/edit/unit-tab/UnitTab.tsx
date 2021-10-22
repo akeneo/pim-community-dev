@@ -66,6 +66,7 @@ const UnitTab = ({
       <TabColumns>
         <UnitList>
           <Search
+            sticky={0}
             placeholder={translate('measurements.search.placeholder')}
             searchValue={searchValue}
             onSearchChange={setSearchValue}

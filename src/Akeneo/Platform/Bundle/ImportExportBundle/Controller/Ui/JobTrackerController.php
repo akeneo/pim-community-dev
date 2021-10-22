@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +43,7 @@ class JobTrackerController extends AbstractController
     private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
     private JobRegistry $jobRegistry;
     private LoggerInterface $logger;
-    private FilesystemInterface $archivistFilesystem;
+    private FilesystemReader $archivistFilesystem;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -54,7 +54,7 @@ class JobTrackerController extends AbstractController
         SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
         JobRegistry $jobRegistry,
         LoggerInterface $logger,
-        FilesystemInterface $archivistFilesystem
+        FilesystemReader $archivistFilesystem
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;

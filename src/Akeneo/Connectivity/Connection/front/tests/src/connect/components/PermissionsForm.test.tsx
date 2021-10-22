@@ -20,7 +20,14 @@ test('The permissions form renders', async () => {
         loadPermissions: jest.fn(),
     };
 
-    renderWithProviders(<PermissionsForm provider={myProvider} permissions={{}} setPermissions={jest.fn()} />);
+    renderWithProviders(
+        <PermissionsForm
+            provider={myProvider}
+            permissions={undefined}
+            onPermissionsChange={jest.fn()}
+            readOnly={undefined}
+        />
+    );
 
     await wait(() => expect(myProvider.renderForm).toHaveBeenCalledTimes(1));
 });

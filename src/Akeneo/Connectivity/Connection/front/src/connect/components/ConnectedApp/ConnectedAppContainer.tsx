@@ -1,15 +1,16 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
-import {useTranslate} from '../../../shared/translate';
+import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
 import {useMediaUrlGenerator} from '../../../settings/use-media-url-generator';
-import {PageContent, PageHeader} from '../../../common';
+import {ApplyButton, PageContent, PageHeader} from '../../../common';
 import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {ConnectedAppPermissions} from './ConnectedAppPermissions';
-import {usePermissionFormRegistry} from '../../../shared/permission-form-registry';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
+import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -21,10 +22,12 @@ const permissionsTabName = '#connected-app-tab-permissions';
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
     const generateUrl = useRouter();
+    const notify = useNotify();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const generateMediaUrl = useMediaUrlGenerator();
-    const permissionFormRegistry = usePermissionFormRegistry();
+    const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -36,11 +39,92 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         </Breadcrumb>
     );
 
+    const SaveButton = () => {
+        return (
+            <ApplyButton onClick={handleSave} disabled={!hasUnsavedChanges} classNames={['AknButtonList-item']}>
+                <Translate id='pim_common.save' />
+            </ApplyButton>
+        );
+    };
+
+    const FormState = () => {
+        return (
+            (hasUnsavedChanges && (
+                <div className='updated-status'>
+                    <span className='AknState'>
+                        <Translate id='pim_common.entity_updated' />
+                    </span>
+                </div>
+            )) ||
+            null
+        );
+    };
+
+    const notifyPermissionProviderError = (entity: string): void => {
+        notify(
+            NotificationLevel.ERROR,
+            translate(
+                'akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.description'
+            ),
+            {
+                titleMessage: translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.flash.save_permissions_error.title',
+                    {
+                        entity: entity,
+                    }
+                ),
+            }
+        );
+    };
+
+    const handleSave = async () => {
+        let hasStillUnsavedChanged = false;
+        let hasSavedSomething = false;
+
+        if (null !== providers) {
+            for (const provider of providers) {
+                if (false !== permissions[provider.key]) {
+                    try {
+                        await provider.save(connectedApp.user_group_name, permissions[provider.key]);
+                        hasSavedSomething = true;
+                    } catch {
+                        notifyPermissionProviderError(provider.label);
+                        hasStillUnsavedChanged = true;
+                    }
+                }
+            }
+        }
+
+        setHasUnsavedChanges(hasStillUnsavedChanged);
+
+        if (hasSavedSomething) {
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.success')
+            );
+        }
+    };
+
+    const handleSetProviderPermissions = useCallback(
+        (providerKey: string, providerPermissions: object) => {
+            // early return when the state has not changed
+            if (JSON.stringify(permissions[providerKey]) === JSON.stringify(providerPermissions)) {
+                return;
+            }
+
+            setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+            setHasUnsavedChanges(true);
+        },
+        [setPermissions, setHasUnsavedChanges, permissions]
+    );
+
     return (
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
+                buttons={[<SaveButton key={0} />]}
                 userButtons={<UserButtons />}
+                state={<FormState />}
                 imageSrc={generateMediaUrl(connectedApp.logo, 'thumbnail')}
             >
                 {connectedApp.name}
@@ -57,7 +141,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    {permissionFormRegistry.count() > 0 && (
+                    {null !== providers && providers.length > 0 && (
                         <TabBar.Tab
                             isActive={isCurrent(permissionsTabName)}
                             onClick={() => {
@@ -72,7 +156,13 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
                 {isCurrent(settingsTabName) && <ConnectedAppSettings connectedApp={connectedApp} />}
 
-                {isCurrent(permissionsTabName) && <ConnectedAppPermissions connectedApp={connectedApp} />}
+                {isCurrent(permissionsTabName) && null !== providers && (
+                    <ConnectedAppPermissions
+                        providers={providers}
+                        setProviderPermissions={handleSetProviderPermissions}
+                        permissions={permissions}
+                    />
+                )}
             </PageContent>
         </>
     );

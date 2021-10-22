@@ -37,7 +37,6 @@ const Header = () => {
       </PageHeader.UserActions>
       <PageHeader.Title>
         {translate('pim_dashboard.greetings', {
-          // @ts-ignore
           name: userContext.get('first_name').charAt(0).toUpperCase() + userContext.get('first_name').slice(1),
         })}
         &nbsp;
