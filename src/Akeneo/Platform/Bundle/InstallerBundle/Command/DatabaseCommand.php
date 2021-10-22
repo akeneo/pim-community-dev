@@ -170,6 +170,8 @@ class DatabaseCommand extends Command
             $this->createNotMappedTables($output);
         }
 
+        $this->setLatestKnownMigration($input);
+
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, null, [
@@ -190,8 +192,6 @@ class DatabaseCommand extends Command
 
         // TODO: Should be in an event subscriber
         $this->launchCommands();
-
-        $this->setLatestKnownMigration($input);
 
         return Command::SUCCESS;
     }
