@@ -61,6 +61,9 @@ const GlobalStyle = createGlobalStyle`
         background-size: 16px !important;
         left: 6px !important;
     }
+    .select2-container-disabled .select2-choices li.select2-search-choice {
+        padding-left: 8px !important;
+    }
 `;
 
 export const MultiSelectInputWithDynamicOptions = ({

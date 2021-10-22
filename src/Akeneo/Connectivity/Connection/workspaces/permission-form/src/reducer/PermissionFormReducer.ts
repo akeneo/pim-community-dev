@@ -7,7 +7,7 @@ const remove = <T>(entries: T[], entryToRemove: T): T[] => {
 };
 
 export type State = {
-    own: {
+    own?: {
         all: boolean;
         identifiers: string[];
     };
@@ -19,21 +19,6 @@ export type State = {
         all: boolean;
         identifiers: string[];
     };
-};
-
-export const initialState = {
-    own: {
-        all: false,
-        identifiers: [],
-    },
-    edit: {
-        all: false,
-        identifiers: [],
-    },
-    view: {
-        all: false,
-        identifiers: [],
-    },
 };
 
 export enum Actions {
@@ -54,7 +39,7 @@ export enum Actions {
     REMOVE_FROM_VIEW = 'REMOVE_FROM_VIEW',
 }
 
-type PermissionFormAction =
+export type Action =
     | {type: Actions.ENABLE_ALL_OWN}
     | {type: Actions.DISABLE_ALL_OWN}
     | {type: Actions.ENABLE_ALL_EDIT}
@@ -71,7 +56,7 @@ type PermissionFormAction =
     | {type: Actions.REMOVE_FROM_EDIT; identifier: string}
     | {type: Actions.REMOVE_FROM_VIEW; identifier: string};
 
-export const reducer = (state: State, action: PermissionFormAction): State => {
+export const reducer = <T extends State>(state: T, action: Action): T => {
     switch (action.type) {
         case Actions.ENABLE_ALL_OWN:
             return {
@@ -115,13 +100,15 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.DISABLE_ALL_EDIT:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: [...state.own.identifiers],
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: [...state.own.identifiers],
+                    },
+                }),
                 edit: {
                     all: false,
-                    identifiers: [...state.own.identifiers],
+                    identifiers: [...(state.own?.identifiers || [])],
                 },
             };
 
@@ -137,10 +124,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.DISABLE_ALL_VIEW:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: [...state.own.identifiers],
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: [...state.own.identifiers],
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: [...state.edit.identifiers],
@@ -195,7 +184,7 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: unique([...state.own.identifiers, action.identifier]),
+                    identifiers: unique([...(state.own?.identifiers || []), action.identifier]),
                 },
                 edit: {
                     ...state.edit,
@@ -234,17 +223,19 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
                 ...state,
                 own: {
                     all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
+                    identifiers: remove(state.own?.identifiers || [], action.identifier),
                 },
             };
 
         case Actions.REMOVE_FROM_EDIT:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: remove(state.own.identifiers, action.identifier),
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: remove(state.edit.identifiers, action.identifier),
@@ -254,10 +245,12 @@ export const reducer = (state: State, action: PermissionFormAction): State => {
         case Actions.REMOVE_FROM_VIEW:
             return {
                 ...state,
-                own: {
-                    all: false,
-                    identifiers: remove(state.own.identifiers, action.identifier),
-                },
+                ...(state.own && {
+                    own: {
+                        all: false,
+                        identifiers: remove(state.own.identifiers, action.identifier),
+                    },
+                }),
                 edit: {
                     all: false,
                     identifiers: remove(state.edit.identifiers, action.identifier),
