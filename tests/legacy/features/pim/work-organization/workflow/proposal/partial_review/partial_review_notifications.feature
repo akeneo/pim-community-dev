@@ -20,6 +20,7 @@ Feature: Adapt notification for redactor depending on action on their proposal
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |
     And I logout
 
+  @skip
   Scenario: When I accept more than 3 values, it shows only number of attributes accepted
     Given Mary proposed the following change to "sp-1":
       | field              | value                     | locale | scope  | tab                 |
