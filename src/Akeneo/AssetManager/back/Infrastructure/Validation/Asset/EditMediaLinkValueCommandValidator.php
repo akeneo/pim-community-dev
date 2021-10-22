@@ -169,6 +169,6 @@ final class EditMediaLinkValueCommandValidator extends ConstraintValidator
 
     private function isInPrivateRange(string $ip): bool
     {
-        return !\filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE);
+        return !\filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE);
     }
 }

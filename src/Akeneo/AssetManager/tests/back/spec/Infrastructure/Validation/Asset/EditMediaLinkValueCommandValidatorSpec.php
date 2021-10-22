@@ -38,7 +38,7 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
 {
     public function let(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
     {
-        $this->beConstructedWith(['http', 'https'], $dnsLookup, $ipMatcher, '127.0.0.1');
+        $this->beConstructedWith(['http', 'https'], $dnsLookup, $ipMatcher, '192.168.1.42');
         $this->initialize($context);
     }
 
@@ -49,11 +49,27 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
 
     function it_allows_a_whitelisted_domain(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
     {
-        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('127.0.0.1');
-        $ipMatcher->match('127.0.0.1', ['127.0.0.1'])->shouldBeCalled()->willReturn(true);
+        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('192.168.1.42');
+        $ipMatcher->match('192.168.1.42', ['192.168.1.42'])->shouldBeCalled()->willReturn(true);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $this->validate($command, new Constraint());
+    }
+
+    function it_denies_localhost_when_not_whitelisted(
+        ExecutionContextInterface $context,
+        DnsLookup $dnsLookup,
+        IpMatcher $ipMatcher,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $dnsLookup->ip('127.0.0.1')->shouldBeCalled()->willReturn('127.0.0.1');
+        $ipMatcher->match('127.0.0.1', ['192.168.1.42'])->shouldBeCalled()->willReturn(false);
+        $mediaLinkAttribute = $this->mediaLinkAttribute();
+        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://127.0.0.1/an_image.png');
+        $context->buildViolation(Constraint::DOMAIN_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('name')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
         $this->validate($command, new Constraint());
     }
 
@@ -64,7 +80,7 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('192.168.15.5');
-        $ipMatcher->match('192.168.15.5', ['127.0.0.1'])->shouldBeCalled()->willReturn(false);
+        $ipMatcher->match('192.168.15.5', ['192.168.1.42'])->shouldBeCalled()->willReturn(false);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
         $context->buildViolation(Constraint::DOMAIN_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
@@ -76,7 +92,7 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
     function it_allows_an_ip_neither_in_whitelist_nor_private_range(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
     {
         $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('8.8.8.8');
-        $ipMatcher->match('8.8.8.8', ['127.0.0.1'])->shouldBeCalled()->willReturn(true);
+        $ipMatcher->match('8.8.8.8', ['192.168.1.42'])->shouldBeCalled()->willReturn(true);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
