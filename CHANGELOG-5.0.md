@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.52 (2021-10-22)
+
 ## Bug fixes
 
 - PIM-10040: Fix longtext types instead of json type in old catalogs
