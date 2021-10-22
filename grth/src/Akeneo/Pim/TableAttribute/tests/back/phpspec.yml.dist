@@ -1,0 +1,8 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    TableAttribute:
+        namespace: Akeneo\Pim\TableAttribute
+        psr4_prefix: Akeneo\Pim\TableAttribute
+        spec_path: src/Akeneo/Pim/TableAttribute/tests/back
+        src_path: src/Akeneo/Pim/TableAttribute/back
+        spec_prefix: Specification

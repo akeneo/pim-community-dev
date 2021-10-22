@@ -1,0 +1,16 @@
+parameters:
+    pim_datagrid.product.attribute_type.pim_catalog_table:
+        column:
+            type: product_value_field
+            frontend_type: table
+        filter:
+            type: product_value_table
+            ftype: table
+
+services:
+    pim_catalog.attributetype.table:
+        class: 'Akeneo\Pim\TableAttribute\Infrastructure\AttributeType\TableType'
+        arguments:
+            - 'table'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_table, entity: '%pim_catalog.entity.product.class%' }

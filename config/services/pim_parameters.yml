@@ -7,6 +7,7 @@ parameters:
     elasticsearch_index_configuration_files:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+        - '%pim_ge_dev_src_folder_location%/src/Akeneo/Pim/TableAttribute/back/Infrastructure/Symfony/Resources/config/elasticsearch/table_attribute_mapping.yml'
 
     elasticsearch_index_configuration_files_product_proposal:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'

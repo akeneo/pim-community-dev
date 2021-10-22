@@ -49,7 +49,7 @@ class Kernel extends BaseKernel
         $container->setParameter('container.dumper.inline_class_loader', true);
 
         $eeConfDir = $this->getProjectDir() . '/config';
-        $grthConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition';
+        $grthConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition/config';
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
 
         $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $ceConfDir);

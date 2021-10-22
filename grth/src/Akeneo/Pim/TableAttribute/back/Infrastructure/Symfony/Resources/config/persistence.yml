@@ -1,0 +1,68 @@
+services:
+    pim_catalog.saver.attribute:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            -
+                - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedTableConfigurationRepository
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\LoadRawTableConfiguration:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\InitSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
+        class: '\Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedSelectOptionCollectionRepository'
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository'
+        tags:
+            - { name: akeneo.pim.cached_query }
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlGetNonExistingSelectOptionCodes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetSelectOptionDetails:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlGetSelectOptionDetails
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlCountSelectOptions
+        arguments:
+            - '@database_connection'

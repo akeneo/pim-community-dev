@@ -1,0 +1,22 @@
+services:
+    pim_catalog.updater.setter.table_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments: [ [ 'pim_catalog_table' ] ]
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Comparator\TableValueComparator:
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Completeness\MaskItemGenerator:
+        tags:
+            - { name: akeneo.pim.enrichment.completeness.mask_item_generator }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Copier\TableAttributeCopier:
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.validator.helper.attribute'
+        tags:
+            - { name: pim_catalog.updater.copier }

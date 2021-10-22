@@ -41,5 +41,12 @@
             <directory suffix="EndToEnd.php">src</directory>
         </testsuite>
 
+        <testsuite name="Table_Attribute_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Pim/TableAttribute/tests/back/Integration</directory>
+        </testsuite>
+        <testsuite name="Table_Attribute_End_To_End">
+            <directory suffix="EndToEnd.php">src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd</directory>
+        </testsuite>
+
     </testsuites>
 </phpunit>

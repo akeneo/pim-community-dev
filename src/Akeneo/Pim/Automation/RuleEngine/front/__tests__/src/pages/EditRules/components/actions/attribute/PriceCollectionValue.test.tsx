@@ -1,8 +1,5 @@
 import 'jest-fetch-mock';
-import {
-  renderWithProviders,
-  screen,
-} from '../../../../../../../test-utils';
+import {renderWithProviders, screen} from '../../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
 import {createAttribute, createScope} from '../../../../../factories';
 import {AttributeType} from '../../../../../../../src/models';
