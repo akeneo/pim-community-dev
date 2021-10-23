@@ -226,10 +226,8 @@ pim_enrich.entity.attribute:
       confirm: Czy na pewno chcesz usunąć ten atrybut?
       product_count: '{0}0 produktów|{1}1 produkt|]1, Inf[{{ count }} produktów'
       product_model_count: '{0}0 modeli produktów|{1}1 model produktu|]1, Inf[{{ count }} modeli produktów'
-      used: aktualnie posiada wartości ustawione dla tego atrybutu. Zostaną one usunięte.
       helper:
         content: Jeśli chcesz zmienić typ atrybutu, aby był tłumaczony lub zmienny, zachowując jednocześnie dostęp do istniejących wartości atrybutu,
-        link: tutaj przechodzimy przez każdy krok.
       type: Wprowadź "{{ attributeCode }}"
       confirm_from_family: Czy na pewno chcesz usunąć ten atrybut z rodziny?
       confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?

@@ -226,10 +226,8 @@ pim_enrich.entity.attribute:
       confirm: この属性を削除してもよろしいですか？
       product_count: '{0}0 個の商品|{1}1 個の商品|]1, Inf[{{ count }} 個の商品'
       product_model_count: '{0}0 個の商品モデル|{1}1 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル'
-      used: には現在、この属性に設定された値があり、削除されます。
       helper:
         content: 既存の属性値へのアクセスを維持したまま、属性タイプを変更してローカライズ可または参照可にする必要がある場合は、
-        link: 別のステップをここで説明します。
       type: '「{{ attributeCode }}」と入力してください'
       confirm_from_family: この属性をファミリーから本当に削除しますか？
       confirm_from_group: 属性 {{ attribute }} をこの属性グループから本当に削除しますか。
