@@ -226,10 +226,8 @@ pim_enrich.entity.attribute:
       confirm: '¿Está seguro que desea eliminar este atributo?'
       product_count: '{0}0 productos|{1}1 producto|]1, Inf[{{ count }} productos'
       product_model_count: '{0}0 modelos de producto|{1}1 modelo de producto|]1, Inf[{{ count }} modelos de producto'
-      used: actualmente tienen valores establecidos para este atributo, se eliminarán.
       helper:
         content: Si necesita cambiar su tipo de atributo, para hacerlo localizable o definible, manteniendo el acceso a sus valores de atributo existentes.
-        link: le guiamos a través de los diferentes pasos aquí.
       type: Escriba «{{ attributeCode }}»
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'

@@ -224,10 +224,8 @@ pim_enrich.entity.attribute:
       confirm: Oletko varma, että haluat poistaa tämän attribuutin?
       product_count: '{0}0 tuotetta|{1}1 tuote|]1, Inf[{{ count }} tuotetta'
       product_model_count: '{0}0 tuotemallia|{1}1 tuotemalli|]1, Inf[{{ count }} tuotemallia'
-      used: currently have values set for this attribute, they will be removed.
       helper:
         content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
-        link: opastamme sinut eri vaiheiden läpi
       type: Kirjoita "{{ attributeCode }}"
       confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
       confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?

@@ -226,10 +226,8 @@ pim_enrich.entity.attribute:
       confirm: 确定要删除此属性吗？
       product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
       product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
-      used: 此属性当前已存在设置的值，它们将被删除。
       helper:
         content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
-        link: 可执行下列不同步骤。
       type: 请输入"{{ attributeCode }}"
       confirm_from_family: 确定要从品类中删除此属性吗？
       confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
