@@ -38,7 +38,6 @@ pim_datagrid:
     actions:
       approve_all: Zatwierdź wszystkie
       refuse_all: Odrzuć wszystkie
-    characters_left: ']-Inf, 1]{{ count }} znak pozostał|]1, +Inf[{{ count }} pozostałych znaków'
 pimee_datagrid:
   cells:
     expand:

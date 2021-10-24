@@ -38,7 +38,6 @@ pim_datagrid:
     actions:
       approve_all: 모두 승인
       refuse_all: 모두 거부
-    characters_left: ']-Inf, 1]{{ count }}자 남음|]1, Inf[{{ count }}자 남음'
 pimee_datagrid:
   cells:
     expand:
