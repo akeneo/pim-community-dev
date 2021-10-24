@@ -38,7 +38,6 @@ pim_datagrid:
     actions:
       approve_all: すべて承認
       refuse_all: すべて拒否
-    characters_left: ']-Inf, 1]残り {{ count }} 文字|]1, Inf[残り {{ count }} 文字'
 pimee_datagrid:
   cells:
     expand:

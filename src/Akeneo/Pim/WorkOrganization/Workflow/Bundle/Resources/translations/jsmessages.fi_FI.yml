@@ -37,7 +37,6 @@ pim_datagrid:
     actions:
       approve_all: Hyväksy kaikki
       refuse_all: Hylkää kaikki
-    characters_left: ']-Inf, 1]{{ count }} merkki jäljellä|]1, Inf[{{ count }} merkkiä jäljellä'
 pimee_datagrid:
   cells:
     expand:
