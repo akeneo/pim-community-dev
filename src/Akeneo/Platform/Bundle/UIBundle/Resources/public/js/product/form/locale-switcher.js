@@ -43,6 +43,9 @@ define([
      * {@inheritdoc}
      */
     configure: function () {
+      this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.changeScope.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', this.changeScope.bind(this));
+
       this.listenTo(
         this.getRoot(),
         'pim_enrich:form:locale_switcher:change',
@@ -110,7 +113,21 @@ define([
      * @returns {Promise}
      */
     getDisplayedLocales: function () {
-      return FetcherRegistry.getFetcher('locale').fetchActivated();
+      return FetcherRegistry.getFetcher('channel')
+        .fetch(UserContext.get('catalogScope'))
+        .then(function (channel) {
+          return channel.locales;
+        });
+    },
+
+    /**
+     * Change scope
+     *
+     * @param {Object} scopeEvent
+     */
+    changeScope: function (scopeEvent) {
+      UserContext.set('catalogScope', scopeEvent.scopeCode, {silent: true});
+      this.render();
     },
 
     /**
