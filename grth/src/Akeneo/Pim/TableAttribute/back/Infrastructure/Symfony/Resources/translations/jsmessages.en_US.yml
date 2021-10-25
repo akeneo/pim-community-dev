@@ -149,8 +149,8 @@ pim_table_attribute:
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
-            delete_first_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
-            delete_other_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
+            delete_first_column_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
+            delete_other_column_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
             no_options_helper: Please add your first option.
             no_options: No options found
             please_try_again: Please try again

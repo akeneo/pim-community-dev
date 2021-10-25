@@ -16,7 +16,7 @@ import {
   uuid,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {Attribute, SelectColumnDefinition, SelectOption} from '../models';
+import {SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {CenteredHelper, FieldsList} from '../shared';
 import styled from 'styled-components';
@@ -60,7 +60,7 @@ const ManageOptionsSearch = styled(Search)`
 type ManageOptionsModalProps = {
   limit?: number;
   onClose: () => void;
-  attribute: Attribute;
+  attribute: TableAttribute;
   columnDefinition: SelectColumnDefinition;
   onChange: (options: SelectOption[]) => void;
 };
@@ -434,7 +434,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           close={closeDeleteOptionModal}
           onDelete={handleDelete}
           optionCode={options[indexToRemove]?.code ?? ''}
-          isFirstColumn={indexToRemove === 0}
+          isFirstColumn={attribute.table_configuration[0].code === columnDefinition.code}
           attributeLabel={getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}
         />
       )}

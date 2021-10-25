@@ -4,18 +4,18 @@ import {
   AddingValueIllustration,
   Button,
   CloseIcon,
+  Helper,
   IconButton,
+  Link,
   pimTheme,
   SectionTitle,
   Table,
   useBooleanState,
   uuid,
-  Helper,
-  Link,
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {Attribute, ColumnCode, ColumnDefinition, TableConfiguration} from '../models';
+import {ColumnCode, ColumnDefinition, TableAttribute, TableConfiguration} from '../models';
 import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal, DataTypesMapping} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
@@ -34,7 +34,7 @@ const AddNewColumnButton = styled(Button)`
 `;
 
 type TableStructureAppProps = {
-  attribute: Attribute;
+  attribute: TableAttribute;
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
   savedColumnCodes: ColumnCode[];

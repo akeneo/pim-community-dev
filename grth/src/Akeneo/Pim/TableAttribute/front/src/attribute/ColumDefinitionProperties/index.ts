@@ -1,8 +1,8 @@
-import {Attribute, ColumnDefinition} from '../../models';
+import {ColumnDefinition, TableAttribute} from '../../models';
 import {ReactElement} from 'react';
 
 type ColumnDefinitionProps = {
-  attribute: Attribute;
+  attribute: TableAttribute;
   selectedColumn: ColumnDefinition;
   handleChange: (newColumn: ColumnDefinition) => void;
 };
