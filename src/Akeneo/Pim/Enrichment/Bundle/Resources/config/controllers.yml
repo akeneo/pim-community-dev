@@ -73,7 +73,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
-            - '@monolog.logger.pim_api_product_acl'
+            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
 
     pim_api.controller.product_model:
@@ -104,7 +104,7 @@ services:
             - '@pim_api.warmup_query_cache.dummy'
             - '@logger'
             - '%pim_api.configuration%'
-            - '@monolog.logger.pim_api_product_acl'
+            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
 
     pim_api.controller.category:
