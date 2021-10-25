@@ -14,15 +14,21 @@ use Doctrine\DBAL\Connection;
  */
 final class CountJobQuery implements CountJobQueryInterface
 {
-    private Connection $sqlConnection;
+    private Connection $connection;
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(Connection $connection)
     {
-        $this->sqlConnection = $sqlConnection;
+        $this->connection = $connection;
     }
 
     public function all(): int
     {
-        return 10;
+        $sql = <<<SQL
+SELECT count(*) as count FROM akeneo_batch_job_execution;
+SQL;
+
+        $result = $this->connection->query($sql)->fetch();
+
+        return (int) $result['count'];
     }
 }

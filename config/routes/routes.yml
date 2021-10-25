@@ -20,6 +20,9 @@ akeneo_feature_flag:
 akeneo_communication_channel:
     resource: "@AkeneoCommunicationChannelBundle/Resources/config/routing.yml"
 
+akeneo_job:
+    resource: "@AkeneoJobBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"

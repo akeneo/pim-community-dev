@@ -16,7 +16,7 @@ class SearchJobResultSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SearchJobResult::class);
     }
 
-    function it_normalizes_itself()
+    public function it_normalizes_itself()
     {
         $jobItem = new JobItem();
         $this->beConstructedWith([$jobItem], 1, 2);
@@ -29,7 +29,7 @@ class SearchJobResultSpec extends ObjectBehavior
         ]);
     }
 
-    function it_can_be_constructed_only_with_a_list_of_asset_items()
+    public function it_can_be_constructed_only_with_a_list_of_asset_items()
     {
         $this->beConstructedWith([1], 5, 10);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

@@ -2,4 +2,4 @@ services:
     Akeneo\Platform\Job\Domain\Query\CountJobQueryInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\CountJobQuery
         arguments:
-            - '@'
+            - '@database_connection'
