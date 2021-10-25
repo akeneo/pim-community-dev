@@ -4,9 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {DataTypesMapping, TableStructureApp} from '../attribute';
 import {
-  Attribute,
   AttributeType,
   getTranslatedTableConfigurationFromVariationTemplate,
+  TableAttribute,
   TableConfiguration,
 } from '../models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
@@ -122,7 +122,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     if (typeof this.savedColumnCodes === 'undefined') {
       this.savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
     }
-    const attribute: Attribute = this.getFormData();
+    const attribute: TableAttribute = this.getFormData();
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

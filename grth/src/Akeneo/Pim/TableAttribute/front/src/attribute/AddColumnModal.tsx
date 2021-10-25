@@ -195,6 +195,9 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
               </SelectInput.Option>
             ))}
           </SelectInput>
+          {!existingColumnCodes.length && (
+            <Helper>{translate('pim_table_attribute.form.attribute.first_column_type_helper')}</Helper>
+          )}
         </Field>
       </FieldsList>
       <Modal.BottomButtons>

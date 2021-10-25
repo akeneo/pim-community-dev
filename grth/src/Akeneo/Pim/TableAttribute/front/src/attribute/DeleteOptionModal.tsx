@@ -38,8 +38,8 @@ const DeleteOptionModal: React.FC<DeleteOptionModalProps> = ({
         <Helper level='info'>
           {translate(
             isFirstColumn
-              ? 'pim_table_attribute.form.attribute.delete_first_option_helper'
-              : 'pim_table_attribute.form.attribute.delete_other_option_helper',
+              ? 'pim_table_attribute.form.attribute.delete_first_column_option_helper'
+              : 'pim_table_attribute.form.attribute.delete_other_column_option_helper',
             {
               attributeLabel,
             }

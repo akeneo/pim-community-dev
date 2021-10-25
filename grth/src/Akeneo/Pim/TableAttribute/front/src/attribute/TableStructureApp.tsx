@@ -4,7 +4,9 @@ import {
   AddingValueIllustration,
   Button,
   CloseIcon,
+  Helper,
   IconButton,
+  Link,
   pimTheme,
   SectionTitle,
   Table,
@@ -13,7 +15,7 @@ import {
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {Attribute, ColumnCode, ColumnDefinition, TableConfiguration} from '../models';
+import {ColumnCode, ColumnDefinition, TableAttribute, TableConfiguration} from '../models';
 import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal, DataTypesMapping} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
@@ -21,6 +23,7 @@ import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 import {CenteredHelper} from '../shared';
 import {LocaleRepository} from '../repositories';
 import {ColumnDefinitionPropertiesMapping} from './ColumDefinitionProperties';
+import {LIMIT_OPTIONS} from './ManageOptionsModal';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -31,7 +34,7 @@ const AddNewColumnButton = styled(Button)`
 `;
 
 type TableStructureAppProps = {
-  attribute: Attribute;
+  attribute: TableAttribute;
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
   savedColumnCodes: ColumnCode[];
@@ -246,6 +249,15 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
+        <Helper level='info'>
+          {translate('pim_table_attribute.form.attribute.table_structure_helper_text', {limit: LIMIT_OPTIONS})}{' '}
+          <Link
+            href='https://help.akeneo.com/pim/serenity/articles/manage-multidimensional-data-in-a-table.html'
+            target='_blank'
+          >
+            {translate('pim_table_attribute.form.attribute.table_structure_helper_link')}
+          </Link>
+        </Helper>
         {tableConfiguration.length > 0 ? (
           <TwoColumnsLayout rightColumn={ColumnDefinitionColumn}>{leftColumn}</TwoColumnsLayout>
         ) : (

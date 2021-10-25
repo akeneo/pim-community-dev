@@ -136,7 +136,7 @@ pim_table_attribute:
             please_type: Please type "{{ text }}"
             confirm_column_delete: Are you sure you want to delete this column?
             confirm_option_delete: Are you sure you want to delete this option?
-            empty_title: Your table options are empty.
+            empty_title: Your table structure is empty.
             empty_subtitle: The first step is to define your columns.
             unique_title: Your table attribute is almost ready.
             unique_subtitle: Define at least 2 columns to start using your table.
@@ -144,14 +144,18 @@ pim_table_attribute:
             manage_options: Manage options
             column_code: Column code
             properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
+            table_structure_helper_text: A table attribute must contain at least 2 columns. The first one is always a “select” column type. Once you’ve created the first column, you must add options. To do so, click on “manage options” and add up to {{ limit }} options! Then, you’ll be able to use each of these options as rows in your product tables.
+            table_structure_helper_link: This article may help you to learn more about table attributes.
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
-            delete_first_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
-            delete_other_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
+            delete_first_column_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
+            delete_other_column_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
             no_options_helper: Please add your first option.
             no_options: No options found
             please_try_again: Please try again
+            first_column_type_helper: The first column of a Table is always a Select column type.
+            discard_changes: You will lose changes to the select options if you leave the page.
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
