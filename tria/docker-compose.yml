@@ -51,6 +51,7 @@ services:
     volumes:
       - './:/srv/pim'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+      - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
