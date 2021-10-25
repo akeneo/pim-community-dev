@@ -62,3 +62,28 @@ akeneo_referenceentity_option_delete:
     type: action
     label: akeneo_referenceentity.acl.option.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
+
+pim_api_reference_entity_edit:
+    type: action
+    label: pim_api.acl.reference_entity.create
+    group_name: pim_api.acl_group.reference_entity
+
+pim_api_reference_entity_list:
+    type: action
+    label: pim_api.acl.reference_entity.list
+    group_name: pim_api.acl_group.reference_entity
+
+pim_api_record_edit:
+    type: action
+    label: pim_api.acl.record.create
+    group_name: pim_api.acl_group.reference_entity
+
+pim_api_record_list:
+    type: action
+    label: pim_api.acl.record.list
+    group_name: pim_api.acl_group.reference_entity
+
+pim_api_record_remove:
+    type: action
+    label: pim_api.acl.record.remove
+    group_name: pim_api.acl_group.reference_entity
