@@ -136,7 +136,7 @@ pim_table_attribute:
             please_type: Please type "{{ text }}"
             confirm_column_delete: Are you sure you want to delete this column?
             confirm_option_delete: Are you sure you want to delete this option?
-            empty_title: Your table options are empty.
+            empty_title: Your table structure is empty.
             empty_subtitle: The first step is to define your columns.
             unique_title: Your table attribute is almost ready.
             unique_subtitle: Define at least 2 columns to start using your table.
