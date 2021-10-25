@@ -1411,6 +1411,18 @@ jobs:
             name: Check that upgrader pod ran
             command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
         - run:
+            name: Check PIM version installed
+            command: |
+              VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+              if [[ "${VERSION_INSTALLED}" == "${IMAGE_TAG}" ]]; then
+                echo "PIM successfully upgraded to ${IMAGE_TAG}"
+              else
+                echo "PIM not upgraded to the correct version"
+                echo "PIM version wanted: ${IMAGE_TAG}"
+                echo "PIM version installed: ${VERSION_INSTALLED}"
+                exit 1
+              fi
+        - run:
             name: Display Deployment Errors
             command: cat deployment.log
             when: on_fail
