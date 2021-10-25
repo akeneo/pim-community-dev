@@ -403,3 +403,7 @@ elasticsearch:
       items:
       - key: srntPimStorageKey
         path: gcs.client.default.credentials_file
+  snapshots:
+    retention: 15
+    repository: pim_gcs_repository
+    folder: elasticsearch-snapshots
