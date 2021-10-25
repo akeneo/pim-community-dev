@@ -5,8 +5,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRender
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ProductValueRendererExtension extends \Twig_Extension
+class ProductValueRendererExtension extends AbstractExtension
 {
     private ProductValueRendererRegistry $productValueRendererRegistry;
 
@@ -19,7 +21,7 @@ class ProductValueRendererExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('render_attribute_value', [$this, 'renderAttributeValue'], ['needs_environment' => true]),
+            new TwigFunction('render_attribute_value', [$this, 'renderAttributeValue'], ['needs_environment' => true]),
         ];
     }
 
