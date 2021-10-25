@@ -108,7 +108,7 @@ class GetProductModelEndToEnd extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        $logger = self::$container->get('monolog.logger.pim_api_acl');
         assert($logger instanceof TestLogger);
 
         $this->assertTrue(
