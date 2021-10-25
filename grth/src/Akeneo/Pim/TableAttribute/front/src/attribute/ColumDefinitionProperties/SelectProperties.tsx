@@ -12,7 +12,7 @@ const ManageOptionsButtonContainer = styled.div`
 
 const SelectProperties: ColumnProperties = ({attribute, selectedColumn, handleChange}) => {
   const translate = useTranslate();
-  const [isManageOptionsOpen, openManageOption, closeManageOption] = useBooleanState();
+  const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState();
 
   const handleManageOptionChange = (options: SelectOption[]) => {
     (selectedColumn as SelectColumnDefinition).options = options;
@@ -21,14 +21,14 @@ const SelectProperties: ColumnProperties = ({attribute, selectedColumn, handleCh
 
   return (
     <ManageOptionsButtonContainer>
-      <Button onClick={openManageOption} ghost size='small' level='tertiary'>
+      <Button onClick={openManageOptions} ghost size='small' level='tertiary'>
         {translate('pim_table_attribute.form.attribute.manage_options')}
       </Button>
       {isManageOptionsOpen && (
         <ManageOptionsModal
           attribute={attribute}
           columnDefinition={selectedColumn as SelectColumnDefinition}
-          onClose={closeManageOption}
+          onClose={closeManageOptions}
           onChange={handleManageOptionChange}
         />
       )}

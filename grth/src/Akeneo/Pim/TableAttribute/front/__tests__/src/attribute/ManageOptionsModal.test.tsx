@@ -348,4 +348,44 @@ describe('ManageOptionsModal', () => {
     fireEvent.keyDown(labelInput, {key: 'Enter', code: 'Enter'});
     expect(getLabelInput('new')).toHaveFocus();
   });
+
+  it('should ask confirmation to close and not do anything is user says cancel', async () => {
+    const handleClose = jest.fn();
+    window.confirm = jest.fn().mockImplementation(() => false);
+
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getComplexTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={handleClose}
+      />
+    );
+    expect(await findCodeInput(0)).toHaveValue('salt');
+    fireEvent.change(getLabelInput(0), {target: {value: 's a l t'}});
+
+    fireEvent.keyDown(await findCodeInput(0), {key: 'Escape', code: 'Escape'});
+
+    expect(handleClose).not.toBeCalled();
+  });
+
+  it('should ask confirmation to close and close if user confirms', async () => {
+    const handleClose = jest.fn();
+    window.confirm = jest.fn().mockImplementation(() => true);
+
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getComplexTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={handleClose}
+      />
+    );
+    expect(await findCodeInput(0)).toHaveValue('salt');
+    fireEvent.change(getLabelInput(0), {target: {value: 'sel'}});
+
+    fireEvent.keyDown(await findCodeInput(0), {key: 'Escape', code: 'Escape'});
+
+    expect(handleClose).toBeCalled();
+  });
 });

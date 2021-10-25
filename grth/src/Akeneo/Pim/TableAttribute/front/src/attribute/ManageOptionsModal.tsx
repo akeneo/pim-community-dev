@@ -96,6 +96,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const [isDeleteOptionModalOpen, openDeleteOptionModal, closeDeleteOptionModal] = useBooleanState();
   const [indexToRemove, setIndexToRemove] = React.useState<number | undefined>();
   const [scrollToBottom, doScrollToBottom, doNotScrollToBottom] = useBooleanState(false);
+  const [isDirty, setDirty] = useBooleanState(false);
 
   const lastCodeInputRef = React.useRef<HTMLInputElement>();
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
@@ -207,6 +208,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     if (options) {
       (options || [])[index] = option;
       setOptionsAndValidate(options);
+      setDirty();
     }
   };
 
@@ -275,6 +277,12 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     setSelectedOptionIndex(undefined);
   };
 
+  const handleCloseManageOptions = () => {
+    if (!isDirty || window.confirm(translate('pim_table_attribute.form.attribute.discard_changes'))) {
+      onClose();
+    }
+  };
+
   const getRealIndex = (option: SelectOptionWithId) => {
     return options?.findIndex(option2 => option2.id === option.id) as number;
   };
@@ -315,7 +323,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
 
   return (
     <>
-      <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
+      <Modal closeTitle={translate('pim_common.close')} onClose={handleCloseManageOptions}>
         <Modal.SectionTitle color='brand'>
           {getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}&nbsp;/&nbsp;
           {columnLabel}
