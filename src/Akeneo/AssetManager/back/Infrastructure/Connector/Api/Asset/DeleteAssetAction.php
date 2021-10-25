@@ -18,9 +18,13 @@ use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -29,14 +33,26 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class DeleteAssetAction
 {
     private DeleteAssetHandler $deleteAssetHandler;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private LoggerInterface $apiAclLogger;
 
-    public function __construct(DeleteAssetHandler $deleteAssetHandler)
-    {
+    public function __construct(
+        DeleteAssetHandler $deleteAssetHandler,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
+    ) {
         $this->deleteAssetHandler = $deleteAssetHandler;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $code): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $assetCode = AssetCode::fromString($code);
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
@@ -56,5 +72,32 @@ class DeleteAssetAction
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_asset_remove';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

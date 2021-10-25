@@ -17,9 +17,13 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeOptionsAction
 {
@@ -35,7 +39,10 @@ class GetConnectorAttributeOptionsAction
         FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
         AssetFamilyExistsInterface $assetFamilyExists,
         AttributeExistsInterface $attributeExists,
-        AttributeSupportsOptions $attributeSupportsOptions
+        AttributeSupportsOptions $attributeSupportsOptions,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
@@ -49,6 +56,8 @@ class GetConnectorAttributeOptionsAction
      */
     public function __invoke(string $assetFamilyIdentifier, string $attributeCode): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
@@ -91,5 +100,32 @@ class GetConnectorAttributeOptionsAction
         }
 
         return new JsonResponse($normalizedAttributeOptions);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_asset_family_list';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

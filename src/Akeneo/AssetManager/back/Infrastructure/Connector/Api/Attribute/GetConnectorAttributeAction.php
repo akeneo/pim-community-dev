@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeB
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeAction
 {
@@ -39,6 +40,8 @@ class GetConnectorAttributeAction
      */
     public function __invoke(string $code, string $assetFamilyIdentifier): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         } catch (\Exception $e) {
@@ -61,5 +64,32 @@ class GetConnectorAttributeAction
         $normalizedAttribute = $attribute->normalize();
 
         return new JsonResponse($normalizedAttribute);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_asset_family_list';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

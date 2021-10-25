@@ -20,10 +20,14 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFam
 use Akeneo\AssetManager\Domain\Query\Limit;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -39,16 +43,28 @@ class GetConnectorAssetFamiliesAction
 
     private AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage;
 
+    private SecurityFacade $securityFacade;
+
+    private TokenStorageInterface $tokenStorage;
+
+    private LoggerInterface $apiAclLogger;
+
     public function __construct(
         FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems,
         PaginatorInterface $halPaginator,
         AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage,
-        int $limit
+        int $limit,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->findConnectorAssetFamilyItems = $findConnectorAssetFamilyItems;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalDownloadLinkToImage = $addHalDownloadLinkToImage;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -57,6 +73,8 @@ class GetConnectorAssetFamiliesAction
      */
     public function __invoke(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterIdentifier = null !== $searchAfter ? AssetFamilyIdentifier::fromString($searchAfter) : null;
@@ -105,5 +123,32 @@ class GetConnectorAssetFamiliesAction
         ];
 
         return $this->halPaginator->paginate($assetFamilies, $paginationParameters, count($assetFamilies));
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_asset_family_list';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }
