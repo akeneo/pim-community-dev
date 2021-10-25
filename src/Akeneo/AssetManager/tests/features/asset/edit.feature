@@ -443,6 +443,18 @@ Feature: Edit an asset
     When the user updates the mediaLink value of the asset with "//a_file.png"
     Then there should be a validation error on the media file value with message "This field should start with a valid protocol. Allowed protocols are: http, https."
 
+  @acceptance-back
+  Scenario: Updating a mediaLink value with a blacklisted domain
+    Given an asset family with an media_link attribute and an asset belonging to this asset family
+    When the user updates the mediaLink value of the asset with "http://localhost/an_image.png"
+    Then there should be a validation error on the media file value with message "This URL is not allowed."
+
+  @acceptance-back
+  Scenario: Updating a mediaLink value with a blacklisted domain but different case
+    Given an asset family with an media_link attribute and an asset belonging to this asset family
+    When the user updates the mediaLink value of the asset with "http://LOCALHOST/an_image.png"
+    Then there should be a validation error on the media file value with message "This URL is not allowed."
+
   @acceptance-front
   Scenario: Updating an asset details
     Given a valid asset
