@@ -159,6 +159,7 @@ pim_common:
   before: Avant
   by: par
   cancel: Annuler
+  characters_left: ']-Inf, 1]{{ count }} caractère restant|]1, +Inf[{{ count }} caractères restants'
   clear_value: Effacer la valeur
   close: Fermer
   code: Code
@@ -200,6 +201,7 @@ pim_common:
   permissions: Autorisations
   previous: Précédent
   properties: Propriétés
+  quality_score: Score de qualité
   remove: Supprimer
   required_label: (obligatoire)
   result_count: "{0}0 résultats|{1}1 résultat|]1, Inf[{{ itemsCount }} résultats"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Ne contient pas
     STARTS WITH: Commence par
     ENDS WITH: Finit par
+    IN: Dans la liste
+    "NOT IN": Pas dans la liste
   read_more: En savoir plus
   channel: Canal
   locale: Locale
@@ -271,6 +275,8 @@ pim_enrich.entity.fallback:
       discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
       discard_changes_title: Êtes-vous sûr(e) ?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} tâche|]1, Inf[{{ count }} tâches"
   module:
     create:
       upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
