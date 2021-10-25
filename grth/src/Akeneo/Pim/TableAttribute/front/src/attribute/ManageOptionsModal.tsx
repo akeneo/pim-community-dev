@@ -434,4 +434,4 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   );
 };
 
-export {ManageOptionsModal};
+export {ManageOptionsModal, LIMIT_OPTIONS};

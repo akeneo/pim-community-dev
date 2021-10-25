@@ -144,6 +144,8 @@ pim_table_attribute:
             manage_options: Manage options
             column_code: Column code
             properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
+            table_structure_helper_text: A table attribute must contain at least 2 columns. The first one is always a “select” column type. Once you’ve created the first column, you must add options. To do so, click on “manage options” and add up to {{ limit }} options! Then, you’ll be able to use each of these options as rows in your product tables.
+            table_structure_helper_link: This article may help you to learn more about table attributes.
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
