@@ -284,3 +284,19 @@ services:
         decoration_inner_name: messenger.default_bus.inner
         arguments:
             - '@messenger.default_bus.inner'
+
+    akeneo_integration_tests.helper.authenticator:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+            - '@session'
+
+    akeneo_integration_tests.helper.web_client:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
+        arguments:
+            - '@router'
