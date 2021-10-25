@@ -67,7 +67,7 @@
         "ext-json": "*",
         "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-BH-681-symfony5",
-        "akeneo/pim-onboarder": "^5.0.0",
+        "akeneo/pim-onboarder": "dev-BH-681-symfony5",
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem-google-cloud-storage": "^2.0",
         "phpseclib/phpseclib": "2.0.31",
