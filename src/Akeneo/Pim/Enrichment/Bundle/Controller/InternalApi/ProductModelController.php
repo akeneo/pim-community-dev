@@ -346,7 +346,12 @@ class ProductModelController
         $options = $request->query->get('options');
         $familyVariant = $this->getFamilyVariant($options['family_variant']);
 
-        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant, $search);
+        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant(
+            $familyVariant,
+            $search,
+            (int) ($options['limit'] ?? self::PRODUCT_MODELS_LIMIT),
+            (int) ($options['page'] ?? 1)
+        );
         $normalizedProductModels = $this->buildNormalizedProductModels($productModels);
 
         return new JsonResponse($normalizedProductModels);
