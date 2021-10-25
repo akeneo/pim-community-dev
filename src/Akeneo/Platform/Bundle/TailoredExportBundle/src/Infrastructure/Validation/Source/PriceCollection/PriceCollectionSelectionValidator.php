@@ -85,12 +85,9 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
     private function validateCurrenciesAreActive(array $currencyCodes, ?string $channelReference): void
     {
         $activatedCurrencies = $this->getActivatedCurrencyCodes($channelReference);
+        $inactiveCurrencies = array_diff($currencyCodes, $activatedCurrencies);
 
-        foreach ($currencyCodes as $currencyCode) {
-            if (in_array($currencyCode, $activatedCurrencies)) {
-                continue;
-            }
-
+        if (!empty($inactiveCurrencies)) {
             $errorMessage = $channelReference ?
                 PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_ON_CHANNEL_MESSAGE :
                 PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_MESSAGE;
@@ -98,9 +95,10 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($errorMessage, [
-                    'channel' => $channelReference,
-                    'currency_code' => $currencyCode
+                    '{{ channel_code }}' => $channelReference,
+                    '{{ currency_codes }}' => implode(', ', $inactiveCurrencies)
                 ])
+                ->setPlural(count($inactiveCurrencies))
                 ->atPath('[currencies]')
                 ->addViolation();
         }

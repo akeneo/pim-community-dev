@@ -39,6 +39,7 @@ class PriceCollectionSourceValidator extends ConstraintValidator
                 $violation->getParameters()
             )
                 ->atPath($violation->getPropertyPath())
+                ->setPlural($violation->getPlural())
                 ->addViolation();
         }
     }

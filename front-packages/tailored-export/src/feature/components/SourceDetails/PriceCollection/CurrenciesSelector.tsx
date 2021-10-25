@@ -39,7 +39,7 @@ const CurrenciesSelector = ({value, onChange, channelReference, validationErrors
       </MultiSelectInput>
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">
-          {translate(error.messageTemplate, error.parameters)}
+          {translate(error.messageTemplate, error.parameters, error.plural)}
         </Helper>
       ))}
     </Field>
