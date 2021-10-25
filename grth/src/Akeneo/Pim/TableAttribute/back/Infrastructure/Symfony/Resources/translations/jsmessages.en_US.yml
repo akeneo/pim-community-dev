@@ -154,6 +154,7 @@ pim_table_attribute:
             no_options_helper: Please add your first option.
             no_options: No options found
             please_try_again: Please try again
+            first_column_type_helper: The first column of a Table is always a Select column type.
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"

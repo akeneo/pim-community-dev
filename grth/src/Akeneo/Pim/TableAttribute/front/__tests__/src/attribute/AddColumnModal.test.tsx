@@ -121,6 +121,7 @@ describe('AddColumnModal', () => {
       />
     );
 
+    expect(screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('pim_common.open'));
 
     expect(await screen.findByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
@@ -140,6 +141,8 @@ describe('AddColumnModal', () => {
         dataTypesMapping={defaultDataTypesMapping}
       />
     );
+
+    expect(screen.queryByText('pim_table_attribute.form.attribute.first_column_type_helper')).toBeNull();
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
