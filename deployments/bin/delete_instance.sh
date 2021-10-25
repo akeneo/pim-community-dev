@@ -62,13 +62,31 @@ if [[ ${PFID} =~ "tria" ]]; then
   yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_secret
   yq d -j -P -i ${PWD}/main.tf.json module.pim.ft_catalog_api_username
 fi
+
 terraform init
+
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find ${PWD} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
+
+TF_STATE_LIST=$(terraform state list)
+
 export TF_VAR_force_destroy_storage=true
-terraform plan -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
-terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig -target=module.pim.google_storage_bucket.srnt_bucket -target=module.pim.google_storage_bucket.srnt_es_bucket
+
+TARGET=module.pim.local_file.kubeconfig
+terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
+
+echo "Check if srnt_bucket exists and need update to remove prevent destroy"
+TARGET=module.pim.google_storage_bucket.srnt_bucket
+if [[ ! -z $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
+  terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
+fi
+
+echo "Check if srnt_es_bucket exists and need update to remove prevent destroy"
+TARGET=module.pim.google_storage_bucket.srnt_es_bucket
+if [[ ! -z $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
+  terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
+fi
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig

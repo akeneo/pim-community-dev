@@ -130,12 +130,12 @@ for NAMESPACE in ${NS_LIST}; do
         then
             # If no helm release exists then we can't delete helm/tf resources and we can delete namespace
             IMAGE_TAG=$(helm3 get values ${NAMESPACE} -n ${NAMESPACE} | yq r - 'image.pim.tag')
-            if [[ -z "${IMAGE_TAG}" ]]; then
-                IMAGE_TAG=${LAST_RELEASE}
-            fi
         else
             IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
             IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
+        fi
+        if [[ -z "${IMAGE_TAG}" ]]; then
+            IMAGE_TAG=${LAST_RELEASE}
         fi
         ACTIVATE_MONITORING=${ACTIVATE_MONITORING:-true}
         echo "  Command debug"
