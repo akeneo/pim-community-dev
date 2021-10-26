@@ -419,19 +419,7 @@ class JobLauncher
 
         $config['filePath'] =  $filePath;
 
-        $username = null !== $username ? sprintf('--username=%s', $username) : '';
-
         $pathFinder = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %s/console %s --env=%s --config=\'%s\' -v %s %s',
-            $pathFinder->find(),
-            sprintf('%s/bin', $this->kernel->getProjectDir()),
-            'akeneo:batch:job',
-            $this->kernel->getEnvironment(),
-            json_encode($config, JSON_HEX_APOS),
-            $jobCode,
-            $username
-        );
         $command = [
             $pathFinder->find(),
             sprintf('%s/bin/console', $this->kernel->getProjectDir()),
@@ -439,10 +427,11 @@ class JobLauncher
             sprintf('--env=%s',$this->kernel->getEnvironment()),
             sprintf("--config=%s", json_encode($config, JSON_HEX_APOS)),
             '-v',
-            $jobCode,
-            $username
+            $jobCode
         ];
-
+        if (null !== $username) {
+            $command[] = sprintf('--username=%s', $username);
+        }
 
         $process = new Process($command);
         $process->run();
