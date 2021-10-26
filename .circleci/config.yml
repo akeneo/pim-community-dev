@@ -1,35 +1,6 @@
 version: 2.1
 
 jobs:
-  checkout_ee:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-      - run:
-          name: Download EE dev with the SSH key that we added above
-          command: |
-              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-              git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
-      - run:
-          name: Checkout EE branch if it exists, or 5.0 otherwise
-          command: |
-            cd /home/circleci/project
-            git checkout ${CIRCLE_BRANCH} || git checkout 5.0
-      - run:
-          name: Require proper dev CE branch
-          command: |
-            sed -i "s|\"akeneo/pim-community-dev\": \"5.0.x-dev|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
-      - run:
-          name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project
-
   checkout_ce:
     machine:
       image: ubuntu-1604:201903-01
@@ -372,13 +343,8 @@ workflows:
                     branches:
                         ignore:
                             - "5.0"
-          - checkout_ee:
-                requires:
-                    - ready_to_build?
           - build_dev:
                 path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
-                requires:
-                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -469,9 +435,6 @@ workflows:
                 requires:
                     - build_dev
           - test_back_behat_legacy:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
                 requires:
                     - build_dev
 
