@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
-import {Dummy} from './feature/Dummy';
+import {ProcessTrackerApp} from './feature/ProcessTrackerApp';
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const FakePIM = () => {
         <AkeneoIcon size={36} />
       </Menu>
       <Page>
-        <Dummy />
+        <ProcessTrackerApp />
       </Page>
     </Container>
   );
