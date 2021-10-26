@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "812dd927f344dfd3ccafc1a64e31331f",
+    "content-hash": "caee3d51e48ed50ba8b4ec49d75985f0",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -2580,12 +2580,12 @@
             "version": "v0.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/avalanche123/Imagine.git",
+                "url": "https://github.com/php-imagine/Imagine.git",
                 "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
+                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
                 "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
                 "shasum": ""
             },
@@ -3716,6 +3716,16 @@
                 "guid",
                 "identifier",
                 "uuid"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/ramsey",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/ramsey/uuid",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-02-21T04:36:14+00:00"
         },
@@ -7440,37 +7450,33 @@
         },
         {
             "name": "symfony/security-acl",
-            "version": "v3.0.2",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-acl.git",
-                "reference": "22928f6be80a37f301500c67e50f57f5b25ffaa8"
+                "reference": "2c1b1b68d8ff410f925697bc689ec6340b3e5d2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-acl/zipball/22928f6be80a37f301500c67e50f57f5b25ffaa8",
-                "reference": "22928f6be80a37f301500c67e50f57f5b25ffaa8",
+                "url": "https://api.github.com/repos/symfony/security-acl/zipball/2c1b1b68d8ff410f925697bc689ec6340b3e5d2b",
+                "reference": "2c1b1b68d8ff410f925697bc689ec6340b3e5d2b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9",
-                "symfony/security-core": "~2.8|~3.0|~4.0"
+                "php": ">=7.1.3",
+                "symfony/security-core": "^3.4|^4.4|^5.0"
             },
             "require-dev": {
                 "doctrine/common": "~2.2",
                 "doctrine/dbal": "~2.2",
+                "doctrine/persistence": "^1.3.3",
                 "psr/log": "~1.0",
-                "symfony/phpunit-bridge": "~2.8|~3.0|~4.0"
-            },
-            "suggest": {
-                "doctrine/dbal": "For using the built-in ACL implementation",
-                "symfony/class-loader": "For using the ACL generateSql script",
-                "symfony/finder": "For using the ACL generateSql script"
+                "symfony/phpunit-bridge": "^3.4|^4.4|^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-main": "3.0-dev"
                 }
             },
             "autoload": {
@@ -7497,7 +7503,21 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2018-12-13T16:51:15+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-01-12T09:10:27+00:00"
         },
         {
             "name": "symfony/security-bundle",
