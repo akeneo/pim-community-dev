@@ -73,7 +73,7 @@
         "friendsofsymfony/jsrouting-bundle": "2.1.1",
         "friendsofsymfony/oauth-server-bundle": "1.6.2",
         "friendsofsymfony/rest-bundle": "2.8.0",
-        "gedmo/doctrine-extensions":"v2.4.37",
+        "gedmo/doctrine-extensions":"v3.0.1",
         "google/cloud-pubsub": "1.29.1",
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "0.7.1",
