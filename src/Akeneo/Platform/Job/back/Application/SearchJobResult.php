@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Domain\Model;
+namespace Akeneo\Platform\Job\Application;
 
+use Akeneo\Platform\Job\Domain\Model\JobItem;
 use Webmozart\Assert\Assert;
 
 /**

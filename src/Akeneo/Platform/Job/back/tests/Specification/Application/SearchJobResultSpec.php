@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Domain\Model;
+namespace Specification\Akeneo\Platform\Job\Application;
 
+use Akeneo\Platform\Job\Application\SearchJobResult;
 use Akeneo\Platform\Job\Domain\Model\JobItem;
-use Akeneo\Platform\Job\Domain\Model\SearchJobResult;
 use PhpSpec\ObjectBehavior;
 
 class SearchJobResultSpec extends ObjectBehavior
