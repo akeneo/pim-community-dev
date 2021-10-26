@@ -38,7 +38,15 @@ akeneo_connectivity.connection:
       link: Access the marketplace
     apps:
       wizard:
+        title: Connect
+        action:
+          confirm: Confirm
+          cancel: Cancel
+          previous: Previous
+          next: Next
+          allow_and_next: Allow and next
         progress:
+          authorizations: Authorizations
           permissions: Permissions
   connections: Connections
   secondary_actions:
