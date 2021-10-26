@@ -18,6 +18,7 @@ use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -37,6 +38,7 @@ class TableValuesReaderSpec extends ObjectBehavior
     function it_is_a_table_values_reader()
     {
         $this->shouldImplement(ItemReaderInterface::class);
+        $this->shouldImplement(TrackableItemReaderInterface::class);
         $this->shouldImplement(InitializableInterface::class);
         $this->shouldImplement(StepExecutionAwareInterface::class);
 
@@ -132,6 +134,10 @@ class TableValuesReaderSpec extends ObjectBehavior
                     ColumnIdGenerator::ingredient() => 'salt',
                     ColumnIdGenerator::quantity() => 10,
                 ],
+                [
+                    ColumnIdGenerator::ingredient() => 'pepper',
+                    ColumnIdGenerator::quantity() => 4,
+                ],
             ]),
             'ecommerce',
             'en_US'
@@ -188,6 +194,10 @@ class TableValuesReaderSpec extends ObjectBehavior
             ColumnIdGenerator::ingredient() => 'salt',
             ColumnIdGenerator::quantity() => 10,
         ])));
+        $this->read()->shouldBeLike(new TableRow('id1', 'nutrition', 'en_US', 'ecommerce', Row::fromNormalized([
+            ColumnIdGenerator::ingredient() => 'pepper',
+            ColumnIdGenerator::quantity() => 4,
+        ])));
         $this->read()->shouldBeLike(new TableRow('id1', 'nutrition', 'fr_FR', 'mobile', Row::fromNormalized([
             ColumnIdGenerator::ingredient() => 'pepper',
             ColumnIdGenerator::quantity() => 10,
@@ -197,5 +207,20 @@ class TableValuesReaderSpec extends ObjectBehavior
             ColumnIdGenerator::quantity() => 5,
         ])));
         $this->read()->shouldReturn(null);
+    }
+
+    public function it_counts_the_results(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilderInterface $pqb
+    ) {
+        $product = new Product();
+
+        $pqbFactory->create([])->willReturn($pqb);
+        $pqb->addFilter('nutrition', Operators::IS_NOT_EMPTY, [])->shouldBeCalledOnce()
+            ->willReturn($pqb);
+        $pqb->execute()->shouldBeCalledOnce()->willReturn(new FakeCursor(array_fill(0, 42, $product)));
+
+        $this->initialize();
+        $this->totalItems()->shouldReturn(42);
     }
 }

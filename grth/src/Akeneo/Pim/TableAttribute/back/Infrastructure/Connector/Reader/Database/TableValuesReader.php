@@ -19,11 +19,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO\TableRow;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
-final class TableValuesReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+final class TableValuesReader implements ItemReaderInterface, TrackableItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     private ?StepExecution $stepExecution = null;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
@@ -73,6 +74,15 @@ final class TableValuesReader implements ItemReaderInterface, InitializableInter
         }
 
         return null;
+    }
+
+    public function totalItems(): int
+    {
+        if (null === $this->results) {
+            throw new \RuntimeException('Class is not initialized.');
+        }
+
+        return $this->results->count();
     }
 
     private function getNextTableRow(): ?TableRow
