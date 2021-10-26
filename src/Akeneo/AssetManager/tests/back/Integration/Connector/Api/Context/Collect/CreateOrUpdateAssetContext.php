@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -117,6 +118,8 @@ class CreateOrUpdateAssetContext implements Context
 
     private ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy;
 
+    private SecurityFacadeStub $securityFacade;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -130,7 +133,8 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
-        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy
+        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy,
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -145,6 +149,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
         $this->computeTransformationLauncherSpy = $computeTransformationLauncherSpy;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -153,6 +158,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_house_asset_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -169,6 +175,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function aAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePim()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_building_asset_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -186,6 +193,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConvention()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_building_asset_creation_with_naming_convention.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -209,6 +217,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function anAssetOfTheBrandAssetFamilyPresentationViewExistingInTheErpButNotInThePimWithNamingConventionExecutionFailure()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'unprocessable_entity_building_asset_for_naming_convention_failure.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -314,6 +323,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpAndThePimWithDifferentInformation()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_house_asset_update.json';
 
         $this->loadFrontViewAssetFamily(true);
@@ -449,6 +459,32 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
+     * @Then the PIM notifies the connector about an error indicating that it is not authorized
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatItISNotAuthorized()
+    {
+        /**
+         * TODO CXP-922: Change the response in the forbidden_collect_assets.json by
+         *
+         * "response": {
+         *   "status": 403,
+         *   "body": {
+         *     "code": 403,
+         *     "message": "Access forbidden. You are not allowed to create or update assets."
+         *   }
+         * }
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_collect_assets.json'
+        );
+        /**
+         * TODO CXP-922: Remove the logger check
+         */
+        // check logger
+    }
+
+    /**
      * @When the connector collects a asset whose data does not comply with the business rules
      */
     public function theConnectorCollectsAAssetWhoseDataDoesNotComplyWithTheBusinessRules()
@@ -493,6 +529,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function someAssetsOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
+        $this->theConnectorHasFullPermission();
         $this->loadFrontViewAssetFamily(false, NamingConvention::createFromNormalized([
             'source' => ['property' => 'code', 'channel' => null, 'locale' => null],
             'pattern' => '/(?P<title>.+)/',
@@ -687,6 +724,19 @@ class CreateOrUpdateAssetContext implements Context
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
             self::REQUEST_CONTRACT_DIR . 'collect_frontview_assets_with_unprocessable_assets.json'
+        );
+    }
+
+    /**
+     * @When the connector collects assets from the ERP without permission
+     */
+    public function theConnectorCollectsAssetsFromTheErpWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_collect_assets.json'
         );
     }
 
@@ -1154,5 +1204,14 @@ class CreateOrUpdateAssetContext implements Context
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'not_found_entity_asset_family_wrong_case.json'
         );
+    }
+
+    private function theConnectorHasFullPermission(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }

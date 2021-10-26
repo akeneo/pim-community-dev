@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode;
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -77,6 +78,8 @@ class GetConnectorAssetContext implements Context
 
     private ?Response $imageNotFoundResponse = null;
 
+    private SecurityFacadeStub $securityFacade;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -84,7 +87,8 @@ class GetConnectorAssetContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider
+        InMemoryFilesystemProviderStub $filesystemProvider,
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -93,6 +97,7 @@ class GetConnectorAssetContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->mediaFileRepository = $mediaFileRepository;
         $this->filesystemProvider = $filesystemProvider;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -179,6 +184,7 @@ class GetConnectorAssetContext implements Context
      */
     public function theAssetFamilyWithSomeAssets(string $assetFamilyIdentifier): void
     {
+        $this->theConnectorHasFullPermission();
         $assetFamilyIdentifier = strtolower($assetFamilyIdentifier);
         for ($i = 0; $i < 10 ; $i++) {
             $asset = new ConnectorAsset(
@@ -358,5 +364,14 @@ class GetConnectorAssetContext implements Context
         );
 
         $this->attributeRepository->create($image);
+    }
+
+    private function theConnectorHasFullPermission(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }

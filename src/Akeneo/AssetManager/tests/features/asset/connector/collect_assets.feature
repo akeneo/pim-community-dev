@@ -101,3 +101,9 @@ Feature: Connection to DAM systems
     Given an asset of the Packshot asset family existing in the PIM
     When the connector collects an asset for an asset family with the wrong case
     Then the PIM notifies the connector that the asset family does not exist
+
+  @integration-back
+  Scenario: Fail to collect an asset if the the connector is not authorized
+    Given some assets of the Frontview asset family existing in the ERP but not in the PIM
+    When the connector collects assets from the ERP without permission
+    Then the PIM notifies the connector about an error indicating that it is not authorized

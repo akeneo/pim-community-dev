@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -86,6 +87,8 @@ class DeleteAssetContext implements Context
 
     private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
+    private SecurityFacadeStub $securityFacade;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -97,7 +100,8 @@ class DeleteAssetContext implements Context
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        InMemoryAttributeRepository $attributeRepository
+        InMemoryAttributeRepository $attributeRepository,
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -110,6 +114,7 @@ class DeleteAssetContext implements Context
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -117,6 +122,7 @@ class DeleteAssetContext implements Context
      */
     public function anAssetOfThePackshotAssetFamilyExistingInThePIM()
     {
+        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_iphone_asset_delete.json';
 
         $this->loadPackshotAssetFamily();
@@ -254,5 +260,14 @@ class DeleteAssetContext implements Context
         );
 
         $this->assetRepository->create($asset);
+    }
+
+    private function theConnectorHasFullPermission(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }

@@ -42,6 +42,7 @@ class OauthAuthenticatedClientFactory
         $user = $this->createUser($username);
         $client = $this->createClient();
         $token = new OAuthToken($user->getRoles());
+        $token->setUser($user);
         $client->getContainer()->get('security.token_storage')->setToken($token);
 
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer fake_token');
