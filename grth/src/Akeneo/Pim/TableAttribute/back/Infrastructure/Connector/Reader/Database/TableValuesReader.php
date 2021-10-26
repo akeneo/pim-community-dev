@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO\TableRow;
@@ -29,15 +30,15 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 final class TableValuesReader implements ItemReaderInterface, TrackableItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     private ?StepExecution $stepExecution = null;
-    private ProductQueryBuilderInterface $pqb;
+    protected ProductQueryBuilderFactoryInterface $pqbFactory;
     private ?CursorInterface $results;
     private ?EntityWithValuesInterface $currentEntity = null;
     private ?\Generator $tableRowGenerator = null;
     private bool $firstRead = true;
 
-    public function __construct(ProductQueryBuilderInterface $pqb)
+    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory)
     {
-        $this->pqb = $pqb;
+        $this->pqbFactory = $pqbFactory;
     }
 
     public function initialize(): void
@@ -45,7 +46,8 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         $filters = $this->getConfiguredFilters();
         $tableAttributeCode = $filters['table_attribute_code'];
 
-        $this->results = $this->pqb->addFilter($tableAttributeCode, Operators::IS_NOT_EMPTY, [])->execute();
+        // TODO Maybe there should be options ?
+        $this->results = $this->pqbFactory->create([])->addFilter($tableAttributeCode, Operators::IS_NOT_EMPTY, [])->execute();
     }
 
     public function read(): ?TableRow

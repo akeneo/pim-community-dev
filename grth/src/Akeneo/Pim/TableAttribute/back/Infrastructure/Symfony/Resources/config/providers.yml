@@ -13,6 +13,8 @@ services:
             -
               csv_table_attribute_options_export: pim-job-instance-csv-table-select-options-export
               xlsx_table_attribute_options_export: pim-job-instance-xlsx-table-select-options-export
+              csv_table_attribute_values_export: pim-job-instance-csv-table-attribute-values-export
+              xlsx_table_attribute_values_export: pim-job-instance-xlsx-table-attribute-values-export
               csv_table_attribute_options_import: pim-job-instance-csv-base-import
               xlsx_table_attribute_options_import: pim-job-instance-xlsx-base-import
         tags:

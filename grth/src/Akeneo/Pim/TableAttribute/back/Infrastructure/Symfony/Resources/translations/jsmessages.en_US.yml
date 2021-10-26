@@ -234,3 +234,5 @@ batch_jobs:
     xlsx_table_attribute_options_export.label: Table attribute select options export in XLSX
     csv_table_attribute_options_import.label: Table attribute select options import in CSV
     xlsx_table_attribute_options_import.label: Table attribute select options import in XLSX
+    csv_table_attribute_values_export.label: Table attribute values export in CSV
+    xlsx_table_attribute_values_export.label: Table attribute values export in XLSX

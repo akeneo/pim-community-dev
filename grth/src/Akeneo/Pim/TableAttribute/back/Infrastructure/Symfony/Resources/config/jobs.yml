@@ -166,12 +166,20 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails'
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader:
+        arguments:
+            # TODO I'm not sure at all it will work
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails:
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     # processors
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
+
+    # TODO
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor: ~
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor:
         arguments:
