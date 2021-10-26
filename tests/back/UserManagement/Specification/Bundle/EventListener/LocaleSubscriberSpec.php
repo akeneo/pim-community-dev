@@ -110,7 +110,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($user);
         $event->getArgument('current_user')->willReturn($user);
 
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
         $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
 
