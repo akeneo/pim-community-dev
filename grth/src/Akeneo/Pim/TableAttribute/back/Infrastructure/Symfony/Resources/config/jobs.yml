@@ -178,7 +178,6 @@ services:
     # processors
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
 
-    # TODO
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor: ~
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor:

@@ -70,7 +70,6 @@ final class TableValuesReader implements ItemReaderInterface, InitializableInter
             if (null !== $this->currentEntity) {
                 $this->tableRowGenerator = $this->getOneTableValue($this->currentEntity, $tableAttributeCode);
             }
-
         }
 
         return null;

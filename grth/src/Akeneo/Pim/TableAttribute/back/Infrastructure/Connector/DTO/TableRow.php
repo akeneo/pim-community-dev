@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Domain\Value\Row;
 
 final class TableRow
@@ -21,7 +23,7 @@ final class TableRow
     public string $attributeCode;
     public ?string $localeCode;
     public ?string $scopeCode;
-    public Row $tableRow;
+    public Row $row;
 
     public function __construct(
         string $entityId,
@@ -34,14 +36,6 @@ final class TableRow
         $this->attributeCode = $attributeCode;
         $this->localeCode = $localeCode;
         $this->scopeCode = $scopeCode;
-        $this->tableRow = $tableRow;
-    }
-
-    public function toArray(): array
-    {
-        return array_merge($this->tableRow->normalize(), [
-            'product' => $this->entityId,
-            'attribute' => $this->attributeCode,
-        ]);
+        $this->row = $tableRow;
     }
 }
