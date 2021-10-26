@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {JobSearchResult} from '../models/JobSearchResult';
 import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
 
