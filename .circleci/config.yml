@@ -1920,8 +1920,6 @@ workflows:
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
 
           - deploy_pr_environment:
                 name: "[<< matrix.PRODUCT_TYPE >>] Deploy pr environment"
@@ -1930,6 +1928,7 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
 
           - build_srnt_dev:
                 requires:
