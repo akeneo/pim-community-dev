@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO\TableRow;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
-final class TableValuesReader implements ItemReaderInterface, TrackableItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+final class TableValuesReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     private ?StepExecution $stepExecution = null;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
@@ -79,6 +76,22 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         return null;
     }
 
+    private function getNextTableRow(): ?TableRow
+    {
+        if (null === $this->tableRowGenerator) {
+            return null;
+        }
+
+        $tableRow = $this->tableRowGenerator->current();
+
+        if (null !== $tableRow) {
+            $this->tableRowGenerator->next();
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $tableRow;
+    }
+
     private function getNextResult(): ?EntityWithValuesInterface
     {
         if ($this->results->valid()) {
@@ -94,13 +107,11 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
 
     private function getOneTableValue(EntityWithValuesInterface $entityWithValues, string $attributeCode): \Generator
     {
-        /** @var ValueInterface $value */
         foreach ($entityWithValues->getValues() as $value) {
             if ($value->getAttributeCode() !== $attributeCode) {
                 continue;
             }
 
-            /** @var Table $table */
             $table = $value->getData();
             foreach ($table as $row) {
                 yield new TableRow(
@@ -119,18 +130,7 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         $this->stepExecution = $stepExecution;
     }
 
-    public function totalItems(): int
-    {
-        if (null === $this->results) {
-            throw new \RuntimeException(
-                'Unable to compute the total items the reader will process until the reader is not initialized'
-            );
-        }
-
-        return $this->results->count();
-    }
-
-    protected function getConfiguredFilters(): array
+    private function getConfiguredFilters(): array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -139,21 +139,5 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         }
 
         return $filters;
-    }
-
-    private function getNextTableRow(): ?TableRow
-    {
-        if (null === $this->tableRowGenerator) {
-            return null;
-        }
-
-        $tableRow = $this->tableRowGenerator->current();
-
-        if (null !== $tableRow) {
-            $this->tableRowGenerator->next();
-            $this->stepExecution->incrementSummaryInfo('read');
-        }
-
-        return $tableRow;
     }
 }
