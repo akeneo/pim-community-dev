@@ -353,9 +353,16 @@ ifeq ($(ACTIVATE_MONITORING),true)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
 endif
 
-.PHONY: commit-instance
-commit-instance:
+$(CLOUD_CUSTOMERS_DEV_DIR):
+	mkdir -p $(CLOUD_CUSTOMERS_DEV_DIR)
 	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+
+.PHONY: pull-cloud-customer-dev
+pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --ff-only
+
+.PHONY: commit-instance
+commit-instance: pull-cloud-customer-dev
 	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
@@ -368,9 +375,7 @@ commit-instance:
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
-uncommit-instance:
-	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)
-	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
 ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
