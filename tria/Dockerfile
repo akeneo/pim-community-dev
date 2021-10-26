@@ -119,10 +119,10 @@ FROM dev AS builder
 
 ARG COMPOSER_AUTH
 
-# Install NodeJS 12 and Yarn
+# Install NodeJS 14 and Yarn
 RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
-    sh -c 'echo "deb https://deb.nodesource.com/node_12.x buster main" > /etc/apt/sources.list.d/nodesource.list' && \
-    sh -c 'echo "deb-src https://deb.nodesource.com/node_12.x buster main" >> /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'echo "deb https://deb.nodesource.com/node_14.x buster main" > /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'echo "deb-src https://deb.nodesource.com/node_14.x buster main" >> /etc/apt/sources.list.d/nodesource.list' && \
     sh -c 'wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
     sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list' && \
     apt-get update && \
