@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "draft-js": "^0.10.5",
-    "draftjs-to-html": "^0.8.4",
+    "draftjs-to-html": "^0.9.1",
     "html-to-draftjs": "^1.5.0",
     "react-draft-wysiwyg": "^1.12.13"
   },
