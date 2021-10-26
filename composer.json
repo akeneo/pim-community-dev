@@ -76,7 +76,7 @@
         "gedmo/doctrine-extensions":"v2.4.37",
         "google/cloud-pubsub": "1.29.1",
         "guzzlehttp/guzzle": "6.5.5",
-        "imagine/imagine": "0.7.1",
+        "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem-ziparchive": "1.0.3",
         "league/flysystem": "^1.0",
