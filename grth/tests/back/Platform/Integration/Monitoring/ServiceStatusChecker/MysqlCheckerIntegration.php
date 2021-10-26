@@ -26,7 +26,7 @@ final class MysqlCheckerIntegration extends TestCase
     {
         $this->getDatabaseConnection()->exec('RENAME TABLE pim_catalog_product_unique_data TO backup_pim_catalog_product_unique_data');
         $status = $this->getMysqlChecker()->status();
-        Assert::assertStringContainsString('Unable to request the database', $status->getMessage());
+        Assert::assertStringContainsString('MySQL exception', $status->getMessage());
         Assert::assertFalse($status->isOk());
     }
 

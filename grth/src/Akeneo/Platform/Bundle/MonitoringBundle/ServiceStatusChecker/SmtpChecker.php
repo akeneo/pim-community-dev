@@ -14,21 +14,26 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Exception;
+use Psr\Log\LoggerInterface;
 
 final class SmtpChecker
 {
     private \Swift_Transport $transport;
+    private LoggerInterface $logger;
 
-    public function __construct(\Swift_Transport $transport)
+
+    public function __construct(\Swift_Transport $transport, LoggerInterface $logger)
     {
         $this->transport = $transport;
+        $this->logger = $logger;
     }
 
     public function status(): ServiceStatus
     {
         try {
             $ping = $this->transport->ping();
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
+            $this->logger->error("Smtp ServiceCheck error", ['exception' => $e]);
             return ServiceStatus::notOk(sprintf('Unable to ping the mailer transport: "%s".', $e->getMessage()));
         }
 

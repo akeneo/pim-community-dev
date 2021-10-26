@@ -31,13 +31,6 @@ updates:
       - dependency-type: "production"
 
   - package-ecosystem: "npm"
-    directory: "/grth"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: "production"
-
-  - package-ecosystem: "npm"
     directory: "/tria/front-packages/free-trial"
     schedule:
       interval: "daily"

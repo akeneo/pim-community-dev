@@ -65,11 +65,21 @@ final class Controller
             throw new AccessDeniedHttpException();
         }
 
-        $mysqlStatus = $this->mysqlChecker->status();
-        $esStatus = $this->elasticsearchChecker->status();
-        $fileStorageStatus = $this->fileStorageChecker->status();
-        $smtpStatus = $this->smtpChecker->status();
-        $pubSubStatus = $this->pubSubStatusChecker->status();
+        $mysqlStatus = $this->timedServiceCheck(function () {
+            return $this->mysqlChecker->status();
+        }, "Mysql");
+        $esStatus = $this->timedServiceCheck(function () {
+            return $this->elasticsearchChecker->status();
+        }, "ElasticSearch");
+        $fileStorageStatus = $this->timedServiceCheck(function () {
+            return $this->fileStorageChecker->status();
+        }, "FileStorage");
+        $smtpStatus = $this->timedServiceCheck(function () {
+            return $this->smtpChecker->status();
+        }, "SmtpServer");
+        $pubSubStatus = $this->timedServiceCheck(function () {
+            return $this->pubSubStatusChecker->status();
+        }, "PubSub");
 
         $responseContent = [
             'service_status' => [
@@ -124,5 +134,17 @@ final class Controller
         }
 
         return true;
+    }
+
+    public function timedServiceCheck(\Closure $serviceCheck, string $serviceCheckName): ServiceStatus
+    {
+        $startTime = new \DateTime();
+        $serviceStatus = $serviceCheck();
+        $endTime = new \DateTime();
+        $durationSeconds = $endTime->getTimestamp() - $startTime->getTimestamp();
+        if ($durationSeconds >= 10) {
+            $this->logger->warning("{$serviceCheckName} service check performed in {$durationSeconds} s.");
+        }
+        return $serviceStatus;
     }
 }

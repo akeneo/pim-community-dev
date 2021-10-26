@@ -15,14 +15,17 @@ namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Psr\Log\LoggerInterface;
 
 final class MysqlChecker
 {
     private Connection $connection;
+    private LoggerInterface $logger;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, LoggerInterface $logger)
     {
         $this->connection = $connection;
+        $this->logger = $logger;
     }
 
     public function status(): ServiceStatus
@@ -31,10 +34,9 @@ final class MysqlChecker
             $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data LIMIT 1")->fetchAll();
 
             return ServiceStatus::ok();
-        } catch (DBALException $e) {
-            return ServiceStatus::notOk(sprintf('Unable to request the database: "%s".', $e->getMessage()));
-        } catch (\Exception $e) {
-            return ServiceStatus::notOk(sprintf('MySQL general execption: "%s".', $e->getMessage()));
+        } catch (\Throwable $e) {
+            $this->logger->error("MySql ServiceCheck error", ['exception' => $e]);
+            return ServiceStatus::notOk(sprintf('MySQL exception: "%s".', $e->getMessage()));
         }
     }
 }

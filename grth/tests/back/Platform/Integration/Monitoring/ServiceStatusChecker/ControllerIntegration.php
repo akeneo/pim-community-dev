@@ -13,6 +13,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ final class ControllerIntegration extends KernelTestCase
             'X-AUTH-TOKEN' => 'my_auth_token',
         ]);
 
-        $smtpCheckerKo = new SmtpChecker($this->createMock(\Swift_Transport::class));
+        $smtpCheckerKo = new SmtpChecker($this->createMock(\Swift_Transport::class), $this->createMock(LoggerInterface::class));
 
         $this->controller = new Controller(
             self::$container->get(MysqlChecker::class),
@@ -134,7 +135,7 @@ final class ControllerIntegration extends KernelTestCase
 
         $mockConnection = $this->createMock(Connection::class);
         $mockConnection->method('executeQuery')->willThrowException(new DBALException('mock message'));
-        $mysqlCheckerKo = new MysqlChecker($mockConnection);
+        $mysqlCheckerKo = new MysqlChecker($mockConnection, $this->createMock(LoggerInterface::class));
 
         $this->controller = new Controller(
             $mysqlCheckerKo,
@@ -151,7 +152,7 @@ final class ControllerIntegration extends KernelTestCase
                 'mysql' => [
                     'ok' => false,
                     'optional' => false,
-                    'message' => 'Unable to request the database: "mock message".',
+                    'message' => 'MySQL exception: "mock message".',
                 ],
                 'elasticsearch' => [
                     'ok' => true,
