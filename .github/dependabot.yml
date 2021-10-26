@@ -1,0 +1,100 @@
+# This is an example with only required properties:
+version: 2
+updates:
+  # Default branch (master)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/grth"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/tailored-export"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/tria"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/grth"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "npm"
+    directory: "/tria/front-packages/free-trial"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/grth"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/tria"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+
+  #5.0
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+
+  #4.0
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "4.0"
+    allow:
+      - dependency-type: "production"
