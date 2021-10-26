@@ -38,14 +38,21 @@ echo "${NS_LIST}"
 if [[ ${TYPE} == "srnt" ]] ; then
     PRODUCT_REFERENCE_TYPE=serenity_instance
     PRODUCT_REFERENCE_CODE=serenity_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=serenity-edition
 fi
 if [[ ${TYPE} == "grth" ]] ; then
     PRODUCT_REFERENCE_TYPE=growth_edition_instance
     PRODUCT_REFERENCE_CODE=growth_edition_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=growth-edition
 fi
 if [[ ${TYPE} == "tria" ]] ; then
     PRODUCT_REFERENCE_TYPE=pim_trial_instance
     PRODUCT_REFERENCE_CODE=trial_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=trial-edition
+fi
+
+if [[ "${ENV_NAME}" == "dev" ]] ; then
+    PRODUCT_TERRAFORM_BUCKET=${PRODUCT_TERRAFORM_BUCKET}-dev
 fi
 
 for NAMESPACE in ${NS_LIST}; do
@@ -134,9 +141,18 @@ for NAMESPACE in ${NS_LIST}; do
             IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
             IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
+
         if [[ -z "${IMAGE_TAG}" ]]; then
             IMAGE_TAG=${LAST_RELEASE}
+        else
+            # if no file has been pushed to terraform module bucket, we set image tag to last release
+            TF_MODULE_EXIST=$(gsutil ls gs://akecld-terraform-modules/${PRODUCT_TERRAFORM_BUCKET}/${IMAGE_TAG})
+            if [[ $? -ne 0 ]]; then
+                echo "${IMAGE_TAG} files don't exist and IMAGE_TAG set to ${LAST_RELEASE}"
+                IMAGE_TAG=${LAST_RELEASE}
+            fi
         fi
+
         ACTIVATE_MONITORING=${ACTIVATE_MONITORING:-true}
         echo "  Command debug"
         echo "      ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make uncommit-instance || true"
