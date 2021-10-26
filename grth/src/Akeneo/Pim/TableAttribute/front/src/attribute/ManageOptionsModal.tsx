@@ -278,7 +278,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   };
 
   const handleCloseManageOptions = () => {
-    if (!isDirty || window.confirm(translate('pim_table_attribute.form.attribute.discard_changes'))) {
+    if (
+      !isDeleteOptionModalOpen &&
+      (!isDirty || window.confirm(translate('pim_table_attribute.form.attribute.discard_changes')))
+    ) {
       onClose();
     }
   };
@@ -293,6 +296,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       options[index].labels[localeCode] = label;
       handleOptionChange(index, options[index]);
     }
+  };
+
+  const handleCloseDeleteOptionModal = () => {
+    setIndexToRemove(undefined);
+    closeDeleteOptionModal();
   };
 
   const LabelTranslations = (
@@ -431,7 +439,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       </Modal>
       {isDeleteOptionModalOpen && typeof indexToRemove !== 'undefined' && options && (
         <DeleteOptionModal
-          close={closeDeleteOptionModal}
+          close={handleCloseDeleteOptionModal}
           onDelete={handleDelete}
           optionCode={options[indexToRemove]?.code ?? ''}
           isFirstColumn={attribute.table_configuration[0].code === columnDefinition.code}
