@@ -1,0 +1,50 @@
+pim_table_configuration:
+  validation:
+    table_configuration:
+      must_be_filled: La configuration de l'attribut tableau doit être remplie
+      must_contain_at_least_two_columns: L'attribut tableau doit contenir au moins 2 colonnes
+      max_columns_reached: Vous avez atteint le nombre maximum de colonnes dans votre tableau (10).
+      missing_column: La colonne {{ field }} doît être remplie
+      missing_option_field: Le champ {{ field }} est requis
+      column_code_must_be_filled: Le code de la colonne doit être rempli
+      option_code_must_be_filled: Le code de l'option doit être rempli
+      invalid_code: Le code de la colonne ne peut contenir que des lettres, des chiffres et des tirets bas
+      invalid_option_code: Le code de l'option ne peut contenir que des lettres, des chiffres et des tirets bas
+      too_long_code: "Le code de la colonne est trop long : il doit avoir au maximum 100 caractères."
+      too_long_label: "L'intitulé de la colonne est trop long : il doit avoir au maximum 250 caractères."
+      too_long_option_code: "Le code de l'option est trop long : il doit avoir au maximum 100 caractères."
+      too_long_option_label: "L'intitulé de l'option est trop long : il doit avoir au maximum 255 caractères."
+      duplicated_column_code: '[0,1]Chaque colonne nécessite un code unique. "%duplicateCodes%" est déjà utilisé|]1, Inf[Chaque colonne nécessite un code unique. "%duplicateCodes%" sont déjà utilisés'
+      column_type_must_be_a_string: Le type de colonne doit être une chaîne de caractères
+      unknown_data_type: "Le type de colonne est inconnu. Veuillez choisir un des éléments suivants: number, text, select, boolean"
+      column_label_must_be_a_string: Le libellé de la colonne doit être une chaîne de caractères
+      option_label_must_be_a_string: Le libellé de l'option doit être une chaîne de caractères
+      label_locale_does_not_exist_or_is_not_activated: La locale "{{ locale_code }}" n'existe pas ou n'est pas activée
+      invalid_labels_format: Les libellés de colonne doivent être sous forme d'un objet clé/valeur
+      invalid_option_labels_format: Les libellés d'option doivent être sous forme d'un objet clé/valeur
+      must_not_be_filled: Le type %type% n'autorise pas table_configuration
+      first_column_should_be_select: 'Le type de la première colonne doit toujours être "select", type courant : "{{ data_type }}"'
+      first_column_code_cannot_be_changed: Le code de la première colonne ne peut pas être modifié.
+      unknown_field: 'Assurez-vous d''utiliser uniquement les champs attendus ; le champ actuel : {{ field }}'
+      attribute_does_not_exist: L'attribut "{{ attribute }}" n'existe pas
+      not_table_attribute: L'attribut "{{ attribute }}" n'est pas un attribut tableau
+      column_does_not_exist: La colonne "{{ column }}" n'existe pas dans l'attribut "{{ attribute }}"
+      not_select_column: La colonne "{{ column }}" de l'attribut "{{ attribute }}" n'a pas le type "select"
+      max_should_be_greater_than_min: La valeur minimum ne doit pas dépasser la valeur maximum.
+      options_cannot_be_set: Le champs options ne peut pas être défini pour les colonnes de type "{{ data_type }}"
+      no_validations_allowed: 'Vous ne pouvez pas utiliser de validations sur une colonne "{{ columnType }}", le type de colonne actuelle est : "{{ given }}"'
+      invalid_validation_key: 'La validation "{{ given }}" ne fonctionne pas sur une colonne "{{ columnType }}", sont autorisés : "{{ expected }}"'
+      too_many_table_attributes: Vous avez atteint le nombre maximum d'attributs de type tableau dans votre PIM ({{ limit }})
+    product_value:
+      non_existing_columns: '[0,1]La colonne "{{ non_existing_columns }}" n''existe pas|]1,Inf[Les colonnes "{{ non_existing_columns }}" n''existent pas'
+      unexpected_data_type: 'La colonne "{{ columnCode }}" s''attend à un {{ expected }}, {{ given }} donné'
+      first_column_required: 'La colonne "{{ columnCode }}" est obligatoire'
+      unknown_option: 'Assurez-vous d''utiliser uniquement les codes d''option existants, le code courant est : "{{ optionCode }}"'
+      integer_required: 'Cette valeur doit être un entier : {{ invalid_value }}'
+      min_validation: Cette valeur doit être supérieure ou égale à {{ limit }}.
+      max_validation: Cette valeur doit être inférieure ou égale à {{ limit }}.
+      value_integer_required: 'La valeur requise est un entier'
+      max_length_validation: Cette valeur est trop longue. Elle doit contenir {{ max }} caractères ou moins.
+      too_many_rows: Vous avez atteint le nombre maximum de lignes dans votre tableau ({{ limit }}).
+    product_value_collection:
+      too_many_cells: Vous avez atteint le nombre maximum de cellules de tableau dans votre produit ({{ count }} cellules, seulement {{ limit }} autorisées).

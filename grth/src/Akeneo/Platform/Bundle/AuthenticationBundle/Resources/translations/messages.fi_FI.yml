@@ -1,3 +1,0 @@
-akeneo_authentication:
-  sso:
-    unknown_user_error: Sinulla ei ole pääsyä tähän sovellukseen. Ota yhteyttä pääkäyttäjään.

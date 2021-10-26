@@ -1,3 +1,0 @@
-akeneo_authentication:
-  sso:
-    unknown_user_error: 您无权访问此应用程序。请联系您的管理员。
