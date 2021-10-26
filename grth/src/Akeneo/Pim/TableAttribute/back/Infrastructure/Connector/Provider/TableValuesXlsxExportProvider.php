@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 final class TableValuesXlsxExportProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    private $supportedJobNames = ['xlsx_table_attribute_values_export'];
+    private $supportedJobNames = ['xlsx_product_table_values_export'];
 
     /**
      * {@inheritDoc}

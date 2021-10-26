@@ -108,7 +108,8 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
-            - '@pim_table_attribute.writer.select_option.file.csv'
+            #TODO
+            - '@pim_connector.writer.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -120,6 +121,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor'
+            #TODO
             - '@pim_table_attribute.writer.select_option.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
