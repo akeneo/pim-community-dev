@@ -345,6 +345,8 @@ workflows:
                             - "5.0"
           - build_dev:
                 path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
+                requires:
+                    - checkout_ce
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
