@@ -16,7 +16,7 @@ define([
     },
 
     run: function () {
-      $.get(this.action.getLinkWithParameters())
+      $.post(this.action.getLink(), this.action.getActionParameters())
         .done(function (data) {
           const title = __('pim_datagrid.mass_action.quick_export.success');
           const link = React.createElement(
