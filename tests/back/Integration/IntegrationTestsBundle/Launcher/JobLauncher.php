@@ -432,8 +432,19 @@ class JobLauncher
             $jobCode,
             $username
         );
+        $command = [
+            $pathFinder->find(),
+            sprintf('%s/bin/console', $this->kernel->getProjectDir()),
+            'akeneo:batch:job',
+            sprintf('--env=%s',$this->kernel->getEnvironment()),
+            sprintf("--config=%s", json_encode($config, JSON_HEX_APOS)),
+            '-v',
+            $jobCode,
+            $username
+        ];
 
-        $process = new Process([$command]);
+
+        $process = new Process($command);
         $process->run();
 
         if (!$process->isSuccessful() && !BatchCommand::EXIT_WARNING_CODE === $process->getExitCode()) {
