@@ -17,7 +17,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO\TableRow;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -58,6 +57,9 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         // itere les produits, pour chaque produit on itère sur les values, pour chaque values on itère sur les lignes
         if ($this->firstRead) {
             $this->currentEntity = $this->getNextResult();
+            if (null !== $this->currentEntity) {
+                $this->tableRowGenerator = $this->getOneTableValue($this->currentEntity, $tableAttributeCode);
+            }
             $this->firstRead = false;
         }
 
@@ -101,7 +103,13 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
             /** @var Table $table */
             $table = $value->getData();
             foreach ($table as $row) {
-                yield new TableRow($entityWithValues->getId(), $attributeCode, $row);
+                yield new TableRow(
+                    $entityWithValues->getIdentifier(),
+                    $attributeCode,
+                    $value->getLocaleCode(),
+                    $value->getScopeCode(),
+                    $row
+                );
             }
         }
     }
@@ -130,9 +138,7 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
             $filters = $filters['data'];
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return $filters;
     }
 
     private function getNextTableRow(): ?TableRow
