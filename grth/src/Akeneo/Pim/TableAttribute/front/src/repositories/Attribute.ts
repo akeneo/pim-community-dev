@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {Attribute, AttributeCode} from '../models';
+import {Attribute, AttributeCode, AttributeType} from '../models';
 import {AttributeFetcher} from '../fetchers';
 
 const attributeCalls: {[attributeCode: string]: Promise<Attribute>} = {};
@@ -18,8 +18,17 @@ const getAttribute: (router: Router, attributeCode: AttributeCode) => Promise<At
   return attributeCache[attributeCode];
 };
 
+const findAllByTypes: (router: Router, attributeTypes: AttributeType[]) => Promise<Attribute[]> = async (
+  router,
+  attributeTypes
+) => {
+  // TODO Add Cache
+  return AttributeFetcher.fetchByTypes(router, attributeTypes)
+};
+
 const AttributeRepository = {
   find: getAttribute,
+  findAllByTypes: findAllByTypes,
 };
 
 export {AttributeRepository};

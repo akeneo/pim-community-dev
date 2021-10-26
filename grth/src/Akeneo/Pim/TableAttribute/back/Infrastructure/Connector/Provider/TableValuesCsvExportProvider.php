@@ -132,7 +132,9 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
             'withHeader' => true,
             'user_to_notify' => null,
             'is_user_authenticated' => false,
-            'table_attribute_code' => null,
+            'filters' => [
+                'table_attribute_code' => null,
+            ],
         ];
     }
 }

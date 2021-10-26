@@ -6,6 +6,9 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {AttributeSelector as InnerAttributeSelector} from "../jobs";
 import {AttributeCode} from "../models";
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const translate = require('oro/translator');
 
 type AttributeSelectorConfig = {
   aclResource: null;
@@ -27,6 +30,7 @@ class AttributeSelector extends BaseView {
   private fieldCode: string;
   private label: string;
   private readOnly: boolean;
+  private errorMessage: string | null = null;
 
   constructor(config: AttributeSelectorConfig) {
     super({...config, className: 'the classname'});
@@ -36,9 +40,23 @@ class AttributeSelector extends BaseView {
     this.readOnly = config.config.readonly;
   }
 
+  onBadRequest(data: {
+    response: any
+  }) {
+    this.errorMessage = propertyAccessor.accessProperty(data.response, this.fieldCode);
+    this.unmount();
+    this.render();
+  }
+
+  configure(): JQueryPromise<any> {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
+
+    return super.configure();
+  }
+
   render(): any {
     const data = this.getFormData();
-    const value = propertyAccessor.accessProperty(data, this.fieldCode, null);
+    const initialValue = propertyAccessor.accessProperty(data, this.fieldCode, null);
 
     const onChange = (attributeCode: AttributeCode | null) => {
       const data = this.getFormData();
@@ -46,23 +64,30 @@ class AttributeSelector extends BaseView {
     }
 
     ReactDOM.render(
-      <ThemeProvider theme={pimTheme}>
-        <InnerAttributeSelector
-          label={this.label}
-          readOnly={this.readOnly}
-          value={value}
-          onChange={onChange}
-        />
-      </ThemeProvider>,
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <InnerAttributeSelector
+            label={translate(this.label)}
+            readOnly={this.readOnly}
+            initialValue={initialValue}
+            onChange={onChange}
+            errorMessage={this.errorMessage}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
       this.el
     );
     return this;
   }
 
   remove(): any {
-    ReactDOM.unmountComponentAtNode(this.el);
+    this.unmount();
 
     return super.remove();
+  }
+
+  unmount(): any {
+    ReactDOM.unmountComponentAtNode(this.el);
   }
 }
 

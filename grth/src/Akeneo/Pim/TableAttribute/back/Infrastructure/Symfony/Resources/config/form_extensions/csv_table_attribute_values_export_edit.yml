@@ -103,7 +103,7 @@ extensions:
     position: 120
     targetZone: properties
     config:
-      fieldCode: configuration.table_attribute_code
+      fieldCode: configuration.filters.table_attribute_code
       label: pim_table_attribute.form.attribute.table_attribute
       readOnly: false
 
