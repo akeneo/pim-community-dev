@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes as GetExistingReferenceDataCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\InvalidReferenceDataException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManager;
@@ -39,8 +40,12 @@ final class GetExistingReferenceDataCodes implements GetExistingReferenceDataCod
             return [];
         }
 
-        $repository = $this->repositoryResolver->resolve($referenceDataName);
-        $tableName = $this->entityManager->getClassMetadata($repository->getClassName())->getTableName();
+        try {
+            $repository = $this->repositoryResolver->resolve($referenceDataName);
+            $tableName = $this->entityManager->getClassMetadata($repository->getClassName())->getTableName();
+        } catch (InvalidReferenceDataException $e) {
+            return [];
+        }
 
         $sql = sprintf('SELECT code FROM %s WHERE code IN (:codes) ORDER BY FIELD(code, :codes)', $tableName);
 

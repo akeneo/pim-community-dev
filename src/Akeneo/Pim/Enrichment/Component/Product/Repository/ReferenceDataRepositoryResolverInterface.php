@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
+use Akeneo\Pim\Structure\Component\ReferenceData\InvalidReferenceDataException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -13,5 +14,8 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface ReferenceDataRepositoryResolverInterface
 {
+    /**
+     * @throws InvalidReferenceDataException
+     */
     public function resolve(string $referenceDataType): ObjectRepository;
 }

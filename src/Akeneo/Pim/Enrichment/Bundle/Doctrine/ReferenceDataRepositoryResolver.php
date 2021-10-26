@@ -4,7 +4,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\InvalidReferenceDataException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -32,9 +34,17 @@ class ReferenceDataRepositoryResolver implements ReferenceDataRepositoryResolver
      */
     public function resolve(string $referenceDataType): ObjectRepository
     {
-        $referenceDataConf = $this->configurationRegistry->get($referenceDataType);
-        $referenceDataClass = $referenceDataConf->getClass();
+        if (!$this->configurationRegistry->has($referenceDataType)) {
+            throw new InvalidReferenceDataException(\sprintf('The "%s" reference data does not exist', $referenceDataType));
+        }
+        $referenceDataClass = $this->configurationRegistry->get($referenceDataType)->getClass();
 
-        return $this->doctrineRegistry->getRepository($referenceDataClass);
+        try {
+            return $this->doctrineRegistry->getRepository($referenceDataClass);
+        } catch (\ReflectionException|MappingException $e) {
+            throw new InvalidReferenceDataException(
+                \sprintf('Could not find repository for "%s" reference data', $referenceDataType)
+            );
+        }
     }
 }
