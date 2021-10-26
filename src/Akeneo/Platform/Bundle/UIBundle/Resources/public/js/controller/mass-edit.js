@@ -39,24 +39,11 @@ define([
         return 'actionName' === parameter.key;
       }).value.replace(new RegExp('_', 'g'), '-');
 
-      /*
-                 The `values` parameter can raise a 414 Too Long URI when we select more than 650 products in
-                 the grid. We use POST request to send the values to the backend to avoid these exceptions.
-                 */
-      const values = _.find(parameters, function (parameter) {
-        return 'values' === parameter.key;
-      }).value.split(',');
-      const queryWithoutValues = query.replace(/&values=[^&]+/, '');
-
       analytics.track('grid:mass-edit:clicked', {
         name: actionName,
       });
 
-      return $.ajax({
-        url: Routing.generate(this.config.route) + queryWithoutValues,
-        method: 'POST',
-        data: {values},
-      }).then(response => {
+      return $.post(Routing.generate(this.config.route), query).then(response => {
         const filters = response.filters;
         const itemsCount = response.itemsCount;
 

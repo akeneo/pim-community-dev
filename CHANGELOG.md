@@ -134,6 +134,7 @@
 - PIM-10090: Fix missing cache clearing during family variant changes computing
 - PIM-10048: fix memory leak in search product models by family variant query
 - PIM-10115: Connections domain blacklist should deny local ip
+- PIM-10129: Fix error 414 with a long filter list when launching a bulk action
 
 ## New features
 
