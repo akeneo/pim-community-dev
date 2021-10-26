@@ -64,20 +64,15 @@ class WebClientHelper
 
     public function assert403Forbidden(Response $response)
     {
-        $expectedForbiddenContent = <<<HTML
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>An Error Occurred: Forbidden</title>
-        <style>
-            body { background-color: #fff; color: #222; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
-            .container { margin: 30px; max-width: 600px; }
-            h1 { color: #dc3545; font-size: 24px; }
-            h2 { font-size: 18px; }
-        </style>
-    </head>
-    <body>
+        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
+        Assert::assertStringContainsString(
+            '<title>An Error Occurred: Forbidden</title>',
+            $response->getContent(),
+            'The title of the 403 forbidden response is not the same'
+        );
+
+        $expectedForbiddenBody = <<<HTML
+        <body>
         <div class="container">
             <h1>Oops! An Error Occurred</h1>
             <h2>The server returned a "403 Forbidden".</h2>
@@ -87,15 +82,13 @@ class WebClientHelper
                 We will fix it as soon as possible. Sorry for any inconvenience caused.
             </p>
         </div>
-    </body>
-</html>
+        </body>
+        HTML;
 
-HTML;
-        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
-        Assert::assertSame(
-            $expectedForbiddenContent,
-            ltrim($response->getContent()),
-            'The content of the 403 forbidden response is not the same'
+        Assert::assertStringContainsString(
+            $expectedForbiddenBody,
+            trim($response->getContent()),
+            'The body of the 403 forbidden response is not the same'
         );
     }
 
