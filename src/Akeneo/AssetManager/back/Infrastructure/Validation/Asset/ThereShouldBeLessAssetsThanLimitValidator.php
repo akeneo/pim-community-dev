@@ -80,7 +80,7 @@ class ThereShouldBeLessAssetsThanLimitValidator extends ConstraintValidator
         if ($total >= $this->assetsLimit) {
             $this->context->buildViolation(ThereShouldBeLessAssetsThanLimit::ERROR_MESSAGE)
                 ->setParameter('%asset_label%', current($command->labels))
-                ->setParameter('%limit%', $this->assetsLimit)
+                ->setParameter('%limit%', (string)$this->assetsLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

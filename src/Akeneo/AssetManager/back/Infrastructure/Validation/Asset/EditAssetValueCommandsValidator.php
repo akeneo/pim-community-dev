@@ -47,13 +47,15 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
         foreach ($editAssetValueCommands as $editValueCommand) {
             $violations = $this->validator->validate($editValueCommand);
             foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
+                $builder = $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath(sprintf('values.%s', $violation->getPropertyPath()))
                     ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->setInvalidValue($editValueCommand)
-                    ->addViolation();
+                    ->setInvalidValue($editValueCommand);
+                if ($violation->getPlural()) {
+                    $builder->setPlural((int)$violation->getPlural());
+                }
+                $builder->addViolation();
             }
         }
     }

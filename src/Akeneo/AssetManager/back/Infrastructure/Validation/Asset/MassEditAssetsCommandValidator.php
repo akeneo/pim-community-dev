@@ -48,12 +48,14 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
         foreach ($massEditAssetsCommand->editValueCommands as $id => $command) {
             $violations = $this->validator->validate($command);
             foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
+                $builder = $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath(sprintf('updaters.%s', $id))
-                    ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->addViolation();
+                    ->setCode($violation->getCode());
+                if ($violation->getPlural()) {
+                    $builder->setPlural((int)$violation->getPlural());
+                }
+                $builder->addViolation();
             }
         }
     }

@@ -77,7 +77,7 @@ class ThereShouldBeLessAssetFamilyThanLimitValidator extends ConstraintValidator
         if ($total >= $this->assetFamilyLimit) {
             $this->context->buildViolation(ThereShouldBeLessAssetFamilyThanLimit::ERROR_MESSAGE)
                 ->setParameter('%asset_family_identifier%', $command->identifier)
-                ->setParameter('%limit%', $this->assetFamilyLimit)
+                ->setParameter('%limit%', (string) $this->assetFamilyLimit)
                 ->atPath('labels')
                 ->addViolation();
         }
