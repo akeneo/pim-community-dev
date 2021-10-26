@@ -24,26 +24,26 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
-    pim_table_attribute.job.csv_values_export:
+    pim_table_attribute.job.csv_product_table_values_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'csv_table_attribute_values_export'
+            - 'csv_product_table_values_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_table_attribute.step.csv_values_export'
+                - '@pim_table_attribute.step.csv_product_table_values_export'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
-    pim_table_attribute.job.xlsx_values_export:
+    pim_table_attribute.job.xlsx_product_table_values_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'xlsx_table_attribute_values_export'
+            - 'xlsx_product_table_values_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_table_attribute.step.xlsx_values_export'
+                - '@pim_table_attribute.step.xlsx_product_table_values_export'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -100,19 +100,19 @@ services:
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
-    pim_table_attribute.step.csv_values_export:
+    pim_table_attribute.step.csv_product_table_values_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader'
+            - '@pim_table_attribute.reader.database.product.table_values'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
             - '@pim_table_attribute.writer.select_option.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
-    pim_table_attribute.step.xlsx_values_export:
+    pim_table_attribute.step.xlsx_product_table_values_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -166,10 +166,15 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails'
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader:
+    pim_table_attribute.reader.database.product.table_values:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader
         arguments:
-            # TODO I'm not sure at all it will work
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
+
+    pim_table_attribute.reader.database.product_model.table_values:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_factory'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails:
         arguments:
