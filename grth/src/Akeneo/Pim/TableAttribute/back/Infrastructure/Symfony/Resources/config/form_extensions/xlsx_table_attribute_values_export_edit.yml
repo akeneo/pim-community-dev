@@ -97,6 +97,18 @@ extensions:
             label: pim_common.label
             readOnly: false
 
+    pim-job-instance-xlsx-table-attribute-values-export-edit-properties-attribute:
+        module: pim/table-attribute/attribute/attribute-selector
+        parent: pim-job-instance-xlsx-table-attribute-values-export-edit-properties
+        position: 120
+        targetZone: properties
+        config:
+            fieldCode: configuration.filters.table_attribute_code
+            label: pim_table_attribute.form.attribute.table_attribute
+            readOnly: false
+            required: true
+            types: ['pim_catalog_table']
+
     pim-job-instance-xlsx-table-attribute-values-export-edit-properties-file-path:
         module: pim/job/common/edit/field/file-path
         parent: pim-job-instance-xlsx-table-attribute-values-export-edit-global

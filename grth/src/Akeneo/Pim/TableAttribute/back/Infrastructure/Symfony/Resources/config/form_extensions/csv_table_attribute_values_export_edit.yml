@@ -106,6 +106,8 @@ extensions:
       fieldCode: configuration.filters.table_attribute_code
       label: pim_table_attribute.form.attribute.table_attribute
       readOnly: false
+      required: true
+      types: ['pim_catalog_table']
 
   pim-job-instance-csv-table-attribute-values-export-edit-properties-file-path:
     module: pim/job/common/edit/field/file-path

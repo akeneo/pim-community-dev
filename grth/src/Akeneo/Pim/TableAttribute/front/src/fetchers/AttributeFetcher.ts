@@ -8,8 +8,15 @@ const fetchAttribute = async (router: Router, attributeCode: AttributeCode): Pro
   return (await response.json()) as Attribute;
 };
 
-const fetchAttributesByTypes = async (router: Router, attributeTypes: AttributeType[]): Promise<Attribute[]> => {
-  const url = router.generate('pim_enrich_attribute_rest_index', {types: attributeTypes});
+// There are other available parameters, but they are not implemented for now.
+// @see vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Controller/InternalApi/AttributeController.php
+export type AttributeFetcherIndexParams = {
+  types?: AttributeType[];
+  search?: string;
+}
+
+const query = async (router: Router, params: AttributeFetcherIndexParams): Promise<Attribute[]> => {
+  const url = router.generate('pim_enrich_attribute_rest_index', params);
   const response = await fetch(url);
 
   return (await response.json()) as Attribute[];
@@ -17,7 +24,7 @@ const fetchAttributesByTypes = async (router: Router, attributeTypes: AttributeT
 
 const AttributeFetcher = {
   fetch: fetchAttribute,
-  fetchByTypes: fetchAttributesByTypes,
+  query: query,
 };
 
 export {AttributeFetcher};

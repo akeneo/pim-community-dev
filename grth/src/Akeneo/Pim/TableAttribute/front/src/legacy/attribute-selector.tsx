@@ -1,14 +1,15 @@
 import BaseView = require('pimui/js/view/base');
-const propertyAccessor = require('pim/common/property');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {AttributeSelector as InnerAttributeSelector} from "../jobs";
-import {AttributeCode} from "../models";
+import {AttributeCode, AttributeType} from "../models";
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const propertyAccessor = require('pim/common/property');
 
 type AttributeSelectorConfig = {
   aclResource: null;
@@ -16,7 +17,9 @@ type AttributeSelectorConfig = {
   config: {
     fieldCode: string;
     label: string;
-    readonly: boolean;
+    readOnly?: boolean;
+    required?: boolean;
+    types?: AttributeType[];
   };
   feature: null;
   loadedModule: any;
@@ -31,18 +34,20 @@ class AttributeSelector extends BaseView {
   private label: string;
   private readOnly: boolean;
   private errorMessage: string | null = null;
+  private required: boolean;
+  private types: string[] | undefined;
 
   constructor(config: AttributeSelectorConfig) {
     super({...config, className: 'the classname'});
 
     this.fieldCode = config.config.fieldCode;
     this.label = config.config.label;
-    this.readOnly = config.config.readonly;
+    this.readOnly = typeof config.config.readOnly === 'undefined' ? false : config.config.readOnly;
+    this.required = typeof config.config.required === 'undefined' ? false : config.config.required;
+    this.types = config.config.types;
   }
 
-  onBadRequest(data: {
-    response: any
-  }) {
+  onBadRequest(data: { response: any }) {
     this.errorMessage = propertyAccessor.accessProperty(data.response, this.fieldCode);
     this.unmount();
     this.render();
@@ -72,6 +77,8 @@ class AttributeSelector extends BaseView {
             initialValue={initialValue}
             onChange={onChange}
             errorMessage={this.errorMessage}
+            required={this.required}
+            types={this.types}
           />
         </ThemeProvider>
       </DependenciesProvider>,
