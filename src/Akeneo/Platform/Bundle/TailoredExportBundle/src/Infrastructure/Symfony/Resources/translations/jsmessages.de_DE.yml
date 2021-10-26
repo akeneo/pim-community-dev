@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Individueller Produktexport in XL
 batch_jobs.xlsx_tailored_product_model_export.label: Individueller Produktmodell-Export in XLSX
 batch_jobs.csv_tailored_product_export.label: Individueller Produktexport in CSV
 batch_jobs.csv_tailored_product_model_export.label: Individueller Produktmodell-Export in CSV
+pim_common:
+  quality_score: Qualitätspunktzahl
 akeneo.tailored_export:
   filters:
     completeness:
