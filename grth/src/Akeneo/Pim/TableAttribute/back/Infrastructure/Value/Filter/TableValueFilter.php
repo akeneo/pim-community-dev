@@ -56,7 +56,10 @@ final class TableValueFilter extends AbstractAttributeFilter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        if ($data !== []) {
+            $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        }
+
         $attributePath = \sprintf('table_values.%s', $attribute->getCode());
 
         $value = $data['value'] ?? null;

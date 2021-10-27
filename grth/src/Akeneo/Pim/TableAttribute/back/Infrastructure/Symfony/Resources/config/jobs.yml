@@ -108,8 +108,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
-            #TODO
-            - '@pim_connector.writer.file.csv'
+            - '@pim_table_attribute.writer.table_values.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -121,8 +120,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor'
-            #TODO
-            - '@pim_table_attribute.writer.select_option.file.xlsx'
+            - '@pim_table_attribute.writer.table_values.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -208,17 +206,41 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher'
 
+    pim_table_attribute.writer.table_values.file.csv:
+        class: Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_table_attribute.writer.file.table_values.flat_item_buffer_flusher'
+
+    pim_table_attribute.writer.table_values.file.xlsx:
+        class: Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_table_attribute.writer.file.table_values.flat_item_buffer_flusher'
+
     pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
         arguments:
             - '@pim_connector.writer.file.default.column_presenter'
             - '@pim_table_attribute.file.select_options.column_sorter'
 
+    pim_table_attribute.writer.file.table_values.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesColumnSorter'
+
     pim_table_attribute.file.select_options.column_sorter:
         class: '%pim_connector.writer.file.default.column_sorter.class%'
         arguments:
             - '@pim_connector.array_converter.field_splitter'
             - [ 'attribute', 'column', 'code' ]
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesColumnSorter:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption:
         arguments:
