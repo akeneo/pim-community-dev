@@ -301,7 +301,7 @@ jobs:
               find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
               find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
-              echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
+              echo "$(date +%F)1 << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
       - run:
           name: Set front package directories owner to circleci
           command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
@@ -319,13 +319,16 @@ jobs:
             key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
       - run:
           name: Set font package directories owner to docker
-          command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
+          command: sudo chown -R 1000:1000 ../project
       - run:
           name: Build front-packages
           command: make front-packages
       - run:
           name: Build Javascript
           command: make javascript-dev
+      - run:
+            name: Change owner on project dir after installing when there is no cache
+            command: sudo chmod -R 777 ../project ~/.cache ~/.composer
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project ~/.cache ~/.composer
