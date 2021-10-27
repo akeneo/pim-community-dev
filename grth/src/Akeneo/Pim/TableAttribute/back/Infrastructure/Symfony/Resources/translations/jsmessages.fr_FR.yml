@@ -135,7 +135,6 @@ pim_table_attribute:
       please_type: Veuillez saisir "{{ text }}"
       confirm_column_delete: Êtes-vous sûr(e) de vouloir supprimer cette colonne ?
       confirm_option_delete: Etes-vous sûr(e) de vouloir supprimer cette option ?
-      empty_title: Les options de votre tableau sont vides.
       empty_subtitle: La première étape est de définir vos colonnes.
       unique_title: Votre attribut tableau est presque prêt.
       unique_subtitle: Définissez au moins 2 colonnes pour commencer à utiliser votre tableau.
@@ -146,8 +145,6 @@ pim_table_attribute:
       limit_option_reached: Vous avez atteint la limite de {{ limit }} options.
       template_label: Sélectionnez le standard de votre tableau "{{ templateLabel }}"
       delete_column_helper: Lorsque vous supprimez cette colonne, toutes ses valeurs sont supprimées de tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
-      delete_first_option_helper: Lorsque vous supprimez cette option, la ligne entière sera supprimée pour tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
-      delete_other_option_helper: Lorsque vous supprimez cette option, la valeur de la cellule sera supprimée pour tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
       no_options_helper: Veuillez ajouter votre première option.
       no_options: Aucune option trouvée.
       please_try_again: Essayez de nouveau
