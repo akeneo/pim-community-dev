@@ -1,6 +1,6 @@
 import React from 'react';
-import {List} from './pages/list/List';
+import {JobExecutionList} from './pages/JobExecutionList';
 
-const ProcessTrackerApp = () => <List />;
+const ProcessTrackerApp = () => <JobExecutionList />;
 
 export {ProcessTrackerApp};

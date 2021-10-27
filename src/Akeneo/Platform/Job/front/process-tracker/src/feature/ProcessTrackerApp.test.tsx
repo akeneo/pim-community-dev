@@ -3,12 +3,12 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ProcessTrackerApp} from './ProcessTrackerApp';
 import {screen} from '@testing-library/react';
 
-jest.mock('./pages/list/List', () => ({
-  List: () => <>List</>,
+jest.mock('./pages/JobExecutionList', () => ({
+  JobExecutionList: () => <>JobExecutionList</>,
 }));
 
 test('it renders job list', () => {
   renderWithProviders(<ProcessTrackerApp />);
 
-  expect(screen.getByText('List')).toBeInTheDocument();
+  expect(screen.getByText('JobExecutionList')).toBeInTheDocument();
 });
