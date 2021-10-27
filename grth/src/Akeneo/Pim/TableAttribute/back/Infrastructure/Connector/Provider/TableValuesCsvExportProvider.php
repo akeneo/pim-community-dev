@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 final class TableValuesCsvExportProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    private $supportedJobNames = ['csv_product_table_values_export'];
+    private $supportedJobNames = ['csv_product_table_values_export', 'csv_product_model_table_values_export'];
 
     /**
      * {@inheritdoc}

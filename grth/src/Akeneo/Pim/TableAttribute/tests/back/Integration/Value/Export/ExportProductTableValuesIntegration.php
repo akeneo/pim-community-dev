@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Reader\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
-final class ExportTableValuesIntegration extends TestCase
+final class ExportProductTableValuesIntegration extends TestCase
 {
     private const CSV_EXPORT_JOB_CODE = 'csv_product_table_values_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_product_table_values_export';

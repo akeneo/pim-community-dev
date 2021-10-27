@@ -12,11 +12,19 @@ use Webmozart\Assert\Assert;
 
 class TableValuesProcessor implements ItemProcessorInterface
 {
+    private string $entityName;
+
+    public function __construct(string $entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function process($tableRow): array
     {
+        /** @var TableRow */
         Assert::isInstanceOf($tableRow, TableRow::class);
 
         $attribute = \implode('-', \array_filter([
@@ -26,7 +34,7 @@ class TableValuesProcessor implements ItemProcessorInterface
         ]));
 
         $data = [
-            'product' => $tableRow->entityId,
+            $this->entityName => $tableRow->entityId,
             'attribute' => $attribute,
         ];
         foreach ($tableRow->row as $columnId => $cell) {

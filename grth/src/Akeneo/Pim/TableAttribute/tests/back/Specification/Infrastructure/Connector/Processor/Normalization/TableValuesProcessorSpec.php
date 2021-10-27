@@ -19,6 +19,11 @@ use PhpSpec\ObjectBehavior;
 
 class TableValuesProcessorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('entity_name');
+    }
+
     function it_is_initializable()
     {
         $this->shouldImplement(ItemProcessorInterface::class);
@@ -41,7 +46,7 @@ class TableValuesProcessorSpec extends ObjectBehavior
 
         $this->process($tableRow)->shouldReturn(
             [
-                'product' => '1234',
+                'entity_name' => '1234',
                 'attribute' => 'nutrition-fr_FR-ecommerce',
                 'ingredient' => 'salt',
                 'quantity' => '10',

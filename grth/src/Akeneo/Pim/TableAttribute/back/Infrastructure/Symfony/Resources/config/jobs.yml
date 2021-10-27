@@ -48,6 +48,30 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
+    pim_table_attribute.job.csv_product_model_table_values_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_product_model_table_values_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_table_attribute.step.csv_product_model_table_values_export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_table_attribute.job.xlsx_product_model_table_values_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_product_model_table_values_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_table_attribute.step.xlsx_product_model_table_values_export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
     pim_table_attribute.job.csv_option_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -158,7 +182,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
+            - '@pim_table_attribute.processor.product_table_values'
             - '@pim_table_attribute.writer.table_values.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -170,7 +194,31 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
+            - '@pim_table_attribute.processor.product_table_values'
+            - '@pim_table_attribute.writer.table_values.file.xlsx'
+            - 1000
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_table_attribute.step.csv_product_model_table_values_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_table_attribute.reader.database.product_model.table_values'
+            - '@pim_table_attribute.processor.product_model_table_values'
+            - '@pim_table_attribute.writer.table_values.file.csv'
+            - 1000
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_table_attribute.step.xlsx_product_model_table_values_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_table_attribute.reader.database.product_model.table_values'
+            - '@pim_table_attribute.processor.product_model_table_values'
             - '@pim_table_attribute.writer.table_values.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -322,7 +370,17 @@ services:
     # processors
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor: ~
+    pim_table_attribute.processor.product_table_values:
+        class:
+            Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor
+        arguments:
+            - 'product'
+
+    pim_table_attribute.processor.product_model_table_values:
+        class:
+            Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor
+        arguments:
+            - 'product_model'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor:
         arguments:
