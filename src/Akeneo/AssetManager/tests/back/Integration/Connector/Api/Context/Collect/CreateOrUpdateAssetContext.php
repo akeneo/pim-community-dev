@@ -470,24 +470,6 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
-//    /**
-//     * @Then the PIM notifies the connector about an error indicating that it is not authorized to edit an asset
-//     */
-//    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatItISNotAuthorizedToEditAnAsset()
-//    {
-//        /**
-//         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-//         */
-//        $this->webClientHelper->assertJsonFromFile(
-//            $this->pimResponse,
-//            self::REQUEST_CONTRACT_DIR . 'forbidden_collect_assets.json'
-//        );
-//        Assert::assertTrue(
-//            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
-//            'Expected warning not found in the logs.'
-//        );
-//    }
-
     /**
      * @When the connector collects a asset whose data does not comply with the business rules
      */
@@ -729,19 +711,6 @@ class CreateOrUpdateAssetContext implements Context
             self::REQUEST_CONTRACT_DIR . 'collect_frontview_assets_with_unprocessable_assets.json'
         );
     }
-
-//    /**
-//     * @When the connector collects assets from the ERP without permission
-//     */
-//    public function theConnectorCollectsAssetsFromTheErpWithoutPermission()
-//    {
-//        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
-//        $client = $this->clientFactory->logIn('julia');
-//        $this->pimResponse = $this->webClientHelper->requestFromFile(
-//            $client,
-//            self::REQUEST_CONTRACT_DIR . 'forbidden_collect_assets.json'
-//        );
-//    }
 
     /**
      * @Then the PIM notifies the connector which assets have data that do not comply with the business rules and what are the errors
