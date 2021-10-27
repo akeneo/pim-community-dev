@@ -37,6 +37,7 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
                 'message' => $message,
                 'propertyPath' => $path,
                 'invalidValue' => $violation->getInvalidValue(),
+                'plural' => $violation->getPlural(),
             ];
         }
 
