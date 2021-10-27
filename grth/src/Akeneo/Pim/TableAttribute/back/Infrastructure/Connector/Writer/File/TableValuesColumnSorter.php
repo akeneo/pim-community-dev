@@ -29,7 +29,10 @@ class TableValuesColumnSorter implements ColumnSorterInterface
         $this->tableConfigurationRepository = $tableConfigurationRepository;
     }
 
-    public function sort(array $unsortedColumns, array $context = [])
+    /**
+     * {@inheritDoc}
+     */
+    public function sort(array $unsortedColumns, array $context = []): array
     {
         $mainColumns = [];
         $valuesColumns = [];

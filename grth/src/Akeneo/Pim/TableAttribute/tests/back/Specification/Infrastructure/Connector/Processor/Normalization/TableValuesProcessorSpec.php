@@ -35,7 +35,7 @@ class TableValuesProcessorSpec extends ObjectBehavior
             Row::fromNormalized([
                 ColumnIdGenerator::ingredient() => 'salt',
                 ColumnIdGenerator::quantity() => 10,
-                ColumnIdGenerator::isAllergenic() => true
+                ColumnIdGenerator::isAllergenic() => true,
             ])
         );
 

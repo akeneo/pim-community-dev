@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Webmozart\Assert\Assert;
 
 final class TableValuesReader implements ItemReaderInterface, TrackableItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
@@ -43,16 +44,16 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
         $filters = $this->getConfiguredFilters();
         $tableAttributeCode = $filters['table_attribute_code'];
 
-        // TODO Maybe there should be options ?
-        $this->results = $this->pqbFactory->create([])->addFilter($tableAttributeCode, Operators::IS_NOT_EMPTY, [])->execute();
+        $this->results = $this->pqbFactory->create([])->addFilter($tableAttributeCode, Operators::IS_NOT_EMPTY, [])
+            ->execute();
     }
 
     public function read(): ?TableRow
     {
         $filters = $this->getConfiguredFilters();
+        Assert::keyExists($filters, 'table_attribute_code');
         $tableAttributeCode = $filters['table_attribute_code'];
 
-        // itere les produits, pour chaque produit on itère sur les values, pour chaque values on itère sur les lignes
         if ($this->firstRead) {
             $this->currentEntity = $this->getNextResult();
             if (null !== $this->currentEntity) {
