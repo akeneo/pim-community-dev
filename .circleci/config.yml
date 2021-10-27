@@ -146,8 +146,8 @@ jobs:
                 find src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                 echo "$(date +%F)1 front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
           - run:
-              name: Set front package directories owner to circleci
-              command: sudo chown -R 1001:1001 ./
+              name: Set src and front package directories owner to circleci
+              command: sudo chown -R 1001:1001 .
           - restore_cache:
               name: Restore front package DSM cache
               key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
@@ -161,8 +161,8 @@ jobs:
               name: Restore micro frontend Process tracker cache
               key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
           - run:
-              name: Set font package directories owner to docker
-              command: sudo chown -R 1000:1000 front-packages
+              name: Set src and front package directories owner to docker
+              command: sudo chown -R 1000:1000 .
           - run:
               name: Build front-packages
               command: make front-packages
@@ -303,8 +303,8 @@ jobs:
               find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
               echo "$(date +%F)1 << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
       - run:
-          name: Set front package directories owner to circleci
-          command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
+          name: Set src and front package directories owner to circleci
+          command: sudo chown -R 1001:1001 .
       - restore_cache:
             name: Restore front package DSM cache
             key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
@@ -318,8 +318,8 @@ jobs:
             name: Restore micro frontend Process tracker cache
             key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
       - run:
-          name: Set font package directories owner to docker
-          command: sudo chown -R 1000:1000 ../project
+          name: Set front package directories owner to docker
+          command: sudo chown -R 1000:1000 .
       - run:
           name: Build front-packages
           command: make front-packages
@@ -329,11 +329,8 @@ jobs:
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project ~/.cache ~/.composer
-      - run:
-            name: Change owner on project dir after installing when there is no cache
-            command: sudo chmod -R 777 ../project ~/.cache ~/.composer
       - save_cache:
-            name: Save fontend dependency cache
+            name: Save frontend dependency cache
             paths:
                 - ~/.cache
             key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
