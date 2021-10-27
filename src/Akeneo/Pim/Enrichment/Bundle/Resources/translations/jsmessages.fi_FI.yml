@@ -93,17 +93,17 @@ pim_enrich.entity.product:
       save_and_finish: Tallenna ja lopeta
     associations:
       title: Tuoteliitokset ({{ count }})
-      none_exist: Assosiaatiotyyppiä ei ole olemassa.
+      none_exist: Tuoteliitostyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
       number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
       number_of_quantified_associations: "{{ productCount }} tuotetta ja {{ productModelCount }} tuotemallia"
-      association_type_selector: Assosiaatiotyyppi
+      association_type_selector: Tuoteliitostyyppi
       target: Kohde
-      manage: Lisää {{ associationType }} assosiaatiot
+      manage: Lisää {{ associationType }} tuoteliitoksia
       manage_description: Valitse tuotteet, jotka haluat liittää tuotteeseen "{{ productLabel }}"
       mass_edit_description: Valitse tuotteet, jotka haluat liittää {{ productCount }} valittuun tuotteeseen
-      add_associations: Lisää assosiaatiot
+      add_associations: Lisää tuoteliitoksia
       variant_products: Varianttituotteet
       quantified:
         quantity: Määrä
@@ -398,8 +398,8 @@ pim_enrich.mass_edit.product:
     associate_to_product_and_product_model:
       label: Liitä tuotteita
       label_count: "{0}Liitä <span class=\"AknFullPage-title--highlight\">tuotteita</span> tuotteisiin tai tuotemalleihin|{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|]1, Inf[Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
-      description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
-      validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
+      description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen tuoteliitos niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
+      validate: Ole hyvä ja lisää tuoteliitos ennen kuin siirryt seuraavaan vaiheeseen
     change_parent_product_model:
       label: Vaihda ylätason tuotemalli
       label_count: "{0}Vaihda <span class=\"AknFullPage-title--highlight\">tuotteiden ylätason tuotemalli</span>|{1}Vaihda ylätason tuotemalli <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span>|]1,Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
@@ -454,8 +454,8 @@ pim_datagrid:
     other: Muut toiminnot
   empty_results:
     associated_product:
-      hint: Tuotteen assosiaatioita ei ole
-      subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
+      hint: Tuoteliitoksia ei ole
+      subHint: 'Klikkaa "Lisää tuoteliitoksia" lisätäksesi tuoteliitoksia tälle tuotteelle'
   filters:
     label: Suodattimet
     system: Järjestelmä

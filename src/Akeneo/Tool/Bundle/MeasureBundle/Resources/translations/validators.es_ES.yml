@@ -2,7 +2,7 @@ pim_measurements:
   validation:
     common:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         limit_reached: 'No puede crear la familia de medición "%measurement_family_code%" porque ha alcanzado el límite de %limit% familias de medición'
     measurement_family:
       standard_unit_code:

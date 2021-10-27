@@ -85,7 +85,7 @@ pim_enrich.entity.attribute_option:
       new_option_code: nueva_opcion
       no_options_msg: '¡Lo sentimos, no hay opciones!'
       add_option: Haga clic aquí para agregar uno
-      delete_confirmation_title_msg: '¿Eliminar "{{ optionCode }}" de sus opciones?'
+      delete_confirmation_title_msg: '¿Eliminar «{{ optionCode }}» de sus opciones?'
       delete_confirmation_subtitle_msg: '¿Está seguro de que desea eliminar esta opción? Esta acción no se puede deshacer.'
       search:
         placeholder: Buscar en etiqueta o código
@@ -118,7 +118,7 @@ pim_enrich.entity.association_type:
         message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
-  hint: <a href="{{link}}" target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
+  hint: <a href=«{{link}}» target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
   no_association_types:
     title: No tiene ningún tipo de asociación
     hint: Cree su primera
@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Editor de texto enriquecido habilitado
     default_value: Valor predeterminado
+    code:
+      must_be_filled: Debe rellenar el código
+      invalid: El código no es válido
+      not_available: Este código no está disponible
+      is_duplicate: Este código ya está en uso
   module:
     add_attribute:
       no_available_attributes: No hay más atributos a agregar
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: '¿Está seguro que desea eliminar este atributo?'
       product_count: '{0}0 productos|{1}1 producto|]1, Inf[{{ count }} productos'
       product_model_count: '{0}0 modelos de producto|{1}1 modelo de producto|]1, Inf[{{ count }} modelos de producto'
+      used: ']-Inf,1]actualmente tiene valores establecidos para este atributo, serán eliminados.|]1, Inf[tienen valores establecidos para este atributo, serán eliminados.'
       helper:
         content: Si necesita cambiar su tipo de atributo, para hacerlo localizable o definible, manteniendo el acceso a sus valores de atributo existentes.
+        link: consulte nuestro Centro de ayuda (para más información).
       type: Escriba «{{ attributeCode }}»
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
@@ -274,7 +281,7 @@ pim_enrich.mass_edit.family:
     confirm:
       label: Confirmación
     launched:
-      label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      label: La acción en masa «{{ operation }}» ha sido lanzada. Será notificado una vez finalizada.
   operation:
     set_requirements:
       label: Establecer los requisitos de atributos
