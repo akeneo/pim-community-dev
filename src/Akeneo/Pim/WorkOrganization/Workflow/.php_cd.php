@@ -20,6 +20,8 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Twig',
 
+        'Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
+
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
 
@@ -30,9 +32,6 @@ $rules = [
         // TIP-984: Workflow should not be linked to Channel
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-
-        // TIP-985: Workflow should not be linked to Currency
-        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
 
         // TIP-986: Workflow should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',

@@ -70,9 +70,6 @@ $rules = [
         'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
-        // used for validation
-        'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
-
         // TODO RUL-28: check if we can use another component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
@@ -122,7 +119,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValueInterface',
 
         // Channel coupling
-        'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
+        'Akeneo\Channel\Component\Query\PublicApi',
 
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];

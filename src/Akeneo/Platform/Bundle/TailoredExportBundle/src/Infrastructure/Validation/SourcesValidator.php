@@ -173,6 +173,7 @@ class SourcesValidator extends ConstraintValidator
                 $violation->getParameters()
             )
                 ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
+                ->setPlural($violation->getPlural())
                 ->addViolation();
         }
     }

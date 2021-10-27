@@ -21,6 +21,7 @@ const PriceCollectionConfigurator = ({source, validationErrors, onSourceChange}:
         }
       />
       <PriceCollectionSelector
+        channelReference={source.channel}
         selection={source.selection}
         validationErrors={filterErrors(validationErrors, '[selection]')}
         onSelectionChange={updatedPriceCollectionSelection =>

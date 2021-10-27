@@ -20,7 +20,7 @@ class PriceCollectionCurrencyLabelSelectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('-', 'fr_FR');
+        $this->beConstructedWith('-', 'fr_FR', ['USD']);
     }
 
     public function it_is_initializable()
@@ -36,5 +36,10 @@ class PriceCollectionCurrencyLabelSelectionSpec extends ObjectBehavior
     public function it_returns_the_locale_code()
     {
         $this->getLocale()->shouldReturn('fr_FR');
+    }
+
+    public function it_returns_the_currencies()
+    {
+        $this->getCurrencies()->shouldReturn(['USD']);
     }
 }

@@ -64,6 +64,7 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']
+      - '@pim_catalog.query.find_activated_currencies'
     tags:
       - { name: validator.constraint_validator }
     public: true

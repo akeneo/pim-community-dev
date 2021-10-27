@@ -55,6 +55,22 @@ class PriceCollectionValidatorTest extends AbstractValidationTest
                     'selection' => [
                         'type' => 'currency_code',
                         'separator' => ',',
+                        'currencies' => [],
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a valid price collection amount selection on a specific currency' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'attribute_code',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'currency_code',
+                        'separator' => ',',
+                        'currencies' => ['USD'],
                     ],
                     'operations' => [],
                 ],

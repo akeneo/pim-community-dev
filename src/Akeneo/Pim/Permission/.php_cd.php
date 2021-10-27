@@ -57,7 +57,6 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
 
         // TODO: we put everything related to permissions at the same place
         'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',

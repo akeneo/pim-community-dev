@@ -97,6 +97,7 @@ class ColumnsValidator extends ConstraintValidator
                 $violation->getParameters()
             )
                 ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
+                ->setPlural($violation->getPlural())
                 ->setInvalidValue($violation->getInvalidValue())
                 ->addViolation();
         }

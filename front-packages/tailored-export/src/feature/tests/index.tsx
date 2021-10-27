@@ -97,7 +97,7 @@ const channels: Channel[] = [
     ],
     category_tree: '',
     conversion_units: [],
-    currencies: [],
+    currencies: ['EUR', 'USD'],
     meta: {
       created: '',
       form: '',
@@ -124,7 +124,7 @@ const channels: Channel[] = [
     ],
     category_tree: '',
     conversion_units: [],
-    currencies: [],
+    currencies: ['USD', 'DKK'],
     meta: {
       created: '',
       form: '',
