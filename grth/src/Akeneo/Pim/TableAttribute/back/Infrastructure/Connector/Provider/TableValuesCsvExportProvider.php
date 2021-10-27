@@ -80,31 +80,11 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
                     'filters' => new Collection(
                         [
                             'fields'           => [
-                                // @TODO: keep or remove?
-//                                'structure' => [
-//                                    new FilterStructureLocale(['groups' => ['Default', 'DataFilters']]),
-//                                    new Collection(
-//                                        [
-//                                            'fields'             => [
-//                                                'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
-//                                                'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
-//                                                'attributes' => new Type(
-//                                                    [
-//                                                        'type'   => 'array',
-//                                                        'groups' => ['Default', 'DataFilters'],
-//                                                    ]
-//                                                )
-//                                            ],
-//                                            'allowMissingFields' => true,
-//                                        ]
-//                                    ),
-//                                ],
                                 'table_attribute_code' => [
                                     new Type('string'),
                                     new NotBlank(),
                                 ],
                             ],
-                            'allowExtraFields' => true,
                         ]
                     ),
                 ],

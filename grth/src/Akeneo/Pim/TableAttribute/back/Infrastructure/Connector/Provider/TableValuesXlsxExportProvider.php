@@ -63,31 +63,11 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
                     'filters' => new Collection(
                         [
                             'fields'           => [
-                                // @TODO: keep or remove?
-//                                'structure' => [
-//                                    new FilterStructureLocale(['groups' => ['Default', 'DataFilters']]),
-//                                    new Collection(
-//                                        [
-//                                            'fields'             => [
-//                                                'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
-//                                                'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
-//                                                'attributes' => new Type(
-//                                                    [
-//                                                        'type'   => 'array',
-//                                                        'groups' => ['Default', 'DataFilters'],
-//                                                    ]
-//                                                )
-//                                            ],
-//                                            'allowMissingFields' => true,
-//                                        ]
-//                                    ),
-//                                ],
                                 'table_attribute_code' => [
                                     new Type('string'),
                                     new NotBlank(),
                                 ],
                             ],
-                            'allowExtraFields' => true,
                         ]
                     ),
                 ],
@@ -114,7 +94,9 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
             'linesPerFile' => 10000,
             'user_to_notify' => null,
             'is_user_authenticated' => false,
-            'table_attribute_code' => null,
+            'filters' => [
+                'table_attribute_code' => null,
+            ],
         ];
     }
 }
