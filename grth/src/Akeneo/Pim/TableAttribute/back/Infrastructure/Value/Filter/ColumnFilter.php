@@ -359,6 +359,7 @@ class ColumnFilter implements ColumnTypeFilter
                         'filter' => [],
                     ],
                 ],
+                'ignore_unmapped' => true,
             ],
         ];
     }

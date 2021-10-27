@@ -23,6 +23,16 @@ final class EmptyFilterIntegration extends AbstractFilterIntegration
     }
 
     /** @test */
+    public function it_returns_empty_result_when_no_product_have_the_tabe_attribute(): void
+    {
+        // Reset index to remove dynamic mappings of previous tests
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
+        // Check there is no error (cf. CPM-404)
+        $this->assertFilter('nutrition', ['column' => 'nutrition_score'], []);
+    }
+
+    /** @test */
     public function it_filters_on_empty_operator(): void
     {
         $this->createProductWithNutrition('empty_product', [], 'family_with_table');
