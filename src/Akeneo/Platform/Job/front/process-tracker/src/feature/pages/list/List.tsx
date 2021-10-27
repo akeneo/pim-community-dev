@@ -21,7 +21,7 @@ const List = () => {
         <PageHeader.UserActions>
           <PimView
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-process-index-user-navigation"
+            viewName="pim-process-tracker-user-navigation"
           />
         </PageHeader.UserActions>
         <PageHeader.Title>
