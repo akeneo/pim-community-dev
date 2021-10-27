@@ -203,6 +203,12 @@ jobs:
               paths:
                 - src/Akeneo/Platform/Job/front/process-tracker
           - run:
+              name: Install database
+              command: |
+                docker load -i php-pim-image.tar
+                APP_ENV=test C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+                docker/wait_docker_up.sh
+          - run:
               name: Run back tests
               command: make job-ci-back
           - run:
