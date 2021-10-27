@@ -385,6 +385,9 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction

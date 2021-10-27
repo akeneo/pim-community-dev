@@ -54,6 +54,8 @@ class UploadMediaFileAction
 
     public function __invoke(Request $request): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $file = $request->files->has('file') ? $request->files->get('file') : null;
 
         if (null === $file) {
@@ -89,7 +91,7 @@ class UploadMediaFileAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_assets_edit';
+        $acl = 'pim_api_asset_edit';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

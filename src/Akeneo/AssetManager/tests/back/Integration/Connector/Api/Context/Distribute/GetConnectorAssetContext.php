@@ -46,6 +46,8 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -80,6 +82,8 @@ class GetConnectorAssetContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -88,7 +92,8 @@ class GetConnectorAssetContext implements Context
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
         InMemoryFilesystemProviderStub $filesystemProvider,
-        SecurityFacadeStub $securityFacade
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -98,6 +103,7 @@ class GetConnectorAssetContext implements Context
         $this->mediaFileRepository = $mediaFileRepository;
         $this->filesystemProvider = $filesystemProvider;
         $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -323,6 +329,24 @@ class GetConnectorAssetContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->imageNotFoundResponse,
             self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that it is not authorized to access an asset$/
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatItISNotAuthorizedToAccessAnAsset()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->mediaFileDownloadResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_asset_media_file_download.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 

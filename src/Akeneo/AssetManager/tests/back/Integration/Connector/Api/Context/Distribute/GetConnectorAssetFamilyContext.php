@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -49,16 +50,20 @@ class GetConnectorAssetFamilyContext implements Context
 
     private ?Response $existentAssetFamily = null;
 
+    private SecurityFacadeStub $securityFacade;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier $findConnectorAssetFamily,
-        AssetFamilyRepositoryInterface $assetFamilyRepository
+        AssetFamilyRepositoryInterface $assetFamilyRepository,
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorAssetFamily = $findConnectorAssetFamily;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -66,6 +71,7 @@ class GetConnectorAssetFamilyContext implements Context
      */
     public function theBrandAssetFamily(): void
     {
+        $this->theConnectorHasAllApiAcls();
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
         $imageInfo = new FileInfo();
         $imageInfo
@@ -149,5 +155,14 @@ class GetConnectorAssetFamilyContext implements Context
             $this->existentAssetFamily,
             self::REQUEST_CONTRACT_DIR . "successful_brand_asset_family.json"
         );
+    }
+
+    private function theConnectorHasAllApiAcls(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }

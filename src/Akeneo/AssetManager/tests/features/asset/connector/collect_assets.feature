@@ -103,7 +103,7 @@ Feature: Connection to DAM systems
     Then the PIM notifies the connector that the asset family does not exist
 
   @integration-back
-  Scenario: Fail to collect an asset if the the connector is not authorized
+  Scenario: Notify an error when collecting an asset without permission
     Given some assets of the Frontview asset family existing in the ERP but not in the PIM
-    When the connector collects assets from the ERP without permission
-    Then the PIM notifies the connector about an error indicating that it is not authorized
+    When the connector collects these assets from the ERP to synchronize them with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting these assets from the ERP to synchronize them with the PIM

@@ -1,15 +1,4 @@
-monolog:
-  handlers:
-    authentication:
-      type: service
-      id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
-      channels: ['security']
-    main:
-      type: stream
-      path: '%kernel.logs_dir%/%kernel.environment%.log'
-      level: debug
-      channels: ['!event']
-    console:
-      type:  console
-      channels: ['!event', '!doctrine']
-      include_stacktraces: true
+services:
+  monolog.logger.pim_api_acl.test:
+    decorates: monolog.logger.pim_api_acl
+    class: Psr\Log\Test\TestLogger

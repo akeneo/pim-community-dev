@@ -15,9 +15,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeAction
@@ -26,12 +29,24 @@ class GetConnectorAttributeAction
 
     private AssetFamilyExistsInterface $assetFamilyExists;
 
+    private SecurityFacade $securityFacade;
+
+    private TokenStorageInterface $tokenStorage;
+
+    private LoggerInterface $apiAclLogger;
+
     public function __construct(
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        AssetFamilyExistsInterface $assetFamilyExists
+        AssetFamilyExistsInterface $assetFamilyExists,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**

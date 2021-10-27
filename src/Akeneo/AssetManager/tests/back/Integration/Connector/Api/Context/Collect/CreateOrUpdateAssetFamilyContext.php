@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -57,6 +58,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAssetFamilyContext implements Context
@@ -86,6 +88,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
 
     private AttributeRepositoryInterface $attributeRepository;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -95,7 +101,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -106,6 +114,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
