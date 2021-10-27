@@ -9,10 +9,12 @@ namespace Akeneo\UserManagement\Component\Model;
  */
 class Role implements RoleInterface
 {
+    public const TYPE_DEFAULT = 'default';
+
     protected ?int $id = null;
     protected ?string $role = null;
     protected ?string $label = null;
-    protected ?string $type = null;
+    protected string $type = self::TYPE_DEFAULT;
 
     public function __construct(?string $role = null)
     {
@@ -59,12 +61,12 @@ class Role implements RoleInterface
         $this->label = $label;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(?string $type): void
+    public function setType(string $type): void
     {
         $this->type = $type;
     }

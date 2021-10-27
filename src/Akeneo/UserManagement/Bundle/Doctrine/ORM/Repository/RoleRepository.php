@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -43,7 +44,11 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     {
         return $this->createQueryBuilder('r')
             ->where('r.role <> :anon')
-            ->setParameter('anon', User::ROLE_ANONYMOUS);
+            ->andWhere('r.type = :defaultType')
+            ->setParameters([
+                'anon' => User::ROLE_ANONYMOUS,
+                'defaultType' => Role::TYPE_DEFAULT,
+            ]);
     }
 
     /**

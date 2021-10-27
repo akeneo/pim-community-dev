@@ -25,6 +25,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      * {
      *     'role': 'ROLE_ADMINISTRATOR',
      *     'label': 'Administrator',
+     *     'type': 'default',
      * }
      */
     public function update($role, array $data, array $options = []): self
@@ -60,6 +61,9 @@ class RoleUpdater implements ObjectUpdaterInterface
             case 'label':
                 $role->setLabel($data);
                 break;
+            case 'type':
+                $role->setType($data);
+                break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
         }
@@ -67,7 +71,9 @@ class RoleUpdater implements ObjectUpdaterInterface
 
     protected function checkDataType(string $field, $data): void
     {
-        if (\in_array($field, ['role', 'label']) && null !== $data && !\is_string($data)) {
+        if ((\in_array($field, ['role', 'label']) && null !== $data && !\is_string($data))
+            || ('type' === $field && !\is_string($data))
+        ) {
             throw InvalidPropertyTypeException::stringExpected($field, static::class, $data);
         }
     }
