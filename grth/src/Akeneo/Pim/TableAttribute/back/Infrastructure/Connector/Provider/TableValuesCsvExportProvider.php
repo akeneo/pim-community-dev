@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
