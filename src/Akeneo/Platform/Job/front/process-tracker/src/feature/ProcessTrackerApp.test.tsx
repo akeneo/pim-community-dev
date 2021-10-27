@@ -7,7 +7,7 @@ jest.mock('./pages/JobExecutionList', () => ({
   JobExecutionList: () => <>JobExecutionList</>,
 }));
 
-test('it renders job list', () => {
+test('it renders job execution list', () => {
   renderWithProviders(<ProcessTrackerApp />);
 
   expect(screen.getByText('JobExecutionList')).toBeInTheDocument();
