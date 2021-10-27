@@ -45,4 +45,29 @@ describe('RowSelector', () => {
     fireEvent.click(screen.getByText('[eggs]'));
     expect(handleChange).toBeCalledWith(ingredientsSelectOptions[2]);
   });
+
+  it('should remove current row', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={handleChange} />
+    );
+
+    expect(await screen.findByText('Pepper')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_common.clear_value'));
+    expect(handleChange).toBeCalledWith(undefined);
+  });
+
+  it('should select any row', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={handleChange} />
+    );
+
+    expect(await screen.findByText('Pepper')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+    });
+    fireEvent.click(screen.getByText('pim_table_attribute.datagrid.any_row'));
+    expect(handleChange).toBeCalledWith(null);
+  });
 });

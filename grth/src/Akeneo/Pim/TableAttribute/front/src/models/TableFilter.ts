@@ -35,7 +35,7 @@ export type PendingBackendTableFilterValue = {
 };
 
 export type PendingTableFilterValue = {
-  row?: SelectOption;
+  row?: SelectOption | null;
   column?: ColumnDefinition;
   operator?: FilterOperator;
   value?: FilterValue;
@@ -43,6 +43,7 @@ export type PendingTableFilterValue = {
 
 const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {
   return (
+    typeof filter.row !== 'undefined' &&
     typeof filter.column !== 'undefined' &&
     typeof filter.operator !== 'undefined' &&
     (['EMPTY', 'NOT EMPTY'].includes(filter.operator) ||

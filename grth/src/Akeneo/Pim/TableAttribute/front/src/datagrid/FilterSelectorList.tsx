@@ -75,7 +75,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
     updateFilter({...filter, operator, value: undefined});
   };
 
-  const handleRowChange = (row: SelectOption | undefined) => {
+  const handleRowChange = (row: SelectOption | undefined | null) => {
     updateFilter({...filter, row});
   };
 
@@ -85,8 +85,8 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
 
   return (
     <FilterSelectorListContainer inline={inline}>
-      <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={filter.column} />
       <RowSelector attribute={attribute} value={filter.row} onChange={handleRowChange} />
+      <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={filter.column} />
       <OperatorSelector
         dataType={filter.column?.data_type}
         value={filter.operator}

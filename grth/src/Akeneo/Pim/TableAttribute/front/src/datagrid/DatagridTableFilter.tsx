@@ -66,8 +66,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [filterValue, setFilterValue] = useState<PendingTableFilterValue>({});
-  const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
+  const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
   const isMounted = useIsMounted();
 
@@ -83,10 +82,13 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
 
   React.useEffect(() => {
-    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined') return;
+    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined' || optionsForFirstColumn === null)
+      return;
 
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.row);
+    const row =
+      optionsForFirstColumn.find(option => option.code === initialDataFilter.row) ||
+      (initialDataFilter.operator ? null : undefined);
     const pendingFilter = {
       row,
       column,
@@ -94,7 +96,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       operator: initialDataFilter.operator,
     };
     setFilterValue(pendingFilter);
-    setInitialFilter(pendingFilter);
   }, [optionsForFirstColumn, attribute]);
 
   const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
@@ -106,7 +107,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   });
 
   const handleValidate = () => {
-    if (isFilterValid(filterValue)) {
+    if (filterValue && isFilterValid(filterValue)) {
       close();
       onChange({
         row: filterValue.row?.code,
@@ -117,11 +118,21 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   };
 
+  const handleClose = () => {
+    if (!filterValue || !isFilterValid(filterValue)) {
+      close();
+      onChange({});
+      setFilterValue({});
+    } else {
+      handleValidate();
+    }
+  };
+
   let criteriaHint = translate('pim_common.all');
-  if (isFilterValid(filterValue) && attribute) {
+  if (filterValue && isFilterValid(filterValue) && attribute) {
     criteriaHint = '';
     criteriaHint +=
-      typeof filterValue.row === 'undefined'
+      typeof filterValue.row === 'undefined' || filterValue.row === null
         ? translate('pim_table_attribute.datagrid.any') + ' '
         : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
     criteriaHint +=
@@ -140,19 +151,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   }
 
-  const handleClose = () => {
-    if (!isFilterValid(filterValue)) {
-      setFilterValue({});
-      onChange({});
-      close();
-      return;
-    }
-    handleValidate();
-  };
-
   return (
     <Dropdown>
-      {isOpen && attribute && initialFilter && (
+      {isOpen && attribute && filterValue && (
         <Dropdown.Overlay onClose={handleClose}>
           <FilterContainer>
             <FilterSectionTitle title={label}>
@@ -162,7 +163,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               attribute={attribute}
               filterValuesMapping={filterValuesMapping}
               onChange={setFilterValue}
-              initialFilter={initialFilter}
+              initialFilter={filterValue}
             />
             <FilterButtonContainer>
               <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
