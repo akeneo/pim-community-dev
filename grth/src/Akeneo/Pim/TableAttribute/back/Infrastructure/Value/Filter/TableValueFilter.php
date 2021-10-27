@@ -57,6 +57,8 @@ final class TableValueFilter extends AbstractAttributeFilter
         }
 
         if ($data !== []) {
+            // If data is empty, we search on the entire table. In this case we allow to search
+            // for all locale and scope, even if the attribute is localizable/scopable
             $this->checkLocaleAndChannel($attribute, $locale, $channel);
         }
 
