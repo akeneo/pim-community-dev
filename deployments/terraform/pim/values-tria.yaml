@@ -84,6 +84,7 @@ free_trial:
   akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"
   akeneo_connect_api_client_base_uri: "https://connect.akeneo.com/"
   akeneo_portal_api_client_base_uri: "https://portal.akeneo.com/"
+  heap_id: "3348469633"
 
 elasticsearch:
   keystore: null
