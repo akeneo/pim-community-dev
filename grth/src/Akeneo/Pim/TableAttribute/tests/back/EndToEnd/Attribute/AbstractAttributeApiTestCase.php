@@ -14,11 +14,11 @@ namespace Akeneo\Test\Pim\TableAttribute\EndToEnd\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 abstract class AbstractAttributeApiTestCase extends ApiTestCase
 {
-    protected function createValidTableAttribute(Client $client)
+    protected function createValidTableAttribute(KernelBrowser $client): void
     {
         $data =
             <<<JSON
