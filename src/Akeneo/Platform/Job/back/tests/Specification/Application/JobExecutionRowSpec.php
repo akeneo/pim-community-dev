@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Domain\Model;
+namespace Specification\Akeneo\Platform\Job\Application;
 
-use Akeneo\Platform\Job\Domain\Model\JobItem;
+use Akeneo\Platform\Job\Application\JobExecutionRow;
 use PhpSpec\ObjectBehavior;
 
-class JobItemSpec extends ObjectBehavior
+class JobExecutionRowSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(JobItem::class);
+        $this->shouldBeAnInstanceOf(JobExecutionRow::class);
     }
 
     public function it_normalizes_itself()

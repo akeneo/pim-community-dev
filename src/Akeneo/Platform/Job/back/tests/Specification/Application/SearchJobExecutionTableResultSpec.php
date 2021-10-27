@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Job\Application;
 
-use Akeneo\Platform\Job\Application\SearchJobResult;
-use Akeneo\Platform\Job\Domain\Model\JobItem;
+use Akeneo\Platform\Job\Application\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecutionTableResult;
 use PhpSpec\ObjectBehavior;
 
-class SearchJobResultSpec extends ObjectBehavior
+class SearchJobExecutionTableResultSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
         $this->beConstructedWith([], 5, 10);
-        $this->shouldBeAnInstanceOf(SearchJobResult::class);
+        $this->shouldBeAnInstanceOf(SearchJobExecutionTableResult::class);
     }
 
     public function it_normalizes_itself()
     {
-        $jobItem = new JobItem();
-        $this->beConstructedWith([$jobItem], 1, 2);
+        $jobExecutionRow = new JobExecutionRow();
+        $this->beConstructedWith([$jobExecutionRow], 1, 2);
         $this->normalize()->shouldReturn([
             'items'         => [
                 [],

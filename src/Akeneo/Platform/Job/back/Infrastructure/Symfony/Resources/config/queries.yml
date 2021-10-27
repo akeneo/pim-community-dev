@@ -1,5 +1,5 @@
 services:
-    Akeneo\Platform\Job\Domain\Query\CountJobQueryInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\CountJobQuery
+    Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\CountJobExecutionQuery
         arguments:
             - '@database_connection'
