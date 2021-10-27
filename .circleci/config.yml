@@ -1933,43 +1933,42 @@ workflows:
           - build_srnt_dev:
                 requires:
                     - checkout
-#          - test_back_integration_bounded_contexts:
-#                requires:
-#                    - build_srnt_dev
-#          - test_back_integration_reference_entities:
-#                requires:
-#                    - build_srnt_dev
+          - test_back_integration_bounded_contexts:
+                requires:
+                    - build_srnt_dev
+          - test_back_integration_reference_entities:
+                requires:
+                    - build_srnt_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_srnt_dev
-#          - test_back_phpunit:
-#                requires:
-#                    - build_srnt_dev
+          - test_back_phpunit:
+                requires:
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
                     - build_srnt_dev
-#          - test_back_data_migrations:
-#                requires:
-#                    - build_srnt_dev
-#          - test_front_static_acceptance_and_integration:
-#                requires:
-#                    - build_srnt_dev
-#          - test_front_end_to_end:
-#                requires:
-#                    - build_srnt_dev
-#          - test_front_code_style:
-#                requires:
-#                    - build_srnt_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_srnt_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_srnt_dev
+          - test_front_end_to_end:
+                requires:
+                    - build_srnt_dev
+          - test_front_code_style:
+                requires:
+                    - build_srnt_dev
 
           - test_back_behat_legacy:
                 requires:
-                    - build_srnt_dev
-#                    - test_back_static_and_acceptance
-#                    - test_front_static_acceptance_and_integration
-#                    - test_front_code_style
-#                    - test_back_phpunit
-#                    - test_back_integration_bounded_contexts
-#                    - test_back_integration_reference_entities
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_front_code_style
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
 
           # Uncomment for next GA
 #          - test_database:
@@ -1993,7 +1992,7 @@ workflows:
                     - test_onboarder_bundle
                     # Uncomment for next GA
 #                    - test_database
-#                    - test_back_data_migrations
+                    - test_back_data_migrations
                     - test_grth
                     - test_tria
 
