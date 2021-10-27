@@ -35,6 +35,12 @@ class GetConnectorAttributeOptionsAction
 
     private AttributeSupportsOptions $attributeSupportsOptions;
 
+    private SecurityFacade $securityFacade;
+
+    private TokenStorageInterface $tokenStorage;
+
+    private LoggerInterface $apiAclLogger;
+
     public function __construct(
         FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
         AssetFamilyExistsInterface $assetFamilyExists,
@@ -48,6 +54,9 @@ class GetConnectorAttributeOptionsAction
         $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
         $this->attributeExists = $attributeExists;
         $this->attributeSupportsOptions = $attributeSupportsOptions;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -107,6 +116,9 @@ class GetConnectorAttributeOptionsAction
         $acl = 'pim_api_asset_family_list';
 
         if (!$this->securityFacade->isGranted($acl)) {
+            /**
+             * TODO CXP-922: throw instead of logging
+             */
             $token = $this->tokenStorage->getToken();
             if (null === $token) {
                 throw new \LogicException('An user must be authenticated if ACLs are required');

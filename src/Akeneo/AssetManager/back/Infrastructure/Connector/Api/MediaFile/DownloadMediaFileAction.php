@@ -90,6 +90,9 @@ class DownloadMediaFileAction
         $acl = 'pim_api_asset_list';
 
         if (!$this->securityFacade->isGranted($acl)) {
+            /**
+             * TODO CXP-922: throw instead of logging
+             */
             $token = $this->tokenStorage->getToken();
             if (null === $token) {
                 throw new \LogicException('An user must be authenticated if ACLs are required');
