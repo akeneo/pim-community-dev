@@ -220,6 +220,7 @@ pim_table_attribute:
         select_your_row: Select your row
         select_your_operator: Select your operator
         select_your_value: Select your value
+        any_row: Any row
 
 pim_enrich:
     entity:

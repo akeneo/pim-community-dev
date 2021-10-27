@@ -15,6 +15,37 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 });
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
+const openDropdown = async () => {
+  expect(await screen.findByText('Nutrition')).toBeInTheDocument();
+  act(() => {
+    fireEvent.click(screen.getByText('Nutrition'));
+  });
+};
+
+const selectRow = async (row: string) => {
+  act(() => {
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
+  });
+  expect(await screen.findByText(row)).toBeInTheDocument();
+  fireEvent.click(screen.getByText(row));
+};
+
+const selectColumn = (column: string) => {
+  act(() => {
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
+  });
+  expect(screen.getByText(column)).toBeInTheDocument();
+  fireEvent.click(screen.getByText(column));
+};
+
+const selectOperator = (operator: string) => {
+  act(() => {
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
+  });
+  expect(screen.getByText(`pim_common.operators.${operator}`)).toBeInTheDocument();
+  fireEvent.click(screen.getByText(`pim_common.operators.${operator}`));
+};
+
 describe('DatagridTableFilter', () => {
   it('should display a filter', async () => {
     renderWithProviders(
@@ -56,9 +87,7 @@ describe('DatagridTableFilter', () => {
     expect(await screen.findByText('Nutrition')).toBeInTheDocument();
     expect(await screen.findByTitle('Salt Quantity pim_common.operators.>= 10000')).toBeInTheDocument();
 
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
+    await openDropdown();
 
     expect(screen.getByTitle('Quantity')).toBeInTheDocument();
     expect(await screen.findByTitle('Salt')).toBeInTheDocument();
@@ -86,14 +115,12 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
+    await openDropdown();
 
     act(() => {
       fireEvent.click(screen.getByTestId('backdrop'));
     });
+
     expect(handleChange).toBeCalledWith({
       value: 10000,
       row: 'salt',
@@ -122,17 +149,10 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
+    await openDropdown();
 
     // Select operator to clear the value and make the filter invalid
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.>'));
+    selectOperator('>');
 
     act(() => {
       fireEvent.click(screen.getByTestId('backdrop'));
@@ -155,40 +175,15 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    // Open dropdown
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
-
-    // Select column
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-    });
-    expect(screen.getByText('Quantity')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Quantity'));
-
-    // Select row
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
-    });
-    expect(await screen.findByText('Pepper')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Pepper'));
-
-    // Select operator
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.>')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.>'));
-
-    // Fill value
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('Quantity');
+    await selectRow('Pepper');
+    selectOperator('>');
     fireEvent.change(screen.getByRole('spinbutton'), {target: {value: '4000'}});
-
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(screen.getByTitle('Pepper Quantity pim_common.operators.> 4000')).toBeInTheDocument();
-
     expect(handleChange).toBeCalledWith({
       column: 'quantity',
       operator: '>',
@@ -212,39 +207,20 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    // Open dropdown
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
-
-    // Select column
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-    });
-    expect(screen.getByText('Is allergenic')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Is allergenic'));
-
-    // Select operator
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.=')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.='));
-
-    // Select value
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('Is allergenic');
+    selectOperator('=');
     act(() => {
       fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
     });
     expect(screen.getByText('pim_common.yes')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_common.yes'));
-
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(
       screen.getByTitle('pim_table_attribute.datagrid.any Is allergenic pim_common.operators.= pim_common.yes')
     ).toBeInTheDocument();
-
     expect(handleChange).toBeCalledWith({
       column: 'is_allergenic',
       operator: '=',
@@ -267,35 +243,16 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    // Open dropdown
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
-
-    // Select column
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-    });
-    expect(screen.getByText('For 1 part')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('For 1 part'));
-
-    // Select operator
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.STARTS WITH')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.STARTS WITH'));
-
-    // Select value
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('For 1 part');
+    selectOperator('STARTS WITH');
     fireEvent.change(screen.getAllByRole('textbox')[3], {target: {value: 'foo'}});
-
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(
       screen.getByTitle('pim_table_attribute.datagrid.any For 1 part pim_common.operators.STARTS WITH "foo"')
     ).toBeInTheDocument();
-
     expect(handleChange).toBeCalledWith({
       column: 'part',
       operator: 'STARTS WITH',
@@ -318,26 +275,10 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    // Open dropdown
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
-
-    // Select column
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-    });
-    expect(screen.getByText('Is allergenic')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Is allergenic'));
-
-    // Select operator
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.EMPTY')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.EMPTY'));
-
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('Is allergenic');
+    selectOperator('EMPTY');
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(
@@ -365,27 +306,10 @@ describe('DatagridTableFilter', () => {
       />
     );
 
-    // Open dropdown
-    expect(await screen.findByText('Nutrition')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByText('Nutrition'));
-    });
-
-    // Select column
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-    });
-    expect(screen.getByText('Ingredients')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Ingredients'));
-
-    // Select operator
-    act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
-    });
-    expect(screen.getByText('pim_common.operators.IN')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_common.operators.IN'));
-
-    // Select value
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('Ingredients');
+    selectOperator('IN');
     act(() => {
       fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
     });
@@ -396,13 +320,11 @@ describe('DatagridTableFilter', () => {
     });
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Pepper'));
-
     fireEvent.click(screen.getByText('pim_common.update'));
 
     expect(
       await screen.findByTitle('pim_table_attribute.datagrid.any Ingredients pim_common.operators.IN Salt, Pepper')
     ).toBeInTheDocument();
-
     expect(handleChange).toBeCalledWith({
       column: 'ingredient',
       operator: 'IN',

@@ -6,11 +6,18 @@ import {useFetchOptions} from '../product';
 
 type RowSelectorProps = {
   attribute: TableAttribute;
-  onChange: (option: SelectOption | undefined) => void;
-  value?: SelectOption;
+  onChange: (option: SelectOption | undefined | null) => void;
+  /**
+   * If value is:
+   * - undefined: the placeholder should be displayed
+   * - null: the user has selected 'Any row'
+   * - a SelectOption: the user has selected a row
+   */
+  value?: SelectOption | null;
 };
 
 const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) => {
+  const ANY_OPTION_CODE = '[any option]';
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -18,12 +25,25 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
   const options = getOptionsFromColumnCode(attribute.table_configuration[0].code);
   const [page, setPage] = React.useState<number>(0);
   const [searchValue, setSearchValue] = React.useState<string>('');
-
-  const handleChange = (selectOptionCode: SelectOptionCode | null) => {
-    onChange((options || []).find(option => option.code === selectOptionCode));
+  const anyRowOption: SelectOption = {
+    code: ANY_OPTION_CODE,
+    labels: {
+      [catalogLocale]: translate('pim_table_attribute.datagrid.any_row'),
+    },
   };
 
-  const filteredOptions = (options || [])
+  const handleChange = (selectOptionCode: SelectOptionCode | null) => {
+    if (null === selectOptionCode) {
+      onChange(undefined);
+    } else if (ANY_OPTION_CODE === selectOptionCode) {
+      onChange(null);
+    } else {
+      onChange((options || []).find(option => option.code === selectOptionCode));
+    }
+  };
+
+  const filteredOptions = [anyRowOption]
+    .concat(options || [])
     .filter(option => {
       return (
         option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -39,7 +59,7 @@ const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) =
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
       placeholder={translate('pim_table_attribute.datagrid.select_your_row')}
-      value={value?.code || null}
+      value={typeof value === 'undefined' ? null : value === null ? ANY_OPTION_CODE : value.code}
       openLabel={translate('pim_common.open')}
       onNextPage={() => {
         setPage(page + 1);
