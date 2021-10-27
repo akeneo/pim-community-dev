@@ -18,5 +18,5 @@ Feature: Connection to e-commerce platforms and marketplaces
   @integration-back
   Scenario: Notify an error when downloading a media file of an asset family asset without permission
     Given the Kartell asset of the Brand asset family with a media file in an attribute value
-    When the connector requests to download the media file of this attribute value
-    Then the PIM notifies the connector about an error indicating that it is not authorized to access an asset
+    When the connector requests to download the media file of this attribute value without permission
+    Then the PIM notifies the connector about missing permissions for downloading the media file of this attribute value

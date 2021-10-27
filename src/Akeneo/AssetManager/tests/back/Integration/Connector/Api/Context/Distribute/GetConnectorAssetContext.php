@@ -107,6 +107,18 @@ class GetConnectorAssetContext implements Context
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
+    }
+
+    /**
      * @Given /^the ([\S]+) asset for the ([\S]+) asset family$/
      */
     public function theAssetForTheAssetFamily(string $referenceCode, string $assetFamilyIdentifier): void
@@ -333,19 +345,38 @@ class GetConnectorAssetContext implements Context
     }
 
     /**
-     * @Then /^the PIM notifies the connector about an error indicating that it is not authorized to access an asset$/
+     * @When the connector requests to download the media file of this attribute value without permission
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatItISNotAuthorizedToAccessAnAsset()
+    public function theConnectorRequestsToDownloadTheMediaFileOfThisAttributeValueWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_list', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        ob_start();
+        $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
+        );
+
+        $this->downloadedMediaFile = ob_get_clean();
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for downloading the media file of this attribute value
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForDownloadingTheMediaFileOfThisAttributeValue()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion
          */
-        $this->webClientHelper->assertJsonFromFile(
+        $this->webClientHelper->assertStreamedResponseFromFile(
             $this->mediaFileDownloadResponse,
-            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_asset_media_file_download.json'
+            $this->downloadedMediaFile,
+            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
         );
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_list"'),
             'Expected warning not found in the logs.'
         );
     }
@@ -388,14 +419,5 @@ class GetConnectorAssetContext implements Context
         );
 
         $this->attributeRepository->create($image);
-    }
-
-    private function theConnectorHasFullPermission(): void
-    {
-        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }
