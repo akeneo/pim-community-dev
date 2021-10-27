@@ -1,17 +1,18 @@
 import React from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate, useRoute, PimView, PageHeader} from '@akeneo-pim-community/shared';
-import {useJobSearchResult} from '../../hooks/useJobSearchResult';
+import {useJobExecutionSearchTableResult} from '../hooks/useJobExecutionSearchTableResult';
 
-const List = () => {
+const JobExecutionList = () => {
   const translate = useTranslate();
-  const jobSearchResult = useJobSearchResult();
+  const jobExecutionSearchTableResult = useJobExecutionSearchTableResult();
   const activityHref = useRoute('pim_dashboard_index');
-  const jobMatchesCount = jobSearchResult === null ? 0 : jobSearchResult.matches_count;
+  const jobExecutionMatchesCount =
+    jobExecutionSearchTableResult === null ? 0 : jobExecutionSearchTableResult.matches_count;
 
   return (
     <>
-      <PageHeader showPlaceholder={null === jobSearchResult}>
+      <PageHeader showPlaceholder={null === jobExecutionSearchTableResult}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step href={`#${activityHref}`}>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
@@ -27,8 +28,8 @@ const List = () => {
         <PageHeader.Title>
           {translate(
             'pim_enrich.entity.job_execution.page_title.index',
-            {count: jobMatchesCount.toString()},
-            jobMatchesCount
+            {count: jobExecutionMatchesCount.toString()},
+            jobExecutionMatchesCount
           )}
         </PageHeader.Title>
       </PageHeader>
@@ -36,4 +37,4 @@ const List = () => {
   );
 };
 
-export {List};
+export {JobExecutionList};

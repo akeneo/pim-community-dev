@@ -1,15 +1,15 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
-import {List} from './List';
-import {JobSearchResult} from '../../models/JobSearchResult';
+import {JobExecutionList} from './JobExecutionList';
+import {JobExecutionSearchTableResult} from '../models/JobExecutionSearchTableResult';
 
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
 }));
 
-jest.mock('../../hooks/useJobSearchResult', () => ({
-  useJobSearchResult: (): JobSearchResult => ({
+jest.mock('../hooks/useJobExecutionSearchTableResult', () => ({
+  useJobExecutionSearchTableResult: (): JobExecutionSearchTableResult => ({
     items: [],
     matches_count: 0,
     total_count: 0,
@@ -17,14 +17,14 @@ jest.mock('../../hooks/useJobSearchResult', () => ({
 }));
 
 test('it renders breadcrumb', () => {
-  renderWithProviders(<List />);
+  renderWithProviders(<JobExecutionList />);
 
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
 });
 
 test('it renders matches job count in page title', () => {
-  renderWithProviders(<List />);
+  renderWithProviders(<JobExecutionList />);
 
   expect(screen.getByText('pim_enrich.entity.job_execution.page_title.index')).toBeInTheDocument();
 });

@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
-import {JobSearchResult} from '../models/JobSearchResult';
+import {JobExecutionSearchTableResult} from '../models/JobExecutionSearchTableResult';
 import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
 
-const useJobSearchResult = (): JobSearchResult | null => {
-  const [searchJobResult, setSearchJobResult] = useState<JobSearchResult | null>(null);
+const useJobExecutionSearchTableResult = (): JobExecutionSearchTableResult | null => {
+  const [searchJobResult, setSearchJobResult] = useState<JobExecutionSearchTableResult | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
 
@@ -26,4 +26,4 @@ const useJobSearchResult = (): JobSearchResult | null => {
   return searchJobResult;
 };
 
-export {useJobSearchResult};
+export {useJobExecutionSearchTableResult};
