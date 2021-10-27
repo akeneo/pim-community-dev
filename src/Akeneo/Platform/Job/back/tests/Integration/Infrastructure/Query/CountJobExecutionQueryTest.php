@@ -10,7 +10,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 
-class CountJobQueryTest extends IntegrationTestCase
+class CountJobExecutionQueryTest extends IntegrationTestCase
 {
     private DoctrineJobRepository $jobExecutionRepository;
     private JobInstanceRepository $jobInstanceRepository;
@@ -25,7 +25,7 @@ class CountJobQueryTest extends IntegrationTestCase
     public function test_it_counts_job(): void
     {
         $this->loadJobExecutions();
-        $countJobQuery = $this->get('Akeneo\Platform\Job\Domain\Query\CountJobQueryInterface');
+        $countJobQuery = $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface');
         $this->assertEquals(1, $countJobQuery->all());
     }
 

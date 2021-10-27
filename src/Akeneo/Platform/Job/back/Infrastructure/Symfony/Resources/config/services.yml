@@ -1,4 +1,4 @@
 services:
-    Akeneo\Platform\Job\Application\SearchJob:
+    Akeneo\Platform\Job\Application\SearchJobExecution:
         arguments:
-            - '@Akeneo\Platform\Job\Domain\Query\CountJobQueryInterface'
+            - '@Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface'
