@@ -2,20 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 
 class AttributeColumnsResolverSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
-        CurrencyRepositoryInterface $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeValuesResolverInterface $valuesResolver
     ) {
-        $this->beConstructedWith($attributeRepository, $currencyRepository, $valuesResolver);
+        $this->beConstructedWith($attributeRepository, $findActivatedCurrencies, $valuesResolver);
     }
 
     function it_resolves_identifier_field($attributeRepository)
@@ -27,13 +27,13 @@ class AttributeColumnsResolverSpec extends ObjectBehavior
 
     function it_resolves_attributes_fields(
         $attributeRepository,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         $valuesResolver,
         AttributeInterface $sku,
         AttributeInterface $name
     ) {
         $attributeRepository->findAll()->willReturn([$sku, $name]);
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD', 'EUR']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD', 'EUR']);
 
         $valuesResolver->resolveEligibleValues([$sku, $name])
             ->willReturn(

@@ -293,6 +293,12 @@ class RootEndpointIntegration extends ApiTestCase
         "PATCH"
       ]
     },
+    "pim_api_product_model_delete": {
+      "route": "/api/rest/v1/product-models/{code}",
+      "methods": [
+        "DELETE"
+      ]
+    },
     "pim_api_category_list": {
       "route": "/api/rest/v1/categories",
       "methods": [
