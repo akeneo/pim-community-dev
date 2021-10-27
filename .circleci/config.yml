@@ -146,7 +146,7 @@ jobs:
                 find src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                 echo "$(date +%F)1 front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
           - run:
-              name: Set src and front package directories owner to circleci
+              name: Set directories owner to circleci
               command: sudo chown -R 1001:1001 .
           - restore_cache:
               name: Restore front package DSM cache
@@ -161,7 +161,7 @@ jobs:
               name: Restore micro frontend Process tracker cache
               key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
           - run:
-              name: Set src and front package directories owner to docker
+              name: Set directories owner to docker
               command: sudo chown -R 1000:1000 .
           - run:
               name: Build front-packages
@@ -203,11 +203,14 @@ jobs:
               paths:
                 - src/Akeneo/Platform/Job/front/process-tracker
           - run:
-              name: Install database
+              name: Start containers
               command: |
                 docker load -i php-pim-image.tar
-                APP_ENV=test C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+                APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
                 docker/wait_docker_up.sh
+          - run:
+              name: Install database
+              command: APP_ENV=test make database
           - run:
               name: Run back tests
               command: make job-ci-back
@@ -303,7 +306,7 @@ jobs:
               find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
               echo "$(date +%F)1 << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
       - run:
-          name: Set src and front package directories owner to circleci
+          name: Set directories owner to circleci
           command: sudo chown -R 1001:1001 .
       - restore_cache:
             name: Restore front package DSM cache
@@ -318,8 +321,8 @@ jobs:
             name: Restore micro frontend Process tracker cache
             key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
       - run:
-          name: Set front package directories owner to docker
-          command: sudo chown -R 1000:1000 .
+          name: Set directories owner to docker
+          command: sudo chown -R 1000:1000 ../project
       - run:
           name: Build front-packages
           command: make front-packages
