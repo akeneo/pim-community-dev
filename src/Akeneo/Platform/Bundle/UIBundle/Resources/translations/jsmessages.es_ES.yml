@@ -159,6 +159,7 @@ pim_common:
   before: Anterior
   by: por
   cancel: Cancelar
+  characters_left: ']-Inf, 1]{{ count }} carácter restante|]1, Inf[{{ count }} caracteres restantes'
   clear_value: Limpiar valor
   close: Cerrar
   code: Código
@@ -200,6 +201,7 @@ pim_common:
   permissions: Permisiones
   previous: Previo
   properties: Propiedades
+  quality_score: Puntuación de calidad
   remove: Eliminar
   required_label: (obligatorio)
   result_count: "{0}0 resultados|{1}1 resultado|]1, Inf[{{ itemsCount }} resultados"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: No contiene
     STARTS WITH: Comienza por
     ENDS WITH: Termina por
+    IN: En la lista
+    "NOT IN": No figura en la lista
   read_more: Leer más
   channel: Canal
   locale: Local
@@ -271,6 +275,8 @@ pim_enrich.entity.fallback:
       discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
       discard_changes_title: '¿Está seguro?'
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} trabajo|]1, Inf[{{ count }} trabajos"
   module:
     create:
       upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco

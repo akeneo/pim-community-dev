@@ -68,6 +68,7 @@ pim_common:
   product_models: Model produktu
   products: Produkty
   properties: Ustawienia
+  quality_score: Wynik jakości
   quantity: Ilość
   remove: Usuń
   save: Zapisz
