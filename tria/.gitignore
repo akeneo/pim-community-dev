@@ -8,6 +8,7 @@ public/cache/*
 node_modules/*
 var/*
 vendor/*
+coverage/*
 phpcs.xml
 phpspec.yml
 docker-compose.override.yml
