@@ -92,6 +92,7 @@ pim_asset_manager:
         not_main_media_attribute: '主要メディアとして設定可能なものは「%main_media_attribute%」ですが、「%attribute%」が入力されています。'
       media_link:
         protocol_not_allowed: 'このフィールドは有効なプロトコルで始まる必要があります。許可されているプロトコル: %allowed_protocols%。'
+        domain_not_allowed: 'この URL は許可されていません。'
   attribute:
     validation:
       options:

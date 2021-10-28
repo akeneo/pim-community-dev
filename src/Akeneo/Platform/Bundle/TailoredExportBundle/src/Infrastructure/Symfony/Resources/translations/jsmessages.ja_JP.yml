@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: カスタム商品を XLSX 形式
 batch_jobs.xlsx_tailored_product_model_export.label: カスタム商品モデルをXLSX形式でエクスポート
 batch_jobs.csv_tailored_product_export.label: カスタム商品をCSVでエクスポート
 batch_jobs.csv_tailored_product_model_export.label: カスタム商品モデルをCSVでエクスポート
+pim_common:
+  quality_score: 品質スコア
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: ロケールをいくつか選択
         remove: ロケールを削除
     quality_score:
+      score:
+        remove: 品質スコアを削除
       locales:
+        placeholder: ロケールをいくつか選択
         label: 品質スコアのロケールを定義する
+        remove: ロケールを削除
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
             channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
         measurement:
+          information: この属性では、値、ユニットコード、ユニットラベル、または値とユニットラベルのいずれかをエクスポートできます。
           value: 値
           unit_locale: ユニットロケール
           unit_code: ユニットコー​​ド
           unit_label: ユニットラベル
+          value_and_unit_label: 値とユニットラベル
         price:
           currency_code: 通貨コード
           currency_label: 通貨ラベル
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: Noの置換値
           edit_mapping: 置換値を編集
           modal:
+            records: レコードを管理
+            options: オプションを管理
+            subtitle: 置換
             no_result:
               title: この属性には値がありません
             empty_result:

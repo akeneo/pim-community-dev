@@ -1,0 +1,232 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: 平均栄養価
+      options:
+        energy: エネルギー
+        fat: 脂質
+        saturated_fat: 飽和脂肪酸
+        carbohydrate: 炭水化物
+        sugars: 糖類
+        protein: タンパク質
+        salt: 食塩
+    per_100g:
+      label: '100gあたり'
+    per_serving:
+      label: '一食あたり (x g)'
+    percentage_reference_intake:
+      label: '参照摂取量% (100gまたは一食あたり)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: 栄養成分表
+      options:
+        total_fat: 脂質 (g)
+        saturated_fat: 飽和脂肪酸 (g)
+        trans_fat: トランス脂肪酸 (g)
+        cholesterol: コレステロール (g)
+        sodium: ナトリウム (g)
+        total_carbohydrate: 炭水化物 (g)
+        dietary_fiber: 食物繊維 (g)
+        total_sugars: 糖類 (g)
+        included_added_sugars: 含まれる添加糖類 (g)
+        protein: タンパク質 (g)
+    amount_per_serving:
+      label: 一食あたりの量
+    percentage_daily_value:
+      label: '一日の摂取量%'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: 栄養
+      options:
+        energy: エネルギー
+        fat: 脂質
+        of_which_saturates: 飽和脂肪酸
+        carbohydrate: 炭水化物
+        of_which_sugars: 糖類
+        fibre: 食物繊維
+        protein: タンパク質
+        salt: 食塩
+    per_100g:
+      label: 100gあたり
+    percentage_reference_intake:
+      label: '参照摂取量%'
+    your_reference_intake:
+      label: '参照摂取量 (8400kJ/2000kcal)'
+  food_composition:
+    composition:
+      label: 成分
+      options:
+        wheat_flour: 小麦粉
+        butter: バター
+        water: 水分
+        sugar: 糖類
+    percentage:
+      label: '%'
+    allergen:
+      label: アレルゲン
+  clothing_composition:
+    composition:
+      label: 成分
+      options:
+        cotton: コットン
+        polyester: ポリエステル
+        elastane: エラスタン
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: 寸法
+      options:
+        length: 長さ (センチ)
+        width: 幅 (センチ)
+        height: 高さ (センチ)
+        weight: 重量 (キロ)
+    value:
+      label: 値
+  dimensions-imperial:
+    dimensions:
+      label: 寸法
+      options:
+        length: 長さ (インチ)
+        width: 幅 (インチ)
+        height: 高さ (インチ)
+        weight: 重量 (ポンド)
+    value:
+      label: 値
+  packaging-metric:
+    parcel:
+      label: 小包
+      options:
+        parcel1: 小包 1
+        parcel2: 小包 2
+        parcel3: 小包 3
+        parcel4: 小包 4
+    width:
+      label: 幅 (センチ)
+    length:
+      label: 長さ (センチ)
+    height:
+      label: 高さ (センチ)
+  packaging-imperial:
+    parcel:
+      label: 小包
+      options:
+        parcel1: 小包 1
+        parcel2: 小包 2
+        parcel3: 小包 3
+        parcel4: 小包 4
+    width:
+      label: 幅 (インチ)
+    length:
+      label: 長さ (インチ)
+    height:
+      label: 高さ (インチ)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: テーブル構造
+      table_attribute: テーブル属性
+      add_column: 新しい列を追加
+      select_type: タイプを選択
+      data_type: 列タイプ
+      labels: ラベルの翻訳
+      column_management: 列管理
+      please_type: '"{{ text }}" と入力してください'
+      confirm_column_delete: この列を削除してもよろしいですか？
+      confirm_option_delete: このオプションを削除してもよろしいですか？
+      empty_title: テーブル構造が空です。
+      empty_subtitle: 最初に、列を定義します。
+      unique_title: テーブル属性がほぼ準備できました
+      unique_subtitle: テーブルの使用を開始するには、少なくとも 2 つの列を定義します。
+      new_option_placeholder: 新規オプションラベルを入力
+      manage_options: オプションを管理
+      column_code: 列コー​​ド
+      properties_helper: テーブル属性を保存するには、テーブル構造と少なくとも 2 つの列を定義する必要があります
+      table_structure_helper_text: テーブル属性には少なくとも 2 つの列が必要です。最初の列は常に "選択" 列タイプです。最初の列を作成した後、オプションを追加する必要があります。オプションを追加するには、"オプションを管理" をクリックします。最大{{ limit }}個のオプションまで追加できます！その後、これらのオプションを製品テーブル行としてそれぞれ使用できるようになります。
+      table_structure_helper_link: この記事ではテーブル属性の詳細について学ぶことができます。
+      limit_option_reached: オプションの上限 {{ %limit% }} に達しました。
+      template_label: '"{{ templateLabel }}" テーブルのスタンダードを選択'
+      delete_column_helper: この列を削除すると、この列のすべての値が "{{ attributeLabel }}" テーブル属性を使用するすべての製品から削除されます。
+      delete_first_column_option_helper: このオプションを削除すると、"{{ attributeLabel }}" テーブル属性を使用するすべての製品の行全体が削除されます。
+      delete_other_column_option_helper: このオプションを削除すると、セル値が "{{ attributeLabel }}" テーブル属性を使用するすべての製品から削除されます。
+      no_options_helper: 最初のオプションを追加してください。
+      no_options: オプションが見つかりません
+      please_try_again: もう一度やり直してください
+      first_column_type_helper: テーブルの最初の列は常に選択の列タイプです。
+      discard_changes: このページから移動すると選択オプションに対する変更が失われます
+    product:
+      items_per_page: ページあたりのアイテム数
+      current_items: "{{ minItem }}-{{ maxItem }} / {{ itemCount }}"
+      current_page: "ページ {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "検索条件に合う行がありません！"
+      no_rows_title: "{{ attributeLabel }} テーブルが空です。"
+      no_rows_subtitle: 新しいプロパティを定義する行を追加
+      no_rows_subtitle_on_readonly: この属性を編集できるようにするには、属性設定ページに移動するか、PIM管理者に連絡してください。
+      no_add_options_title: 行を追加
+      no_add_options: '"{{ attributeLabel }}" オプションを管理'
+      no_add_options_unallowed: '"{{ attributeLabel }}" オプションを管理するには、PIM管理者に連絡してください'
+      no_add_options_link: こちら
+      no_edit_permission: 編集許可がありません
+      actions:
+        delete_row: この行を削除
+        clear_row: この行をクリア
+        move_first: 最初の位置に移動
+        move_last: 最後の位置に移動
+      order: 注文
+  properties:
+    data_type:
+      text: テキスト
+      number: 数値
+      boolean: はい/いいえ
+      select: 選択
+  validations:
+    column_code_must_be_filled: コードを入力する必要があります
+    column_data_type_must_be_filled: データタイプを入力する必要があります
+    invalid_column_code: 列コー​​ドには、文字、数字、アンダースコアのみを使用できます
+    invalid_code: コー​​ドには、文字、数字、アンダースコアのみを使用できます
+    duplicated_column_code: 各列に固有のコードが必要です。{{ duplicateCode }} はすでに使用されています
+    duplicated_select_code: 各コードに固有のコードが必要です
+    max_greater_than_min: 最大は最小より大きい必要があります
+    max_length: 最大文字数 (最大100文字)
+    min: 最小値
+    max: 最大値
+    decimals_allowed: 少数が使用できます
+    max_length_range: '{{ maximum }} 以下の最大文字数を定義してください'
+  templates:
+    choose_template: テンプレートを選択
+    choose_template_subtitle: これらのテンプレートは規制ではなく、例に過ぎません。属性構造を保存する前に編集できます。
+    empty_table: 空のテーブル
+    nutrition: 栄養
+    nutrition-unitedkingdom: 栄養 (英国)
+    nutrition-europe: 平均栄養価 (ヨーロッパ)
+    nutrition-unitedstates: 栄養成分表 (米国)
+    food_composition: 食品成分
+    clothing_composition: 衣類構成
+    dimensions: 製品寸法
+    dimensions-metric: 寸法 (メートル法)
+    dimensions-imperial: 寸法 (ヤードポンド法)
+    packaging: 包装寸法
+    packaging-metric: 包装寸法 (メートル法)
+    packaging-imperial: 包装寸法 (ヤードポンド法)
+  product_edit_form:
+    add_rows: 行を追加
+    search: 検索
+  datagrid:
+    placeholder: プレビューは利用できません。テーブル属性値にアクセスするには、製品ページを開いてください
+    any: すべて
+    select_your_column: 列を選択
+    select_your_row: 行を選択
+    select_your_operator: 演算子を選択
+    select_your_value: 値を選択
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: テーブル
+batch_jobs:
+  csv_table_attribute_options_export.label: テーブル属性選択オプションをCSV形式でエクスポート
+  xlsx_table_attribute_options_export.label: テーブル属性選択オプションをXLSX形式でエクスポート
+  csv_table_attribute_options_import.label: テーブル属性選択オプションをCSV形式でインポート
+  xlsx_table_attribute_options_import.label: テーブル属性選択オプションをXLSX形式でインポート
