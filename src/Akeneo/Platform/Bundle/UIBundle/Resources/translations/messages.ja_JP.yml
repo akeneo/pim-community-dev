@@ -68,6 +68,7 @@ pim_common:
   product_models: 商品モデル
   products: 商品
   properties: プロパティ
+  quality_score: 品質スコア
   quantity: 数量
   remove: 削除
   save: 保存
