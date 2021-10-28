@@ -13,7 +13,7 @@ import {showDataQualityInsightsAttributeToImproveAction} from '@akeneo-pim-commu
 import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator';
 import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 import SpellcheckProductValuesList from './SpellcheckProductValuesList';
-import {useCatalogContext, useGetSpellcheckSupportedLocales} from "../../../../infrastructure";
+import {useCatalogContext, useGetSpellcheckSupportedLocales} from '../../../../infrastructure';
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
