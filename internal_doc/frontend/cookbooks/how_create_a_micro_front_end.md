@@ -7,7 +7,7 @@ Before to start, you need to know the following things:
 - The name of your micro frontend ($MICRO_FRONTEND_NAME)
 
 ## Register you new micro frontend 
-First step is to register the new package as workspace of the PIM., we do this in order to mutualize node_modules.
+First step is to register the new package as workspace of the PIM, we do this in order to mutualize node_modules.
 
 To do this, you need to modify the following packages.json depending on where your micro frontend is located:
 
@@ -71,7 +71,7 @@ So you need to modify the package.json file of your new micro-frontend.
 ```
 
 Note:
-Replace akeneo-pim-community by akeneo-pim-enterprise if your micro frontend is in enterprise edition.
+Replace `akeneo-pim-community` by `akeneo-pim-enterprise` if your micro frontend is in enterprise edition.
 
 ## Add your test suite into the packages.json
 Now you need to create the following new script into the package.json of the community or enterprise edition (depending on where the micro frontend is located)
@@ -102,7 +102,7 @@ Then add restore cache step just after the other restore_cache micro frontend:
 And save in cache the micro frontend generated lib with the following lines:
 ```yaml
       - save_cache:
-            name: Save micro frontend Process Tracker cache
+            name: Save micro frontend $PROJECT_NAME cache
             key: micro-frontend-$PROJECT_NAME-{{ checksum "~/$PROJECT_NAME.hash" }}
             paths:
                 - $RELATIVE_PATH_TO_PROJECT_CONTAINING_MICRO_FRONTEND/$PROJECT_NAME
