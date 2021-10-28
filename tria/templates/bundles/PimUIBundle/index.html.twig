@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Loading...</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="favicon.ico" />
+
+        <link rel="stylesheet" href="{{asset('css/pim.css', 'frontend')}}"/>
+        <style>
+            #ad-blocker-overlay {
+                position: absolute;
+                z-index: 1200;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(17, 50, 77, 0.2);
+                border-radius: 0;
+            }
+            #ad-blocker-information {
+                position: absolute;
+                z-index: 1210;
+                top: calc(50% - 183px);
+                left: calc(50% - 300px);
+                width: 600px;
+                height: 366px;
+                background: rgb(255, 255, 255);
+                box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
+                border-radius: 0;
+                color: #11324d;
+                text-align: center;
+                padding: 20px 120px 0 120px;
+            }
+            #ad-blocker-information .ad-blocker-information-lock-icon {
+                width: 250px;
+            }
+            #ad-blocker-information #ad-blocker-information-close-icon {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                cursor: pointer;
+            }
+            #ad-blocker-information .ad-blocker-information-title {
+                font-size: 17px;
+                font-weight: 500;
+                height: 21px;
+                text-align: center;
+            }
+        </style>
+
+        {{ external_javascript_dependencies() }}
+        <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
+        <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
+    </head>
+    <body>
+        <div class="app">
+            <div class="AknDefault-progressContainer">
+                <h3>
+                    Loading ...
+                </h3>
+                <img src="{{ asset('bundles/pimui/images/main-loader.gif') }}"/>
+                {% if true == oro_config_value('pim_ui.loading_message_enabled') %}
+                <h4 class="AknDefault-progressContainer--loadingMessages">
+                    {{ random(oro_config_value('pim_ui.loading_messages')|split('\n')) }}
+                </h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="hash-loading-mask"></div>
+
+        <div id="ad-blocker-overlay"></div>
+        <div id="ad-blocker-information">
+            <img id="ad-blocker-information-close-icon" src="{{ asset('adblock/Icons_ close.svg', 'frontend') }}"/>
+            <div class="ad-blocker-information-title">It seems you are using an Adblocker.</div>
+            <img class="ad-blocker-information-lock-icon" src="{{ asset('adblock/akeneo-ico-free-trial.png', 'frontend') }}"/>
+            <div class="ad-blocker-information-content">If it's the case, please disable your Adblocker while discovering Akeneo Free Trial so you can benefit from our onboarding.</div>
+        </div>
+        <script type="text/javascript" src="{{ asset('adblock/ad-banner.js', 'frontend') }}"></script>
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
+            function removeAdblockAlert() {
+                document.body.removeChild(document.getElementById('ad-blocker-information'));
+                document.body.removeChild(document.getElementById('ad-blocker-overlay'));
+            }
+          if(sessionStorage.getItem('adblock-alert-is-visible') !== null || document.getElementById('nLbyuIxfUjHk')) {
+              removeAdblockAlert();
+          }
+          if(document.getElementById('ad-blocker-information-close-icon')) {
+              document.getElementById('ad-blocker-information-close-icon').addEventListener("click", (e) => {
+                  removeAdblockAlert();
+                  sessionStorage.setItem('adblock-alert-is-visible', false);
+              });
+          }
+        </script>
+    </body>
+</html>
