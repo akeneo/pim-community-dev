@@ -5,7 +5,6 @@
 - [Frontend developer toolkit](./frontend_developer_toolkit.md)
 
 ## Cookbooks
-
 - Backbone
     - [Creating a new Backbone page](./cookbooks/creating_backbone_page.md)
 - React
@@ -18,6 +17,8 @@
 - Backbone ⇄ React
     - [How to share data and events between the Backbone view, and the React component?](./cookbooks/sharing_data_between_backbone_and_react.md)
     - [Use React portals to share a context between multiple React instances](./cookbooks/working_with_react_portals_and_backbone.md)
+- Micro-frontend
+  - [How to create a micro-frontend](./cookbooks/how_create_a_micro_front_end.md)
 
 ## Annexes
 
