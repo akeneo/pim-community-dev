@@ -71,9 +71,11 @@ class RoleUpdater implements ObjectUpdaterInterface
 
     protected function checkDataType(string $field, $data): void
     {
-        if ((\in_array($field, ['role', 'label']) && null !== $data && !\is_string($data))
-            || ('type' === $field && !\is_string($data))
-        ) {
+        $isRoleDataTypeInvalid = $field === 'role' && null !== $data &&  !\is_string($data);
+        $isLabelDataTypeInvalid = $field === 'label' && null !== $data && !\is_string($data);
+        $isTypeDataTypeInvalid = $field === 'type' && !\is_string($data);
+
+        if ($isRoleDataTypeInvalid || $isTypeDataTypeInvalid || $isLabelDataTypeInvalid) {
             throw InvalidPropertyTypeException::stringExpected($field, static::class, $data);
         }
     }

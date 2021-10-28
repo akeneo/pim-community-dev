@@ -13,24 +13,27 @@ final class LoadDatagridPimRoleGridIntegration extends ControllerIntegrationTest
      */
     public function test_it_only_return_default_type_roles(): void
     {
+        $roleRepository = $this->get('pim_user.repository.role');
+        $roleSaver = $this->get('pim_user.saver.role');
+
         /** @var RoleInterface $roleRedactor */
         $roleRedactor = $this->get('pim_user.factory.role')->create();
         $roleRedactor->setRole('ROLE_REDACTOR');
         $roleRedactor->setLabel('Redactor');
 
-        $this->get('pim_user.saver.role')->save($roleRedactor);
+        $roleSaver->save($roleRedactor);
 
         /** @var RoleInterface $roleCatalogManager */
-        $roleCatalogManager = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_CATALOG_MANAGER');
+        $roleCatalogManager = $roleRepository->findOneByIdentifier('ROLE_CATALOG_MANAGER');
         $roleCatalogManager->setType('some_other_type');
 
-        $this->get('pim_user.saver.role')->save($roleCatalogManager);
+        $roleSaver->save($roleCatalogManager);
 
         /** @var RoleInterface $roleUser */
-        $roleUser = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_USER');
+        $roleUser = $roleRepository->findOneByIdentifier('ROLE_USER');
 
         /** @var RoleInterface $roleAdministrator */
-        $roleAdministrator = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $roleAdministrator = $roleRepository->findOneByIdentifier('ROLE_ADMINISTRATOR');
 
         $this->logIn('admin');
         $response = $this->callRoute(
