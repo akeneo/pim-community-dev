@@ -1,0 +1,232 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: 平均营养值
+      options:
+        energy: 能量
+        fat: 脂肪
+        saturated_fat: 饱和脂肪
+        carbohydrate: 碳水化合物
+        sugars: 糖
+        protein: 蛋白质
+        salt: 盐
+    per_100g:
+      label: '每 100g'
+    per_serving:
+      label: '每份（克）'
+    percentage_reference_intake:
+      label: '参考摄入量百分率（每 100g 或每份）'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: 营养成分表
+      options:
+        total_fat: 总脂肪 (g)
+        saturated_fat: 饱和脂肪 (g)
+        trans_fat: 反式脂肪 (g)
+        cholesterol: 胆固醇 (g)
+        sodium: 钠 (g)
+        total_carbohydrate: 总碳水化合物含量 (g)
+        dietary_fiber: 膳食纤维 (g)
+        total_sugars: 总糖 (g)
+        included_added_sugars: 包括添加糖 (g)
+        protein: 蛋白质 (g)
+    amount_per_serving:
+      label: 每份量
+    percentage_daily_value:
+      label: '日需百分率'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: 营养
+      options:
+        energy: 能量
+        fat: 脂肪
+        of_which_saturates: 饱和
+        carbohydrate: 碳水化合物
+        of_which_sugars: 含糖量
+        fibre: 纤维
+        protein: 蛋白质
+        salt: 盐
+    per_100g:
+      label: 每 100g
+    percentage_reference_intake:
+      label: '参考摄入量百分率'
+    your_reference_intake:
+      label: '您的参考摄入量 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: 成分
+      options:
+        wheat_flour: 小麦面粉
+        butter: 黄油
+        water: 水
+        sugar: 糖
+    percentage:
+      label: '%'
+    allergen:
+      label: 过敏原
+  clothing_composition:
+    composition:
+      label: 成分
+      options:
+        cotton: 棉花
+        polyester: 涤纶
+        elastane: 氨纶
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: 尺寸
+      options:
+        length: 长度 (cm)
+        width: 宽度 (cm)
+        height: 高度 (cm)
+        weight: 重量 (kg)
+    value:
+      label: 值
+  dimensions-imperial:
+    dimensions:
+      label: 尺寸
+      options:
+        length: 长度（英寸）
+        width: 宽度（英寸）
+        height: 高度（英寸）
+        weight: 重量（磅）
+    value:
+      label: 值
+  packaging-metric:
+    parcel:
+      label: 包裹
+      options:
+        parcel1: 包裹 1
+        parcel2: 包裹 2
+        parcel3: 包裹 3
+        parcel4: 包裹 4
+    width:
+      label: 宽度 (cm)
+    length:
+      label: 长度 (cm)
+    height:
+      label: 高度 (cm)
+  packaging-imperial:
+    parcel:
+      label: 包裹
+      options:
+        parcel1: 包裹 1
+        parcel2: 包裹 2
+        parcel3: 包裹 3
+        parcel4: 包裹 4
+    width:
+      label: 宽度（英寸）
+    length:
+      label: 长度（英寸）
+    height:
+      label: 高度（英寸）
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: 表结构
+      table_attribute: 表属性
+      add_column: 添加新列
+      select_type: 选择类型
+      data_type: 列类型
+      labels: 标签翻译
+      column_management: 列管理
+      please_type: 请输入"{{ text }}"
+      confirm_column_delete: 确实要删除此列吗?
+      confirm_option_delete: 确定要删除此选项吗？
+      empty_title: 您的表结构为空。
+      empty_subtitle: 第一步是定义列。
+      unique_title: 您的表属性已准备就绪。
+      unique_subtitle: 定义至少 2 列以开始使用您的表。
+      new_option_placeholder: 写下新的选项标签
+      manage_options: 管理选项
+      column_code: 列代码
+      properties_helper: 您必须先定义表结构和至少 2 列才能保存您的表属性
+      table_structure_helper_text: 表属性必须包含至少 2 列。第一列始终为“选择”列类型。创建第一列后，必须添加选项。为此，请点击“管理选项”并添加最多 {{ limit }} 个选项！这样，您就可以将每个选项用作产品表中的行。
+      table_structure_helper_link: 这篇文章可能有助于您了解更多关于表属性的信息。
+      limit_option_reached: 您已达到选项的上限数目 {{ %limit% }}。
+      template_label: 选择您的 "{{ templateLabel }}" 表的标准
+      delete_column_helper: 删除此列时，它的所有值会从使用 "{{ attributeLabel }}" 表属性的所有产品中移除。
+      delete_first_column_option_helper: 删除此选项时，整个行将从使用 "{{ attributeLabel }}" 表属性的所有产品中删除。
+      delete_other_column_option_helper: 删除此选项时，单元格的值将从使用 "{{ attributeLabel }}" 表属性的所有产品中移除。
+      no_options_helper: 请添加您的第一个选项。
+      no_options: 没有找到选项
+      please_try_again: 请再试一次
+      first_column_type_helper: 表的第一列始终为“选择”列类型。
+      discard_changes: 如果离开此页面，将会丢失对选择选项的更改。
+    product:
+      items_per_page: 每页项目数
+      current_items: "{{ minItem }}-{{ maxItem }}/{{ itemCount }}"
+      current_page: "第 {{ currentPage }} 页 / 共 {{ pageCount }} 页"
+      no_search_result: "抱歉，找不到与搜索相符的行！"
+      no_rows_title: "您的 {{ attributeLabel }} 表为空。"
+      no_rows_subtitle: 添加行以定义新属性
+      no_rows_subtitle_on_readonly: 要编辑此属性，请前往属性设置页面或联系您的 PIM 管理员。
+      no_add_options_title: 添加行
+      no_add_options: 管理您的"{{ attributeLabel }}"选项
+      no_add_options_unallowed: 联系您的 PIM 管理员来管理"{{ attributeLabel }}"选项
+      no_add_options_link: 此处
+      no_edit_permission: 没有编辑权限
+      actions:
+        delete_row: 删除此行
+        clear_row: 清除此行
+        move_first: 移动到第一个位置
+        move_last: 移动到最后一个位置
+      order: 订单
+  properties:
+    data_type:
+      text: 文本
+      number: 数字
+      boolean: 是/否
+      select: 选择
+  validations:
+    column_code_must_be_filled: 必须填写代码
+    column_data_type_must_be_filled: 必须填写数据类型
+    invalid_column_code: 列代码只能包含字母、数字和下划线
+    invalid_code: 代码只能包含字母、数字和下划线
+    duplicated_column_code: 每一列都要求唯一的代码。{{ duplicateCode }} 已使用
+    duplicated_select_code: 每个代码都要求唯一
+    max_greater_than_min: 最大值必须大于最小值
+    max_length: 最大字符数 (最多 100 个)
+    min: 最小值
+    max: 最大值
+    decimals_allowed: 允许小数值
+    max_length_range: 请在小于或等于 {{ maximum }} 的范围内定义最大字符数
+  templates:
+    choose_template: 选择模板
+    choose_template_subtitle: 这些模板只是示例，不是规章。您可以在保存属性结构之前对它们进行编辑。
+    empty_table: 空表
+    nutrition: 营养
+    nutrition-unitedkingdom: 营养（英国）
+    nutrition-europe: 平均营养值（欧洲）
+    nutrition-unitedstates: 营养成分表（美国）
+    food_composition: 食品成分
+    clothing_composition: 衣服成分
+    dimensions: 产品尺寸
+    dimensions-metric: 尺寸（公制系统）
+    dimensions-imperial: 尺寸（英制系统）
+    packaging: 包装尺寸
+    packaging-metric: 包装尺寸（公制系统）
+    packaging-imperial: 包装尺寸（英制系统）
+  product_edit_form:
+    add_rows: 添加行
+    search: 搜索
+  datagrid:
+    placeholder: 预览不可用，请打开产品页面访问表属性值
+    any: 任何 
+    select_your_column: 选择列
+    select_your_row: 选择行
+    select_your_operator: 选择运算符
+    select_your_value: 选择值
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: 表
+batch_jobs:
+  csv_table_attribute_options_export.label: 以 CSV 导出表属性选择选项
+  xlsx_table_attribute_options_export.label: 以 XLSX 导出表属性选择选项
+  csv_table_attribute_options_import.label: 以 CSV 导入表属性选择选项
+  xlsx_table_attribute_options_import.label: 以 XLSX 导入表属性选择选项

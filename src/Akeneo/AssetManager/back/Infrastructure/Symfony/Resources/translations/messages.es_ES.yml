@@ -26,7 +26,7 @@ akeneo_assetmanager:
       delete: Eliminar una opción
   jobs:
     asset_manager_execute_naming_convention:
-      error: 'La convención de nombres falló en el activo "{{ asset }}"'
+      error: 'La convención de nombres falló en el activo «{{ asset }}»'
     asset_manager_mass_delete:
       error: 'La eliminación en masa ha fallado en los activos «{{ assets }}» con el error «{{ error }}»'
     asset_manager_mass_edit:

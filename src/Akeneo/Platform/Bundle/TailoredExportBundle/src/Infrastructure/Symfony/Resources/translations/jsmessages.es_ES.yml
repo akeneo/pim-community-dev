@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Exportación de productos a medid
 batch_jobs.xlsx_tailored_product_model_export.label: Exportación de modelo de producto personalizado en XLSX
 batch_jobs.csv_tailored_product_export.label: Exportación de producto personalizado en CSV
 batch_jobs.csv_tailored_product_model_export.label: Exportación de modelo de producto personalizado en CSV
+pim_common:
+  quality_score: Puntuación de calidad
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: Seleccionar algunas configuraciones regionales
         remove: Eliminar la configuración regional
     quality_score:
+      score:
+        remove: Eliminar la puntuación de calidad
       locales:
+        placeholder: Seleccionar algunas configuraciones regionales
         label: Definir las configuraciones regionales para la puntuación de calidad
+        remove: Eliminar la configuración regional
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: Si el atributo usado como etiqueta tiene un valor por configuración regional, puede seleccionar una configuración regional específica.
             channel: Si el atributo utilizado como etiqueta tiene un valor por canal, puede seleccionar un canal específico.
         measurement:
+          information: Para este atributo, puede exportar el valor, el código de la unidad, la etiqueta de la unidad o el valor y la etiqueta de la unidad.
           value: Valor
           unit_locale: Configuración regional de unidad
           unit_code: Código de unidad
           unit_label: Etiqueta unitaria
+          value_and_unit_label: Etiqueta de valor y unidad
         price:
           currency_code: Código de moneda
           currency_label: Etiqueta de moneda
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: Valor de reemplazo de No
           edit_mapping: Editar valores de reemplazo
           modal:
+            records: Gestionar los registros
+            options: Gestionar las opciones
+            subtitle: Sustitución
             no_result:
               title: Lo sentimos, no hay ningún valor en este atributo
             empty_result:

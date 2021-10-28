@@ -92,6 +92,7 @@ pim_asset_manager:
         not_main_media_attribute: '主媒体所需的属性应为"%main_media_attribute%"，而给定的是"%attribute%"。'
       media_link:
         protocol_not_allowed: '此字段应以有效的协议开始。允许的协议为：%allowed_protocols%。'
+        domain_not_allowed: '不允许使用此 URL。'
   attribute:
     validation:
       options:

@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Dostosowany eksport produktów w 
 batch_jobs.xlsx_tailored_product_model_export.label: Dostosowany eksport modelu produktu w formacie XLSX
 batch_jobs.csv_tailored_product_export.label: Dostosowany eksport produktów w formacie CSV
 batch_jobs.csv_tailored_product_model_export.label: Dostosowany eksport modelu produktu w formacie CSV
+pim_common:
+  quality_score: Wynik jakości
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: Wybierz wersje językowe
         remove: Usuń wersję językową
     quality_score:
+      score:
+        remove: Usuń wynik jakości
       locales:
+        placeholder: Wybierz wersje językowe
         label: Zdefiniuj ustawienia regionalne uwzględniane w wyniku jakości
+        remove: Usuń wersję językową
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: Jeśli atrybut używany jako etykieta ma wartość na wersję językową, możesz wybrać określoną wersję językową.
             channel: Jeśli atrybut używany jako etykieta ma wartość na kanał, możesz wybrać określony kanał.
         measurement:
+          information: W przypadku tego atrybutu możesz wyeksportować wartość, kod jednostki, etykietę jednostkową lub wartość i etykietę jednostkową.
           value: Wartość
           unit_locale: Wersja językowa jednostki
           unit_code: Kod jednostki
           unit_label: Etykieta jednostki
+          value_and_unit_label: Wartość i etykieta jednostkowa
         price:
           currency_code: Kod waluty
           currency_label: Etykieta waluty
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: Brak wartości zastępczej
           edit_mapping: Edytuj wartości zastępcze
           modal:
+            records: Zarządzaj rekordami
+            options: Zarządzaj opcjami
+            subtitle: Zastąpienie
             no_result:
               title: Przepraszamy, w tym atrybucie nie ma żadnej wartości.
             empty_result:
