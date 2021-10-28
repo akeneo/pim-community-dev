@@ -23,10 +23,6 @@ class LanguageTranslator implements LanguageTranslatorInterface
             return $fallback;
         }
 
-        if (null === $translatedLanguage) {
-            return $fallback;
-        }
-
         try {
             $country = Countries::getName($country, $displayLocale);
         } catch (MissingResourceException $e) {

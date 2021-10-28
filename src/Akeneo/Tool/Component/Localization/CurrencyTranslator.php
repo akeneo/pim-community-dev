@@ -16,10 +16,6 @@ class CurrencyTranslator implements CurrencyTranslatorInterface
             return $fallback;
         }
 
-        if (null === $currencyTranslated) {
-            return $fallback;
-        }
-
         return $currencyTranslated;
     }
 }
