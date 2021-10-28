@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\InMemory;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
 
 /**
@@ -24,8 +24,7 @@ use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
  */
 final class InMemoryFindActivatedCurrencies implements FindActivatedCurrenciesInterface
 {
-    /** @var InMemoryChannelRepository */
-    private $channelRepository;
+    private InMemoryChannelRepository $channelRepository;
 
     public function __construct(InMemoryChannelRepository $channelRepository)
     {
