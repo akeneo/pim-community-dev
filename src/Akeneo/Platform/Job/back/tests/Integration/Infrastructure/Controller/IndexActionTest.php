@@ -29,11 +29,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-        Assert::assertSame(json_decode($response->getContent(), true)['total_count'], 0);
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
+        Assert::assertSame(json_decode($response->getContent(), true)['total_count'], 1);
     }
 }

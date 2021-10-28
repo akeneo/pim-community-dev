@@ -13,10 +13,7 @@ abstract class ControllerIntegrationTestCase extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient(['environment' => 'test', 'debug' => false]);
+        $this->client = static::createClient(['debug' => false]);
         $this->client->disableReboot();
-
-        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
-        $authenticator->createSystemUser();
     }
 }
