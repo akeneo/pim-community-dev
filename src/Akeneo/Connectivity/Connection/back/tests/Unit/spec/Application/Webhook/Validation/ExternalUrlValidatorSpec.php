@@ -174,4 +174,21 @@ class ExternalUrlValidatorSpec extends ObjectBehavior
 
         $this->validate($value, $constraint);
     }
+
+    public function it_denies_localhost_ip(
+        ExecutionContextInterface $context,
+        DnsLookupInterface $dnsLookup,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder,
+        ExternalUrl $constraint
+    ): void {
+        $this->initialize($context);
+        $value = 'https://127.0.0.1/foo';
+
+        $dnsLookup->ip('127.0.0.1')->willReturn('127.0.0.1');
+        $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setParameter(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($value, $constraint);
+    }
 }

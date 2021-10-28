@@ -62,6 +62,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
         $violation->getParameters()->willReturn([]);
         $violation->getInvalidValue()->willReturn('');
         $violation->getConstraint()->willReturn($constraint);
+        $violation->getPlural()->willReturn(null);
 
         $this->normalize($violation, 'internal_api', ['translate' => false])->shouldReturn([
             'messageTemplate' => 'identifier_attribute_already_exists',
@@ -69,6 +70,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
             'message' => 'An identifier attribute already exists.',
             'propertyPath' => 'foo',
             'invalidValue' => '',
+            'plural' => null
         ]);
     }
 }

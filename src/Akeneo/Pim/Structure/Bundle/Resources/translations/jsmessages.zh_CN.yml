@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: 富文本编辑器已启用
     default_value: 默认值
+    code:
+      must_be_filled: 必须填写代码
+      invalid: 代码无效
+      not_available: 此代码不可用
+      is_duplicate: 此代码已被使用
   module:
     add_attribute:
       no_available_attributes: 没有需要再添加的属性
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: 确定要删除此属性吗？
       product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
       product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
+      used: ']-Inf,1]此属性当前已设置了值，这些将被删除。|]1, Inf[此属性当前已设置了值，这些将被删除。'
       helper:
         content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
+        link: 查看我们的“帮助中心”（获取更多信息）。
       type: 请输入"{{ attributeCode }}"
       confirm_from_family: 确定要从品类中删除此属性吗？
       confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
