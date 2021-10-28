@@ -23,9 +23,9 @@ pim_reference_entity:
   reference_entity:
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código ya existe para esta entidad.'
-        limit_reached: 'No se puede crear la entidad de referencia "{{ %reference_entity_label% }}" ya ha alcanzado el límite de {{ %limit% }} entidades de referencia'
+        limit_reached: 'No se puede crear la entidad de referencia «{{ %reference_entity_label% }}» ya ha alcanzado el límite de {{ %limit% }} entidades de referencia'
     button:
       save: Guardar
       save_permission: Guardar
@@ -34,7 +34,7 @@ pim_reference_entity:
       title: Permisos de la entidad
     title: Entidades
     breadcrumb: Entidades de referencia
-    img: La imagen principal de la entidad de referencia denominada "{{ label }}"
+    img: La imagen principal de la entidad de referencia denominada «{{ label }}»
     tab:
       records: Registros
       attribute: Atributos
@@ -49,8 +49,8 @@ pim_reference_entity:
       title: Atributos del registro
       attribute:
         error:
-          render_list: 'Se ha producido un error durante el procesamiento del atributo "{ %attribute_code%}}"'
-          render_edit: 'Se ha producido un error durante la renderización de los campos de propiedades adicionales "{ %attribute_code%}}"'
+          render_list: 'Se ha producido un error durante el procesamiento del atributo "{ %attribute_code%}}»'
+          render_edit: 'Se ha producido un error durante la renderización de los campos de propiedades adicionales "{ %attribute_code%}}»'
     module:
       delete:
         button: Eliminar entidad
@@ -75,7 +75,7 @@ pim_reference_entity:
         code: Código (requerido)
       confirm: Guardar
     delete:
-      message: '¿Está seguro que desea eliminar la entidad "{{ referenceEntityLabel }}"?'
+      message: '¿Está seguro que desea eliminar la entidad «{{ referenceEntityLabel }}»?'
       title: Entidad de referencia
     notification:
       save:
@@ -104,12 +104,12 @@ pim_reference_entity:
       title: Registros
     record_selected: '{0} {{ count }} registro seleccionado|{1} {{ count }} registro seleccionado|]1,Inf] {{ count }} registros seleccionados'
     validation:
-      limit_reached: 'No puede crear el registro "{{ %record_label% }}" porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
+      limit_reached: 'No puede crear el registro «{{ %record_label% }}» porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código ya existe para esta entidad.'
       text:
-        incompatible_with_regular_expression: 'Por favor, introduzca un texto que satisfaga la expresión regular: "{{ %regular_expression% }}"'
+        incompatible_with_regular_expression: 'Por favor, introduzca un texto que satisfaga la expresión regular: «{{ %regular_expression% }}»'
         invalid_email: 'Por favor, introduzca una dirección de correo electrónico: xxxx@xx.xx'
         invalid_url: 'Por favor, introduzca una URL: http(s)://xxxx.XXX'
     no_data:
@@ -121,7 +121,7 @@ pim_reference_entity:
     selector:
       no_value: Haz clic aquí para seleccionar un registro.
     error:
-      value: Ups parece que el procesamiento del campo "{{ fieldName }}" ha fallado. Revise la consola de administración para más detalles.
+      value: Ups parece que el procesamiento del campo «{{ fieldName }}» ha fallado. Revise la consola de administración para más detalles.
     button:
       save: Guardar
       create: Añadir nuevo
@@ -136,7 +136,7 @@ pim_reference_entity:
         attribute: Atributo de producto
       title: Productos
       no_attribute:
-        title: No hay ningún atributo de producto vinculado a la entidad de referencia "{{ entityLabel }}"
+        title: No hay ningún atributo de producto vinculado a la entidad de referencia «{{ entityLabel }}»
         subtitle: "Para empezar a vincular productos a esta entidad de referencia puede crear una nueva: "
         link: Crear un nuevo atributo de producto
       not_enough_items:
@@ -146,7 +146,7 @@ pim_reference_entity:
           not_usable_in_grid: Para descubrir todos los productos enlazados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
         button: Ver todos los productos
       no_product:
-        title: No hay productos enlazados para el atributo de producto "{{ entityLabel }}"
+        title: No hay productos enlazados para el atributo de producto «{{ entityLabel }}»
         subtitle: "Empieza a vincular productos a este atributo para verlos aquí"
     enrich:
       title: Registro de atributos
@@ -164,7 +164,7 @@ pim_reference_entity:
         create_another: Crear otro registro
       confirm: Guardar
     delete:
-      message: '¿Está seguro que desea eliminar el registro "{{ recordLabel }}"? Si se encuentra asociado a productos o registros, los mismos serán eliminados.'
+      message: '¿Está seguro que desea eliminar el registro «{{ recordLabel }}»? Si se encuentra asociado a productos o registros, los mismos serán eliminados.'
       title: Registro
     grid:
       search: Buscar en la etiqueta, el código y el texto de los atributos
@@ -205,7 +205,7 @@ pim_reference_entity:
         success: Registro creado correctamente.
         fail: Se ha producido un error durante la creación del registro
       delete:
-        success: Registro "{{ code }}" eliminado con éxito.
+        success: Registro «{{ code }}» eliminado con éxito.
         fail: Se ha producido un error durante la eliminación del registro
       mass_delete:
         success: Se ha lanzado la acción en masa «Eliminar en masa». Se le notificará cuando se haya completado.
@@ -214,7 +214,7 @@ pim_reference_entity:
       label: Completo
   attribute:
     validation:
-      limit_reached: 'No puede crear el atributo "{{ %attribute_label% }}" porque a llegado al límite de atributos {{ %limit% }} para esta entidad de referencia'
+      limit_reached: 'No puede crear el atributo «{{ %attribute_label% }}» porque a llegado al límite de atributos {{ %limit% }} para esta entidad de referencia'
     default:
       code: Código
       label: Etiqueta
@@ -287,7 +287,7 @@ pim_reference_entity:
             url: URL
         decimals_allowed: Valores decimales permitidos
     delete:
-      message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
+      message: '¿Está seguro que desea eliminar el atributo «{{ attributeLabel }}»?'
       title: Atributo
     notification:
       list:
@@ -310,7 +310,7 @@ pim_reference_entity:
         title: Traducciones de etiqueta
 pim_enrich:
   confirmation:
-    discard_changes: 'Perderá los cambios realizados sobre "{{ entity }}" la entidad si abandona esta página.'
+    discard_changes: 'Perderá los cambios realizados sobre «{{ entity }}» la entidad si abandona esta página.'
   entity:
     attribute:
       property:
