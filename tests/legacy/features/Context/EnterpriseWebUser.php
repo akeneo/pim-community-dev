@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 use Context\WebUser as BaseWebUser;
 
 /**
@@ -181,29 +182,43 @@ class EnterpriseWebUser extends BaseWebUser
      * @Given /^I fill in this comment in the popin: "([^"]+)"$/
      * @Given /^I fill in this comment in the popin:$/
      */
-    public function iFillInThisCommentInThePopin($comment)
+    public function iFillInThisCommentInThePopin($comment): void
     {
         if ($comment instanceof PyStringNode) {
             $comment = $comment->getRaw();
         }
 
-        $this->spin(function () use ($comment) {
-            $formerField = $this->getCurrentPage()->find('css', '#modal-comment'); // Field from send for approval
-            $field = $this->getCurrentPage()->find('css', sprintf('textarea')); // Field from proposals grid
-            if (null !== $formerField) {
-                $formerField->setValue($comment);
-                $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
+        try {
+            $sendForProposalTextField = $this->spin(function () {
+                return $this->getCurrentPage()->find('css', '#modal-comment'); // Field from send for approval
+            }, 'Cannot find the proposal modal comment element');
+        } catch (TimeoutException $exception) {
+            $sendForProposalTextField = null;
+        }
 
-                return true;
-            } elseif (null !== $field) {
-                $field->setValue($comment);
-                $this->getSession()->executeScript("$('textarea').trigger('change');");
+        if (null !== $sendForProposalTextField) {
+            $sendForProposalTextField->setValue($comment);
+            $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
 
-                return true;
-            }
+            return;
+        }
 
-            return false;
-        }, 'Can not fill the comment in the popin');
+        try {
+            $proposalGridField = $this->spin(function () {
+                return $this->getCurrentPage()->find('css', 'textarea'); // Field from proposals grid
+            }, 'Cannot find the proposal grid field');
+        } catch (TimeoutException $exception) {
+            $proposalGridField = null;
+        }
+
+        if (null !== $proposalGridField) {
+            $proposalGridField->setValue($comment);
+            $this->getSession()->executeScript("$('textarea').trigger('change');");
+
+            return;
+        }
+
+        throw new \Exception('Cannot fill the comment in the popin');
     }
 
     /**
@@ -221,6 +236,7 @@ class EnterpriseWebUser extends BaseWebUser
             $button = $this->spin(function () use ($row, $partialAction) {
                 $row = $this->getElementByDataAttribute($row, '');
                 $buttons = $row->findAll('css', 'button');
+
                 return $partialAction === 'approve' ? $buttons[0] : $buttons[1];
             }, sprintf('Unable to the button to approve/reject'));
 
@@ -341,10 +357,10 @@ class EnterpriseWebUser extends BaseWebUser
      * @param array  $data    ['product' => '', 'attribute' => '', 'author' => '', 'scope' => '', 'locale' => '']
      * @param string $context ".proposal-changes" for example
      *
-     * @throws Spin\TimeoutException
+     * @return NodeElement
      * @throws \Exception
      *
-     * @return NodeElement
+     * @throws Spin\TimeoutException
      */
     protected function getElementByDataAttribute($data, $context)
     {
@@ -356,8 +372,14 @@ class EnterpriseWebUser extends BaseWebUser
             $data['author']
         );
 
-        $locator .= (isset($data['scope']) && '' !== $data['scope']) ? sprintf('[data-scope="%s"]', $data['scope']) : '';
-        $locator .= (isset($data['locale']) && '' !== $data['locale']) ? sprintf('[data-locale="%s"]', $data['locale']) : '';
+        $locator .= (isset($data['scope']) && '' !== $data['scope']) ? sprintf(
+            '[data-scope="%s"]',
+            $data['scope']
+        ) : '';
+        $locator .= (isset($data['locale']) && '' !== $data['locale']) ? sprintf(
+            '[data-locale="%s"]',
+            $data['locale']
+        ) : '';
 
         return $this->spin(function () use ($locator) {
             return $this->getCurrentPage()->find('css', $locator);
