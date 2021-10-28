@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: リッチテキストエディターは有効
     default_value: 既定値
+    code:
+      must_be_filled: コードを入力する必要があります
+      invalid: コードが無効です
+      not_available: このコードは使用できません
+      is_duplicate: このコードはすでに使用されています
   module:
     add_attribute:
       no_available_attributes: これ以上追加する属性はありません
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: この属性を削除してもよろしいですか？
       product_count: '{0}0 個の商品|{1}1 個の商品|]1, Inf[{{ count }} 個の商品'
       product_model_count: '{0}0 個の商品モデル|{1}1 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル'
+      used: ']-Inf,1]現在この属性に値が設定されていますが、削除されます。|]1, Inf[現在この属性に値が設定されていますが、削除されます。'
       helper:
         content: 既存の属性値へのアクセスを維持したまま、属性タイプを変更してローカライズ可または参照可にする必要がある場合は、
+        link: 詳細についてはヘルプセンターをご確認ください。
       type: '「{{ attributeCode }}」と入力してください'
       confirm_from_family: この属性をファミリーから本当に削除しますか？
       confirm_from_group: 属性 {{ attribute }} をこの属性グループから本当に削除しますか。
