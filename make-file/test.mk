@@ -19,7 +19,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
 
 ### Static tests
-static-back: check-pullup #Doc: launch PHP static analyzer asset-manager & check Sf services
+static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-static-back
 	echo "Job done! Nothing more to do here..."
 
