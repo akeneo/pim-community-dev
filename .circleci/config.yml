@@ -144,7 +144,7 @@ jobs:
                 find front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
                 find front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                 find src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
-                echo "$(date +%F)1 front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
+                echo "$(date +%F) front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
           - run:
               name: Set directories owner to circleci
               command: sudo chown -R 1001:1001 .
@@ -304,7 +304,7 @@ jobs:
               find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
               find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
-              echo "$(date +%F)1 << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
+              echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/process-tracker.hash
       - run:
           name: Set directories owner to circleci
           command: sudo chown -R 1001:1001 .
