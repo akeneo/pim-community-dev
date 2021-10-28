@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class LoadDatagridPimRoleGridIntegration extends ControllerIntegrationTestCase
 {
+    /**
+     * @group ce
+     */
     public function test_it_only_return_default_type_roles(): void
     {
         /** @var RoleInterface $roleRedactor */
