@@ -82,7 +82,7 @@ class ThereShouldBeLessAttributesThanLimitValidator extends ConstraintValidator
         if ($total >= $this->attributesLimit) {
             $this->context->buildViolation(ThereShouldBeLessAttributesThanLimit::ERROR_MESSAGE)
                 ->setParameter('%attribute_label%', current($command->labels))
-                ->setParameter('%limit%', $this->attributesLimit)
+                ->setParameter('%limit%', (string)$this->attributesLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

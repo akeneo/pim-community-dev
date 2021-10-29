@@ -95,8 +95,8 @@ class AllowedExtensionsValidator extends ConstraintValidator
             $actualLength = strlen($allowedExtension);
             if ($actualLength > AttributeAllowedExtensions::MAX_EXTENSION_LENGTH) {
                 $context->buildViolation(AllowedExtensions::MESSAGE_CANNOT_BE_LONGER_THAN_MAX)
-                        ->setParameter('%actual_length%', strlen($allowedExtension))
-                        ->setParameter('%expected_length%', AttributeAllowedExtensions::MAX_EXTENSION_LENGTH)
+                        ->setParameter('%actual_length%', (string) strlen($allowedExtension))
+                        ->setParameter('%expected_length%', (string) AttributeAllowedExtensions::MAX_EXTENSION_LENGTH)
                         ->addViolation();
             }
         });

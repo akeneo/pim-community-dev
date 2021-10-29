@@ -77,7 +77,7 @@ class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidato
         if ($total > $this->ruleTemplateByAssetFamilyLimit) {
             $this->context->buildViolation(ThereShouldBeLessRuleTemplateThanLimit::ERROR_MESSAGE)
                 ->setParameter('%asset_family_identifier%', $command->identifier)
-                ->setParameter('%limit%', $this->ruleTemplateByAssetFamilyLimit)
+                ->setParameter('%limit%', (string) $this->ruleTemplateByAssetFamilyLimit)
                 ->atPath('labels')
                 ->addViolation();
         }

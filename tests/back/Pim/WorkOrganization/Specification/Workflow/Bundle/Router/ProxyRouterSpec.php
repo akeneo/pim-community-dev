@@ -57,7 +57,7 @@ class ProxyRouterSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('mary');
+        $user->getUserIdentifier()->willReturn('mary');
 
         $productRepository->findOneByIdentifier('my_product')->willReturn($product);
         $productDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn(null);
@@ -83,7 +83,7 @@ class ProxyRouterSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('mary');
+        $user->getUserIdentifier()->willReturn('mary');
         $productRepository->findOneByIdentifier('my_product')->willReturn($product);
         $productDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
 

@@ -65,7 +65,7 @@ class IndexPublishedProductCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $bulkSize = $input->getOption('page-size') ?? self::DEFAULT_PAGE_SIZE;
 
@@ -94,6 +94,6 @@ class IndexPublishedProductCommand extends Command
 
         $output->writeln($message);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

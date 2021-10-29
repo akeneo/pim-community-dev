@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class AttributeExtensionSpec extends ObjectBehavior
@@ -16,7 +17,7 @@ class AttributeExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldHaveType(\Twig_Extension::class);
+        $this->shouldHaveType(AbstractExtension::class);
     }
 
     function it_has_functions()

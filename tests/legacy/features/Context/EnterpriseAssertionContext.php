@@ -43,7 +43,10 @@ class EnterpriseAssertionContext extends BaseAssertionContext
      */
     public function iShouldSeeThatCharactersAreRemaining($expectedNumber)
     {
-        $modalBodyContent     = $this->getCurrentPage()->find('css', '.modal-body');
+        $modalBodyContent = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal-body');
+        }, 'Cannot find modal body content');
+
         $remainingCharContent = $modalBodyContent->find('css', '.remaining-chars');
         $remainingChar        = $remainingCharContent->getText();
 

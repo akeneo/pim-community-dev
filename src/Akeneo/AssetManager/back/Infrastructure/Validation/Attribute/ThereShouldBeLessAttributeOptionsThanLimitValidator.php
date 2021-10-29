@@ -85,7 +85,7 @@ class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintVali
 
         if (count($attribute->getAttributeOptions()) >= $this->attributeOptionsLimit - 1) {
             $this->context->buildViolation(ThereShouldBeLessAttributeOptionsThanLimit::MESSAGE_TOO_MANY_OPTIONS)
-                ->setParameter('{{ limit }}', $this->attributeOptionsLimit)
+                ->setParameter('{{ limit }}', (string) $this->attributeOptionsLimit)
                 ->setCode(Count::TOO_MANY_ERROR)
                 ->addViolation();
         }

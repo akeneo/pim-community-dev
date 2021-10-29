@@ -42,6 +42,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         BulkRemoverInterface $bulkRemover,
         PublishedProductRepositoryInterface $repositoryWithoutPermission
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $productRepository,
             $repositoryWithPermission,

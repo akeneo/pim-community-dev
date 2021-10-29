@@ -38,6 +38,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         CollectionFilterInterface $valuesFilter,
         PimUserDraftSourceFactory $draftSourceFactory
     ) {
+        $dispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
+        $dispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $workingCopySaver,
             $userContext,

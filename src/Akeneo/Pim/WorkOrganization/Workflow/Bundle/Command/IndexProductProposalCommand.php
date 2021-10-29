@@ -90,14 +90,14 @@ class IndexProductProposalCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $batchSize = (int) $input->getOption('batch-size') ?? self::DEFAULT_BATCH_SIZE;
 
         $this->indexProductProposals($batchSize, $output);
         $this->indexProductModelProposals($batchSize, $output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

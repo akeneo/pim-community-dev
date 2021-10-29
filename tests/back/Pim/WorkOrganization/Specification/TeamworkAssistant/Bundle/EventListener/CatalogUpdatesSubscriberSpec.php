@@ -54,7 +54,7 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
 
     function it_updates_the_pre_processed_data_when_we_update_the_product_from_the_ui(
         $attributeGroupCompletenessJobLauncher,
-        $requestStack,
+        RequestStack $requestStack,
         $catalogContext,
         GenericEvent $event,
         ProductInterface $product,
@@ -62,7 +62,7 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
         ParameterBag $parameterBag
     ) {
         $parameterBag->get('_route')->willReturn('pim_enrich_product_rest_post');
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
         $request->attributes = $parameterBag;
 
         $event->getSubject()->willReturn($product);
@@ -77,14 +77,14 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
 
     function it_only_pre_processes_attribute_group_completeness_for_product_entities(
         $attributeGroupCompletenessJobLauncher,
-        $requestStack,
+        RequestStack $requestStack,
         GenericEvent $event,
         ProjectInterface $project,
         Request $request,
         ParameterBag $parameterBag
     ) {
         $parameterBag->get('_route')->willReturn('pim_enrich_product_rest_post');
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
         $request->attributes = $parameterBag;
 
         $event->getSubject()->willReturn($project);
@@ -103,7 +103,7 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
         ParameterBag $parameterBag
     ) {
         $parameterBag->get('_route')->willReturn('route');
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
         $request->attributes = $parameterBag;
 
         $event->getSubject()->willReturn($project);
@@ -114,11 +114,11 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_pre_processes_attribute_group_completeness_during_an_import(
-        $requestStack,
+        RequestStack $requestStack,
         $attributeGroupCompletenessJobLauncher,
         GenericEvent $event
     ) {
-        $requestStack->getMasterRequest()->willReturn(null);
+        $requestStack->getMainRequest()->willReturn(null);
 
         $attributeGroupCompletenessJobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 

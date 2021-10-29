@@ -10,25 +10,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class AddContextHeaderResponseListenerSpec extends ObjectBehavior
 {
     function it_injects_response_headers_without_query_string(
         BoundedContextResolver $boundedContextResolver,
+        HttpKernelInterface $kernel,
         Request $request,
-        ResponseEvent $event,
         Response $response,
         ResponseHeaderBag $headers,
         ParameterBag $requestAttributes
     ) {
         $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
-        $event->getRequest()->shouldBeCalled()->willReturn($request);
+        $event = new ResponseEvent(
+            $kernel->getWrappedObject(),
+            $request->getWrappedObject(),
+            HttpKernelInterface::MAIN_REQUEST,
+            $response->getWrappedObject()
+        );
+
         $request->getPathInfo()->willReturn('my_path_info');
         $requestAttributes->get('_route', 'undefined')->willReturn('my_symfony_route');
         $request->attributes = $requestAttributes;
-
-        $event->getResponse()->shouldBeCalled()->willReturn($response);
 
         $response->headers = $headers;
 

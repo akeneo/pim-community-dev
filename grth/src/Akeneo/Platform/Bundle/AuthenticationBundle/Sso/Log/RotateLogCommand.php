@@ -24,8 +24,7 @@ final class RotateLogCommand extends Command
 {
     protected static $defaultName = 'pimee:sso:rotate-log';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     /** @static string */
     const TABLE_NAME = 'pimee_sso_log';
@@ -52,7 +51,7 @@ final class RotateLogCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $maxDays = (int) $input->getArgument('max-days');
 
@@ -71,6 +70,8 @@ final class RotateLogCommand extends Command
                 'expirationTime' => $this->connection->convertToDatabaseValue($expirationDate, 'datetime')
             ]
         );
-        $output->writeln(sprintf("<info>SSO logs rotation done.</info>", $maxDays));
+        $output->writeln("<info>SSO logs rotation done.</info>");
+
+        return Command::SUCCESS;
     }
 }

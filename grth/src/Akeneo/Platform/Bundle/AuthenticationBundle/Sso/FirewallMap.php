@@ -9,22 +9,19 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repos
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallContext;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap as SymfonyFirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
-class FirewallMap implements FirewallMapInterface
+class FirewallMap extends SymfonyFirewallMap
 {
     private const CONFIGURATION_CODE = 'authentication_sso';
     private const SSO_FIREWALL_NAME = 'sso';
 
-    /** @var FirewallMapInterface */
-    private $firewallMap;
-
-    /** @var Repository */
-    private $configRepository;
-
-    private $container;
-    private $map;
+    private FirewallMapInterface $firewallMap;
+    private Repository $configRepository;
+    private ContainerInterface $container;
+    private iterable $map;
 
     public function __construct(ContainerInterface $container, iterable $map, Repository $configRepository)
     {
