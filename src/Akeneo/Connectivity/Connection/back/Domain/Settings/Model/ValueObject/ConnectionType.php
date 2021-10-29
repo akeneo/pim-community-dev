@@ -10,7 +10,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionType
 {
-    private const DEFAULT_TYPE = 'default';
+    const DEFAULT_TYPE = 'default';
 
     private string $type;
 
