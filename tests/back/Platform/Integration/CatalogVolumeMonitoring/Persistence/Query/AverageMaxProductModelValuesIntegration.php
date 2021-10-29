@@ -19,7 +19,6 @@ class AverageMaxProductModelValuesIntegration extends QueryTestCase
         $this->assertEquals(6, $volume->getMaxVolume());
         $this->assertEquals(5, $volume->getAverageVolume());
         $this->assertEquals('average_max_product_model_values', $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning());
     }
 
     public function testGetAverageAndMaximumNumberOfProductModelValuesDoesNotTakeAccountOfProductValues()
@@ -34,6 +33,5 @@ class AverageMaxProductModelValuesIntegration extends QueryTestCase
        $this->assertEquals(6, $volume->getMaxVolume());
        $this->assertEquals(5, $volume->getAverageVolume());
        $this->assertEquals('average_max_product_model_values', $volume->getVolumeName());
-       $this->assertFalse($volume->hasWarning());
     }
 }

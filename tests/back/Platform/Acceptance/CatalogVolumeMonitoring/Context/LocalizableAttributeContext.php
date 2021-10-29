@@ -37,16 +37,6 @@ final class LocalizableAttributeContext implements Context
     }
 
     /**
-     * @Given the limit of the number of localizable attributes is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfLocalizableAttributesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of localizable attributes is :numberOfLocalizableAttributes
      *
      * @param int $numberOfLocalizableAttributes
@@ -56,25 +46,5 @@ final class LocalizableAttributeContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfLocalizableAttributes, $volumes['count_localizable_attributes']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of localizable attributes is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfLocalizableAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_localizable_attributes']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of localizable attributes is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfLocalizableAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_localizable_attributes']['has_warning']);
     }
 }

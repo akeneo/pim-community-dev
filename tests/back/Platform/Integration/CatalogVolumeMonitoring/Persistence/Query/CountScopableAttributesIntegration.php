@@ -20,6 +20,5 @@ class CountScopableAttributesIntegration extends QueryTestCase
 
         Assert::assertEquals(5, $volume->getVolume());
         Assert::assertEquals('count_scopable_attributes', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 }
