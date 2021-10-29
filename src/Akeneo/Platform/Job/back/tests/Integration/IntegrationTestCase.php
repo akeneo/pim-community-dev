@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-
 namespace Akeneo\Platform\Job\Test\Integration;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader;
+use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class IntegrationTestCase extends WebTestCase
 {
-    protected CatalogInterface $catalog;
-
-    abstract protected function getConfiguration(): Configuration;
+    protected FixturesLoader $fixturesLoader;
+    protected array $fixtures;
+    private Connection $dbalConnection;
 
     protected function setUp(): void
     {
         parent::setUp();
-        static::bootKernel(['environment' => 'test', 'debug' => false]);
+        static::bootKernel(['debug' => false]);
 
-        $this->catalog = $this->get('akeneo_integration_tests.catalogs');
-        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load($this->getConfiguration());
+        $this->dbalConnection = $this->get('database_connection');
+        $this->fixturesLoader = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader');
+
+        $this->resetDB();
+        $this->fixtures = $this->loadFixtures();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
@@ -44,16 +44,43 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    protected function logAs(string $username)
+    private function resetDB(): void
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
+        $resetQuery = <<<SQL
+            SET foreign_key_checks = 0;
+
+            DELETE FROM akeneo_batch_job_instance;
+            DELETE FROM akeneo_batch_job_execution;
+            DELETE FROM oro_user;
+            DELETE FROM oro_access_group;
+            DELETE FROM oro_user_access_group;
+
+            SET foreign_key_checks = 1;
+SQL;
+        $this->dbalConnection->executeQuery($resetQuery);
     }
 
-    protected function assertEntityIsValid($entity)
+    private function loadFixtures(): array
     {
-        $constraints = $this->get('validator')->validate($entity);
-        $this->assertCount(0, $constraints, $constraints->__toString());
+        $jobInstances = [
+            'a_product_import' => $this->fixturesLoader->createJobInstance([
+                'code' => 'a_product_import',
+                'job_name' => 'a_product_import',
+            ]),
+            'another_product_import' => $this->fixturesLoader->createJobInstance([
+                'code' => 'another_product_import',
+                'job_name' => 'another_product_import',
+            ]),
+        ];
+        $jobExecutions = [
+            'a_job_execution' => $this->fixturesLoader->createJobExecution([
+                'job_instance_id' => $jobInstances['a_product_import']
+            ])
+        ];
+
+        return [
+            'job_instances' => $jobInstances,
+            'job_executions' => $jobExecutions,
+        ];
     }
 }

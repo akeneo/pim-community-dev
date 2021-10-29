@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Application;
+namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
-use Akeneo\Platform\Job\Application\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecutionTableResult;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionTableResult;
 use PhpSpec\ObjectBehavior;
 
 class SearchJobExecutionTableResultSpec extends ObjectBehavior

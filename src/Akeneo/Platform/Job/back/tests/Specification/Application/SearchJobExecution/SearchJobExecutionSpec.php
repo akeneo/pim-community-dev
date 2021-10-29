@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Application;
+namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution;
-use Akeneo\Platform\Job\Application\SearchJobExecutionTableResult;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecution;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionTableResult;
 use Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface;
 use PhpSpec\ObjectBehavior;
 

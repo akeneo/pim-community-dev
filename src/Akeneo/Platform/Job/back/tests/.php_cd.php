@@ -28,6 +28,7 @@ $rules = [
             'Akeneo\Platform\Job\Domain',
             'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Types\Types',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Symfony\Component',
