@@ -11,8 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UnitCountValidator extends ConstraintValidator
 {
-    /** @var int */
-    private $max;
+    private int $max;
 
     public function __construct(int $max)
     {
@@ -22,7 +21,7 @@ class UnitCountValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UnitCount) {
             throw new UnexpectedTypeException($constraint, UnitCount::class);
@@ -40,7 +39,7 @@ class UnitCountValidator extends ConstraintValidator
 
         if ($count > $this->max) {
             $this->context->buildViolation(UnitCount::MAX_MESSAGE)
-                ->setParameter('%limit%', $this->max)
+                ->setParameter('%limit%', (string)$this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)
                 ->addViolation();
@@ -48,7 +47,7 @@ class UnitCountValidator extends ConstraintValidator
 
         if ($count < MeasurementFamily::MIN_UNIT_COUNT) {
             $this->context->buildViolation(UnitCount::MIN_MESSAGE)
-                ->setParameter('%limit%', MeasurementFamily::MIN_UNIT_COUNT)
+                ->setParameter('%limit%', (string)MeasurementFamily::MIN_UNIT_COUNT)
                 ->setInvalidValue($value)
                 ->addViolation();
         }

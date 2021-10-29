@@ -13,6 +13,7 @@ class RootEndpointIntegration extends ApiTestCase
 {
     public function testGetEndpoint()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->request('GET', 'api/rest/v1');
 
@@ -291,6 +292,12 @@ class RootEndpointIntegration extends ApiTestCase
       "route": "/api/rest/v1/product-models",
       "methods": [
         "PATCH"
+      ]
+    },
+    "pim_api_product_model_delete": {
+      "route": "/api/rest/v1/product-models/{code}",
+      "methods": [
+        "DELETE"
       ]
     },
     "pim_api_category_list": {

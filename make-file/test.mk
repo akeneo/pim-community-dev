@@ -61,7 +61,11 @@ acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	$(MAKE) connectivity-connection-acceptance-back
 	$(MAKE) job-acceptance-back
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
+else
+	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite Akeneo_Measurement_Acceptance
+endif
 
 .PHONY: acceptance-front
 acceptance-front:

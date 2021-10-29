@@ -55,6 +55,10 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         /** @phpstan-ignore-next-line */
         unset($flatAttribute['labels']);
         $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
+        if (\is_array($standardAttribute['guidelines'] ?? null)) {
+            unset($flatAttribute['guidelines']);
+            $flatAttribute += $this->normalizeGuidelines($standardAttribute['guidelines']);
+        }
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
 
@@ -97,6 +101,16 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         }
 
         return $normalizedOptions === '' ? null : $normalizedOptions;
+    }
+
+    protected function normalizeGuidelines(array $guidelines): array
+    {
+        $flatGuidelines = [];
+        foreach ($guidelines as $locale => $guidelinesForLocale) {
+            $flatGuidelines[\sprintf('guidelines-%s', $locale)] = $guidelinesForLocale;
+        }
+
+        return $flatGuidelines;
     }
 
     private function normalizeTranslations(array $labels, array $context): array

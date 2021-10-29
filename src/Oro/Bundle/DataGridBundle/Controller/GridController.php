@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class GridController extends AbstractController
+class GridController
 {
     private ManagerInterface $manager;
 

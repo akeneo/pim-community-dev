@@ -38,72 +38,26 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var DatabaseSchemaHandler */
-    private $databaseSchemaHandler;
-
-    /** @var SystemUserAuthenticator */
-    private $systemUserAuthenticator;
-
-    /** @var Application */
-    private $cli;
-
-    /** @var ReferenceDataLoader */
-    private $referenceDataLoader;
-
-    /** @var FilesystemOperator */
-    private $archivistFilesystem;
-
-    /** @var DoctrineJobRepository */
-    private $doctrineJobRepository;
-
-    /** @var FixtureJobLoader */
-    private $fixtureJobLoader;
-
-    /** @var AclManager */
-    private $aclManager;
-
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var ClientRegistry */
-    private $clientRegistry;
-
-    /** @var Client */
-    private $esClient;
-
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var string */
-    private $databaseHost;
-
-    /** @var string */
-    private $databaseName;
-
-    /** @var string */
-    private $databaseUser;
-
-    /** @var string */
-    private $databasePassword;
-
-    /** @var string */
-    private $sqlDumpDirectory;
-
-    /** @var \Elasticsearch\Client */
-    private $nativeElasticsearchClient;
-
-    /** @var MeasurementInstaller */
-    private $measurementInstaller;
-
-    /** @var TransportInterface */
-    private $transport;
-
+    private DatabaseSchemaHandler $databaseSchemaHandler;
+    private SystemUserAuthenticator $systemUserAuthenticator;
+    private Application $cli;
+    private ReferenceDataLoader $referenceDataLoader;
+    private FilesystemOperator $archivistFilesystem;
+    private DoctrineJobRepository $doctrineJobRepository;
+    private FixtureJobLoader $fixtureJobLoader;
+    private AclManager $aclManager;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private ClientRegistry $clientRegistry;
+    private Connection $dbConnection;
+    private string $databaseHost;
+    private string $databaseName;
+    private string $databaseUser;
+    private string $databasePassword;
+    private string $sqlDumpDirectory;
+    private \Elasticsearch\Client $nativeElasticsearchClient;
+    private MeasurementInstaller $measurementInstaller;
+    private TransportInterface $transport;
     private EventDispatcherInterface $eventDispatcher;
     private JobLauncher $jobLauncher;
 
@@ -119,7 +73,6 @@ class FixturesLoader implements FixturesLoaderInterface
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         ClientRegistry $clientRegistry,
-        Client $esClient,
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
         TransportInterface $transport,
@@ -132,7 +85,6 @@ class FixturesLoader implements FixturesLoaderInterface
         string $sqlDumpDirectory,
         string $elasticsearchHost
     ) {
-        $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
         $this->referenceDataLoader = $referenceDataLoader;
@@ -147,7 +99,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->clientRegistry = $clientRegistry;
-        $this->esClient = $esClient;
         $this->dbConnection = $dbConnection;
         $this->databaseHost = $databaseHost;
         $this->databaseName = $databaseName;
@@ -399,19 +350,21 @@ class FixturesLoader implements FixturesLoaderInterface
             mkdir($dir, 0755, true);
         }
 
-        $this->execCommand([
-            'mysqldump',
-            '-h '.$this->databaseHost,
-            '-u '.$this->databaseUser,
-            '-p'.$this->databasePassword,
-            '--no-create-info',
-            '--quick',
-            '--skip-add-locks',
-            '--skip-disable-keys',
-            '--complete-insert',
-            $this->databaseName,
-            '> '.$filepath,
-        ]);
+        $this->execCommand(
+            [
+                'mysqldump',
+                '-h' . $this->databaseHost,
+                '-u' . $this->databaseUser,
+                '-p' . $this->databasePassword,
+                '--no-create-info',
+                '--quick',
+                '--skip-add-locks',
+                '--skip-disable-keys',
+                '--complete-insert',
+                $this->databaseName,
+                '--result-file=' . $filepath,
+            ]
+        );
     }
 
     /**
@@ -430,7 +383,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function execCommand(array $arguments, $timeout = 120): string
     {
-        $process = new Process(implode(' ', $arguments));
+        $process = new Process($arguments);
         $process->setTimeout($timeout);
         $process->run();
 

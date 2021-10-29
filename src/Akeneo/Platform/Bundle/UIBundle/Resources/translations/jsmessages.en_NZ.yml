@@ -241,8 +241,6 @@ pim_enrich.entity.fallback:
       discard_changes: You will lose changes to the {{ entity }} if you leave the page.
       discard_changes_title: Are you sure?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: Drop your {{ type }} file here, or click to browse disk

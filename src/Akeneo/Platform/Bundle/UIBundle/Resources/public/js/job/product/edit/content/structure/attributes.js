@@ -18,6 +18,7 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/job/product/edit/content/structure/attributes-selector',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -29,7 +30,8 @@ define([
   LoadingMask,
   fetcherRegistry,
   UserContext,
-  AttributeSelector
+  AttributeSelector,
+  analytics
 ) {
   return BaseForm.extend({
     className: 'AknFieldContainer attributes',
@@ -129,6 +131,8 @@ define([
           this.setData(data);
           modal.close();
           this.render();
+
+          analytics.track('export-profile:product:attribute-applied');
         }.bind(this)
       );
     },

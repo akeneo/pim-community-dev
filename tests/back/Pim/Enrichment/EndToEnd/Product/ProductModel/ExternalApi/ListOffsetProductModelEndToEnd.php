@@ -197,7 +197,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/product-models');
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        $logger = self::$container->get('monolog.logger.pim_api_acl');
         assert($logger instanceof TestLogger);
 
         $this->assertTrue(
@@ -205,6 +205,6 @@ JSON;
             'Expected warning not found in the logs.'
         );
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 }

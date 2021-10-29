@@ -271,8 +271,6 @@ pim_enrich.entity.fallback:
       discard_changes: 이 페이지를 나가면 {{ entity }}에 대한 변경 사항이 손실됩니다.
       discard_changes_title: 계속하시겠습니까?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} 작업|]1, Inf[{{ count }} 작업"
   module:
     create:
       upload: 여기에 {{ type }} 파일을 놓거나, 클릭하여 디스크 찾아보기

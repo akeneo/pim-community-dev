@@ -34,7 +34,7 @@ final class PurgeOutdatedDataCommand extends Command
             ->addOption('date', 'd', InputOption::VALUE_REQUIRED, 'Date from which the purge will be launched (Y-m-d)', date('Y-m-d'));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $purgeDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('date'));
 

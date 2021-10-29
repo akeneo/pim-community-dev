@@ -48,31 +48,31 @@ pim_ui.system_config:
     loading_message.title: Loading messages
 other_actions: Other actions
 pim_common:
+  association_types: Association types
   cancel: Cancel
-  save: Save
-  delete: Delete
-  update: Update
-  view: View
-  edit: Edit
-  created: Created
-  updated: Updated
-  create: Create
-  permissions: Permissions
-  properties: Properties
-  name: Name
-  remove: Remove
-  code: Code
-  label: Label
-  quantity: Quantity
-  products: Products
-  product_models: Product models
   categories: Categories
+  code: Code
+  create: Create
+  created: Created
+  delete: Delete
+  edit: Edit
   enabled: Enabled
   family: Family
   groups: Groups
-  yes: "Yes"
+  label: Label
+  name: Name
   no: "No"
-  association_types: Association types
+  permissions: Permissions
+  product_models: Product models
+  products: Products
+  properties: Properties
+  quantity: Quantity
+  remove: Remove
+  save: Save
+  update: Update
+  updated: Updated
+  view: View
+  yes: "Yes"
 pim_enrich:
   #ACLs
   acl:

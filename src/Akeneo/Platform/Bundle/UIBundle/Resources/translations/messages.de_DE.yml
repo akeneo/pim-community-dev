@@ -48,34 +48,35 @@ pim_ui.system_config:
     loading_message.title: Nachrichten werden geladen
 other_actions: Weitere Aktionen
 pim_common:
-  cancel: Abbrechen
-  save: Speichern
-  delete: Löschen
-  update: Aktualisieren
-  view: Ansehen
-  edit: Bearbeiten
-  created: Erstellt
-  updated: Aktualisiert
-  create: Anlegen
-  permissions: Berechtigungen
-  properties: Eigenschaften
-  name: Name
-  remove: Entfernen
-  code: Code
-  label: Bezeichnung
-  quantity: Quantität
-  products: Produkte
-  product_models: Produktmodelle
-  categories: Kategorien
-  family_variant: Varianten der Produktfamilien
-  enabled: Aktiviert
-  family: Produktfamilie
-  parent: Eltern
-  groups: Gruppen
-  unit: Einheit
-  yes: "Ja"
-  no: "Nein"
   association_types: Verbindungstypen
+  cancel: Abbrechen
+  categories: Kategorien
+  code: Code
+  create: Anlegen
+  created: Erstellt
+  delete: Löschen
+  edit: Bearbeiten
+  enabled: Aktiviert
+  family_variant: Varianten der Produktfamilien
+  family: Produktfamilie
+  groups: Gruppen
+  label: Bezeichnung
+  name: Name
+  no: "Nein"
+  parent: Eltern
+  permissions: Berechtigungen
+  product_models: Produktmodelle
+  products: Produkte
+  properties: Eigenschaften
+  quality_score: Qualitätspunktzahl
+  quantity: Quantität
+  remove: Entfernen
+  save: Speichern
+  unit: Einheit
+  update: Aktualisieren
+  updated: Aktualisiert
+  view: Ansehen
+  yes: "Ja"
 pim_enrich:
   #ACLs
   acl:

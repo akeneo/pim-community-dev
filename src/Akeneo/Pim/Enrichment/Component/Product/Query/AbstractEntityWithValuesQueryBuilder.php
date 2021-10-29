@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -214,14 +213,6 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
 
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addAttributeFilter($attribute, $operator, $value, $locale, $scope, $context);
-
-        // The products without family should not be returned when filtering on an empty value,
-        // as empty optional values are considered inexistant
-        if (Operators::IS_EMPTY === $operator
-            || Operators::IS_EMPTY_FOR_CURRENCY === $operator
-            || Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator) {
-            $this->addFilter('family', Operators::IS_NOT_EMPTY, null);
-        }
 
         return $this;
     }

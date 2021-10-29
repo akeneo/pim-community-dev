@@ -26,6 +26,7 @@ Feature: Quick export many products with localized attributes from datagrid
       | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD         | 40   | red   | 0.5 GRAM    | 75        |                 |
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD       | 41   | blue  |             |           |                 |
 
+  @skip
   Scenario: Successfully quick export XLSX products with localized attributes
     Given I am on the products grid
     And I switch the locale to "en_US"

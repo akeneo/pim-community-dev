@@ -34,7 +34,7 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
     /**
      * @inheritDoc
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array
+    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
     {
         $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
         $productScores = $this->getProductScoresQuery->byProductIds($productIds);

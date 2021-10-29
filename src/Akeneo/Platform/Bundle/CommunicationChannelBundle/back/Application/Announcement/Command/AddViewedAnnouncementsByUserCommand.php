@@ -12,10 +12,8 @@ namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Command;
 final class AddViewedAnnouncementsByUserCommand
 {
     /** @var string[] */
-    private $viewedAnnouncementIds;
-
-    /** @var int */
-    private $userId;
+    private array $viewedAnnouncementIds;
+    private int $userId;
 
     /**
      * @param string[] $viewedAnnouncementIds

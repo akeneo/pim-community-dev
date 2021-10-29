@@ -13,11 +13,14 @@ services:
             - '@liip_imagine.filter.manager'
             - '@pim_catalog.repository.cached_attribute'
             - '@@AkeneoPimEnrichment/Product/renderPdf.html.twig'
-            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_pdf_generator_font%'
-            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 80 }
 
     pim_pdf_generator.renderer.registry:
         class: '%pim_pdf_generator.renderer.registry.class%'
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRendererRegistry:
+        arguments:
+            - !tagged_iterator pim_pdf_generator.product_value_renderer
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer'

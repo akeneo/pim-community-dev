@@ -10,11 +10,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class OperationCountValidator extends ConstraintValidator
 {
-    /** @var int */
-    private $min = 1;
-
-    /** @var int */
-    private $max;
+    private int $min = 1;
+    private int $max;
 
     public function __construct(int $max)
     {
@@ -42,7 +39,7 @@ class OperationCountValidator extends ConstraintValidator
 
         if ($count > $this->max) {
             $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('%limit%', $this->max)
+                ->setParameter('%limit%', (string)$this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)
                 ->addViolation();
@@ -52,7 +49,7 @@ class OperationCountValidator extends ConstraintValidator
 
         if ($count < $this->min) {
             $this->context->buildViolation($constraint->minMessage)
-                ->setParameter('%limit%', $this->min)
+                ->setParameter('%limit%', (string)$this->min)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->min)
                 ->addViolation();

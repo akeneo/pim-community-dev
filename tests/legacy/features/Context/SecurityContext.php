@@ -6,14 +6,13 @@ use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Doctrine\Common\Util\ClassUtils;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SecurityContext extends PimContext
 {
-    /** @var Client */
-    protected $client;
+    protected KernelBrowser $client;
 
     /**
      * @When /^I make a direct authenticated DELETE call on the "([^"]*)" user group$/
@@ -936,7 +935,7 @@ class SecurityContext extends PimContext
     {
         // http://symfony.com/doc/current/testing/http_authentication.html
 
-        $client = new Client($this->getKernel());
+        $client = new KernelBrowser($this->getKernel());
         $client->disableReboot();
         $client->followRedirects();
         $this->client = $client;

@@ -159,6 +159,7 @@ pim_common:
   before: 前
   by: by
   cancel: キャンセル
+  characters_left: ']-Inf, 1]残り {{ count }} 文字|]1, Inf[残り {{ count }} 文字'
   clear_value: 値の削除
   close: 閉じる
   code: コード
@@ -200,6 +201,7 @@ pim_common:
   permissions: 許可
   previous: 前
   properties: プロパティ
+  quality_score: 品質スコア
   remove: 削除
   required_label: (必須)
   result_count: "{0}0 結果|{1}1 結果|]1, Inf[{{ itemsCount }} 結果"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: '次を含まない:'
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
+    IN: リストにあります
+    "NOT IN": リストにありません
   read_more: 続きを読む
   channel: チャンネル
   locale: ロケール
@@ -272,7 +276,7 @@ pim_enrich.entity.fallback:
       discard_changes_title: よろしいですか?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} 操作|]1, Inf[{{ count }} 操作"
+    index: "]-Inf, 1]ジョブ {{ count }} 件|]1, Inf[ジョブ {{ count }} 件"
   module:
     create:
       upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'

@@ -22,6 +22,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -50,6 +51,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         $magentoConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $bynderConnection = $this->createConnection('bynder', 'Magento', FlowType::DATA_DESTINATION);
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',

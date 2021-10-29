@@ -30,7 +30,7 @@ const Container = styled.div<
   position: fixed;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
-  z-index: 2001;
+  z-index: 1901;
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
 `;
@@ -42,6 +42,16 @@ type OverlayProps = Override<
      * Vertical position of the overlay (forced).
      */
     verticalPosition?: VerticalPosition;
+
+    /**
+     * Horizontal position of the overlay (forced)
+     */
+    horizontalPosition?: HorizontalPosition;
+
+    /**
+     * When dropdown is open, it will keep the opener element displayed.
+     */
+    dropdownOpenerVisible?: boolean;
 
     /**
      * What to do on overlay closing.
@@ -61,12 +71,13 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
+  z-index: 1900;
 `;
 
 const getOverlayPosition = (
   verticalPosition?: VerticalPosition,
   horizontalPosition?: HorizontalPosition,
+  dropdownOpenerVisible?: boolean,
   parentRef?: RefObject<HTMLDivElement>,
   elementRef?: RefObject<HTMLDivElement>
 ) => {
@@ -82,27 +93,37 @@ const getOverlayPosition = (
   const parentRect = parentRef.current.getBoundingClientRect();
   const elementRect = elementRef.current.getBoundingClientRect();
 
-  const top =
+  let top =
     'up' === verticalPosition
       ? parentRect.bottom - elementRect.height + BORDER_SHADOW_OFFSET
       : parentRect.top - BORDER_SHADOW_OFFSET;
 
-  const left =
-    'left' === horizontalPosition
-      ? parentRect.right - elementRect.width + BORDER_SHADOW_OFFSET
-      : parentRect.left - BORDER_SHADOW_OFFSET;
+  if (dropdownOpenerVisible) {
+    top = 'up' === verticalPosition ? parentRect.top - elementRect.height : parentRect.bottom + 1;
+  }
+
+  const left = 'left' === horizontalPosition ? parentRect.right - elementRect.width : parentRect.left;
 
   return [top, left];
 };
 
-const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: OverlayProps) => {
+const Overlay = ({
+  verticalPosition,
+  horizontalPosition,
+  dropdownOpenerVisible = false,
+  parentRef,
+  onClose,
+  children,
+  ...rest
+}: OverlayProps) => {
+  const [overlayPosition, setOverlayPosition] = useState<number[]>([0, 0]);
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'dropdown-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
-  const horizontalPosition = useHorizontalPosition(overlayRef);
+  const overlayVerticalPosition = useVerticalPosition(overlayRef, verticalPosition);
+  const overlayHorizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
   useWindowResize();
@@ -116,7 +137,19 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
     };
   }, []);
 
-  const [top, left] = getOverlayPosition(verticalPosition, horizontalPosition, parentRef, overlayRef);
+  useEffect(() => {
+    setOverlayPosition(
+      getOverlayPosition(
+        overlayVerticalPosition,
+        overlayHorizontalPosition,
+        dropdownOpenerVisible,
+        parentRef,
+        overlayRef
+      )
+    );
+  }, [children, overlayVerticalPosition, overlayHorizontalPosition, parentRef, overlayRef, dropdownOpenerVisible]);
+
+  const [top, left] = overlayPosition;
 
   return createPortal(
     <>

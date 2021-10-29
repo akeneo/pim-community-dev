@@ -231,6 +231,11 @@ class User implements UserInterface
      */
     public function getUsername()
     {
+        return $this->getUserIdentifier();
+    }
+
+    public function getUserIdentifier()
+    {
         return $this->username;
     }
 
@@ -403,7 +408,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -411,7 +416,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonExpired()
+    public function isAccountNonExpired(): bool
     {
         return true;
     }
@@ -419,7 +424,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonLocked()
+    public function isAccountNonLocked(): bool
     {
         return $this->isEnabled();
     }
@@ -861,7 +866,7 @@ class User implements UserInterface
      */
     public function __toString()
     {
-        return (string) $this->getUsername();
+        return (string) $this->getUserIdentifier();
     }
 
     /**

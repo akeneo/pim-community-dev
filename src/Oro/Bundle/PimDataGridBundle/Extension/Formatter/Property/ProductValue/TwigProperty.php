@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Twig\Environment;
+
 /**
  * Allows to configure a related template for value rendering
  *
@@ -14,13 +16,9 @@ class TwigProperty extends FieldProperty
     /** @staticvar string */
     const TEMPLATE_KEY = 'template';
 
-    /** @var \Twig_Environment */
-    protected $environment;
+    protected Environment $environment;
 
-    /**
-     * @param \Twig_Environment $environment
-     */
-    public function __construct(\Twig_Environment $environment)
+    public function __construct(Environment $environment)
     {
         $this->environment = $environment;
     }
@@ -39,11 +37,14 @@ class TwigProperty extends FieldProperty
 
     /**
      * Load twig template
-     *
-     * @return \Twig_TemplateInterface
      */
     protected function getTemplate()
     {
-        return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
+        $templateName = $this->get(self::TEMPLATE_KEY);
+
+        return $this->environment->loadTemplate(
+            $this->environment->getTemplateClass($templateName),
+            $templateName,
+        );
     }
 }

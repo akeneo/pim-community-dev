@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateM
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
@@ -63,11 +64,12 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
+                /** @var ConstraintViolationInterface $violation */
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath(self::PROPERTY_PATH)
                     ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
+                    ->setPlural($violation->getPlural() ?? 0)
                     ->setInvalidValue($violation->getInvalidValue())
                     ->addViolation();
             }

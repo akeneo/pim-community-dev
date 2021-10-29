@@ -48,34 +48,35 @@ pim_ui.system_config:
     loading_message.title: メッセージを読み込み中...
 other_actions: その他の操作
 pim_common:
-  cancel: キャンセル
-  save: 保存
-  delete: 削除
-  update: 更新
-  view: ビュー
-  edit: 編集
-  created: '作成:'
-  updated: '更新:'
-  create: 作成
-  permissions: 許可
-  properties: プロパティ
-  name: 名前
-  remove: 削除
-  code: コード
-  label: ラベル
-  quantity: 数量
-  products: 商品
-  product_models: 商品モデル
-  categories: カテゴリ
-  family_variant: ファミリーバリエーション
-  enabled: 有効
-  family: ファミリー
-  parent: 親
-  groups: グループ
-  unit: ユニット
-  yes: "はい"
-  no: "いいえ"
   association_types: 関連タイプ
+  cancel: キャンセル
+  categories: カテゴリ
+  code: コード
+  create: 作成
+  created: '作成:'
+  delete: 削除
+  edit: 編集
+  enabled: 有効
+  family_variant: ファミリーバリエーション
+  family: ファミリー
+  groups: グループ
+  label: ラベル
+  name: 名前
+  no: "いいえ"
+  parent: 親
+  permissions: 許可
+  product_models: 商品モデル
+  products: 商品
+  properties: プロパティ
+  quality_score: 品質スコア
+  quantity: 数量
+  remove: 削除
+  save: 保存
+  unit: ユニット
+  update: 更新
+  updated: '更新:'
+  view: ビュー
+  yes: "はい"
 pim_enrich:
   #ACLs
   acl:

@@ -24,7 +24,7 @@
   "peerDependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.9.12",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.11"
   },
   "dependencies": {
     "draft-js": "^0.10.5",
