@@ -98,7 +98,7 @@ class DatagridViewRepositoryIntegration extends TestCase
         $privateDatagridView = $this->createDatagridView('view 1', 'product-grid-private', DatagridView::TYPE_PRIVATE, $julia);
         $foundDatagridView = $this->datagridViewRepository->findPublicDatagridViewByLabel('view 1');
 
-        Assert::assertSame($publicDatagridView, $foundDatagridView);
+        Assert::same($publicDatagridView, $foundDatagridView);
     }
 
     public function test_it_finds_private_view_by_label(): void
@@ -109,7 +109,7 @@ class DatagridViewRepositoryIntegration extends TestCase
         $datagridView2 = $this->createDatagridView('view 2', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser);
         $foundDatagridView = $this->datagridViewRepository->findPrivateDatagridViewByLabel('view 2', $adminUser);
 
-        Assert::assertSame($datagridView2, $foundDatagridView);
+        Assert::same($datagridView2, $foundDatagridView);
     }
 
     private function createDatagridView(
