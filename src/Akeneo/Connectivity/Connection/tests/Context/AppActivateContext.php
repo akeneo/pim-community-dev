@@ -147,6 +147,41 @@ SQL;
         $this->assertRoleAclsAreGranted($roles, $acls);
     }
 
+    /**
+     * @Then it has an authorization code
+     */
+    public function itHasAnAuthorizationCode()
+    {
+        $code = $this->getCreatedAuthorizationCode();
+
+        if (empty($code)) {
+            throw new \LogicException('Unable to find an authorization code');
+        }
+    }
+
+    private function getCreatedAuthorizationCode(): array
+    {
+        if ($this->connectedApp === null) {
+            throw new \LogicException('There is no connected app in the Context');
+        }
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->getMainContext()->getContainer()->get('doctrine.dbal.default_connection');
+
+        $query = <<<SQL
+SELECT pim_api_auth_code.token
+FROM pim_api_auth_code
+JOIN pim_api_client on pim_api_auth_code.client_id = pim_api_client.id
+JOIN akeneo_connectivity_connection on pim_api_client.id = akeneo_connectivity_connection.client_id
+JOIN akeneo_connectivity_connected_app ON akeneo_connectivity_connected_app.connection_code = akeneo_connectivity_connection.code
+WHERE akeneo_connectivity_connected_app.id = :id
+SQL;
+
+        return $connection->fetchAssoc($query, [
+            'id' => $this->connectedApp['id'],
+        ]) ?: [];
+    }
+
     private function assertRoleAclsAreGranted(array $roles, array $acls): void
     {
         /** @var AclManager $aclManager */
