@@ -34,6 +34,6 @@ class CountLocalizableAttributesSpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['count' => '4']);
-        $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_localizable_attributes'));
+        $this->fetch()->shouldBeLike(new CountVolume(4, 'count_localizable_attributes'));
     }
 }

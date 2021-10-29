@@ -20,17 +20,12 @@ class AverageMaxProductValuesPerFamily implements AverageMaxQuery
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $limit;
-
     /**
      * @param Connection $connection
-     * @param int $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->limit = $limit;
     }
 
     /**
@@ -74,7 +69,7 @@ class AverageMaxProductValuesPerFamily implements AverageMaxQuery
             ) as a
 SQL;
         $result = $this->connection->executeQuery($sql)->fetchAssociative();
-        $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
+        $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], self::VOLUME_NAME);
 
         return $volume;
     }

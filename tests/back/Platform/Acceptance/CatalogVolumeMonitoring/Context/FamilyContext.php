@@ -37,16 +37,6 @@ final class FamilyContext implements Context
     }
 
     /**
-     * @Given the limit of the number of families is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfFamiliesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of families is :numberOfFamilies
      *
      * @param int $numberOfFamilies
@@ -56,25 +46,5 @@ final class FamilyContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfFamilies, $volumes['count_families']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of families is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfFamiliesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_families']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of families is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfFamiliesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_families']['has_warning']);
     }
 }

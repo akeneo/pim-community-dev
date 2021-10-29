@@ -21,7 +21,6 @@ class AverageMaxLocalizableAndScopableAttributesPerFamilyIntegration extends Que
         Assert::assertEquals(80, $volume->getMaxVolume());
         Assert::assertEquals(40, $volume->getAverageVolume());
         Assert::assertEquals('average_max_localizable_and_scopable_attributes_per_family', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

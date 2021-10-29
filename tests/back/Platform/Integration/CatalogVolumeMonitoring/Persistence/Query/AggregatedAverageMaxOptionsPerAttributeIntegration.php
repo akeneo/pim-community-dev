@@ -35,6 +35,5 @@ class AggregatedAverageMaxOptionsPerAttributeIntegration extends TestCase
         $this->assertEquals('average_max_options_per_attribute', $volume->getVolumeName());
         $this->assertEquals(23, $volume->getMaxVolume());
         $this->assertEquals(15, $volume->getAverageVolume());
-        $this->assertFalse($volume->hasWarning());
     }
 }

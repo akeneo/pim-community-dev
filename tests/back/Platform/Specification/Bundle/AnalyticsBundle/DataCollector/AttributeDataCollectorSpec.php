@@ -57,16 +57,16 @@ class AttributeDataCollectorSpec extends ObjectBehavior
         $localizableAndScopableAttributePerFamilyAverageMaxQuery,
         $attributePerFamilyAverageMaxQuery
     ) {
-        $attributeCountQuery->fetch()->willReturn(new CountVolume(1000, -1, 'count_attributes'));
-        $localizableAttributeCountQuery->fetch()->willReturn(new CountVolume(33, -1, 'count_localizable_attributes'));
-        $scopableAttributeCountQuery->fetch()->willReturn(new CountVolume(40, -1, 'count_scopable_attributes'));
-        $localizableAndScopableAttributeCountQuery->fetch()->willReturn(new CountVolume(64, -1, 'count_localizable_and_scopable_attributes'));
-        $useableAsGridFilterAttributeCountQuery->fetch()->willReturn(new CountVolume(12, -1, 'count_useable_as_grid_filter_attributes'));
+        $attributeCountQuery->fetch()->willReturn(new CountVolume(1000, 'count_attributes'));
+        $localizableAttributeCountQuery->fetch()->willReturn(new CountVolume(33, 'count_localizable_attributes'));
+        $scopableAttributeCountQuery->fetch()->willReturn(new CountVolume(40, 'count_scopable_attributes'));
+        $localizableAndScopableAttributeCountQuery->fetch()->willReturn(new CountVolume(64, 'count_localizable_and_scopable_attributes'));
+        $useableAsGridFilterAttributeCountQuery->fetch()->willReturn(new CountVolume(12, 'count_useable_as_grid_filter_attributes'));
 
-        $localizableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12, 7, -1, 'average_max_localizable_attributes_per_family'));
-        $scopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(13, 9, -1, 'average_max_scopable_attributes_per_family'));
-        $localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(10, 7, -1, 'average_max_localizable_and_scopable_attributes_per_family'));
-        $attributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(20, 15, -1, 'avg_number_attributes_per_family'));
+        $localizableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12, 7,'average_max_localizable_attributes_per_family'));
+        $scopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(13, 9,'average_max_scopable_attributes_per_family'));
+        $localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(10, 7, 'average_max_localizable_and_scopable_attributes_per_family'));
+        $attributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(20, 15, 'avg_number_attributes_per_family'));
 
         $this->collect()->shouldReturn([
             'nb_attributes' => 1000,

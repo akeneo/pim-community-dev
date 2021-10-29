@@ -34,6 +34,6 @@ class CountFamiliesSpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['count' => '4']);
-        $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_families'));
+        $this->fetch()->shouldBeLike(new CountVolume(4, 'count_families'));
     }
 }

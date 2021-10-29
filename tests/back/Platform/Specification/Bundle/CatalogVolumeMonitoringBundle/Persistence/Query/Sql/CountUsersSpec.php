@@ -35,6 +35,6 @@ class CountUsersSpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'), ['type' => User::TYPE_USER])->willReturn($result);
         $result->fetchAssociative()->willReturn(['count' => '25']);
-        $this->fetch()->shouldBeLike(new CountVolume(25, -1, 'count_users'));
+        $this->fetch()->shouldBeLike(new CountVolume(25, 'count_users'));
     }
 }

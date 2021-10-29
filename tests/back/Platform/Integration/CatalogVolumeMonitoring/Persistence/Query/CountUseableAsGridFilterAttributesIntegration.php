@@ -18,7 +18,6 @@ class CountUseableAsGridFilterAttributesIntegration extends QueryTestCase
 
         Assert::assertEquals(5, $volume->getVolume());
         Assert::assertEquals('count_useable_as_grid_filter_attributes', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

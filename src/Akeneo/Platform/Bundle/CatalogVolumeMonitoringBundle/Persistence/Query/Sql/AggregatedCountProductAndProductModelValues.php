@@ -22,17 +22,12 @@ class AggregatedCountProductAndProductModelValues implements CountQuery
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $limit;
-
     /**
      * @param Connection $connection
-     * @param int        $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->limit = $limit;
     }
 
     public function fetch(): CountVolume
@@ -45,6 +40,6 @@ SQL;
         $sqlResult = $this->connection->executeQuery($sql)->fetchAssociative();
         $volumeValue = isset($sqlResult['value']) ? (int) $sqlResult['value'] : 0;
 
-        return new CountVolume($volumeValue, $this->limit, self::VOLUME_NAME);
+        return new CountVolume($volumeValue, self::VOLUME_NAME);
     }
 }

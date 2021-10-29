@@ -59,24 +59,4 @@ final class AttributePerFamilyContext implements Context
 
         Assert::eq($volumes['average_max_attributes_per_family']['value']['max'], $number);
     }
-
-    /**
-     * @Given the limit of the number of attributes per family is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
-     * @Then the report warns the users that the number of attributes per family is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfAttributesPerFamilyIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['average_max_attributes_per_family']['has_warning']);
-    }
 }

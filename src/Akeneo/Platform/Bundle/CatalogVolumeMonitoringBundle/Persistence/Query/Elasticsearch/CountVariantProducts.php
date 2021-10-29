@@ -20,13 +20,9 @@ class CountVariantProducts implements CountQuery
     /** @var Client */
     private $client;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(Client $client, int $limit)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->limit = $limit;
     }
 
     public function fetch(): CountVolume
@@ -51,6 +47,6 @@ class CountVariantProducts implements CountQuery
         ];
         $result = $this->client->count($query);
 
-        return new CountVolume((int)$result['count'], $this->limit, self::VOLUME_NAME);
+        return new CountVolume((int)$result['count'], self::VOLUME_NAME);
     }
 }

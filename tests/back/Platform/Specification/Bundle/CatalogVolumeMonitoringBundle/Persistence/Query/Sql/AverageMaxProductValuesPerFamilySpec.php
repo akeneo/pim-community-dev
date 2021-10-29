@@ -34,7 +34,7 @@ class AverageMaxProductValuesPerFamilySpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['average' => '5', 'max' => '10']);
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 5, 100, 'average_max_product_values_per_family'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 5, 'average_max_product_values_per_family'));
     }
 
     function it_gets_average_and_max_volume_of_an_empty_catalog(Connection $connection, Result $statement)
@@ -42,6 +42,6 @@ class AverageMaxProductValuesPerFamilySpec extends ObjectBehavior
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['average' => null, 'max' => null]);
 
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 100, 'average_max_product_values_per_family'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 'average_max_product_values_per_family'));
     }
 }

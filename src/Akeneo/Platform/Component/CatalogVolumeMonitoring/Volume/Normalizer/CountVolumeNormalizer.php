@@ -24,7 +24,6 @@ class CountVolumeNormalizer
         $data = [
             $data->getVolumeName() => [
                 'value' => $data->getVolume(),
-                'has_warning' => $data->hasWarning(),
                 'type' => self::VOLUME_TYPE
             ]
         ];

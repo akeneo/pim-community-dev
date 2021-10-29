@@ -37,16 +37,6 @@ final class CategoryContext implements Context
     }
 
     /**
-     * @Given the limit of the number of categories is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfCategoriesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of categories is :numberOfCategories
      *
      * @param int $numberOfCategories
@@ -56,25 +46,5 @@ final class CategoryContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfCategories, $volumes['count_categories']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of categories is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfCategoriesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_categories']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of categories is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfCategoriesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_categories']['has_warning']);
     }
 }

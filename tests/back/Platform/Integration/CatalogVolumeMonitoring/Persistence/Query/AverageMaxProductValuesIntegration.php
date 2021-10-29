@@ -21,7 +21,6 @@ class AverageMaxProductValuesIntegration extends QueryTestCase
         Assert::assertEquals(6, $volume->getMaxVolume());
         Assert::assertEquals(5, $volume->getAverageVolume());
         Assert::assertEquals('average_max_product_values', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     public function testGetAverageAndMaximumNumberOfProductValuesDoesNotTakeAccountOfProductModelValues()
@@ -36,6 +35,5 @@ class AverageMaxProductValuesIntegration extends QueryTestCase
         Assert::assertEquals(6, $volume->getMaxVolume());
         Assert::assertEquals(5, $volume->getAverageVolume());
         Assert::assertEquals('average_max_product_values', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 }

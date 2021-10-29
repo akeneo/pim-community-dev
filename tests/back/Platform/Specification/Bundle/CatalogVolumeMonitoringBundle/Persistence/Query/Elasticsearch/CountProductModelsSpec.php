@@ -29,6 +29,6 @@ class CountProductModelsSpec extends ObjectBehavior
     function it_gets_the_products_volume(Client $client)
     {
         $client->count(Argument::type('array'))->shouldBeCalled()->willReturn(['count' => 7]);
-        $this->fetch()->shouldBeLike(new CountVolume(7, 10, 'count_product_models'));
+        $this->fetch()->shouldBeLike(new CountVolume(7, 'count_product_models'));
     }
 }

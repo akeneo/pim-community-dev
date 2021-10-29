@@ -40,9 +40,9 @@ class VolumeAggregationSpec extends ObjectBehavior
         $countQuery2,
         $averageMaxQuery
     ) {
-        $countQuery1->fetch()->willReturn(new CountVolume(11, 20, 'count_volume_1'));
-        $countQuery2->fetch()->willReturn(new CountVolume(7, 10, 'count_volume_2'));
-        $averageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(42, 34, -1, 'average_max_volume'));
+        $countQuery1->fetch()->willReturn(new CountVolume(11, 'count_volume_1'));
+        $countQuery2->fetch()->willReturn(new CountVolume(7, 'count_volume_2'));
+        $averageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(42, 34, 'average_max_volume'));
 
         $aggregatedVolumeRepository->add(Argument::that(function (AggregatedVolume $aggregatedVolume) {
             return 'count_volume_1' === $aggregatedVolume->getVolumeName()

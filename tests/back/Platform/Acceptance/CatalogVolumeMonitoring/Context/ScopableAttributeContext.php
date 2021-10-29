@@ -37,16 +37,6 @@ final class ScopableAttributeContext implements Context
     }
 
     /**
-     * @Given the limit of the number of scopable attributes is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfScopableAttributesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of scopable attributes is :numberOfScopableAttributes
      *
      * @param int $numberOfScopableAttributes
@@ -56,25 +46,5 @@ final class ScopableAttributeContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfScopableAttributes, $volumes['count_scopable_attributes']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of scopable attributes is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberScopableAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_scopable_attributes']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of scopable attributes is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberScopableAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_scopable_attributes']['has_warning']);
     }
 }

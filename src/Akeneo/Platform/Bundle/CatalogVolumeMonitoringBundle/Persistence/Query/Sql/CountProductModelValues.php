@@ -22,17 +22,12 @@ class CountProductModelValues implements CountQuery
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $limit;
-
     /**
      * @param Connection $connection
-     * @param int        $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->limit = $limit;
     }
 
     /**
@@ -46,7 +41,7 @@ class CountProductModelValues implements CountQuery
 SQL;
         $result = $this->connection->executeQuery($sql)->fetchAssociative();
 
-        $volume = new CountVolume((int) $result['sum_product_model_values'], $this->limit, self::VOLUME_NAME);
+        $volume = new CountVolume((int) $result['sum_product_model_values'], self::VOLUME_NAME);
 
         return $volume;
     }

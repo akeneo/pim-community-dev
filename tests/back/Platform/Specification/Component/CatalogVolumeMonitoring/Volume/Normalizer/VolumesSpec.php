@@ -52,7 +52,6 @@ class VolumesSpec extends ObjectBehavior
         $countVolumeNormalizer->normalize($countVolume1)->willReturn([
             'count_volume_1' => [
                 'value' => 10,
-                'has_warning' => true,
                 'type' => 'count'
             ]
         ]);
@@ -60,7 +59,6 @@ class VolumesSpec extends ObjectBehavior
         $countVolumeNormalizer->normalize($countVolume2)->willReturn([
             'count_volume_2' => [
                 'value' => 12,
-                'has_warning' => false,
                 'type' => 'count'
             ]
         ]);
@@ -68,7 +66,6 @@ class VolumesSpec extends ObjectBehavior
         $averageVolumeNormalizer->normalize($averageMaxVolumes)->willReturn([
             'average_max_volume' => [
                 'value' => ['average' => 4, 'max' => 10],
-                'has_warning' => false,
                 'type' => 'average_max'
             ]
         ]);
@@ -76,17 +73,14 @@ class VolumesSpec extends ObjectBehavior
         $this->volumes()->shouldReturn([
             'count_volume_1' => [
                 'value' => 10,
-                'has_warning' => true,
                 'type' => 'count'
             ],
             'count_volume_2' => [
                 'value' => 12,
-                'has_warning' => false,
                 'type' => 'count'
             ],
             'average_max_volume' => [
                 'value' => ['average' => 4, 'max' => 10],
-                'has_warning' => false,
                 'type' => 'average_max'
             ],
         ]);

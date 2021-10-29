@@ -22,23 +22,13 @@ class AverageMaxVolumes
     /** @var int */
     private $averageVolume;
 
-    /** @var int*/
-    private $limit;
-
     /** @var string */
     private $volumeName;
 
-    /**
-     * @param int    $maxVolume
-     * @param int    $averageVolume
-     * @param int    $limit
-     * @param string $volumeName
-     */
-    public function __construct(int $maxVolume, int $averageVolume, int $limit, string $volumeName)
+    public function __construct(int $maxVolume, int $averageVolume, string $volumeName)
     {
         $this->maxVolume = $maxVolume;
         $this->averageVolume = $averageVolume;
-        $this->limit = $limit;
         $this->volumeName = $volumeName;
     }
 
@@ -55,10 +45,5 @@ class AverageMaxVolumes
     public function getVolumeName(): string
     {
         return $this->volumeName;
-    }
-
-    public function hasWarning(): bool
-    {
-        return $this->limit >= 0 && $this->maxVolume > $this->limit;
     }
 }

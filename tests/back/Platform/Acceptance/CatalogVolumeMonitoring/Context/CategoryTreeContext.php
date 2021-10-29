@@ -37,16 +37,6 @@ final class CategoryTreeContext implements Context
     }
 
     /**
-     * @Given the limit of the number of category trees is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfCategoryTreesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of category trees is :numberOfCategoryTrees
      *
      * @param int $numberOfCategoryTrees
@@ -56,25 +46,5 @@ final class CategoryTreeContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfCategoryTrees, $volumes['count_category_trees']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of category trees is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfCategoryTreesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_category_trees']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of category trees is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfCategoryTreesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_category_trees']['has_warning']);
     }
 }

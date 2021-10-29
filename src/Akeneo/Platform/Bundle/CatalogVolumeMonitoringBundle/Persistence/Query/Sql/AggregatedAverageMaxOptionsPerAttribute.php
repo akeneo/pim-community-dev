@@ -22,17 +22,12 @@ class AggregatedAverageMaxOptionsPerAttribute implements AverageMaxQuery
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $limit;
-
     /**
      * @param Connection $connection
-     * @param int        $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->limit = $limit;
     }
 
     /**
@@ -51,7 +46,7 @@ SQL;
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 
-        $volume = new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
+        $volume = new AverageMaxVolumes($maxValue, $averageValue, self::VOLUME_NAME);
 
         return $volume;
     }
