@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10136: [Backport] PIM-9763: Make sure that 2 users can each create a private view with the same name
+- PIM-10131: [Backport] PIM-9740: Prevent to delete a channel used in a product export job
 
 # 5.0.54 (2021-10-29)
 
