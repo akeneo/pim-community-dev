@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 
@@ -18,6 +19,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
  */
 class Connection
 {
+    private const DEFAULT_TYPE = 'default';
+
     private ConnectionCode $code;
 
     private ConnectionLabel $label;
@@ -28,9 +31,11 @@ class Connection
 
     private UserId $userId;
 
-    private ?ConnectionImage $image = null;
+    private ?ConnectionImage $image;
 
     private bool $auditable;
+
+    private ConnectionType $type;
 
     public function __construct(
         string $code,
@@ -39,7 +44,8 @@ class Connection
         int $clientId,
         int $userId,
         ?string $image = null,
-        bool $auditable = false
+        bool $auditable = false,
+        string $type = self::DEFAULT_TYPE
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);
@@ -48,6 +54,7 @@ class Connection
         $this->userId = new UserId($userId);
         $this->image = null !== $image ? new ConnectionImage($image) : null;
         $this->auditable = $auditable;
+        $this->type = new ConnectionType($type);
     }
 
     public function code(): ConnectionCode
@@ -83,6 +90,11 @@ class Connection
     public function auditable(): bool
     {
         return $this->auditable;
+    }
+
+    public function type(): ConnectionType
+    {
+        return $this->type;
     }
 
     public function setLabel(ConnectionLabel $label): void
