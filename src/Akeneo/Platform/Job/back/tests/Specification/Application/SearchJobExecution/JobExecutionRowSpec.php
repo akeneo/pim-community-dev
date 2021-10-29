@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecutionTable\JobExecutionRow;
 use PhpSpec\ObjectBehavior;
 
 class JobExecutionRowSpec extends ObjectBehavior

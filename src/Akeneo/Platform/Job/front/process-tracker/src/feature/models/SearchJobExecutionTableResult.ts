@@ -1,7 +1,7 @@
 type JobExecutionRow = {};
 
 type SearchJobExecutionTableResult = {
-  items: JobExecutionRow[];
+  rows: JobExecutionRow[];
   matches_count: number;
   total_count: number;
 };
