@@ -159,6 +159,7 @@ pim_common:
   before: Voor
   by: door
   cancel: Annuleer
+  characters_left: ']-Inf, 1]{{ count }} teken over|]1, Inf[{{ count }} tekens over'
   clear_value: Verwijder waarde
   close: Sluiten
   code: Code
@@ -200,6 +201,7 @@ pim_common:
   permissions: Machtigingen
   previous: Vorige
   properties: Eigenschappen
+  quality_score: Kwaliteitsscore
   remove: Verwijder
   required_label: (vereist)
   result_count: "{0}0 resultaten|{1}1 resultaat|]1, Inf[{{ itemsCount }} resultaten"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Bevat geen
     STARTS WITH: Begint met
     ENDS WITH: Eindigt met
+    IN: In lijst
+    "NOT IN": Niet in de lijst
   read_more: Lees meer
   channel: Kanaal
   locale: Locale
@@ -271,6 +275,8 @@ pim_enrich.entity.fallback:
       discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
       discard_changes_title: Weet u het zeker?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} woord|]1, Inf[{{ count }} woorden"
   module:
     create:
       upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
