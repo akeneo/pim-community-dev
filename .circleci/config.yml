@@ -298,16 +298,16 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  test_connectivity:
+  test_connectivity_lint_unit_and_coupling:
       machine:
           image: ubuntu-2004:202101-01
       steps:
           - attach_workspace:
                 at: ~/
-          -   run:
+          - run:
                 name: Create yarn cache folder
                 command: mkdir -p  ~/.cache/yarn
-          -   run:
+          - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
           - run:
@@ -331,15 +331,70 @@ jobs:
           - run:
                 name: Unit back
                 command: make connectivity-connection-unit-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
+  test_connectivity_integration:
+      machine:
+          image: ubuntu-2004:202101-01
+      parallelism: 2
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=test make database
           - run:
                 name: Integration back
                 command: make connectivity-connection-integration-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
+  test_connectivity_e2e:
+      machine:
+          image: ubuntu-2004:202101-01
+      parallelism: 2
+      steps:
+          - attach_workspace:
+                at: ~/
           - run:
-                name: End to end back
-                command: make connectivity-connection-e2e-back
+                name: Create yarn cache folder
+                command: mkdir -p  ~/.cache/yarn
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: PhpUnit End to end
+                command: PIM_CONTEXT=test make end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -888,7 +943,13 @@ workflows:
 #          - test_database:
 #                requires:
 #                    - build_dev
-          - test_connectivity:
+          - test_connectivity_lint_unit_and_coupling:
+                requires:
+                    - build_dev_ce
+          - test_connectivity_integration:
+                requires:
+                    - build_dev_ce
+          - test_connectivity_e2e:
                 requires:
                     - build_dev_ce
           - ready_to_build_only_ce?:
@@ -915,7 +976,9 @@ workflows:
                     - build_dev_ce
           - pull_request_success:
                 requires:
-                    - test_connectivity
+                    - test_connectivity_lint_unit_and_coupling
+                    - test_connectivity_integration
+                    - test_connectivity_e2e
                     - test_back_data_migrations_ce
 
   nightly:
