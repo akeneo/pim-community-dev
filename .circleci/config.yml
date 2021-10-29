@@ -826,22 +826,20 @@ workflows:
                     branches:
                         ignore:
                             - master
+          - deploy_pr_environment:
                 requires:
+                    - deploy_pr_environment?
                     - build_prod
-          - delete_pr_environment:
-                requires:
-                    - delete_pr_environment?
           - delete_pr_environment?:
                 type: approval
                 filters:
                     branches:
                         ignore:
                             - master
+          - delete_pr_environment:
                 requires:
+                    - delete_pr_environment?
                     - deploy_pr_environment
-          - deploy_pr_environment:
-                requires:
-                    - deploy_pr_environment?
           # Uncomment for next GA
 #          - test_database:
 #                requires:
@@ -891,12 +889,15 @@ workflows:
                   - build_dev_ce
           - marketplace_activate_e2e?:
                 type: approval
-                requires:
-                  - build_dev_ce
+                filters:
+                    branches:
+                        ignore:
+                            - master
           - marketplace_activate_e2e:
                 name: marketplace_activate_e2e_ce
                 requires:
                   - marketplace_activate_e2e?
+                  - build_dev_ce
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
