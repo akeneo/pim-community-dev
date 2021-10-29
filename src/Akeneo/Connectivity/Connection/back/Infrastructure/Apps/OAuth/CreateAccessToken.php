@@ -48,6 +48,11 @@ class CreateAccessToken implements CreateAccessTokenInterface
         }
         $this->auth2->setVariable(OAuth2::CONFIG_ACCESS_LIFETIME, null);
 
-        return $this->auth2->createAccessToken($client, $authCode->getData());
+        return $this->auth2->createAccessToken(
+            $client,
+            $authCode->getData(),
+            null,
+            3600*4
+        );
     }
 }

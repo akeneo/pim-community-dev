@@ -18,15 +18,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class CodeChallengeMustBeValidValidator extends ConstraintValidator
 {
     private WebMarketplaceApiInterface $webMarketplaceApi;
-    private FeatureFlag $featureFlag;
+    private FeatureFlag $fakeAppsFeatureFlag;
 
     public function __construct(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        FeatureFlag $featureFlag
-    )
-    {
+        FeatureFlag $fakeAppsFeatureFlag
+    ) {
         $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->featureFlag = $featureFlag;
+        $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
     }
 
     public function validate($value, Constraint $constraint)
@@ -43,6 +42,10 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
                     get_debug_type($value)
                 )
             );
+        }
+
+        if (true === $this->fakeAppsFeatureFlag->isEnabled()) {
+            return;
         }
 
         if (empty($value->getClientId())
