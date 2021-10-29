@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.54 (2021-10-29)
+
 ## Bug fixes
 
 - PIM-10126: Check if the locale is supported for the spellcheck feature before create spellcheck elements
