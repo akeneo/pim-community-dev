@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Infrastructure\Loader;
+namespace Akeneo\Platform\Job\Test\Integration\Loader;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;

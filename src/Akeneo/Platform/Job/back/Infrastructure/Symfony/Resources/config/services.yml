@@ -2,7 +2,3 @@ services:
     Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecution:
         arguments:
             - '@Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface'
-
-    Akeneo\Platform\Job\Infrastructure\Loader\FixturesLoader:
-        arguments:
-            - '@database_connection'

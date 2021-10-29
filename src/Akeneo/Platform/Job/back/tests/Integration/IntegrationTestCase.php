@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration;
 
-use Akeneo\Platform\Job\Infrastructure\Loader\FixturesLoader;
+use Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -20,7 +20,7 @@ abstract class IntegrationTestCase extends WebTestCase
         static::bootKernel(['debug' => false]);
 
         $this->dbalConnection = $this->get('database_connection');
-        $this->fixturesLoader = $this->get('Akeneo\Platform\Job\Infrastructure\Loader\FixturesLoader');
+        $this->fixturesLoader = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader');
 
         $this->resetDB();
         $this->fixtures = $this->loadFixtures();
