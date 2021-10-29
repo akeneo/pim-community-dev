@@ -826,6 +826,15 @@ workflows:
                     branches:
                         ignore:
                             - master
+          - delete_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+          - deploy_pr_environment:
+                requires:
+                    - deploy_pr_environment?
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
