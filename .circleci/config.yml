@@ -393,8 +393,8 @@ jobs:
                 name: Install database
                 command: APP_ENV=test make database
           - run:
-                name: PhpUnit End to end
-                command: PIM_CONTEXT=test make end-to-end-back
+                name: End to end back
+                command: make connectivity-connection-e2e-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
