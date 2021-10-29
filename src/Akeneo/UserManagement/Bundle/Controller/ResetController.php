@@ -58,7 +58,7 @@ class ResetController extends AbstractController
     }
 
     /**
-     * @Template("PimUserBundle:Reset:request.html.twig")
+     * @Template("@PimUser/Reset/request.html.twig")
      */
     public function request()
     {
@@ -68,7 +68,7 @@ class ResetController extends AbstractController
     /**
      * Request reset user password
      *
-     * @Template("PimUserBundle:Reset:sendEmail.html.twig")
+     * @Template("@PimUser/Reset/sendEmail.html.twig")
      */
     public function sendEmail(Request $request)
     {
@@ -137,7 +137,7 @@ class ResetController extends AbstractController
     /**
      * Reset user password
      *
-     * @Template("PimUserBundle:Reset:reset.html.twig")
+     * @Template("@PimUser/Reset:reset.html.twig")
      */
     public function reset($token)
     {

@@ -9,12 +9,12 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -180,12 +180,8 @@ class FileController
     /**
      * Returns the Mime type of a file.
      * If the file is linked to a FileInfo, returns its Mime type.
-     *
-     * @param string $filename
-     *
-     * @return string
      */
-    protected function getMimeType($filename)
+    protected function getMimeType(string $filename): ?string
     {
         $mimeType = null;
 
@@ -194,7 +190,7 @@ class FileController
             $mimeType = $file->getMimeType();
         }
         if (null === $mimeType && file_exists($filename)) {
-            $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+            $mimeType = (new MimeTypes())->guessMimeType($filename);
         }
 
         return $mimeType;

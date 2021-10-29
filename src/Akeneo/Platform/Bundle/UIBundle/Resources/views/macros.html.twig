@@ -207,8 +207,8 @@
         excludes - names of attributes which should not be rendered even if they exist in attr parameter
 #}
 {% macro attributes(attr, excludes) %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set attr = attr|default({}) %}
         {% for attrname, attrvalue in attr %}{% if not excludes is defined or not excludes[attrname] is defined %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endif %}{% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}

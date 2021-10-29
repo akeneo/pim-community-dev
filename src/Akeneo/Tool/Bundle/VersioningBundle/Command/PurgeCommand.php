@@ -144,7 +144,7 @@ class PurgeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
@@ -193,10 +193,12 @@ class PurgeCommand extends Command
             if (!$helper->ask($input, $output, $question)) {
                 $output->writeln('Abort purge operation.');
 
-                return;
+                return Command::FAILURE;
             }
         }
 
         $this->versionPurger->purge($purgeOptions, $output);
+
+        return Command::SUCCESS;
     }
 }

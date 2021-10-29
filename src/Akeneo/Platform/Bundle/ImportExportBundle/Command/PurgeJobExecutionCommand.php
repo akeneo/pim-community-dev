@@ -53,14 +53,14 @@ class PurgeJobExecutionCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = $input->getOption('days');
         if (!is_numeric($days)) {
             $output->writeln(
                 sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
             );
-            return;
+            return Command::FAILURE;
         }
 
         if (0 === (int) $days) {
@@ -68,7 +68,7 @@ class PurgeJobExecutionCommand extends Command
             $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
             if (!$helper->ask($input, $output, $confirmation)) {
                 $output->write("Operation aborted\n");
-                return;
+                return Command::FAILURE;
             }
             $this->purgeJobExecution->all();
             $output->write("All jobs execution deleted ...\n");
@@ -76,5 +76,7 @@ class PurgeJobExecutionCommand extends Command
             $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
             $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
         }
+
+        return Command::SUCCESS;
     }
 }

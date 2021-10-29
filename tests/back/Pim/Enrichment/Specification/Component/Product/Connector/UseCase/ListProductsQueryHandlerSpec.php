@@ -41,6 +41,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
+        $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $channelRepository,
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),

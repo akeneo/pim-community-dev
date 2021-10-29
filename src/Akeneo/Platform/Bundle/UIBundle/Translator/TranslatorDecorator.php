@@ -28,7 +28,7 @@ class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans(string $id, array $parameters = [], $domain = null, $locale = null)
     {
         return $this->symfonyTranslator->trans($id, $parameters, $domain, $locale);
     }

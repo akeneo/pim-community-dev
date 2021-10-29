@@ -46,12 +46,14 @@ class SystemInfoCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $systemInfoStyle = new SystemInfoStyle($input, $output);
 
         $systemInfoStyle->title($this->translator->trans('pim_analytics.system_info.title'));
         $systemInfoStyle->table([], $this->formatCollectedData($this->getCollectedData()));
+
+        return Command::SUCCESS;
     }
 
     /**

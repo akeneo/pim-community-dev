@@ -78,7 +78,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
@@ -118,7 +118,7 @@ class AssetsCommand extends Command
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::POST_ASSETS_DUMP);
 
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**
