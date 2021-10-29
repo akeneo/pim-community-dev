@@ -50,7 +50,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $avatar->getKey()->willReturn('a/b/c/123456avatar.png');
         $avatar->getOriginalFilename()->willReturn('avatar.png');
 
-        $user->getUsername()->willReturn('johndoe');
+        $user->getUserIdentifier()->willReturn('johndoe');
         $user->isEnabled()->willReturn(true);
         $user->getNamePrefix()->willReturn(null);
         $user->getFirstName()->willReturn('John');

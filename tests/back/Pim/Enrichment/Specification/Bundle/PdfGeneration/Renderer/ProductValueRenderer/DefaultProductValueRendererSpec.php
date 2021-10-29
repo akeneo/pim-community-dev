@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use PhpSpec\ObjectBehavior;
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 
 class DefaultProductValueRendererSpec extends ObjectBehavior
 {
@@ -17,9 +18,9 @@ class DefaultProductValueRendererSpec extends ObjectBehavior
         $this->supportsAttributeType(AttributeTypes::TEXTAREA)->shouldReturn(true);
     }
 
-    function it_renders_string_value(ValueInterface $value)
+    function it_renders_string_value(ValueInterface $value, LoaderInterface $loader)
     {
-        $environment = new Environment();
+        $environment = new Environment($loader->getWrappedObject());
         $attribute = new Attribute();
 
         $value->__toString()
@@ -29,9 +30,9 @@ class DefaultProductValueRendererSpec extends ObjectBehavior
         $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('a value');
     }
 
-    function it_renders_metric_value(MetricValue $value)
+    function it_renders_metric_value(MetricValue $value, LoaderInterface $loader)
     {
-        $environment = new Environment();
+        $environment = new Environment($loader->getWrappedObject());
         $attribute = new Attribute();
 
         $value->__toString()

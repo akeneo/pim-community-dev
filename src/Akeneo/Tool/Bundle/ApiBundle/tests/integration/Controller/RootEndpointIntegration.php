@@ -13,6 +13,7 @@ class RootEndpointIntegration extends ApiTestCase
 {
     public function testGetEndpoint()
     {
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->request('GET', 'api/rest/v1');
 

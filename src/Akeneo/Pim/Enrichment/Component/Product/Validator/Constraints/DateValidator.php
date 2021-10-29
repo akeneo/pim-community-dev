@@ -20,6 +20,9 @@ class DateValidator extends BaseDateValidator
         if (!$constraint instanceof Date) {
             throw new UnexpectedTypeException($constraint, Date::class);
         }
+        if ($value instanceof \DateTimeInterface) {
+            return;
+        }
 
         parent::validate($value, $constraint);
 

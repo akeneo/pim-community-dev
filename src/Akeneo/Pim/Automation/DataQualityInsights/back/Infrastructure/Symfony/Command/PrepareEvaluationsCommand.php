@@ -42,7 +42,7 @@ class PrepareEvaluationsCommand extends Command
             ->setDescription('Prepare the evaluations of products and structure');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');

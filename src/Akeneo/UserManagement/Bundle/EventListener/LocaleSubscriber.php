@@ -51,7 +51,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
 
         if ($user === $event->getArgument('current_user')) {
-            $request = $this->requestStack->getMasterRequest();
+            $request = $this->requestStack->getMainRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getCode());
             $this->localeAware->setLocale($user->getUiLocale()->getCode());
         }

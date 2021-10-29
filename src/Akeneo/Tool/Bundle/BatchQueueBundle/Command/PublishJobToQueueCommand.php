@@ -99,7 +99,7 @@ class PublishJobToQueueCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $jobInstanceCode = $input->getArgument('code');
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];

@@ -37,7 +37,7 @@ final class SchedulePeriodicTasksCommand extends Command
             ->setDescription('Schedule the periodic tasks of Data-Quality-Insights.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
