@@ -38,4 +38,10 @@ class ConnectionTypeSpec extends ObjectBehavior
         $this->beConstructedWith('connection_type');
         $this->__toString()->shouldReturn('connection_type');
     }
+
+    public function it_returns_a_default_value(): void
+    {
+        $this->beConstructedWith(null);
+        $this->__toString()->shouldReturn('default');
+    }
 }

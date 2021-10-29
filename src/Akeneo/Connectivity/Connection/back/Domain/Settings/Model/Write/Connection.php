@@ -19,8 +19,6 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
  */
 class Connection
 {
-    private const DEFAULT_TYPE = 'default';
-
     private ConnectionCode $code;
 
     private ConnectionLabel $label;
@@ -45,7 +43,7 @@ class Connection
         int $userId,
         ?string $image = null,
         bool $auditable = false,
-        string $type = self::DEFAULT_TYPE
+        ?string $type = null
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);

@@ -10,10 +10,14 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionType
 {
+    private const DEFAULT_TYPE = 'default';
+
     private string $type;
 
-    public function __construct(string $type)
+    public function __construct(?string $type = self::DEFAULT_TYPE)
     {
+        $type = $type ?? self::DEFAULT_TYPE;
+
         if (empty($type)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.type.required');
         }
