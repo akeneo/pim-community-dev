@@ -70,6 +70,23 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         $this->validate($value, $constraint);
     }
 
+    public function it_skips_the_validator_if_a_value_is_empty(
+        CodeChallengeMustBeValid $constraint,
+        AccessTokenRequest $value,
+        WebMarketplaceApiInterface $webMarketplaceApi,
+        ExecutionContextInterface $context
+    ): void {
+        $value->getClientId()->willReturn('');
+        $value->getCodeIdentifier()->willReturn('');
+        $value->getCodeChallenge()->willReturn('');
+
+        $webMarketplaceApi->validateCodeChallenge(Argument::cetera())->shouldNotBeCalled();
+
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($value, $constraint);
+    }
+
     public function it_adds_a_violation_when_the_code_challenge_is_refused(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,

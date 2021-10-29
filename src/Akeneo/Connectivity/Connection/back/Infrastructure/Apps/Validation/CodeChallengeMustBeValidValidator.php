@@ -48,6 +48,13 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
             return;
         }
 
+        if (empty($value->getClientId())
+            || empty($value->getCodeIdentifier())
+            || empty($value->getCodeChallenge())
+        ) {
+            return;
+        }
+
         $codeChallengeIsValid = $this->webMarketplaceApi->validateCodeChallenge(
             $value->getClientId(),
             $value->getCodeIdentifier(),
