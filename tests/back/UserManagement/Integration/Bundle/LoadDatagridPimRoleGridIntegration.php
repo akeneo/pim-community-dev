@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
 use Akeneo\Test\Integration\Configuration;
@@ -11,7 +13,7 @@ final class LoadDatagridPimRoleGridIntegration extends ControllerIntegrationTest
     /**
      * @group ce
      */
-    public function test_it_only_return_default_type_roles(): void
+    public function test_it_only_returns_default_type_roles(): void
     {
         $roleRepository = $this->get('pim_user.repository.role');
         $roleSaver = $this->get('pim_user.saver.role');
