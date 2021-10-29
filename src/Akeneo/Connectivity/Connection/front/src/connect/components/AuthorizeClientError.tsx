@@ -48,7 +48,7 @@ export const AuthorizeClientError: FC<Props> = ({error}) => {
             <ClientErrorIllustration width={420} height={204} />
             <ErrorTexts>
                 <ErrorMessage>{translate(error)}</ErrorMessage>
-                <SubText>{translate('akeneo_connectivity.connection.connect.apps.authorize.error.sub_text')}</SubText>
+                <SubText>{translate('akeneo_connectivity.connection.connect.apps.error.sub_text')}</SubText>
             </ErrorTexts>
         </FullScreen>
     );
