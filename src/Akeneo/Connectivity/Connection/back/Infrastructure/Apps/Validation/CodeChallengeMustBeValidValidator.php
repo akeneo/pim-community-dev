@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -17,10 +18,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class CodeChallengeMustBeValidValidator extends ConstraintValidator
 {
     private WebMarketplaceApiInterface $webMarketplaceApi;
+    private FeatureFlag $fakeAppsFeatureFlag;
 
-    public function __construct(WebMarketplaceApiInterface $webMarketplaceApi)
-    {
+    public function __construct(
+        WebMarketplaceApiInterface $webMarketplaceApi,
+        FeatureFlag $fakeAppsFeatureFlag
+    ) {
         $this->webMarketplaceApi = $webMarketplaceApi;
+        $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
     }
 
     public function validate($value, Constraint $constraint)
@@ -37,6 +42,10 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
                     get_debug_type($value)
                 )
             );
+        }
+
+        if (true === $this->fakeAppsFeatureFlag->isEnabled()) {
+            return;
         }
 
         $codeChallengeIsValid = $this->webMarketplaceApi->validateCodeChallenge(

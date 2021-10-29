@@ -126,6 +126,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
+        $this->get('akeneo_connectivity.connection.marketplace_fake_apps.feature')->disable();
         $this->loadAppsFixtures();
     }
 

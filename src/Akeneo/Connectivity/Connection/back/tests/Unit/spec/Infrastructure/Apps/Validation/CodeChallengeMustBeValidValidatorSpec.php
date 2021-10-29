@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -18,9 +19,11 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
+        FeatureFlag $fakeAppsFeatureFlag,
         ExecutionContextInterface $context
     ): void {
-        $this->beConstructedWith($webMarketplaceApi);
+        $this->beConstructedWith($webMarketplaceApi, $fakeAppsFeatureFlag);
+        $fakeAppsFeatureFlag->isEnabled()->willReturn(false);
         $this->initialize($context);
     }
 
