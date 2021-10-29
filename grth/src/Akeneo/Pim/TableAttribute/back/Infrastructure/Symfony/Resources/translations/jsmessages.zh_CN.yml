@@ -40,7 +40,7 @@ table_attribute_template:
       options:
         energy: 能量
         fat: 脂肪
-        of_which_saturates: 饱和
+        of_which_saturates: 饱和脂肪
         carbohydrate: 碳水化合物
         of_which_sugars: 含糖量
         fibre: 纤维
@@ -173,7 +173,7 @@ pim_table_attribute:
         clear_row: 清除此行
         move_first: 移动到第一个位置
         move_last: 移动到最后一个位置
-      order: 订单
+      order: 顺序
   properties:
     data_type:
       text: 文本
@@ -219,6 +219,7 @@ pim_table_attribute:
     select_your_row: 选择行
     select_your_operator: 选择运算符
     select_your_value: 选择值
+    any_row: 任意行
 pim_enrich:
   entity:
     attribute:
