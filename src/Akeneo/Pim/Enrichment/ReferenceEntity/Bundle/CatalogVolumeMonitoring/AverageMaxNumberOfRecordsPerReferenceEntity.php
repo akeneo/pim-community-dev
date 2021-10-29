@@ -20,15 +20,10 @@ class AverageMaxNumberOfRecordsPerReferenceEntity implements AverageMaxQuery
     /** @var SqlAverageMaxNumberOfRecordsPerReferenceEntity */
     private $averageMaxNumberOfRecordsPerReferenceEntity;
 
-    /** @var int */
-    private $limit;
-
     public function __construct(
-        SqlAverageMaxNumberOfRecordsPerReferenceEntity $averageMaxNumberOfRecordsPerReferenceEntity,
-        int $limit
+        SqlAverageMaxNumberOfRecordsPerReferenceEntity $averageMaxNumberOfRecordsPerReferenceEntity
     ) {
         $this->averageMaxNumberOfRecordsPerReferenceEntity = $averageMaxNumberOfRecordsPerReferenceEntity;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -37,7 +32,6 @@ class AverageMaxNumberOfRecordsPerReferenceEntity implements AverageMaxQuery
         $result = new AverageMaxVolumes(
             $volume->getMaxVolume(),
             $volume->getAverageVolume(),
-            $this->limit,
             self::VOLUME_NAME
         );
 

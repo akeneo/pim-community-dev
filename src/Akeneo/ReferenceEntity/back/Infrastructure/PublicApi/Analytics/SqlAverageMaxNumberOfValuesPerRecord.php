@@ -15,12 +15,10 @@ class SqlAverageMaxNumberOfValuesPerRecord
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
     private Connection $sqlConnection;
-    private int $limit;
 
-    public function __construct(Connection $sqlConnection, int $limit)
+    public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -36,7 +34,6 @@ SQL;
         return new AverageMaxVolumes(
             (int) $result['max'],
             (int) $result['average'],
-            $this->limit,
             self::VOLUME_NAME
         );
     }

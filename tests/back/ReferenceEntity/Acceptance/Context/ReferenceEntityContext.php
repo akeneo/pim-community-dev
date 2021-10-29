@@ -36,14 +36,6 @@ final class ReferenceEntityContext implements Context
     }
 
     /**
-     * @Given the limit of reference entities is set to :limit
-     */
-    public function theLimitOfReferenceEntitiesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of reference entities is :numberOfReferenceEntities
      */
     public function theReportReturnsThatTheNumberOfReferenceEntitiesIs(int $numberOfReferenceEntities): void
@@ -51,25 +43,5 @@ final class ReferenceEntityContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfReferenceEntities, $volumes['count_reference_entities']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of reference entities is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfReferenceEntitiesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_reference_entities']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of reference entities is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfReferenceEntitiesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_reference_entities']['has_warning']);
     }
 }

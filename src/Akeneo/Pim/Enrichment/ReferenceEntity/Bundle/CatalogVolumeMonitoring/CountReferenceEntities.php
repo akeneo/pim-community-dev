@@ -20,19 +20,15 @@ class CountReferenceEntities implements CountQuery
     /** @var SqlCountReferenceEntities */
     private $sqlCountReferenceEntities;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(SqlCountReferenceEntities $sqlCountReferenceEntities, int $limit)
+    public function __construct(SqlCountReferenceEntities $sqlCountReferenceEntities)
     {
         $this->sqlCountReferenceEntities = $sqlCountReferenceEntities;
-        $this->limit = $limit;
     }
 
     public function fetch(): CountVolume
     {
         $volume = $this->sqlCountReferenceEntities->fetch();
-        $result = new CountVolume($volume->getVolume(), $this->limit, self::VOLUME_NAME);
+        $result = new CountVolume($volume->getVolume(), self::VOLUME_NAME);
 
         return $result;
     }
