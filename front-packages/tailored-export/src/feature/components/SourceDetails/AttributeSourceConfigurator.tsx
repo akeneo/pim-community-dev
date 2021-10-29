@@ -12,7 +12,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
-import {AttributeConfiguratorProps, Source} from '../../models';
+import {AttributeConfiguratorProps, AttributeSource} from '../../models';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {LocaleDropdown} from '../LocaleDropdown';
 import {MeasurementConfigurator} from './Measurement/MeasurementConfigurator';
@@ -28,6 +28,7 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
+import {TableConfigurator} from './Table/TableConfigurator';
 import {ErrorBoundary, DeletedAttributeSourcePlaceholder} from './error';
 
 const Container = styled.div`
@@ -53,12 +54,13 @@ const configurators: {[attributeType: string]: FunctionComponent<AttributeConfig
   pim_catalog_multiselect: MultiSelectConfigurator,
   akeneo_reference_entity: ReferenceEntityConfigurator,
   pim_catalog_asset_collection: AssetCollectionConfigurator,
+  pim_catalog_table: TableConfigurator,
 };
 
 type AttributeSourceConfiguratorProps = {
-  source: Source;
+  source: AttributeSource;
   validationErrors: ValidationError[];
-  onSourceChange: (updatedSource: Source) => void;
+  onSourceChange: (updatedSource: AttributeSource) => void;
 };
 
 const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}: AttributeSourceConfiguratorProps) => {

@@ -12,6 +12,7 @@ use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Subscription;
 use Google\Cloud\PubSub\Topic;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 class PubSubStatusCheckerSpec extends ObjectBehavior
 {
@@ -19,7 +20,8 @@ class PubSubStatusCheckerSpec extends ObjectBehavior
         PubSubClientFactory $pubSubClientFactory,
         PubSubClient $pubSubClient,
         Topic $topic,
-        Subscription $subscription
+        Subscription $subscription,
+        LoggerInterface $logger
     ) {
         $pubSubClientFactory->createPubSubClient(['projectId' => 'a_project_id'])
             ->willReturn($pubSubClient);
@@ -30,7 +32,7 @@ class PubSubStatusCheckerSpec extends ObjectBehavior
         $topic->subscription('a_subscription_id')
             ->willReturn($subscription);
 
-        $this->beConstructedWith($pubSubClientFactory, 'a_project_id', 'a_topic_id', 'a_subscription_id');
+        $this->beConstructedWith($pubSubClientFactory, 'a_project_id', 'a_topic_id', 'a_subscription_id',$logger);
     }
 
     function it_is_a_pubsub_status_checker()

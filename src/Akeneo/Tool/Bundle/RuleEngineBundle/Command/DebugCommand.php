@@ -51,13 +51,15 @@ class DebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (null !== $code = $input->getArgument('code')) {
             $this->showRule($output, $code);
         } else {
             $this->listRules($output);
         }
+
+        return Command::SUCCESS;
     }
 
     /**

@@ -28,8 +28,6 @@ config:
             defaultController:
                 module: pim/controller/template
             controllers:
-#                pim_enrich_attribute_create:
-#                    module: pimee/controller/attribute/create
                 pimee_enrich_locale_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_enrich_locale_edit_permissions

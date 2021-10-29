@@ -1,4 +1,4 @@
-import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
+import {Channel, ChannelReference, getLocalesFromChannel, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 import {getDefaultMeasurementSource, MeasurementSource} from '../components/SourceDetails/Measurement/model';
 import {
@@ -41,34 +41,42 @@ import {
   QuantifiedAssociationTypeSource,
 } from '../components/SourceDetails/QuantifiedAssociationType/model';
 import {CodeSource, getDefaultCodeSource} from '../components/SourceDetails/Code/model';
+import {getDefaultQualityScoreSource, QualityScoreSource} from '../components/SourceDetails/QualityScore/model';
+import {getDefaultTableSource, TableSource} from '../components/SourceDetails/Table/model';
 
 const MAX_SOURCE_COUNT = 4;
 
-type Source =
-  | AssetCollectionSource
-  | BooleanSource
+type PropertySource =
   | CategoriesSource
   | CodeSource
-  | DateSource
   | EnabledSource
   | FamilySource
   | FamilyVariantSource
-  | FileSource
   | GroupsSource
+  | ParentSource
+  | QualityScoreSource;
+
+type AttributeSource =
+  | AssetCollectionSource
+  | BooleanSource
+  | DateSource
+  | FileSource
   | IdentifierSource
   | MeasurementSource
   | MultiSelectSource
   | NumberSource
-  | ParentSource
   | PriceCollectionSource
   | ReferenceEntitySource
   | ReferenceEntityCollectionSource
   | SimpleSelectSource
-  | TextSource
-  | SimpleAssociationTypeSource
-  | QuantifiedAssociationTypeSource;
+  | TableSource
+  | TextSource;
 
-const getDefaultPropertySource = (sourceCode: string): Source => {
+type AssociationTypeSource = SimpleAssociationTypeSource | QuantifiedAssociationTypeSource;
+
+type Source = PropertySource | AttributeSource | AssociationTypeSource;
+
+const getDefaultPropertySource = (sourceCode: string, channels: Channel[]): PropertySource => {
   switch (sourceCode) {
     case 'code':
       return getDefaultCodeSource();
@@ -84,6 +92,15 @@ const getDefaultPropertySource = (sourceCode: string): Source => {
       return getDefaultFamilySource();
     case 'family_variant':
       return getDefaultFamilyVariantSource();
+    case 'quality_score':
+      const channel = channels[0] ?? null;
+      const locale = getLocalesFromChannel(channels, channel?.code ?? null)[0] ?? null;
+
+      if (null === channel || null === locale) {
+        throw new Error('Missing channel or locale');
+      }
+
+      return getDefaultQualityScoreSource(channel.code, locale.code);
     default:
       throw new Error(`Invalid property source "${sourceCode}"`);
   }
@@ -93,7 +110,7 @@ const getDefaultAttributeSource = (
   attribute: Attribute,
   channel: ChannelReference,
   locale: LocaleReference
-): Source => {
+): AttributeSource => {
   switch (attribute.type) {
     case 'pim_catalog_boolean':
       return getDefaultBooleanSource(attribute, channel, locale);
@@ -117,6 +134,8 @@ const getDefaultAttributeSource = (
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
       return getDefaultTextSource(attribute, channel, locale);
+    case 'pim_catalog_table':
+      return getDefaultTableSource(attribute, channel, locale);
     case 'pim_catalog_asset_collection':
       return getDefaultAssetCollectionSource(attribute, channel, locale);
     case 'akeneo_reference_entity_collection':
@@ -128,7 +147,7 @@ const getDefaultAttributeSource = (
   }
 };
 
-const getDefaultAssociationTypeSource = (associationType: AssociationType): Source => {
+const getDefaultAssociationTypeSource = (associationType: AssociationType): AssociationTypeSource => {
   if (associationType.is_quantified) {
     return getDefaultQuantifiedAssociationTypeSource(associationType);
   }
@@ -137,4 +156,4 @@ const getDefaultAssociationTypeSource = (associationType: AssociationType): Sour
 };
 
 export {MAX_SOURCE_COUNT, getDefaultPropertySource, getDefaultAttributeSource, getDefaultAssociationTypeSource};
-export type {Source};
+export type {Source, AttributeSource, AssociationTypeSource, PropertySource};

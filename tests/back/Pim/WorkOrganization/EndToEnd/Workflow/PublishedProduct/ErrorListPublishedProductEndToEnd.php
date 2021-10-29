@@ -2,7 +2,7 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorListPublishedProductEndToEnd extends AbstractPublishedProductTestCase
@@ -321,13 +321,7 @@ class ErrorListPublishedProductEndToEnd extends AbstractPublishedProductTestCase
         $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-
-    /**
-     * @param Client $client
-     * @param string $message
-     * @param int    $code
-     */
-    private function assert(Client $client, string $message, int $code)
+    private function assert(KernelBrowser $client, string $message, int $code): void
     {
         $response = $client->getResponse();
 

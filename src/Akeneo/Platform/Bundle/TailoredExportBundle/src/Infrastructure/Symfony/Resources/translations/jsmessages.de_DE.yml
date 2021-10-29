@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Individueller Produktexport in XL
 batch_jobs.xlsx_tailored_product_model_export.label: Individueller Produktmodell-Export in XLSX
 batch_jobs.csv_tailored_product_export.label: Individueller Produktexport in CSV
 batch_jobs.csv_tailored_product_model_export.label: Individueller Produktmodell-Export in CSV
+pim_common:
+  quality_score: Qualitätspunktzahl
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: Gebietsschema auswählen
         remove: Gebietsschema entfernen
     quality_score:
+      score:
+        remove: Qualitätswert entfernen
       locales:
+        placeholder: Gebietsschema auswählen
         label: Definieren Sie die Gebietsschema für die Qualitätswert
+        remove: Gebietsschema entfernen
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: Wenn das Attribut als Label einen Wert pro Gebietsschema hat, können Sie ein bestimmtes Gebietsschema auswählen.
             channel: Wenn das Attribut als Label einen Wert pro Kanal hat, können Sie einen bestimmten Kanal auswählen.
         measurement:
+          information: Für dieses Attribut können Sie entweder den Wert, den Einheitscode, das Einheitsetikett oder den Wert und das Einheitslabel exportieren.
           value: Wert
           unit_locale: Gebietsschema
           unit_code: Einheit
           unit_label: Einheitslabel
+          value_and_unit_label: Wert und Einheiten-Label
         price:
           currency_code: Währungscode
           currency_label: Währungsbezeichnung
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: Ersetzungswert für Nein
           edit_mapping: Ersetzungswerte bearbeiten
           modal:
+            records: Datensätze verwalten
+            options: Optionen verwalten
+            subtitle: Ersetzen
             no_result:
               title: Leider gibt es keinen Wert in diesem Attribut
             empty_result:

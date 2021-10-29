@@ -168,12 +168,15 @@ class SourcesValidator extends ConstraintValidator
     private function buildViolations(ConstraintViolationListInterface $violations, $source): void
     {
         foreach ($violations as $violation) {
-            $this->context->buildViolation(
+            $builder = $this->context->buildViolation(
                 $violation->getMessage(),
                 $violation->getParameters()
             )
-                ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
-                ->addViolation();
+                ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()));
+            if ($violation->getPlural()) {
+                $builder->setPlural((int)$violation->getPlural());
+            }
+            $builder->addViolation();
         }
     }
 }

@@ -78,8 +78,8 @@ class RecordCodeShouldBeUniqueValidator extends ConstraintValidator
         );
         if ($alreadyExists) {
             $this->context->buildViolation(RecordCodeShouldBeUnique::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
-                ->setParameter('%code%', $code)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier->normalize())
+                ->setParameter('%code%', $code->normalize())
                 ->atPath('code')
                 ->addViolation();
         }

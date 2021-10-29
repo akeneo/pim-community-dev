@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class IsGrantedExtensionSpec extends ObjectBehavior
@@ -24,7 +25,7 @@ class IsGrantedExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldBeAnInstanceOf(\Twig_Extension::class);
+        $this->shouldHaveType(AbstractExtension::class);
     }
 
     function it_has_functions()

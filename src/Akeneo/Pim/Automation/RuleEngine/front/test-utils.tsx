@@ -18,6 +18,7 @@ import renderMeasurement from '../front/src/pages/EditRules/components/actions/a
 import renderAssetCollection from '../front/src/pages/EditRules/components/actions/attribute/AssetCollectionValue';
 import renderMultiReferenceEntity from '../front/src/pages/EditRules/components/actions/attribute/MultiReferenceEntityValue';
 import renderSimpleReferenceEntity from '../front/src/pages/EditRules/components/actions/attribute/SimpleReferenceEntityValue';
+import {defaultCellInputsMapping, defaultCellMatchersMapping} from "@akeneo-pim-ge/table_attribute/__tests__/factories";
 
 jest.mock('./src/dependenciesTools/provider/dependencies.ts');
 
@@ -85,13 +86,15 @@ export const renderWithProviders = (ui: React.ReactElement, context?: Context, o
     akeneo_reference_entity_collection: {default: renderMultiReferenceEntity },
     akeneo_reference_entity: {default: renderSimpleReferenceEntity },
   }
+  const cellMatchersMapping = defaultCellMatchersMapping;
+  const cellInputsMapping = defaultCellInputsMapping;
 
   const AllProviders: React.FC = ({children}) => {
     return (
       <LegacyDependencies>
         <AkeneoThemeProvider>
           <ReactHookFormProvider defaultValues={options?.defaultValues} toRegister={options?.toRegister}>
-            <ConfigContext.Provider value={{attributeValueConfig}}>
+            <ConfigContext.Provider value={{attributeValueConfig, cellMatchersMapping, cellInputsMapping}}>
               {children}
             </ConfigContext.Provider>
           </ReactHookFormProvider>

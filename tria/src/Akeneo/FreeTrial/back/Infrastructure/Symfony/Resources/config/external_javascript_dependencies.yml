@@ -25,7 +25,7 @@ services:
   Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\GoogleTagManager:
     arguments:
       - '@security.script_nonce_generator'
-      - '%env(GOOGLE_ANALYTICS_ID)%'
+      - '%env(GOOGLE_TAG_MANAGER_ID)%'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -33,7 +33,7 @@ services:
   Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\GoogleAnalytics:
     arguments:
       - '@security.script_nonce_generator'
-      - '%env(GOOGLE_TAG_MANAGER_ID)%'
+      - '%env(GOOGLE_ANALYTICS_ID)%'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }

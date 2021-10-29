@@ -205,9 +205,9 @@ class CatalogUpdatesIntegration extends TeamworkAssistantTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        $rootPath = $this->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR;
         return new Configuration(
             [
                 $rootPath .

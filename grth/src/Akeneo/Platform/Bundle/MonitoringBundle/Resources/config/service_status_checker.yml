@@ -3,6 +3,7 @@ services:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker'
         arguments:
             - '@database_connection'
+            - '@logger'
 
     akeneo_monitoring.status_checker.pub_sub:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusChecker'
@@ -11,21 +12,26 @@ services:
             - '%env(GOOGLE_CLOUD_PROJECT)%'
             - '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
             - '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
+            - '@logger'
+
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
         arguments:
             - '@akeneo_elasticsearch.registry.clients'
+            - '@logger'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@logger'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
         arguments:
             - '@swiftmailer.mailer.default.transport.real'
+            - '@logger'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
         public: true

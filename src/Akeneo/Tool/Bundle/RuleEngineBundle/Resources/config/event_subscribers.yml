@@ -18,7 +18,8 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo_rule_engine.event_subscriber.assets_installer:
-        class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\AssetsInstaller
+        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
         arguments:
             - '@filesystem'
-            - '%kernel.project_dir%'
+            - '%kernel.project_dir%/src/Akeneo/Pim/Automation/RuleEngine/front/src'
+            - '%kernel.project_dir%/public/bundles/akeneopimruleengine'

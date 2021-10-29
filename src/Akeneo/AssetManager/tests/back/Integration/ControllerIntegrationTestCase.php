@@ -31,15 +31,15 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 
     protected function setUp(): void
     {
+        static::ensureKernelShutdown();
         $this->client = static::createClient(['environment' => 'test_fake', 'debug' => false]);
         $this->client->disableReboot();
     }
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return static::getContainer()->get($service);
     }
-
 
     /**
      * {@inheritdoc}

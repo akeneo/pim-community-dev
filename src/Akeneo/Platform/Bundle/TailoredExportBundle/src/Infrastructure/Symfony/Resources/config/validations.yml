@@ -1,7 +1,7 @@
 services:
-  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\AssetCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint: ~
@@ -19,10 +19,13 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Table\TableSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint: ~
 
   akeneo.tailored_export.validation.source:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\SourcesValidator'
@@ -43,8 +46,9 @@ services:
         pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceConstraint'
         pim_catalog_price_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint'
         pim_catalog_simpleselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint'
-        pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
-        pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_table: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Table\TableSourceConstraint'
+        pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
+        pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
       -
         categories: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint'
         enabled: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint'
@@ -52,6 +56,7 @@ services:
         family_variant: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint'
         groups: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint'
         parent: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSourceConstraint'
+        quality_score: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint'
     tags:
       - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
     public: true
@@ -59,6 +64,7 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']
+      - '@pim_catalog.query.find_activated_currencies'
     tags:
       - { name: validator.constraint_validator }
     public: true

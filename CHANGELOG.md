@@ -101,6 +101,11 @@
 - PIM-10109: Fix query to get reference entity records to be case insensitive
 - PIM-10103: Fix JS error on attribute options when DQI is disabled
 - PIM-10106: Fix Red underlines for spelling mistakes are moving
+- PIM-10087: Fix storage errors HTTP code to return 500 instead of 422
+- PIM-10048: fix memory leak in search product models by family variant query
+- PIM-10115: Blacklist domains for asset media links
+- PIM-10110: Enrich Service check logging upon exception and slow service check.
+- PIM-10120: Remove obsolete asset reference data
 
 ## Improvements
 

@@ -13,19 +13,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection;
 
+use Webmozart\Assert\Assert;
+
 final class PriceCollectionCurrencyCodeSelection implements PriceCollectionSelectionInterface
 {
     public const TYPE = 'currency_code';
 
     private string $separator;
+    private array $currencies;
 
-    public function __construct(string $separator)
+    public function __construct(string $separator, array $currencies)
     {
+        Assert::allString($currencies);
+
         $this->separator = $separator;
+        $this->currencies = $currencies;
     }
 
     public function getSeparator(): string
     {
         return $this->separator;
+    }
+
+    public function getCurrencies(): array
+    {
+        return $this->currencies;
     }
 }

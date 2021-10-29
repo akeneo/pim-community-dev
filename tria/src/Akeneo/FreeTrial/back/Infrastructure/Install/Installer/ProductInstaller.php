@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductInstaller implements FixtureInstaller
 {
-    private const BATCH_SIZE = 100;
+    private const DEFAULT_BATCH_SIZE = 100;
 
     private ProductBuilderInterface $productBuilder;
 
@@ -34,18 +34,22 @@ final class ProductInstaller implements FixtureInstaller
 
     private FixtureReader $fixturesReader;
 
+    private int $batchSize;
+
     public function __construct(
         FixtureReader $fixturesReader,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $updater,
         BulkSaverInterface $saver,
-        ValidatorInterface $productValidator
+        ValidatorInterface $productValidator,
+        int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
         $this->productBuilder = $productBuilder;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->productValidator = $productValidator;
         $this->fixturesReader = $fixturesReader;
+        $this->batchSize = $batchSize;
     }
 
     public function install(): void
@@ -59,7 +63,7 @@ final class ProductInstaller implements FixtureInstaller
             ]];
             $products[] = $this->createProduct($productData);
 
-            if (count($products) % self::BATCH_SIZE === 0) {
+            if (count($products) % $this->batchSize === 0) {
                 $this->saver->saveAll($products);
                 $products = [];
             }

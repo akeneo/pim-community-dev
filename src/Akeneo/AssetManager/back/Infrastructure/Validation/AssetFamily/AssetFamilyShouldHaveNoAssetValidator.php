@@ -73,7 +73,7 @@ class AssetFamilyShouldHaveNoAssetValidator extends ConstraintValidator
 
         if ($hasAssets) {
             $this->context->buildViolation(AssetFamilyShouldHaveNoAsset::ERROR_MESSAGE)
-                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
+                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier->normalize())
                 ->addViolation();
         }
     }

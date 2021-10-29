@@ -63,7 +63,7 @@ class ClearThumbnailCacheCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $previewType = $input->getArgument('preview_type');
@@ -72,26 +72,26 @@ class ClearThumbnailCacheCommand extends Command
         if ($shouldClearAllPreviewTypes && $previewType) {
             $output->writeln('<error>Preview type cannot be cleared with the --all option.</error>');
 
-            return;
+            return Command::FAILURE;
         }
         if (empty($previewType) && !$shouldClearAllPreviewTypes) {
             $output->writeln(
                 '<error>Provide a preview type to clear its cache or use the --all option to clear all preview type caches at once.</error>'
             );
 
-            return;
+            return Command::FAILURE;
         }
 
         if ($shouldClearAllPreviewTypes) {
             $output->writeln('<info>Clearing all the thumbnail caches will cause the PIM to recreate the thumbnail caches the next time they are needed in the PIM which can cause performance issues.</info>');
             if (!$io->confirm('Are you sure you want to clear all the caches ?', true)) {
-                return;
+                return Command::FAILURE;
             }
         }
         $previewTypesToClear = $this->getSupportedPreviewTypes();
         if (!$shouldClearAllPreviewTypes) {
             if (!$this->checkPreviewTypeIsValid($io, $previewType, $previewTypesToClear)) {
-                return;
+                return Command::FAILURE;
             }
             $previewTypesToClear = [$previewType];
         }
@@ -103,7 +103,7 @@ class ClearThumbnailCacheCommand extends Command
         $output->writeln('');
         $output->writeln('<info>Thumbnail cache successfully cleared</info>');
 
-        return 0;
+        return  Command::SUCCESS;
     }
 
     private function getSupportedPreviewTypes(): array

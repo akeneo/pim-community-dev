@@ -15,12 +15,9 @@ namespace Akeneo\AssetManager\Common\Helper;
 
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\User;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Allows to generate an http client authenticated with the given user with Oauth.
@@ -40,7 +37,7 @@ class OauthAuthenticatedClientFactory
         $this->kernel = $kernel;
     }
 
-    public function logIn(string $username): Client
+    public function logIn(string $username): KernelBrowser
     {
         $user = $this->createUser($username);
         $client = $this->createClient();
@@ -61,9 +58,9 @@ class OauthAuthenticatedClientFactory
         return $user;
     }
 
-    private function createClient(): Client
+    private function createClient(): KernelBrowser
     {
-        $client = new Client($this->kernel);
+        $client = new KernelBrowser($this->kernel);
         $client->disableReboot();
         $client->followRedirects();
 

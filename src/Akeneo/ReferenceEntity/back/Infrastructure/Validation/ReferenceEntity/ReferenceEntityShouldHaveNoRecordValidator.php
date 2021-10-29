@@ -74,7 +74,7 @@ class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
 
         if ($hasRecords) {
             $this->context->buildViolation(ReferenceEntityShouldHaveNoRecord::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier->normalize())
                 ->addViolation();
         }
     }

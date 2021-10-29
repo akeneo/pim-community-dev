@@ -29,6 +29,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         EntityManagerClearerInterface $cacheClearer
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $productsUpdater,
             $productsValidator,

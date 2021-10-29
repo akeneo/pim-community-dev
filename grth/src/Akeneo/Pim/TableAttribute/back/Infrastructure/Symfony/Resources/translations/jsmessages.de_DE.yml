@@ -1,0 +1,167 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      options:
+        energy: Energie
+        fat: Fett
+        saturated_fat: Gesättigte Fettsäuren
+        carbohydrate: Kohlenhydrate
+        sugars: Zucker
+        protein: Proteine
+        salt: Salz
+    per_100g:
+      label: 'Pro 100g'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Nährwertangaben
+      options:
+        total_fat: Gesamtfett (g)
+        saturated_fat: Gesättigte Fettsäuren (g)
+        trans_fat: Transfette (g)
+        cholesterol: Cholesterin (g)
+        sodium: Natrium (g)
+        total_carbohydrate: Gesamtkohlenhydrate (g)
+        dietary_fiber: Ballaststoffe (g)
+        total_sugars: Summe Zucker (g)
+        included_added_sugars: Hinzugefügter Zucker (g)
+        protein: Proteine (g)
+    amount_per_serving:
+      label: Angaben pro Portion
+    percentage_daily_value:
+      label: '% Tageswert'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Nährwerte
+      options:
+        energy: Energie
+        fat: Fett
+        carbohydrate: Kohlenhydrate
+        of_which_sugars: davon Zucker
+        fibre: Ballaststoffe
+        protein: Proteine
+        salt: Salz
+    per_100g:
+      label: Pro 100g
+    percentage_reference_intake:
+      label: '% Referenzmenge'
+    your_reference_intake:
+      label: 'Ihre Referenzmenge 8400 kJ 2000 kcal'
+  food_composition:
+    composition:
+      label: Zusammensetzung
+      options:
+        wheat_flour: Weizenmehl
+        water: Wasser
+        sugar: Zucker
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergen
+  clothing_composition:
+    composition:
+      label: Zusammensetzung
+      options:
+        cotton: Baumwolle
+        polyester: Polyester
+        elastane: Elastan
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Abmessungen
+      options:
+        length: Länge (cm)
+        width: Breite (%)
+        height: Höhe (cm)
+        weight: Gewicht (kg)
+    value:
+      label: Wert
+  dimensions-imperial:
+    dimensions:
+      label: Abmessungen
+      options:
+        length: Länge (Zoll)
+        width: Breite (Zoll)
+        height: Höhe (Zoll)
+        weight: Gewicht (Pfund)
+    value:
+      label: Wert
+  packaging-metric:
+    width:
+      label: Breite (%)
+    length:
+      label: Länge (cm)
+    height:
+      label: Höhe (cm)
+  packaging-imperial:
+    width:
+      label: Breite (Zoll)
+    length:
+      label: Länge (Zoll)
+    height:
+      label: Höhe (Zoll)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Tabellenstruktur
+      table_attribute: Tabellenattribut
+      add_column: Neue Spalte hinzufügen
+      select_type: Wählen Sie eine Option
+      data_type: Spaltentyp
+      labels: Labelübersetzungen
+      column_management: Spaltenverwaltung
+      please_type: Bitte geben Sie "{{ text }}" ein
+      confirm_column_delete: Sind Sie sicher, dass Sie diese Spalte löschen möchten?
+      confirm_option_delete: Sind Sie sicher, dass Sie diese Option löschen möchten?
+      empty_title: Ihre Tabellenstruktur ist leer.
+      empty_subtitle: Der erste Schritt ist, Ihre Spalten zu definieren.
+      unique_title: Ihr Tabellenattribut ist fast fertig.
+      unique_subtitle: Definieren Sie mindestens 2 Spalten, um Ihre Tabelle zu verwenden.
+      manage_options: Optionen verwalten
+      column_code: Spaltencode
+      table_structure_helper_link: Dieser Artikel kann Ihnen helfen, mehr über Tabellenattribute zu erfahren.
+      limit_option_reached: Sie haben das Limit von {{ limit }} Optionen erreicht.
+      template_label: Wählen Sie den Standard Ihrer "{{ templateLabel }}" Tabelle
+      no_options: Keine Optionen gefunden
+      please_try_again: Bitte versuche es noch einmal
+    product:
+      current_items: "{{ minItem }}-{{ maxItem }} von {{ itemCount }}"
+      current_page: "Seite {{ currentPage }} / {{ pageCount }}"
+      no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
+      no_rows_subtitle_on_readonly: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
+      no_add_options: Verwalten Sie Ihre "{{ attributeLabel }}" Optionen
+      no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten
+      no_add_options_link: hier
+      no_edit_permission: Keine Bearbeitungs-Berechtigung
+      actions:
+        delete_row: Diese Zeile löschen
+  properties:
+    data_type:
+      text: Text
+      boolean: Ja/Nein
+  validations:
+    column_code_must_be_filled: Der Code muss ausgefüllt werden
+    column_data_type_must_be_filled: Der Datentyp muss ausgefüllt werden
+    duplicated_select_code: Jeder Code benötigt einen eindeutigen Code
+    max_greater_than_min: Max muss mehr sein als Min
+    max_length: Maximale Anzahl an Zeichen (bis zu 100)
+    min: Minimalwert
+    max: Maximalwert
+    decimals_allowed: Dezimalwerte erlaubt
+  templates:
+    choose_template: Vorlage auswählen
+    empty_table: Leere Tabelle
+    nutrition: Nährwerte
+    food_composition: Essenskomposition
+    clothing_composition: Kleidungskomposition
+    dimensions-metric: Abmessungen (Metrisches System)
+    dimensions-imperial: Abmessungen (Imperiales System)
+  product_edit_form:
+    search: Suche
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Tabelle

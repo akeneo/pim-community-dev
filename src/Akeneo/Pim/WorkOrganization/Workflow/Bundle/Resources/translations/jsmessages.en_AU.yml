@@ -37,7 +37,6 @@ pim_datagrid:
     actions:
       approve_all: Approve all
       refuse_all: Reject all
-    characters_left: ']-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left'
 pimee_datagrid:
   cells:
     expand:

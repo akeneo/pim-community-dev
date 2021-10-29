@@ -1,0 +1,38 @@
+services:
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\CreateAttributeContext:
+        public: true
+        arguments:
+            - '@validator'
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext'
+
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext:
+        public: true
+        arguments:
+            - '@validator'
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext'
+
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation:
+        public: true
+        arguments:
+            - '@test.catalog.product_validation.context'
+            - '@test.catalog.product.builder'
+
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext:
+        public: true
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
+        class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryGetNonExistingSelectOptionCodes
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:
+        class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryTableConfigurationRepository
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
+        class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemorySelectOptionCollectionRepository

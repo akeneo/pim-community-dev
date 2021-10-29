@@ -1,9 +1,5 @@
-#!/usr/bin/bash
-set -x
-set -e
-
-apt-get -qq update
-apt-get -qq --no-install-recommends --no-install-suggests --yes --quiet install curl jq ca-certificates
+#!/bin/bash
+set -ex
 
 export LOGIN_DATA=$(mktemp)
 export COOKIE_JAR=$(mktemp)

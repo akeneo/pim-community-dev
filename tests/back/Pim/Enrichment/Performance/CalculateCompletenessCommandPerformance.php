@@ -36,7 +36,7 @@ class CalculateCompletenessCommandPerformance extends KernelTestCase
         // Original value: 23.1s
         $profileConfig->assert('main.wall_time < 30s', 'Total time');
         // Original value: 174MB
-        $profileConfig->assert('main.peak_memory < 200mb', 'Memory');
+        $profileConfig->assert('main.peak_memory < 205mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 2 calls to ES are performed (1 to search, 1 to index)

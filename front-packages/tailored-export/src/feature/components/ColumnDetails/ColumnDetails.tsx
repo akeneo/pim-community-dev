@@ -74,7 +74,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
 
   const handleSourceAdd = async (addedSourceCode: string, sourceType: string) => {
     if (sourceType === 'property') {
-      const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode);
+      const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode, channels);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
       onColumnChange(updatedColumnConfiguration);
     } else if (sourceType === 'association_type') {

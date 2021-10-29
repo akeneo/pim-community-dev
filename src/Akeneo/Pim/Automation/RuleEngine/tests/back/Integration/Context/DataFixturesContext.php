@@ -580,12 +580,12 @@ final class DataFixturesContext implements Context
 
     private function replacePlaceholders(string $string): string
     {
-        $kernelRootDir = $this->getContainer()->getParameter('kernel.root_dir');
+        $kernelProjectDir = $this->getContainer()->getParameter('kernel.project_dir');
 
         return strtr($string, [
             '%tmp%' => !empty($_ENV['BEHAT_TMPDIR'] ?? '') ? $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat',
-            '%fixtures%' => $kernelRootDir . '/../tests/legacy/features/Context/fixtures',
-            '%web%' => $kernelRootDir . '/../public/',
+            '%fixtures%' => $kernelProjectDir . '/tests/legacy/features/Context/fixtures',
+            '%web%' => $kernelProjectDir . '/public/',
         ]);
     }
 

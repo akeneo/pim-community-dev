@@ -1,16 +1,16 @@
 import React from 'react';
 import {Helper} from 'akeneo-design-system';
 import {useTranslate, getErrorsForPath, ValidationError} from '@akeneo-pim-community/shared';
-import {Source} from '../../models';
+import {AssociationTypeSource} from '../../models';
 import {useAssociationType} from '../../hooks';
 import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
 import {QuantifiedAssociationTypeConfigurator} from './QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator';
 import {DeletedAssociationTypeSourcePlaceholder, ErrorBoundary} from './error';
 
 type AssociationTypeSourceConfiguratorProps = {
-  source: Source;
+  source: AssociationTypeSource;
   validationErrors: ValidationError[];
-  onSourceChange: (updatedSource: Source) => void;
+  onSourceChange: (updatedSource: AssociationTypeSource) => void;
 };
 
 const AssociationTypeSourceConfigurator = ({

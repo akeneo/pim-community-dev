@@ -29,24 +29,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class CatalogUpdatesSubscriber implements EventSubscriberInterface
 {
-    /** @var ChainedProjectRemover */
-    protected $chainedProjectRemover;
+    protected ChainedProjectRemover $chainedProjectRemover;
+    protected RequestStack $requestStack;
+    protected RefreshProjectCompletenessJobLauncher $jobLauncher;
+    protected CatalogContext $catalogContext;
 
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var RefreshProjectCompletenessJobLauncher */
-    protected $jobLauncher;
-
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /**
-     * @param ChainedProjectRemover                 $chainedProjectRemover
-     * @param RefreshProjectCompletenessJobLauncher $jobLauncher
-     * @param RequestStack                          $requestStack
-     * @param CatalogContext                        $catalogContext
-     */
     public function __construct(
         ChainedProjectRemover $chainedProjectRemover,
         RefreshProjectCompletenessJobLauncher $jobLauncher,
@@ -62,7 +49,7 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
@@ -80,7 +67,7 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
      */
     public function updatePreProcessedData(GenericEvent $event)
     {
-        if (null === $request = $this->requestStack->getMasterRequest()) {
+        if (null === $request = $this->requestStack->getMainRequest()) {
             return;
         }
 

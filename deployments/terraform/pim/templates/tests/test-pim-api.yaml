@@ -11,11 +11,11 @@ metadata:
 spec:
   containers:
   - name: test-pim-api
-    image: debian:buster-slim
+    image: curlimages/curl
     env:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-    command: ["bash", "/scripts-dir/test-pim-api.sh"]
+    command: ["sh", "/scripts-dir/test-pim-api.sh"]
     volumeMounts:
     - name: pim-scripts
       mountPath: /scripts-dir

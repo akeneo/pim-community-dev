@@ -9,7 +9,7 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrU
             - NotBlank: ~
         identityProviderEntityId:
             - NotBlank: ~
-            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\AtLeastOneOf:
+            - Symfony\Component\Validator\Constraints\AtLeastOneOf:
                 message: "This value is not a valid URL or URN."
                 includeInternalMessages: false
                 constraints:

@@ -32,21 +32,21 @@ aliases:
 
   - &dockerCloudDeployerCurrent   # cloudDeployer version used in prod (used for lastest release deployement)
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.10
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.7
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
   - &dockerCloudDeployerNext      # cloudDeployer version (used for lastest current deployement)
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.10
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.7
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
   - &dockerJenkinsCloudDeployer
       docker:
-          - image: eu.gcr.io/akeneo-ci/jenkinsfile-runner:2.10
+          - image: eu.gcr.io/akeneo-cloud/jenkinsfile-runner:7.7
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -1029,23 +1029,50 @@ jobs:
               name: Install dependencies
               command: make dependencies
           - run:
-              name: Build the DSM
-              command: make dsm
-          - run:
               name: Launch Grth in test mode
               command: make pim-test
           - run:
               name: Lint Back
               command: PIM_CONTEXT=test make lint-back
           - run:
+              name: Static tests
+              command: PIM_CONTEXT=test make static-back
+          - run:
               name: Unit Back
               command: PIM_CONTEXT=test make unit-back
+          - run:
+              name: Code Coupling Detection
+              command: PIM_CONTEXT=test make coupling-back
+          - run:
+              name: Acceptance tests
+              command: PIM_CONTEXT=test make acceptance-back
           - run:
               name: Integration Back
               command: PIM_CONTEXT=test make pim-integration-back
           - run:
               name: End to End Back
               command: PIM_CONTEXT=test make end-to-end-back
+          - run:
+                name: PhpUnit Migration
+                command: PIM_CONTEXT=test make migration-back
+          - run:
+                name: Install assets & css
+                command: make assets css
+          - run:
+                name: Build the DSM
+                command: make dsm
+          - run:
+                name: Build front-packages
+                command: make front-packages
+          - run:
+                name: Build Javascript
+                command: make javascript-test
+          - run:
+              name: Front linter
+              command: PIM_CONTEXT=test make lint-front
+          - run:
+              name: Front unit tests
+              command: PIM_CONTEXT=test make unit-front
           - store_test_results:
                 path: ${TYPE}/var/tests
           - store_artifacts:
@@ -1393,6 +1420,18 @@ jobs:
             name: Check that upgrader pod ran
             command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
         - run:
+            name: Check PIM version installed
+            command: |
+              VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+              if [[ "${VERSION_INSTALLED}" == "${IMAGE_TAG}" ]]; then
+                echo "PIM successfully upgraded to ${IMAGE_TAG}"
+              else
+                echo "PIM not upgraded to the correct version"
+                echo "PIM version wanted: ${IMAGE_TAG}"
+                echo "PIM version installed: ${VERSION_INSTALLED}"
+                exit 1
+              fi
+        - run:
             name: Display Deployment Errors
             command: cat deployment.log
             when: on_fail
@@ -1436,13 +1475,11 @@ jobs:
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
                 echo "Source PFID: ${SOURCE_PFID}"
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
-                echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1892,8 +1929,6 @@ workflows:
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
 
           - deploy_pr_environment:
                 name: "[<< matrix.PRODUCT_TYPE >>] Deploy pr environment"
@@ -1902,6 +1937,7 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
 
           - build_srnt_dev:
                 requires:
@@ -1933,10 +1969,21 @@ workflows:
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
+
+          - test_back_behat_legacy:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_front_code_style
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
+
           # Uncomment for next GA
 #          - test_database:
 #                requires:
 #                    - build_srnt_dev
+
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
@@ -1946,14 +1993,7 @@ workflows:
           - test_tria:
                 requires:
                     - build_srnt_dev
-          - test_back_behat_legacy:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_front_code_style
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
+
           - pull_request_success:
                 requires:
                     - test_back_performance
@@ -2086,7 +2126,7 @@ workflows:
   nightly_srnt_release:
       triggers:
           - schedule:
-                cron: "0 2,13 * * *"
+                cron: "0 2,11 * * *"
                 filters:
                     branches:
                         only:
@@ -2190,7 +2230,7 @@ workflows:
   nightly_grth_release:
       triggers:
           - schedule:
-                cron: "0 3,13 * * *"
+                cron: "0 3,11 * * *"
                 filters:
                     branches:
                         only:
@@ -2241,7 +2281,7 @@ workflows:
   nightly_tria_release:
     triggers:
       - schedule:
-          cron: "0 4,13 * * *"
+          cron: "0 4,11 * * *"
           filters:
             branches:
               only:
@@ -2462,8 +2502,7 @@ commands:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
                       command: |
-                          #TODO Retrieve last tagged version for production
-                          CONNECTOR_BC_BRANCH=v0
+                          CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:

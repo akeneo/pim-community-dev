@@ -40,7 +40,3 @@ elasticsearch:
     resources:
       requests:
         memory: "512Mi"
-
-connectors:
-  bigcommerce:
-    enabled: true

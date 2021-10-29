@@ -22,6 +22,9 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator:
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AttributeValueHydrator:
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\PropertyValueHydrator:
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface'
+
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator:
     arguments:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator'

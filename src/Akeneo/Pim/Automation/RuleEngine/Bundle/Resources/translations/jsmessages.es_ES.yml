@@ -94,7 +94,7 @@ pimee_catalog_rule:
         code:
           required: Se requiere un código de regla.
           too_short: "El código de regla es demasiado corto. Requiere {{ characterLimit }} caracteres o más."
-          allowed_characters: El código de regla sólo puede contener caracteres alfanuméricos y guiones bajos.
+          allowed_characters: El código de regla solo puede contener caracteres alfanuméricos y guiones bajos.
           unique: El código ya está usado.
       cross_link: Deja el formulario de creación de regla
     edit:
@@ -383,12 +383,12 @@ pimee_catalog_rule:
     division_by_zero: Divisiones por cero no son posibles
     two_operations_are_required: La lista de operaciones debe contener 2 operaciones o más.
     two_items_are_required: La lista debe contener 2 elementos o más.
-    unknown_or_inactive_locale: 'El local "{{ localeCode }}" no existe o no está activado'
-    unknown_or_inactive_currency: 'La moneda "{{ currencyCode }}" no existe o no está activada'
-    unbound_locale: 'El local "{{ localeCode }}" no está activado en el canal "{{ channelCode }}"'
-    unbound_currency: 'La moneda "{{ currencyCode }}" no está activada en el canal "{{ channelCode }}"'
+    unknown_or_inactive_locale: 'El local «{{ localeCode }}» no existe o no está activado'
+    unknown_or_inactive_currency: 'La moneda «{{ currencyCode }}» no existe o no está activada'
+    unbound_locale: 'El local «{{ localeCode }}» no está activado en el canal «{{ channelCode }}»'
+    unbound_currency: 'La moneda «{{ currencyCode }}» no está activada en el canal «{{ channelCode }}»'
     locale_on_unlocalizable_attribute: Este atributo no es localizable. Por favor, elimine el local antes de continuar.
-    unknown_scope: 'El canal "{{ scopeCode }}" no existe'
+    unknown_scope: 'El canal «{{ scopeCode }}» no existe'
     scope_on_unscopable_attribute: Este atributo no es rastreable. Por favor, elimine el canal antes de continuar.
     unknown_families: "{1}La familia {{ familyCodes }} no existe|]1,+Inf[Las {{ familyCodes }} familias no existen"
     unknown_family_variants: "{1}La variante de familia {{ familyVariantCodes }} no existe|]1,+Inf[Las variantes de familia {{ familyVariantCodes }} no existen"
@@ -403,8 +403,8 @@ pimee_catalog_rule:
     create_attribute_link: haz clic aquí para crear el atributo
     edit_unauthorize: No tienes permisos para editar reglas
     wrong_date_timespan: Para definir un lapso de tiempo válido, asegúrese de que su fecha de fin no está establecida antes de su fecha de inicio.
-    measurement_family_not_found: La familia de medida "{{ measurement_code }}" no existe
-    unit_not_found: La unidad de medida "{{ unitCode }}" no se encontró en la familia de medida "{{ measurement_code }}"
+    measurement_family_not_found: La familia de medida «{{ measurement_code }}» no existe
+    unit_not_found: La unidad de medida «{{ unitCode }}» no se encontró en la familia de medida «{{ measurement_code }}»
     empty_association_warning: Si deja esta lista vacía, esta regla borrará este tipo de asociación.
 pim_enrich:
   entity:

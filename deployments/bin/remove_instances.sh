@@ -2,7 +2,7 @@
 
 # Check if TYPE is not empty
 if [[ -z "${TYPE}" ]]; then
-    echo "TYPE varibale should not be empty"
+    echo "TYPE variable should not be empty"
     exit 1
 fi
 
@@ -14,22 +14,45 @@ else
     exit 1
 fi
 
-# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+CONTAINER_FILTER="v202"
+if [[ "${TYPE}" == "grth" ]]; then
+    CONTAINER_FILTER="growth-"
+fi
+if [[ "${TYPE}" == "tria" ]]; then
+    CONTAINER_FILTER="trial-"
+fi
+
+echo "Get last release version for ${TYPE}"
+LAST_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="${CONTAINER_FILTER}" --sort-by="~tags" --format="value(tags)" | head -n1)
+
+NS_LIST=${NS}
+FORCE_DELETE=true
+if [[ -z "${NS_LIST}" ]]; then
+    # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
+    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+    FORCE_DELETE=false
+fi
 
 echo "${TYPE} namespaces list :"
 echo "${NS_LIST}"
 if [[ ${TYPE} == "srnt" ]] ; then
     PRODUCT_REFERENCE_TYPE=serenity_instance
     PRODUCT_REFERENCE_CODE=serenity_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=serenity-edition
 fi
 if [[ ${TYPE} == "grth" ]] ; then
     PRODUCT_REFERENCE_TYPE=growth_edition_instance
     PRODUCT_REFERENCE_CODE=growth_edition_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=growth-edition
 fi
 if [[ ${TYPE} == "tria" ]] ; then
     PRODUCT_REFERENCE_TYPE=pim_trial_instance
     PRODUCT_REFERENCE_CODE=trial_${ENV_NAME}
+    PRODUCT_TERRAFORM_BUCKET=trial-edition
+fi
+
+if [[ "${ENV_NAME}" == "dev" ]] ; then
+    PRODUCT_TERRAFORM_BUCKET=${PRODUCT_TERRAFORM_BUCKET}-dev
 fi
 
 for NAMESPACE in ${NS_LIST}; do
@@ -37,6 +60,7 @@ for NAMESPACE in ${NS_LIST}; do
     NAMESPACE=$(echo ${NS_INFO[0]})
     NS_STATUS=$(echo ${NS_INFO[1]})
     NS_AGE=$(echo ${NS_INFO[2]})
+    DELETE_INSTANCE=${FORCE_DELETE:-false}
 
     echo "-------------------------------------------"
     echo "Namespace : ${NAMESPACE}"
@@ -44,7 +68,6 @@ for NAMESPACE in ${NS_LIST}; do
     echo "  Age :                   ${NS_AGE}"
     INSTANCE_NAME_PREFIX=pimci
     INSTANCE_NAME=$(echo ${NAMESPACE} | sed "s/${TYPE}-//")
-    DELETE_INSTANCE=false
 
     # delete environments that failed (not automatically removed by circleCI)
     # Theses environments are upgraded serenity / growth edition (pimup) and aged of 1 hour
@@ -112,14 +135,27 @@ for NAMESPACE in ${NS_LIST}; do
         POD=$(kubectl get pods --no-headers --namespace=${NAMESPACE} -l 'component in (pim-web,pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' | awk 'NR==1{print $1}')
         if [[ -z "$POD" ]]
         then
-            kubectl delete ns ${NAMESPACE} || true
-            continue
+            # If no helm release exists then we can't delete helm/tf resources and we can delete namespace
+            IMAGE_TAG=$(helm3 get values ${NAMESPACE} -n ${NAMESPACE} | yq r - 'image.pim.tag')
         else
             IMAGE=$(kubectl get pod --namespace=${NAMESPACE} -l 'component in (pim-daemon-job-consumer-process,pim-bigcommerce-connector-daemon)' -o json | jq -r '.items[0].status.containerStatuses[0].image')
             IMAGE_TAG=$(echo $IMAGE | grep -oP ':.*' | grep -oP '[^\:].*')
         fi
+
+        if [[ -z "${IMAGE_TAG}" ]]; then
+            IMAGE_TAG=${LAST_RELEASE}
+        else
+            # if no file has been pushed to terraform module bucket, we set image tag to last release
+            TF_MODULE_EXIST=$(gsutil ls gs://akecld-terraform-modules/${PRODUCT_TERRAFORM_BUCKET}/${IMAGE_TAG})
+            if [[ $? -ne 0 ]]; then
+                echo "${IMAGE_TAG} files don't exist and IMAGE_TAG set to ${LAST_RELEASE}"
+                IMAGE_TAG=${LAST_RELEASE}
+            fi
+        fi
+
+        ACTIVATE_MONITORING=${ACTIVATE_MONITORING:-true}
         echo "  Command debug"
-        echo "      ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make uncommit-instance || true"
-        ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=true make uncommit-instance || true
+        echo "      ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make uncommit-instance || true"
+        ENV_NAME=${ENV_NAME} PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} IMAGE_TAG=${IMAGE_TAG} TYPE=${TYPE} INSTANCE_NAME=${INSTANCE_NAME} INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make uncommit-instance || true
     fi
 done

@@ -5,7 +5,7 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\InstallerCommand;
 use PhpSpec\ObjectBehavior;
@@ -15,9 +15,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class InstallerCommandSpec extends ObjectBehavior
 {
-    function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $referenceEntitiesInstaller)
+    function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $assetsInstaller)
     {
-        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, false);
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, false);
     }
 
     function it_is_initializable()
@@ -58,29 +58,29 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->loadFixtures($installerEvent);
     }
 
-    function it_loads_the_fixtures_if_forced($fixturesInstaller, $referenceEntitiesInstaller, InstallerEvent $installerEvent)
+    function it_loads_the_fixtures_if_forced($fixturesInstaller, $assetsInstaller, InstallerEvent $installerEvent)
     {
-        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, true);
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, true);
         $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
 
         $fixturesInstaller->loadCatalog()->shouldBeCalled();
         $this->loadFixtures($installerEvent);
     }
 
-    function it_does_not_load_the_fixtures_if_not_forced($fixturesInstaller, $referenceEntitiesInstaller, InstallerEvent $installerEvent)
+    function it_does_not_load_the_fixtures_if_not_forced($fixturesInstaller, $assetsInstaller, InstallerEvent $installerEvent)
     {
-        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, false);
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, false);
         $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
 
         $fixturesInstaller->loadCatalog()->shouldNotBeCalled();
         $this->loadFixtures($installerEvent);
     }
 
-    function it_installs_the_reference_entities(AssetsInstaller $referenceEntitiesInstaller)
+    function it_installs_the_reference_entities(AssetsInstaller $assetsInstaller)
     {
         $event = new GenericEvent();
         $event->setArgument('symlink', true);
-        $referenceEntitiesInstaller->installAssets(true)->shouldBeCalled();
+        $assetsInstaller->installAssets(true)->shouldBeCalled();
 
         $this->installAssets($event);
     }

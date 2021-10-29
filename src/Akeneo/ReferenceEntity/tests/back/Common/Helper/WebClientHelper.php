@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Helper;
 
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -38,7 +38,7 @@ class WebClientHelper
     }
 
     public function callRoute(
-        Client $client,
+        KernelBrowser $client,
         string $route,
         array $arguments = [],
         string $method = 'GET',
@@ -64,20 +64,15 @@ class WebClientHelper
 
     public function assert403Forbidden(Response $response)
     {
-        $expectedForbiddenContent = <<<HTML
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>An Error Occurred: Forbidden</title>
-        <style>
-            body { background-color: #fff; color: #222; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
-            .container { margin: 30px; max-width: 600px; }
-            h1 { color: #dc3545; font-size: 24px; }
-            h2 { font-size: 18px; }
-        </style>
-    </head>
-    <body>
+        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
+        Assert::assertStringContainsString(
+            '<title>An Error Occurred: Forbidden</title>',
+            $response->getContent(),
+            'The title of the 403 forbidden response is not the same'
+        );
+
+        $expectedForbiddenBody = <<<HTML
+        <body>
         <div class="container">
             <h1>Oops! An Error Occurred</h1>
             <h2>The server returned a "403 Forbidden".</h2>
@@ -87,15 +82,13 @@ class WebClientHelper
                 We will fix it as soon as possible. Sorry for any inconvenience caused.
             </p>
         </div>
-    </body>
-</html>
+        </body>
+        HTML;
 
-HTML;
-        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
-        Assert::assertSame(
-            $expectedForbiddenContent,
-            ltrim($response->getContent()),
-            'The content of the 403 forbidden response is not the same'
+        Assert::assertStringContainsString(
+            $expectedForbiddenBody,
+            trim($response->getContent()),
+            'The body of the 403 forbidden response is not the same'
         );
     }
 
@@ -119,7 +112,7 @@ HTML;
         Assert::assertSame(500, $response->getStatusCode());
     }
 
-    public function assertRequest(Client $client, string $relativeFilePath): void
+    public function assertRequest(KernelBrowser $client, string $relativeFilePath): void
     {
         $response = $this->requestFromFile($client, $relativeFilePath);
         $this->assertFromFile($response, $relativeFilePath);
@@ -153,7 +146,7 @@ HTML;
         }
     }
 
-    public function requestFromFile(Client $client, string $relativeFilePath): Response
+    public function requestFromFile(KernelBrowser $client, string $relativeFilePath): Response
     {
         $fileData = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $fileData) {

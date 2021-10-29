@@ -44,7 +44,8 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${OLDEST_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${OLDEST_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
-    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/bin
+    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/bin
+    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/terraform/pim/templates/tests
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
@@ -55,7 +56,8 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
-    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/bin
+    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/bin
+    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
 }
 
 function getDiff() {
@@ -134,6 +136,10 @@ case $ZCC_CONTEXT in
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
         getDiff "${SOURCE}/dbschema" "${TARGET}/dbschema"
+
+        echo -en "\n\n - Differences in upgrades between the oldest release in production & the next release to deploy :\n\n"
+        getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades"
+        
         exit $?
         ;;
 esac

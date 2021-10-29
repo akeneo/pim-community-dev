@@ -72,13 +72,15 @@ class EditNumberValueCommandValidator extends ConstraintValidator
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
+                $violationBuilder = $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath((string)$command->attribute->getCode())
                     ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
+                    ->setInvalidValue($violation->getInvalidValue());
+                if ($violation->getPlural()) {
+                    $violationBuilder->setPlural((int)$violation->getPlural());
+                }
+                $violationBuilder->addViolation();
             }
         }
     }
@@ -166,7 +168,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
                 '',
                 '',
                 0,
-                0,
+                '0',
                 null,
                 $command->number
             );

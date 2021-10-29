@@ -60,7 +60,7 @@ class DeleteCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $code = $input->getArgument('code');
 
@@ -69,6 +69,8 @@ class DeleteCommand extends Command
             $this->bulkRemover->removeAll($rules);
             $output->writeln('<info>Done !</info>');
         }
+
+        return Command::SUCCESS;
     }
 
     /**

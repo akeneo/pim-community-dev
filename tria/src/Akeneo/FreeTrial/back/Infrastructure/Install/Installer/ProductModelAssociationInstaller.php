@@ -52,6 +52,7 @@ final class ProductModelAssociationInstaller implements FixtureInstaller
             }
 
             $this->updater->update($productModel, ['associations' => $productModelData['associations']]);
+            $productModels[] = $productModel;
         }
 
         $this->saver->saveAll($productModels);

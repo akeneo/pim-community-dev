@@ -1,0 +1,8 @@
+pim_table_attribute_get_select_options:
+    path: /rest/table-attribute/{attributeCode}/select-options/{columnCode}
+    defaults:
+        _controller: Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectOptionsController
+    requirements:
+        attributeCode: '[a-zA-Z0-9_]+'
+        columnCode: '[a-zA-Z0-9_]+'
+    methods: [ GET ]

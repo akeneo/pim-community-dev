@@ -22,6 +22,7 @@ export enum AttributeType {
   REFERENCE_ENTITY_COLLECTION = 'akeneo_reference_entity_collection',
   ASSET_COLLECTION = 'pim_catalog_asset_collection',
   LEGACY_ASSET_COLLECTION = 'pim_assets_collection',
+  TABLE = 'pim_catalog_table',
 }
 
 type Attribute = {
