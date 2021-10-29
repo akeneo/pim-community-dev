@@ -128,6 +128,7 @@ final class TableValueFilter extends AbstractAttributeFilter
                         'filter' => $filters,
                     ],
                 ],
+                'ignore_unmapped' => true,
             ],
         ];
 
