@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,15 +19,18 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     private WebMarketplaceAliasesInterface $webMarketplaceAliases;
     private LoggerInterface $logger;
     private string $fixturePath;
+    private FeatureFlag $fakeAppsFeatureFlag;
 
     public function __construct(
         ClientInterface $client,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FeatureFlag $fakeAppsFeatureFlag
     ) {
         $this->client = $client;
         $this->webMarketplaceAliases = $webMarketplaceAliases;
         $this->logger = $logger;
+        $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
     }
 
     public function getExtensions(int $offset = 0, int $limit = 10): array
@@ -36,6 +40,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
 
         $response = $this->client->request('GET', '/api/1.0/extensions', [
             'query' => [
+                'extension_type' => 'connector',
                 'edition' => $edition,
                 'version' => $version,
                 'offset' => $offset,
@@ -48,7 +53,24 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
 
     public function getApps(int $offset = 0, int $limit = 10): array
     {
-        return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+        if ($this->fakeAppsFeatureFlag->isEnabled()) {
+            return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+        }
+
+        $edition = $this->webMarketplaceAliases->getEdition();
+        $version = $this->webMarketplaceAliases->getVersion();
+
+        $response = $this->client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'extension_type' => 'app',
+                'edition' => $edition,
+                'version' => $version,
+                'offset' => $offset,
+                'limit' => $limit,
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     public function getApp(string $id): ?array
