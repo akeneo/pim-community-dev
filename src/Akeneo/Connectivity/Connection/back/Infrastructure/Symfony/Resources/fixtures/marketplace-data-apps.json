@@ -15,8 +15,8 @@
                 "E-commerce"
             ],
             "certified": true,
-            "activate_url": "http://030f-90-105-199-253.ngrok.io/activate",
-            "callback_url": "http://030f-90-105-199-253.ngrok.io/oauth2"
+            "activate_url": "https://3e9e-2a01-cb05-8463-b00-f6a6-5e8e-6285-2db0.eu.ngrok.io/activate",
+            "callback_url": "https://3e9e-2a01-cb05-8463-b00-f6a6-5e8e-6285-2db0.eu.ngrok.io/oauth2"
         }
     ]
 }

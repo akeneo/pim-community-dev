@@ -27,7 +27,7 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
         $redirectUri = $appAuthorization->getRedirectUri();
         $state = $appAuthorization->getState();
 
-        $code = $this->authorizationCodeGenerator->generate($appConfirmation, $redirectUri);
+        $code = $this->authorizationCodeGenerator->generate($appConfirmation, $redirectUri, $appAuthorization->getScope());
 
         return $this->appendQueryParams($redirectUri, [
             'code' => $code,

@@ -39,6 +39,7 @@ class RequestAccessTokenAction
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
+
         $accessTokenRequest = new AccessTokenRequest(
             $request->get('client_id', ''),
             $request->get('code', ''),
@@ -53,6 +54,21 @@ class RequestAccessTokenAction
                 Response::HTTP_BAD_REQUEST
             );
         }
+
+        //check en base si pim_api_auth_code scope === openid pour le
+        //            $accessTokenRequest->getAuthorizationCode() === token
+        //context =openid => create jwt
+        //return   { "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+        //     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+        //     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+        //     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+        //     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+        //     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+        //     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+        //     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+        //     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+        //     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+        //  }
 
         $token = $this->createAccessToken->create(
             $accessTokenRequest->getClientId(),

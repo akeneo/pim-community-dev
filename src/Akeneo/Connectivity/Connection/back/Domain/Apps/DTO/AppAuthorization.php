@@ -88,4 +88,9 @@ class AppAuthorization
     {
         return $this->redirectUri;
     }
+
+    public function getScope(): string
+    {
+        return $this->scope;
+    }
 }
