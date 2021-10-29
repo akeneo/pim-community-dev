@@ -76,6 +76,7 @@ class FileController
         }
 
         try {
+            $this->removeWebPFromAcceptHeader($request);
             return $this->imagineController->filterAction($request, $filename, $filter);
         } catch (NotFoundHttpException | \RuntimeException $exception) {
             return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
@@ -114,7 +115,24 @@ class FileController
      */
     public function cacheAction(Request $request, $path, $filter)
     {
+        $this->removeWebPFromAcceptHeader($request);
         return $this->imagineController->filterAction($request, $path, $filter);
+    }
+
+    private function removeWebPFromAcceptHeader(Request $request): void
+    {
+        $headerOriginalAcceptValues = explode(',', $request->headers->get('accept', ''));
+        $headerNewAcceptValues = [];
+        foreach($headerOriginalAcceptValues as $accept)
+        {
+            if($accept === 'image/webp')
+            {
+                continue;
+            }
+
+            $headerNewAcceptValues[] = $accept;
+        }
+        $request->headers->set('accept', implode(',', $headerNewAcceptValues));
     }
 
     /**
