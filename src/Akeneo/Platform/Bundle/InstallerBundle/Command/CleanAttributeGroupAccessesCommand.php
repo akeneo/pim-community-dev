@@ -56,11 +56,13 @@ class CleanAttributeGroupAccessesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Removing the group "ALL" from attribute groups\' permissions...');
         $groupAll = $this->groupRepository->getDefaultUserGroup();
         $this->attributeGroupAccessRepository->revokeAccessToGroups([$groupAll]);
         $output->writeln('<info>done !</info>');
+
+        return Command::SUCCESS;
     }
 }

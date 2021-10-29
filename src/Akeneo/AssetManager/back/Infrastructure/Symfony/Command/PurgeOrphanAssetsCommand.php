@@ -57,7 +57,7 @@ class PurgeOrphanAssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->preparePurgeTable();
 
@@ -69,7 +69,7 @@ class PurgeOrphanAssetsCommand extends Command
         if ($filesToPurge > 0) {
             $io = new SymfonyStyle($input, $output);
             if (!$io->confirm(sprintf('We found %s asset to purge. Do you want to continue and remove the files from storage?', $filesToPurge))) {
-                return 0;
+                return Command::SUCCESS;
             }
             $this->removeFileFromStorage($output);
             $this->removeFilesFromFileInfo();
@@ -79,7 +79,7 @@ class PurgeOrphanAssetsCommand extends Command
 
         $this->removePurgeTable();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function preparePurgeTable()

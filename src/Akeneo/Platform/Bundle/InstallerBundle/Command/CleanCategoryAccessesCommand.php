@@ -55,12 +55,14 @@ class CleanCategoryAccessesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Removing the group "ALL" from categories\' permissions...');
         $groupAll = $this->groupRepository->getDefaultUserGroup();
         $this->accessRepository->revokeAccessToGroups([$groupAll]);
         $this->objectManager->flush();
         $output->writeln('<info>done !</info>');
+
+        return Command::SUCCESS;
     }
 }

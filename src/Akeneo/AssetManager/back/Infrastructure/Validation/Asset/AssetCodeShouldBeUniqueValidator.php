@@ -79,7 +79,7 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
         if ($alreadyExists
             || in_array(strtolower($command->code), $this->insertedCodes)) {
             $this->context->buildViolation(AssetCodeShouldBeUnique::ERROR_MESSAGE)
-                ->setParameter('%code%', $code)
+                ->setParameter('%code%', (string) $code)
                 ->atPath('code')
                 ->addViolation();
             return;

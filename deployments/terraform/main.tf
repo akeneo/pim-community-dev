@@ -84,7 +84,7 @@ EOF
           cat curl_mailgun_deletion_response.txt
           rm curl_mailgun_deletion_response.txt
       else
-          echo "Mailgun credentials creation is OK - http_response: $${http_response} "
+          echo "Mailgun credentials deletion is OK - http_response: $${http_response} "
           cat curl_mailgun_deletion_response.txt
           rm curl_mailgun_deletion_response.txt
       fi

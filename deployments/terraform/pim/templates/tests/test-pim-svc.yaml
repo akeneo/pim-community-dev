@@ -11,13 +11,13 @@ metadata:
 spec:
   containers:
   - name: test-pim-svc
-    image: debian:buster-slim
+    image: curlimages/curl
     env:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}/monitoring/services_status
       - name: MONITORING_AUTHENTICATION_TOKEN
         value: "X-AUTH-TOKEN: {{ required ".Values.pim.monitoring.authenticationToken" .Values.pim.monitoring.authenticationToken}}"
-    command: ["bash", "/scripts-dir/test-pim-svc.sh"]
+    command: ["sh", "/scripts-dir/test-pim-svc.sh"]
     volumeMounts:
     - name: pim-scripts
       mountPath: /scripts-dir

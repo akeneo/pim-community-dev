@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -23,7 +22,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteActionTest extends ControllerIntegrationTestCase
@@ -149,7 +147,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedResponse = '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.records.should_have_no_record","parameters":{"%reference_entity_identifier%":[]},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedResponse = '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.records.should_have_no_record","parameters":{"%reference_entity_identifier%":"brand"},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
     }

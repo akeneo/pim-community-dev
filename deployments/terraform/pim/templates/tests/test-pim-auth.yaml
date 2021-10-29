@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: test-pim-auth
-    image: debian:buster-slim
+    image: curlimages/curl
     env:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
@@ -19,7 +19,7 @@ spec:
         value: {{ .Values.pim.defaultAdminUser.email }}
       - name: PASSWORD
         value: {{ .Values.pim.defaultAdminUser.password }}
-    command: ["bash", "/scripts-dir/test-pim-auth.sh"]
+    command: ["sh", "/scripts-dir/test-pim-auth.sh"]
     volumeMounts:
     - name: pim-scripts
       mountPath: /scripts-dir

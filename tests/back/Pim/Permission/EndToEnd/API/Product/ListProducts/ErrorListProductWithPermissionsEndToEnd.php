@@ -3,7 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Products\ListProducts;
 
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorListProductWithPermissionsEndToEnd extends AbstractProductTestCase
@@ -104,11 +104,7 @@ class ErrorListProductWithPermissionsEndToEnd extends AbstractProductTestCase
         $this->assert($client, 'Filter on property "a_metric_without_decimal_negative" is not supported or does not support operator "EMPTY"');
     }
 
-    /**
-     * @param Client $client
-     * @param string $message
-     */
-    private function assert(Client $client, $message)
+    private function assert(KernelBrowser $client, string $message): void
     {
         $response = $client->getResponse();
 

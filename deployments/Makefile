@@ -371,7 +371,7 @@ commit-instance: pull-cloud-customer-dev
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Created instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
@@ -379,12 +379,20 @@ uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
 ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
-endif
-	make change-terraform-source-version
 ifeq ($(TYPE),srnt)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform/monitoring"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform/monitoring"
+endif
+endif
+else
+ifeq ($(TYPE),srnt)
+	PIM_VERSION=$(shell yq r "/root/cloud-customers-dev/saas/projects/akecld-saas-dev/europe-west3-a/releases/$(PFID)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	PIM_VERSION=$(shell yq r "${INSTANCE_DIR}/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
+endif
 endif
 endif
 	make delete
@@ -392,7 +400,7 @@ endif
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Deleted instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance

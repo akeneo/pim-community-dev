@@ -24,8 +24,7 @@ use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
  */
 final class InMemoryFindActivatedCurrencies implements FindActivatedCurrenciesInterface
 {
-    /** @var InMemoryChannelRepository */
-    private $channelRepository;
+    private InMemoryChannelRepository $channelRepository;
 
     public function __construct(InMemoryChannelRepository $channelRepository)
     {

@@ -22,6 +22,7 @@ abstract class ControllerIntegrationTestCase extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        static::ensureKernelShutdown();
         $this->client = static::createClient(['environment' => 'test', 'debug' => false]);
         $this->client->disableReboot();
 

@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: test-pim-daemon
-    image: debian:buster-slim
+    image: eu.gcr.io/akeneo-ci/dev-images/curl-jq
     env:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}

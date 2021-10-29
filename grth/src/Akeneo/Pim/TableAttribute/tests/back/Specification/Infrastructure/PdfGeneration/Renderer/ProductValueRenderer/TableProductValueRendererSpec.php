@@ -15,6 +15,7 @@ use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 
 class TableProductValueRendererSpec extends ObjectBehavior
 {
@@ -29,9 +30,10 @@ class TableProductValueRendererSpec extends ObjectBehavior
         ColumnFactory $columnFactory,
         TranslatorInterface $translator,
         AttributeInterface $attribute,
-        TableValue $value
+        TableValue $value,
+        LoaderInterface $loader
     ) {
-        $environment = new Environment();
+        $environment = new Environment($loader->getWrappedObject());
         $aqrId = ColumnIdGenerator::generateAsString('aqr');
         $attribute
             ->getRawTableConfiguration()

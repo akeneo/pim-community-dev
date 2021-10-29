@@ -186,14 +186,16 @@ class EditValueCommandValidator extends ConstraintValidator
         $attributeCode = (string) $command->attribute->getCode();
         $referenceEntityIdentifier = (string) $command->attribute->getReferenceEntityIdentifier();
         foreach ($violations as $violation) {
-            $this->context->buildViolation($violation->getMessage())
+            $violationBuilder = $this->context->buildViolation($violation->getMessage())
                 ->setParameter('%attribute_code%', $attributeCode)
                 ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->atPath($attributeCode)
                 ->setCode($violation->getCode())
-                ->setPlural($violation->getPlural())
-                ->setInvalidValue($violation->getInvalidValue())
-                ->addViolation();
+                ->setInvalidValue($violation->getInvalidValue());
+            if ($violation->getPlural()) {
+                $violationBuilder->setPlural((int)$violation->getPlural());
+            }
+            $violationBuilder->addViolation();
         }
     }
 }
