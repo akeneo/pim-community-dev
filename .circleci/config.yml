@@ -730,7 +730,6 @@ jobs:
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-2004:202101-01
-      parallelism: 4
       steps:
         -   attach_workspace:
                 at: ~/
@@ -758,6 +757,7 @@ jobs:
   test_back_data_migrations:
       machine:
           image: ubuntu-2004:202101-01
+      parallelism: 4
       steps:
           - attach_workspace:
                 at: ~/
