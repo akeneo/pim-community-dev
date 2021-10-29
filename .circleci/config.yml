@@ -836,10 +836,11 @@ workflows:
                     branches:
                         ignore:
                             - master
+                requires:
+                    - deploy_pr_environment
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
-                    - deploy_pr_environment
           # Uncomment for next GA
 #          - test_database:
 #                requires:
