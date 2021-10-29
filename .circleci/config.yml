@@ -1905,7 +1905,6 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
-
           - test_upgrade_from_last_release:
                 name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
                 matrix:
@@ -1913,14 +1912,16 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
-
           - deploy_pr_environment?:
                 name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                 type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
-
           - deploy_pr_environment:
                 name: "[<< matrix.PRODUCT_TYPE >>] Deploy pr environment"
                 matrix:
@@ -1929,7 +1930,6 @@ workflows:
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                     - "[<< matrix.PRODUCT_TYPE >>] Build"
-
           - build_srnt_dev:
                 requires:
                     - checkout
@@ -1960,7 +1960,6 @@ workflows:
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
-
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -1969,12 +1968,10 @@ workflows:
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities
-
           # Uncomment for next GA
 #          - test_database:
 #                requires:
 #                    - build_srnt_dev
-
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
@@ -1984,7 +1981,6 @@ workflows:
           - test_tria:
                 requires:
                     - build_srnt_dev
-
           - pull_request_success:
                 requires:
                     - test_back_performance
