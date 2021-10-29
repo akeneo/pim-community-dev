@@ -1,6 +1,8 @@
 liip_imagine:
     driver: imagick
     data_loader: flysystem_data_loader
+    webp:
+        generate: true
     filter_sets:
         cache: ~
         avatar_med:
