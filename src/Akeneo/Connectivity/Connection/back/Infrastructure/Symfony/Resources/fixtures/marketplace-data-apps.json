@@ -5,7 +5,7 @@
     "items": [
         {
             "id": "6ff52991-1144-45cf-933a-5c45ae58e71a",
-            "name": "Yell extension",
+            "name": "Yell custo",
             "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
             "author": "Akeneo connectivity team",
             "partner": "Akeneo",
@@ -15,8 +15,8 @@
                 "E-commerce"
             ],
             "certified": true,
-            "activate_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate",
-            "callback_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2"
+            "activate_url": "http://030f-90-105-199-253.ngrok.io/activate",
+            "callback_url": "http://030f-90-105-199-253.ngrok.io/oauth2"
         }
     ]
 }
