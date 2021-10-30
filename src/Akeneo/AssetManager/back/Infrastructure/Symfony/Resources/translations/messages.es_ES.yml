@@ -27,7 +27,7 @@ akeneo_assetmanager:
       delete: Eliminar una opción
   jobs:
     asset_manager_execute_naming_convention:
-      error: 'La convención de nombres falló en el activo "{{ asset }}"'
+      error: 'La convención de nombres falló en el activo «{{ asset }}»'
 pim_import_export:
   widget:
     last_operations:
