@@ -2,7 +2,7 @@ pim_asset_manager:
   asset_family:
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'Ya existe una familia de activos con el código "%asset_family_identifier%"'
         limit_reached: 'No puede crear la familia de recursos "%asset_family_label%" porque ha llegado al límite de %limit% familias de recursos'
       assets:
@@ -19,15 +19,15 @@ pim_asset_manager:
         product_selection_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         product_assignment_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         extrapolated_attribute_should_exist: 'El atributo "%attribute_code%" no existe para esta familia de recursos'
-        extrapolated_attribute_type_should_be_supported: 'El atributo "%attribute_code%" de tipo "%attribute_type%" no es compatible, sólo los siguientes tipos de atributos son soportados para este campo: %supported_attribute_type%'
+        extrapolated_attribute_type_should_be_supported: 'El atributo "%attribute_code%" de tipo "%attribute_type%" no es compatible, solo los siguientes tipos de atributos son soportados para este campo: %supported_attribute_type%'
         channel_should_exist: 'El canal "%channel_code%" no existe'
         locale_should_exist: 'El local "%locale_code%" no está activado o no existe'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por local'
-        assignment_mode_not_supported: 'Se ha encontrado un modo de asignación no válido "{{ %assignment_mode% }}" en una regla de enlace de producto, se espera que sea "replace" o "add"'
-        channel_not_supported_for_field: 'No puede especificar un canal para el campo "{{ %product_field% }}"'
-        locale_not_supported_for_field: 'No puede especificar un canal para el campo "{{ %product_field% }}"'
-        assignmement_attribute_does_not_support_this_asset_family: 'El atributo de producto "{{ %product_attribute_code% }}" no puede contener activos de la familia de activos "{{ %asset_family_identifier% }}"'
+        assignment_mode_not_supported: 'Se ha encontrado un modo de asignación no válido «{{ %assignment_mode% }}» en una regla de enlace de producto, se espera que sea "replace" o "add"'
+        channel_not_supported_for_field: 'No puede especificar un canal para el campo «{{ %product_field% }}»'
+        locale_not_supported_for_field: 'No puede especificar un canal para el campo «{{ %product_field% }}»'
+        assignmement_attribute_does_not_support_this_asset_family: 'El atributo de producto «{{ %product_attribute_code% }}» no puede contener activos de la familia de activos «{{ %asset_family_identifier% }}»'
         assignmement_attribute_does_not_exist: 'no existe el atributo de producto "%product_attribute_code%"'
         assignmement_attribute_is_not_an_asset_collection: 'el atributo de producto "%product_attribute_code%" no es un atributo de tipo colección de activos'
       attribute_as_main_media:
@@ -52,7 +52,7 @@ pim_asset_manager:
   asset:
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'Un recurso ya existe con el código "%code%"'
         should_exist: 'El recurso no se encontró'
       text:
@@ -94,7 +94,7 @@ pim_asset_manager:
         duplicated: 'La opción "%option_code%" ya existe'
         too_many: 'Ha alcanzado el límite de {{ limit }} opciones de atributo por atributo.'
         code:
-          pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+          pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
           should_not_be_blank: 'El código de la opción no debe estar vacío'
       max_length:
         should_be_an_integer: 'Este valor debe ser un entero.'
@@ -107,9 +107,9 @@ pim_asset_manager:
         should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
         cannot_be_lower_than_min: 'El máximo no puede ser inferior al mínimo'
       code:
-        pattern: "Este campo solo puede contener letras, números y guiones bajos. \"{{value}}\".\n\n"
-        reserved_codes: 'El código no puede ser ninguno de esos valores: "{{ comma_separated_reserved_keywords }}"'
-        should_not_exist: 'El atributo ya existe para la entidad de referencia "{{ reference_entity_identifier }}" y el código de atributo "{{ code }}"'
+        pattern: "Este campo solo puede contener letras, números y guiones bajos. «{{value}}».\n\n"
+        reserved_codes: 'El código no puede ser ninguno de esos valores: «{{ comma_separated_reserved_keywords }}»'
+        should_not_exist: 'El atributo ya existe para la entidad de referencia «{{ reference_entity_identifier }}» y el código de atributo «{{ code }}»'
         should_exist: 'El atributo no se encontró'
       regular_expression:
         invalid_regular_expression: 'Esta expresión regular no es válida. Aquí está un ejemplo de una expresión regular válida: "/[a-z]+[0-9]*/"'

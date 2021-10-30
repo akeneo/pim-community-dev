@@ -49,8 +49,8 @@ akeneo_franklin_insights:
         do_not_map_attribute_success: 'Atributo exitosamente actualizado.'
         create_attribute_success: '{0} Lo sentimos, no se ha creado ninguno de los atributos {{ requestCount }}. |{1} Atributo creado con éxito y adjuntado a la familia «{{ family }}». |[2,Inf[ {{ successCount }} atributos de {{ requestCount }} han sido creados con éxito y adjuntados a la familia «{{ family }}».'
         create_attribute_error: 'Lo sentimos, se ha producido un error al crear o adjuntar el atributo a la familia.'
-        suggest_attribute_mapping_error: 'El atributo de catálogo "[{{ catalogAttributeCode }}]" ya está mapeado en el atributo Franklin "{{ franklinAttributeLabel }}".'
-        add_attribute_to_family_success: '{1} Atributo adjunto con éxito a la familia "{{ family }}". |[2,Inf[ Atributos adjuntos con éxito a la familia "{{ family }}".'
+        suggest_attribute_mapping_error: 'El atributo de catálogo "[{{ catalogAttributeCode }}]" ya está mapeado en el atributo Franklin «{{ franklinAttributeLabel }}».'
+        add_attribute_to_family_success: '{1} Atributo adjunto con éxito a la familia «{{ family }}». |[2,Inf[ Atributos adjuntos con éxito a la familia «{{ family }}».'
         add_attribute_to_family_error: 'Lo sentimos, se ha producido un error al adjuntar el atributo a la familia.'
         fail_to_retrieve_franklin_mapping: 'El mapeo de atributos no está disponible en este momento. Vuelve más tarde.'
       fields:
