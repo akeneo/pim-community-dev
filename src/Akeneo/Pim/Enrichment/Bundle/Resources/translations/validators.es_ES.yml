@@ -1,8 +1,8 @@
 An identifier attribute already exists.: Ya existe un atributo identificador.
-Attribute code may contain only letters, numbers and underscore: El código de atributo sólo puede contener letras, números y guión bajo
-Attribute code may contain only letters (at least one), numbers and underscores: El código de atributo sólo puede contener letras (al menos una), números y guiones bajos
+Attribute code may contain only letters, numbers and underscore: El código de atributo solo puede contener letras, números y guión bajo
+Attribute code may contain only letters (at least one), numbers and underscores: El código de atributo solo puede contener letras (al menos una), números y guiones bajos
 Attribute code may not contain line-feed characters: El código de atributo no puede contener un salto de línea
-Attribute group code may contain only letters, numbers and underscores: El código de atributo sólo puede contener letras, números y guión bajo
+Attribute group code may contain only letters, numbers and underscores: El código de atributo solo puede contener letras, números y guión bajo
 This attribute type can't be used as a grid filter: Este tipo de atributo no puede usarse como un filtro
 This code is not available: Este código no está disponible
 This attribute type must be required: Este tipo de atributo debe ser requerido
@@ -11,8 +11,8 @@ This attribute type can't have unique value: Este tipo de atributo no puede tene
 No default value may be specified for this attribute type: Ningún valor inicial puede ser definido por este tipo de atirbuto
 This value should be Yes or No: Este valor debe ser Si o No
 This value should not be blank: Este valor no debe estar vacío
-Option code may contain only letters, numbers and underscores: El Código de opción debe contener sólo letras, números y caracteres especiales
-Option code may contain only letters (at least one), numbers and underscores: El código de opción sólo puede contener letras (al menos una), números y guiones bajos
+Option code may contain only letters, numbers and underscores: El Código de opción debe contener solo letras, números y caracteres especiales
+Option code may contain only letters (at least one), numbers and underscores: El código de opción solo puede contener letras (al menos una), números y guiones bajos
 This value should not be a decimal.: Este valor no debe ser un decimal.
 "The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": El atributo %attribute% requiere un valor no decimal, y %value% no es un valor válido.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
@@ -53,7 +53,7 @@ pim_catalog:
     php_int_max_reached: 'El número máximo debe ser inferior a %php_int_max%.'
     not_null_family: La familia no puede ser "nula" porque su producto con la identificación "%sku%" es un producto variante.
     variant_product_has_parent: 'El producto variante "%variant_product%" debe tener un padre'
-    invalid_variant_product_parent: 'El producto variante "%variant_product%" no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto sólo puede tener otro modelo de producto como niño)'
+    invalid_variant_product_parent: 'El producto variante "%variant_product%" no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto solo puede tener otro modelo de producto como niño)'
     modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
     family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" son usados gran cantidad de veces en la configuración de atributos variantes
     family_variant_axes_unique: Los ejes variantes debe ser únicos, "%attributes%" son usados bastante seguido en la configuración de los atributos variantes

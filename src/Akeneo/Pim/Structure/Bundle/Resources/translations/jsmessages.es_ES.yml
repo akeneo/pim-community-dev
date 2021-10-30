@@ -266,7 +266,7 @@ pim_enrich.mass_edit.family:
     confirm:
       label: Confirmación
     launched:
-      label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      label: La acción en masa «{{ operation }}» ha sido lanzada. Será notificado una vez finalizada.
   operation:
     set_requirements:
       label: Establecer los requisitos de atributos
