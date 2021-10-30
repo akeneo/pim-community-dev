@@ -24,7 +24,7 @@ akeneo_connectivity.connection:
     constraint:
       code:
         required: Se requiere código de conexión.
-        invalid: El código de conexión sólo puede contener letras, números y guiones bajos.
+        invalid: El código de conexión solo puede contener letras, números y guiones bajos.
         too_short: El código de conexión es demasiado corto. Debe tener 3 caracteres o más.
         too_long: El código de conexión es demasiado largo. Debe tener 100 caracteres o menos.
         must_be_unique: El código de conexión debe ser único.
@@ -33,7 +33,7 @@ akeneo_connectivity.connection:
         too_short: La etiqueta de conexión es demasiado corta. Debe tener 3 caracteres o más.
         too_long: La etiqueta de conexión es demasiado larga. Debe tener 100 caracteres o menos.
       flow_type:
-        invalid: El tipo de flujo de conexión sólo puede ser 'data_source', 'data_destination' u 'otro'.
+        invalid: El tipo de flujo de conexión solo puede ser 'data_source', 'data_destination' u 'otro'.
       image:
         must_exist: No se encontró la imagen. Por favor, inténtelo de nuevo.
   flow_type:
