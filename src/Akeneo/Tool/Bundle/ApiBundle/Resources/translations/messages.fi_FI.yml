@@ -25,8 +25,8 @@ pim_api:
     locale.list: Listaa lokaatiot
     currency.list: Listaa valuutat
     association_type:
-      edit: Luo ja päivitä assosiaatiotyyppejä
-      list: Listaa assosiaatiotyypit
+      edit: Luo ja päivitä tuoteliitostyyppejä
+      list: Listaa tuoteliitostyypit
   acl_group:
     overall_access: Yleiset Web API-käyttöoikeudet
     attribute: Attribuutit
@@ -38,7 +38,7 @@ pim_api:
     channel: Kanavat
     locale: Lokaatiot
     currency: Valuutat
-    association_type: Assosiaatiotyypit
+    association_type: Tuoteliitostyypit
 pim_user:
   roles:
     tab:
