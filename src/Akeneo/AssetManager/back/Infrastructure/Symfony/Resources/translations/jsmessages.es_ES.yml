@@ -82,36 +82,36 @@ pim_asset_manager:
         no_data: No hay ninguna familia de activos disponible
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
-        should_be_unique: 'Ya existe una familia de activos con el código "{{ %asset_family_identifier% }}"'
-        limit_reached: 'No puede crear la familia de recursos "{{ %asset_family_label% }}" porque ha llegado al límite de {{ %limit% }} familias de recursos'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'Ya existe una familia de activos con el código «{{ %asset_family_identifier% }}»'
+        limit_reached: 'No puede crear la familia de recursos «{{ %asset_family_label% }}» porque ha llegado al límite de {{ %limit% }} familias de recursos'
       transformation:
         limit_reached: 'Has alcanzado el límite de transformaciones {{ %limit% }}'
-        same_operation_twice: 'La operación "{{ %operation_type% }}" no puede definirse dos veces en una sola transformación'
-        source_can_not_be_a_target: 'La fuente de atributo "{{ %attribute_code% }}" no puede ser un objetivo de atributo de una transformación.'
-        attribute_reference_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
-        filename_is_not_unique: 'Ya existe una transformación con el prefijo de nombre de archivo "{{ %filename_prefix% }}" y el sufijo "{{ %filename_suffix% }}" para la fuente de atributo "{{ %attribute_code% }}"'
-        code_is_not_unique: 'No puedes definir dos transformaciones con el mismo código "{{ %transformation_code% }}"'
+        same_operation_twice: 'La operación «{{ %operation_type% }}» no puede definirse dos veces en una sola transformación'
+        source_can_not_be_a_target: 'La fuente de atributo «{{ %attribute_code% }}» no puede ser un objetivo de atributo de una transformación.'
+        attribute_reference_should_exist: 'El atributo «{{ %attribute_code% }}» no existe para esta familia de recursos'
+        filename_is_not_unique: 'Ya existe una transformación con el prefijo de nombre de archivo «{{ %filename_prefix% }}» y el sufijo «{{ %filename_suffix% }}» para la fuente de atributo «{{ %attribute_code% }}»'
+        code_is_not_unique: 'No puedes definir dos transformaciones con el mismo código «{{ %transformation_code% }}»'
         unknown_extra_field: 'La propiedad {{ {{ field }} }} no se esperaba.'
       naming_convention:
-        property_should_exist: 'La propiedad "{{ %property% }}" no existe para esta familia de activos'
+        property_should_exist: 'La propiedad «{{ %property% }}» no existe para esta familia de activos'
         not_main_media_attribute_code: 'La propiedad debe coincidir con el código del atributo definido como medio principal'
       rule_template:
-        limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos "{{ %asset_family_identifier% }}".'
+        limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos «{{ %asset_family_identifier% }}».'
         product_selection_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         product_assignment_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
-        extrapolated_attribute_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
-        extrapolated_attribute_type_should_be_supported: 'El atributo "{{ %attribute_code% }}" de tipo "{{ %attribute_type% }}" no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
-        channel_should_exist: 'El canal "{{ %channel_code% }}" no existe'
-        locale_should_exist: 'El local "{{ %locale_code% }}" no está activada o no existe'
-        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'El atributo "{{ %attribute_code% }}" no se puede utilizar para la extrapolación porque tiene un valor por canal'
-        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'El atributo "{{ %attribute_code% }}" no se puede utilizar para la extrapolación porque tiene un valor por configuración regional'
-        assignment_mode_not_supported: 'Se ha encontrado un modo de asignación no válido "{{ %assignment_mode% }}" en una regla de enlace de producto, se espera que sea "replace" o "add"'
-        channel_not_supported_for_field: 'No puede especificar un canal para el campo "{{ %product_field% }}"'
-        locale_not_supported_for_field: 'No puede especificar un local para el campo "{{ %product_field% }}"'
-        assignmement_attribute_does_not_support_this_asset_family: 'El atributo de producto "{{ %product_attribute_code% }}" no puede contener activos de la familia de activos "{{ %asset_family_identifier% }}"'
-        assignmement_attribute_does_not_exist: 'no existe el atributo de producto "{{ %product_attribute_code% }}"'
-        assignmement_attribute_is_not_an_asset_collection: 'el atributo de producto "{{ %product_attribute_code% }}" no es un atributo de tipo colección de activos'
+        extrapolated_attribute_should_exist: 'El atributo «{{ %attribute_code% }}» no existe para esta familia de recursos'
+        extrapolated_attribute_type_should_be_supported: 'El atributo «{{ %attribute_code% }}» de tipo «{{ %attribute_type% }}» no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
+        channel_should_exist: 'El canal «{{ %channel_code% }}» no existe'
+        locale_should_exist: 'El local «{{ %locale_code% }}» no está activada o no existe'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'El atributo «{{ %attribute_code% }}» no se puede utilizar para la extrapolación porque tiene un valor por canal'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'El atributo «{{ %attribute_code% }}» no se puede utilizar para la extrapolación porque tiene un valor por configuración regional'
+        assignment_mode_not_supported: 'Se ha encontrado un modo de asignación no válido «{{ %assignment_mode% }}» en una regla de enlace de producto, se espera que sea "replace" o "add"'
+        channel_not_supported_for_field: 'No puede especificar un canal para el campo «{{ %product_field% }}»'
+        locale_not_supported_for_field: 'No puede especificar un local para el campo «{{ %product_field% }}»'
+        assignmement_attribute_does_not_support_this_asset_family: 'El atributo de producto «{{ %product_attribute_code% }}» no puede contener activos de la familia de activos «{{ %asset_family_identifier% }}»'
+        assignmement_attribute_does_not_exist: 'no existe el atributo de producto «{{ %product_attribute_code% }}»'
+        assignmement_attribute_is_not_an_asset_collection: 'el atributo de producto «{{ %product_attribute_code% }}» no es un atributo de tipo colección de activos'
     button:
       save: Guardar
       save_permission: Guardar
@@ -159,8 +159,8 @@ pim_asset_manager:
       title: Atributos de activos
       attribute:
         error:
-          render_list: 'Se ha producido un error durante la representación del atributo "{{ %attribute_code% }}"'
-          render_edit: 'Se ha producido un error durante la representación del atributo "{{ %attribute_code% }}" campos de propiedades adicionales'
+          render_list: 'Se ha producido un error durante la representación del atributo «{{ %attribute_code% }}»'
+          render_edit: 'Se ha producido un error durante la representación del atributo «{{ %attribute_code% }}» campos de propiedades adicionales'
     module:
       delete:
         button: Eliminar familia de activos
@@ -185,7 +185,7 @@ pim_asset_manager:
         code: Código (requerido)
       confirm: Guardar
     delete:
-      message: '¿Está seguro de que desea eliminar la familia de activos "{{ assetFamilyLabel }}"?'
+      message: '¿Está seguro de que desea eliminar la familia de activos «{{ assetFamilyLabel }}»?'
       title: Atributo
     edit:
       discard_changes: Perderá los cambios en la familia de activos «{{ assetFamilyLabel }}» si abandona la página.
@@ -229,7 +229,7 @@ pim_asset_manager:
       subtitle: Para gestionar los permisos de la entidad de referencia es necesario tener al menos un grupo de usuarios.
       link: Haga clic aquí para añadir su primer grupo de usuarios
   asset:
-    img: El medio principal del activo llamado "{{ label }}"
+    img: El medio principal del activo llamado «{{ label }}»
     validation:
       limit_reached: 'No puede crear el activo «{{ %asset_label% }}» porque ha alcanzado el límite de activos {{ %limit% }} para esta familia de activos'
       code:
@@ -323,10 +323,10 @@ pim_asset_manager:
         invalid: error
         created: creado
     delete:
-      message: '¿Está seguro que desea eliminar el activo "{{ assetLabel }}"? Si está vinculado a los productos, los enlaces se eliminarán.'
+      message: '¿Está seguro que desea eliminar el activo «{{ assetLabel }}»? Si está vinculado a los productos, los enlaces se eliminarán.'
       title: Activo
     delete_all:
-      confirm: '¿Está seguro de que desea eliminar todos los activos "{{ entityIdentifier }}"? Si están vinculados a los productos, se eliminarán los enlaces a los productos.'
+      confirm: '¿Está seguro de que desea eliminar todos los activos «{{ entityIdentifier }}»? Si están vinculados a los productos, se eliminarán los enlaces a los productos.'
     grid:
       search: Buscar en la etiqueta, el código y el texto de los atributos
       filter:
@@ -366,16 +366,16 @@ pim_asset_manager:
         success: Activo creado con éxito.
         fail: Se ha producido un error durante la creación del activo
       delete:
-        success: El activo "{{ code }}" se ha eliminado correctamente.
+        success: El activo «{{ code }}» se ha eliminado correctamente.
         fail: Se ha producido un error durante la eliminación del activo
       delete_all:
-        success: Todos los activos "{{ entityIdentifier }}" se han eliminado correctamente.
+        success: Todos los activos «{{ entityIdentifier }}» se han eliminado correctamente.
         fail: Se ha producido un error durante la eliminación de todos los activos de esta familia de activos
     completeness:
       label: Completo
   attribute:
     validation:
-      limit_reached: 'No puedes crear el atributo "{{ %attribute_label% }}" porque has alcanzado el límite de atributos {{ %limit% }} para esta familia de activos'
+      limit_reached: 'No puedes crear el atributo «{{ %attribute_label% }}» porque has alcanzado el límite de atributos {{ %limit% }} para esta familia de activos'
     default:
       code: Código
       label: Etiqueta
@@ -455,7 +455,7 @@ pim_asset_manager:
         suffix: Sufijo
         media_type: Tipo de medios
     delete:
-      message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
+      message: '¿Está seguro que desea eliminar el atributo «{{ attributeLabel }}»?'
       title: Atributo
     notification:
       list:
