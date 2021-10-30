@@ -86,26 +86,26 @@ pim_enrich.entity.attribute_option:
       delete_confirmation_title_msg: Poista "{{ optionCode }}" valintalistan arvoista?
       delete_confirmation_subtitle_msg: Haluatko varmasti poistaa tämän valintalistan arvon? Et voi peruuttaa tätä toimenpidettä.
 pim_enrich.entity.association_type:
-  label: assosiaatiotyyppi
+  label: tuoteliitostyyppi
   property:
     is_two_way: 2-suuntainen tuoteliitos
     is_quantified: Lukumäärällinen tuoteliitos
   flash:
     update:
-      success: Assosiaatiotyypin päivittäminen onnistui.
-      fail: Assosiaatiotyyppiä ei voitu päivittää.
-      fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      success: Tuoteliitostyypin päivittäminen onnistui.
+      fail: Tuoteliitostyyppiä ei voitu päivittää.
+      fields_not_ready: "Tuoteliitostyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     create:
-      success: Assosiaatiotyyppi luotu onnistuneesti
+      success: Tuoteliitostyyppi luotu onnistuneesti
     delete:
-      success: Assosiaatiotyyppi poistettu onnistuneesti
+      success: Tuoteliitostyyppi poistettu onnistuneesti
       fail: Liitostyyppiä ei voi poistaa
   page_title:
-    index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
+    index: "]-Inf, 1] {{ count }} tuoteliitostyyppi|]1, Inf [{{ count }} tuoteliitostyyppiä"
   module:
     create:
       title: Luo uusi tuoteliitostyyppi
-      button: Luo assosiaatiotyyppi
+      button: Luo tuoteliitosyyppi
       is_two_way:
         message_on_read_only: Tuoteliitostyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
       is_quantified:

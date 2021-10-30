@@ -89,8 +89,8 @@ pim_enrich:
       add_attribute: Lisää attribuutti tuotteelle
       remove_attribute: Poista attribuutti tuotteelta
       categories_view: Katso tuotteen kategorioita
-      associations_view: Näytä tuotteen assosiaatiot
-      associations_edit: Lisää assosiaatiot tuotteelle
+      associations_view: Näytä tuotteen tuoteliitokset
+      associations_edit: Lisää tuoteliitoksia tuotteelle
       change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -158,19 +158,19 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa assosiaatiotyypit
-      create: Luo assosiaatiotyyppi
-      edit: Muokkaa assosiaatiotyyppiä
-      remove: Poista assosiaatiotyyppi
-      history: Näytä assosiaatiotyypin historia
+      index: Listaa tuoteliitostyypit
+      create: Luo tuoteliitostyyppi
+      edit: Muokkaa tuoteliitostyyppiä
+      remove: Poista tuoteliitostyyppi
+      history: Näytä tuoteliitostyypin historia
     association:
-      remove: Poista tuotteen assosiaatiot
+      remove: Poista tuotteen tuoteliitokset
     job_tracker:
       index: Näytä prosessien seuraaja
       view_all_jobs: Näytä kaikki työt prosessiselaimessa
       stop_job: Pysäytä käynnissä oleva työ
   acl_group:
-    association_type: Assosiaatiotyypit
+    association_type: Tuoteliitostyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
@@ -198,7 +198,7 @@ pim_enrich:
     locale: luo alue
     product: luo tuote
     group: luo ryhmä
-    association type: luo assosiaatiotyyppi
+    association type: luo tuoteliitostyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
 #Confirmation messages
@@ -260,8 +260,8 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: Assosiaatiotyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Assosiaatiotyyppiä ei ole olemassa.
+    remove from products: Tuoteliitostyypin poistaminen poistaa sen myös %count% tuotteelta.
+    none exist: Tuoteliitostyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, valintalistan arvot lajitellaan automaattisesti niiden lokalisoidun otsikon mukaan
@@ -419,7 +419,7 @@ pane.accordion:
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
-  association_type.title: Luo uusi assosiaatiotyyppi
+  association_type.title: Luo uusi tuoteliitostyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto

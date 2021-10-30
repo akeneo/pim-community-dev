@@ -81,7 +81,7 @@ pim_catalog:
     300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
     301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
     302: Tämä kenttä vaatii kelvollisen laajuuden.
-    303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
+    303: Tämä kenttä vaatii kelvollisen tuoteliitoksen muodon.
     pim_immutable_product_validator: Sama tunnus on jo toisen tuotteen käytössä
     pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
     quantified_associations:

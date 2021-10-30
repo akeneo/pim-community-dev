@@ -55,7 +55,7 @@ measurements:
       select: Seleccione su operador
     convert_from_standard: Operación de conversión
     create_another: Crear otra unidad
-    will_be_read_only: Un atributo de producto está vinculado a esta familia de medición. Una vez creada la unidad, sólo podrá editar sus etiquetas traducidas y su símbolo.
+    will_be_read_only: Un atributo de producto está vinculado a esta familia de medición. Una vez creada la unidad, solo podrá editar sus etiquetas traducidas y su símbolo.
   list:
     header:
       standard_unit: Unidad estándar

@@ -85,7 +85,7 @@ pim_enrich.entity.attribute_option:
       new_option_code: nueva_opcion
       no_options_msg: '¡Lo sentimos, no hay opciones!'
       add_option: Haga clic aquí para agregar uno
-      delete_confirmation_title_msg: '¿Eliminar "{{ optionCode }}" de sus opciones?'
+      delete_confirmation_title_msg: '¿Eliminar «{{ optionCode }}» de sus opciones?'
       delete_confirmation_subtitle_msg: '¿Está seguro de que desea eliminar esta opción? Esta acción no se puede deshacer.'
 pim_enrich.entity.association_type:
   label: tipo de asociación
@@ -114,7 +114,7 @@ pim_enrich.entity.association_type:
         message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
-  hint: <a href="{{link}}" target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
+  hint: <a href=«{{link}}» target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
 pim_enrich.entity.group_type:
   label: tipo de grupo
   flash:
@@ -266,7 +266,7 @@ pim_enrich.mass_edit.family:
     confirm:
       label: Confirmación
     launched:
-      label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      label: La acción en masa «{{ operation }}» ha sido lanzada. Será notificado una vez finalizada.
   operation:
     set_requirements:
       label: Establecer los requisitos de atributos
