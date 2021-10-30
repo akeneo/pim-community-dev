@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Esportazione prodotti su misura i
 batch_jobs.xlsx_tailored_product_model_export.label: Esportazione modelli prodotto su misura in XLSX
 batch_jobs.csv_tailored_product_export.label: Esportazione prodotti su misura in CSV
 batch_jobs.csv_tailored_product_model_export.label: Esportazione modelli prodotto su misura in CSV
+pim_common:
+  quality_score: Punteggio qualità
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: Seleziona alcune impostazioni locali
         remove: Rimuovi l'impostazione locale
     quality_score:
+      score:
+        remove: Rimuovi punteggio qualità
       locales:
+        placeholder: Seleziona alcune impostazioni locali
         label: Definisci le impostazioni locali per il punteggio qualità
+        remove: Rimuovi l'impostazione locale
   form:
     job_instance:
       tab:
@@ -89,15 +95,19 @@ akeneo.tailored_export:
             locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
             channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
         measurement:
+          information: Per questo attributo puoi esportare il valore, il codice unità, l'etichetta unità oppure il valore e l'etichetta unità.
           value: Valore
           unit_locale: Impostazione locale unità
           unit_code: Codice unità
           unit_label: Etichetta unità
+          value_and_unit_label: Valore ed etichetta unità
         price:
           currency_code: Codice valuta
           currency_label: Etichetta valuta
           currency_locale: Impostazione locale valuta
           information: Per questo attributo, puoi esportare il codice valuta, l'etichetta valuta o l'importo.
+          currencies: Seleziona valute
+          all_currencies: Tutto
         file:
           information: Per questo attributo, puoi esportare il percorso, la chiave di file o il nome di file.
         decimal_separator:
@@ -127,6 +137,9 @@ akeneo.tailored_export:
           no: Testo alternativo per il valore "No"
           edit_mapping: Modifica valori di sostituzione
           modal:
+            records: Gestisci i record
+            options: Gestisci le opzioni
+            subtitle: Sostituzione
             no_result:
               title: Spiacenti, non è presente alcun valore in questo attributo
             empty_result:
@@ -197,3 +210,6 @@ akeneo.tailored_export:
         does_not_exist: La famiglia di unità di misura {{ measurement_family_code }} non esiste.
       unit:
         does_not_exist: L'unità {{ unit_code }} non esiste nella famiglia di unità di misura {{ measurement_family_code }}.
+    currency:
+      should_be_active: '{0} Le valute "{{ currency_codes }}" non sono collegate ad alcun canale.|{1} La valuta "{{ currency_codes }}" non è collegata ad alcun canale.|]1,Inf] Le valute "{{ currency_codes }}" non sono collegate ad alcun canale.'
+      should_be_active_on_channel: '{0} Le valute "{{ currency_codes }}" non sono attive per il canale "{{ channel_code }}.|{1} La valuta "{{ currency_codes }}" non è attiva per il canale "{{ channel_code }}".|]1,Inf] Le valute "{{ currency_codes }}" non sono attive per il canale "{{ channel_code }}".'
