@@ -1,0 +1,50 @@
+pim_table_configuration:
+  validation:
+    table_configuration:
+      must_be_filled: La configurazione dell'attributo tabella deve essere indicata
+      must_contain_at_least_two_columns: L'attributo tabella deve contenere almeno 2 colonne
+      max_columns_reached: Hai raggiunto il numero massimo di colonne per la tabella (10)
+      missing_column: La colonna {{ field }} deve essere compilata
+      missing_option_field: Il {{ field }} è richiesto
+      column_code_must_be_filled: Il codice colonna deve essere indicato
+      option_code_must_be_filled: Il codice opzione deve essere indicato
+      invalid_code: Il codice colonna può contenere solo lettere, numeri e underscore
+      invalid_option_code: Il codice opzione può contenere solo lettere, numeri e underscore
+      too_long_code: "Il codice colonna è troppo lungo: deve essere di 100 caratteri al massimo"
+      too_long_label: "L'etichetta della colonna è troppo lunga: deve essere di 250 caratteri al massimo"
+      too_long_option_code: "Il codice opzione è troppo lungo: deve essere di 100 caratteri al massimo"
+      too_long_option_label: "L'etichetta dell'opzione è troppo lunga: deve essere di 255 caratteri al massimo"
+      duplicated_column_code: '[0,1]Ciascuna colonna richiede un codice univoco. "%duplicateCodes%" è già utilizzato|]1,Inf[Ciascuna colonna richiede un codice univoco. "%duplicateCodes%" sono già utilizzati'
+      column_type_must_be_a_string: Il tipo di dati della colonna deve essere una stringa
+      unknown_data_type: "Il tipo di dati della colonna è sconosciuto. Scegline uno tra i seguenti: numero, testo, seleziona, booleano"
+      column_label_must_be_a_string: L'etichetta della colonna deve essere una stringa
+      option_label_must_be_a_string: L'etichetta dell'opzione deve essere una stringa
+      label_locale_does_not_exist_or_is_not_activated: L'impostazione locale "{{ locale_code }}" non esiste o non è attivata
+      invalid_labels_format: Le etichette delle colonne devono essere oggetti chiave/valore
+      invalid_option_labels_format: Le etichette delle opzioni devono essere oggetti chiave/valore
+      must_not_be_filled: Il tipo %type% non ammette table_configuration
+      first_column_should_be_select: 'La prima colonna deve essere sempre di tipo "seleziona". Tipo attuale: "{{ data_type }}"'
+      first_column_code_cannot_be_changed: Il codice della prima colonna non può essere modificato.
+      unknown_field: 'Utilizza solamente i campi attesi. Campo attuale: {{ field }}'
+      attribute_does_not_exist: L'attributo "{{ attribute }}" non esiste
+      not_table_attribute: L'attributo "{{ attribute }}" non è un attributo tabella
+      column_does_not_exist: La colonna "{{ column }}" non esiste per l'attributo "{{ attribute }}"
+      not_select_column: La colonna "{{ column }}" dell'attributo "{{ attribute }}" non è di tipo "seleziona"
+      max_should_be_greater_than_min: Il valore massimo deve essere maggiore del valore minimo.
+      options_cannot_be_set: Non è possibile impostare le opzioni per una colonna di tipo "{{ data_type }}"
+      no_validations_allowed: 'Non utilizzare Validazioni su colonne di tipo "{{ columnType }}". Tipo di colonna attuale: "{{ given }}"'
+      invalid_validation_key: 'La validazione "{{ given }}" non è compatibile con le colonne "{{ columnType }}". Consentite: "{{ expected }}"'
+      too_many_table_attributes: Hai raggiunto il numero massimo di attributi tabella per il PIM ({{ limit }})
+    product_value:
+      non_existing_columns: '[0,1]La colonna "{{ non_existing_columns }}" non esiste]1,Inf[Le colonne "{{ non_existing_columns }}" non esistono'
+      unexpected_data_type: 'Per la colonna "{{ columnCode }}" è atteso un {{ expected }}. È stato immesso {{ given }}'
+      first_column_required: 'La colonna "{{ columnCode }}" è obbligatoria'
+      unknown_option: 'Utilizza solamente codici opzione esistenti. Valore attuale: "{{ optionCode }}"'
+      integer_required: 'Questo valore dovrebbe essere un intero: {{ invalid_value }}'
+      min_validation: Questo valore dovrebbe maggiore o uguale a {{ limit }}.
+      max_validation: Questo valore dovrebbe essere minore o uguale a {{ limit }}.
+      value_integer_required: 'Il valore richiesto è un numero intero'
+      max_length_validation: Questo valore dovrebbe contenere al massimo {{ limit }} caratteri.
+      too_many_rows: Hai raggiunto il numero massimo di righe per la tabella ({{ limit }}).
+    product_value_collection:
+      too_many_cells: Hai raggiunto il numero massimo di celle nella tabella del prodotto ({{ count }} celle; ammesse solamente {{ limit }})

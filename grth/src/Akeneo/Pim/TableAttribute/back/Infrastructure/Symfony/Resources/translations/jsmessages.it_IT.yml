@@ -1,0 +1,233 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Valori nutritivi medi
+      options:
+        energy: Energia
+        fat: Grassi
+        saturated_fat: Grassi saturi
+        carbohydrate: Carboidrati
+        sugars: Zuccheri
+        protein: Proteine
+        salt: Sale
+    per_100g:
+      label: 'per 100g'
+    per_serving:
+      label: 'Per porzione (x g)'
+    percentage_reference_intake:
+      label: '% della dose di riferimento (per 100 g o per porzione)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Informazioni nutrizionali
+      options:
+        total_fat: Grassi totali (g)
+        saturated_fat: Grassi saturi (g)
+        trans_fat: Grassi trans (g)
+        cholesterol: Colesterolo (g)
+        sodium: Sodio (g)
+        total_carbohydrate: Carboidrati totali (g)
+        dietary_fiber: Fibra alimentare (g)
+        total_sugars: Zuccheri totali (g)
+        included_added_sugars: Compresi zuccheri aggiunti (g)
+        protein: Proteine (g)
+    amount_per_serving:
+      label: Quantità per porzione
+    percentage_daily_value:
+      label: '% valore giornaliero'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Nutrizione
+      options:
+        energy: Energia
+        fat: Grassi
+        of_which_saturates: di cui saturi
+        carbohydrate: Carboidrati
+        of_which_sugars: di cui zuccheri
+        fibre: Fibre
+        protein: Proteine
+        salt: Sale
+    per_100g:
+      label: Per 100g
+    percentage_reference_intake:
+      label: '% assunzione di riferimento'
+    your_reference_intake:
+      label: 'assunzione di riferimento 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: Composizione
+      options:
+        wheat_flour: Farina di grano
+        butter: Burro
+        water: Acqua
+        sugar: Zucchero
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergene
+  clothing_composition:
+    composition:
+      label: Composizione
+      options:
+        cotton: Cotone
+        polyester: Poliestere
+        elastane: Elastan
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Dimensioni
+      options:
+        length: Lunghezza (cm)
+        width: Larghezza (cm)
+        height: Altezza (cm)
+        weight: Peso (kg)
+    value:
+      label: Valore
+  dimensions-imperial:
+    dimensions:
+      label: Dimensioni
+      options:
+        length: Lunghezza (pollici)
+        width: Larghezza (pollici)
+        height: Altezza (pollici)
+        weight: Peso (libbre)
+    value:
+      label: Valore
+  packaging-metric:
+    parcel:
+      label: Pacco
+      options:
+        parcel1: Pacco 1
+        parcel2: Pacco 2
+        parcel3: Pacco 3
+        parcel4: Pacco 4
+    width:
+      label: Larghezza (cm)
+    length:
+      label: Lunghezza (cm)
+    height:
+      label: Altezza (cm)
+  packaging-imperial:
+    parcel:
+      label: Pacco
+      options:
+        parcel1: Pacco 1
+        parcel2: Pacco 2
+        parcel3: Pacco 3
+        parcel4: Pacco 4
+    width:
+      label: Larghezza (pollici)
+    length:
+      label: Lunghezza (pollici)
+    height:
+      label: Altezza (pollici)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Struttura tabella
+      table_attribute: Attributo tabella
+      add_column: Aggiungi colonne
+      select_type: Seleziona il tipo
+      data_type: Tipo di colonna
+      labels: Traduzioni etichetta
+      column_management: Gestione colonne
+      please_type: Digita "{{ text }}"
+      confirm_column_delete: Vuoi davvero eliminare la colonna?
+      confirm_option_delete: Vuoi davvero eliminare questa opzione?
+      empty_title: La struttura della tabella è vuota.
+      empty_subtitle: Il primo passo è definire le colonne.
+      unique_title: L'attributo colonna è quasi pronto.
+      unique_subtitle: Definisci almeno 2 colonne per iniziare a usare la tabella.
+      new_option_placeholder: Scrivi la nuova etichetta dell'opzione
+      manage_options: Gestisci le opzioni
+      column_code: Codice colonna
+      properties_helper: Devi definire la struttura della tabella e almeno 2 colonne, prima di poter salvare l'attributo tabella
+      table_structure_helper_text: Un attributo tabella deve contenere almeno 2 colonne. Il primo è sempre una colonna di tipo "seleziona". Una volta creata la  prima colonna, devi aggiungere delle opzioni. Per farlo, fai clic su "Gestisci le opzioni" e inserisci un massimo di {{ limit }} opzioni! In seguito potrai usare queste opzioni come righe nelle tabelle di prodotti.
+      table_structure_helper_link: Questo articolo può esserti utile per saperne di più sugli attributi tabella.
+      limit_option_reached: Hai raggiunto il limite di {{ limit }} opzioni.
+      template_label: Seleziona lo standard della tabella "{{ templateLabel }}"
+      delete_column_helper: Se elimini questa colonna, tutti i suoi valori verranno rimossi da tutti i prodotti che utilizzano l'attributo tabella "{{ attributeLabel }}".
+      delete_first_column_option_helper: Se elimini questa opzione, l'intera riga verrà eliminata per tutti i prodotti che utilizzano l'attributo tabella "{{ attributeLabel }}".
+      delete_other_column_option_helper: Se elimini questa opzione, il valore della cella verrà rimosso per tutti i prodotti che utilizzano l'attributo tabella "{{ attributeLabel }}".
+      no_options_helper: Aggiungi la prima opzione.
+      no_options: Nessuna opzione trovata
+      please_try_again: Per favore, riprova
+      first_column_type_helper: La prima colonna di una Tabella è sempre una colonna di tipo Seleziona.
+      discard_changes: Se lasci la pagina perderai le modifiche alle opzioni di selezione.
+    product:
+      items_per_page: Elementi per pagina
+      current_items: "{{ minItem }}-{{ maxItem }} di {{ itemCount }}"
+      current_page: "Pagina {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "Spiacenti, non ci sono righe corrispondenti alla tua ricerca!"
+      no_rows_title: "La tabella {{ attributeLabel }} è vuota."
+      no_rows_subtitle: Aggiungi righe per definire nuove proprietà
+      no_rows_subtitle_on_readonly: Per modificare questo attributo, vai alla pagina di impostazione degli attributi oppure contatta il tuo amministratore PIM.
+      no_add_options_title: Per aggiungere righe
+      no_add_options: Gestisci le opzioni "{{ attributeLabel }}"
+      no_add_options_unallowed: Contatta l'amministratore PIM per gestire le opzioni "{{ attributeLabel }}"
+      no_add_options_link: qui
+      no_edit_permission: Permesso di modifica mancante
+      actions:
+        delete_row: Elimina questa riga
+        clear_row: Cancella questa riga
+        move_first: Sposta alla prima posizione
+        move_last: Sposta all'ultima posizione
+      order: Ordina
+  properties:
+    data_type:
+      text: Testo
+      number: Numero
+      boolean: Sì/No
+      select: Seleziona
+  validations:
+    column_code_must_be_filled: È necessario indicare il codice
+    column_data_type_must_be_filled: È necessario indicare il tipo di dati
+    invalid_column_code: Il codice colonna può contenere solo lettere, numeri e underscore
+    invalid_code: Il codice può contenere solo lettere, numeri e underscore
+    duplicated_column_code: Ciascuna colonna richiede un codice univoco. {{ duplicateCode }} è già utilizzato
+    duplicated_select_code: Ciascun codice deve essere univoco
+    max_greater_than_min: Max deve essere maggiore di Min
+    max_length: Numero massimo di caratteri (fino a 100)
+    min: Valore minimo
+    max: Valore massimo
+    decimals_allowed: Valori decimali ammessi
+    max_length_range: Indica un numero massimo di caratteri minore o uguale a {{ maximum }}
+  templates:
+    choose_template: Scegli un modello
+    choose_template_subtitle: Questi modelli sono solo esemplificativi, non normativi. Puoi modificarli prima di salvare la struttura dell'attributo.
+    empty_table: Tabella vuota
+    nutrition: Nutrizione
+    nutrition-unitedkingdom: Nutrizione (Regno Unito)
+    nutrition-europe: Valori nutritivi medi (Europa)
+    nutrition-unitedstates: Informazioni nutrizionali (Stati Uniti)
+    food_composition: Composizione dell'alimento
+    clothing_composition: Composizione del capo
+    dimensions: Dimensioni del prodotto
+    dimensions-metric: Dimensioni (sistema metrico decimale)
+    dimensions-imperial: Dimensioni (sistema imperiale britannico)
+    packaging: Dimensioni del pacco
+    packaging-metric: Dimensioni del pacco (sistema metrico decimale)
+    packaging-imperial: Dimensioni del pacco (sistema imperiale britannico)
+  product_edit_form:
+    add_rows: Aggiungi righe
+    search: Cerca
+  datagrid:
+    placeholder: Anteprima non disponibile, apri la pagina del prodotto per accedere ai valori degli attributi della tabella
+    any: Qualsiasi
+    select_your_column: Seleziona la colonna
+    select_your_row: Seleziona la riga
+    select_your_operator: Seleziona un operatore
+    select_your_value: Seleziona un valore
+    any_row: Qualsiasi riga
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Tabella
+batch_jobs:
+  csv_table_attribute_options_export.label: Esportazione in CSV delle opzioni degli attributi tabella
+  xlsx_table_attribute_options_export.label: Esportazione in XLSX delle opzioni degli attributi tabella
+  csv_table_attribute_options_import.label: Importazione da CSV delle opzioni degli attributi tabella
+  xlsx_table_attribute_options_import.label: Importazione da XLSX delle opzioni degli attributi tabella

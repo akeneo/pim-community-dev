@@ -92,6 +92,7 @@ pim_asset_manager:
         not_main_media_attribute: 'Het verwachte attribuut als belangrijkste media is "%main_media_attribute%", "%attribute%" gegeven.'
       media_link:
         protocol_not_allowed: 'Dit veld moet beginnen met een geldig protocol. Toegestane protocollen zijn: %allowed_protocols%.'
+        domain_not_allowed: 'Deze URL is niet toegestaan.'
   attribute:
     validation:
       options:
