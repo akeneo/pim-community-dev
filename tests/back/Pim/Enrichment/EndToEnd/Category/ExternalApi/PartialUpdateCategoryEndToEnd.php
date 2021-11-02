@@ -423,15 +423,36 @@ JSON;
     public function testResponseWhenParentIsMovedInChildren()
     {
         $client = $this->createAuthenticatedClient();
-        $categoryId = $this->get('pim_catalog.repository.category')->findOneByIdentifier('master')->getId();
+        $categoryId = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA')->getId();
 
-        $data = '{"parent": "categoryA"}';
+        $data = '{"parent": "categoryA1"}';
         $expectedContent = sprintf('{"code":422, "message": "Cannot set child as parent to node: %d"}', $categoryId);
-        $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenRootCategoryIsMovedToSubCategory()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [], '{"parent": "categoryA"}');
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'You can\'t move a category tree linked to a user. Check the expected format on the API documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     /**
