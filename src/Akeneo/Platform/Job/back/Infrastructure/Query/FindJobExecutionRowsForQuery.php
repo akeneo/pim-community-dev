@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Application\SearchJobExecutionTable\JobExecutionRow;
-use Akeneo\Platform\Job\Domain\Query\FindJobExecutionRowsForQueryInterface;
+use Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows\FindJobExecutionRowsResult;
+use Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows\FindJobExecutionRowsForQueryInterface;
 use Akeneo\Platform\Job\Domain\Query\SearchExecutionTableQueryInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
@@ -24,11 +25,30 @@ class FindJobExecutionRowsForQuery implements FindJobExecutionRowsForQueryInterf
         $this->connection = $connection;
     }
 
-    public function find(SearchExecutionTableQueryInterface $query): array
+    public function find(SearchExecutionTableQueryInterface $query): FindJobExecutionRowsResult
+    {
+        $jobExecutionRows = $this->findJobExecutionRows($query);
+        $jobExecutionMatchesCount = $this->countJobExecutionRows();
+
+        return new FindJobExecutionRowsResult($jobExecutionRows, $jobExecutionMatchesCount);
+    }
+
+    private function countJobExecutionRows(): int {
+        $sql = <<<SQL
+    SELECT
+        count(*)
+    FROM akeneo_batch_job_execution je
+    JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
+SQL;
+
+        return (int) $this->connection->executeQuery($sql)->fetchColumn();
+    }
+
+    private function findJobExecutionRows(SearchExecutionTableQueryInterface $query): array
     {
         $sql = <<<SQL
     SELECT
-        ji.label as job,
+        ji.label as jobName,
         ji.type,
         je.start_time as start_at,
         je.user as username,
@@ -37,10 +57,25 @@ class FindJobExecutionRowsForQuery implements FindJobExecutionRowsForQueryInterf
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
-    GROUP BY je.id;
+    GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
+    ORDER BY ISNULL(je.start_time) DESC, je.start_time DESC
+    LIMIT :offset, :limit;
 SQL;
 
-        $rawJobExecutions = $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        $page = $query->getPage();
+        $size = $query->getSize();
+
+        $rawJobExecutions = $this->connection->executeQuery(
+            $sql,
+            [
+                'offset' => ($page - 1) * $size,
+                'limit' => $size,
+            ],
+            [
+                'offset' => \PDO::PARAM_INT,
+                'limit' => \PDO::PARAM_INT,
+            ]
+        )->fetchAll(\PDO::FETCH_ASSOC);
 
         return $this->buildJobExecutionRows($rawJobExecutions);
     }
@@ -50,7 +85,7 @@ SQL;
         return array_map(
             static fn ($rawJobExecution) =>
                 new JobExecutionRow(
-                    $rawJobExecution['job'],
+                    $rawJobExecution['jobName'],
                     $rawJobExecution['type'],
                     $rawJobExecution['start_time'],
                     $rawJobExecution['username'],

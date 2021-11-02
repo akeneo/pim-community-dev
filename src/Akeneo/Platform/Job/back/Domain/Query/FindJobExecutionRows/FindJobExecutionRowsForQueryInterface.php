@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Domain\Query;
+namespace Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows;
 
-use Akeneo\Platform\Job\Application\SearchJobExecutionTable\JobExecutionRow;
+use Akeneo\Platform\Job\Domain\Query\SearchExecutionTableQueryInterface;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -13,8 +13,5 @@ use Akeneo\Platform\Job\Application\SearchJobExecutionTable\JobExecutionRow;
  */
 interface FindJobExecutionRowsForQueryInterface
 {
-    /**
-     * @return JobExecutionRow[]
-     */
-    public function find(SearchExecutionTableQueryInterface $query): array;
+    public function find(SearchExecutionTableQueryInterface $query): FindJobExecutionRowsResult;
 }

@@ -9,4 +9,7 @@ namespace Akeneo\Platform\Job\Domain\Query;
  */
 interface SearchExecutionTableQueryInterface
 {
+    public function getPage(): int;
+
+    public function getSize(): int;
 }

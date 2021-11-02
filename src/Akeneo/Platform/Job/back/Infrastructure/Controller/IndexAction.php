@@ -32,6 +32,8 @@ final class IndexAction
         }
 
         $searchJobExecutionTableQuery = new SearchExecutionTableQuery();
+        $searchJobExecutionTableQuery->page = $request->query->getInt('page', 1);
+
         $searchJobExecutionTableResult = $this->searchJobExecutionTable->search($searchJobExecutionTableQuery);
 
         return new JsonResponse(

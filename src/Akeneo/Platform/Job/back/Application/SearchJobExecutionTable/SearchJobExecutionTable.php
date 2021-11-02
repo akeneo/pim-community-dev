@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Application\SearchJobExecutionTable;
 
 use Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface;
-use Akeneo\Platform\Job\Domain\Query\FindJobExecutionRowsForQueryInterface;
+use Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows\FindJobExecutionRowsForQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -27,9 +27,9 @@ final class SearchJobExecutionTable
 
     public function search(SearchExecutionTableQuery $query): SearchJobExecutionTableResult
     {
-        $jobExecutionRows = $this->findJobExecutionRowsForQuery->find($query);
+        $findJobExecutionRowsResult = $this->findJobExecutionRowsForQuery->find($query);
         $totalCount = $this->countJobExecutionQuery->all();
 
-        return new SearchJobExecutionTableResult($jobExecutionRows, count($jobExecutionRows), $totalCount);
+        return new SearchJobExecutionTableResult($findJobExecutionRowsResult->jobExecutionRows, $findJobExecutionRowsResult->matchesCount, $totalCount);
     }
 }

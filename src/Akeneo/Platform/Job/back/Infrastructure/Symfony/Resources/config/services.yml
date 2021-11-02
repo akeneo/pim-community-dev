@@ -1,5 +1,5 @@
 services:
     Akeneo\Platform\Job\Application\SearchJobExecutionTable\SearchJobExecutionTable:
         arguments:
-            - '@Akeneo\Platform\Job\Domain\Query\FindJobExecutionRowsForQueryInterface'
+            - '@Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows\FindJobExecutionRowsForQueryInterface'
             - '@Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface'
