@@ -12,11 +12,13 @@ final class GoogleTagManager implements ExternalDependencyProviderInterface, Con
 {
     private ScriptNonceGenerator $nonceGenerator;
     private string $googleTagManagerId;
+    private string $googleAnalyticsId;
 
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $googleTagManagerId)
+    public function __construct(ScriptNonceGenerator $nonceGenerator, string $googleTagManagerId, $googleAnalyticsId)
     {
         $this->nonceGenerator = $nonceGenerator;
         $this->googleTagManagerId = $googleTagManagerId;
+        $this->googleAnalyticsId = $googleAnalyticsId;
     }
 
     public function getScript(): string
@@ -27,6 +29,7 @@ final class GoogleTagManager implements ExternalDependencyProviderInterface, Con
 <script nonce="$nonce">
   window.dataLayer = window.dataLayer||[];
   dataLayer.push({'pim-nonce': '$nonce'});
+  dataLayer.push({'google-analytics-id': '$this->googleAnalyticsId'});
 </script>
 <!-- Google Tag Manager -->
 <script nonce="$nonce">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
