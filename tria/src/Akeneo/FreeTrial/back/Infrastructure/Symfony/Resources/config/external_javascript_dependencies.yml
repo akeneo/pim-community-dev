@@ -37,3 +37,11 @@ services:
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
+
+  Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\Hotjar:
+    arguments:
+      - '@security.script_nonce_generator'
+      - '%env(HOTJAR_ID)%'
+    tags:
+      - { name: akeneo.pim.security.content_security_policy_provider }
+      - { name: akeneo.pim.security.external_dependency_provider }

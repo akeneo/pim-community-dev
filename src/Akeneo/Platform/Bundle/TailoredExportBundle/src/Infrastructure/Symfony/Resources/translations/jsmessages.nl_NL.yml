@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: Op maat gemaakte export van produ
 batch_jobs.xlsx_tailored_product_model_export.label: Op maat gemaakte export van productmodellen in XLSX
 batch_jobs.csv_tailored_product_export.label: Op maat gemaakte export van producten in CSV
 batch_jobs.csv_tailored_product_model_export.label: Op maat gemaakte export van productmodellen in CSV
+pim_common:
+  quality_score: Kwaliteitsscore
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: Selecteer enkele talen
         remove: Verwijder de taal
     quality_score:
+      score:
+        remove: Kwaliteitsscore verwijderen
       locales:
+        placeholder: Selecteer enkele talen
         label: Geef de talen voor de kwaliteitsscore op
+        remove: Verwijder de taal
   form:
     job_instance:
       tab:
@@ -89,15 +95,19 @@ akeneo.tailored_export:
             locale: Als het attribuut dat gebruikt wordt als label een waarde per locatie heeft, kunt u een specifieke taal selecteren.
             channel: Als het attribuut dat gebruikt wordt als label een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
         measurement:
+          information: Voor dit attribuut kun je de waarde of de code of het label van de eenheid exporteren.
           value: Waarde
           unit_locale: Taal van eenheid
           unit_code: Code van eenheid
           unit_label: Label van eenheid
+          value_and_unit_label: Waarde en unit label
         price:
           currency_code: Valutacode
           currency_label: Valutalabel
           currency_locale: Taal voor valuta
           information: Voor dit attribuut kunt u de valutacode, het valutabelabel of het bedrag exporteren.
+          currencies: Valuta’s selecteren
+          all_currencies: Alle
         file:
           information: Voor dit attribuut kunt u het pad, de bestandssleutel of de bestandsnaam exporteren.
         decimal_separator:
@@ -127,6 +137,9 @@ akeneo.tailored_export:
           no: Geen vervangende waarde
           edit_mapping: Vervangende waarden bewerken
           modal:
+            records: Records beheren
+            options: Opties beheren
+            subtitle: Vervanging
             no_result:
               title: Dit attribuut bevat geen waarde
             empty_result:
@@ -197,3 +210,6 @@ akeneo.tailored_export:
         does_not_exist: De afmetingenfamilie {{ measurement_family_code }} bestaat niet.
       unit:
         does_not_exist: De eenheid {{ unit_code }} bestaat niet in de afmetingenfamilie {{ measurement_family_code }}.
+    currency:
+      should_be_active: '{0} De valuta''s "{{ currency_codes }}" zijn niet gekoppeld aan een kanaal.{1} De munteenheid "{{ currency_codes }}" is niet gekoppeld aan een kanaal.ins. ]1,Inf] De valuta''s "{{ currency_codes }}" zijn niet gekoppeld aan een kanaal.'
+      should_be_active_on_channel: '{0} De valuta''s "{{ currency_codes }}" zijn niet gekoppeld aan een kanaal.{1} De munteenheid "{{ currency_codes }}" is niet gekoppeld aan een kanaal.ins. ]1,Inf] De valuta''s "{{ currency_codes }}" zijn niet gekoppeld aan een kanaal.'

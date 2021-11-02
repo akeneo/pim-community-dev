@@ -1,0 +1,233 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Gemiddelde voedingswaarden
+      options:
+        energy: Energie
+        fat: Vet
+        saturated_fat: Verzadigd vet
+        carbohydrate: Koolhydraten
+        sugars: Suikers
+        protein: Eiwitten
+        salt: Zout
+    per_100g:
+      label: 'per 100g'
+    per_serving:
+      label: 'Per portie (x g)'
+    percentage_reference_intake:
+      label: '% van referentie inname (per 100g of portie)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Voedingswaarden
+      options:
+        total_fat: Totaal vet (g)
+        saturated_fat: Verzadigd vet (g)
+        trans_fat: Transvet (g)
+        cholesterol: Cholesterol (g)
+        sodium: Natrium (g)
+        total_carbohydrate: Totaal koolhydraten (g)
+        dietary_fiber: Voedingsvezels (g)
+        total_sugars: Totaal aantal Suikers (g)
+        included_added_sugars: Waarvan toegevoegde suikers (g)
+        protein: Eiwitten (g)
+    amount_per_serving:
+      label: Hoeveelheid per portie
+    percentage_daily_value:
+      label: '% Dagelijkse Waarde'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Voedingswaarde
+      options:
+        energy: Energie
+        fat: Vet
+        of_which_saturates: waarvan verzadigd is
+        carbohydrate: Koolhydraten
+        of_which_sugars: waarvan suikers
+        fibre: Vezel
+        protein: Eiwitten
+        salt: Zout
+    per_100g:
+      label: per 100g
+    percentage_reference_intake:
+      label: '% Referentie inname'
+    your_reference_intake:
+      label: 'uw referentie inname 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: Samenstelling
+      options:
+        wheat_flour: Tarwebloem
+        butter: Boter
+        water: Water
+        sugar: Suiker
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergeen
+  clothing_composition:
+    composition:
+      label: Samenstelling
+      options:
+        cotton: Katoen
+        polyester: Polyester
+        elastane: Elastaan
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Afmetingen
+      options:
+        length: Lengte (cm)
+        width: Breedte (cm)
+        height: Hoogte (cm)
+        weight: Weight (kg)
+    value:
+      label: Waarde
+  dimensions-imperial:
+    dimensions:
+      label: Afmetingen
+      options:
+        length: Lengte (cm)
+        width: Breedte (cm)
+        height: Hoogte (cm)
+        weight: Gewicht (pounds)
+    value:
+      label: Waarde
+  packaging-metric:
+    parcel:
+      label: Pakket
+      options:
+        parcel1: Pakket 1
+        parcel2: Pakket 2
+        parcel3: Pakket 3
+        parcel4: Pakket 4
+    width:
+      label: Breedte (cm)
+    length:
+      label: Lengte (cm)
+    height:
+      label: Hoogte (cm)
+  packaging-imperial:
+    parcel:
+      label: Pakket
+      options:
+        parcel1: Pakket 1
+        parcel2: Pakket 2
+        parcel3: Pakket 3
+        parcel4: Pakket 4
+    width:
+      label: Breedte (cm)
+    length:
+      label: Lengte (cm)
+    height:
+      label: Hoogte (cm)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Tabelstructuur
+      table_attribute: Tabelkenmerk
+      add_column: Nieuwe kolommen toevoegen
+      select_type: Selecteer uw soort
+      data_type: Kolomsoort
+      labels: Labelvertalingen
+      column_management: Kolombeheer
+      please_type: Typ  "{{ text }}"
+      confirm_column_delete: Weet je zeker dat u deze kolom wilt verwijderen?
+      confirm_option_delete: Weet u zeker dat u deze optie wilt verwijderen?
+      empty_title: Uw tabelstructuur is leeg.
+      empty_subtitle: De eerste stap is het definiëren van uw kolommen.
+      unique_title: Uw tabelattribuut is bijna klaar.
+      unique_subtitle: Definieer ten minste 2 kolommen om te beginnen met het gebruik van de tabel.
+      new_option_placeholder: Schrijf uw nieuwe optielabel hier
+      manage_options: Opties beheren
+      column_code: Kolomcode
+      properties_helper: U moet de tabelstructuur en ten minste 2 kolommen definiëren voordat u het tabelattribuut kunt opslaan
+      table_structure_helper_text: Een tabelattribuut moet ten minste 2 kolommen bevatten. De eerste is altijd een kolomtype. Zodra u de eerste kolom hebt gemaakt, moet u opties toevoegen. Om dit te doen, klik op "opties beheren" en voeg {{ limit }} opties toe! Vervolgens kunt u elk van deze opties gebruiken als rijen in uw producttabellen.
+      table_structure_helper_link: Dit artikel kan u helpen om meer te weten te komen over tabelattributen.
+      limit_option_reached: U hebt de limiet van {{ %limit% }} transformaties bereikt
+      template_label: Selecteer de standaard van uw "{{ templateLabel }}" tabel
+      delete_column_helper: Wanneer u deze kolom verwijdert, worden alle waarden ervan verwijderd uit alle producten die gebruik maken van het "{{ attributeLabel }}" tabelattribuut.
+      delete_first_column_option_helper: Wanneer u deze kolom verwijdert, worden alle waarden ervan verwijderd uit alle producten die gebruik maken van het "{{ attributeLabel }}" tabelattribuut.
+      delete_other_column_option_helper: Wanneer u deze kolom verwijdert, worden alle waarden ervan verwijderd uit alle producten die gebruik maken van het "{{ attributeLabel }}" tabelattribuut.
+      no_options_helper: Voeg uw eerste optie toe.
+      no_options: Geen opties gevonden.
+      please_try_again: Probeer nog eens
+      first_column_type_helper: De eerste kolom van een tabel is altijd een kolomtype selecteren.
+      discard_changes: Als u deze pagina verlaat verliest u de wijzigingen aan de geselecteerde opties.
+    product:
+      items_per_page: Items per pagina
+      current_items: "{{ minItem }}-{{ maxItem }} van {{ itemCount }}"
+      current_page: "Pagina {{ currentPage }} van {{ totalPages }}"
+      no_search_result: "Sorry, er zijn gen regels voor uw zoekopdracht!"
+      no_rows_title: "Uw {{ attributeLabel }} tabel is leeg."
+      no_rows_subtitle: Voeg rijen toe om nieuwe eigenschappen te definiëren.
+      no_rows_subtitle_on_readonly: Om dit attribuut te kunnen bewerken, ga naar de attribuut-instelling pagina of neem contact op met uw PIM-beheerder.
+      no_add_options_title: Om rijen toe te voegen
+      no_add_options: Beheer uw "{{ attributeLabel }}" opties
+      no_add_options_unallowed: Neem contact op met uw PIM beheerder om de "{{ attributeLabel }}" opties te beheren
+      no_add_options_link: hier
+      no_edit_permission: Geen toestemming voor bewerken
+      actions:
+        delete_row: Deze rij verwijderen
+        clear_row: Wis deze rij
+        move_first: Verplaats naar de eerste positie
+        move_last: Verplaats naar laatste positie
+      order: Volgorde
+  properties:
+    data_type:
+      text: Tekst
+      number: Nummer
+      boolean: Ja/Nee
+      select: Selecteer
+  validations:
+    column_code_must_be_filled: De code moet worden ingevuld
+    column_data_type_must_be_filled: Het gegevenstype moet ingevuld worden
+    invalid_column_code: De kolomcode mag alleen letters, cijfers en onderstrepingstekens bevatten
+    invalid_code: De code mag alleen letters, cijfers en onderstrepingstekens bevatten
+    duplicated_column_code: Elke kolom vereist een unieke code. {{ duplicateCode }} wordt al gebruikt
+    duplicated_select_code: Elke code vereist een unieke code
+    max_greater_than_min: Max moet groter zijn dan Min
+    max_length: Maximum aantal tekens (tot 100)
+    min: Minimumwaarde
+    max: Maximale waarde
+    decimals_allowed: Decimale waarden toegestaan
+    max_length_range: Definieer een maximum aantal tekens kleiner dan of gelijk aan {{ maximum }}
+  templates:
+    choose_template: 'Kies uw eigen sjabloon:'
+    choose_template_subtitle: Deze sjablonen zijn slechts voorbeelden, niet regelgevend. U kunt ze bewerken voordat u uw attribuutstructuur opslaat.
+    empty_table: Tabel leegmaken
+    nutrition: Voedingswaarde
+    nutrition-unitedkingdom: Voedingswaarde (Verenigd Koninkrijk)
+    nutrition-europe: Gemiddelde voedingswaarden
+    nutrition-unitedstates: Voedingsfeiten (Verenigde Staten)
+    food_composition: Voedingssamenstelling
+    clothing_composition: Kledingsamenstelling
+    dimensions: Productafmetingen
+    dimensions-metric: Afmetingen (Metrisch systeem)
+    dimensions-imperial: Afmetingen (Imperiaal systeem)
+    packaging: Afmetingen pakket
+    packaging-metric: Verpakkingsafmetingen (Metrisch systeem)
+    packaging-imperial: Verpakkingsafmetingen (Imperiaal systeem)
+  product_edit_form:
+    add_rows: Rijen toevoegen
+    search: Zoeken
+  datagrid:
+    placeholder: Preview niet beschikbaar, open de productpagina om de tabelattribuutwaarden te openen
+    any: Elke
+    select_your_column: Selecteer uw kolom
+    select_your_row: Selecteer uw rij
+    select_your_operator: Selecteer uw operator
+    select_your_value: Selecteer uw waarde
+    any_row: Elke rij
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Tabel
+batch_jobs:
+  csv_table_attribute_options_export.label: Tabel attribuut optiesselectie exporteren in CSV
+  xlsx_table_attribute_options_export.label: Tabel attribuut optiesselectie exporteren in XLSX
+  csv_table_attribute_options_import.label: Tabel attribuut optiesselectie importeren in CSV
+  xlsx_table_attribute_options_import.label: Tabel attribuut optiesselectie importeren in XLSX
