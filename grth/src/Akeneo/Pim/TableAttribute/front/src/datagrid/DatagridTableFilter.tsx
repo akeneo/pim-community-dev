@@ -41,7 +41,6 @@ const FilterButtonContainer = styled.div`
 
 type DatagridTableFilterProps = {
   showLabel: boolean;
-  label: string;
   canDisable: boolean;
   onDisable: () => void;
   attributeCode: AttributeCode;
@@ -52,13 +51,13 @@ type DatagridTableFilterProps = {
 
 const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   showLabel,
-  label,
   canDisable,
   onDisable,
   attributeCode,
   onChange,
   filterValuesMapping,
   initialDataFilter,
+  ...rest
 }) => {
   const router = useRouter();
   const translate = useTranslate();
@@ -152,12 +151,14 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   }
 
   return (
-    <Dropdown>
+    <Dropdown {...rest}>
       {isOpen && attribute && filterValue && (
         <Dropdown.Overlay onClose={handleClose}>
           <FilterContainer>
-            <FilterSectionTitle title={label}>
-              <FilterSectionTitleTitle>{label}</FilterSectionTitleTitle>
+            <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
+              <FilterSectionTitleTitle>
+                {getLabel(attribute.labels, catalogLocale, attribute.code)}
+              </FilterSectionTitleTitle>
             </FilterSectionTitle>
             <FilterSelectorList
               attribute={attribute}
@@ -174,7 +175,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
         </Dropdown.Overlay>
       )}
       <FilterBox className='AknFilterBox-filter' onClick={open}>
-        {showLabel && <span className='AknFilterBox-filterLabel'>{label}</span>}
+        {showLabel && attribute && <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>}
         <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
           {criteriaHint}
         </span>
