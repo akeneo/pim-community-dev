@@ -16,6 +16,7 @@ datagrid:
                 where:
                     and:
                         - r.role <> '%pim_user.entity.user.class%::ROLE_ANONYMOUS'
+                        - r.type = '%pim_user.entity.role.class%::TYPE_DEFAULT'
         columns:
             label:
                 label: pim_datagrid.columns.roles.label
