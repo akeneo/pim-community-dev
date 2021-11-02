@@ -38,8 +38,7 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
         $errorResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::ERROR);
         $warnResults = $this->findDocumentsByLevel(EventsApiDebugLogLevels::WARNING);
 
-        Assert::assertEquals(4, $infoResults['hits']['total']['value']);
-        Assert::assertEquals(4, $noticeResults['hits']['total']['value']);
+        Assert::assertEquals(8, $infoResults['hits']['total']['value'] + $noticeResults['hits']['total']['value']);
         Assert::assertEquals(10, $errorResults['hits']['total']['value']);
         Assert::assertEquals(10, $warnResults['hits']['total']['value']);
     }
