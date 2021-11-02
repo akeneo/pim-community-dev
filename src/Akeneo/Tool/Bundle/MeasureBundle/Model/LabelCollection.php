@@ -65,7 +65,7 @@ class LabelCollection
     {
         $localeCodes = array_map(static fn (LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $localeIdentifiers);
 
-        $filteredLabels = array_filter($this->translatedLabels, static fn ($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
+        $filteredLabels = array_filter($this->translatedLabels, static fn (string $labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
 
         return new self($filteredLabels);
     }

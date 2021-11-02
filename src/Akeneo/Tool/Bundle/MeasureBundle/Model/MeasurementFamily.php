@@ -120,7 +120,7 @@ class MeasurementFamily
     {
         $unit = $this->getUnit($standardUnitCode, $units);
 
-        Assert::notNull($unit, sprintf('Standard unit "%s" cannot be found', $standardUnitCode));
+        Assert::notNull($unit, sprintf('Standard unit "%s" cannot be found', $standardUnitCode->normalize()));
         Assert::true($unit->canBeAStandardUnit(), sprintf('Standard unit "%s" cannot be a standard unit', $unit->code()->normalize()));
     }
 }

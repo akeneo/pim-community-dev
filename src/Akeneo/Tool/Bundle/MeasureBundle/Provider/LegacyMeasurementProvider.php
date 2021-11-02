@@ -39,7 +39,7 @@ class LegacyMeasurementProvider
     private function loadLegacyMeasurementFamilies(): array
     {
         $measurementFamilies = array_map(
-            static fn (MeasurementFamily $family) => $this->adapter->adapts($family),
+            fn (MeasurementFamily $family) => $this->adapter->adapts($family),
             $this->measurementFamilyRepository->all()
         );
 

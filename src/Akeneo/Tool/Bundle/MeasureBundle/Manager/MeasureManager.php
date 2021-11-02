@@ -33,7 +33,7 @@ class MeasureManager
         $unitsConfig = $familyConfig['units'];
 
         return array_map(
-            static fn ($unit) => $unit['symbol'],
+            static fn (array $unit) => $unit['symbol'],
             $unitsConfig
         );
     }

@@ -148,7 +148,7 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $standardUnit = Type::getType(Types::STRING)->convertToPhpValue($standardUnit, $platform);
         //TODO check Type:JSON
-        $units = array_map(static fn (array $normalizedUnit) => $this->hydrateUnit(
+        $units = array_map(fn (array $normalizedUnit) => $this->hydrateUnit(
             $normalizedUnit['code'],
             $normalizedUnit['labels'],
             $normalizedUnit['convert_from_standard'],
