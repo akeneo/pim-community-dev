@@ -79,7 +79,7 @@ const ColumnList = ({
 
   useEffect(() => {
     focus();
-  }, [selectedColumn?.uuid, focus, placeholderDisplayed]);
+  }, [selectedColumnUuid, focus, placeholderDisplayed]);
 
   const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
     const clipboardData = event.clipboardData;
