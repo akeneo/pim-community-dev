@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -18,9 +19,11 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
+        FeatureFlag $fakeAppsFeatureFlag,
         ExecutionContextInterface $context
     ): void {
-        $this->beConstructedWith($webMarketplaceApi);
+        $this->beConstructedWith($webMarketplaceApi, $fakeAppsFeatureFlag);
+        $fakeAppsFeatureFlag->isEnabled()->willReturn(false);
         $this->initialize($context);
     }
 
@@ -61,6 +64,23 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
             $codeIdentifier,
             $codeChallenge
         )->willReturn(true);
+
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($value, $constraint);
+    }
+
+    public function it_skips_the_validator_if_a_value_is_empty(
+        CodeChallengeMustBeValid $constraint,
+        AccessTokenRequest $value,
+        WebMarketplaceApiInterface $webMarketplaceApi,
+        ExecutionContextInterface $context
+    ): void {
+        $value->getClientId()->willReturn('');
+        $value->getCodeIdentifier()->willReturn('');
+        $value->getCodeChallenge()->willReturn('');
+
+        $webMarketplaceApi->validateCodeChallenge(Argument::cetera())->shouldNotBeCalled();
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

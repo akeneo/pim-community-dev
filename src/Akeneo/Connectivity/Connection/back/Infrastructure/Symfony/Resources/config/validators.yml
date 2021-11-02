@@ -67,5 +67,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
         tags:
             - { name: validator.constraint_validator }

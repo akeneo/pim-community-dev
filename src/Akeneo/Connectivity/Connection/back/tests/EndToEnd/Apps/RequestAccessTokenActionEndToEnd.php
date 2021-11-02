@@ -39,7 +39,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
 
         $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
-            'GET',
+            'POST',
             '/connect/apps/v1/oauth2/token',
             [
                 'client_id' => $this->clientId,
@@ -66,7 +66,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
 
         $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
-            'GET',
+            'POST',
             '/connect/apps/v1/oauth2/token',
             [
                 // No client_id
