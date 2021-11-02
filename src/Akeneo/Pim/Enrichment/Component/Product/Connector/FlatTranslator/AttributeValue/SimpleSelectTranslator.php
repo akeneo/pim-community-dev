@@ -15,8 +15,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  */
 class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
 {
-    /** @var GetExistingAttributeOptionsWithValues */
-    private $getExistingAttributeOptionsWithValues;
+    private GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues;
 
     public function __construct(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
     {
@@ -43,7 +42,7 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
-            if (empty($value)) {
+            if (null === $value || '' === $value) {
                 $result[$valueIndex] = $value;
                 continue;
             }
