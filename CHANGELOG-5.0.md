@@ -4,6 +4,8 @@
 
 - PIM-10136: [Backport] PIM-9763: Make sure that 2 users can each create a private view with the same name
 - PIM-10131: [Backport] PIM-9740: Prevent to delete a channel used in a product export job
+- PIM-10133: [Backport EXB-1046]: Prevent to delete a channel used in shared catalog export job
+- PIM-10134: Prevent to delete a channel used in a published product export job
 
 # 5.0.54 (2021-10-29)
 
