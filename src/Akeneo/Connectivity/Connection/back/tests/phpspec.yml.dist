@@ -1,0 +1,7 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    Connection:
+        namespace: AkeneoEnterprise\Connectivity\Connection
+        psr4_prefix: AkeneoEnterprise\Connectivity\Connection
+        spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
+        src_path: src/Akeneo/Connectivity/Connection/back

@@ -14,7 +14,6 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-coupling-back
 	PIM_CONTEXT=workflow $(MAKE) workflow-coupling-back
 	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
-	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
 
@@ -44,7 +43,6 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
-	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
 	PIM_CONTEXT=tailored-export $(MAKE) lint-back
 
@@ -56,7 +54,6 @@ lint-back: #Doc: launch all PHP linter tests
 lint-front: #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-lint-front rule-engine-types-check-front rule-engine-prettier-check-front
-	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
 .PHONY: unit-back
@@ -98,7 +95,6 @@ acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat accep
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-acceptance-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-acceptance-back
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-acceptance-back
-	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-acceptance-back
 	PIM_CONTEXT=tailored-export $(MAKE) acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
