@@ -1,5 +1,7 @@
 # 5.0.x
 
+## Bug fixes
+
 - PIM-10136: [Backport] PIM-9763: Make sure that 2 users can each create a private view with the same name
 
 # 5.0.54 (2021-10-29)
