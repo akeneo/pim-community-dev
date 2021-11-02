@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConnectionType
+final class ConnectionType
 {
     const DEFAULT_TYPE = 'default';
 
@@ -29,7 +29,7 @@ class ConnectionType
         $this->type = $type;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->type;
     }

@@ -101,9 +101,8 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertSame(FlowType::OTHER, $result['flow_type']);
         Assert::assertNotNull($result['client_id']);
         Assert::assertNotNull($result['user_id']);
-        Assert::assertSame(true , (bool) $result['auditable']);
+        Assert::assertTrue((bool) $result['auditable']);
         Assert::assertSame('connection_type' , $result['type']);
-
     }
 
     protected function getConfiguration(): Configuration
