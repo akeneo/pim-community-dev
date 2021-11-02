@@ -84,6 +84,7 @@ data:
   AKENEO_CONNECT_API_CLIENT_USERNAME: {{ .Values.free_trial.akeneo_connect_api_client_username | quote }}
   AKENEO_CONNECT_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_connect_api_client_base_uri | quote }}
   AKENEO_PORTAL_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_portal_api_client_base_uri | quote }}
+  HOTJAR_ID: {{ .Values.free_trial.hotjar_id | quote }}
   {{- else }}
   FLAG_FREE_TRIAL_ENABLED: "0"
   {{- end }}
