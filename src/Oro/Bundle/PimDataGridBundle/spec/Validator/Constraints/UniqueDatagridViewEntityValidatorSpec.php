@@ -4,7 +4,7 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Validator\Constraints;
 
 use Akeneo\UserManagement\Component\Model\User;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
-use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository;
 use Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntity;
 use Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntityValidator;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
 {
     function let(
         ExecutionContextInterface $context,
-        DatagridViewRepositoryInterface $datagridViewRepository
+        DatagridViewRepository $datagridViewRepository
     ) {
         $this->beConstructedWith($datagridViewRepository);
 
@@ -29,7 +29,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_to_the_context_if_a_public_datagrid_view_already_exists_with_the_same_label(
         ExecutionContextInterface $context,
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        DatagridViewRepository $datagridViewRepository,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         DatagridView $datagridView,
         DatagridView $datagridViewInDatabase
@@ -55,7 +55,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_to_the_context_if_a_private_datagrid_view_already_exists_with_the_same_label_and_same_user(
         ExecutionContextInterface $context,
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        DatagridViewRepository $datagridViewRepository,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         DatagridView $datagridView,
         DatagridView $datagridViewInDatabase
@@ -83,7 +83,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_violation_to_the_context_if_no_public_datagrid_view_already_exists_with_the_same_label(
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        DatagridViewRepository $datagridViewRepository,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         DatagridView $datagridView
     ) {
@@ -102,7 +102,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_violation_to_the_context_if_no_private_datagrid_view_already_exists_with_the_same_label_and_same_user(
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        DatagridViewRepository $datagridViewRepository,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         DatagridView $datagridView
     ) {
@@ -124,7 +124,7 @@ class UniqueDatagridViewEntityValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_violation_to_the_context_if_i_update_a_datagrid_view(
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        DatagridViewRepository $datagridViewRepository,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         DatagridView $datagridView
     ) {
