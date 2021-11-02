@@ -58,6 +58,8 @@ class GetConnectorAttributeOptionAction
      */
     public function __invoke(string $referenceEntityIdentifier, string $attributeCode, string $optionCode): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $e) {

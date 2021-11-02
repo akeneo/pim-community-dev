@@ -77,6 +77,7 @@ class GetConnectorReferenceEntitiesAction
      */
     public function __invoke(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterIdentifier = null !== $searchAfter ? ReferenceEntityIdentifier::fromString($searchAfter) : null;

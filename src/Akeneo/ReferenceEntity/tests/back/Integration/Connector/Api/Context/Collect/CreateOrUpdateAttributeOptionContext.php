@@ -36,8 +36,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeOptionContext implements Context
@@ -68,18 +70,37 @@ class CreateOrUpdateAttributeOptionContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $activatedLocales;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
-        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
         $this->activatedLocales = $activatedLocales;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
 
     /**
@@ -363,6 +384,40 @@ class CreateOrUpdateAttributeOptionContext implements Context
         ];
 
         Assert::assertEquals($expectedAttributeOptions, $attribute['options']);
+    }
+
+    /**
+     * @When /^the connector collects the Australia attribute option of the Sales area Attribute of the Brand reference entity from the ERP to synchronize it with the PIM without permission$/
+     */
+    public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIMWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_entity_edit', false);
+        $this->requestContract = 'forbidden_australia_attribute_option_update.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for adding attribute option to the structure$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForAddingAttributeOptionToTheStructure()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_edit"'),
+            'Expected warning not found in the logs.'
+        );
     }
 
     /**

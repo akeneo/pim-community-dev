@@ -97,6 +97,7 @@ class CreateOrUpdateReferenceEntityAction
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $exception) {

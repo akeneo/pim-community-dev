@@ -40,7 +40,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -84,6 +87,10 @@ class GetConnectorRecordContext implements Context
     /** @var null|Response */
     private $imageNotFoundResponse;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -91,7 +98,9 @@ class GetConnectorRecordContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider
+        InMemoryFilesystemProviderStub $filesystemProvider,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -100,6 +109,19 @@ class GetConnectorRecordContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->mediaFileRepository = $mediaFileRepository;
         $this->filesystemProvider = $filesystemProvider;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
 
     /**
@@ -175,6 +197,39 @@ class GetConnectorRecordContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->existentRecord,
             self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_record.json", strtolower($referenceCode))
+        );
+    }
+
+    /**
+     * @When /^the connector requests the Kartell record for the Brand reference entity without permission$/
+     */
+    public function theConnectorRequestsKartellRecordForBrandReferenceEntityWithoutPermission(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_record_list', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->existentRecord = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for distributing a record$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForDistributingARecord(): void
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->existentRecord,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_record_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 

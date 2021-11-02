@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Helper;
 
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
@@ -45,6 +46,7 @@ class OauthAuthenticatedClientFactory
         $user = $this->createUser($username);
         $client = $this->createClient();
         $token = new OAuthToken($user->getRoles());
+        $token->setUser($user);
         $client->getContainer()->get('security.token_storage')->setToken($token);
 
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer fake_token');
@@ -56,6 +58,9 @@ class OauthAuthenticatedClientFactory
     {
         $user = new User();
         $user->setUsername($username);
+        $user->setRoles([
+            new Role('ROLE_USER'),
+        ]);
         $this->userRepository->save($user);
 
         return $user;

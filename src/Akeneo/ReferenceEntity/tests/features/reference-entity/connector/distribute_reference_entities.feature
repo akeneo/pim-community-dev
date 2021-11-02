@@ -20,3 +20,15 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given 7 reference entities in the PIM
     When the connector requests all reference entities of the PIM
     Then the PIM returns the label and image properties of the 7 reference entities of the PIM
+
+  @integration-back
+  Scenario: Notify an error when getting a reference entity without permission
+    Given the Brand reference entity
+    When the connector requests the Brand reference entity without permission
+    Then the PIM notifies the connector about missing permissions for distributing this reference entity to the ERP
+
+  @integration-back
+  Scenario: Notify an error when getting all the reference entities without permission
+    Given 7 reference entities in the PIM
+    When the connector requests all reference entities of the PIM without permission
+    Then the PIM notifies the connector about missing permissions for distributing the 7 reference entities of the PIM

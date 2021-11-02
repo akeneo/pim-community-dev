@@ -23,7 +23,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorReferenceEntityContext implements Context
@@ -45,16 +48,35 @@ class GetConnectorReferenceEntityContext implements Context
     /** @var null|Response */
     private $existentReferenceEntity;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier $findConnectorReferenceEntity,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
         $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
 
     /**
@@ -108,6 +130,38 @@ class GetConnectorReferenceEntityContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->existentReferenceEntity,
             self::REQUEST_CONTRACT_DIR . "successful_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @When /^the connector requests the Brand reference entity without permission$/
+     */
+    public function theConnectorRequestsTheBrandReferenceEntityWithoutPermission(): void
+    {
+        $this->securityFacade->setIsGranted('pim_api_entity_list', false);
+
+        $client = $this->clientFactory->logIn('julia');
+        $this->existentReferenceEntity = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entity.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for distributing this reference entity to the ERP
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForDistributingReferenceEntity()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->existentReferenceEntity,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entity.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 }
