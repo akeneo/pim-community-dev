@@ -1,37 +1,35 @@
-# How create a micro frontend
+# How to create a micro-frontend
 
-You decided to add a new micro frontend into the pim-enterprise-dev or pim-community-dev codebase ? This guide is for you !
+You decided to add a new micro-frontend into the `pim-enterprise-dev` or `pim-community-dev` codebase? This guide is for you!
 
 Before to start, you need to know the following things:
-- The new micro frontend location (in this cookbook it will be named $MICRO_FRONTEND_PATH)
-- The name of your micro frontend ($MICRO_FRONTEND_NAME)
+- The new micro-frontend location (in this cookbook it will be named $MICRO_FRONTEND_PATH)
+- The name of your micro-frontend ($MICRO_FRONTEND_NAME)
 
-## Register you new micro frontend 
-First step is to register the new package as workspace of the PIM, we do this in order to mutualize node_modules.
+## Register your new micro-frontend
+First step is to register the new package as a workspace of the PIM, we do this in order to mutualize the `node_modules`.
 
-To do this, you need to modify the following packages.json depending on where your micro frontend is located:
+To do this, you need to modify the following `package.json` depending on where your micro-frontend is located:
 
 - In the Enterprise Edition:
-  - std-build/packages.json
-  - packages.json
-  - tria/packages.json
-  - grth/packages.json
+  - std-build/package.json
+  - package.json
 
 - In the Trial Edition:
-  - tria/packages.json
+  - tria/package.json
 
 - In the Growth Edition:
-  - std-build/packages.json
-  - packages.json
-  - grth/packages.json
+  - std-build/package.json
+  - package.json
+  - grth/package.json
 
 - In the Community Edition:
-  - std-build/packages.json
-  - packages.json
-  - tria/packages.json
-  - grth/packages.json
-  - vendor/akeneo/pim-community-dev/packages.json
-  - vendor/akeneo/pim-community-dev/std-build/packages.json
+  - std-build/package.json
+  - package.json
+  - tria/package.json
+  - grth/package.json
+  - vendor/akeneo/pim-community-dev/package.json
+  - vendor/akeneo/pim-community-dev/std-build/package.json
 
 In those files you need to add your package path into the workspaces:
 ```diff
@@ -40,12 +38,12 @@ In those files you need to add your package path into the workspaces:
   }
 ```
 
-For example, the measurement micro frontend present in the community edition we have the following workspace:
+For example, the measurement micro-frontend present in the community edition we have the following workspace:
 ```
-  // In community edition packages.json
+  // In community edition package.json
   "front-packages/measurement",
 
-  // In the others packages.json
+  // In the others package.json
   "vendor/akeneo/pim-community-dev/front-packages/measurement",
 ```
 
@@ -57,7 +55,7 @@ Then you need to run the following command:
   yarn create react-app $MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME --template file:~/dev/create-react-app/packages/cra-template-typescript
 ```
 
-The script will create all the thing you need to develop a micro frontend in the PIM.
+The script will create all the things you need to develop a micro-frontend in the PIM.
 
 To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start`.
 
@@ -71,10 +69,10 @@ So you need to modify the package.json file of your new micro-frontend.
 ```
 
 Note:
-Replace `akeneo-pim-community` by `akeneo-pim-enterprise` if your micro frontend is in enterprise edition.
+Replace `akeneo-pim-community` by `akeneo-pim-enterprise` if your micro-frontend is in enterprise edition.
 
-## Add your test suite into the packages.json
-Now you need to create the following new script into the package.json of the community or enterprise edition (depending on where the micro frontend is located)
+## Add your test suite into the package.json
+Now you need to create the following new script into the package.json of the community or enterprise edition (depending on where the micro-frontend is located)
 ```json
     "$PROJECT_NAME:lint:check": "yarn workspace @akeneo-pim-community/$PROJECT_NAME lint:check",
     "$PROJECT_NAME:build": "yarn workspace @akeneo-pim-community/$PROJECT_NAME lib:build",
@@ -85,24 +83,24 @@ And call it in the following scripts: `packages:build`, `packages:unit` and `pac
 
 ## Modify the .circleci files to add your package into the cache
 
-Now that the CI launches the tests, you need to add your new micro frontend to the list of cached micro frontends. We do that because generating libs of frontend take time.
+Now that the CI launches the tests, you need to add your new micro-frontend to the list of cached micro-frontends. We do that because generating libs of frontend take time.
 
 First you need to add your package into the `Create hash for front packages` step.
 ```sh
     find $RELATIVE_PATH_TO_PROJECT_CONTAINING_MICRO_FRONTEND/$PROJECT_NAME -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/$PROJECT_NAME.hash
 ```
 
-Then add restore cache step just after the other restore_cache micro frontend:
+Then add restore cache step just after the other restore_cache micro-frontend:
 ```yaml
       - restore_cache:
-            name: Restore micro frontend $PROJECT_NAME cache
+            name: Restore micro-frontend $PROJECT_NAME cache
             key: micro-frontend-$PROJECT_NAME-{{ checksum "~/$PROJECT_NAME.hash" }}
 ```
 
-And save in cache the micro frontend generated lib with the following lines:
+And save in cache the micro-frontend generated lib with the following lines:
 ```yaml
       - save_cache:
-            name: Save micro frontend $PROJECT_NAME cache
+            name: Save micro-frontend $PROJECT_NAME cache
             key: micro-frontend-$PROJECT_NAME-{{ checksum "~/$PROJECT_NAME.hash" }}
             paths:
                 - $RELATIVE_PATH_TO_PROJECT_CONTAINING_MICRO_FRONTEND/$PROJECT_NAME
