@@ -65,9 +65,11 @@ Feature: Edit a product
   Scenario: Successfully add a metric attribute to a product
     Given I am logged in as "Julia"
     And I am on the "sandal" product page
+    Then the product Shoes size should be "29 Centimeter"
     When I change the "Shoes size" to "29 Dekameter"
     And I save the product
-    Then the product Shoes size should be "29 Dekameter"
+    Then I should not see the text "There are unsaved changes."
+    And the product Shoes size should be "29 Dekameter"
 
   @critical
   Scenario: Successfully switch the product scope
