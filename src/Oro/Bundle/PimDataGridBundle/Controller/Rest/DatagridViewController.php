@@ -190,7 +190,8 @@ class DatagridViewController
         }
 
         /**
-         * Pull-up master/6.0: do not pull.
+         * Pull-up master/6.0: remove the if and the call to `removeIfExists()`. It's a workaround to not
+         * create a migration on a released version.
          */
         if (null !== $this->removeLabelUniqueConstraint) {
             $this->removeLabelUniqueConstraint->removeIfExists();
