@@ -17,7 +17,7 @@ final class SearchJobExecutionHandler
     private CountJobExecutionQueryInterface $countJobExecutionQuery;
 
     public function __construct(
-        SearchJobExecutionInterface     $findJobExecutionRowsForQuery,
+        SearchJobExecutionInterface $findJobExecutionRowsForQuery,
         CountJobExecutionQueryInterface $countJobExecutionQuery
     ) {
         $this->findJobExecutionRowsForQuery = $findJobExecutionRowsForQuery;

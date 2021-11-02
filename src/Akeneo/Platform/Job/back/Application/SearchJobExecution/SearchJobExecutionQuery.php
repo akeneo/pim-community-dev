@@ -11,14 +11,4 @@ class SearchJobExecutionQuery
 {
     public int $page = 1;
     public int $size = 25;
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function getSize(): int
-    {
-        return $this->size;
-    }
 }

@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class IndexAction
 {
-    private SearchJobExecutionHandler $searchJobExecutionTable;
+    private SearchJobExecutionHandler $searchJobExecutionHandler;
 
-    public function __construct(SearchJobExecutionHandler $searchJobExecutionTable)
+    public function __construct(SearchJobExecutionHandler $searchJobExecutionHandler)
     {
-        $this->searchJobExecutionTable = $searchJobExecutionTable;
+        $this->searchJobExecutionHandler = $searchJobExecutionHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -31,13 +31,11 @@ final class IndexAction
             return new RedirectResponse('/');
         }
 
-        $searchJobExecutionTableQuery = new SearchJobExecutionQuery();
-        $searchJobExecutionTableQuery->page = $request->query->getInt('page', 1);
+        $searchJobExecutionQuery = new SearchJobExecutionQuery();
+        $searchJobExecutionQuery->page = $request->query->getInt('page', 1);
 
-        $searchJobExecutionTableResult = $this->searchJobExecutionTable->search($searchJobExecutionTableQuery);
+        $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 
-        return new JsonResponse(
-            $searchJobExecutionTableResult->normalize()
-        );
+        return new JsonResponse($jobExecutionTable->normalize());
     }
 }

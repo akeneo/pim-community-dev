@@ -24,7 +24,7 @@ final class CountJobExecutionQuery implements CountJobExecutionQueryInterface
     public function all(): int
     {
         $sql = <<<SQL
-    SELECT count(*) as count FROM akeneo_batch_job_execution;
+SELECT count(*) as count FROM akeneo_batch_job_execution;
 SQL;
 
         $result = $this->connection->query($sql)->fetchColumn();

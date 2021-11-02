@@ -42,8 +42,8 @@ class SearchJobExecution implements SearchJobExecutionInterface
     LIMIT :offset, :limit;
 SQL;
 
-        $page = $query->getPage();
-        $size = $query->getSize();
+        $page = $query->page;
+        $size = $query->size;
 
         $rawJobExecutions = $this->connection->executeQuery(
             $sql,
