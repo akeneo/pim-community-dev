@@ -13,6 +13,7 @@ import {showDataQualityInsightsAttributeToImproveAction} from '@akeneo-pim-commu
 import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator';
 import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 import SpellcheckProductValuesList from './SpellcheckProductValuesList';
+import {useCatalogContext, useGetSpellcheckSupportedLocales} from '../../../../infrastructure';
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
@@ -21,12 +22,17 @@ export interface AttributesTabContentProps {
 }
 
 const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
+  const {locale} = useCatalogContext();
+  const spellcheckSupportedLocales = useGetSpellcheckSupportedLocales();
+
   return (
     <AttributeGroupsStatusProvider>
       <TextAttributesContextListener />
       <AttributeToImproveContextListener />
 
-      <SpellcheckProductValuesList />
+      {spellcheckSupportedLocales !== null && locale && spellcheckSupportedLocales.includes(locale) && (
+        <SpellcheckProductValuesList />
+      )}
     </AttributeGroupsStatusProvider>
   );
 };
