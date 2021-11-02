@@ -21,6 +21,7 @@ const MainContainer = styled.div`
   justify-content: space-between;
   flex-direction: column;
   max-width: 100%;
+  width: 1px;
 
   ${LineContainer} {
     min-height: 34px;
