@@ -10,11 +10,15 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily;
  */
 class CreateMeasurementFamilyCommand
 {
-    public string $code;
+    /** @var string */
+    public $code;
 
-    public array $labels;
+    /** @var array */
+    public $labels;
 
-    public string $standardUnitCode;
+    /** @var string */
+    public $standardUnitCode;
 
-    public array $units = [];
+    /** @var array */
+    public $units = [];
 }
