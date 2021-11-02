@@ -68,7 +68,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
         $valueKey = ValueKey::create($attribute->getIdentifier(), $channelReference, $localeReference);
         $existingValue = $record->findValue($valueKey);
 
-        if (null === $existingValue || $existingValue->getData()->getKey() !== $command->filePath) {
+        if (!$existingValue instanceof Value || $existingValue->getData()->getKey() !== $command->filePath) {
             $fileInfo = new FileInfo();
             $fileInfo->setKey($command->filePath);
             $fileInfo->setOriginalFilename($command->originalFilename);
