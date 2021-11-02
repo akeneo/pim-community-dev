@@ -57,6 +57,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_datagrid.updater.datagrid_view'
             - '@pim_datagrid.factory.datagrid_view'
+            - '@Oro\Bundle\PimDataGridBundle\Query\Sql\RemoveUniqueLabelConstraint'
 
     pim_datagrid.controller.productgrid:
         public: true
