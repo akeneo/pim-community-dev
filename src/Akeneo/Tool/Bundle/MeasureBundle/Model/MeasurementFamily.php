@@ -16,17 +16,13 @@ class MeasurementFamily
 {
     public const MIN_UNIT_COUNT = 1;
 
-    /** @var string */
-    private $code;
+    private MeasurementFamilyCode $code;
 
-    /** @var LabelCollection */
-    private $labels;
+    private LabelCollection $labels;
 
-    /** @var UnitCode */
-    private $standardUnitCode;
+    private UnitCode $standardUnitCode;
 
-    /** @var array */
-    private $units;
+    private array $units;
 
     private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
     {
@@ -54,9 +50,7 @@ class MeasurementFamily
             'labels' => $this->labels->normalize(),
             'standard_unit_code' => $this->standardUnitCode->normalize(),
             'units' => array_map(
-                function (Unit $unit) {
-                    return $unit->normalize();
-                },
+                static fn (Unit $unit) => $unit->normalize(),
                 $this->units
             )
         ];
@@ -80,7 +74,7 @@ class MeasurementFamily
     {
         $unit = $this->getUnit($unitCode, $this->units);
 
-        if (null === $unit) {
+        if (!$unit instanceof Unit) {
             throw new UnitNotFoundException();
         }
 
@@ -102,9 +96,7 @@ class MeasurementFamily
     private function assertNoDuplicatedUnits(array $units): void
     {
         $normalizedUnitCodes = array_map(
-            function (Unit $unit) {
-                return $unit->code()->normalize();
-            },
+            static fn (Unit $unit) => $unit->code()->normalize(),
             $units
         );
         Assert::uniqueValues($normalizedUnitCodes);
@@ -114,9 +106,7 @@ class MeasurementFamily
     {
         $unit = current(array_filter(
             $units,
-            function (Unit $unit) use ($standardUnitCode) {
-                return $standardUnitCode->equals($unit->code());
-            }
+            static fn (Unit $unit) => $standardUnitCode->equals($unit->code())
         ));
 
         if (!$unit) {
@@ -128,8 +118,9 @@ class MeasurementFamily
 
     private function assertStandardUnitOperationIsAMultiplyByOne(UnitCode $standardUnitCode, array $units): void
     {
-        /** @var Unit $unit */
         $unit = $this->getUnit($standardUnitCode, $units);
+
+        Assert::notNull($unit, sprintf('Standard unit "%s" cannot be found', $standardUnitCode));
         Assert::true($unit->canBeAStandardUnit(), sprintf('Standard unit "%s" cannot be a standard unit', $unit->code()->normalize()));
     }
 }

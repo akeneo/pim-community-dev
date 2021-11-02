@@ -22,14 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteMeasurementFamilyAction
 {
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var DeleteMeasurementFamilyHandler */
-    private $deleteMeasurementFamilyHandler;
+    private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
     public function __construct(
         ValidatorInterface $validator,

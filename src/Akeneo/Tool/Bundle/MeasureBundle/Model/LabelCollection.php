@@ -10,8 +10,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
  */
 class LabelCollection
 {
-    /** @var array */
-    private $translatedLabels;
+    private array $translatedLabels;
 
     private function __construct(array $translatedLabels)
     {
@@ -64,13 +63,9 @@ class LabelCollection
 
     public function filterByLocaleIdentifiers(array $localeIdentifiers): LabelCollection
     {
-        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
-            return $localeIdentifier->normalize();
-        }, $localeIdentifiers);
+        $localeCodes = array_map(static fn (LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $localeIdentifiers);
 
-        $filteredLabels = array_filter($this->translatedLabels, function ($labelCode) use ($localeCodes) {
-            return in_array($labelCode, $localeCodes);
-        }, ARRAY_FILTER_USE_KEY);
+        $filteredLabels = array_filter($this->translatedLabels, static fn ($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
 
         return new self($filteredLabels);
     }

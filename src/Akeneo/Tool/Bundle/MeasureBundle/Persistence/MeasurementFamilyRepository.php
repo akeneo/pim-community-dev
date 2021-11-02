@@ -148,14 +148,12 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $standardUnit = Type::getType(Types::STRING)->convertToPhpValue($standardUnit, $platform);
         //TODO check Type:JSON
-        $units = array_map(function (array $normalizedUnit) {
-            return $this->hydrateUnit(
-                $normalizedUnit['code'],
-                $normalizedUnit['labels'],
-                $normalizedUnit['convert_from_standard'],
-                $normalizedUnit['symbol']
-            );
-        }, json_decode($normalizedUnits, true));
+        $units = array_map(static fn (array $normalizedUnit) => $this->hydrateUnit(
+            $normalizedUnit['code'],
+            $normalizedUnit['labels'],
+            $normalizedUnit['convert_from_standard'],
+            $normalizedUnit['symbol']
+        ), json_decode($normalizedUnits, true));
 
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),

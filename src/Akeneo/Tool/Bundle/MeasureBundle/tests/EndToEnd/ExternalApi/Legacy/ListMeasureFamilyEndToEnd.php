@@ -1833,7 +1833,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/measure-families?with_count=true&limit=1');
 
         $measureFamilies = $this->getStandardizedMeasureFamilies();
-        $measureFamiliesCount = count($measureFamilies);
+        $measureFamiliesCount = is_countable($measureFamilies) ? count($measureFamilies) : 0;
 
         $expected = <<<JSON
 {

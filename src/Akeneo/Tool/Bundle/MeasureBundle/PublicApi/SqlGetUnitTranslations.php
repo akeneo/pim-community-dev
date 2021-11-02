@@ -8,8 +8,7 @@ use Doctrine\DBAL\Connection;
 
 class SqlGetUnitTranslations implements GetUnitTranslations
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -28,14 +27,13 @@ FROM akeneo_measurement am, JSON_TABLE(am.units,
 ) AS unit_labels
 WHERE am.code = :measurementFamilyCode;
 SQL;
-        $rows = $this->connection->executeQuery(
+
+        return $this->connection->executeQuery(
             $sql,
             [
                 'labelPath' => sprintf('$.labels.%s', $localeCode),
                 'measurementFamilyCode' => $measurementFamilyCode
             ]
         )->fetchAll(\PDO::FETCH_KEY_PAIR);
-
-        return $rows;
     }
 }

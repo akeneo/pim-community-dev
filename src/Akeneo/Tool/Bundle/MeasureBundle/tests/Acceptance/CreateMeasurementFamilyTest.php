@@ -469,14 +469,12 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
         $saveFamilyCommand->standardUnitCode = 0 === $numberOfUnits ? '' : 'unit_0';
-        $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(function ($i) {
-            return [
-                'code' => sprintf('unit_%d', $i),
-                'labels' => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
-                'symbol' => 'Kg',
-            ];
-        }, range(0, $numberOfUnits - 1));
+        $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(static fn ($i) => [
+            'code' => sprintf('unit_%d', $i),
+            'labels' => [],
+            'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+            'symbol' => 'Kg',
+        ], range(0, $numberOfUnits - 1));
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
@@ -641,16 +639,14 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
                 MeasurementFamilyCode::fromString($measurementFamilyCode),
                 LabelCollection::fromArray([]),
                 UnitCode::fromString($standardUnitCode),
-                array_map(function (string $unitCode) {
-                    return Unit::create(
-                        UnitCode::fromString($unitCode),
-                        LabelCollection::fromArray([]),
-                        [
-                            Operation::create("mul", "1"),
-                        ],
-                        "km",
-                    );
-                }, $unitCodes)
+                array_map(static fn (string $unitCode) => Unit::create(
+                    UnitCode::fromString($unitCode),
+                    LabelCollection::fromArray([]),
+                    [
+                        Operation::create("mul", "1"),
+                    ],
+                    "km",
+                ), $unitCodes)
             )
         );
     }

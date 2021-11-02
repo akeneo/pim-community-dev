@@ -14,17 +14,13 @@ use Webmozart\Assert\Assert;
  */
 final class Unit
 {
-    /** @var UnitCode */
-    private $code;
+    private UnitCode $code;
 
-    /** @var LabelCollection */
-    private $labels;
+    private LabelCollection $labels;
 
-    /** @var array */
-    private $convertFromStandard;
+    private array $convertFromStandard;
 
-    /** @var string */
-    private $symbol;
+    private string $symbol;
 
     private function __construct(UnitCode $code, LabelCollection $labels, array $convertFromStandard, string $symbol)
     {
@@ -48,9 +44,7 @@ final class Unit
             'code' => $this->code->normalize(),
             'labels' => $this->labels->normalize(),
             'convert_from_standard' => array_map(
-                function (Operation $operation) {
-                    return $operation->normalize();
-                },
+                static fn (Operation $operation) => $operation->normalize(),
                 $this->convertFromStandard
             ),
             'symbol' => $this->symbol,
