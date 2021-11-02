@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
-use Akeneo\Platform\Job\Application\SearchJobExecutionTable\SearchExecutionTableQuery;
-use Akeneo\Platform\Job\Application\SearchJobExecutionTable\SearchJobExecutionTable;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class IndexAction
 {
-    private SearchJobExecutionTable $searchJobExecutionTable;
+    private SearchJobExecutionHandler $searchJobExecutionTable;
 
-    public function __construct(SearchJobExecutionTable $searchJobExecutionTable)
+    public function __construct(SearchJobExecutionHandler $searchJobExecutionTable)
     {
         $this->searchJobExecutionTable = $searchJobExecutionTable;
     }
@@ -31,7 +31,7 @@ final class IndexAction
             return new RedirectResponse('/');
         }
 
-        $searchJobExecutionTableQuery = new SearchExecutionTableQuery();
+        $searchJobExecutionTableQuery = new SearchJobExecutionQuery();
         $searchJobExecutionTableQuery->page = $request->query->getInt('page', 1);
 
         $searchJobExecutionTableResult = $this->searchJobExecutionTable->search($searchJobExecutionTableQuery);

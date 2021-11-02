@@ -4,7 +4,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Platform\Job\Domain\Query\FindJobExecutionRows\FindJobExecutionRowsForQueryInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobExecutionRowsForQuery
+    Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
         arguments:
             - '@database_connection'

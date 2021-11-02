@@ -1,0 +1,93 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
+
+use \Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
+
+class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->loadFixtures();
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_paginated_job_executions(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow('another_product_import', 'import', null, null, 'STARTING', 0),
+            new JobExecutionRow('another_product_import', 'import', '2020-01-02 00:00:00', null, 'STARTED', 0),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->page = 2;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow('another_product_import', 'import', '2020-01-01 00:00:00', null, 'COMPLETED', 2),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_job_execution_count_related_to_query()
+    {
+        $query = new SearchJobExecutionQuery();
+
+        $this->assertEquals(3, $this->getQuery()->count($query));
+    }
+
+    private function loadFixtures()
+    {
+        $jobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'another_product_import',
+            'job_name' => 'another_product_import',
+            'label' => 'another_product_import',
+            'type' => 'import',
+        ]);
+
+        $jobExecutionId = $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $jobInstanceId,
+            'start_time' => '2020-01-01T01:00:00+01:00',
+            'status' => 1,
+        ]);
+
+        $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $jobInstanceId,
+            'start_time' => '2020-01-02T01:00:00+01:00',
+            'status' => 3,
+        ]);
+
+        $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $jobInstanceId,
+            'start_time' => null,
+            'status' => 2,
+        ]);
+
+        $this->fixturesLoader->createStepExecution([
+            'job_execution_id' => $jobExecutionId,
+            'warning_count' => 2,
+        ]);
+    }
+
+    private function getQuery(): SearchJobExecutionInterface
+    {
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
+    }
+}

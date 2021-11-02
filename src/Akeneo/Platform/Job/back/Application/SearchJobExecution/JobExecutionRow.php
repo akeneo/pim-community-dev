@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecutionTable;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -31,7 +31,7 @@ final class JobExecutionRow
     public function normalize(): array
     {
         return [
-            'jobName' => $this->jobName,
+            'job_name' => $this->jobName,
             'type' => $this->type,
             'start_at' => $this->startAt,
             'username' => $this->username,
