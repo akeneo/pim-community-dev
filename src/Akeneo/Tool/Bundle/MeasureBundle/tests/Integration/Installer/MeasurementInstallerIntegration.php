@@ -19,8 +19,7 @@ use PHPUnit\Framework\Assert;
  */
 class MeasurementInstallerIntegration extends SqlIntegrationTestCase
 {
-    /** @var MeasurementInstaller */
-    private $measurementInstaller;
+    private ?MeasurementInstaller $measurementInstaller = null;
 
     public function setUp(): void
     {

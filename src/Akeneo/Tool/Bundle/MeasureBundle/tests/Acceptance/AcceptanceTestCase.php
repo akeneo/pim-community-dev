@@ -17,11 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class AcceptanceTestCase extends KernelTestCase
 {
-    /** @var MeasurementInstaller */
-    protected $fixturesLoader;
-
-    /** @var Connection */
-    protected $connection;
+    protected ?MeasurementInstaller $fixturesLoader = null;
+    protected ?Connection $connection = null;
 
     /**
      * {@inheritdoc}

@@ -21,20 +21,15 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class LegacyMeasureFamilyController
 {
-    /** @var ArrayConverterInterface */
-    protected $measureFamilyConverter;
+    protected ArrayConverterInterface $measureFamilyConverter;
 
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
+    protected ParameterValidatorInterface $parameterValidator;
 
-    /** @var PaginatorInterface */
-    protected $paginator;
+    protected PaginatorInterface $paginator;
 
-    /** @var array */
-    protected $apiConfiguration;
+    protected array $apiConfiguration;
 
-    /** @var LegacyMeasurementProvider */
-    private $legacyMeasurementProvider;
+    private LegacyMeasurementProvider $legacyMeasurementProvider;
 
     /**
      * @param ArrayConverterInterface     $measureFamilyConverter
@@ -112,7 +107,7 @@ class LegacyMeasureFamilyController
 
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         $convertedMeasureFamilies = $this->convertMeasureFamilies($queryParameters);
-        $count = true === $request->query->getBoolean('with_count') ? count($measuresConfig) : null;
+        $count = $request->query->getBoolean('with_count') ? count($measuresConfig) : null;
         $paginatedMeasureFamilies = $this->paginator->paginate(
             $convertedMeasureFamilies,
             $parameters,

@@ -12,5 +12,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class UnitsMustBeIndexedByCode extends Constraint
 {
-    public $message = 'pim_measurements.validation.measurement_family.units.must_be_indexed_by_code';
+    public string $message = 'pim_measurements.validation.measurement_family.units.must_be_indexed_by_code';
 }

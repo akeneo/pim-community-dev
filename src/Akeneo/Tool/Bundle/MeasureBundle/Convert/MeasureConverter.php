@@ -16,13 +16,10 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureConverter
 {
-    const SCALE = 12;
+    private const SCALE = 12;
 
-    /** * @var string */
-    protected $family;
-
-    /** @var LegacyMeasurementProvider */
-    private $legacyMeasurementProvider;
+    private ?string $family = null;
+    private LegacyMeasurementProvider $legacyMeasurementProvider;
 
     public function __construct(LegacyMeasurementProvider $provider)
     {
@@ -63,9 +60,7 @@ class MeasureConverter
     {
         $standardValue = $this->convertBaseToStandard($baseUnit, $value);
 
-        $result = $this->convertStandardToResult($finalUnit, $standardValue);
-
-        return $result;
+        return $this->convertStandardToResult($finalUnit, $standardValue);
     }
 
     /**
