@@ -191,6 +191,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $foundUser = $this->userManager->findUserBy(['id' => $foundConnection->userId()->id()]);
         Assert::assertNotNull($foundUser, 'No persisted user found');
         Assert::assertStringContainsString((string) $foundConnection->code(), $foundUser->getUsername(), 'User is not an app dedicated user');
+        Assert::assertEquals($appName, $foundUser->getFullname());
 
         /** @var Collection $userGroups */
         $userGroups = $foundUser->getGroups();
