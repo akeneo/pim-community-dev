@@ -27,7 +27,8 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'my_username',
             '1',
             '2',
-            true
+            true,
+            'default'
         );
     }
 
@@ -92,7 +93,8 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'my_username',
             '1',
             '2',
-            true
+            true,
+            'default'
         );
         $this->image()->shouldBeNull();
     }
@@ -117,6 +119,11 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         $this->auditable()->shouldReturn(true);
     }
 
+    public function it_returns_the_type()
+    {
+        $this->type()->shouldReturn('default');
+    }
+
     public function it_normalizes_a_connection_with_credentials()
     {
         $this->setPassword('my_password');
@@ -133,6 +140,7 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
             'user_role_id' => '1',
             'user_group_id' => '2',
             'auditable' => true,
+            'type' => 'default',
         ]);
     }
 }
