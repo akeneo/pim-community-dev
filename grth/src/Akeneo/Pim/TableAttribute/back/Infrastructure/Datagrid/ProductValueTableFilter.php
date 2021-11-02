@@ -54,11 +54,20 @@ class ProductValueTableFilter extends AbstractFilter
      */
     public function getMetadata(): array
     {
-        return [
+        $defaultMetadata = [
             'name' => $this->getName(),
             'label' => ucfirst($this->name),
             FilterUtility::TYPE_KEY => 'table',
             FilterUtility::ENABLED_KEY => false,
         ];
+
+        $metadata = array_diff_key(
+            $this->get(),
+            array_flip($this->util->getExcludeParams())
+        );
+        $metadata = $this->mapParams($metadata);
+        $metadata = array_merge($defaultMetadata, $metadata);
+
+        return $metadata;
     }
 }
