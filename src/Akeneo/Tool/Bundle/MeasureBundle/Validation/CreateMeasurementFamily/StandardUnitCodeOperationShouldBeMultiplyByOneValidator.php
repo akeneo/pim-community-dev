@@ -21,7 +21,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
     public function validate($saveMeasurementFamily, Constraint $constraint)
     {
         $standardUnit = $this->standardUnit($saveMeasurementFamily);
-        $hasOneOperation = 1 === \count($standardUnit['convert_from_standard']);
+        $hasOneOperation = 1 === (is_countable($standardUnit['convert_from_standard']) ? \count($standardUnit['convert_from_standard']) : 0);
         if (!$hasOneOperation) {
             return;
         }

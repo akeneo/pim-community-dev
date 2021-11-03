@@ -113,6 +113,9 @@ class AttributeSaverSpec extends ObjectBehavior
         SaverInterface $additionalSaver,
         AttributeInterface $attribute
     ) {
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class),Argument::type('string'))
+            ->willReturn(Argument::type('object'));
+
         $this->beConstructedWith($entityManager, $eventDispatcher, [$additionalSaver]);
         $entityManager->getConnection()->willReturn($connection);
         $options = ['option1' => 'value1'];

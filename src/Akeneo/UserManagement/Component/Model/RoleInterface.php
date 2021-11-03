@@ -44,7 +44,7 @@ interface RoleInterface
      */
     public function setLabel(?string $label): void;
 
-    public function getType(): ?string;
+    public function getType(): string;
 
-    public function setType(?string $type): void;
+    public function setType(string $type): void;
 }

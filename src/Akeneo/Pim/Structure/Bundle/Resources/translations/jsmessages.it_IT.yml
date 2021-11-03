@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Editor di testo RTF abilitato
     default_value: Valore predefinito
+    code:
+      must_be_filled: È necessario indicare il codice
+      invalid: Il codice non è valido
+      not_available: Questo codice non è disponibile
+      is_duplicate: Questo codice è già in uso
   module:
     add_attribute:
       no_available_attributes: Non ci sono altri attributi da aggiungere
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: Sei sicuro di voler eliminare questo attributo?
       product_count: '{0}0 prodotti|{1}1 prodotto|]1, Inf[{{ count }} prodotti'
       product_model_count: '{0}0 modelli di prodotto|{1}1 modello di prodotto|]1, Inf[{{ count }} modelli di prodotto'
+      used: ']-Inf,1]attualmente vi sono valori impostati per questo attributo, saranno rimossi.|]1, Inf[attualmente vi sono valori impostati per questo attributo, saranno rimossi.'
       helper:
         content: Se è necessario modificare il tipo di attributo, per renderlo localizzabile o applicabile, mantenendo l'accesso ai valori degli attributi esistenti,
+        link: consulta il nostro Help Center (per ulteriori informazioni).
       type: Digita "{{ attributeCode }}"
       confirm_from_family: Sei sicuro di voler rimuovere questo attributo dalla famiglia?
       confirm_from_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?

@@ -15,6 +15,7 @@ class BaseSaverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
     {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,
@@ -28,7 +29,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->shouldHaveType(BulkSaverInterface::class);
     }
 
-    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager, $eventDispatcher)
+    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager)
     {
         $type = new ModelToSave();
         $objectManager->persist($type)->shouldBeCalled();
@@ -37,7 +38,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($type);
     }
 
-    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager, $eventDispatcher)
+    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager)
     {
         $type1 = new ModelToSave();
         $type2 = new ModelToSave();

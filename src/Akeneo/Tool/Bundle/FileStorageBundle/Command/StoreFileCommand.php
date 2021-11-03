@@ -47,7 +47,7 @@ class StoreFileCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('file');
         if (!is_file($filePath)) {

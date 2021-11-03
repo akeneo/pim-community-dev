@@ -54,7 +54,7 @@ class ViewElementExtension extends \Twig\Extension\AbstractExtension
      *
      * @return string
      */
-    public function renderViewElements(array $context, $type)
+    public function renderViewElements(array $context, $type): string
     {
         $elements = $this->getViewElements($type, $context);
         $content = '';

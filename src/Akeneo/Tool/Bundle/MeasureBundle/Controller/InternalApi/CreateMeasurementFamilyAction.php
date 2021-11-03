@@ -22,17 +22,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateMeasurementFamilyAction
 {
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
-    private $violationNormalizer;
+    private NormalizerInterface $violationNormalizer;
 
-    /** @var CreateMeasurementFamilyHandler */
-    private $createMeasurementFamilyHandler;
+    private CreateMeasurementFamilyHandler $createMeasurementFamilyHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
     public function __construct(
         ValidatorInterface $validator,

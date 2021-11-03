@@ -79,7 +79,7 @@ class RefreshCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
@@ -92,7 +92,7 @@ class RefreshCommand extends Command
         if ($totalPendings === 0) {
             $output->writeln('<info>Versioning is already up to date.</info>');
 
-            return;
+            return Command::SUCCESS;
         }
 
         $progress = new ProgressBar($output, $totalPendings);
@@ -130,6 +130,8 @@ class RefreshCommand extends Command
         }
         $progress->finish();
         $output->writeln(sprintf('<info>%d created versions.</info>', $totalPendings));
+
+        return Command::SUCCESS;
     }
 
     /**

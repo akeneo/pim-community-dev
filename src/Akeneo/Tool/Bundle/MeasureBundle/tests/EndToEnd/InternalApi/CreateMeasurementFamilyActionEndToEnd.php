@@ -14,8 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateMeasurementFamilyActionEndToEnd extends WebTestCase
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private ?MeasurementFamilyRepositoryInterface $measurementFamilyRepository = null;
 
     public function setUp(): void
     {

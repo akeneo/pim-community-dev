@@ -29,7 +29,7 @@ final class UserOwnsDefaultGridViewsValidator extends ConstraintValidator
                     $constraint->message,
                     [
                         '{{ label }}' => $defaultGridView->getLabel(),
-                        '{{ username }}' => $user->getUsername(),
+                        '{{ username }}' => $user->getUserIdentifier(),
                     ]
                 )->atPath($path)->setInvalidValue($defaultGridView->getLabel())->addViolation();
             }

@@ -17,11 +17,8 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 abstract class WebTestCase extends TestCase
 {
-    /** @var KernelBrowser */
-    protected $client;
-
-    /** @var UserInterface */
-    protected $user;
+    protected ?KernelBrowser $client = null;
+    protected ?UserInterface $user = null;
 
     protected function setUp(): void
     {
@@ -42,7 +39,7 @@ abstract class WebTestCase extends TestCase
 
     protected function getAdminUser(): UserInterface
     {
-        if (!$this->user) {
+        if ($this->user === null) {
             $this->user = self::$container->get('pim_user.manager')->findUserByUsername('admin') ?? $this->createAdminUser();
         }
 

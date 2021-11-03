@@ -13,8 +13,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureManager
 {
-    /** @var LegacyMeasurementProvider */
-    private $legacyMeasurementProvider;
+    private LegacyMeasurementProvider $legacyMeasurementProvider;
 
     public function __construct(LegacyMeasurementProvider $legacyMeasurementProvider)
     {
@@ -34,9 +33,7 @@ class MeasureManager
         $unitsConfig = $familyConfig['units'];
 
         return array_map(
-            function ($unit) {
-                return $unit['symbol'];
-            },
+            static fn (array $unit) => $unit['symbol'],
             $unitsConfig
         );
     }
