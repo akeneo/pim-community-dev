@@ -51,7 +51,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
      */
     public function normalize(): array
     {
-        return array_map(fn (LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $this->localeIdentifiers);
+        return array_map(static fn (LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $this->localeIdentifiers);
     }
 
     /**
