@@ -20,7 +20,7 @@ class JobExecutionTableSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                new JobExecutionRow('jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10)
+                new JobExecutionRow(1, 'jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10)
             ],
             1,
             2
@@ -29,9 +29,10 @@ class JobExecutionTableSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'rows' => [
                 [
+                    'job_execution_id' => 1,
                     'job_name' => 'jobName',
                     'type' => 'export',
-                    'start_at' => '2021-11-02 13:20:27',
+                    'started_at' => '2021-11-02 13:20:27',
                     'username' => 'admin',
                     'status' => 'COMPLETED',
                     'warning_count' => 10,

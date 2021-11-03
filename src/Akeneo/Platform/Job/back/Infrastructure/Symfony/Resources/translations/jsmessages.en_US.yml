@@ -1,0 +1,13 @@
+pim_title:
+  akeneo_job_process_tracker_index: Process tracker
+
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        job_name: Job
+        type: Type
+        started_at: Started At
+        username: Username
+        status: Status
+        warnings: Warnings

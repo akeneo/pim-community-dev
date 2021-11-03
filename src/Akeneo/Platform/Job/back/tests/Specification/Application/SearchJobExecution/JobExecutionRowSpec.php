@@ -11,7 +11,7 @@ class JobExecutionRowSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10);
+        $this->beConstructedWith(1, 'jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10);
     }
 
     public function it_is_initializable(): void
@@ -22,9 +22,10 @@ class JobExecutionRowSpec extends ObjectBehavior
     public function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
+            'job_execution_id' => 1,
             'job_name' => 'jobName',
             'type' => 'export',
-            'start_at' => '2021-11-02 13:20:27',
+            'started_at' => '2021-11-02 13:20:27',
             'username' => 'admin',
             'status' => 'COMPLETED',
             'warning_count' => 10,
@@ -33,12 +34,13 @@ class JobExecutionRowSpec extends ObjectBehavior
 
     public function it_normalizes_itself_with_null_value()
     {
-        $this->beConstructedWith('jobName', 'export', null, null, 'COMPLETED', 10);
+        $this->beConstructedWith(1, 'jobName', 'export', null, null, 'COMPLETED', 10);
 
         $this->normalize()->shouldReturn([
+            'job_execution_id' => 1,
             'job_name' => 'jobName',
             'type' => 'export',
-            'start_at' => null,
+            'started_at' => null,
             'username' => null,
             'status' => 'COMPLETED',
             'warning_count' => 10,

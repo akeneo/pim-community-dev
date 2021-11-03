@@ -28,6 +28,7 @@ class SearchJobExecution implements SearchJobExecutionInterface
     {
         $sql = <<<SQL
     SELECT
+        je.id,
         ji.label,
         ji.type,
         je.start_time,
@@ -76,6 +77,7 @@ SQL;
         return array_map(
             static fn ($rawJobExecution) =>
                 new JobExecutionRow(
+                    (int) $rawJobExecution['id'],
                     $rawJobExecution['label'],
                     $rawJobExecution['type'],
                     $rawJobExecution['start_time'],

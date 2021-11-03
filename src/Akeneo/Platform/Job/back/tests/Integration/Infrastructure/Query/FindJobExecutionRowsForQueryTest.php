@@ -11,9 +11,12 @@ use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
 {
+    private array $jobExecutionIds;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->jobExecutionIds = [];
         $this->loadFixtures();
     }
 
@@ -26,8 +29,8 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
         $query->size = 2;
 
         $expectedJobExecutions = [
-            new JobExecutionRow('another_product_import', 'import', null, null, 'STARTING', 0),
-            new JobExecutionRow('another_product_import', 'import', '2020-01-02 00:00:00', null, 'STARTED', 0),
+            new JobExecutionRow($this->jobExecutionIds[2], 'another_product_import', 'import', null, null, 'STARTING', 0),
+            new JobExecutionRow($this->jobExecutionIds[1], 'another_product_import', 'import', '2020-01-02 00:00:00', null, 'STARTED', 0),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
@@ -37,7 +40,7 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
         $query->page = 2;
 
         $expectedJobExecutions = [
-            new JobExecutionRow('another_product_import', 'import', '2020-01-01 00:00:00', null, 'COMPLETED', 2),
+            new JobExecutionRow($this->jobExecutionIds[0], 'another_product_import', 'import', '2020-01-01 00:00:00', null, 'COMPLETED', 2),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
@@ -62,26 +65,26 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
             'type' => 'import',
         ]);
 
-        $jobExecutionId = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $jobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'status' => 1,
         ]);
 
-        $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $jobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
             'status' => 3,
         ]);
 
-        $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $jobInstanceId,
             'start_time' => null,
             'status' => 2,
         ]);
 
         $this->fixturesLoader->createStepExecution([
-            'job_execution_id' => $jobExecutionId,
+            'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
         ]);
     }
