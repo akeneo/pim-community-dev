@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Twig\Extension\AbstractExtension;
 
 class CategoryExtensionSpec extends ObjectBehavior
 {
@@ -19,7 +20,7 @@ class CategoryExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldBeAnInstanceOf('\Twig_Extension');
+        $this->shouldBeAnInstanceOf(AbstractExtension::class);
     }
 
     function it_registers_category_functions()

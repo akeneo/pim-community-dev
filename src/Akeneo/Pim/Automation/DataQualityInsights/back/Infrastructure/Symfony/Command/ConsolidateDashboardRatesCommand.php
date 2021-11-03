@@ -35,7 +35,7 @@ final class ConsolidateDashboardRatesCommand extends Command
             ->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $consolidationDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getArgument('day'));
 

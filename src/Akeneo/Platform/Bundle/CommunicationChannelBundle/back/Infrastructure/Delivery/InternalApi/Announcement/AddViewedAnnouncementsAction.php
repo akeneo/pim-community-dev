@@ -43,7 +43,7 @@ class AddViewedAnnouncementsAction
         }
 
         $command = new AddViewedAnnouncementsByUserCommand(
-            $request->request->get('viewed_announcement_ids'),
+            (array) $request->request->get('viewed_announcement_ids'),
             $user->getId()
         );
         $this->addViewedAnnouncementsByUserHandler->execute($command);

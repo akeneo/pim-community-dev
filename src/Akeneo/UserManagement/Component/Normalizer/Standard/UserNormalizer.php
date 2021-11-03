@@ -30,7 +30,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
         ] : null;
 
         return [
-            'username' => $user->getUsername(),
+            'username' => $user->getUserIdentifier(),
             'enabled' => $user->isEnabled(),
             'name_prefix' => $user->getNamePrefix(),
             'first_name' => $user->getFirstName(),

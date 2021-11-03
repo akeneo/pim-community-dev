@@ -14,8 +14,7 @@ use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAn
  */
 final class AddViewedAnnouncementsByUserHandler
 {
-    /** @var ViewedAnnouncementRepositoryInterface */
-    private $viewedAnnouncementRepository;
+    private ViewedAnnouncementRepositoryInterface $viewedAnnouncementRepository;
 
     public function __construct(ViewedAnnouncementRepositoryInterface $viewedAnnouncementRepository)
     {

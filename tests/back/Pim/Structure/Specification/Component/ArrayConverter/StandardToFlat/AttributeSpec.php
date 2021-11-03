@@ -105,4 +105,20 @@ class AttributeSpec extends ObjectBehavior
 
         $this->convert($item)->shouldReturn($expected);
     }
+
+    function it_converts_raw_table_configuration_to_a_json_string()
+    {
+        $item = [
+            'table_configuration' => [
+                [
+                    'code' => 'ingredients',
+                ],
+            ],
+        ];
+        $expected = [
+            'table_configuration' => '[{"code":"ingredients"}]',
+        ];
+
+        $this->convert($item)->shouldReturn($expected);
+    }
 }

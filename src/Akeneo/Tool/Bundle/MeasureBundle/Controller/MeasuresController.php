@@ -16,11 +16,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class MeasuresController
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
 
-    /** @var IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily */
-    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
+    private IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
 
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,

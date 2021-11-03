@@ -54,7 +54,7 @@ class WebUser extends PimContext
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->spin(function () use ($entity) {
-            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog, [role=dialog]')) {
                 return true;
             }
 
@@ -108,17 +108,19 @@ class WebUser extends PimContext
 
     /**
      * @param string $type
+     * @param string $code
      *
      * @return Then[]
      *
-     * @Given /^I create a(?:n)? "([^"]*)" attribute$/
+     * @Given /^I create a(?:n)? "([^"]*)" attribute with code "([^"]*)"?$/
      */
-    public function iCreateAnAttribute($type)
+    public function iCreateAnAttribute($type, $code = '')
     {
-        return [
-            new Step\Then('I create a new attribute'),
-            new Step\Then(sprintf('I choose the "%s" attribute type', $type))
-        ];
+        $this->iCreateANew('attribute');
+        $this->iChooseTheAttributeType($type);
+        $field = $this->getCurrentPage()->findField('Code');
+        $field->setValue($code);
+        $this->getCurrentPage()->findButton('Confirm')->click();
     }
 
     /**
@@ -786,12 +788,14 @@ class WebUser extends PimContext
      */
     public function theFieldShouldContain($label, $expected)
     {
-        $page  = $this->getCurrentPage();
-        $field = $this->spin(function () use ($page, $label) {
-            return $page->findField($label);
-        }, sprintf('Field "%s" not found.', $label));
+        $this->spin(function () use ($label, $expected) {
+            $page  = $this->getCurrentPage();
+            $field = $page->findField($label);
+            if (null === $field) {
+                throw new ElementNotFoundException($this->getSession());
+            }
 
-        $this->spin(function () use ($field, $label, $expected) {
+
             if ($field->hasClass('select2-focusser')) {
                 for ($i = 0; $i < 2; ++$i) {
                     $parent = $field->getParent();

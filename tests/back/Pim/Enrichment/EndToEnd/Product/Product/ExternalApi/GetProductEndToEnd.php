@@ -312,7 +312,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product');
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        $logger = self::$container->get('monolog.logger.pim_api_acl');
         assert($logger instanceof TestLogger);
 
         $this->assertTrue(

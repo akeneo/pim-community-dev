@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,6 +21,7 @@ class ChannelRemoverSpec extends ObjectBehavior
         TranslatorInterface $translator,
         IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,

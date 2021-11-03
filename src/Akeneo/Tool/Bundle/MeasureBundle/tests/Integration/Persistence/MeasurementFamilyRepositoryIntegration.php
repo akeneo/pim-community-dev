@@ -16,8 +16,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\SqlIntegrationTestCase;
 
 class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $repository;
+    private ?MeasurementFamilyRepositoryInterface $repository = null;
 
     public function setUp(): void
     {
@@ -112,9 +111,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
         $this->assertEquals(
             ['Area', 'Binary'],
-            array_map(function (MeasurementFamily $measurementFamily) {
-                return $measurementFamily->normalize()['code'];
-            }, $measurementFamilies)
+            array_map(static fn (MeasurementFamily $measurementFamily) => $measurementFamily->normalize()['code'], $measurementFamilies)
         );
 
         $this->repository->deleteByCode(MeasurementFamilyCode::fromString('Area'));
@@ -122,9 +119,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $measurementFamilies = $this->repository->all();
         $this->assertEquals(
             ['Binary'],
-            array_map(function (MeasurementFamily $measurementFamily) {
-                return $measurementFamily->normalize()['code'];
-            }, $measurementFamilies)
+            array_map(static fn (MeasurementFamily $measurementFamily) => $measurementFamily->normalize()['code'], $measurementFamilies)
         );
     }
 

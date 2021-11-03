@@ -45,6 +45,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
                 'locale'    => null,
                 'scope'     => null,
                 'message'   => $violation->getMessage(),
+                'path'      => $propertyPath,
             ];
         }
 
@@ -71,6 +72,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
                 'locale'    => '<all_locales>' === $locale ? null : $locale,
                 'scope'     => '<all_channels>' === $channel ? null : $channel,
                 'message'   => $violation->getMessage(),
+                'path'      => $propertyPath,
             ];
         }
 
@@ -88,6 +90,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
                 'locale'    => $attribute['locale'],
                 'scope'     => $attribute['scope'],
                 'message'   => $violation->getMessage(),
+                'path'      => $propertyPath,
             ];
         }
 

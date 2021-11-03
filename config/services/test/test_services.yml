@@ -50,7 +50,6 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@akeneo_elasticsearch.registry.clients'
-            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
             - '@akeneo_measure.installer.measurement_installer'
             - '@messenger.transport.business_event'

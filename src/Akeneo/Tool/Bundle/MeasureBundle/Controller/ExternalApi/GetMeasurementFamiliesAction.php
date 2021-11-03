@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class GetMeasurementFamiliesAction
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
 
     public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
@@ -26,9 +25,7 @@ class GetMeasurementFamiliesAction
     public function __invoke(): JsonResponse
     {
         $measurementFamilies = $this->measurementFamilyRepository->all();
-        $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $measurementFamily) {
-            return $measurementFamily->normalizeWithIndexedUnits();
-        }, $measurementFamilies);
+        $normalizedMeasurementFamilies = array_map(static fn (MeasurementFamily $measurementFamily) => $measurementFamily->normalizeWithIndexedUnits(), $measurementFamilies);
 
         return new JsonResponse($normalizedMeasurementFamilies);
     }

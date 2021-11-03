@@ -360,7 +360,7 @@ class UserController
         $violations = new ConstraintViolationList();
         $passwordViolations = new ConstraintViolationList();
 
-        $previousUserName = $user->getUsername();
+        $previousUserName = $user->getUserIdentifier();
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
             if ($passwordViolations->count() === 0) {

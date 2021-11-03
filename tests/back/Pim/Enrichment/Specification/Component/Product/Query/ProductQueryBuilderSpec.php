@@ -135,48 +135,6 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('sku', '=', '42', []);
     }
 
-    function it_adds_a_non_empty_family_filter_when_adding_an_empty_attribute_filter(
-        $repository,
-        $filterRegistry,
-        $searchQb,
-        AttributeFilterInterface $textFilter,
-        FieldFilterInterface $familyFilter,
-        AttributeInterface $name
-    ) {
-        $name = new Attribute();
-        $name->setCode('name');
-        $name->setScopable(false);
-        $name->setLocalizable(false);
-
-        $repository->findOneByIdentifier('name')->willReturn($name);
-        $filterRegistry->getFieldFilter('name', 'EMPTY')->willReturn(null);
-        $filterRegistry->getAttributeFilter($name, 'EMPTY')->willReturn($textFilter);
-        $repository->findOneByIdentifier('family')->willReturn(null);
-        $filterRegistry->getFieldFilter('family', 'NOT EMPTY')->willReturn($familyFilter);
-
-        $textFilter->setQueryBuilder($searchQb)->shouldBeCalled();
-        $textFilter->addAttributeFilter(
-            $name,
-            'EMPTY',
-            null,
-            null,
-            null,
-            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'name']
-        )->shouldBeCalled();
-
-        $familyFilter->setQueryBuilder($searchQb)->shouldBeCalled();
-        $familyFilter->addFieldFilter(
-            'family',
-            'NOT EMPTY',
-            null,
-            'en_US',
-            'print',
-            ['locale' => 'en_US', 'scope' => 'print']
-        )->shouldBeCalled();
-
-        $this->addFilter('name', 'EMPTY', null, []);
-    }
-
     function it_adds_a_field_sorter($repository, $sorterRegistry, FieldSorterInterface $sorter)
     {
         $repository->findOneBy(['code' => 'id'])->willReturn(null);

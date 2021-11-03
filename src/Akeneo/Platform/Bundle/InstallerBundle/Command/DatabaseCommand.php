@@ -119,7 +119,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Prepare database schema</info>');
 
@@ -170,6 +170,8 @@ class DatabaseCommand extends Command
             $this->createNotMappedTables($output);
         }
 
+        $this->setLatestKnownMigration($input);
+
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, null, [
@@ -191,9 +193,7 @@ class DatabaseCommand extends Command
         // TODO: Should be in an event subscriber
         $this->launchCommands();
 
-        $this->setLatestKnownMigration($input);
-
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**
@@ -230,7 +230,7 @@ class DatabaseCommand extends Command
         $this->connection->exec($configTableSql);
 
         $output->writeln('<info>Create messenger table</info>');
-        $messengerTableSql = "CREATE TABLE messenger_messages (
+        $messengerTableSql = "CREATE TABLE IF NOT EXISTS messenger_messages (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
                 `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,

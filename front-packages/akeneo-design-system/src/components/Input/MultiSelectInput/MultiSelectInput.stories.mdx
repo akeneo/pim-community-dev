@@ -68,7 +68,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState([]);
       return (
         <>
-          <MultiSelectInput readOnly={true} value={['en_US']} placeholder="Placeholder" emptyResultLabel="Not matches found">
+          <MultiSelectInput readOnly={true} value={['en_US']} placeholder="Placeholder" emptyResultLabel="No match found">
             <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
@@ -191,7 +191,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       const [value, setValue] = useState([]);
       return (
         <>
-          <MultiSelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+          <MultiSelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No match found">
             <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
             <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
@@ -209,6 +209,27 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
           </MultiSelectInput>
           <SpaceContainer height={350} />
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Pagination
+
+<Canvas>
+  <Story name="Pagination">
+    {args => {
+      const [items, setItems] = useState([...Array(20).keys()]);
+      const [value, setValue] = useState([]);
+      const onNextPage = () => { setItems([...Array(items.length + 20).keys()]); };
+      return (
+        <SpaceContainer height={170}>
+          <MultiSelectInput {...args} value={value} onChange={setValue} emptyResultLabel="No matches found" onNextPage={onNextPage}>
+            {items.map(item => <MultiSelectInput.Option value={`Option ${item}`} title={`Option ${item}`} key={`Option ${item}`}>
+              {`Option ${item + 1}`}
+            </MultiSelectInput.Option>)}
+          </MultiSelectInput>
+        </SpaceContainer>
       );
     }}
   </Story>
