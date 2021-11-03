@@ -10,21 +10,10 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
  */
 class SearchableRecordItem
 {
-    /** @var string */
-    public $identifier;
-
-    /** @var string */
-    public $referenceEntityIdentifier;
-
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels;
-
-    /** @var array */
-    public $values;
-
-    /** @var \DateTimeImmutable */
-    public $updatedAt;
+    public string $identifier;
+    public string $referenceEntityIdentifier;
+    public string $code;
+    public array $labels;
+    public array $values;
+    public \DateTimeImmutable $updatedAt;
 }

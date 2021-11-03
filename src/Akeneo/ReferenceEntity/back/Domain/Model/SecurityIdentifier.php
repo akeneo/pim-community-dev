@@ -14,8 +14,7 @@ use Webmozart\Assert\Assert;
  */
 class SecurityIdentifier
 {
-    /** @var string  */
-    private $identifier;
+    private string $identifier;
 
     private function __construct(string $identifier)
     {

@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class OptionData implements ValueDataInterface
 {
-    /** @var string */
-    private $optionCode;
+    private string $optionCode;
 
     private function __construct(string $optionCode)
     {

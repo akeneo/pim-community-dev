@@ -25,14 +25,9 @@ class NumberAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'number';
 
-    /** @var AttributeDecimalsAllowed */
-    private $decimalsAllowed;
-
-    /** @var AttributeLimit */
-    private $minValue;
-
-    /** @var AttributeLimit */
-    private $maxValue;
+    private AttributeDecimalsAllowed $decimalsAllowed;
+    private AttributeLimit $minValue;
+    private AttributeLimit $maxValue;
 
     private function __construct(
         AttributeIdentifier $identifier,
@@ -98,8 +93,8 @@ class NumberAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'decimals_allowed' => $this->decimalsAllowed->normalize(),
-                'min_value'  => $this->minValue->normalize(),
-                'max_value'  => $this->maxValue->normalize(),
+                'min_value' => $this->minValue->normalize(),
+                'max_value' => $this->maxValue->normalize(),
             ]
         );
     }

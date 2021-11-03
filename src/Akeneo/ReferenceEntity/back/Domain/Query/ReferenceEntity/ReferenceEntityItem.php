@@ -26,26 +26,19 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 class ReferenceEntityItem
 {
     public const IDENTIFIER = 'identifier';
-
     public const LABELS = 'labels';
-
     public const IMAGE = 'image';
 
-    /** @var ReferenceEntityIdentifier */
-    public $identifier;
-
-    /** @var LabelCollection */
-    public $labels;
-
-    /** @var Image */
-    public $image;
+    public ReferenceEntityIdentifier $identifier;
+    public LabelCollection $labels;
+    public Image $image;
 
     public function normalize(): array
     {
         return [
             self::IDENTIFIER => (string) $this->identifier,
-            self::LABELS     => $this->labels->normalize(),
-            self::IMAGE      => $this->image->normalize(),
+            self::LABELS => $this->labels->normalize(),
+            self::IMAGE => $this->image->normalize(),
         ];
     }
 }

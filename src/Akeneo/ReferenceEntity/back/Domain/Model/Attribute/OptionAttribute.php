@@ -19,7 +19,7 @@ class OptionAttribute extends AbstractAttribute
     public const ATTRIBUTE_TYPE = 'option';
 
     /** @var AttributeOption[] */
-    private $attributeOptions = [];
+    private array $attributeOptions = [];
 
     public static function create(
         AttributeIdentifier $identifier,
@@ -78,9 +78,7 @@ class OptionAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    static fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->getAttributeOptions()
                 ),
             ]

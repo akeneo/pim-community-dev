@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class RecordData implements ValueDataInterface
 {
-    /** @var string */
-    private $recordCode;
+    private string $recordCode;
 
     private function __construct(string $recordCode)
     {
