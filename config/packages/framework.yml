@@ -23,5 +23,7 @@ framework:
                 version_strategy: pim_enrich.version_strategy
     cache:
         pools:
-            name:
+            pim_apcu_cache:
                 adapter: cache.adapter.apcu
+            oro_acl_cache:
+                adapter: cache.adapter.filesystem

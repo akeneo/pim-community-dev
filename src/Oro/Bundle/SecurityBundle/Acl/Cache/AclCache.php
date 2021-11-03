@@ -8,20 +8,12 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 
 class AclCache extends DoctrineAclCache
 {
-    /**
-     * @var CacheProvider
-     */
-    protected $cache;
+    protected CacheProvider $cache;
 
-    /**
-     * @param CacheProvider $cache
-     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param string $prefix
-     */
     public function __construct(
         CacheProvider $cache,
         PermissionGrantingStrategyInterface $permissionGrantingStrategy,
-        $prefix = DoctrineAclCache::PREFIX
+        string $prefix = DoctrineAclCache::PREFIX
     ) {
         $this->cache = $cache;
         $this->cache->setNamespace($prefix);

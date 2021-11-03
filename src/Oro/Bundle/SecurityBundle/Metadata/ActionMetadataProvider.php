@@ -1,55 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\SecurityBundle\Metadata;
 
-use Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class ActionMetadataProvider
 {
     const CACHE_NAMESPACE = 'AclAction';
     const CACHE_KEY = 'data';
 
-    /**
-     * @var AclAnnotationProvider
-     */
-    protected $annotationProvider;
+    protected AclAnnotationProvider $annotationProvider;
+    protected ?AdapterInterface $cache = null;
 
     /**
-     * @var CacheProvider
-     */
-    protected $cache;
-
-    /**
-     * @var array
+     * @var ?array
      *         key = action name
      *         value = ActionMetadata
      */
-    protected $localCache;
+    protected ?array $localCache = null;
 
-    /**
-     * Constructor
-     *
-     * @param AclAnnotationProvider $annotationProvider
-     * @param CacheProvider|null    $cache
-     */
     public function __construct(
         AclAnnotationProvider $annotationProvider,
-        CacheProvider $cache = null
+        ?AdapterInterface $cache = null
     ) {
         $this->annotationProvider = $annotationProvider;
         $this->cache = $cache;
-        if ($this->cache !== null && $this->cache->getNamespace() === '') {
-            $this->cache->setNamespace(self::CACHE_NAMESPACE);
-        }
     }
 
     /**
      * Checks whether an action with the given name is defined.
-     *
-     * @param  string $actionName The entity class name
-     * @return bool
      */
-    public function isKnownAction($actionName)
+    public function isKnownAction(string $actionName): bool
     {
         $this->ensureMetadataLoaded();
 
@@ -61,25 +44,19 @@ class ActionMetadataProvider
      *
      * @return ActionMetadata[]
      */
-    public function getActions()
+    public function getActions(): array
     {
         $this->ensureMetadataLoaded();
 
         return array_values($this->localCache);
     }
 
-    /**
-     * Warms up the cache
-     */
-    public function warmUpCache()
+    public function warmUpCache(): void
     {
         $this->ensureMetadataLoaded();
     }
 
-    /**
-     * Clears the cache
-     */
-    public function clearCache()
+    public function clearCache(): void
     {
         if ($this->cache) {
             $this->cache->delete(self::CACHE_KEY);
@@ -90,12 +67,12 @@ class ActionMetadataProvider
     /**
      * Makes sure that metadata are loaded
      */
-    protected function ensureMetadataLoaded()
+    protected function ensureMetadataLoaded(): void
     {
         if ($this->localCache === null) {
             $data = null;
             if ($this->cache) {
-                $data = $this->cache->fetch(self::CACHE_KEY);
+                $data = $this->cache->getItem(self::CACHE_KEY)->get();
             }
             if (!$data) {
                 $data = [];
@@ -110,7 +87,8 @@ class ActionMetadataProvider
                 }
 
                 if ($this->cache) {
-                    $this->cache->save(self::CACHE_KEY, $data);
+                    $item = $this->cache->getItem(self::CACHE_KEY);
+                    $item->set($data);
                 }
             }
 
