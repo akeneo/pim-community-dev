@@ -27,20 +27,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ProxyRouter implements UrlGeneratorInterface
 {
-    /** @var UrlGeneratorInterface */
-    private $router;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    private $draftRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $identifiableObjectRepository;
-
-    /** @var string */
-    private $newRoute;
+    private UrlGeneratorInterface $router;
+    private TokenStorageInterface $tokenStorage;
+    private EntityWithValuesDraftRepositoryInterface $draftRepository;
+    private IdentifiableObjectRepositoryInterface $identifiableObjectRepository;
+    private string $newRoute;
 
     public function __construct(
         UrlGeneratorInterface $router,
@@ -70,7 +61,7 @@ class ProxyRouter implements UrlGeneratorInterface
             throw new NotFoundHttpException(sprintf('Entity "%s" does not exist', $parameters['code']));
         }
 
-        $username = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         $name = null === $this->draftRepository->findUserEntityWithValuesDraft($entity, $username)
             ? $name : $this->newRoute;
 

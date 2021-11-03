@@ -1,0 +1,233 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Valeurs nutritionnelles moyennes
+      options:
+        energy: Energie
+        fat: Matières grasses
+        saturated_fat: Graisses saturées
+        carbohydrate: Glucides
+        sugars: Sucres
+        protein: Protéines
+        salt: Sel
+    per_100g:
+      label: 'Pour 100g'
+    per_serving:
+      label: 'Par portion (x g)'
+    percentage_reference_intake:
+      label: '% d''apport de référence (par 100 g ou portion)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Informations Nutritionnelles
+      options:
+        total_fat: Graisse totale (g)
+        saturated_fat: Graisses saturées (g)
+        trans_fat: Graisses transaturées (g)
+        cholesterol: Cholestérol (g)
+        sodium: Sodium (g)
+        total_carbohydrate: Glucides totaux (g)
+        dietary_fiber: Fibres alimentaires (g)
+        total_sugars: Total Sucres (g)
+        included_added_sugars: Dont Sucres ajoutés (g)
+        protein: Protéines (g)
+    amount_per_serving:
+      label: Quantité par portion
+    percentage_daily_value:
+      label: '% valeur journalière'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Nutrition
+      options:
+        energy: Energie
+        fat: Matières grasses
+        of_which_saturates: dont saturées
+        carbohydrate: Glucides
+        of_which_sugars: dont sucres
+        fibre: Fibres
+        protein: Protéines
+        salt: Sel
+    per_100g:
+      label: Pour 100g
+    percentage_reference_intake:
+      label: '% apport de référence'
+    your_reference_intake:
+      label: 'votre apport de référence 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: Composition
+      options:
+        wheat_flour: Farine de blé
+        butter: Beurre
+        water: Eau
+        sugar: Sucre
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergène
+  clothing_composition:
+    composition:
+      label: Composition
+      options:
+        cotton: Coton
+        polyester: Polyester
+        elastane: Elastane
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Longueur (cm)
+        width: Largeur (cm)
+        height: Hauteur (cm)
+        weight: Poids (kg)
+    value:
+      label: Valeur
+  dimensions-imperial:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Longueur (pouce)
+        width: Largeur (pouces)
+        height: Hauteur (pouces)
+        weight: Poids (livres)
+    value:
+      label: Valeur
+  packaging-metric:
+    parcel:
+      label: Colis
+      options:
+        parcel1: Colis 1
+        parcel2: Colis 2
+        parcel3: Colis 3
+        parcel4: Colis 4
+    width:
+      label: Largeur (cm)
+    length:
+      label: Longueur (cm)
+    height:
+      label: Hauteur (cm)
+  packaging-imperial:
+    parcel:
+      label: Colis
+      options:
+        parcel1: Colis 1
+        parcel2: Colis 2
+        parcel3: Colis 3
+        parcel4: Colis 4
+    width:
+      label: Largeur (pouces)
+    length:
+      label: Longueur (pouce)
+    height:
+      label: Hauteur (pouce)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Structure du tableau
+      table_attribute: Attribut tableau
+      add_column: Ajouter de nouvelles colonnes
+      select_type: Sélectionnez le type
+      data_type: Type de colonne
+      labels: Traduction des libellés
+      column_management: Gestion des colonnes
+      please_type: Veuillez saisir "{{ text }}"
+      confirm_column_delete: Êtes-vous sûr(e) de vouloir supprimer cette colonne ?
+      confirm_option_delete: Etes-vous sûr(e) de vouloir supprimer cette option ?
+      empty_title: La structure de votre tableau est vide.
+      empty_subtitle: La première étape est de définir vos colonnes.
+      unique_title: Votre attribut tableau est presque prêt.
+      unique_subtitle: Définissez au moins 2 colonnes pour commencer à utiliser votre tableau.
+      new_option_placeholder: Ecrivez votre nouveau libellé d'option ici
+      manage_options: Gérer les options
+      column_code: Code de la colonne
+      properties_helper: Vous devez définir la structure du tableau et au moins 2 colonnes avant de pouvoir enregistrer votre attribut tableau
+      table_structure_helper_text: Un attribut de type tableau doit contenir au moins 2 colonnes. La première est toujours de type "Colonne à choix unique". Une fois la première colonne créée, vous devez ajouter des options. Pour ce faire, cliquez sur "Gérer les options" et ajoutez jusqu'à {{ limit }} options ! Ensuite, vous aurez la possibilité d'utiliser chacune de ces options comme ligne dans vos tableaux.
+      table_structure_helper_link: Cet article vous permettra d'en savoir plus sur les attributs de type tableau.
+      limit_option_reached: Vous avez atteint la limite de {{ limit }} options.
+      template_label: Sélectionnez le standard de votre tableau "{{ templateLabel }}"
+      delete_column_helper: Lorsque vous supprimez cette colonne, toutes ses valeurs sont supprimées de tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
+      delete_first_column_option_helper: Lorsque vous supprimez cette option, la ligne entière sera supprimée pour tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
+      delete_other_column_option_helper: Lorsque vous supprimez cette option, la valeur de la cellule sera supprimée pour tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
+      no_options_helper: Veuillez ajouter votre première option.
+      no_options: Aucune option trouvée.
+      please_try_again: Essayez de nouveau
+      first_column_type_helper: La première colonne d'un tableau est toujours de type "Colonne à choix unique"
+      discard_changes: Vous perdrez les modifications effectuées sur les options si vous quittez la page.
+    product:
+      items_per_page: Éléments par page
+      current_items: "{{ minItem }}-{{ maxItem }} sur {{ itemCount }}"
+      current_page: "Page {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "Désolé, il n'y a pas de lignes pour votre recherche !"
+      no_rows_title: "Votre tableau {{ attributeLabel }} est vide."
+      no_rows_subtitle: Ajouter des lignes pour définir de nouvelles propriétés
+      no_rows_subtitle_on_readonly: Pour pouvoir modifier cet attribut, allez dans la page de configuration de l'attribut ou contactez votre administrateur PIM.
+      no_add_options_title: Pour ajouter des lignes
+      no_add_options: Gérez les options de l'attribut "{{ attributeLabel }}"
+      no_add_options_unallowed: Contactez votre administrateur PIM pour gérer les options de l'attribut "{{ attributeLabel }}"
+      no_add_options_link: ici
+      no_edit_permission: Aucune permission de modification
+      actions:
+        delete_row: Supprimer cette ligne
+        clear_row: Effacer le contenu de cette ligne
+        move_first: Déplacer en première position
+        move_last: Déplacer en dernière position
+      order: Ordre
+  properties:
+    data_type:
+      text: Texte
+      number: Nombre
+      boolean: Oui/Non
+      select: Colonne à choix unique
+  validations:
+    column_code_must_be_filled: Le code doit être rempli
+    column_data_type_must_be_filled: Le type de données doit être renseigné
+    invalid_column_code: Le code de la colonne ne peut contenir que des lettres, des chiffres et des tirets bas
+    invalid_code: Le code ne peut contenir que des lettres, des chiffres et des tirets bas
+    duplicated_column_code: Chaque colonne nécessite un code unique. {{ duplicateCode }} est déjà utilisé
+    duplicated_select_code: Chaque code nécessite un code unique
+    max_greater_than_min: Le maximum doit être supérieur au minimum
+    max_length: Nombre maximum de caractères (jusqu'à 100)
+    min: Valeur minimale
+    max: Valeur maximale
+    decimals_allowed: Valeurs décimales autorisées
+    max_length_range: Veuillez définir un nombre maximum de caractères inférieur ou égal à {{ maximum }}
+  templates:
+    choose_template: Choisissez votre modèle
+    choose_template_subtitle: Ces modèles ne sont que des exemples, ils ne sont pas réglementaires. Vous pouvez les modifier avant d'enregistrer votre structure d'attribut.
+    empty_table: Tableau vide
+    nutrition: Nutrition
+    nutrition-unitedkingdom: Nutrition (Royaume-Uni)
+    nutrition-europe: Valeurs nutritionnelles moyennes (Europe)
+    nutrition-unitedstates: Données nutritionnelles (États-Unis)
+    food_composition: Composition alimentaire
+    clothing_composition: Composition de vêtement
+    dimensions: Dimensions de produit
+    dimensions-metric: Dimensions (système métrique)
+    dimensions-imperial: Dimensions (système impérial)
+    packaging: Dimensions d'emballage
+    packaging-metric: Dimensions d'emballage (système métrique)
+    packaging-imperial: Dimensions d'emballage (système impérial)
+  product_edit_form:
+    add_rows: Ajouter des lignes
+    search: Rechercher
+  datagrid:
+    placeholder: Aperçu indisponible, ouvrez la page produit pour accéder aux valeurs de l'attribut tableau
+    any: Au moins 1
+    select_your_column: Sélectionnez votre colonne
+    select_your_row: Sélectionnez votre ligne
+    select_your_operator: Sélectionnez votre opérateur
+    select_your_value: Sélectionnez votre valeur
+    any_row: N'importe quelle ligne
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Tableau
+batch_jobs:
+  csv_table_attribute_options_export.label: Export des options des attributs tableau en CSV
+  xlsx_table_attribute_options_export.label: Export des options des attributs tableau en XLSX
+  csv_table_attribute_options_import.label: Import des options des attributs tableau en CSV
+  xlsx_table_attribute_options_import.label: Import des options des attributs tableau en XLSX

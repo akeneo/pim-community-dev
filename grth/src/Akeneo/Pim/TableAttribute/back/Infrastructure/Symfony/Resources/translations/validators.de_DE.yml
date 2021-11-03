@@ -1,0 +1,14 @@
+pim_table_configuration:
+  validation:
+    table_configuration:
+      must_be_filled: Die Tabellenattributkonfiguration muss ausgefüllt werden
+      max_columns_reached: Sie haben die maximale Anzahl an Spalten in Ihrer Tabelle erreicht (10)
+      missing_column: Die {{ field }} Spalte muss ausgefüllt werden
+      missing_option_field: Das {{ field }} ist erforderlich
+      column_type_must_be_a_string: Der Spaltendatentyp muss ein String sein
+      unknown_data_type: "Der Spaltendatentyp ist unbekannt. Bitte wählen Sie eine der folgenden: Nummer, Text, Auswählen, Boolean"
+      column_label_must_be_a_string: Die Spaltenbezeichnung muss ein String sein
+      attribute_does_not_exist: Das Attribut "{{ attribute }}" existiert nicht
+    product_value:
+      integer_required: 'Dieser Wert sollte eine Ganzzahl sein: {{ invalid_value }}'
+      value_integer_required: 'Der benötigte Wert ist eine Ganzzahl'

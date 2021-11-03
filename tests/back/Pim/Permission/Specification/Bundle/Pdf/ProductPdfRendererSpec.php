@@ -35,7 +35,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
@@ -49,7 +48,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $channelRepository,
             $localeRepository,
             self::TEMPLATE_NAME,
-            $attributeOptionRepository,
             $authorizationChecker,
             null
         );
@@ -97,7 +95,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths' => [],
             'customFont' => null,
-            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
@@ -162,7 +159,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
             'imagePaths' => ['fookey'],
             'customFont' => null,
-            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
@@ -222,7 +218,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths' => [],
             'customFont' => null,
-            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();

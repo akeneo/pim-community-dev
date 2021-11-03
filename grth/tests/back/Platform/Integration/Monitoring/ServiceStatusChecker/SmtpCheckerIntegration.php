@@ -7,6 +7,7 @@ use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ServiceStatus;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Psr\Log\LoggerInterface;
 use Swift_SmtpTransport;
 use Swift_Transport;
 
@@ -25,7 +26,7 @@ class SmtpCheckerIntegration extends TestCase
 {
     public function test_smtp_check_is_ok_when_there_is_no_error_when_sending_a_mail()
     {
-        $checker = new SmtpChecker($this->getPingableMailerTransport());
+        $checker = new SmtpChecker($this->getPingableMailerTransport(),$this->createMock(LoggerInterface::class));
         $status = $checker->status();
 
         Assert::assertEquals(true, $status->isOk());
@@ -33,7 +34,7 @@ class SmtpCheckerIntegration extends TestCase
 
     public function test_smtp_check_is_ko_when_there_is_an_error_when_sending_a_mail()
     {
-        $checker = new SmtpChecker($this->getNotPingableMailerTransport());
+        $checker = new SmtpChecker($this->getNotPingableMailerTransport(),$this->createMock(LoggerInterface::class));
         $status = $checker->status();
 
         Assert::assertEquals(false, $status->isOk());

@@ -1,9 +1,5 @@
-#!/usr/bin/bash
-set -x
-set -e
-
-apt-get -qq update
-apt-get -qq --no-install-recommends --no-install-suggests --yes --quiet install curl ca-certificates
+#!/bin/sh
+set -ex
 
 CURL="curl --connect-timeout 10 --retry 5 --retry-delay 5 --retry-connrefused"
 

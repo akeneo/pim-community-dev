@@ -11,7 +11,7 @@
 namespace Akeneo\Tool\Component\FileMetadata;
 
 use Akeneo\Tool\Component\FileMetadata\Adapter\AdapterRegistry;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * File metadata reader factory implementation.
@@ -21,11 +21,8 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
  */
 class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
 {
-    /** @var AdapterRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $metadataReaderClass;
+    protected AdapterRegistry $registry;
+    protected string $metadataReaderClass;
 
     /**
      * @param AdapterRegistry $registry
@@ -33,7 +30,7 @@ class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
      */
     public function __construct(
         AdapterRegistry $registry,
-        $metadataReaderClass = 'Akeneo\Tool\Component\FileMetadata\FileMetadataReader'
+        string $metadataReaderClass = 'Akeneo\Tool\Component\FileMetadata\FileMetadataReader'
     ) {
         $this->registry = $registry;
         $this->metadataReaderClass = $metadataReaderClass;
@@ -46,8 +43,7 @@ class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
     {
         $adapters = [];
 
-        $mimeTypeGuesser = MimeTypeGuesser::getInstance();
-        $mimeType = $mimeTypeGuesser->guess($file->getPathname());
+        $mimeType = (new MimeTypes())->guessMimeType($file->getPathname());
 
         foreach ($this->registry->all() as $adapter) {
             if ($adapter->isMimeTypeSupported($mimeType)) {

@@ -38,7 +38,7 @@ class ApproveTasklet extends AbstractReviewTasklet implements TrackableTaskletIn
         $jobParameters = $this->stepExecution->getJobParameters();
         $productDrafts = $this->productDraftRepository->findByIds($jobParameters->get('productDraftIds'));
         $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));
-        $context = ['comment' => $jobParameters->get('comment')];
+        $context = ['comment' => $jobParameters->get('comment') ?? ''];
 
         $this->stepExecution->setTotalItems(count($productDrafts ?? []) + count($productModelDrafts ?? []));
         if (null !== $productDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {

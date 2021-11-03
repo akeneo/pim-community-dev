@@ -115,8 +115,8 @@ config:
                     edit:   pim-attribute-form-reference-entity
         pim/form/common/attributes/create-button:
             attribute_icons:
-                akeneo_reference_entity_collection: reference-entity-multiple
-                akeneo_reference_entity: reference-entity
+                akeneo_reference_entity_collection: EntityMultiIcon
+                akeneo_reference_entity: EntityIcon
 
     paths:
         pim/controller/reference-entity/list: akeneoreferenceentity/infrastructure/controller/reference-entity/list.tsx

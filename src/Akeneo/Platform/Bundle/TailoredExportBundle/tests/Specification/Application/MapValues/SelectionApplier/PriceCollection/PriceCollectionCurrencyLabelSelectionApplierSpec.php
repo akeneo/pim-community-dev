@@ -36,7 +36,19 @@ class PriceCollectionCurrencyLabelSelectionApplierSpec extends ObjectBehavior
 
     public function it_applies_the_selection(FindCurrencyLabelsInterface $findCurrencyLabels)
     {
-        $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR');
+        $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR', ['USD', 'DKK']);
+        $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
+        $findCurrencyLabels->byCodes(['USD', 'DKK'], 'fr_FR')->willReturn([
+            'USD' => 'Dollars $',
+            'DKK' => 'Donkey kong 🐒'
+        ]);
+
+        $this->applySelection($selection, $value)->shouldReturn('Dollars $|Donkey kong 🐒');
+    }
+
+    public function it_applies_the_selection_with_all_currencies(FindCurrencyLabelsInterface $findCurrencyLabels)
+    {
+        $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR', []);
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
         $findCurrencyLabels->byCodes(['EUR', 'USD', 'DKK'], 'fr_FR')->willReturn([
             'EUR' => 'Euros €',
@@ -59,7 +71,7 @@ class PriceCollectionCurrencyLabelSelectionApplierSpec extends ObjectBehavior
 
     public function it_supports_price_collection_code_selection_with_price_collection_value()
     {
-        $selection = new PriceCollectionCurrencyLabelSelection('/', 'fr_FR');
+        $selection = new PriceCollectionCurrencyLabelSelection('/', 'fr_FR', []);
         $value = new PriceCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);

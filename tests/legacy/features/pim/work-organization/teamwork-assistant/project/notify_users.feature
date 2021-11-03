@@ -257,6 +257,7 @@ Feature: Notify users after a project creation
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
+  @skip
   Scenario: Successfully notify users when creating a project on decoration
     And I am logged in as "Julia"
     When I am on the products grid

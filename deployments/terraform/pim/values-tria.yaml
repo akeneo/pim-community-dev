@@ -84,6 +84,8 @@ free_trial:
   akeneo_connect_api_client_username: "pim-trial@partners.akeneo.com"
   akeneo_connect_api_client_base_uri: "https://connect.akeneo.com/"
   akeneo_portal_api_client_base_uri: "https://portal.akeneo.com/"
+  hotjar_id: "2273004"
+  google_analytics_account_id: UA-35417741-13
 
 elasticsearch:
   keystore: null

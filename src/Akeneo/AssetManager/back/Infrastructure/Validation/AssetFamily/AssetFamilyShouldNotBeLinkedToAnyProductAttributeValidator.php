@@ -74,7 +74,7 @@ class AssetFamilyShouldNotBeLinkedToAnyProductAttributeValidator extends Constra
 
         if ($isLinkedToAtLeastOneProductAttribute) {
             $this->context->buildViolation(AssetFamilyShouldNotBeLinkedToAnyProductAttribute::ERROR_MESSAGE)
-                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
+                ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier->normalize())
                 ->addViolation();
         }
     }

@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
+use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\DateValue;
@@ -34,9 +35,18 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntit
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeValueHydrator
 {
+    private NormalizerInterface $normalizer;
+
+    public function __construct(
+        NormalizerInterface $normalizer
+    ) {
+        $this->normalizer = $normalizer;
+    }
+
     public function hydrate(
         ?ValueInterface $value,
         string $attributeType,
@@ -100,14 +110,25 @@ class AttributeValueHydrator
                 return new SimpleSelectValue($data);
             case 'pim_catalog_price_collection':
                 return new PriceCollectionValue(array_map(
-                    static fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
-                    $data->toArray()
+                    static fn (ProductPriceInterface $price) => new Price(
+                        (string) $price->getData(),
+                        $price->getCurrency(),
+                    ),
+                    $data->toArray(),
                 ));
             case 'akeneo_reference_entity':
                 return new ReferenceEntityValue((string) $data);
             case 'akeneo_reference_entity_collection':
                 return new ReferenceEntityCollectionValue(array_map('strval', $data));
+            case 'pim_catalog_table':
+                if (!$data instanceof Table) {
+                    throw new \LogicException('Malformed value for Table attribute');
+                }
 
+                return new StringValue(json_encode(
+                    $this->normalizer->normalize($data, 'standard'),
+                    JSON_THROW_ON_ERROR,
+                ));
             default:
                 throw new \InvalidArgumentException(sprintf('Unsupported attribute type "%s"', $attributeType));
         }

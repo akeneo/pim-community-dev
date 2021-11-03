@@ -9,10 +9,16 @@ find-legacy-translations: #Doc: run find_legacy_translations.sh script
 .PHONY: lint-back
 lint-back: #Doc: launch all PHP linter tests
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-lint-back
+
+.PHONY: lint-front
+lint-front: #Doc: launch all YARN linter tests
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-lint-front table-attribute-prettier-check-front
 
 ### Unit tests
 .PHONY: unit-back
 unit-back: $(PIM_SRC_PATH)/var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > $(PIM_SRC_PATH)/var/tests/phpspec/specs.xml
 	cd $(PIM_SRC_PATH) && vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -31,6 +37,7 @@ endif
 .PHONY: unit-front
 unit-front: #Doc: launch all JS unit tests
 	$(YARN_RUN) unit
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-front
 
 .PHONY: acceptance-front
 acceptance-front:
@@ -66,3 +73,22 @@ ifeq ($(CI),true)
 else
 	APP_ENV=test $(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpunit --testsuite End_to_End
 endif
+
+.PHONY: coupling-back
+coupling-back: #Doc: launch all coupling detector tests
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-coupling-back
+
+.PHONY: acceptance-back
+acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-acceptance-back
+
+static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
+	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-static-back
+
+.PHONY: check-pullup
+check-pullup: #Doc: check pullup
+	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-pullup
+
+.PHONY: check-sf-services
+check-sf-services: #Doc: check Sf services
+	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-services-instantiability

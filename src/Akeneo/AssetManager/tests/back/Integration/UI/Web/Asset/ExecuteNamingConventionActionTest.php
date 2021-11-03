@@ -388,7 +388,7 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
     private function assertViolationOnMaxLengthNotCorrect(Response $response): void
     {
         self::assertEquals(
-            '[{"messageTemplate":"This value is too long. It should have 1 character or less.","parameters":{"{{ value }}":"\u00221975\u0022","{{ limit }}":1},"message":"This value is too long. It should have 1 character or less.","propertyPath":"values.year_of_first_album","invalidValue":{"text":"1975","attribute":{"regularExpression":{"empty":true},"maxLength":[],"textarea":false,"validationRuleSetToRegularExpression":false,"validationRuleSetToEmail":false,"validationRuleSetToUrl":false,"validationRule":true,"type":"text","identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":["en_US"],"order":[],"valuePerChannel":false,"valuePerLocale":false},"channel":null,"locale":null}}]',
+            '[{"messageTemplate":"This value is too long. It should have 1 character or less.","parameters":{"{{ value }}":"\u00221975\u0022","{{ limit }}":"1"},"message":"This value is too long. It should have 1 character or less.","propertyPath":"values.year_of_first_album","invalidValue":{"text":"1975","attribute":{"regularExpression":{"empty":true},"maxLength":[],"textarea":false,"validationRuleSetToRegularExpression":false,"validationRuleSetToEmail":false,"validationRuleSetToUrl":false,"validationRule":true,"type":"text","identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":["en_US"],"order":[],"valuePerChannel":false,"valuePerLocale":false},"channel":null,"locale":null}}]',
             $response->getContent()
         );
     }

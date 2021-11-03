@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
@@ -9,18 +10,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\PriceFilter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(ProposalAttributePathResolver $attributePathResolver, CurrencyRepositoryInterface $currencyRepository)
+    function let(ProposalAttributePathResolver $attributePathResolver, FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
         $this->beConstructedWith(
             $attributePathResolver,
-            $currencyRepository,
+            $findActivatedCurrencies,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -71,11 +71,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_lower_than(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -102,11 +102,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_lower_or_equal_than(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -133,11 +133,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_equals(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -164,11 +164,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_not_equal(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -206,11 +206,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_greater_or_equal_than(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -237,11 +237,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_greater_than(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -305,11 +305,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_empty_for_currency(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -323,6 +323,17 @@ class PriceFilterSpec extends ObjectBehavior
                     ],
                     'minimum_should_match' => 1
                 ]
+            ]
+        )->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['a_price']]],
+                        ['terms' => ['attributes_of_ancestors' => ['a_price']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
             ]
         )->shouldBeCalled();
 
@@ -363,11 +374,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_not_empty_for_currency(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
@@ -466,11 +477,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_throws_if_the_currency_is_not_supported(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
 
         $attributePathResolver->getAttributePaths($price)->willReturn(['values.a_price-prices.ecommerce.en_US']);
@@ -595,11 +606,11 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributePathResolver,
-        $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 

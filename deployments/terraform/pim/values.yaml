@@ -282,6 +282,7 @@ free_trial:
 connectors:
   bigcommerce:
     enabled: false
+    challengePapoActivation: true
 
 mysql:
   image:
@@ -319,7 +320,7 @@ mysql:
       failureThreshold: 5
 
 memcached:
-  image: memcached:1.6.7
+  image: memcached:1.6.12
   fullnameOverride: memcached
   replicaCount: 1
   resources:
@@ -403,3 +404,7 @@ elasticsearch:
       items:
       - key: srntPimStorageKey
         path: gcs.client.default.credentials_file
+  snapshots:
+    retention: 15
+    repository: pim_gcs_repository
+    folder: elasticsearch-snapshots

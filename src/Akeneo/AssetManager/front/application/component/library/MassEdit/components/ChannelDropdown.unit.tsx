@@ -88,7 +88,7 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Ecommerce')).toBeInTheDocument();
 });
 
-test('it displays all channels when opening the dropdown', () => {
+test('it displays all channels when opening the dropdown', async () => {
   const handleOnChange = jest.fn();
   renderWithProviders(
     <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
@@ -96,9 +96,9 @@ test('it displays all channels when opening the dropdown', () => {
 
   userEvent.click(screen.getByRole('textbox'));
 
-  expect(screen.getAllByText('Ecommerce')).toHaveLength(2);
-  expect(screen.getByText('Mobile')).toBeInTheDocument();
+  expect(await screen.findByText('Mobile')).toBeInTheDocument();
   expect(screen.getByText('Print')).toBeInTheDocument();
+  expect(screen.getAllByText('Ecommerce')).toHaveLength(2);
 });
 
 test('it does not display the dropdown when read only', () => {
@@ -119,14 +119,14 @@ test('it does not display the dropdown when read only', () => {
   expect(screen.queryByText('Print')).not.toBeInTheDocument();
 });
 
-test('it calls onChange handler when clicking on another channel', () => {
+test('it calls onChange handler when clicking on another channel', async () => {
   const handleOnChange = jest.fn();
   renderWithProviders(
     <ChannelDropdown uiLocale="en_US" channels={channels} channel="ecommerce" onChange={handleOnChange} />
   );
 
   userEvent.click(screen.getByRole('textbox'));
-  userEvent.click(screen.getByText('Mobile'));
+  userEvent.click(await screen.findByText('Mobile'));
 
   expect(handleOnChange).toHaveBeenCalledWith('mobile');
 });

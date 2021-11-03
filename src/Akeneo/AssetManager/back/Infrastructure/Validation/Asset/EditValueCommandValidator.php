@@ -171,13 +171,15 @@ class EditValueCommandValidator extends ConstraintValidator
     {
         $attributeCode = (string) $command->attribute->getCode();
         foreach ($violations as $violation) {
-            $this->context->buildViolation($violation->getMessage())
+            $builder = $this->context->buildViolation($violation->getMessage())
                 ->setParameter('%attribute_code%', $attributeCode)
                 ->atPath($attributeCode . $path)
                 ->setCode($violation->getCode())
-                ->setPlural($violation->getPlural())
-                ->setInvalidValue($violation->getInvalidValue())
-                ->addViolation();
+                ->setInvalidValue($violation->getInvalidValue());
+            if ($violation->getPlural()) {
+                $builder->setPlural((int)$violation->getPlural());
+            }
+            $builder->addViolation();
         }
     }
 }

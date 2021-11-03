@@ -108,6 +108,8 @@ akeneo.tailored_export:
           currency_label: Currency label
           currency_locale: Currency locale
           information: For this attribute, you can export either the currency code, the currency label or the amount.
+          currencies: Select currencies
+          all_currencies: All
         file:
           information: For this attribute, you can export either the path, the filekey or the filename.
         decimal_separator:
@@ -210,3 +212,6 @@ akeneo.tailored_export:
         does_not_exist: The measurement family {{ measurement_family_code }} does not exist.
       unit:
         does_not_exist: The unit {{ unit_code }} does not exist in measurement family {{ measurement_family_code }}.
+    currency:
+      should_be_active: '{0} The currencies "{{ currency_codes }}" are not linked to any channel.|{1} The currency "{{ currency_codes }}" is not linked to any channel.|]1,Inf] The currencies "{{ currency_codes }}" are not linked to any channel.'
+      should_be_active_on_channel: '{0} The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}.|{1} The currency "{{ currency_codes }}" is not active for channel "{{ channel_code }}".|]1,Inf] The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}".'

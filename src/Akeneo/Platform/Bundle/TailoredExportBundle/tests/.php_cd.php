@@ -64,6 +64,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Pim\TableAttribute\Domain\Value\Table',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ],

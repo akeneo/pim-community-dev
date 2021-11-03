@@ -75,7 +75,7 @@ class ReferenceEntityShouldNotBeLinkedToAnyProductAttributeValidator extends Con
 
         if ($isLinkedToAtLeastOneProductAttribute) {
             $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyProductAttribute::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier->normalize())
                 ->addViolation();
         }
     }

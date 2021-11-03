@@ -1,0 +1,128 @@
+Akeneo\Pim\Structure\Component\Model\Attribute:
+  constraints:
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsMaximumTableAttributesReached: ~
+  properties:
+    rawTableConfiguration:
+      - Type: array
+      - Count:
+          min: 2
+          max: 10
+          minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
+          maxMessage: pim_table_configuration.validation.table_configuration.max_columns_reached
+      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
+      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
+      - All:
+          - Type: array
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\OptionsShouldOnlyBeSetOnSelectColumns: ~
+          - Collection:
+              fields:
+                code:
+                  - Required:
+                      - NotBlank:
+                          message: pim_table_configuration.validation.table_configuration.column_code_must_be_filled
+                      - Regex:
+                          pattern: /^[a-zA-Z0-9_]+$/
+                          message: pim_table_configuration.validation.table_configuration.invalid_code
+                      - Length:
+                          max: 100
+                          maxMessage: pim_table_configuration.validation.table_configuration.too_long_code
+                data_type:
+                  - Required:
+                      - Type:
+                          type: string
+                          message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
+                      - Choice:
+                          choices: [ "text", "number", "boolean", "select" ]
+                          message: pim_table_configuration.validation.table_configuration.unknown_data_type
+                labels:
+                  - Optional:
+                      - Type:
+                          type: array
+                          message: pim_table_configuration.validation.table_configuration.invalid_labels_format
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollection: ~
+                      - All:
+                          - Type:
+                              type: string
+                              message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                          - NotNull:
+                              message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                          - Length:
+                              max: 250
+                              maxMessage: pim_table_configuration.validation.table_configuration.too_long_label
+                validations:
+                  - Optional:
+                      - Type:
+                          type: array
+                          message: The Validations field requires a key value object
+                      - Collection:
+                          fields:
+                            max_length:
+                              - Type:
+                                  type: int
+                                  message: The required value is an integer
+                              - Positive:
+                                  message: The required value is a positive integer
+                              - LessThanOrEqual:
+                                  value: 100
+                                  message: Please define a maximum number of characters lower than or equal to {{ compared_value }}.
+                            min:
+                              - Type:
+                                  type: numeric
+                                  message: The required value is a number
+                            max:
+                              - Type:
+                                  type: numeric
+                                  message: The required value is a number
+                            decimals_allowed:
+                              - Type:
+                                  type: bool
+                                  message: The required value is a boolean
+                          allowMissingFields: true
+                          allowExtraFields: true # handled in ValidationShouldMatchColumnType
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMin: ~
+                options:
+                  - Optional:
+                      - Type:
+                          type: array
+                          message: The Options field requires an array containing only key value objects
+                      - Count:
+                          max: 20000
+                          maxMessage: You have reached the maximum number of options in your column (20000).
+                      - All:
+                        - Type:
+                            type: array
+                            message: The Options field requires an array containing only key value objects
+                        - Collection:
+                            fields:
+                              code:
+                                - Required:
+                                    - NotBlank:
+                                        message: pim_table_configuration.validation.table_configuration.option_code_must_be_filled
+                                    - Regex:
+                                        pattern: /^[a-zA-Z0-9_]+$/
+                                        message: pim_table_configuration.validation.table_configuration.invalid_option_code
+                                    - Length:
+                                        max: 100
+                                        maxMessage: pim_table_configuration.validation.table_configuration.too_long_option_code
+                              labels:
+                                - Optional:
+                                    - Type:
+                                        type: array
+                                        message: pim_table_configuration.validation.table_configuration.invalid_option_labels_format
+                                    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollection: ~
+                                    - All:
+                                        - Type:
+                                            type: string
+                                            message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
+                                        - Length:
+                                            max: 255
+                                            maxMessage: pim_table_configuration.validation.table_configuration.too_long_option_label
+                                        - NotNull:
+                                            message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
+                            missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_option_field
+                            extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_field
+              missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
+              extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_field

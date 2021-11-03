@@ -6,7 +6,7 @@ services:
 
     Google\Cloud\Storage\Bucket:
         class: 'Google\Cloud\Storage\Bucket'
-        factory: 'Google\Cloud\Storage\StorageClient:bucket'
+        factory: ['@Google\Cloud\Storage\StorageClient', 'bucket']
         arguments:
             - '%env(SRNT_GOOGLE_BUCKET_NAME)%'
 

@@ -1,0 +1,25 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\CreateAttributeContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
+                - test.channel.context
+                - test.locale.context
+                - test.user.context
+                - test.attribute.context
+                - test.catalog.product_validation.context
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false

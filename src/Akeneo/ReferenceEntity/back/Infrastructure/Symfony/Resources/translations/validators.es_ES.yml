@@ -2,7 +2,7 @@ pim_reference_entity:
   reference_entity:
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'Una entidad de referencia ya existe con código "%reference_entity_identifier%"'
         limit_reached: 'No puede crear la entidad de referencia "%reference_entity_label%" porque ha llegado al límite de %limit% entidades de referencia'
       records:
@@ -17,7 +17,7 @@ pim_reference_entity:
   record:
     validation:
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
         should_exist: 'No se encontró el registro'
       text:
@@ -62,7 +62,7 @@ pim_reference_entity:
         duplicated: 'La opción "%option_code%" ya existe'
         too_many: 'Ha alcanzado el límite de opciones de atributo {{ limit }} por atributo.'
         code:
-          pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+          pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
           should_not_be_blank: 'El código de la opción no debe estar vacío'
       max_length:
         should_be_an_integer: 'Este valor debe ser un entero.'
@@ -75,9 +75,9 @@ pim_reference_entity:
         should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
         cannot_be_lower_than_min: 'El máximo no puede ser inferior al mínimo'
       code:
-        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
-        reserved_codes: 'El código no puede ser ninguno de esos valores: "{{ comma_separated_reserved_keywords }}"'
-        should_not_exist: 'El atributo ya existe para la entidad de referencia "{{ reference_entity_identifier }}" y el código de atributo "{{ code }}"'
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
+        reserved_codes: 'El código no puede ser ninguno de esos valores: «{{ comma_separated_reserved_keywords }}»'
+        should_not_exist: 'El atributo ya existe para la entidad de referencia «{{ reference_entity_identifier }}» y el código de atributo «{{ code }}»'
         should_exist: 'El atributo no se encontró'
       regular_expression:
         invalid_regular_expression: 'Esta expresión regular no es válida. Aquí está un ejemplo de una expresión regular válida: "/[a-z]+[0-9]*/"'

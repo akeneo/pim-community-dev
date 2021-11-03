@@ -91,7 +91,7 @@ class IndexRecordsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkRecordIndexExists();
 
@@ -108,7 +108,7 @@ class IndexRecordsCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

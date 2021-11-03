@@ -38,7 +38,6 @@ pim_datagrid:
     actions:
       approve_all: Alles goedkeuren
       refuse_all: Alles afwijzen
-    characters_left: ']-Inf, 1]{{ count }} teken over|]1, Inf[{{ count }} tekens over'
 pimee_datagrid:
   cells:
     expand:

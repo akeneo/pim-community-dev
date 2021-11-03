@@ -136,6 +136,10 @@ case $ZCC_CONTEXT in
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
         getDiff "${SOURCE}/dbschema" "${TARGET}/dbschema"
+
+        echo -en "\n\n - Differences in upgrades between the oldest release in production & the next release to deploy :\n\n"
+        getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades"
+        
         exit $?
         ;;
 esac

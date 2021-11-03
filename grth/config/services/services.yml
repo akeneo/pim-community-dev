@@ -1,0 +1,7 @@
+services:
+    Hslavich\OneloginSamlBundle\Controller\SamlController:
+        class: Hslavich\OneloginSamlBundle\Controller\SamlController
+        tags: ['controller.service_arguments']
+        public: true
+        autowire: true
+

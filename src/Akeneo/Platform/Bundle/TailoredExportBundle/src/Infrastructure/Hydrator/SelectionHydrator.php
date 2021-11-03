@@ -95,6 +95,7 @@ class SelectionHydrator
             case 'pim_catalog_identifier':
             case 'pim_catalog_textarea':
             case 'pim_catalog_text':
+            case 'pim_catalog_table':
                 return new ScalarSelection();
             case 'pim_catalog_metric':
                 return $this->createMeasurementSelection($selectionConfiguration, $attribute);
@@ -195,7 +196,7 @@ class SelectionHydrator
                 );
             case MeasurementValueAndUnitLabelSelection::TYPE:
                 return new MeasurementValueAndUnitLabelSelection(
-                    $selectionConfiguration['decimal_separator'] ?? '.',
+                    $selectionConfiguration['decimal_separator'],
                     $attribute->metricFamily(),
                     $selectionConfiguration['locale']
                 );
@@ -247,11 +248,21 @@ class SelectionHydrator
     {
         switch ($selectionConfiguration['type']) {
             case PriceCollectionCurrencyCodeSelection::TYPE:
-                return new PriceCollectionCurrencyCodeSelection($selectionConfiguration['separator']);
+                return new PriceCollectionCurrencyCodeSelection(
+                    $selectionConfiguration['separator'],
+                    $selectionConfiguration['currencies'] ?? []
+                );
             case PriceCollectionCurrencyLabelSelection::TYPE:
-                return new PriceCollectionCurrencyLabelSelection($selectionConfiguration['separator'], $selectionConfiguration['locale']);
+                return new PriceCollectionCurrencyLabelSelection(
+                    $selectionConfiguration['separator'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['currencies'] ?? []
+                );
             case PriceCollectionAmountSelection::TYPE:
-                return new PriceCollectionAmountSelection($selectionConfiguration['separator']);
+                return new PriceCollectionAmountSelection(
+                    $selectionConfiguration['separator'],
+                    $selectionConfiguration['currencies'] ?? []
+                );
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())

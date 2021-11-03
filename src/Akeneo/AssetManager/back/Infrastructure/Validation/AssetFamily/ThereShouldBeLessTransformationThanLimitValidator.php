@@ -45,7 +45,7 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
         if ($total > $this->maxTransformationByAssetFamilyLimit) {
             $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
                 ->setParameter('%asset_family_identifier%', $command->identifier)
-                ->setParameter('%limit%', $this->maxTransformationByAssetFamilyLimit)
+                ->setParameter('%limit%', (string) $this->maxTransformationByAssetFamilyLimit)
                 ->atPath('transformations')
                 ->addViolation();
         }

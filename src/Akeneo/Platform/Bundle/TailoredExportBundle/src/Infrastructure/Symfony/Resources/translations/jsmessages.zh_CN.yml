@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: 以 XLSX 格式定制导出产品
 batch_jobs.xlsx_tailored_product_model_export.label: 以 XLSX 格式定制导出产品模型
 batch_jobs.csv_tailored_product_export.label: 以 CSV 格式定制导出产品
 batch_jobs.csv_tailored_product_model_export.label: 以 CSV 格式定制导出产品模型
+pim_common:
+  quality_score: 质量评分
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: 选择一些区域
         remove: 移除区域
     quality_score:
+      score:
+        remove: 移除质量评分
       locales:
+        placeholder: 选择一些区域
         label: 定义质量评分的区域
+        remove: 移除区域
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: 如果用作标签的属性每个区域都有一个值，则您可以选择特定的区域。
             channel: 如果用作标签的属性每个渠道都有一个值，则您可以选择特定的渠道。
         measurement:
+          information: 对于此属性，可以导出值、单位代码、单位标签，或者值和单位标签。
           value: 值
           unit_locale: 单位区域
           unit_code: 单位代码
           unit_label: 单位标签
+          value_and_unit_label: 值和单位标签
         price:
           currency_code: 货币代码
           currency_label: 货币标签
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: '“否”替换值'
           edit_mapping: 编辑替换值
           modal:
+            records: 管理记录
+            options: 管理选项
+            subtitle: 替换
             no_result:
               title: 抱歉，此属性中没有值
             empty_result:

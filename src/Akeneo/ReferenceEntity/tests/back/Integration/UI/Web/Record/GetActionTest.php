@@ -43,7 +43,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {

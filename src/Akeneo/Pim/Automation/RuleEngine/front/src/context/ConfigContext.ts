@@ -1,5 +1,9 @@
 import {createContext} from 'react';
 import {InputValueProps} from '../pages/EditRules/components/actions/attribute';
+import {
+  CellInputsMapping,
+  CellMatchersMapping,
+} from '@akeneo-pim-ge/table_attribute/src/product';
 
 export type AttributeValueConfig = {
   [attributeType: string]: {
@@ -9,10 +13,14 @@ export type AttributeValueConfig = {
 
 export type ConfigContextValue = {
   attributeValueConfig: AttributeValueConfig;
+  cellInputsMapping: CellInputsMapping;
+  cellMatchersMapping: CellMatchersMapping;
 };
 
 const defaultConfigContextValue = {
   attributeValueConfig: {},
+  cellInputsMapping: {},
+  cellMatchersMapping: {},
 };
 
 const ConfigContext = createContext<ConfigContextValue>(

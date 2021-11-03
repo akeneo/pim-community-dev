@@ -15,6 +15,8 @@ namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
+use PHPUnit\Framework\Error;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 final class FileStorageChecker
@@ -26,10 +28,13 @@ final class FileStorageChecker
     ];
 
     private FileSystemProvider $filesystemProvider;
+    private LoggerInterface $logger;
 
-    public function __construct(FilesystemProvider $filesystemProvider)
+
+    public function __construct(FilesystemProvider $filesystemProvider, LoggerInterface $logger)
     {
         $this->filesystemProvider = $filesystemProvider;
+        $this->logger = $logger;
     }
 
     public function status(): ServiceStatus
@@ -61,7 +66,8 @@ final class FileStorageChecker
             $filesystem->delete($filename);
 
             return 'monitoring' === $content;
-        } catch (FilesystemException $e) {
+        } catch (\Throwable $e) {
+            $this->logger->error("FileStore ServiceCheck error: {$prefix}", ['exception' => $e]);
             return false;
         }
     }

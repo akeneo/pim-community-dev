@@ -109,6 +109,10 @@ csv_user_import;All;IT support
 xlsx_user_import;All;IT support
 csv_user_role_import;All;IT support
 xlsx_user_role_import;All;IT support
+csv_table_attribute_options_export;All;IT support,Manager
+xlsx_table_attribute_options_export;All;IT support,Manager
+csv_table_attribute_options_import;All;IT support,Manager
+xlsx_table_attribute_options_import;All;IT support,Manager
 project_calculation;All;IT support,Manager
 refresh_project_completeness_calculation;All;IT support,Manager
 compute_completeness_of_products_family;All;IT support,Manager

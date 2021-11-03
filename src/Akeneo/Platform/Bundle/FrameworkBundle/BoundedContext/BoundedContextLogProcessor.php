@@ -32,7 +32,7 @@ class BoundedContextLogProcessor
     public function __invoke(array $record): array
     {
         try {
-            $request = $this->requestStack->getMasterRequest();
+            $request = $this->requestStack->getMainRequest();
 
             if (null === $request) {
                 return $record;

@@ -143,3 +143,11 @@ liip_imagine:
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:
                     color: "#ffffff"
+
+# see https://github.com/liip/LiipImagineBundle/pull/1379
+services:
+    liip_imagine.mime_type_guesser:
+        alias: "mime_types"
+
+    liip_imagine.extension_guesser:
+        alias: "mime_types"

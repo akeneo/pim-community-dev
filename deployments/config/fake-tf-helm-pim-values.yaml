@@ -127,3 +127,5 @@ connectors:
     pubsub:
       topic_name: "fakeValue"
       subscription_name: "fakeValue"
+    akeneo_connect_bot_password: "fakeValue"
+    akeneo_connect_bot_client_secret: "fakeValue"

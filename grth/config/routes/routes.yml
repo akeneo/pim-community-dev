@@ -1,5 +1,8 @@
 akeneo_monitoring:
     resource: "@AkeneoMonitoringBundle/Resources/config/routing.yml"
 
+pimee_table_attribute:
+    resource: "@AkeneoPimTableAttributeBundle/Resources/config/routing.yml"
+
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

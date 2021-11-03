@@ -75,7 +75,7 @@ class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator ext
 
         if ($isLinked) {
             $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier->normalize())
                 ->addViolation();
         }
     }

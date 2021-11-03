@@ -51,27 +51,45 @@ final class HandlePriceCollectionValueTest extends AttributeTestCase
         return [
             'it selects the currency codes' => [
                 'operations' => [],
-                'selection' => new PriceCollectionCurrencyCodeSelection(','),
+                'selection' => new PriceCollectionCurrencyCodeSelection(',', []),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
                 'expected' => [self::TARGET_NAME => 'EUR,USD'],
             ],
+            'it selects only the given currency codes' => [
+                'operations' => [],
+                'selection' => new PriceCollectionCurrencyCodeSelection(',', ['EUR']),
+                'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
+                'expected' => [self::TARGET_NAME => 'EUR'],
+            ],
             'it selects the currency labels' => [
                 'operations' => [],
-                'selection' => new PriceCollectionCurrencyLabelSelection(',', 'fr_FR'),
+                'selection' => new PriceCollectionCurrencyLabelSelection(',', 'fr_FR', []),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
                 'expected' => [self::TARGET_NAME => 'euro,dollar des États-Unis'],
             ],
+            'it selects only the currency labels for the currency selection' => [
+                'operations' => [],
+                'selection' => new PriceCollectionCurrencyLabelSelection(',', 'fr_FR', ['EUR']),
+                'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
+                'expected' => [self::TARGET_NAME => 'euro'],
+            ],
             'it selects the amount' => [
                 'operations' => [],
-                'selection' => new PriceCollectionAmountSelection(','),
+                'selection' => new PriceCollectionAmountSelection(',', []),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
                 'expected' => [self::TARGET_NAME => '199,100'],
+            ],
+            'it selects only the amount for the currency selection' => [
+                'operations' => [],
+                'selection' => new PriceCollectionAmountSelection(',', ['USD']),
+                'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
+                'expected' => [self::TARGET_NAME => '100'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
                     new DefaultValueOperation('n/a'),
                 ],
-                'selection' => new PriceCollectionCurrencyCodeSelection(','),
+                'selection' => new PriceCollectionCurrencyCodeSelection(',', []),
                 'value' => new NullValue(),
                 'expected' => [self::TARGET_NAME => 'n/a'],
             ],
@@ -79,7 +97,7 @@ final class HandlePriceCollectionValueTest extends AttributeTestCase
                 'operations' => [
                     new DefaultValueOperation('n/a'),
                 ],
-                'selection' => new PriceCollectionCurrencyCodeSelection(','),
+                'selection' => new PriceCollectionCurrencyCodeSelection(',', []),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
                 'expected' => [self::TARGET_NAME => 'EUR,USD'],
             ],

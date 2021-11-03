@@ -161,3 +161,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Presenter\AssetCollectionValuePresenter'
         tags:
             - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.product_value.table:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TablePresenter
+        tags:
+            - { name: pimee_workflow.presenter }

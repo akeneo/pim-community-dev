@@ -1,3 +1,6 @@
+parameters:
+    env(ALLOWED_NETWORK_ASSETS_WHITELIST): ''
+
 services:
     akeneo_assetmanager.infrastructure.validation.asset.asset_code_should_be_unique:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUniqueValidator
@@ -219,6 +222,9 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommandValidator
         arguments:
             - '%allowed_media_link_protocols%'
+            - '@Akeneo\AssetManager\Infrastructure\Network\DnsLookup'
+            - '@Akeneo\AssetManager\Infrastructure\Network\IpMatcher'
+            - '%env(string:ALLOWED_NETWORK_ASSETS_WHITELIST)%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.edit_media_link_value_command' }
 

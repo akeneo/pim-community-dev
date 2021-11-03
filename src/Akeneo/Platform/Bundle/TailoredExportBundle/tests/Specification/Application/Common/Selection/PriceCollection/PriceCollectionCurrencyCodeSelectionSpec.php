@@ -20,12 +20,18 @@ class PriceCollectionCurrencyCodeSelectionSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith(
-            '-'
+            '-',
+            ['EUR', 'USD']
         );
     }
 
     public function it_returns_the_separator()
     {
         $this->getSeparator()->shouldReturn('-');
+    }
+
+    public function it_returns_the_currencies()
+    {
+        $this->getCurrencies()->shouldReturn(['EUR', 'USD']);
     }
 }

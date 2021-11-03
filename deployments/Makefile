@@ -198,6 +198,9 @@ ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr-ge)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
@@ -247,9 +250,14 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_logout_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_api_client_base_uri "https://connect-sandbox.ip.akeneo.com/"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_portal_api_client_base_uri "https://portal-dev4-sandbox.ip.akeneo.com/"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.google_analytics_account_id "UA-113156045-4"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.hotjar_id "2672696"
 endif
+	@echo "cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml"
 	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
+	@echo "cat $(INSTANCE_DIR)/values.yaml"
+	cat $(INSTANCE_DIR)/values.yaml
 
 .PHONY: prepare-chart-default-values
 prepare-chart-default-values:
@@ -347,9 +355,16 @@ ifeq ($(ACTIVATE_MONITORING),true)
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
 endif
 
-.PHONY: commit-instance
-commit-instance:
+$(CLOUD_CUSTOMERS_DEV_DIR):
+	mkdir -p $(CLOUD_CUSTOMERS_DEV_DIR)
 	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+
+.PHONY: pull-cloud-customer-dev
+pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --ff-only
+
+.PHONY: commit-instance
+commit-instance: pull-cloud-customer-dev
 	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
@@ -358,21 +373,27 @@ commit-instance:
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Created instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
-uncommit-instance:
-	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)
-	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
 ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
+ifeq ($(TYPE),srnt)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform/monitoring"
+endif
+endif
 else
 ifeq ($(TYPE),srnt)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform"
+	PIM_VERSION=$(shell yq r "/root/cloud-customers-dev/saas/projects/akecld-saas-dev/europe-west3-a/releases/$(PFID)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$(IMAGE_TAG)//deployments/terraform/monitoring"
+	PIM_VERSION=$(shell yq r "${INSTANCE_DIR}/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
 endif
 endif
 endif
@@ -381,7 +402,7 @@ endif
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Deleted instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance

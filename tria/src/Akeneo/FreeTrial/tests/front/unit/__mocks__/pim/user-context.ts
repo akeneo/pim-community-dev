@@ -1,2 +1,4 @@
-const UserContext = jest.fn();
+const UserContext = {
+  get: jest.fn(),
+};
 module.exports = UserContext;

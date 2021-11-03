@@ -8,10 +8,11 @@ services:
             - '@pim_catalog.command_launcher'
 
     akeneo_referenceentity.command.installer.assets_installer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller
+        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
         arguments:
             - '@filesystem'
-            - '%kernel.project_dir%'
+            - '%kernel.project_dir%/src/Akeneo/ReferenceEntity/front'
+            - '%kernel.project_dir%/public/bundles/akeneoreferenceentity'
 
     akeneo_referenceentity.event_subscriber.installer:
         class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\InstallerCommand

@@ -16,6 +16,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\Performance;
 use Akeneo\UserManagement\Component\Model\User;
 use Blackfire\Bridge\PhpUnit\TestCaseTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -35,13 +36,14 @@ abstract class AbstractApiPerformance extends WebTestCase
             ->createSystemUser();
     }
 
-    protected function createAuthenticatedClient(string $connectionFlowType = null)
+    protected function createAuthenticatedClient(string $connectionFlowType = null): KernelBrowser
     {
         [$clientId, $secret, $username, $password] = $this->createApiConnection($connectionFlowType);
         $this->promoteUserToAdmin($username);
 
         [$accessToken] = $this->authenticate($clientId, $secret, $username, $password);
 
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $accessToken);
         $aclManager = $this->get('oro_security.acl.manager');
@@ -95,6 +97,7 @@ abstract class AbstractApiPerformance extends WebTestCase
 
     private function authenticate(string $clientId, string $secret, string $username, string $password): array
     {
+        static::ensureKernelShutdown();
         $webClient = static::createClient();
         $webClient->request(
             'POST',
@@ -120,7 +123,7 @@ abstract class AbstractApiPerformance extends WebTestCase
         ];
     }
 
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
         return static::$kernel->getContainer()->get($service);
     }

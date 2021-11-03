@@ -72,7 +72,7 @@ class RunCommand extends Command
      *
      * @throws \InvalidArgumentException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
         $ruleCodes = null === $code ? [] : explode(',', $code);
@@ -105,7 +105,7 @@ class RunCommand extends Command
 
         if ($verbose) {
             $progressBar = new ProgressBar($output);
-        
+
             $this->eventDispatcher->addListener(
                 RuleEvents::POST_EXECUTE,
                 function () use ($progressBar) {
@@ -134,6 +134,7 @@ class RunCommand extends Command
             'rules run stats',
             ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
         );
+
         return $result;
     }
 }

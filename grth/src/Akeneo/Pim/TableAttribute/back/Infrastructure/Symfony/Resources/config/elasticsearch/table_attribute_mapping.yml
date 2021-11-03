@@ -1,0 +1,58 @@
+mappings:
+  dynamic_templates:
+    -
+      table_values:
+        path_match: 'table_values.*'
+        path_unmatch: 'table_values.*.*'
+        match_mapping_type: 'object'
+        mapping:
+          type: 'nested'
+    -
+      table_values_locale:
+        path_match: 'table_values.*.locale'
+        mapping:
+          type: 'keyword'
+    -
+      table_values_channel:
+        path_match: 'table_values.*.channel'
+        mapping:
+          type: 'keyword'
+    -
+      table_values_row:
+        path_match: 'table_values.*.row'
+        mapping:
+          type: 'keyword'
+          normalizer: 'identifier_normalizer'
+    -
+      table_values_column:
+        path_match: 'table_values.*.column'
+        mapping:
+          type: 'keyword'
+          normalizer: 'identifier_normalizer'
+    -
+      table_values_is_column_complete:
+        path_match: 'table_values.*.is_column_complete'
+        mapping:
+          type: 'boolean'
+    -
+      table_values_number:
+        path_match: 'table_values.*.value-number'
+        mapping:
+          type: 'double'
+    -
+      table_values_text:
+        path_match: 'table_values.*.value-text'
+        mapping:
+          type: 'keyword'
+          normalizer: 'text_normalizer'
+    -
+      table_values_boolean:
+        path_match: 'table_values.*.value-boolean'
+        mapping:
+          type: 'boolean'
+    -
+      table_values_select:
+        path_match: 'table_values.*.value-select'
+        mapping:
+          type: 'keyword'
+          normalizer: 'attribute_option_normalizer'

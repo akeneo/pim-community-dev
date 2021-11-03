@@ -92,6 +92,7 @@ pim_asset_manager:
         not_main_media_attribute: 'Das erwartete Attribut als Hauptmedium ist "%main_media_attribute%", "%attribute%" gegeben.'
       media_link:
         protocol_not_allowed: 'Dieses Feld sollte mit einem gültigen Protokoll beginnen. Erlaubte Protokolle sind: %allowed_protocols%.'
+        domain_not_allowed: 'Diese URL ist nicht erlaubt.'
   attribute:
     validation:
       options:

@@ -6,3 +6,11 @@ suites:
     spec_path: tests/back/Platform
     src_path: src/Akeneo/Platform
     spec_prefix: Specification
+
+  ## Table attribute context
+  TableAttribute:
+    namespace: Akeneo\Pim\TableAttribute
+    psr4_prefix: Akeneo\Pim\TableAttribute
+    spec_path: src/Akeneo/Pim/TableAttribute/tests/back
+    src_path: src/Akeneo/Pim/TableAttribute/back
+    spec_prefix: Specification

@@ -92,13 +92,16 @@ class ColumnsValidator extends ConstraintValidator
         ]));
 
         foreach ($violations as $violation) {
-            $this->context->buildViolation(
+            $builder = $this->context->buildViolation(
                 $violation->getMessage(),
                 $violation->getParameters()
             )
                 ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
-                ->setInvalidValue($violation->getInvalidValue())
-                ->addViolation();
+                ->setInvalidValue($violation->getInvalidValue());
+            if ($violation->getPlural()) {
+                $builder->setPlural((int)$violation->getPlural());
+            }
+            $builder->addViolation();
         }
     }
 }

@@ -33,6 +33,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
   AttributeType.TEXTAREA,
   AttributeType.METRIC,
+  AttributeType.TABLE,
 ];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: AttributeType[] = [

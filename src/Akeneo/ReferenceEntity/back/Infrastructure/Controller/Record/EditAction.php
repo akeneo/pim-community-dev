@@ -17,13 +17,10 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditReco
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -93,11 +90,7 @@ class EditAction
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            ($this->editRecordHandler)($command);
-        } catch (FileTransferException | FileRemovalException $exception) {
-            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
-        }
+        ($this->editRecordHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

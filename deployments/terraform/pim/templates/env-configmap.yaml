@@ -62,6 +62,13 @@ data:
 
   PUBSUB_TOPIC_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.topic_name }}
   PUBSUB_SUBSCRIPTION_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.subscription_name }}
+  {{- if .Values.connectors.bigcommerce.challengePapoActivation }}
+  CONNECTOR_BIGCOMMERCE_FEATURE_FLAG_MUST_CHECK_PAPO_ACTIVATION: "1"
+  {{- else }}
+  CONNECTOR_BIGCOMMERCE_FEATURE_FLAG_MUST_CHECK_PAPO_ACTIVATION: "0"
+  {{- end }}
+  CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_PASSWORD: {{ required "Environment variable CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_PASSWORD is missing" .Values.connectors.bigcommerce.akeneo_connect_bot_password | quote }}
+  CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_CLIENT_SECRET: {{ required "Environment variable CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_CLIENT_SECRET is missing" .Values.connectors.bigcommerce.akeneo_connect_bot_client_secret | quote }}
 
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
@@ -84,6 +91,8 @@ data:
   AKENEO_CONNECT_API_CLIENT_USERNAME: {{ .Values.free_trial.akeneo_connect_api_client_username | quote }}
   AKENEO_CONNECT_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_connect_api_client_base_uri | quote }}
   AKENEO_PORTAL_API_CLIENT_BASE_URI: {{ .Values.free_trial.akeneo_portal_api_client_base_uri | quote }}
+  HOTJAR_ID: {{ .Values.free_trial.hotjar_id | quote }}
+  GOOGLE_ANALYTICS_ID: {{ .Values.free_trial.google_analytics_account_id | quote }}
   {{- else }}
   FLAG_FREE_TRIAL_ENABLED: "0"
   {{- end }}
