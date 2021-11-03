@@ -9,3 +9,12 @@ services:
         arguments:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
         tags: ['akeneo.pim.cached_query']
+
+    Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob:
+        arguments:
+            - '@database_connection'
+            -
+                - '%pim_connector.job_name.xlsx_product_export%'
+                - '%pim_connector.job_name.xlsx_product_model_export%'
+                - '%pim_connector.job_name.csv_product_export%'
+                - '%pim_connector.job_name.csv_product_model_export%'
