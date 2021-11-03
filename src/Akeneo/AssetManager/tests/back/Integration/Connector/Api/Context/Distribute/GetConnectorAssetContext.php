@@ -198,11 +198,43 @@ class GetConnectorAssetContext implements Context
     }
 
     /**
+     * @When the connector requests the Kartell asset for the Brand asset family without permission
+     */
+    public function theConnectorRequestsTheKartellAssetForTheBrandAssetFamilyWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_list', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->existentAsset = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . "forbidden_kartell_asset.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for requesting the Kartell asset for the Brand asset family without permission
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheKartellAssetForTheBrandAssetFamilyWithoutPermission()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->existentAsset,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_asset.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_list"'),
+            'Expected warning not found in the logs.'
+        );
+    }
+
+    /**
      * @Given /^the ([\S]+) asset family with some assets$/
      */
     public function theAssetFamilyWithSomeAssets(string $assetFamilyIdentifier): void
     {
-        $this->theConnectorHasFullPermission();
         $assetFamilyIdentifier = strtolower($assetFamilyIdentifier);
         for ($i = 0; $i < 10 ; $i++) {
             $asset = new ConnectorAsset(

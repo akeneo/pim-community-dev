@@ -122,7 +122,6 @@ class DeleteAssetContext implements Context
      */
     public function anAssetOfThePackshotAssetFamilyExistingInThePIM()
     {
-        $this->theConnectorHasFullPermission();
         $this->requestContract = 'successful_iphone_asset_delete.json';
 
         $this->loadPackshotAssetFamily();
@@ -260,14 +259,5 @@ class DeleteAssetContext implements Context
         );
 
         $this->assetRepository->create($asset);
-    }
-
-    private function theConnectorHasFullPermission(): void
-    {
-        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 }

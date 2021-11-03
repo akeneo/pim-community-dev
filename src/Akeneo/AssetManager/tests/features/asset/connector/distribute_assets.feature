@@ -95,3 +95,9 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand asset family with some assets
     When the connector requests assets that were updated since a date that does not have the right format
     Then the PIM notifies the connector about an error indicating that the date format is not the expected one
+
+  @integration-back
+  Scenario: Notify an error when getting an asset of an asset family without permission
+    Given the Kartell asset for the Brand asset family
+    When the connector requests the Kartell asset for the Brand asset family without permission
+    Then the PIM notifies the connector about missing permissions for requesting the Kartell asset for the Brand asset family without permission
