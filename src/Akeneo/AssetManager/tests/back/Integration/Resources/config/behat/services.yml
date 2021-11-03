@@ -57,6 +57,8 @@ services:
             - '@akeneoasset_manager.tests.helper.web_client_helper'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
         tags:
         - { name: fob.context_service }
 
