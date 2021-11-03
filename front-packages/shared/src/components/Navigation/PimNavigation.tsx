@@ -1,10 +1,25 @@
-import React, {FC, useCallback, useMemo} from 'react';
-import styled from 'styled-components';
+import React, {FC, useMemo} from 'react';
+import styled, {css} from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 import {useAnalytics} from '../../hooks';
+
+const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom', freeTrialEnabled: boolean}>`
+  ${({align}) =>
+    align === 'bottom' && css`
+      position: absolute;
+      bottom: 0;
+    `
+  }
+
+  ${({disabled, freeTrialEnabled}) =>
+    disabled && freeTrialEnabled && css`
+      cursor: pointer;
+    `
+  }
+`;
 
 type NavigationEntry = {
   code: string;
@@ -23,6 +38,7 @@ type Props = {
   activeSubEntryCode: string | null;
   freeTrialEnabled?: boolean;
 };
+
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
@@ -54,29 +70,6 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     });
   }, [activeNavigationEntry, activeSubEntryCode]);
 
-  const getMainNavigationItemStyles = useCallback(
-    (entry: NavigationEntry) => {
-      let styles: React.CSSProperties = {};
-      if (entry.align === 'bottom') {
-        styles = {
-          ...styles,
-          position: 'absolute',
-          bottom: '0',
-        };
-      }
-
-      if (entry.disabled && freeTrialEnabled) {
-        styles = {
-          ...styles,
-          cursor: 'pointer',
-        };
-      }
-
-      return styles;
-    },
-    [freeTrialEnabled]
-  );
-
   return (
     <NavContainer aria-label="Main navigation">
       <MainNavContainer>
@@ -85,7 +78,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
         </LogoContainer>
         <MenuContainer>
           {entries.map(entry => (
-            <MainNavigationItem
+            <StyledMainNavigationItem
               id={entry.code}
               key={entry.code}
               active={entry.code === activeEntryCode}
@@ -96,7 +89,8 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               role="menuitem"
               data-testid="pim-main-menu-item"
               className={entry.code === activeEntryCode ? 'active' : undefined}
-              style={getMainNavigationItemStyles(entry)}
+              align={entry.align}
+              freeTrialEnabled={freeTrialEnabled}
             >
               {translate(entry.title)}
               {entry.disabled && freeTrialEnabled && (
@@ -106,7 +100,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
                   </StyledTag>
                 </LockIconContainer>
               )}
-            </MainNavigationItem>
+            </StyledMainNavigationItem>
           ))}
         </MenuContainer>
         <HelpContainer>
