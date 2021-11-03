@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
@@ -19,29 +19,23 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class PriceCollectionAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var EntityWithValuesBuilderInterface */
-    protected $entityWithValuesBuilder;
+    protected FindActivatedCurrenciesInterface $findActivatedCurrencies;
+    protected EntityWithValuesBuilderInterface $entityWithValuesBuilder;
 
     /**
-     * @param AttributeValidatorHelper         $attrValidatorHelper
-     * @param CurrencyRepositoryInterface      $currencyRepository
-     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
-     * @param string[]                         $supportedTypes
+     * @param string[] $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyRepositoryInterface $currencyRepository,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->currencyRepository      = $currencyRepository;
+        $this->findActivatedCurrencies = $findActivatedCurrencies;
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
-        $this->supportedTypes          = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -87,7 +81,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         $data,
         $locale,
         $scope
-    ) {
+    ): void {
         $productValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         $currencyToRemove = [];
@@ -117,7 +111,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -154,7 +148,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
+            if (!in_array($price['currency'], $this->findActivatedCurrencies->forAllChannels())) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'currency code',

@@ -8,7 +8,9 @@ use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
 use Twig\Node\Node;
+use Twig\TwigFunction;
 
 class ViewElementExtensionSpec extends ObjectBehavior
 {
@@ -47,7 +49,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldBeAnInstanceOf('\Twig_Extension');
+        $this->shouldBeAnInstanceOf(AbstractExtension::class);
     }
 
     function it_registers_view_element_functions()
@@ -189,7 +191,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
                 $function = array_filter(
                     $subject,
                     function ($function) use ($name, $needsContext, $safe) {
-                        return $function instanceof \Twig_SimpleFunction &&
+                        return $function instanceof TwigFunction &&
                             $function->getName() === $name &&
                             $function->needsContext() === $needsContext &&
                             $function->getSafe(new Node()) === $safe;

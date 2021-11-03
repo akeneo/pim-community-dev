@@ -9,8 +9,6 @@ framework:
     validation:
         enable_annotations: true
         enabled: true
-    templating:
-        engines: 'twig'
     default_locale: '%env(APP_DEFAULT_LOCALE)%'
     session:
         name: BAPID

@@ -26,6 +26,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -82,6 +83,7 @@ class ProductModelController
     private LoggerInterface $logger;
     private LoggerInterface $apiProductAclLogger;
     private SecurityFacade $security;
+    private RemoverInterface $productModelRemover;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -109,7 +111,8 @@ class ProductModelController
         LoggerInterface $logger,
         array $apiConfiguration,
         LoggerInterface $apiProductAclLogger,
-        SecurityFacade $security
+        SecurityFacade $security,
+        RemoverInterface $productModelRemover
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -137,6 +140,7 @@ class ProductModelController
         $this->apiConfiguration = $apiConfiguration;
         $this->apiProductAclLogger = $apiProductAclLogger;
         $this->security = $security;
+        $this->productModelRemover = $productModelRemover;
     }
 
     /**
@@ -234,6 +238,24 @@ class ProductModelController
         $response = $this->getResponse($productModel, $status);
 
         return $response;
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function deleteAction(string $code): JsonResponse
+    {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_remove');
+
+        $productModel = $this->productModelRepository->findOneByIdentifier($code);
+
+        if (null === $productModel) {
+            throw new NotFoundHttpException(\sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
+        }
+
+        $this->productModelRemover->remove($productModel);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -415,7 +437,7 @@ class ProductModelController
     }
 
     /**
-     * Updates product with the provided request data
+     * Updates product model with the provided request data
      *
      * @param ProductModelInterface $productModel
      * @param array                 $data
@@ -522,10 +544,6 @@ class ProductModelController
         }
     }
 
-    /**
-     * We don't have the guarantee that the recently introduced ACLs are correctly configured on existing roles.
-     * To avoid unwanted access denied errors, we will log instead, to monitor on production environments.
-     */
     private function denyAccessUnlessAclIsGranted(string $acl): void
     {
         if (!$this->security->isGranted($acl)) {
@@ -538,6 +556,22 @@ class ProductModelController
                 implode(',', $user->getRoles()),
                 $acl
             ));
+
+            throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
+        }
+    }
+
+    private function deniedAccessMessage(string $acl): string
+    {
+        switch ($acl) {
+            case 'pim_api_product_list':
+                return 'Access forbidden. You are not allowed to list products.';
+            case 'pim_api_product_edit':
+                return 'Access forbidden. You are not allowed to create or update products.';
+            case 'pim_api_product_remove':
+                return 'Access forbidden. You are not allowed to delete products.';
+            default:
+                return 'Access forbidden.';
         }
     }
 }

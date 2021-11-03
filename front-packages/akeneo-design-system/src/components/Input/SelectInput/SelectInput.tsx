@@ -6,6 +6,7 @@ import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {usePagination} from '../../../hooks/usePagination';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -35,14 +36,14 @@ const ActionContainer = styled.div`
   gap: 10px;
 `;
 
-const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+const SelectedOptionContainer = styled.div<{readOnly: boolean; clearable: boolean} & AkeneoThemedProps>`
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 ${({clearable}) => (clearable ? 68 : 38)}px 0 16px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
@@ -97,8 +98,12 @@ const OptionCollection = styled.div`
 `;
 
 const Option = styled.span<{value: string}>`
-  display: flex;
-  align-items: center;
+  display: block;
+  line-height: 34px;
+  min-height: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 type SelectInputProps = Override<
@@ -156,6 +161,16 @@ type SelectInputProps = Override<
      * Force the vertical position of the overlay.
      */
     verticalPosition?: VerticalPosition;
+
+    /**
+     * Handler called when the next page is almost reached.
+     */
+    onNextPage?: () => void;
+
+    /**
+     * Handler called when the search value changed
+     */
+    onSearchChange?: (searchValue: string) => void;
   }
 >;
 
@@ -175,12 +190,15 @@ const SelectInput = ({
   openLabel,
   readOnly = false,
   verticalPosition,
+  onNextPage,
+  onSearchChange,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const firstOptionRef = useRef<HTMLDivElement>(null);
   const lastOptionRef = useRef<HTMLDivElement>(null);
 
@@ -224,6 +242,7 @@ const SelectInput = ({
   };
 
   const handleSearch = (value: string) => {
+    onSearchChange?.(value);
     setSearchValue(value);
   };
 
@@ -296,11 +315,15 @@ const SelectInput = ({
     [onChange]
   );
 
+  usePagination(containerRef, lastOptionRef, onNextPage, dropdownIsOpen);
+
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
         {null !== value && '' === searchValue && (
-          <SelectedOptionContainer readOnly={readOnly}>{currentValueElement}</SelectedOptionContainer>
+          <SelectedOptionContainer readOnly={readOnly} clearable={clearable}>
+            {currentValueElement}
+          </SelectedOptionContainer>
         )}
         <TextInput
           id={id}
@@ -342,7 +365,7 @@ const SelectInput = ({
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
         <Overlay parentRef={inputRef} verticalPosition={verticalPosition} onClose={handleBlur}>
-          <OptionCollection>
+          <OptionCollection ref={containerRef}>
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (

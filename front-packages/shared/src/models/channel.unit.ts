@@ -5,6 +5,7 @@ import {
   getLocalesFromChannel,
   getAllLocalesFromChannels,
   getLocaleFromChannel,
+  getCurrencyCodesFromChannelReference,
 } from './channel';
 import {denormalizeLocale} from './locale';
 
@@ -256,5 +257,51 @@ describe('akeneo > shared > model --- channel', () => {
         code: 'fr_FR',
       },
     ]);
+  });
+
+  test('I can extract currency codes from all channels', () => {
+    expect(getCurrencyCodesFromChannelReference([], null)).toEqual([]);
+    expect(
+      getCurrencyCodesFromChannelReference(
+        [
+          {
+            ...baseChannel,
+            code: 'ecommerce',
+            locales: [],
+            currencies: ['USD', 'EUR'],
+          },
+          {
+            ...baseChannel,
+            code: 'mobile',
+            locales: [],
+            currencies: ['DKK', 'EUR'],
+          },
+        ],
+        null
+      )
+    ).toEqual(['USD', 'EUR', 'DKK']);
+  });
+
+  test('I can extract currency codes from a channel', () => {
+    expect(getCurrencyCodesFromChannelReference([], 'ecommerce')).toEqual([]);
+    expect(
+      getCurrencyCodesFromChannelReference(
+        [
+          {
+            ...baseChannel,
+            code: 'ecommerce',
+            locales: [],
+            currencies: ['USD', 'EUR'],
+          },
+          {
+            ...baseChannel,
+            code: 'mobile',
+            locales: [],
+            currencies: ['DKK', 'EUR'],
+          },
+        ],
+        'ecommerce'
+      )
+    ).toEqual(['USD', 'EUR']);
   });
 });

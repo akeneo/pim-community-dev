@@ -75,10 +75,10 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $this->collectTechnicalError($event);
     }
 
-    public function it_flushes_collected_errors($collectApiError, TerminateEvent $terminateEvent): void
+    public function it_flushes_collected_errors($collectApiError): void
     {
         $collectApiError->flush()->shouldBeCalled();
 
-        $this->flushApiErrors($terminateEvent);
+        $this->flushApiErrors();
     }
 }

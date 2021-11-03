@@ -22,8 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SaveMeasurementFamilyActionEndToEnd extends WebTestCase
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private ?MeasurementFamilyRepositoryInterface $measurementFamilyRepository = null;
 
     public function setUp(): void
     {
@@ -194,8 +193,6 @@ class SaveMeasurementFamilyActionEndToEnd extends WebTestCase
             json_encode($requestBody)
         );
 
-        $response = $this->client->getResponse();
-
-        return $response;
+        return $this->client->getResponse();
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
 use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub;
+use Akeneo\Test\Acceptance\EventDispatcher\EventDispatcherMock;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler;
@@ -16,10 +17,12 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DeleteMeasurementFamilyTest extends AcceptanceTestCase
 {
+    public EventDispatcherMock $eventDispatcherMock;
     private ValidatorInterface $validator;
     private InMemoryMeasurementFamilyRepository $measurementFamilyRepository;
     private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler;
@@ -118,16 +121,14 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
                 MeasurementFamilyCode::fromString($measurementFamilyCode),
                 LabelCollection::fromArray([]),
                 UnitCode::fromString($standardUnitCode),
-                array_map(function (string $unitCode) {
-                    return Unit::create(
-                        UnitCode::fromString($unitCode),
-                        LabelCollection::fromArray([]),
-                        [
-                            Operation::create("mul", "1"),
-                        ],
-                        "km",
-                    );
-                }, $unitCodes)
+                array_map(static fn (string $unitCode) => Unit::create(
+                    UnitCode::fromString($unitCode),
+                    LabelCollection::fromArray([]),
+                    [
+                        Operation::create("mul", "1"),
+                    ],
+                    "km",
+                ), $unitCodes)
             )
         );
     }
@@ -137,7 +138,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
      *
      */
     private function assertCannotRemoveTheMeasurementFamily(
-        \Symfony\Component\Validator\ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations
     ): void {
         $this->assertEquals(1, $violations->count());
         $violation = $violations->get(0);

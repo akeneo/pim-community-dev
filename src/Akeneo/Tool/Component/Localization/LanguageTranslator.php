@@ -3,23 +3,23 @@
 namespace Akeneo\Tool\Component\Localization;
 
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MissingResourceException;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 
 class LanguageTranslator implements LanguageTranslatorInterface
 {
     public function translate(string $localeCode, string $locale, string $fallback): string
     {
         $displayLocale = \Locale::getPrimaryLanguage($locale);
-        list($language, $country) = explode('_', $localeCode);
+        [$language, $country] = explode('_', $localeCode);
 
-        $translatedLanguage = Intl::getLanguageBundle()->getLanguageName(
-            $language,
-            $country,
-            $displayLocale
-        );
-
-        if (null === $translatedLanguage) {
+        try {
+            $translatedLanguage = Languages::getName(
+                $language,
+                $displayLocale
+            );
+        } catch (MissingResourceException $e) {
             return $fallback;
         }
 

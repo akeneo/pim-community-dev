@@ -5,6 +5,6 @@ monolog:
           channels: ['!event', '!doctrine', '!event_api', '!business_event']
 
 services:
-    monolog.logger.pim_api_product_acl.test:
-        decorates: monolog.logger.pim_api_product_acl
+    monolog.logger.pim_api_acl.test:
+        decorates: monolog.logger.pim_api_acl
         class: Psr\Log\Test\TestLogger

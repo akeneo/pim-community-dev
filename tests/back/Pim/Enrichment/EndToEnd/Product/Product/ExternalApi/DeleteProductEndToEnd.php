@@ -65,7 +65,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $client->request('DELETE', 'api/rest/v1/products/foo');
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.pim_api_product_acl');
+        $logger = self::$container->get('monolog.logger.pim_api_acl');
         assert($logger instanceof TestLogger);
 
         $this->assertTrue(
@@ -73,6 +73,6 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
             'Expected warning not found in the logs.'
         );
 
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 }

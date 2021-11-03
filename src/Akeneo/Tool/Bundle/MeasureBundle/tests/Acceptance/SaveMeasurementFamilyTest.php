@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Acceptance;
 
 use Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub;
+use Akeneo\Test\Acceptance\EventDispatcher\EventDispatcherMock;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveMeasurementFamilyTest extends AcceptanceTestCase
 {
+    public EventDispatcherMock $eventDispatcherMock;
     private ValidatorInterface $validator;
     private InMemoryMeasurementFamilyRepository $measurementFamilyRepository;
     private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler;
@@ -495,14 +497,12 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
         $saveFamilyCommand->code = 'WEIGHT';
         $saveFamilyCommand->labels = [];
         $saveFamilyCommand->standardUnitCode = 0 === $numberOfUnits ? '' : 'unit_0';
-        $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(function ($i) {
-            return [
-                'code' => sprintf('unit_%d', $i),
-                'labels' => [],
-                'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
-                'symbol' => 'Kg',
-            ];
-        }, range(0, $numberOfUnits - 1));
+        $saveFamilyCommand->units = 0 === $numberOfUnits ? [] : array_map(static fn (int $i) => [
+            'code' => sprintf('unit_%d', $i),
+            'labels' => [],
+            'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+            'symbol' => 'Kg',
+        ], range(0, $numberOfUnits - 1));
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
@@ -709,16 +709,14 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
                 MeasurementFamilyCode::fromString($measurementFamilyCode),
                 LabelCollection::fromArray([]),
                 UnitCode::fromString($standardUnitCode),
-                array_map(function (string $unitCode) {
-                    return Unit::create(
-                        UnitCode::fromString($unitCode),
-                        LabelCollection::fromArray([]),
-                        [
-                            Operation::create("mul", "1"),
-                        ],
-                        "km",
-                    );
-                }, $unitCodes)
+                array_map(static fn (string $unitCode) => Unit::create(
+                    UnitCode::fromString($unitCode),
+                    LabelCollection::fromArray([]),
+                    [
+                        Operation::create("mul", "1"),
+                    ],
+                    "km",
+                ), $unitCodes)
             )
         );
     }

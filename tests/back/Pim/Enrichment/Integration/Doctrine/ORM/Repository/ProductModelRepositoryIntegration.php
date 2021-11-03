@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use PHPUnit\Framework\Assert;
 
 class ProductModelRepositoryIntegration extends TestCase
 {
@@ -28,6 +29,60 @@ class ProductModelRepositoryIntegration extends TestCase
 
         $productModelChild = $this->getProductModelRepository()->findFirstCreatedVariantProductModel($productModel);
         $this->assertNull($productModelChild);
+    }
+
+    /** @test */
+    public function findProductModelsForFamilyVariantWithSearchAndPagination(): void
+    {
+        $productModel = $this->createProductModel();
+        $this->createVariantProductModels($productModel);
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByCode('familyVariantA2');
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            3,
+            1
+        );
+        Assert::assertCount(3, $productModels);
+        $productModelCodes = array_map(
+            fn (ProductModelInterface $productModel): string => $productModel->getCode(),
+            $productModels
+        );
+        Assert::assertEqualsCanonicalizing(
+            ['a_product_model', 'a_variant_product_model', 'another_variant_product_model'],
+            $productModelCodes
+        );
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            'another',
+            3,
+            1
+        );
+        Assert::assertCount(1, $productModels);
+        $productModelCodes = array_map(
+            fn (ProductModelInterface $productModel): string => $productModel->getCode(),
+            $productModels
+        );
+        Assert::assertEqualsCanonicalizing(['another_variant_product_model'], $productModelCodes);
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            1,
+            1
+        );
+        Assert::assertCount(1, $productModels);
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            1,
+            5
+        );
+        Assert::assertCount(0, $productModels);
     }
 
     public function getProductModelRepository(): ProductModelRepositoryInterface

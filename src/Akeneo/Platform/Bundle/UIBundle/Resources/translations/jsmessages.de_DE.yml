@@ -159,6 +159,7 @@ pim_common:
   before: Vor
   by: von
   cancel: Abbrechen
+  characters_left: ']-Inf, 1]{{ count }} Zeichen übrig|]1, Inf[{{ count }} Zeichen übrig'
   clear_value: Wert leeren
   close: Schließen
   code: Code
@@ -200,6 +201,7 @@ pim_common:
   permissions: Berechtigungen
   previous: Zurück
   properties: Eigenschaften
+  quality_score: Qualitätspunktzahl
   remove: Entfernen
   required_label: (erforderlich)
   result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Enthält nicht
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
+    IN: In Liste
+    "NOT IN": Nicht in der Liste
   read_more: Mehr lesen
   channel: Kanal
   locale: Gebietsschema
@@ -272,7 +276,7 @@ pim_enrich.entity.fallback:
       discard_changes_title: Wirklich ganz sicher?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} Operation|]1, Inf[{{ count }} Operationen"
+    index: "]-Inf, 1]{{ count }} Job|]1, Inf[{{ count }} Jobs"
   module:
     create:
       upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken

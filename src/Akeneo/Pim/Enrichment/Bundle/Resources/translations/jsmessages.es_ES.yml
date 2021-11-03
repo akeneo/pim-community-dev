@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       success: Producto actualizado con éxito.
       fail: El producto no puede ser actualizado.
       fields_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
-      already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
+      already_in_upload: Un fichero ya está siendo cargado por este atributo en el local «{{ locale }}» y objetivo «{{ scope }}»
       file_upload: Ha ocurrido un error durante la carga del fichero
     delete:
       success: Producto eliminado con éxito.
@@ -101,7 +101,7 @@ pim_enrich.entity.product:
       association_type_selector: Tipo de asociación
       target: Objetivo
       manage: Agregar {{ associationType }} asociaciones
-      manage_description: Seleccione los productos que desea asociar con el producto "{{ productLabel }}"
+      manage_description: Seleccione los productos que desea asociar con el producto «{{ productLabel }}»
       mass_edit_description: Seleccione los productos que desea asociar a los {{ productCount }} productos seleccionados
       add_associations: Agregar asociaciones
       variant_products: Productos variantes
@@ -256,7 +256,7 @@ pim_enrich.export.product:
     channel:
       help: El canal define el alcance de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
     locales:
-      help: "Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés."
+      help: "Los locales definen los valores de producto traducidos a exportar. Ej.: solo obtener información de producto en inglés."
     attributes:
       label: "Todos los atributos {0} |{1} Un atributo seleccionado |] 1, Inf [{{ count }} atributos seleccionados"
       help: "Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos."
@@ -272,7 +272,7 @@ pim_enrich.export.product:
       description: Seleccione la información del producto a exportar
     family:
       title: Familia
-      help: "Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos."
+      help: "Seleccionar los productos a exportar según su familia. Ej.: Exportar solo los zapatos y vestidos."
       operators:
         IN: En la lista
         "NOT IN": No figura en la lista
@@ -345,7 +345,7 @@ pim_enrich.mass_edit.product:
     launch_error:
       label: Ha ocurrido un error durante el lanzamiento de la operación de edición en masa
     launched:
-      label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      label: La acción en masa «{{ operation }}» ha sido lanzada. Será notificado una vez finalizada.
   operation:
     common:
       select_attributes: Seleccionar atributos
@@ -357,7 +357,7 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Editar valores de atributo
       label_count: "{0}Editar valores de atributo de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Editar valores de atributo de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributo de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
-      description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
+      description: Se editarán solo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
       no_update: Por favor, seleccione al menos un campo para actualizar
     add_attribute_value:
       label: Añadir valores de atributo

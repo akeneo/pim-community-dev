@@ -6,6 +6,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 use Twig\Node\Node;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class LocaleExtensionSpec extends ObjectBehavior
 {
@@ -35,20 +37,20 @@ class LocaleExtensionSpec extends ObjectBehavior
         $functions->shouldHaveTwigFilter('flag', 'flag', ['html'], true);
     }
 
-    function it_provides_current_locale_code($userContext, $en)
+    function it_provides_current_locale_code($userContext, LocaleInterface $en)
     {
         $userContext->getCurrentLocale()->willReturn($en);
         $this->currentLocaleCode()->shouldReturn('en_US');
     }
 
-    function it_provides_a_locale_label_translated_in_the_specified_locale($userContext, $fr)
+    function it_provides_a_locale_label_translated_in_the_specified_locale($userContext, LocaleInterface $fr)
     {
         $userContext->getCurrentLocale()->willReturn($fr);
 
         $this->localeLabel('fr', 'en_US')->shouldReturn('French');
     }
 
-    function it_provides_a_currency_symbol_translated_in_the_specified_locale($userContext, $en)
+    function it_provides_a_currency_symbol_translated_in_the_specified_locale($userContext, LocaleInterface $en)
     {
         $userContext->getCurrentLocale()->willReturn($en);
         $this->currencySymbol('USD')->shouldReturn('$');
@@ -56,7 +58,7 @@ class LocaleExtensionSpec extends ObjectBehavior
 
     }
 
-    function it_provides_a_currency_label_translated_in_the_specified_locale($userContext, $en)
+    function it_provides_a_currency_label_translated_in_the_specified_locale($userContext, LocaleInterface $en)
     {
         $userContext->getCurrentLocale()->willReturn($en);
         $this->currencyLabel('USD')->shouldReturn('US Dollar');
@@ -73,7 +75,7 @@ class LocaleExtensionSpec extends ObjectBehavior
                 $function = array_filter(
                     $subject,
                     function ($function) use ($name) {
-                        return $function instanceof \Twig_SimpleFunction &&
+                        return $function instanceof TwigFunction &&
                             $function->getName() === $name;
                     }
                 );
@@ -90,7 +92,7 @@ class LocaleExtensionSpec extends ObjectBehavior
                 $filter = array_filter(
                     $subject,
                     function ($filter) use ($name) {
-                        return $filter instanceof \Twig_SimpleFilter &&
+                        return $filter instanceof TwigFilter &&
                             $filter->getName() === $name;
                     }
                 );

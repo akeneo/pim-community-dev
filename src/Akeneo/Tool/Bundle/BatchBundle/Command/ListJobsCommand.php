@@ -56,7 +56,7 @@ class ListJobsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $criteria = [];
         $type = $input->getOption('type');
@@ -67,6 +67,8 @@ class ListJobsCommand extends Command
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
         $table = $this->buildTable($jobs, $output);
         $table->render($output);
+
+        return Command::SUCCESS;
     }
 
     /**

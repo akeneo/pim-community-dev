@@ -107,7 +107,7 @@ class FormatterExtension extends AbstractExtension
             $metadata = $this->getPropertyObject($fieldConfig)->getMetadata();
 
             // translate label on backend
-            $metadata['label'] = $this->translator->trans($metadata['label']);
+            $metadata['label'] = $this->translator->trans($metadata['label'] ?? '');
             $propertiesMetadata[] = $metadata;
         }
 

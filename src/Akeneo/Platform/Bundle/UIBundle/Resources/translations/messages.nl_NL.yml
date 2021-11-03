@@ -48,34 +48,35 @@ pim_ui.system_config:
     loading_message.title: Laadberichten
 other_actions: Andere acties
 pim_common:
-  cancel: Annuleer
-  save: Opslaan
-  delete: Verwijderen
-  update: Bijwerken
-  view: Bekijk
-  edit: Wijzig
-  created: Aangemaakt
-  updated: Bijgewerkt
-  create: Aanmaken
-  permissions: Machtigingen
-  properties: Eigenschappen
-  name: Naam
-  remove: Verwijder
-  code: Code
-  label: Label
-  quantity: Aantal
-  products: Producten
-  product_models: Productmodels
-  categories: Categorieën
-  family_variant: Familie variant
-  enabled: Ingeschakeld
-  family: Familie
-  parent: Bovenliggende
-  groups: Groepen
-  unit: Eenheid
-  yes: "Ja"
-  no: "Nee"
   association_types: Associatietypes
+  cancel: Annuleer
+  categories: Categorieën
+  code: Code
+  create: Aanmaken
+  created: Aangemaakt
+  delete: Verwijderen
+  edit: Wijzig
+  enabled: Ingeschakeld
+  family_variant: Familie variant
+  family: Familie
+  groups: Groepen
+  label: Label
+  name: Naam
+  no: "Nee"
+  parent: Bovenliggende
+  permissions: Machtigingen
+  product_models: Productmodels
+  products: Producten
+  properties: Eigenschappen
+  quality_score: Kwaliteitsscore
+  quantity: Aantal
+  remove: Verwijder
+  save: Opslaan
+  unit: Eenheid
+  update: Bijwerken
+  updated: Bijgewerkt
+  view: Bekijk
+  yes: "Ja"
 pim_enrich:
   #ACLs
   acl:
