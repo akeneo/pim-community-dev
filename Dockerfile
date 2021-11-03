@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster-slim as base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
@@ -47,3 +47,37 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 
 COPY docker/build/akeneo.ini /etc/php/8.0/cli/conf.d/99-akeneo.ini
 COPY docker/build/akeneo.ini /etc/php/8.0/fpm/conf.d/99-akeneo.ini
+
+FROM base as dev
+
+ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
+
+RUN apt-get update && \
+    apt-get --yes install gnupg &&\
+    sh -c 'wget -q -O - https://packages.blackfire.io/gpg.key |APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' &&\
+    sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list' &&\
+    apt-get update && \
+    apt-get --yes install \
+        blackfire \
+        blackfire-php \
+        curl \
+        default-mysql-client \
+        git \
+        perceptualdiff \
+        php8.0-xdebug \
+        procps \
+        unzip &&\
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY docker/build/xdebug.ini /etc/php/8.0/cli/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/8.0/fpm/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/blackfire.ini /etc/php/8.0/cli/conf.d/99-akeneo-blackfire.ini
+COPY docker/build/blackfire.ini /etc/php/8.0/fpm/conf.d/99-akeneo-blackfire.ini
+
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
+
+RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
+
+VOLUME /srv/pim
