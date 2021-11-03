@@ -50,3 +50,9 @@ Feature: Connection to MDM or ERP systems
     Given some asset families with media file attributes
     When the connector collects an asset family whose naming convention do not comply with the business rules
     Then the PIM notifies the connector about errors indicating that the asset family naming convention that do not comply with the business rules
+
+  @integration-back
+  Scenario: Notify an error when trying to collect the properties of a given asset family that exist in the ERP but not in the PIM
+    Given the Frontview asset family existing in the ERP but not in the PIM
+    When the connector collects the properties of the Brand asset family from the ERP to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting the properties of the Brand asset family from the ERP to synchronize it with the PIM without permission
