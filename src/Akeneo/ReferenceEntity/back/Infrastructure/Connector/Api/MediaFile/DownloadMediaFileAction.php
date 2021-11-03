@@ -93,7 +93,7 @@ class DownloadMediaFileAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_record_edit';
+        $acl = 'pim_api_record_list';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

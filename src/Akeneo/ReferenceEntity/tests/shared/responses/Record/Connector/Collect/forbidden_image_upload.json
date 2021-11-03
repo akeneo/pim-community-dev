@@ -1,0 +1,25 @@
+{
+    "request": {
+        "method": "POST",
+        "route": "akeneo_reference_entities_media_file_rest_connector_upload",
+        "query": [],
+        "headers": {
+            "CONTENT_TYPE": "multipart/form-data"
+        },
+        "files": {
+            "file": {
+                "path": "Record/Connector/Collect/Kartell.jpg",
+                "name": "Kartell.jpg",
+                "mime_type": "image/jpeg"
+            }
+        }
+    },
+    "response": {
+        "status": 201,
+        "body": "",
+        "headers": {
+            "Location": "http://localhost/api/rest/v1/reference-entities-media-files/in/memory/files/Kartell.jpg",
+            "Reference-entities-media-file-code": "in/memory/files/Kartell.jpg"
+        }
+    }
+}

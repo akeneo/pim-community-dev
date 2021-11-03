@@ -350,6 +350,43 @@ class GetConnectorRecordContext implements Context
     }
 
     /**
+     * @When /^the connector requests to download the media file of this record attribute value without permission$/
+     */
+    public function theConnectorRequestsToDownloadTheMediaFileOfThisRecordAttributeValueWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_record_list', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        ob_start();
+        $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_media_file_download.json'
+        );
+
+        $this->downloadedMediaFile = ob_get_clean();
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for downloading a media file$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForDownloadingAMediaFile()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertStreamedResponseFromFile(
+            $this->mediaFileDownloadResponse,
+            $this->downloadedMediaFile,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_media_file_download.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_record_list"'),
+            'Expected warning not found in the logs.'
+        );
+    }
+
+    /**
      * @When /^the connector requests to download a non existent media file$/
      */
     public function theConnectorRequestsToDownloadANonExistentMediaFile()

@@ -1,0 +1,17 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_media_file_rest_connector_download",
+        "query": {
+            "fileCode": "0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": "This represents the binary of an image",
+        "headers": {
+            "Content-Type": "image/jpeg",
+            "Content-Disposition": "attachment; filename=\"kartell.jpg\""
+        }
+    }
+}
