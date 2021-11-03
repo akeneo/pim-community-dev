@@ -70,7 +70,7 @@ akeneo_data_quality_insights:
           no_data: Sus productos parecen estar vacíos, debería añadir atributos para este indicador clave para destacar la calidad de sus productos.
           messages:
             first_step:
-              message1: Una forma de mejorar esta proporción es asegurarse de definir cuidadosamente los atributos más relevantes. <a href=«{{ link }}» target="_blank">Eche un vistazo a nuestro centro de ayuda</a>.
+              message1: Una forma de mejorar esta proporción es asegurarse de definir cuidadosamente los atributos más relevantes. <a href="{{ link }}" target="_blank">Eche un vistazo a nuestro centro de ayuda</a>.
               message2: '¿Su PIM sigue siendo un misterio para usted? <a href=«{{ link }}» target="_blank">Aprenda a sacarle el máximo partido</a>.'
               message3: Nuestros equipos desarrollaron el PIM, ¡usted lo hace vivir!
               message4: La información detallada de los productos marca una verdadera diferencia para sus clientes. ¡Usted puede cambiar las reglas del juego!
