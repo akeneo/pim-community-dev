@@ -25,7 +25,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
     /**
      * @throws \InvalidArgumentException
      */
-    protected function checkCommonProperties(array $nomalizedCommand): void
+    protected function checkCommonProperties(array $normalizedCommand): void
     {
         $keysToCheck = [
             'code',
@@ -35,7 +35,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
-            if (!array_key_exists($keyToCheck, $nomalizedCommand)) {
+            if (!array_key_exists($keyToCheck, $normalizedCommand)) {
                 throw new \InvalidArgumentException(
                     sprintf('Expects normalized command to have key "%s"', $keyToCheck)
                 );

@@ -46,14 +46,14 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
     /**
      * @throws \InvalidArgumentException
      */
-    private function checkAdditionalProperties(array $nomalizedCommand): void
+    private function checkAdditionalProperties(array $normalizedCommand): void
     {
         $keysToCheck = [
             'record_type',
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
-            if (!array_key_exists($keyToCheck, $nomalizedCommand)) {
+            if (!array_key_exists($keyToCheck, $normalizedCommand)) {
                 throw new \InvalidArgumentException(
                     sprintf('Expects normalized command to have key "%s"', $keyToCheck)
                 );
