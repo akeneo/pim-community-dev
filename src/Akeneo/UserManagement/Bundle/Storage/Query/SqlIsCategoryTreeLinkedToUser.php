@@ -24,7 +24,7 @@ class SqlIsCategoryTreeLinkedToUser implements IsCategoryTreeLinkedToUser
     {
         $sql = <<<SQL
         SELECT EXISTS (
-            SELECT *
+            SELECT id
             FROM oro_user
             WHERE defaultTree_id = :treeId
         )
