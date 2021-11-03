@@ -34,6 +34,8 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformati
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAssetFamilyContext implements Context
@@ -52,18 +54,34 @@ class GetConnectorAssetFamilyContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier $findConnectorAssetFamily,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        SecurityFacadeStub $securityFacade
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorAssetFamily = $findConnectorAssetFamily;
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 
     /**
@@ -71,7 +89,6 @@ class GetConnectorAssetFamilyContext implements Context
      */
     public function theBrandAssetFamily(): void
     {
-        $this->theConnectorHasAllApiAcls();
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
         $imageInfo = new FileInfo();
         $imageInfo
@@ -157,12 +174,34 @@ class GetConnectorAssetFamilyContext implements Context
         );
     }
 
-    private function theConnectorHasAllApiAcls(): void
+    /**
+     * @When the connector requests the Brand asset family without permission
+     */
+    public function theConnectorRequestsTheBrandAssetFamilyWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->existentAssetFamily = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."forbidden_brand_asset_family.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for requesting the Brand asset family without permission
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheBrandAssetFamilyWithoutPermission()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->existentAssetFamily,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_asset_family.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_list"'),
+            'Expected warning not found in the logs.'
+        );
     }
 }
