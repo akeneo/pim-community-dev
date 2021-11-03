@@ -33,3 +33,9 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand asset family with some attributes
     When the connector requests a non-existent attribute of a given asset family
     Then the PIM notifies the connector about an error indicating that the attribute does not exist for the Brand asset family
+
+  @integration-back
+  Scenario: Notify an error when trying to distribute the structure of a given asset family without permission
+    Given 6 attributes that structure the Brand asset family in the PIM
+    When the connector requests the structure of the Brand asset family from the PIM without permission
+    Then the PIM notifies the connector about missing permissions for requesting the structure of the Brand asset family from the PIM without permission

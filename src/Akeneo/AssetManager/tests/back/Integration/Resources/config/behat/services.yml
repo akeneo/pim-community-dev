@@ -105,7 +105,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_attributes_by_asset_family_identifier'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeContext
