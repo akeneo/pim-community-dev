@@ -12,7 +12,6 @@ Oro\Bundle\PimDataGridBundle\Entity\DatagridView:
         label:
             type:     string
             length:   100
-            unique:   true
             nullable: false
         type:
             type:     string
