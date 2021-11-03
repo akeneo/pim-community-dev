@@ -1,10 +1,12 @@
 import React from 'react';
-import { useTranslate } from '@akeneo-pim-community/shared';
+import { useDateFormatter, useTranslate } from '@akeneo-pim-community/shared';
 import { Table } from 'akeneo-design-system';
 import { JobExecutionRow } from '../../models/JobExecutionTable';
+import JobExecutionStatus from "../JobExecutionStatus";
 
 const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRow[]}) => {
   const translate = useTranslate();
+  const dateFormatter = useDateFormatter();
 
   return (
     <Table>
@@ -38,16 +40,22 @@ const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRo
               {jobExecutionRow.type}
             </Table.Cell>
             <Table.Cell>
-              {jobExecutionRow.start_at}
+              {jobExecutionRow.started_at && dateFormatter(jobExecutionRow.started_at, {day: '2-digit', hour: '2-digit', minute: '2-digit', month: '2-digit', year: 'numeric'})}
             </Table.Cell>
             <Table.Cell>
               {jobExecutionRow.username}
             </Table.Cell>
             <Table.Cell>
-              {jobExecutionRow.status}
+              <JobExecutionStatus
+                status={jobExecutionRow.status}
+                hasWarning={jobExecutionRow.warning_count > 0}
+                currentStep={0}
+                hasError={false}
+                totalSteps={3}
+              />
             </Table.Cell>
             <Table.Cell>
-              {jobExecutionRow.warning_count}
+              {jobExecutionRow.warning_count > 0 ? jobExecutionRow.warning_count : '-'}
             </Table.Cell>
           </Table.Row>
         ))}

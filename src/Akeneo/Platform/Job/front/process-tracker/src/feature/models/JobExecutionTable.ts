@@ -1,10 +1,12 @@
+type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
+
 type JobExecutionRow = {
   job_execution_id: number;
   job_name: string;
   type: string;
-  start_at: string | null;
+  started_at: string | null;
   username: string | null;
-  status: string;
+  status: JobStatus;
   warning_count: number;
 };
 
@@ -14,4 +16,4 @@ type JobExecutionTable = {
   total_count: number;
 };
 
-export type {JobExecutionTable, JobExecutionRow};
+export type {JobExecutionTable, JobExecutionRow, JobStatus};

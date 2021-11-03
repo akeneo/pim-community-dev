@@ -34,7 +34,8 @@ class SearchJobExecution implements SearchJobExecutionInterface
         je.start_time,
         je.user,
         je.status,
-        SUM(IFNULL(se.warning_count, 0)) as warning_count
+        SUM(IFNULL(se.warning_count, 0)) as warning_count,
+           je.tra
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id

@@ -18,9 +18,22 @@ final class JobExecutionRow
     private ?string $username;
     private string $status;
     private int $warningCount;
+    private int $errorCount;
+    private int $currentStep;
+    private int $totalStep;
 
-    public function __construct(int $jobExecutionId, string $jobName, string $type, ?string $startedAt, ?string $username, string $status, int $warningCount)
-    {
+    public function __construct(
+        int $jobExecutionId,
+        string $jobName,
+        string $type,
+        ?string $startedAt,
+        ?string $username,
+        string $status,
+        int $warningCount,
+        int $errorCount,
+        int $currentStep,
+        int $totalStep
+    ) {
         $this->jobExecutionId = $jobExecutionId;
         $this->jobName = $jobName;
         $this->type = $type;
@@ -28,6 +41,9 @@ final class JobExecutionRow
         $this->username = $username;
         $this->status = $status;
         $this->warningCount = $warningCount;
+        $this->errorCount = $errorCount;
+        $this->currentStep = $currentStep;
+        $this->totalStep = $totalStep;
     }
 
     public function normalize(): array
@@ -40,6 +56,11 @@ final class JobExecutionRow
             'username' => $this->username,
             'status' => $this->status,
             'warning_count' => $this->warningCount,
+            'error_count' => $this->errorCount,
+            'tracking' => [
+                'current_step' => $this->currentStep,
+                'total_step' => $this->totalStep,
+            ],
         ];
     }
 }
