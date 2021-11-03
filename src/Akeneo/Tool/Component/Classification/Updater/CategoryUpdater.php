@@ -27,13 +27,13 @@ class CategoryUpdater implements ObjectUpdaterInterface
 {
     protected PropertyAccessor $accessor;
     protected IdentifiableObjectRepositoryInterface $categoryRepository;
-    private IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser;
-    private IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel;
+    private ?IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser;
+    private ?IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
-        IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser,
-        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel
+        IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser = null,
+        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel = null
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->categoryRepository = $categoryRepository;
@@ -147,13 +147,17 @@ class CategoryUpdater implements ObjectUpdaterInterface
         }
 
         if (null !== $category->getId() && $category->isRoot()) {
-            if (true === $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId())) {
+            if (null !== $this->isCategoryTreeLinkedToUser
+                && true === $this->isCategoryTreeLinkedToUser->byCategoryTreeId($category->getId())
+            ) {
                 throw InvalidPropertyException::expected(
                     'You can\'t move a category tree linked to a user.',
                     static::class
                 );
             }
-            if (true === $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId())) {
+            if (null !== $this->isCategoryTreeLinkedToChannel
+                && true === $this->isCategoryTreeLinkedToChannel->byCategoryTreeId($category->getId())
+            ) {
                 throw InvalidPropertyException::expected(
                     'You can\'t move a category tree linked to a channel.',
                     static::class
