@@ -90,7 +90,7 @@ SQL;
             'exclude_codes' => Connection::PARAM_STR_ARRAY,
             'limit' => \PDO::PARAM_INT,
             'offset' => \PDO::PARAM_INT,
-        ])->fetchAll(\PDO::FETCH_ASSOC);
+        ])->fetchAllAssociative();
 
         return array_map(
             static fn (array $attributeOption) => new AttributeOption(

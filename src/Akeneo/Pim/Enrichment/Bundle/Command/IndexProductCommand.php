@@ -188,7 +188,7 @@ SQL;
             [
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll(FetchMode::COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     /**

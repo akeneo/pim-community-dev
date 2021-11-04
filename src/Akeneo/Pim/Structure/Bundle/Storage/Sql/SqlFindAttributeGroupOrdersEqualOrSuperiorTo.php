@@ -42,6 +42,6 @@ SQL;
             ]
         );
 
-        return $query->fetchAll(\PDO::FETCH_COLUMN);
+        return $query->fetchFirstColumn();
     }
 }

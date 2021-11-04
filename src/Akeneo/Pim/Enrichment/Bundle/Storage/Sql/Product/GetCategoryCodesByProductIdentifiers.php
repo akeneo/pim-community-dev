@@ -65,7 +65,7 @@ FROM (
 GROUP BY product_identifier
 SQL;
 
-        $queryResults = $this->connection->fetchAll(
+        $queryResults = $this->connection->fetchAllAssociative(
             $forProductQuery,
             [$identifiers, $identifiers, $identifiers],
             [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]

@@ -92,7 +92,7 @@ SQL;
             $sql,
             ['productModelId' => $productModelId->toInt()],
             ['productModelId' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        )->fetchAllAssociative();
 
         if (empty($rows)) {
             return null;

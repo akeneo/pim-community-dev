@@ -28,7 +28,7 @@ class CreateUserIntegration extends TestCase
         $sqlQuery = <<<SQL
 SELECT username, first_name, last_name, email, user_type, enabled FROM oro_user
 SQL;
-        $results = $this->getDatabaseConnection()->fetchAll($sqlQuery);
+        $results = $this->getDatabaseConnection()->fetchAllAssociative($sqlQuery);
         Assert::assertCount(1, $results);
 
         Assert::assertEquals('Pimgento', $results[0]['first_name']);
@@ -48,7 +48,7 @@ SQL;
         $sqlQuery = <<<SQL
 SELECT username, first_name, last_name, email, user_type, enabled FROM oro_user
 SQL;
-        $results = $this->getDatabaseConnection()->fetchAll($sqlQuery);
+        $results = $this->getDatabaseConnection()->fetchAllAssociative($sqlQuery);
         Assert::assertCount(1, $results);
 
         Assert::assertEquals('Pim_Ecom', $results[0]['first_name']);

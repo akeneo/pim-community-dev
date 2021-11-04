@@ -32,7 +32,7 @@ class EmailDomains implements EmailDomainsQuery
                 ORDER by email_domain
 SQL;
 
-        $rows = $this->connection->fetchAll($sql);
+        $rows = $this->connection->fetchAllAssociative($sql);
 
         foreach ($rows as $row) {
             $results[] = $row['email_domain'];

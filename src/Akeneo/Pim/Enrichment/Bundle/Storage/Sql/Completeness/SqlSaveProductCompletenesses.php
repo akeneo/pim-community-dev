@@ -114,7 +114,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     {
         $query = 'SELECT locale.id as locale_id, locale.code as locale_code FROM pim_catalog_locale locale';
 
-        $rows = $this->connection->fetchAll($query);
+        $rows = $this->connection->fetchAllAssociative($query);
 
         $result = [];
         foreach ($rows as $row) {
@@ -127,7 +127,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     private function channelIdsIndexedByChannelCodes(): array
     {
         $query = 'SELECT channel.id as channel_id, channel.code as channel_code FROM pim_catalog_channel channel';
-        $rows = $this->connection->fetchAll($query);
+        $rows = $this->connection->fetchAllAssociative($query);
 
         $result = [];
         foreach ($rows as $row) {

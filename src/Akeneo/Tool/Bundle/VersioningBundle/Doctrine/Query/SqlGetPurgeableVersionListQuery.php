@@ -88,7 +88,7 @@ SQL;
             $statement->bindParam('logged_at', $loggedAt, \PDO::PARAM_STR);
             $statement->bindParam('last_id', $lastId, \PDO::PARAM_INT);
             $statement->execute();
-            $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $results = $statement->fetchAllAssociative();
 
             if (!empty($results)) {
                 $lastResult = end($results);

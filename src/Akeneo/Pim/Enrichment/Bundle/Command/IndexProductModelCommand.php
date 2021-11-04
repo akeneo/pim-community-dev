@@ -206,7 +206,7 @@ SQL;
             [
                 'codes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll(FetchMode::COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     private function getTotalNumberOfRootProductModels(): int

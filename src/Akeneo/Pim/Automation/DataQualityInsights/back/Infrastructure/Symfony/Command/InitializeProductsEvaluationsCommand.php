@@ -177,7 +177,7 @@ SQL;
             $query,
             ['lastId' => $productId, 'limit' => self::BATCH_SIZE],
             ['lastId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
     }
 
     private function getProductModelIdsFrom(int $productModelId): array
@@ -190,6 +190,6 @@ SQL;
             $query,
             ['lastId' => $productModelId, 'limit' => self::BATCH_SIZE],
             ['lastId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
     }
 }

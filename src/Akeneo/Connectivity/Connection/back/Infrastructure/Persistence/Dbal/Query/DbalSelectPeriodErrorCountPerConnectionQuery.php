@@ -101,7 +101,7 @@ SQL;
                 'from_datetime' => Types::DATETIME_IMMUTABLE,
                 'up_to_datetime' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
     }
 
     /**
@@ -135,6 +135,6 @@ SQL;
                 'from_datetime' => Types::DATETIME_IMMUTABLE,
                 'up_to_datetime' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
     }
 }
