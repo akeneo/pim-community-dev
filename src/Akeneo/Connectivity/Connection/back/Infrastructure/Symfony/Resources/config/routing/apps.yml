@@ -27,3 +27,8 @@ akeneo_connectivity_connection_apps_rest_get_all_connected_apps:
     path: '/connected-apps'
     controller: akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps
     methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_delete:
+    path: '/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction
+    methods: [DELETE]
