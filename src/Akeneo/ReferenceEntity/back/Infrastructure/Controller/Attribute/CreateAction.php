@@ -37,24 +37,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateAction
 {
     private CreateAttributeHandler $createAttributeHandler;
-
-    private FindAttributeNextOrderInterface $attributeNextOrder;
-
     private SecurityFacade $securityFacade;
-
     private NormalizerInterface $normalizer;
-
     private ValidatorInterface $validator;
-
     private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         CreateAttributeHandler $createAttributeHandler,
-        FindAttributeNextOrderInterface $attributeNextOrder,
         CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
         TokenStorageInterface $tokenStorage,
@@ -63,7 +54,6 @@ class CreateAction
         SecurityFacade $securityFacade
     ) {
         $this->createAttributeHandler = $createAttributeHandler;
-        $this->attributeNextOrder = $attributeNextOrder;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;

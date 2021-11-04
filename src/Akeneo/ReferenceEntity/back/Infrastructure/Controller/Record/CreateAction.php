@@ -37,17 +37,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateAction
 {
     private CreateRecordHandler $createRecordHandler;
-
     private RecordIndexerInterface $recordIndexer;
-
     private NormalizerInterface $normalizer;
-
     private ValidatorInterface $validator;
-
     private SecurityFacade $securityFacade;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(

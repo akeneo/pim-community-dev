@@ -34,13 +34,9 @@ class DownloadMediaFileAction
     private const FILE_STORAGE_ALIAS = 'catalogStorage';
 
     private MediaFileRepositoryInterface $mediaFileRepository;
-
     private FilesystemProvider $filesystemProvider;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

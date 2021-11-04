@@ -33,11 +33,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class DeleteAction
 {
     private SecurityFacade $securityFacade;
-
     private DeleteAttributeHandler $deleteAttributeHandler;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(

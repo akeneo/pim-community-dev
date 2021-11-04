@@ -27,9 +27,7 @@ use Symfony\Component\Validator\Validation;
 class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintValidator
 {
     private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
     private AttributeRepositoryInterface $attributeRepository;
-
     private int $attributeOptionsLimit;
 
     public function __construct(

@@ -210,10 +210,6 @@ class EditNumberValueCommandValidator extends ConstraintValidator
     /**
      * When integers are passed in as strings, they might be greater than the integer's limit (imposed by the system)
      * We need to check this in order to prevent loosing precisions.
-     *
-     * @param EditNumberValueCommand $command
-     *
-     * @return bool
      */
     private function isTooLong(EditNumberValueCommand $command) :bool
     {

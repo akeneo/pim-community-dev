@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -34,18 +33,13 @@ use Doctrine\DBAL\Types\Types;
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
     private AbstractPlatform $platform;
-
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-
     private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
         $this->valueHydrator = $valueHydrator;
     }
 

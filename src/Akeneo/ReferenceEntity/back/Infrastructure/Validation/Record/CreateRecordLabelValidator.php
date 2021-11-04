@@ -35,9 +35,7 @@ use Webmozart\Assert\Assert;
 final class CreateRecordLabelValidator extends ConstraintValidator
 {
     private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel;
-
     private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
-
     private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
@@ -68,7 +66,6 @@ final class CreateRecordLabelValidator extends ConstraintValidator
     }
 
     /**
-     * @param CreateRecordCommand $command
      * @return AbstractEditValueCommand[]
      */
     private function getEditLabelCommands(CreateRecordCommand $command): array

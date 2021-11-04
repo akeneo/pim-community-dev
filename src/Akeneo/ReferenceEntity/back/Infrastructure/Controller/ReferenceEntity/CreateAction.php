@@ -33,11 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateAction
 {
     private CreateReferenceEntityHandler $createReferenceEntityHandler;
-
     private NormalizerInterface $normalizer;
-
     private ValidatorInterface $validator;
-
     private SecurityFacade $securityFacade;
 
     public function __construct(

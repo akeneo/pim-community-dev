@@ -34,8 +34,6 @@ class IndexAction
 
     /**
      * Get all reference entities
-     *
-     * @return JsonResponse
      */
     public function __invoke(): JsonResponse
     {

@@ -30,7 +30,6 @@ use Doctrine\DBAL\Types\Type;
 class ConnectorReferenceEntityHydrator
 {
     private AbstractPlatform $platform;
-
     private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(

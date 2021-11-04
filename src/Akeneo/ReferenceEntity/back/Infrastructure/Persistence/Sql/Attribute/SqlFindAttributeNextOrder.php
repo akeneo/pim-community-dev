@@ -22,9 +22,6 @@ class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
     private Connection $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;

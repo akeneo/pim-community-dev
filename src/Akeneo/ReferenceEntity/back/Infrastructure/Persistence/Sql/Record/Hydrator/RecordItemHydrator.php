@@ -34,11 +34,8 @@ use Doctrine\DBAL\Types\Type;
 class RecordItemHydrator implements RecordItemHydratorInterface
 {
     private AbstractPlatform $platform;
-
     private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
-
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
     private ValueHydratorInterface $valueHydrator;
 
     public function __construct(

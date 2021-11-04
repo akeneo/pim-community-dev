@@ -17,13 +17,8 @@ class AggregatedAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
 
     private Connection $connection;
-
     private int $limit;
 
-    /**
-     * @param Connection $connection
-     * @param int        $limit
-     */
     public function __construct(Connection $connection, int $limit)
     {
         $this->connection = $connection;

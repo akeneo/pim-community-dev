@@ -46,23 +46,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GetConnectorRecordsAction
 {
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private Limit $limit;
-
     private SearchConnectorRecord $searchConnectorRecord;
-
     private PaginatorInterface $halPaginator;
-
     private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-
     private ValidatorInterface $validator;
-
     private SearchFiltersValidator $searchFiltersValidator;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

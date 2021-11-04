@@ -29,7 +29,6 @@ use Webmozart\Assert\Assert;
 class ConnectorRecordHydrator
 {
     private AbstractPlatform $platform;
-
     private ConnectorValueTransformerRegistry $valueTransformerRegistry;
 
     public function __construct(

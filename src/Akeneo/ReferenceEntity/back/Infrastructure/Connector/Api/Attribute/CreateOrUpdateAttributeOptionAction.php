@@ -34,29 +34,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateOrUpdateAttributeOptionAction
 {
     private Router $router;
-
     private AttributeOptionValidator $jsonSchemaValidator;
-
     private ValidatorInterface $businessRulesValidator;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private AttributeExistsInterface $attributeExists;
-
     private AttributeSupportsOptions $attributeSupportsOptions;
-
     private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
     private AttributeRepositoryInterface $attributeRepository;
-
     private EditAttributeOptionHandler $editAttributeOptionHandler;
-
     private AppendAttributeOptionHandler $appendAttributeOptionHandler;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

@@ -37,15 +37,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeleteAction
 {
     private SecurityFacade $securityFacade;
-
     private NormalizerInterface $normalizer;
-
     private ValidatorInterface $validator;
-
     private DeleteReferenceEntityHandler $deleteReferenceEntityHandler;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(

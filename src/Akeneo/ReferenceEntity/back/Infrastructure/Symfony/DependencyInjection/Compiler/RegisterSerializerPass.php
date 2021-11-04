@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @see       Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass
+ * @see       \Symfony\Component\Serializer\DependencyInjection\SerializerPass
  */
 class RegisterSerializerPass implements CompilerPassInterface
 {
@@ -20,10 +20,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     /** @staticvar integer The default priority for services */
     public const DEFAULT_PRIORITY = 100;
 
-    /**
-     * @param string $serializerServiceId
-     */
-    public function __construct($serializerServiceId)
+    public function __construct(string $serializerServiceId)
     {
         $this->serializerServiceId = $serializerServiceId;
     }
@@ -31,7 +28,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition($this->serializerServiceId)) {
             throw new \LogicException(
@@ -53,12 +50,9 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * Returns an array of service references for a specified tag name
      *
-     * @param string           $tagName
-     * @param ContainerBuilder $container
-     *
      * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    protected function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

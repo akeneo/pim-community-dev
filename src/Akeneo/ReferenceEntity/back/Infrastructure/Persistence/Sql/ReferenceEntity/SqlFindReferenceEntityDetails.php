@@ -34,9 +34,7 @@ use Doctrine\DBAL\Types\Type;
 class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
 {
     private Connection $sqlConnection;
-
     private FindAttributesDetailsInterface $findAttributesDetails;
-
     private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
@@ -103,8 +101,6 @@ SQL;
     }
 
     /**
-     * @return ReferenceEntityDetails
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function hydrateReferenceEntityDetails(

@@ -26,17 +26,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditAction
 {
     private EditAttributeCommandFactoryInterface $editAttributeCommandFactory;
-
     private EditAttributeHandler $editAttributeHandler;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
-
     private NormalizerInterface $normalizer;
-
     private ValidatorInterface $validator;
-
     private SecurityFacade $securityFacade;
 
     public function __construct(

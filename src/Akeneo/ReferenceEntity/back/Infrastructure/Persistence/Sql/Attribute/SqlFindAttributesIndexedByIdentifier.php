@@ -26,9 +26,7 @@ use Doctrine\DBAL\Connection;
 class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
     private Connection $sqlConnection;
-
     private AttributeHydratorRegistry $attributeHydratorRegistry;
-
     private array $cachedResults = [];
 
     public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
@@ -75,7 +73,7 @@ SQL;
         );
         $result = $statement->fetchAllAssociative();
 
-        return [];
+        return $result ?: [];
     }
 
     /**

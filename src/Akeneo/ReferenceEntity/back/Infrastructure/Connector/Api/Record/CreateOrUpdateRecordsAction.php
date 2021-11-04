@@ -46,31 +46,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateOrUpdateRecordsAction
 {
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private RecordExistsInterface $recordExists;
-
     private EditRecordCommandFactory $editRecordCommandFactory;
-
     private EditRecordHandler $editRecordHandler;
-
     private CreateRecordHandler $createRecordHandler;
-
-    private Router $router;
-
     private ValidatorInterface $recordDataValidator;
-
     private ViolationNormalizer $violationNormalizer;
-
     private RecordValidator $recordStructureValidator;
-
     private RecordListValidator $recordListValidator;
-
     private int $maximumRecordsPerRequest;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -79,7 +65,6 @@ class CreateOrUpdateRecordsAction
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
-        Router $router,
         ValidatorInterface $recordDataValidator,
         ViolationNormalizer $violationNormalizer,
         RecordValidator $recordStructureValidator,
@@ -94,7 +79,6 @@ class CreateOrUpdateRecordsAction
         $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->createRecordHandler = $createRecordHandler;
-        $this->router = $router;
         $this->recordDataValidator = $recordDataValidator;
         $this->violationNormalizer = $violationNormalizer;
         $this->recordStructureValidator = $recordStructureValidator;

@@ -7,7 +7,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 class InactiveLabelFilter
 {
     private FindActivatedLocalesInterface $findActivatedLocales;
-
     private ?array $activatedLocalesCache = null;
 
     public function __construct(FindActivatedLocalesInterface $findActivatedLocales)

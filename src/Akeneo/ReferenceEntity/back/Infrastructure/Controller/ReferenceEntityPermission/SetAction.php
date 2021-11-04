@@ -35,15 +35,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SetAction
 {
     private SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
-
     private SecurityFacade $securityFacade;
-
     private ValidatorInterface $validator;
-
     private Serializer $serializer;
 
     public function __construct(

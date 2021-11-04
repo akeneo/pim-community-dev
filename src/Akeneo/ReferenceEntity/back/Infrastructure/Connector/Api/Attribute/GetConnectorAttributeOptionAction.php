@@ -28,13 +28,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class GetConnectorAttributeOptionAction
 {
     private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

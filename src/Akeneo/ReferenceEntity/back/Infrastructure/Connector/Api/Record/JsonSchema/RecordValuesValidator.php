@@ -27,7 +27,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 class RecordValuesValidator
 {
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
     private RecordValueValidatorRegistry $recordValueValidatorRegistry;
 
     public function __construct(

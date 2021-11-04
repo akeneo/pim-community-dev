@@ -29,7 +29,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class IndexAction
 {
     private FindAttributesDetailsInterface $findAttributesDetails;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
 
     public function __construct(

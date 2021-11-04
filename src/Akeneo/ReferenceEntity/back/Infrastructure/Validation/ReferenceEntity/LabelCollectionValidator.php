@@ -40,7 +40,6 @@ class LabelCollectionValidator extends ConstraintValidator
 
     /**
      * @param mixed      $labels     The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
      */
     public function validate($labels, Constraint $constraint)
     {

@@ -29,11 +29,8 @@ class RefreshRecordsCommand extends Command
     private const BULK_SIZE = 100;
 
     private Connection $sqlConnection;
-
     private FindAllRecordIdentifiers $findAllRecordIdentifiers;
-
     private RefreshRecord $refreshRecord;
-
     private LoggerInterface $logger;
 
     public function __construct(

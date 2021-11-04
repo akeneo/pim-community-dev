@@ -22,11 +22,8 @@ class FixturesInstaller
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
     private Connection $sqlConnection;
-
     private FileStorerInterface $storer;
-
     private Client $recordClient;
-
     private CommandLauncher $commandLauncher;
 
     public function __construct(

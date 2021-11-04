@@ -37,13 +37,9 @@ class IndexRecordsCommand extends Command
     private const ERROR_CODE_USAGE = 1;
 
     private Client $recordClient;
-
     private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-
     private RecordIndexerInterface $recordIndexer;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private string $recordIndexName;
 
     public function __construct(
@@ -121,9 +117,6 @@ class IndexRecordsCommand extends Command
         }
     }
 
-    /**
-     * @param OutputInterface $output
-     */
     protected function indexAll(OutputInterface $output): void
     {
         $allReferenceEntities = $this->referenceEntityRepository->all();
@@ -151,7 +144,7 @@ class IndexRecordsCommand extends Command
     }
 
     /**
-     * @param String[] $referenceEntityCodes
+     * @param string[] $referenceEntityCodes
      *
      * @return ReferenceEntityIdentifier[]
      */

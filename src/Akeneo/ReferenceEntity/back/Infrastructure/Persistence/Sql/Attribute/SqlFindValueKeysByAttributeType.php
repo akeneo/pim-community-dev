@@ -26,7 +26,6 @@ use Doctrine\DBAL\Connection;
 class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInterface
 {
     private Connection $sqlConnection;
-
     private ?array $cachedResult = null;
 
     public function __construct(Connection $sqlConnection)

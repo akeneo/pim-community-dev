@@ -34,13 +34,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditAction
 {
     private EditReferenceEntityHandler $editReferenceEntityHandler;
-
     private Serializer $serializer;
-
     private ValidatorInterface $validator;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(

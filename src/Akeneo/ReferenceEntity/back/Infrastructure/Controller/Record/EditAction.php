@@ -35,15 +35,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditAction
 {
     private EditRecordCommandFactory $editRecordCommandFactory;
-
     private EditRecordHandler $editRecordHandler;
-
     private ValidatorInterface $validator;
-
     private NormalizerInterface $normalizer;
-
     private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(

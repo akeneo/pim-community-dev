@@ -34,9 +34,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const VALUES_FIELD = 'values';
 
     private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
-
     private SqlFindSearchableRecords $findSearchableRecords;
-
     private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
     public function __construct(

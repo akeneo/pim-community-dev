@@ -26,15 +26,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class GetConnectorReferenceEntityAttributesAction
 {
     private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

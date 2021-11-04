@@ -15,7 +15,6 @@ class SqlAverageMaxNumberOfValuesPerRecord
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
     private Connection $sqlConnection;
-
     private int $limit;
 
     public function __construct(Connection $sqlConnection, int $limit)

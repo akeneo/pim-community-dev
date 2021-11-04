@@ -73,7 +73,7 @@ class OptionCollectionAttributeHydrator extends AbstractAttributeHydrator
     }
 
     /**
-     * @param array $attributeOptions
+     * @param string[] $attributeOptions
      *
      * @return AttributeOption[]
      */

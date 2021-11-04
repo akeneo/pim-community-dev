@@ -36,9 +36,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class SqlAttributeRepository implements AttributeRepositoryInterface
 {
     private Connection $sqlConnection;
-
     private AttributeHydratorRegistry $attributeHydratorRegistry;
-
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
@@ -181,8 +179,6 @@ SQL;
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     *
      * @return AbstractAttribute[]
      * @throws DBALException
      */

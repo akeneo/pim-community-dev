@@ -40,25 +40,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateOrUpdateReferenceEntityAction
 {
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private ValidatorInterface $validator;
-
     private CreateReferenceEntityHandler $createReferenceEntityHandler;
-
     private EditReferenceEntityHandler $editReferenceEntityHandler;
-
     private Router $router;
-
     private ReferenceEntityValidator $jsonSchemaValidator;
-
     private FindFileDataByFileKeyInterface $findFileData;
-
     private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

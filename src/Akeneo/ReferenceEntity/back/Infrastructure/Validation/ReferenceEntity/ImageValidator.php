@@ -30,7 +30,6 @@ class ImageValidator extends ConstraintValidator
 {
     /**
      * @param mixed      $image       The value that should be validated
-     * @param Constraint $constraint  The constraint for the validation
      */
     public function validate($image, Constraint $constraint)
     {

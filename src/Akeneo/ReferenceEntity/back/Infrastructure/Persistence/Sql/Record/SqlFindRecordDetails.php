@@ -31,13 +31,9 @@ use Doctrine\DBAL\Types\Type;
 class SqlFindRecordDetails implements FindRecordDetailsInterface
 {
     private Connection $sqlConnection;
-
     private RecordDetailsHydratorInterface $recordDetailsHydrator;
-
     private GenerateEmptyValuesInterface $generateEmptyValues;
-
     private FindValueKeyCollectionInterface $findValueKeyCollection;
-
     private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     public function __construct(

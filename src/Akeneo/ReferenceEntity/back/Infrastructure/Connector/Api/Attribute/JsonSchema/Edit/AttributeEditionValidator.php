@@ -11,7 +11,6 @@ use Webmozart\Assert\Assert;
 final class AttributeEditionValidator
 {
     private AttributeRepositoryInterface $attributeRepository;
-
     private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
     /** @var AttributeValidatorInterface[] */

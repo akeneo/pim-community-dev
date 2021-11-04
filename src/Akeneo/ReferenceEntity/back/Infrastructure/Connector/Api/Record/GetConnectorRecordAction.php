@@ -34,15 +34,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class GetConnectorRecordAction
 {
     private FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord;
-
     private ReferenceEntityExistsInterface $referenceEntityExists;
-
     private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
