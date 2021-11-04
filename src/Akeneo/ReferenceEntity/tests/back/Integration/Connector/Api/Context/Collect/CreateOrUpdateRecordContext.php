@@ -264,7 +264,6 @@ class CreateOrUpdateRecordContext implements Context
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_creation.json'
         );
-
     }
 
     /**

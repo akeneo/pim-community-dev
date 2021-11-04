@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
 use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
-use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -26,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
