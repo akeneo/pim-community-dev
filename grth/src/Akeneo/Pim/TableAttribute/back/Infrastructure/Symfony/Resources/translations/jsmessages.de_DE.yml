@@ -1,6 +1,7 @@
 table_attribute_template:
   nutrition-europe:
     average_nutritional_values:
+      label: Durchschnittliche Nährwerte
       options:
         energy: Energie
         fat: Fett
@@ -51,6 +52,7 @@ table_attribute_template:
       label: Zusammensetzung
       options:
         wheat_flour: Weizenmehl
+        butter: Butter
         water: Wasser
         sugar: Zucker
     percentage:
@@ -118,50 +120,90 @@ pim_table_attribute:
       empty_subtitle: Der erste Schritt ist, Ihre Spalten zu definieren.
       unique_title: Ihr Tabellenattribut ist fast fertig.
       unique_subtitle: Definieren Sie mindestens 2 Spalten, um Ihre Tabelle zu verwenden.
+      new_option_placeholder: Schreiben Sie eine neue Optionsbezeichnung.
       manage_options: Optionen verwalten
       column_code: Spaltencode
+      properties_helper: Sie müssen die Tabellenstruktur und mindestens 2 Spalten definieren, bevor Sie Ihr Tabellenattribut speichern können
+      table_structure_helper_text: Ein Tabellenattribut muss mindestens 2 Spalten enthalten. Sobald Sie die erste Spalte erstellt haben, müssen Sie Optionen hinzufügen. Dazu klicken Sie auf „Optionen verwalten“ und fügen Sie {{ limit }} Optionen hinzu! Dann können Sie jede dieser Optionen als Zeilen in Ihren Produkttabellen verwenden.
       table_structure_helper_link: Dieser Artikel kann Ihnen helfen, mehr über Tabellenattribute zu erfahren.
       limit_option_reached: Sie haben das Limit von {{ limit }} Optionen erreicht.
       template_label: Wählen Sie den Standard Ihrer "{{ templateLabel }}" Tabelle
+      delete_column_helper: Wenn Sie diese Spalte löschen, werden alle ihre Werte mit dem Attribut "{{ attributeLabel }}" aus allen Produkten entfernt.
+      delete_first_column_option_helper: Wenn Sie diese Option löschen, wird die gesamte Zeile für alle Produkte mit dem Attribut "{{ attributeLabel }}" gelöscht.
+      delete_other_column_option_helper: Wenn Sie diese Option löschen, wird der Zellenwert für alle Produkte mit dem Attribut "{{ attributeLabel }}" entfernt.
+      no_options_helper: Bitte fügen Sie Ihre erste Option hinzu.
       no_options: Keine Optionen gefunden
       please_try_again: Bitte versuche es noch einmal
+      first_column_type_helper: Die erste Spalte einer Tabelle ist immer ein Spaltentyp.
+      discard_changes: Wenn Sie die Seite verlassen, verlieren Sie die Änderungen an den Auswahloptionen.
     product:
+      items_per_page: Elemente pro Seite
       current_items: "{{ minItem }}-{{ maxItem }} von {{ itemCount }}"
       current_page: "Seite {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "Leider gibt es keine Zeilen für Ihre Suche!"
       no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
+      no_rows_subtitle: Füge Zeilen hinzu, um neue Eigenschaften zu definieren
       no_rows_subtitle_on_readonly: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
+      no_add_options_title: Um Zeilen hinzuzufügen
       no_add_options: Verwalten Sie Ihre "{{ attributeLabel }}" Optionen
       no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten
       no_add_options_link: hier
       no_edit_permission: Keine Bearbeitungs-Berechtigung
       actions:
         delete_row: Diese Zeile löschen
+        move_first: An erste Position verschieben
+        move_last: An letzte Position verschieben
+      order: Sortierung
   properties:
     data_type:
       text: Text
+      number: Nummer
       boolean: Ja/Nein
+      select: Auswählen
   validations:
     column_code_must_be_filled: Der Code muss ausgefüllt werden
     column_data_type_must_be_filled: Der Datentyp muss ausgefüllt werden
+    invalid_column_code: Der Spaltencode darf nur Buchstaben, Zahlen und Unterstriche enthalten
+    invalid_code: Der Code darf nur Buchstaben, Zahlen und Unterstriche enthalten
+    duplicated_column_code: Jede Spalte benötigt einen eindeutigen Code. {{ duplicateCode }} wird bereits verwendet
     duplicated_select_code: Jeder Code benötigt einen eindeutigen Code
     max_greater_than_min: Max muss mehr sein als Min
     max_length: Maximale Anzahl an Zeichen (bis zu 100)
     min: Minimalwert
     max: Maximalwert
     decimals_allowed: Dezimalwerte erlaubt
+    max_length_range: Bitte definieren Sie eine maximale Anzahl von Zeichen kleiner oder gleich {{ maximum }}
   templates:
     choose_template: Vorlage auswählen
+    choose_template_subtitle: Diese Vorlagen sind nur Beispiele. Sie können sie bearbeiten, bevor Sie Ihre Attributsstruktur speichern.
     empty_table: Leere Tabelle
     nutrition: Nährwerte
+    nutrition-unitedkingdom: Ernährung (Großbritannien)
+    nutrition-europe: Durchschnittliche Nährwerte (Europa)
+    nutrition-unitedstates: Ernährungsdaten (Vereinigte Staaten)
     food_composition: Essenskomposition
     clothing_composition: Kleidungskomposition
+    dimensions: Produktabmessungen
     dimensions-metric: Abmessungen (Metrisches System)
     dimensions-imperial: Abmessungen (Imperiales System)
+    packaging: Verpackungsgröße
+    packaging-metric: Verpackungsabmessungen (Metrisches System)
+    packaging-imperial: Verpackungsabmessungen (Imperiales System)
   product_edit_form:
     search: Suche
+  datagrid:
+    placeholder: Vorschau nicht verfügbar, öffnen Sie die Produktseite, um auf die Tabellenattributwerte zuzugreifen
+    select_your_column: Spalte auswählen
+    select_your_row: Wählen Sie Ihre Zeile
+    select_your_operator: Operator auswählen
+    select_your_value: Wählen Sie Ihren Wert
+    any_row: Jede Zeile
 pim_enrich:
   entity:
     attribute:
       property:
         type:
           pim_catalog_table: Tabelle
+batch_jobs:
+  csv_table_attribute_options_export.label: Tabellen-Attribut-Auswahloptionen Export in CSV
+  xlsx_table_attribute_options_export.label: Tabellen-Attribut-Auswahloptionen Export in XLSX
