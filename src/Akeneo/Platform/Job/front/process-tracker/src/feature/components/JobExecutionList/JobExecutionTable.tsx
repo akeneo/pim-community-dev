@@ -40,7 +40,10 @@ const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRo
               {translate(`pim_import_export.widget.last_operations.job_type.${jobExecutionRow.type}`)}
             </Table.Cell>
             <Table.Cell>
-              {jobExecutionRow.started_at && dateFormatter(jobExecutionRow.started_at, {day: '2-digit', hour: '2-digit', minute: '2-digit', month: '2-digit', year: 'numeric'})}
+              {jobExecutionRow.started_at ?
+                dateFormatter(jobExecutionRow.started_at, {day: '2-digit', hour: '2-digit', minute: '2-digit', month: '2-digit', year: 'numeric'}):
+                '-'
+              }
             </Table.Cell>
             <Table.Cell>
               {jobExecutionRow.username}

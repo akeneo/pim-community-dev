@@ -9,6 +9,8 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterfa
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -35,8 +37,8 @@ class SearchJobExecution implements SearchJobExecutionInterface
         je.user,
         je.status,
         SUM(IFNULL(se.warning_count, 0)) as warning_count,
-        COUNT(*) AS current_step_number,
-        JSON_MERGE(JSON_ARRAYAGG(se.failure_exceptions), JSON_ARRAYAGG(se.errors)) as errors
+        COUNT(se.job_execution_id) AS current_step_number,
+        JSON_MERGE(JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')), JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))) as errors
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
@@ -76,18 +78,21 @@ SQL;
 
     private function buildJobExecutionRows(array $rawJobExecutions): array
     {
-        return array_map(function (array $rawJobExecution) {
+        $platform = $this->connection->getDatabasePlatform();
+
+        return array_map(function (array $rawJobExecution) use ($platform): JobExecutionRow {
             $errors = json_decode($rawJobExecution['errors'], true); // TODO revalidate that currently the errors are here
             $errorCount = 0;
             foreach ($errors as $error) {
                 $errorCount += count(unserialize($error));
             }
 
+            $startTime = Type::getType(Types::DATETIME_MUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
             return new JobExecutionRow(
                 (int) $rawJobExecution['id'],
                 $rawJobExecution['label'],
                 $rawJobExecution['type'],
-                $rawJobExecution['start_time'],
+                $startTime,
                 $rawJobExecution['user'],
                 (string) new BatchStatus((int) $rawJobExecution['status']),
                 (int) $rawJobExecution['warning_count'],

@@ -14,7 +14,7 @@ final class JobExecutionRow
     private int $jobExecutionId;
     private string $jobName;
     private string $type;
-    private ?string $startedAt;
+    private ?\DateTime $startedAt;
     private ?string $username;
     private string $status;
     private int $warningCount;
@@ -26,7 +26,7 @@ final class JobExecutionRow
         int $jobExecutionId,
         string $jobName,
         string $type,
-        ?string $startedAt,
+        ?\DateTime $startedAt,
         ?string $username,
         string $status,
         int $warningCount,
@@ -52,7 +52,7 @@ final class JobExecutionRow
             'job_execution_id' => $this->jobExecutionId,
             'job_name' => $this->jobName,
             'type' => $this->type,
-            'started_at' => $this->startedAt,
+            'started_at' => $this->startedAt ? $this->startedAt->format(DATE_ATOM) : null,
             'username' => $this->username,
             'status' => $this->status,
             'warning_count' => $this->warningCount,
