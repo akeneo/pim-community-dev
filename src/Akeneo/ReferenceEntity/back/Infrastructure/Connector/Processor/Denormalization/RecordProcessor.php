@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\Denormalizat
 use Akeneo\ReferenceEntity\Application\Record\CreateAndEditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
@@ -45,6 +46,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
     private FindImageAttributeCodesInterface $findImageAttributeCodes;
     private FileStorerInterface $fileStorer;
     private ?StepExecution $stepExecution = null;
+    /** @var array<string, AttributeCode> */
     private array $indexedImageAttributeCodes = [];
 
     public function __construct(

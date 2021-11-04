@@ -26,12 +26,11 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
     private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
 
     /** @var LocaleIdentifier[] */
-    private array $localesCache;
+    private array $localesCache = [];
 
     public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers)
     {
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
-        $this->localesCache = [];
     }
 
     public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
