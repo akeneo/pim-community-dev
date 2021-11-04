@@ -37,42 +37,26 @@ class ReferenceEntityDetails
     public const ATTRIBUTE_AS_LABEL = 'attribute_as_label';
     public const ATTRIBUTE_AS_IMAGE = 'attribute_as_image';
 
-    /** @var ReferenceEntityIdentifier */
-    public $identifier;
-
-    /** @var LabelCollection */
-    public $labels;
-
-    /** @var Image */
-    public $image;
-
-    /** @var int */
-    public $recordCount;
-
+    public ReferenceEntityIdentifier $identifier;
+    public LabelCollection $labels;
+    public Image $image;
+    public int $recordCount;
     /** @var AttributeDetails[] */
-    public $attributes;
-
-    /** @var AttributeAsLabelReference */
-    public $attributeAsLabel;
-
-    /** @var AttributeAsImageReference */
-    public $attributeAsImage;
-
-    /** @var bool */
-    public $isAllowedToEdit = true;
+    public array $attributes;
+    public AttributeAsLabelReference $attributeAsLabel;
+    public AttributeAsImageReference $attributeAsImage;
+    public bool $isAllowedToEdit = true;
 
     private const EDIT_PERMISSION = 'edit';
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER   => (string) $this->identifier,
-            self::LABELS       => $this->labels->normalize(),
-            self::IMAGE        => $this->image->normalize(),
+            self::IDENTIFIER => (string) $this->identifier,
+            self::LABELS => $this->labels->normalize(),
+            self::IMAGE => $this->image->normalize(),
             self::RECORD_COUNT => $this->recordCount,
-            self::ATTRIBUTES   => array_map(function (AttributeDetails $attribute) {
-                return $attribute->normalize();
-            }, $this->attributes),
+            self::ATTRIBUTES => array_map(static fn (AttributeDetails $attribute) => $attribute->normalize(), $this->attributes),
             self::PERMISSION => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,
             ],

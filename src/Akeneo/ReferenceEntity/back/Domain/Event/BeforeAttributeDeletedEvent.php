@@ -24,11 +24,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class BeforeAttributeDeletedEvent extends Event
 {
-    /** @var ReferenceEntityIdentifier */
-    public $referenceEntityIdentifier;
-
-    /** @var AttributeIdentifier */
-    public $attributeIdentifier;
+    public ReferenceEntityIdentifier $referenceEntityIdentifier;
+    public AttributeIdentifier $attributeIdentifier;
 
     public function __construct(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeIdentifier $attributeIdentifier)
     {

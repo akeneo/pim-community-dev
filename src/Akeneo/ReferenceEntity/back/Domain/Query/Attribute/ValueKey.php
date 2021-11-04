@@ -29,8 +29,7 @@ use Webmozart\Assert\Assert;
  */
 class ValueKey
 {
-    /** @var string */
-    private $key;
+    private string $key;
 
     private function __construct(string $key)
     {
