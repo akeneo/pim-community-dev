@@ -34,7 +34,7 @@ class GetLastOperations implements GetLastOperationsInterface
     {
         $statement = $this->getQueryBuilder($user)->execute();
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 
     /**

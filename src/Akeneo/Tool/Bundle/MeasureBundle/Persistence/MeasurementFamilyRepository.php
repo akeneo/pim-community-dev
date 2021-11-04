@@ -200,7 +200,7 @@ SQL;
     FROM akeneo_measurement;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         $measurementFamiliesIndexByCodes = [];
         foreach ($results as $result) {

@@ -96,6 +96,6 @@ SQL;
 SQL;
         $statement = $this->dbalConnection->executeQuery($query, ['userId' => $userId]);
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 }

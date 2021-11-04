@@ -139,7 +139,7 @@ SQL;
             $sql,
             ['codes' => $codes],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $codesPerLevel[$row['image_level']][] = $row['product_model_code'];
@@ -181,7 +181,7 @@ SQL;
             $sql,
             ['codes' => $codes],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $productModels = [];
         $productModelsInfo = [];

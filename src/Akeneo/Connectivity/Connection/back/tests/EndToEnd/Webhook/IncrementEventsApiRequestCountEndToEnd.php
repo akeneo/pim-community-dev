@@ -124,7 +124,7 @@ SELECT event_minute, event_count, updated
 FROM akeneo_connectivity_connection_events_api_request_count
 SQL;
 
-        return $this->dbalConnection->executeQuery($sql)->fetchAll();
+        return $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
     }
 
     protected function getConfiguration(): Configuration

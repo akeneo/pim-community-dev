@@ -151,7 +151,7 @@ final class MigrateJobMessagesFromOldQueueCommand extends Command
                 $query,
                 ['batch' => self::BATCH, 'id' => $lastId],
                 ['batch' => Types::INTEGER, 'id' => Types::INTEGER]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (0 === count($rows)) {
                 break;

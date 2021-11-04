@@ -180,7 +180,7 @@ SQL;
                     'formerId' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (empty($rows)) {
                 return;

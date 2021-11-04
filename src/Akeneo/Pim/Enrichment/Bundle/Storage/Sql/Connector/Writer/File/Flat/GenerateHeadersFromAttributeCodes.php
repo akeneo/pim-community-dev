@@ -72,7 +72,7 @@ SQL;
             $attributesDataSql,
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $headers = [];
         foreach ($attributesData as $attributeData) {

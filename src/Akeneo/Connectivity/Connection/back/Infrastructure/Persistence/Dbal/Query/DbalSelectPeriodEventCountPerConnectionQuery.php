@@ -106,7 +106,7 @@ SQL;
                 'up_to_datetime' => Types::DATETIME_IMMUTABLE,
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
     }
 
     /**
@@ -142,7 +142,7 @@ SQL;
                 'up_to_datetime' => Types::DATETIME_IMMUTABLE,
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
     }
 
     private function getFlowTypeForEventType(string $eventType): string

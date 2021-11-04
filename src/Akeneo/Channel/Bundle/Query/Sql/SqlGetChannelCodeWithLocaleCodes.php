@@ -32,7 +32,7 @@ FROM pim_catalog_channel channel
 GROUP BY channel.code;
 SQL;
 
-        $results = $this->connection->executeQuery($sql)->fetchAll();
+        $results = $this->connection->executeQuery($sql)->fetchAllAssociative();
 
         return array_map([$this, 'hydrateLocaleCodes'], $results);
     }

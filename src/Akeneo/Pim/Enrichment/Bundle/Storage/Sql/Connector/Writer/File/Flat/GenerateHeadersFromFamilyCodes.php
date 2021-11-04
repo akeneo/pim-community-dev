@@ -77,7 +77,7 @@ SQL;
             $attributesDataSql,
             ['familyCodes' => $familyCodes],
             ['familyCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $headers = [];
         foreach ($attributesData as $attributeData) {
