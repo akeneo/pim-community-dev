@@ -211,7 +211,7 @@ class ProductModelDraftController
         }
 
         try {
-            $this->manager->$action($productModelDraft, ['comment' => $request->request->get('comment')]);
+            $this->manager->$action($productModelDraft, ['comment' => $request->get('comment')]);
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
