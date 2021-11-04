@@ -2,7 +2,7 @@ import React from 'react';
 import { useDateFormatter, useTranslate } from '@akeneo-pim-community/shared';
 import { Table } from 'akeneo-design-system';
 import { JobExecutionRow } from '../../models/JobExecutionTable';
-import JobExecutionStatus from "../JobExecutionStatus";
+import {JobExecutionStatus} from "../JobExecutionStatus";
 
 const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRow[]}) => {
   const translate = useTranslate();

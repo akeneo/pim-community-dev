@@ -1,7 +1,7 @@
 import React from 'react';
 import {Badge, Level} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {JobStatus} from '../models/JobExecutionTable';
+import {JobStatus} from '../models/JobStatus';
 
 const badgeLevel = (status: JobStatus, hasError: boolean, hasWarning: boolean): Level => {
   if (status === 'FAILED' || hasError) {
@@ -45,5 +45,4 @@ const JobExecutionStatus = ({
   );
 };
 
-export default JobExecutionStatus;
-export type {JobStatus};
+export {JobExecutionStatus};

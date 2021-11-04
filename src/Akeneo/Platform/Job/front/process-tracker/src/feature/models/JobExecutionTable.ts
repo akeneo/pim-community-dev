@@ -1,4 +1,4 @@
-type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
+import {JobStatus} from './JobStatus'
 
 type JobExecutionRow = {
   job_execution_id: number;
@@ -21,4 +21,4 @@ type JobExecutionTable = {
   total_count: number;
 };
 
-export type {JobExecutionTable, JobExecutionRow, JobStatus};
+export type {JobExecutionTable, JobExecutionRow};
