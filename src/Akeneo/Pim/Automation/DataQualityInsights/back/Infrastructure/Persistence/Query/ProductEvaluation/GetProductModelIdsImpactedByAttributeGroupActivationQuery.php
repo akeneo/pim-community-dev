@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Result;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -53,7 +53,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         }
     }
 
-    private function executeQueryToRetrieveImpactedRootProductModels(\DateTimeImmutable $updatedSince): ResultStatement
+    private function executeQueryToRetrieveImpactedRootProductModels(\DateTimeImmutable $updatedSince): Result
     {
         $familyVariantIds = $this->retrieveFamilyVariantsWithAttributeGroupActivationUpdatedSince($updatedSince);
 
@@ -96,7 +96,7 @@ SQL;
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    private function executeQueryToRetrieveImpactedSubProductModels(\DateTimeImmutable $updatedSince): ResultStatement
+    private function executeQueryToRetrieveImpactedSubProductModels(\DateTimeImmutable $updatedSince): Result
     {
         $familyVariantIds = $this->retrieveLevelTwoFamilyVariantsWithAttributeGroupActivationUpdatedSince($updatedSince);
 
@@ -138,6 +138,6 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, ['updatedSince' => $updatedSince->format(Clock::TIME_FORMAT)]);
 
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchFirstColumn();
     }
 }

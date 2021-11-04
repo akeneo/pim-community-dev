@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Result;
 
 final class GetCatalogProductScoreEvolutionQuery implements GetCatalogProductScoreEvolutionQueryInterface
 {
@@ -74,7 +74,7 @@ SQL;
         return $this->buildResult($stmt, (string) $channel, (string) $locale);
     }
 
-    private function buildResult(ResultStatement $stmt, string $channel, string $locale): array
+    private function buildResult(Result $stmt, string $channel, string $locale): array
     {
         $productScoreEvolution = [
             'average_rank' => null,
