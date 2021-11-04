@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * Apply permissions when updating the product model.
@@ -41,16 +42,32 @@ class GrantedProductModelUpdater implements ObjectUpdaterInterface
     /** @var array */
     private $supportedFields;
 
+    private ?FilterInterface $productModelFieldFilter;
+
+    private ?FilterInterface $productModelAssociationFilter;
+
+    private array $supportedAssociations;
+
+    /**
+     * @todo @pull-up master: Remove optional values for $productModelFieldFilter, $productModelAssociationFilter and $supportedAssociations
+     *   And re-order parameters to have $productModelFieldFilter and $productModelAssociationFilter before $supportedFields
+     */
     public function __construct(
         ObjectUpdaterInterface $productModelUpdater,
         AuthorizationCheckerInterface $authorizationChecker,
         FilterInterface $productModelFilter,
-        array $supportedFields
+        array $supportedFields,
+        FilterInterface $productModelFieldFilter = null,
+        FilterInterface $productModelAssociationFilter = null,
+        array $supportedAssociations = []
     ) {
         $this->productModelUpdater = $productModelUpdater;
         $this->authorizationChecker = $authorizationChecker;
         $this->productModelFilter = $productModelFilter;
         $this->supportedFields = $supportedFields;
+        $this->productModelFieldFilter = $productModelFieldFilter;
+        $this->productModelAssociationFilter = $productModelAssociationFilter;
+        $this->supportedAssociations = $supportedAssociations;
     }
 
     /**
@@ -65,6 +82,7 @@ class GrantedProductModelUpdater implements ObjectUpdaterInterface
         // TODO: PIM-6564 will be done when we'll publish product model
         if (null !== $productModel->getId()) {
             $this->checkGrantedFieldsForViewableProductModel($productModel, $data);
+            $this->checkGrantedFieldsForProductModelDraft($productModel, $data);
         }
 
         $this->productModelUpdater->update($productModel, $data, $options);
@@ -102,5 +120,59 @@ class GrantedProductModelUpdater implements ObjectUpdaterInterface
                 ));
             }
         }
+    }
+
+    /**
+     * If the product model is a draft (that's means the user is not owner of the product model but can edit it),
+     * product model's fields cannot be updated, but we allow their presence in the product model to facilitate the update.
+     * To know if a field has been updated, we call Filters
+     * whose responsibility is to compare submitted data with data in database and return only updated values.
+     * If Filters return a non empty array, it means user tries to update a non granted field.
+     */
+    private function checkGrantedFieldsForProductModelDraft(ProductModelInterface $productModel, array $data): void
+    {
+        /**
+         * @todo @pull-up master: Remove this check
+         */
+        if (null === $this->productModelFieldFilter) {
+            return;
+        }
+
+        $isOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $productModel);
+        $canEdit = $this->authorizationChecker->isGranted([Attributes::EDIT], $productModel);
+
+        if (!$isOwner && $canEdit) {
+            $fields = array_filter($data, function ($code) {
+                return in_array($code, $this->supportedFields);
+            }, ARRAY_FILTER_USE_KEY);
+            $filteredProductModelFields = !empty($fields) ? $this->productModelFieldFilter->filter($productModel, $fields) : [];
+            $updatedAssociations = $this->getUpdatedAssociations($productModel, $data);
+
+            $updatedFields = array_keys(array_merge($filteredProductModelFields, $updatedAssociations));
+            if (!empty($updatedFields)) {
+                $message = count($updatedFields) > 1 ? 'following fields' : 'field';
+                throw new InvalidArgumentException(sprintf(
+                    'You cannot update the %s "%s". You should at least own this product model to do it.',
+                    $message,
+                    implode(', ', $updatedFields)
+                ));
+            }
+        }
+    }
+
+    private function getUpdatedAssociations(ProductModelInterface $productModel, array $data): array
+    {
+        /**
+         * @todo @pull-up master: Remove this check
+         */
+        if (null === $this->productModelAssociationFilter) {
+            return [];
+        }
+
+        $associations = array_filter($data, function ($code) {
+            return in_array($code, $this->supportedAssociations);
+        }, ARRAY_FILTER_USE_KEY);
+
+        return !empty($associations) ? $this->productModelAssociationFilter->filter($productModel, $associations) : [];
     }
 }

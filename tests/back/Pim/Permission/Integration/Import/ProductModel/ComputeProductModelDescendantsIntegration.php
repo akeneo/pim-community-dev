@@ -46,7 +46,7 @@ class ComputeProductModelDescendantsIntegration extends AbstractProductModelImpo
         $content = <<<CSV
 code;family_variant;parent;categories;a_localized_and_scopable_text_area-en_US-ecommerce;a_text
 root_product_model;familyVariantA1;;categoryA;"Lorem ipsum dolor sit amet";
-sub_product_model;familyVariantA1;root_product_model;categoryA1;;"Some random text"
+sub_product_model;familyVariantA1;root_product_model;master;;"Some random text"
 CSV;
         $this->jobLauncher->launchAuthenticatedSubProcessImport('csv_product_model_import', $content, 'mary');
 
@@ -83,7 +83,7 @@ CSV;
                 [
                     'field'    => 'categories',
                     'operator' => Operators::IN_LIST,
-                    'value'    => ['categoryA1'],
+                    'value'    => ['master'],
                 ],
                 [
                     'field' => 'a_simple_select',
@@ -167,6 +167,7 @@ CSV;
                         ],
                     ],
                 ],
+                'categories' => ['master'],
             ]
         );
         $this->createProduct(
