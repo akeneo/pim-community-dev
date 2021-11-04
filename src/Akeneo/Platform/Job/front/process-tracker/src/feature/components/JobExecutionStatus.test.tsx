@@ -1,16 +1,8 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {JobExecutionStatus} from './JobExecutionStatus';
 import {JobStatus} from '../models/JobStatus'
-
-declare global {
-  namespace NodeJS {
-    interface Global {
-      fetch: any;
-    }
-  }
-}
 
 test.each<JobStatus>(['COMPLETED', 'STOPPING', 'STOPPED', 'FAILED', 'ABANDONED', 'UNKNOWN'])(
   'It displays the job status "%s" without the progress',
