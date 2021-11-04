@@ -46,6 +46,6 @@ SQL;
             ]
         );
 
-        return $stmt->fetchAll(FetchMode::COLUMN);
+        return $stmt->fetchFirstColumn();
     }
 }
