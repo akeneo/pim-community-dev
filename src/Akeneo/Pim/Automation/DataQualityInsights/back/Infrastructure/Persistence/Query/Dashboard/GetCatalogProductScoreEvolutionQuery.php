@@ -81,7 +81,7 @@ SQL;
             'data' => [],
         ];
 
-        $result = $stmt->fetchColumn(0);
+        $result = $stmt->fetchOne();
         if ($result === null || $result === false) {
             return $productScoreEvolution;
         }

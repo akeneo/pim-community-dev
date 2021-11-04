@@ -35,7 +35,7 @@ final class SqlIsCategoryTreeLinkedToChannel implements IsCategoryTreeLinkedToCh
             [
                 'treeId' => $categoryTreeId
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (bool) $exists;
     }

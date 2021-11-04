@@ -213,7 +213,7 @@ SQL;
     {
         return (int)$this->connection->executeQuery(
             'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
-        )->fetchColumn(0);
+        )->fetchOne();
     }
 
     /**

@@ -169,7 +169,7 @@ SQL;
 
     private function getTotalNumberOfProducts(): int
     {
-        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn(0);
+        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
     private function getExistingProductIdentifiers(array $identifiers): array

@@ -113,6 +113,6 @@ class ClientProviderIntegration extends TestCase
     {
         $sql = "SELECT COUNT(id) FROM pim_api_client";
 
-        return (int) $this->connection->executeQuery($sql)->fetchColumn();
+        return (int) $this->connection->executeQuery($sql)->fetchOne();
     }
 }

@@ -29,7 +29,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $productModelIds = [];
         $stmtRootProductModels = $this->executeQueryToRetrieveImpactedRootProductModels($updatedSince);
 
-        while ($productModelId = $stmtRootProductModels->fetchColumn()) {
+        while ($productModelId = $stmtRootProductModels->fetchOne()) {
             $productModelIds[] = new ProductId(intval($productModelId));
             if (count($productModelIds) >= $bulkSize) {
                 yield $productModelIds;
@@ -39,7 +39,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
 
         $stmtSubProductModels = $this->executeQueryToRetrieveImpactedSubProductModels($updatedSince);
 
-        while ($productModelId = $stmtSubProductModels->fetchColumn()) {
+        while ($productModelId = $stmtSubProductModels->fetchOne()) {
             $productModelIds[] = new ProductId(intval($productModelId));
             if (count($productModelIds) >= $bulkSize) {
                 yield $productModelIds;

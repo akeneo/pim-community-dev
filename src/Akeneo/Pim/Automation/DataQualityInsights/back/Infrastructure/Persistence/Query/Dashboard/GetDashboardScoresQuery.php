@@ -73,7 +73,7 @@ SQL;
 
     private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
     {
-        $result = $stmt->fetchColumn(0);
+        $result = $stmt->fetchOne();
         if ($result === null || $result === false) {
             return null;
         }

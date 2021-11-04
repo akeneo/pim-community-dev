@@ -165,7 +165,7 @@ FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE JSON_CONTAINS_PATH(scores, 'one', $path)
 SQL;
 
-        $count = intval($this->db->executeQuery($query)->fetchColumn());
+        $count = intval($this->db->executeQuery($query)->fetchOne());
 
         $this->assertSame($expectedCount, $count);
     }
@@ -183,7 +183,7 @@ SQL;
             'code' => DashboardProjectionCode::CATALOG
         ]);
 
-        $averageRanks = json_decode($stmt->fetchColumn(), true);
+        $averageRanks = json_decode($stmt->fetchOne(), true);
 
         $this->assertEquals($expectedAverageRanks, $averageRanks);
     }

@@ -79,7 +79,7 @@ final class InitializeProductsEvaluationsCommand extends Command
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product;
 SQL
-        )->fetchColumn());
+        )->fetchOne());
 
         if ($productCount === 0) {
             $io->text('There are no products to initialize.');
@@ -121,7 +121,7 @@ SQL;
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product_model;
 SQL
-        )->fetchColumn());
+        )->fetchOne());
 
         if ($productModelCount === 0) {
             $io->text('There are no product models to initialize.');

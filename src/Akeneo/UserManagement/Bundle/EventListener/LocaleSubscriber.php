@@ -125,7 +125,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $sql = 'SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1';
         $statement = $this->em->getConnection()->executeQuery($sql);
-        $locale = $statement->fetchColumn(0);
+        $locale = $statement->fetchOne();
 
         if (!$locale) {
             return null;

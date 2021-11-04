@@ -187,7 +187,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $stmt = $this->db->executeQuery(
             'SELECT COUNT(*) FROM pim_data_quality_insights_product_criteria_evaluation'
         );
-        $count = intval($stmt->fetchColumn());
+        $count = intval($stmt->fetchOne());
 
         $this->assertSame($expectedCount, $count);
     }

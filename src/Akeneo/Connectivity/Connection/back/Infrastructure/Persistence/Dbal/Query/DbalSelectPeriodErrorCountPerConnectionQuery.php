@@ -64,7 +64,7 @@ SQL;
         );
 
         $connectionCodes = [];
-        while ($code = $resultStmt->fetchColumn()) {
+        while ($code = $resultStmt->fetchOne()) {
             $connectionCodes[] = $code;
         }
 

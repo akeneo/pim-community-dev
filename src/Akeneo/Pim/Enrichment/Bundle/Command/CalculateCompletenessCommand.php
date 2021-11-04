@@ -83,7 +83,7 @@ class CalculateCompletenessCommand extends Command
 
     private function getTotalNumberOfProducts(): int
     {
-        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn();
+        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
     private function getProductIdentifiers(): iterable

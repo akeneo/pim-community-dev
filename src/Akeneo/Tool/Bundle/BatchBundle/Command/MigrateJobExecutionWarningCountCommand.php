@@ -88,7 +88,7 @@ SQL;
 SELECT 1 FROM pim_one_time_task WHERE code = :code
 SQL;
 
-        return !boolval($this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchColumn());
+        return !boolval($this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne());
     }
 
     private function getNextStepExecutionIdBulk(int $lastId, int $bulkSize): ?array

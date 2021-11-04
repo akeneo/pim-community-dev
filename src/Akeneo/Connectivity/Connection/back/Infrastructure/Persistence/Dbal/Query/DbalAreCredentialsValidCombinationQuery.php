@@ -34,6 +34,6 @@ SQL;
             'username' => $username,
         ];
 
-        return (bool) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchColumn();
+        return (bool) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchOne();
     }
 }

@@ -110,7 +110,7 @@ SQL;
 
         $count = $this->dbConnection->executeQuery($query, [
             'resource_name' => $resourceName,
-        ])->fetchColumn();
+        ])->fetchOne();
 
         return intval($count);
     }

@@ -28,6 +28,6 @@ class DbalCountActiveEventSubscriptionsQuery implements CountActiveEventSubscrip
         WHERE webhook_enabled=1
         SQL;
 
-        return (int) $this->dbalConnection->query($query)->fetchColumn();
+        return (int) $this->dbalConnection->executeQuery($query)->fetchOne();
     }
 }

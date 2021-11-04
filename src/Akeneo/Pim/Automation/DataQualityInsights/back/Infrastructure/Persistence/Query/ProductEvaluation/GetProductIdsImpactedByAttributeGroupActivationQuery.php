@@ -42,7 +42,7 @@ SQL;
         );
 
         $productIds = [];
-        while ($productId = $stmt->fetchColumn()) {
+        while ($productId = $stmt->fetchOne()) {
             $productIds[] = new ProductId(intval($productId));
 
             if (count($productIds) >= $bulkSize) {
