@@ -275,6 +275,7 @@ JSON;
     {
         parent::setUp();
 
+        $this->removeJobsUsingTabletChannel();
         $tablet = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('tablet');
         $this->get('pim_catalog.remover.channel')->remove($tablet);
 
@@ -400,5 +401,15 @@ JSON;
 
         Assert::assertEqualsCanonicalizing($expectedAllComplete, $indexedProductModel['_source']['all_complete']);
         Assert::assertEqualsCanonicalizing($expectedAllIncomplete, $indexedProductModel['_source']['all_incomplete']);
+    }
+
+    private function removeJobsUsingTabletChannel(): void
+    {
+        $query = <<<SQL
+DELETE FROM akeneo_batch_job_instance
+WHERE raw_parameters REGEXP 'scope[{";:as0-9]+tablet';
+SQL;
+
+        $this->get('database_connection')->executeQuery($query);
     }
 }
