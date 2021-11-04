@@ -3,6 +3,7 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
@@ -137,22 +138,22 @@ class Base extends Page
      */
     public function toggleSwitch($locator, $on = true)
     {
-        $field = $this->findField($locator);
+        $this->spin(function () use ($locator, $on) {
+            $field = $this->findField($locator);
+            if ($field->getAttribute('role') === 'switch') {
+                // BooleanInput.tsx from DSM
+                $field->find('css', sprintf('*[title=%s]', $on ? 'Yes' : 'No'))->click();
 
-        if ($field->getAttribute('role') === 'switch') {
-            // BooleanInput.tsx from DSM
-            $field->find('css', sprintf('*[title=%s]', $on ? 'Yes' : 'No'))->click();
+                return true;
+            }
 
-            return;
-        }
-
-        $this->spin(function () use ($field, $on) {
             // Legacy boolean
             if ($on !== $field->isChecked()) {
                 $switch = $this->getClosest($field, 'switch');
                 if (null === $switch) {
                     return false;
                 }
+
                 $switch->click();
             }
 

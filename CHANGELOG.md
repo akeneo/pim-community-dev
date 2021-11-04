@@ -136,6 +136,7 @@
 - PIM-10115: Connections domain blacklist should deny local ip
 - PIM-10138: Fix Add attribute dropdown being hidden when bulk editing Assets
 - PIM-10129: Fix error 414 with a long filter list when launching a bulk action and quick export
+- PIM-10139: Fix missing translation key in Italian locale with "change family" mass action
 
 ## New features
 
