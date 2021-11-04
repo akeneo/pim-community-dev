@@ -29,13 +29,29 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->assertTrue($isChannelUsedInProductProductExportJob->execute('mobile'));
     }
 
-    private function givenAProductImportJob(): void
+    public function test_it_determines_if_a_channel_is_used_in_published_product_export_jobs(): void
+    {
+        $isChannelUsedInProductProductExportJob = $this->get(IsChannelUsedInProductProductExportJob::class);
+
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductImportJob('csv_published_product_import');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductExportJobUsingChannel('ecommerce', 'csv_published_product_export');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+         $this->givenAProductExportJobUsingChannel('mobile', 'csv_published_product_export');
+        $this->assertTrue($isChannelUsedInProductProductExportJob->execute('mobile'));
+    }
+
+    private function givenAProductImportJob(string $jobName = 'csv_product_import'): void
     {
         $job =  $this->get('pim_connector.factory.job_instance')->create()
             ->setCode('an_import_job')
             ->setConnector('Akeneo CSV Connector')
             ->setType('import')
-            ->setJobName('csv_product_import')
+            ->setJobName($jobName)
             ->setRawParameters([
                 'filePath' => '/tmp/export_products.csv',
                 'delimiter' => ';',
@@ -50,13 +66,15 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->get('akeneo_batch.saver.job_instance')->save($job);
     }
 
-    private function givenAProductExportJobUsingChannel(string $channelCode): void
-    {
+    private function givenAProductExportJobUsingChannel(
+        string $channelCode,
+        string $jobName = 'csv_product_export'
+    ): void {
         $job =  $this->get('pim_connector.factory.job_instance')->create()
             ->setCode(sprintf('an_export_using_channel_%s', $channelCode))
             ->setConnector('Akeneo CSV Connector')
             ->setType('export')
-            ->setJobName('csv_product_export')
+            ->setJobName($jobName)
             ->setRawParameters([
                 'filePath' => '/tmp/export_products.csv',
                 'delimiter' => ';',
