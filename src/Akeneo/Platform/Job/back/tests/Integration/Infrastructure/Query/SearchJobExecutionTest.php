@@ -9,7 +9,7 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
-class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
+class SearchJobExecutionTest extends IntegrationTestCase
 {
     private array $jobExecutionIds;
 
@@ -29,8 +29,30 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
         $query->size = 2;
 
         $expectedJobExecutions = [
-            new JobExecutionRow($this->jobExecutionIds[2], 'another_product_import', 'import', null, null, 'STARTING', 0),
-            new JobExecutionRow($this->jobExecutionIds[1], 'another_product_import', 'import', '2020-01-02 00:00:00', null, 'STARTED', 0),
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'another_product_import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'another_product_import',
+                'import',
+                new \DateTime('2020-01-02T00:00:00+00:00'),
+                null,
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
@@ -40,7 +62,18 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
         $query->page = 2;
 
         $expectedJobExecutions = [
-            new JobExecutionRow($this->jobExecutionIds[0], 'another_product_import', 'import', '2020-01-01 00:00:00', null, 'COMPLETED', 2),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'another_product_import',
+                'import',
+                new \DateTime('2020-01-01T00:00:00+00:00'),
+                null,
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
@@ -86,6 +119,23 @@ class FindJobExecutionRowsForQueryTest extends IntegrationTestCase
         $this->fixturesLoader->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
+        ]);
+
+        $this->fixturesLoader->createStepExecution([
+            'job_execution_id' => $this->jobExecutionIds[0],
+        ]);
+
+        $this->fixturesLoader->createStepExecution([
+            'job_execution_id' => $this->jobExecutionIds[0],
+            'warning_count' => 2,
+        ]);
+
+        $this->fixturesLoader->createStepExecution([
+            'job_execution_id' => $this->jobExecutionIds[1],
+            'errors' => [
+                'an_error' => 'a backtrace',
+                'an_another_error' => 'an another backtrace',
+            ]
         ]);
     }
 

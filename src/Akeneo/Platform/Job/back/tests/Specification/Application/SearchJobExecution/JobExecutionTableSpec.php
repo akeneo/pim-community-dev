@@ -20,7 +20,18 @@ class JobExecutionTableSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                new JobExecutionRow(1, 'jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10)
+                new JobExecutionRow(
+                    1,
+                    'jobName',
+                    'export',
+                    new \DateTime('2021-11-02T11:20:27+02:00'),
+                    'admin',
+                    'COMPLETED',
+                    10,
+                    0,
+                    1,
+                    2
+                )
             ],
             1,
             2
@@ -32,10 +43,15 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'job_execution_id' => 1,
                     'job_name' => 'jobName',
                     'type' => 'export',
-                    'started_at' => '2021-11-02 13:20:27',
+                    'started_at' => '2021-11-02T11:20:27+02:00',
                     'username' => 'admin',
                     'status' => 'COMPLETED',
                     'warning_count' => 10,
+                    'error_count' => 0,
+                    'tracking' => [
+                        'current_step' => 1,
+                        'total_step' => 2,
+                    ]
                 ]
             ],
             'matches_count' => 1,
