@@ -54,13 +54,6 @@ const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)
   }
 `;
 
-const TableInputValuePlaceholderContainer = styled(LoadingPlaceholderContainer)`
-  width: 100%;
-  & > * {
-    height: 100px;
-  }
-`;
-
 type TableInputValueProps = {
   valueData: TableValueWithId;
   onChange?: (tableValue: TableValueWithId) => void;
@@ -103,18 +96,16 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [searchText]);
 
   const addDirtyCell = (id: string, columnCode: ColumnCode | undefined) => {
-    if (!attribute) {
-      return;
+    if (attribute) {
+      if (typeof columnCode === 'undefined') {
+        attribute.table_configuration.forEach(columnDefinition =>
+          dirtyCells.push({id, columnCode: columnDefinition.code})
+        );
+      } else {
+        dirtyCells.push({id, columnCode});
+      }
+      setDirtyCells([...dirtyCells]);
     }
-
-    if (typeof columnCode === 'undefined') {
-      attribute.table_configuration.forEach(columnDefinition =>
-        dirtyCells.push({id, columnCode: columnDefinition.code})
-      );
-    } else {
-      dirtyCells.push({id, columnCode});
-    }
-    setDirtyCells([...dirtyCells]);
   };
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
@@ -255,123 +246,120 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     return null;
   };
 
-  if (!attribute) {
-    return (
-      <TableInputValuePlaceholderContainer>
-        <div />
-      </TableInputValuePlaceholderContainer>
-    );
-  }
-
-  const [firstColumn, ...otherColumns] = attribute.table_configuration;
+  const [firstColumn, ...otherColumns] = attribute?.table_configuration || [];
 
   return (
-    <TableInputContainer isCopying={isCopying}>
-      <TableInput
-        readOnly={readOnly}
-        isDragAndDroppable={isDragAndDroppable}
-        onReorder={isDragAndDroppable ? handleReorder : undefined}
-      >
-        <TableInput.Header>
-          {attribute.table_configuration.map(columnDefinition => (
-            <TableInput.HeaderCell key={columnDefinition.code}>
-              {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
-            </TableInput.HeaderCell>
-          ))}
-          <HeaderActionsCell />
-        </TableInput.Header>
-        <TableInputValueBody>
-          {valueDataPage.map(row => {
-            return (
-              <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
-                <TableInput.Cell>
-                  <TableInput.CellContent
-                    rowTitle={true}
-                    highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
-                    inError={
-                      isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
-                      getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === null
-                    }
-                  >
-                    {typeof getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === 'undefined' ? (
-                      <FirstCellLoadingPlaceholderContainer>
-                        <div>{translate('pim_common.loading')}</div>
-                      </FirstCellLoadingPlaceholderContainer>
-                    ) : (
-                      getOptionLabel(firstColumn.code, row[firstColumn.code] as string) || `[${row[firstColumn.code]}]`
-                    )}
-                  </TableInput.CellContent>
-                </TableInput.Cell>
-                {otherColumns.map(columnDefinition => {
-                  return (
-                    <TableInput.Cell key={`${row[UNIQUE_ID_KEY]}-${columnDefinition.code}`}>
-                      {tableInputCell(row, columnDefinition)}
+    <>
+      {attribute && (
+        <TableInputContainer isCopying={isCopying}>
+          <TableInput
+            readOnly={readOnly}
+            isDragAndDroppable={isDragAndDroppable}
+            onReorder={isDragAndDroppable ? handleReorder : undefined}
+          >
+            <TableInput.Header>
+              {attribute.table_configuration.map(columnDefinition => (
+                <TableInput.HeaderCell key={columnDefinition.code}>
+                  {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
+                </TableInput.HeaderCell>
+              ))}
+              <HeaderActionsCell />
+            </TableInput.Header>
+            <TableInputValueBody>
+              {valueDataPage.map(row => {
+                return (
+                  <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
+                    <TableInput.Cell>
+                      <TableInput.CellContent
+                        rowTitle={true}
+                        highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
+                        inError={
+                          isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
+                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === null
+                        }
+                      >
+                        {typeof getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === 'undefined' ? (
+                          <FirstCellLoadingPlaceholderContainer>
+                            <div>{translate('pim_common.loading')}</div>
+                          </FirstCellLoadingPlaceholderContainer>
+                        ) : (
+                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) ||
+                          `[${row[firstColumn.code]}]`
+                        )}
+                      </TableInput.CellContent>
                     </TableInput.Cell>
-                  );
-                })}
-                <TableInput.Cell>
-                  {!readOnly && (
-                    <Dropdown>
-                      <IconButton
-                        icon={<MoreVerticalIcon size={16} />}
-                        title={translate('pim_common.actions')}
-                        onClick={() => openActions(row[UNIQUE_ID_KEY])}
-                        ghost='borderless'
-                        level='tertiary'
-                      />
-                      {isOpenActions(row[UNIQUE_ID_KEY]) && (
-                        <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
-                          <Dropdown.ItemCollection>
-                            <Dropdown.Item onClick={() => handleDeleteRow(row[UNIQUE_ID_KEY])}>
-                              {translate('pim_table_attribute.form.product.actions.delete_row')}
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleClearRow(row[UNIQUE_ID_KEY])}>
-                              {translate('pim_table_attribute.form.product.actions.clear_row')}
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleMoveFirst(row[UNIQUE_ID_KEY])}>
-                              {translate('pim_table_attribute.form.product.actions.move_first')}
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleMoveLast(row[UNIQUE_ID_KEY])}>
-                              {translate('pim_table_attribute.form.product.actions.move_last')}
-                            </Dropdown.Item>
-                          </Dropdown.ItemCollection>
-                        </Dropdown.Overlay>
+                    {otherColumns.map(columnDefinition => {
+                      return (
+                        <TableInput.Cell key={`${row[UNIQUE_ID_KEY]}-${columnDefinition.code}`}>
+                          {tableInputCell(row, columnDefinition)}
+                        </TableInput.Cell>
+                      );
+                    })}
+                    <TableInput.Cell>
+                      {!readOnly && (
+                        <Dropdown>
+                          <IconButton
+                            icon={<MoreVerticalIcon size={16} />}
+                            title={translate('pim_common.actions')}
+                            onClick={() => openActions(row[UNIQUE_ID_KEY])}
+                            ghost='borderless'
+                            level='tertiary'
+                          />
+                          {isOpenActions(row[UNIQUE_ID_KEY]) && (
+                            <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
+                              <Dropdown.ItemCollection>
+                                <Dropdown.Item onClick={() => handleDeleteRow(row[UNIQUE_ID_KEY])}>
+                                  {translate('pim_table_attribute.form.product.actions.delete_row')}
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleClearRow(row[UNIQUE_ID_KEY])}>
+                                  {translate('pim_table_attribute.form.product.actions.clear_row')}
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleMoveFirst(row[UNIQUE_ID_KEY])}>
+                                  {translate('pim_table_attribute.form.product.actions.move_first')}
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleMoveLast(row[UNIQUE_ID_KEY])}>
+                                  {translate('pim_table_attribute.form.product.actions.move_last')}
+                                </Dropdown.Item>
+                              </Dropdown.ItemCollection>
+                            </Dropdown.Overlay>
+                          )}
+                        </Dropdown>
                       )}
-                    </Dropdown>
-                  )}
-                </TableInput.Cell>
-              </TableInput.Row>
-            );
-          })}
-        </TableInputValueBody>
-      </TableInput>
-      {isSearching && valueDataPage.length === 0 && (
-        <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
-          {translate('pim_table_attribute.form.product.no_search_result')}
-        </BorderedCenteredHelper>
+                    </TableInput.Cell>
+                  </TableInput.Row>
+                );
+              })}
+            </TableInputValueBody>
+          </TableInput>
+          {isSearching && valueDataPage.length === 0 && (
+            <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
+              {translate('pim_table_attribute.form.product.no_search_result')}
+            </BorderedCenteredHelper>
+          )}
+          {!isSearching && valueDataPage.length === 0 && (
+            <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
+              <CenteredHelper.Title>
+                {translate('pim_table_attribute.form.product.no_rows_title', {
+                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                })}
+              </CenteredHelper.Title>
+              {readOnly
+                ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
+                : translate('pim_table_attribute.form.product.no_rows_subtitle')}
+            </BorderedCenteredHelper>
+          )}
+          {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
+            <TableFooter
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              rowsCount={filteredData.length}
+              setCurrentPage={setCurrentPage}
+              setItemsPerPage={setItemsPerPage}
+            />
+          )}
+        </TableInputContainer>
       )}
-      {!isSearching && valueDataPage.length === 0 && (
-        <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>
-            {translate('pim_table_attribute.form.product.no_rows_title', {
-              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-            })}
-          </CenteredHelper.Title>
-          {readOnly
-            ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
-            : translate('pim_table_attribute.form.product.no_rows_subtitle')}
-        </BorderedCenteredHelper>
-      )}
-      {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
-        <TableFooter
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          rowsCount={filteredData.length}
-          setCurrentPage={setCurrentPage}
-          setItemsPerPage={setItemsPerPage}
-        />
-      )}
-    </TableInputContainer>
+    </>
   );
 };
 

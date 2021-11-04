@@ -7,9 +7,8 @@ type AttributeContextState = {
 };
 
 export const AttributeContext = React.createContext<AttributeContextState>({
-  setAttribute: () => {
-    console.error('AttributeContext setAttribute can not be called');
-  },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setAttribute: /* istanbul ignore next */ () => {},
 });
 
 export const useAttributeContext = () => {

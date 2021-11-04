@@ -30,17 +30,6 @@ const getSelectOptions = async (
   return selectOptionsCache[key];
 };
 
-const getSelectOption = async (
-  router: Router,
-  attributeCode: AttributeCode,
-  columnCode: ColumnCode,
-  selectOptionCode: string
-): Promise<SelectOption | null> => {
-  const options = await getSelectOptions(router, attributeCode, columnCode);
-
-  return options?.find(option => option.code.toLowerCase() === selectOptionCode.toLowerCase()) ?? null;
-};
-
 const saveSelectOptions = async (
   router: Router,
   attribute: TableAttribute,
@@ -76,7 +65,6 @@ const saveSelectOptions = async (
 
 const SelectOptionRepository = {
   findFromColumn: getSelectOptions,
-  findFromCell: getSelectOption,
   clearCache: clearCacheSelectOptions,
   save: saveSelectOptions,
 };

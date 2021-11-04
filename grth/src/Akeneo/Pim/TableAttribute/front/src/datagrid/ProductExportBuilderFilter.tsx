@@ -47,6 +47,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   onChange,
   initialDataFilter,
 }) => {
+  // TODO I think it's broken
   const {attribute, setAttribute} = useAttributeContext();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const handleChange = (filter: PendingTableFilterValue) => {
@@ -66,23 +67,21 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : [];
 
   React.useEffect(() => {
-    if (!attribute) {
-      return;
+    if (attribute) {
+      const column = attribute.table_configuration.find(column => column.code === initialDataFilter.value?.column);
+
+      if (typeof optionsForFirstColumn === 'undefined') {
+        return;
+      }
+
+      const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
+      setInitialFilter({
+        row,
+        column,
+        value: initialDataFilter.value?.value,
+        operator: initialDataFilter.operator,
+      });
     }
-
-    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.value?.column);
-
-    if (typeof optionsForFirstColumn === 'undefined') {
-      return;
-    }
-
-    const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
-    setInitialFilter({
-      row,
-      column,
-      value: initialDataFilter.value?.value,
-      operator: initialDataFilter.operator,
-    });
   }, [attribute, optionsForFirstColumn]);
 
   return (

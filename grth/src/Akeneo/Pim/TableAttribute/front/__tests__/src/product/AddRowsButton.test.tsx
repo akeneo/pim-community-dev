@@ -7,6 +7,7 @@ import {TestAttributeContextProvider} from '../../shared/TestAttributeContextPro
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/attribute/ManageOptionsModal');
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 
@@ -142,5 +143,31 @@ describe('AddRowsButton', () => {
       expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
+  });
+
+  it('should open manage options directly', async () => {
+    fetchMock.mockResponse((request: Request) => {
+      if (request.url.includes('pim_enrich_attribute_rest_post')) {
+        return Promise.resolve(JSON.stringify(true));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'ingredient'} checkedOptionCodes={[]} toggleChange={jest.fn()} />
+      </TestAttributeContextProvider>
+    );
+
+    const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
+    await act(async () => {
+      fireEvent.click(button);
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
+
+    expect(await screen.findByText('Edit options TODO TRANSLATE')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Edit options TODO TRANSLATE'));
+    fireEvent.click(screen.getByText('Fake confirm'));
   });
 });

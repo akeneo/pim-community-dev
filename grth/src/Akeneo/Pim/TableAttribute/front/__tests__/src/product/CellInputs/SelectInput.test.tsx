@@ -1,12 +1,15 @@
 import React from 'react';
+import 'jest-fetch-mock';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import SelectInput from '../../../../src/product/CellInputs/SelectInput';
-import {ColumnDefinition} from '../../../../src/models';
-import {getComplexTableAttribute, getComplexTableConfiguration} from '../../../factories';
+import {ColumnDefinition, SelectOption} from '../../../../src/models';
+import {getComplexTableAttribute} from '../../../factories';
 import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
+import {nutritionScoreSelectOptions} from '../../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+import {SelectOptionRepository} from '../../../../src/repositories';
 
-jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../../src/attribute/ManageOptionsModal');
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 
@@ -17,6 +20,16 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 });
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
+const fetchGetSelectOptions = (options: SelectOption[]) => {
+  fetchMock.mockResponse((request: Request) => {
+    if (request.url.includes('pim_table_attribute_get_select_options')) {
+      return Promise.resolve(JSON.stringify(options));
+    }
+
+    throw new Error(`The "${request.url}" url is not mocked.`);
+  });
+};
+
 const nutritionScoreColumn: ColumnDefinition = {
   code: 'nutrition_score',
   validations: {},
@@ -25,7 +38,14 @@ const nutritionScoreColumn: ColumnDefinition = {
 };
 
 describe('SelectInput', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks();
+    SelectOptionRepository.clearCache();
+  });
+
   it('should render label of existing option', async () => {
+    fetchGetSelectOptions(nutritionScoreSelectOptions);
+
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <SelectInput
@@ -42,6 +62,8 @@ describe('SelectInput', () => {
   });
 
   it('should delete the value', async () => {
+    fetchGetSelectOptions(nutritionScoreSelectOptions);
+
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
@@ -61,11 +83,11 @@ describe('SelectInput', () => {
   });
 
   it('should display nothing if no options', () => {
+    fetchGetSelectOptions([]);
+
     const handleChange = jest.fn();
-    const table_configuration = getComplexTableAttribute().table_configuration;
-    table_configuration[4].code = 'no_options';
     renderWithProviders(
-      <TestAttributeContextProvider attribute={{...getComplexTableAttribute(), table_configuration}}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <SelectInput
           columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
           highlighted={false}
@@ -80,6 +102,8 @@ describe('SelectInput', () => {
   });
 
   it('should paginate the options', async () => {
+    fetchGetSelectOptions(nutritionScoreSelectOptions);
+
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <SelectInput
@@ -107,6 +131,8 @@ describe('SelectInput', () => {
   });
 
   it('should updates the value', async () => {
+    fetchGetSelectOptions(nutritionScoreSelectOptions);
+
     const handleChange = jest.fn();
 
     renderWithProviders(
@@ -132,6 +158,8 @@ describe('SelectInput', () => {
   });
 
   it('should search in the options', async () => {
+    fetchGetSelectOptions(nutritionScoreSelectOptions);
+
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <SelectInput
@@ -153,15 +181,18 @@ describe('SelectInput', () => {
 
     expect(screen.queryByText('U')).toBeInTheDocument();
     expect(screen.queryByText('A')).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText('pim_common.search'), {target: {value: 'foobarz'}});
+    expect(await screen.findByText('pim_table_attribute.form.attribute.please_try_again')).toBeInTheDocument();
   });
 
   it('should display a link when there is no option', async () => {
-    const table_configuration = getComplexTableConfiguration();
-    table_configuration[4].code = 'no_options';
+    fetchGetSelectOptions([]);
+
     renderWithProviders(
-      <TestAttributeContextProvider attribute={{...getComplexTableAttribute(), table_configuration}}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <SelectInput
-          columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
+          columnDefinition={nutritionScoreColumn}
           highlighted={false}
           inError={false}
           row={{'unique id': 'uniqueIdB'}}
@@ -176,5 +207,46 @@ describe('SelectInput', () => {
       expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
       fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
     });
+  });
+
+  it('should update options directly', async () => {
+    let hasCalledPostAttribute = false;
+    let getOptionsCalls = 0;
+    fetchMock.mockResponse((request: Request) => {
+      if (request.url.includes('pim_enrich_attribute_rest_post')) {
+        hasCalledPostAttribute = true;
+        return Promise.resolve(JSON.stringify(true));
+      }
+      if (request.url.includes('pim_table_attribute_get_select_options')) {
+        getOptionsCalls++;
+        if (getOptionsCalls <= 2) {
+          return Promise.resolve(JSON.stringify(nutritionScoreSelectOptions));
+        } else {
+          return Promise.resolve(JSON.stringify([{code: 'fake_code'}]));
+        }
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <SelectInput
+          columnDefinition={nutritionScoreColumn}
+          highlighted={false}
+          inError={false}
+          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+          onChange={jest.fn()}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    expect(await screen.findByText('B')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_common.open'));
+    expect(await screen.findByText('Edit options')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Edit options'));
+    fireEvent.click(screen.getByText('Fake confirm'));
+    expect(hasCalledPostAttribute).toBeTruthy();
+    expect(await screen.findByText('[B]')).toBeInTheDocument();
   });
 });
