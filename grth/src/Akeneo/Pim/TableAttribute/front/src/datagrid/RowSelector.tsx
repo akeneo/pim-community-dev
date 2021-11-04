@@ -1,11 +1,11 @@
 import React from 'react';
-import {getLabel, useUserContext, useTranslate} from '@akeneo-pim-community/shared';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectInput} from 'akeneo-design-system';
-import {SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {SelectOption, SelectOptionCode} from '../models';
 import {useFetchOptions} from '../product';
+import {useAttributeContext} from '../contexts/AttributeContext';
 
 type RowSelectorProps = {
-  attribute: TableAttribute;
   onChange: (option: SelectOption | undefined | null) => void;
   /**
    * If value is:
@@ -16,13 +16,14 @@ type RowSelectorProps = {
   value?: SelectOption | null;
 };
 
-const RowSelector: React.FC<RowSelectorProps> = ({attribute, onChange, value}) => {
+const RowSelector: React.FC<RowSelectorProps> = ({onChange, value}) => {
   const ANY_OPTION_CODE = '[any option]';
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
-  const options = getOptionsFromColumnCode(attribute.table_configuration[0].code);
+  const {attribute, setAttribute} = useAttributeContext();
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
+  const options = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : [];
   const [page, setPage] = React.useState<number>(0);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const anyRowOption: SelectOption = {

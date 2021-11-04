@@ -1,8 +1,9 @@
-import {ColumnCode, TableAttribute, TableCell} from '../../models';
+import {ColumnCode, TableCell} from '../../models';
 import {TableValueWithId} from '../TableFieldApp';
 
 export type CellMatcher = (
-  attribute: TableAttribute,
+  // attribute: TableAttribute,
+  // TODO Used ?
   valueData: TableValueWithId
 ) => (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean;
 

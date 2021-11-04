@@ -18,6 +18,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {CellInputsMapping} from './CellInputs';
 import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
+import {useAttributeContext} from '../contexts/AttributeContext';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -54,7 +55,6 @@ const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)
 `;
 
 type TableInputValueProps = {
-  attribute: TableAttribute;
   valueData: TableValueWithId;
   onChange?: (tableValue: TableValueWithId) => void;
   searchText?: string;
@@ -66,7 +66,6 @@ type TableInputValueProps = {
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
-  attribute,
   valueData,
   onChange,
   readOnly = false,
@@ -78,18 +77,18 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
+  const {attribute, setAttribute} = useAttributeContext();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [dirtyCells, setDirtyCells] = React.useState<ViolatedCell[]>([]);
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
-  const [firstColumn, ...otherColumns] = attribute.table_configuration;
-  const {getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
+  const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellInputsMapping).forEach(data_type => {
-    matchers[data_type] = cellMatchersMapping[data_type].default(attribute, valueData);
+    matchers[data_type] = cellMatchersMapping[data_type].default(valueData);
   });
 
   React.useEffect(() => {
@@ -97,6 +96,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [searchText]);
 
   const addDirtyCell = (id: string, columnCode: ColumnCode | undefined) => {
+    if (!attribute) {
+      return;
+    }
+
     if (typeof columnCode === 'undefined') {
       attribute.table_configuration.forEach(columnDefinition =>
         dirtyCells.push({id, columnCode: columnDefinition.code})
@@ -133,7 +136,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     return matcher && matcher(cell, searchText, columnDefinition.code);
   };
 
-  if (isSearching) {
+  if (isSearching && attribute) {
     filteredData = valueData.filter(row => {
       return attribute.table_configuration.some(columnDefinition => {
         return cellMatchSearch(row[columnDefinition.code], columnDefinition);
@@ -232,12 +235,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
       return (
         <CellInput
+          attribute={attribute as TableAttribute}
           row={row}
           columnDefinition={columnDefinition}
           onChange={value => handleChange(row[UNIQUE_ID_KEY], columnCode, value)}
           data-testid={`input-${row[UNIQUE_ID_KEY]}-${columnCode}`}
           inError={isInErrorFromBackend(row[UNIQUE_ID_KEY], columnCode)}
-          attribute={attribute}
           highlighted={matchSearch(cell, searchText, columnCode)}
         />
       );
@@ -245,6 +248,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
     return null;
   };
+
+  if (!attribute) {
+    return <div>LOADING</div>;
+  }
+
+  const [firstColumn, ...otherColumns] = attribute.table_configuration;
 
   return (
     <TableInputContainer isCopying={isCopying}>
@@ -271,15 +280,15 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
                     inError={
                       isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
-                      getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
+                      getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === null
                     }
                   >
-                    {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
+                    {typeof getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === 'undefined' ? (
                       <FirstCellLoadingPlaceholderContainer>
                         <div>{translate('pim_common.loading')}</div>
                       </FirstCellLoadingPlaceholderContainer>
                     ) : (
-                      getOptionLabel(firstColumn.code, row[firstColumn.code]) || `[${row[firstColumn.code]}]`
+                      getOptionLabel(firstColumn.code, row[firstColumn.code] as string) || `[${row[firstColumn.code]}]`
                     )}
                   </TableInput.CellContent>
                 </TableInput.Cell>

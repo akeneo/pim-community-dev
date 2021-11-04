@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Dropdown, Link, TableInput} from 'akeneo-design-system';
-import {Attribute, ColumnCode, SelectOption, SelectOptionCode} from '../../models';
+import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
+import {useAttributeContext} from '../../contexts/AttributeContext';
 
 const BATCH_SIZE = 20;
 
@@ -14,7 +15,6 @@ type TableInputSelectProps = {
   onChange: (value: SelectOptionCode | undefined) => void;
   inError?: boolean;
   highlighted?: boolean;
-  attribute: Attribute;
   columnCode: ColumnCode;
 };
 
@@ -28,7 +28,6 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   onChange,
   inError = false,
   highlighted = false,
-  attribute,
   columnCode,
   ...rest
 }) => {
@@ -36,6 +35,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const userContext = useUserContext();
   const security = useSecurity();
   const router = useRouter();
+  const {attribute, setAttribute} = useAttributeContext();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
@@ -43,10 +43,10 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const options = getOptionsFromColumnCode(columnCode);
 
-  const isLoading = typeof options === 'undefined';
+  const isLoading = !attribute || typeof options === 'undefined';
   let option = null;
   if (value && typeof options !== 'undefined') {
     option = options.find(option => option.code.toLowerCase() === value.toLowerCase());
@@ -83,10 +83,12 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
 
   const handleRedirect = () => {
     setCloseTick(!closeTick);
-    router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
+    if (attribute) {
+      router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
+    }
   };
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <LoadingPlaceholderContainer>
         <FakeInput>{translate('pim_common.loading')}</FakeInput>
@@ -126,7 +128,11 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
             {hasEditPermission ? (
               <div>
                 {translate('pim_table_attribute.form.product.no_add_options', {
-                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                  attributeLabel: getLabel(
+                    (attribute as TableAttribute).labels,
+                    userContext.get('catalogLocale'),
+                    (attribute as TableAttribute).code
+                  ),
                 })}{' '}
                 <Link onClick={handleRedirect}>
                   {translate('pim_table_attribute.form.product.no_add_options_link')}
@@ -134,7 +140,11 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
               </div>
             ) : (
               translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                attributeLabel: getLabel(
+                  (attribute as TableAttribute).labels,
+                  userContext.get('catalogLocale'),
+                  (attribute as TableAttribute).code
+                ),
               })
             )}
           </CenteredHelper>
@@ -152,12 +162,11 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   );
 };
 
-const renderer: CellInput = ({row, columnDefinition, onChange, inError, attribute, highlighted, ...rest}) => {
+const renderer: CellInput = ({row, columnDefinition, onChange, inError, highlighted, ...rest}) => {
   const cell = row[columnDefinition.code] as SelectOptionCode | undefined;
 
   return (
     <SelectInput
-      attribute={attribute}
       highlighted={highlighted}
       value={cell}
       onChange={onChange}

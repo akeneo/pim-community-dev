@@ -1,8 +1,11 @@
+import React from 'react';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellMatcher} from './index';
+import {useAttributeContext} from '../../contexts/AttributeContext';
 
-const useSearch: CellMatcher = (attribute, valueData) => {
-  const {getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
+const useSearch: CellMatcher = () => {
+  const {attribute, setAttribute} = useAttributeContext();
+  const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
 
   return (cell, searchText, columnCode) => {
     const isSearching = searchText !== '';
@@ -10,7 +13,7 @@ const useSearch: CellMatcher = (attribute, valueData) => {
       return false;
     }
 
-    const label = getOptionLabel(columnCode, cell);
+    const label = getOptionLabel(columnCode, cell as string);
     return !!label && label.toLowerCase().includes(searchText.toLowerCase());
   };
 };

@@ -11,16 +11,17 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../models';
+import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode} from '../models';
 import styled from 'styled-components';
 import {CenteredHelper} from '../shared';
 import {SelectOptionRepository} from '../repositories';
-import {ManageOptionsModal} from "../attribute";
+import {ManageOptionsModal} from '../attribute';
+import {useAttributeContext} from '../contexts/AttributeContext';
+import {useFetchOptions} from './useFetchOptions';
 
 const BATCH_SIZE = 20;
 
 type AddRowsButtonProps = {
-  attribute: TableAttribute;
   columnCode: ColumnCode;
   checkedOptionCodes: SelectOptionCode[];
   toggleChange: (optionCode: SelectOptionCode) => void;
@@ -37,7 +38,7 @@ const NoEditPermission = styled(Badge)`
 const EditOptionsContainer = styled.div`
   margin: 10px;
   text-align: center;
-`
+`;
 
 type Option = {
   code: string;
@@ -45,7 +46,6 @@ type Option = {
 };
 
 const AddRowsButton: React.FC<AddRowsButtonProps> = ({
-  attribute,
   columnCode,
   checkedOptionCodes,
   toggleChange,
@@ -55,28 +55,24 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   const translate = useTranslate();
   const security = useSecurity();
   const userContext = useUserContext();
+  const {attribute, setAttribute} = useAttributeContext();
 
   const [isOpen, open, close] = useBooleanState(false);
   const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [items, setItems] = useState<Option[] | undefined>(undefined);
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
-
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
   const lowercaseCheckedOptionCodes = checkedOptionCodes.map(code => code.toLowerCase());
 
   const searchRef = React.createRef<HTMLInputElement>();
 
-  const setItemsFromOptions = (selectOptions: SelectOption[] | null) => {
-    setItems(
-      (selectOptions ?? []).map((option: SelectOption) => {
-        return {
-          code: option.code,
-          label: getLabel(option.labels, userContext.get('catalogLocale'), option.code),
-        };
-      })
-    );
-  }
+  const items = (getOptionsFromColumnCode(columnCode) || []).map(option => {
+    return {
+      code: option.code,
+      label: getLabel(option.labels, userContext.get('catalogLocale'), option.code),
+    };
+  });
 
   const focus = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.focus();
@@ -87,14 +83,6 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
       focus(searchRef);
     }
   }, [isOpen]);
-
-  React.useEffect(() => {
-    if (isOpen && typeof items === 'undefined') {
-      SelectOptionRepository.findFromColumn(router, attribute.code, columnCode).then(selectOptions => {
-        setItemsFromOptions(selectOptions);
-      });
-    }
-  }, [router, isOpen]);
 
   const handleNextPage = () => {
     setNumberOfDisplayedItems(numberOfDisplayedItems + BATCH_SIZE);
@@ -116,16 +104,20 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
 
   const handleRedirect = () => {
     close();
-    router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
+    if (attribute) {
+      router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
+    }
   };
 
   const handleSaveOptions = (selectOptions: SelectOption[]) => {
-    SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
-      if (result) {
-        setItemsFromOptions(selectOptions);
-      }
-    })
-  }
+    if (attribute) {
+      SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
+        if (result) {
+          setAttribute({...attribute});
+        }
+      });
+    }
+  };
 
   return (
     <Dropdown>
@@ -133,7 +125,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
         {translate('pim_table_attribute.product_edit_form.add_rows')}
         <ArrowDownIcon />
       </Button>
-      {isOpen && (
+      {isOpen && attribute && (
         <Dropdown.Overlay horizontalPosition='left' onClose={close}>
           <Dropdown.Header>
             {searchValue === '' && itemsToDisplay.length === 0 && !hasEditPermission && (
@@ -198,15 +190,21 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
               </CenteredHelper.Container>
             )}
           </Dropdown.ItemCollection>
-          {hasEditPermission && <EditOptionsContainer>
-            <Button onClick={openManageOptions}>Edit options</Button>
-            {isManageOptionsOpen && <ManageOptionsModal
-              onClose={closeManageOptions}
-              attribute={attribute}
-              columnDefinition={attribute.table_configuration[0] as SelectColumnDefinition}
-              onChange={handleSaveOptions}
-            />}
-          </EditOptionsContainer>}
+          {hasEditPermission && (
+            <EditOptionsContainer>
+              <Button onClick={openManageOptions} ghost level='secondary'>
+                Edit options
+              </Button>
+              {isManageOptionsOpen && (
+                <ManageOptionsModal
+                  onClose={closeManageOptions}
+                  attribute={attribute}
+                  columnDefinition={attribute.table_configuration[0] as SelectColumnDefinition}
+                  onChange={handleSaveOptions}
+                />
+              )}
+            </EditOptionsContainer>
+          )}
         </Dropdown.Overlay>
       )}
     </Dropdown>

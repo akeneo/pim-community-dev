@@ -1,17 +1,17 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {useFetchOptions} from '../../product';
-import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {SelectOptionCode, TableAttribute} from '../../models';
-import {AttributeFetcher} from '../../fetchers';
-import {useIsMounted} from '../../shared';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {SelectOptionCode} from '../../models';
+import {useAttributeContext} from '../../contexts/AttributeContext';
 
-const StringFilterValue: TableFilterValueRenderer = ({value, onChange, attribute, columnCode}) => {
+const StringFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
+  const {attribute, setAttribute} = useAttributeContext();
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const options = getOptionsFromColumnCode(columnCode);
   const [page, setPage] = React.useState<number>(0);
   const [searchValue, setSearchValue] = React.useState<string>('');
@@ -45,21 +45,11 @@ const StringFilterValue: TableFilterValueRenderer = ({value, onChange, attribute
   );
 };
 
-const useValueRenderer: FilteredValueRenderer = attributeCode => {
-  const [attribute, setAttribute] = React.useState<TableAttribute | undefined>();
+const useValueRenderer: FilteredValueRenderer = () => {
+  const {attribute, setAttribute} = useAttributeContext();
   const userContext = useUserContext();
-  const router = useRouter();
-  const isMounted = useIsMounted();
 
-  useEffect(() => {
-    AttributeFetcher.fetch(router, attributeCode).then(attribute => {
-      if (isMounted()) {
-        setAttribute(attribute as TableAttribute);
-      }
-    });
-  }, []);
-
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
 
   return (value, columnCode) => {
     const options = getOptionsFromColumnCode(columnCode) || [];

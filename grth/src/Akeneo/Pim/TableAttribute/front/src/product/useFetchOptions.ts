@@ -1,61 +1,54 @@
 import React from 'react';
-import {AttributeCode, ColumnCode, SelectOption, TableCell, TableConfiguration, TableRow} from '../models';
+import {ColumnCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
 import {useIsMounted} from '../shared';
 
 const useFetchOptions: (
-  tableConfiguration: TableConfiguration | undefined,
-  attributeCode: AttributeCode,
-  valueData: TableRow[]
+  attribute: TableAttribute | undefined,
+  setAttribute: (tableAttribute: TableAttribute) => void
 ) => {
   getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined;
-  getOptionLabel: (columnCode: ColumnCode, value: TableCell) => string | undefined | null;
-} = (tableConfiguration, attributeCode, valueData) => {
+  getOptionLabel: (columnCode: ColumnCode, value: string) => string | undefined | null;
+} = (attribute, setAttribute) => {
   const router = useRouter();
   const userContext = useUserContext();
   const isMounted = useIsMounted();
 
-  const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
-  const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
-
-  const innerGetOptionLabel = async (columnCode: ColumnCode, value: string) => {
-    const selectOption = await SelectOptionRepository.findFromCell(router, attributeCode, columnCode, value);
-
-    return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : null;
-  };
-
   React.useEffect(() => {
-    if (tableConfiguration) {
+    if (attribute) {
       const f = async () => {
-        for await (const column of tableConfiguration.filter(
+        let dirty = false;
+        for await (const column of attribute.table_configuration.filter(
           columnDefinition => columnDefinition.data_type === 'select'
         )) {
-          options[column.code] =
-            (await SelectOptionRepository.findFromColumn(router, attributeCode, column.code)) || [];
-          for await (const row of valueData) {
-            if (typeof row[column.code] !== 'undefined') {
-              selectOptionLabels[`${column.code}-${row[column.code]}`.toLowerCase()] = await innerGetOptionLabel(
-                column.code,
-                row[column.code] as string
-              );
-            }
+          const i = attribute.table_configuration.findIndex(columnDefinition => columnDefinition.code === column.code);
+          const currentOptions = (attribute.table_configuration[i] as SelectColumnDefinition).options;
+          const newOptions = (await SelectOptionRepository.findFromColumn(router, attribute.code, column.code)) || [];
+          if (JSON.stringify(currentOptions) !== JSON.stringify(newOptions)) {
+            dirty = true;
+            (attribute.table_configuration[i] as SelectColumnDefinition).options = newOptions;
           }
         }
-        if (!isMounted()) return;
-        setOptions({...options});
-        setSelectOptionLabels({...selectOptionLabels});
+        if (isMounted() && dirty) setAttribute({...attribute});
       };
       f();
     }
-  }, [valueData.length, tableConfiguration]);
+  }, [attribute]);
 
-  const getOptionsFromColumnCode = (columnCode: ColumnCode) => {
-    return options[columnCode];
+  const getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined = columnCode => {
+    if (!attribute) return undefined;
+    const i = attribute?.table_configuration.findIndex(columnDefinition => columnDefinition.code === columnCode);
+    return (attribute?.table_configuration[i] as SelectColumnDefinition).options;
   };
 
-  const getOptionLabel = (columnCode: ColumnCode, value: TableCell) => {
-    return selectOptionLabels[`${columnCode}-${value}`.toLowerCase()];
+  // Undefined = loading ; null = not found ; string = label
+  const getOptionLabel = (columnCode: ColumnCode, value: string) => {
+    if (!attribute) return undefined;
+    const options = getOptionsFromColumnCode(columnCode);
+    if (typeof options === 'undefined') return undefined;
+    const option = options.find((option: SelectOption) => option.code === value);
+    return option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : null;
   };
 
   return {

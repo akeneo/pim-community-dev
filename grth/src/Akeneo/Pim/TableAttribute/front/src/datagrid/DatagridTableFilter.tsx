@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
+import {useAttributeContext} from '../contexts/AttributeContext';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -66,7 +67,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const isMounted = useIsMounted();
 
   useEffect(() => {
@@ -151,42 +152,44 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   }
 
   return (
-    <Dropdown {...rest}>
-      {isOpen && attribute && filterValue && (
-        <Dropdown.Overlay onClose={handleClose}>
-          <FilterContainer>
-            <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
-              <FilterSectionTitleTitle>
-                {getLabel(attribute.labels, catalogLocale, attribute.code)}
-              </FilterSectionTitleTitle>
-            </FilterSectionTitle>
-            <FilterSelectorList
-              attribute={attribute}
-              filterValuesMapping={filterValuesMapping}
-              onChange={setFilterValue}
-              initialFilter={filterValue}
-            />
-            <FilterButtonContainer>
-              <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
-                {translate('pim_common.update')}
-              </Button>
-            </FilterButtonContainer>
-          </FilterContainer>
-        </Dropdown.Overlay>
-      )}
-      <FilterBox className='AknFilterBox-filter' onClick={open}>
-        {showLabel && attribute && (
-          <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>
+    <AttributeContext.Provider value={{attribute, setAttribute}}>
+      <Dropdown {...rest}>
+        {isOpen && attribute && filterValue && (
+          <Dropdown.Overlay onClose={handleClose}>
+            <FilterContainer>
+              <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
+                <FilterSectionTitleTitle>
+                  {getLabel(attribute.labels, catalogLocale, attribute.code)}
+                </FilterSectionTitleTitle>
+              </FilterSectionTitle>
+              <FilterSelectorList
+                attribute={attribute}
+                filterValuesMapping={filterValuesMapping}
+                onChange={setFilterValue}
+                initialFilter={filterValue}
+              />
+              <FilterButtonContainer>
+                <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
+                  {translate('pim_common.update')}
+                </Button>
+              </FilterButtonContainer>
+            </FilterContainer>
+          </Dropdown.Overlay>
         )}
-        <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
-          {criteriaHint}
-        </span>
-        <span className='AknFilterBox-filterCaret' />
-      </FilterBox>
-      {canDisable && (
-        <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable} />
-      )}
-    </Dropdown>
+        <FilterBox className='AknFilterBox-filter' onClick={open}>
+          {showLabel && attribute && (
+            <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>
+          )}
+          <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
+            {criteriaHint}
+          </span>
+          <span className='AknFilterBox-filterCaret' />
+        </FilterBox>
+        {canDisable && (
+          <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable} />
+        )}
+      </Dropdown>
+    </AttributeContext.Provider>
   );
 };
 

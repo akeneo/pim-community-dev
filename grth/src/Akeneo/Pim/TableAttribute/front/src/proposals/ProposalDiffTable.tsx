@@ -48,7 +48,7 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
   const valueData = change[accessor] || [];
   const catalogLocale = userContext.get('catalogLocale');
   const [attribute, setAttribute] = React.useState<TableAttribute | undefined>();
-  const {getOptionLabel} = useFetchOptions(attribute?.table_configuration, change.attributeCode, valueData);
+  const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
 
   React.useEffect(() => {
     AttributeRepository.find(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
@@ -102,8 +102,8 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
       ({} as TableRowWithId))[columnCode];
     const dataType = (tableConfiguration.find(column => column.code === columnCode) as ColumnDefinition).data_type;
     if (dataType === 'select') {
-      beforeCell = getOptionLabel(columnCode, beforeCell) || '';
-      afterCell = getOptionLabel(columnCode, afterCell) || '';
+      beforeCell = getOptionLabel(columnCode, beforeCell as string) || '';
+      afterCell = getOptionLabel(columnCode, afterCell as string) || '';
     }
     if (dataType === 'boolean') {
       const value = accessor === 'before' ? beforeCell : afterCell;

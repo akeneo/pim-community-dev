@@ -2,7 +2,7 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, Checkbox, getColor, Locale, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
-import {ColumnCode, TableRow, TableValue} from '../models';
+import {ColumnCode, TableAttribute, TableRow, TableValue} from '../models';
 import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
@@ -12,6 +12,7 @@ import {useToggleRow} from './useToggleRow';
 import {SelectOptionRepository} from '../repositories';
 import {CellMatchersMapping} from './CellMatchers';
 import {CellInputsMapping} from './CellInputs';
+import {AttributeContext} from '../contexts/AttributeContext';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -108,6 +109,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
+  const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute);
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
@@ -139,7 +141,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     SelectOptionRepository.clearCache();
   }, []);
 
-  const renderElements = useRenderElements(attribute.code, elements);
+  const renderElements = useRenderElements(attributeState.code, elements);
 
   const handleCopyCheckedChange = (value: boolean) => {
     setCopyChecked(value);
@@ -165,7 +167,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   }
 
   return (
-    <>
+    <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
       <TableInputContainer
         isCompareTranslate={isCompareTranslate}
         className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}
@@ -194,7 +196,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             {getLocaleScopeInfo(locale, scope)}
             {isEditable && isDisplayedForCurrentLocale && (
               <AddRowsButton
-                attribute={attribute}
                 columnCode={firstColumnCode}
                 checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
                 toggleChange={handleToggleRow}
@@ -204,7 +205,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           {context.optional && context.removable && isEditable && (
             <i
               className='AknIconButton AknIconButton--small icon-remove remove-attribute'
-              data-attribute={attribute.code}
+              data-attribute={attributeState.code}
               data-toggle='tooltip'
               title={translate('pim_enrich.entity.product.module.attribute.remove_optional')}
             />
@@ -213,7 +214,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         <div className='AknFieldContainer-inputContainer field-input'>
           {isDisplayedForCurrentLocale && (
             <TableInputValue
-              attribute={attribute}
               valueData={tableValue}
               onChange={handleChange}
               searchText={copyContext ? '' : searchText}
@@ -232,7 +232,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
       </TableInputContainer>
       <div className='AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container'>
         {copyContext && (
-          <div data-attribute={attribute.code} className='AknComparableFields field-container'>
+          <div data-attribute={attributeState.code} className='AknComparableFields field-container'>
             <div className='AknComparableFields-copyContainer copy-container'>
               <CopyCheckbox checked={copyChecked} onChange={handleCopyCheckedChange} data-testid='copyCheckbox' />
               <div className='AknFieldContainer AknComparableFields-item'>
@@ -242,7 +242,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                 </TableFieldHeader>
                 <div className='AknFieldContainer-inputContainer field-input'>
                   <TableInputValue
-                    attribute={attribute}
                     valueData={addUniqueIds(copyContext.data || [])}
                     readOnly={true}
                     isCopying={!!copyContext}
@@ -255,7 +254,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           </div>
         )}
       </div>
-    </>
+    </AttributeContext.Provider>
   );
 };
 

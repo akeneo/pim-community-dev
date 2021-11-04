@@ -48,12 +48,12 @@ const saveSelectOptions = async (
   options: SelectOption[]
 ): Promise<boolean> => {
   const url = router.generate('pim_enrich_attribute_rest_post', {
-    identifier: attribute.code
+    identifier: attribute.code,
   });
 
   const table_configuration = attribute.table_configuration;
   const i = table_configuration.findIndex(column => column.code === columnCode);
-  table_configuration[i] = {...(table_configuration[i] as SelectColumnDefinition), options}
+  table_configuration[i] = {...(table_configuration[i] as SelectColumnDefinition), options};
   const body = {table_configuration};
 
   return fetch(url, {
@@ -62,15 +62,17 @@ const saveSelectOptions = async (
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: JSON.stringify(body)
-  }).then(() => {
-    clearCacheSelectOptions();
-    return true;
-  }).catch(error => {
-    console.error(error);
-    return false;
-  });
-}
+    body: JSON.stringify(body),
+  })
+    .then(() => {
+      clearCacheSelectOptions();
+      return true;
+    })
+    .catch(error => {
+      console.error(error);
+      return false;
+    });
+};
 
 const SelectOptionRepository = {
   findFromColumn: getSelectOptions,

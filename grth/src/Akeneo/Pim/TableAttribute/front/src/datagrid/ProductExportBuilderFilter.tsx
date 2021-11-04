@@ -1,17 +1,17 @@
 import React from 'react';
 import {
   ColumnCode,
-  isFilterValid,
-  PendingTableFilterValue,
-  TableAttribute,
-  SelectOptionCode,
   FilterOperator,
   FilterValue,
+  isFilterValid,
+  PendingTableFilterValue,
+  SelectOptionCode,
 } from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
+import {useAttributeContext} from '../contexts/AttributeContext';
 
 export type BackendTableProductExportFilterValue = {
   operator: FilterOperator;
@@ -32,7 +32,6 @@ export type PendingTableProductExportFilterValue = {
 };
 
 type ProductExportBuilderFilterProps = {
-  attribute: TableAttribute;
   filterValuesMapping: FilterValuesMapping;
   onChange: (val: BackendTableProductExportFilterValue) => void;
   initialDataFilter: PendingTableProductExportFilterValue;
@@ -43,12 +42,12 @@ const FieldContainer = styled.div`
 `;
 
 const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
-  attribute,
   filterValuesMapping,
   onChange,
   initialDataFilter,
 }) => {
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
+  const {attribute, setAttribute} = useAttributeContext();
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
