@@ -13,14 +13,14 @@ const fetchAttribute = async (router: Router, attributeCode: AttributeCode): Pro
 export type AttributeFetcherIndexParams = {
   types?: AttributeType[];
   search?: string;
-}
+};
 
 const query = async (router: Router, params: AttributeFetcherIndexParams): Promise<Attribute[]> => {
   const url = router.generate('pim_enrich_attribute_rest_index', params);
   const response = await fetch(url);
 
   return (await response.json()) as Attribute[];
-}
+};
 
 const AttributeFetcher = {
   fetch: fetchAttribute,

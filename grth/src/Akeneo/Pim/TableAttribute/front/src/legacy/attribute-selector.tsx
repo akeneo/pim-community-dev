@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {AttributeSelector as InnerAttributeSelector} from "../jobs";
-import {AttributeCode, AttributeType} from "../models";
+import {AttributeSelector as InnerAttributeSelector} from '../jobs';
+import {AttributeCode, AttributeType} from '../models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
@@ -27,7 +27,7 @@ type AttributeSelectorConfig = {
   parent: string;
   position: number;
   targetZone: string;
-}
+};
 
 class AttributeSelector extends BaseView {
   private fieldCode: string;
@@ -47,7 +47,7 @@ class AttributeSelector extends BaseView {
     this.types = config.config.types;
   }
 
-  onBadRequest(data: { response: any }) {
+  onBadRequest(data: {response: any}) {
     this.errorMessage = propertyAccessor.accessProperty(data.response, this.fieldCode);
     this.unmount();
     this.render();
@@ -66,7 +66,7 @@ class AttributeSelector extends BaseView {
     const onChange = (attributeCode: AttributeCode | null) => {
       const data = this.getFormData();
       propertyAccessor.updateProperty(data, this.fieldCode, attributeCode);
-    }
+    };
 
     ReactDOM.render(
       <DependenciesProvider>
