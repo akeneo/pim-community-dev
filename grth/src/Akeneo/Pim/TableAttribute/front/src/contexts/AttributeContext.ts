@@ -12,7 +12,7 @@ export const useAttributeContext = () => {
   const context = React.useContext(AttributeContext);
 
   if (undefined === context) {
-    throw new Error('Context not OK');
+    throw new Error('The AttributeContext was not initialized.');
   }
 
   return context;

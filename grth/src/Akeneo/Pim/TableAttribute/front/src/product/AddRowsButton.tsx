@@ -193,7 +193,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
           {hasEditPermission && (
             <EditOptionsContainer>
               <Button onClick={openManageOptions} ghost level='secondary'>
-                Edit options
+                Edit options TODO TRANSLATE
               </Button>
               {isManageOptionsOpen && (
                 <ManageOptionsModal

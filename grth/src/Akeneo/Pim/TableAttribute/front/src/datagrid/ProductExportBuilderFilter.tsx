@@ -6,6 +6,7 @@ import {
   isFilterValid,
   PendingTableFilterValue,
   SelectOptionCode,
+  TableAttribute,
 } from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
@@ -62,14 +63,19 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   };
 
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
-  const optionsForFirstColumn = getOptionsFromColumnCode(attribute.table_configuration[0].code);
+  const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : [];
 
   React.useEffect(() => {
+    if (!attribute) {
+      return;
+    }
+
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.value?.column);
 
     if (typeof optionsForFirstColumn === 'undefined') {
       return;
     }
+
     const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
     setInitialFilter({
       row,
@@ -77,14 +83,14 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
       value: initialDataFilter.value?.value,
       operator: initialDataFilter.operator,
     });
-  }, [optionsForFirstColumn]);
+  }, [attribute, optionsForFirstColumn]);
 
   return (
     <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
       <div className='AknFieldContainer-inputContainer'>
         {initialFilter && (
           <FilterSelectorList
-            attribute={attribute}
+            attribute={attribute as TableAttribute}
             filterValuesMapping={filterValuesMapping}
             onChange={handleChange}
             initialFilter={initialFilter}

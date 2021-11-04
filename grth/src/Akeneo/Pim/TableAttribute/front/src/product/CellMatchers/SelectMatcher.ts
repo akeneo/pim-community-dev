@@ -1,4 +1,3 @@
-import React from 'react';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellMatcher} from './index';
 import {useAttributeContext} from '../../contexts/AttributeContext';

@@ -54,6 +54,13 @@ const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)
   }
 `;
 
+const TableInputValuePlaceholderContainer = styled(LoadingPlaceholderContainer)`
+  width: 100%;
+  & > * {
+    height: 100px;
+  }
+`;
+
 type TableInputValueProps = {
   valueData: TableValueWithId;
   onChange?: (tableValue: TableValueWithId) => void;
@@ -88,7 +95,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellInputsMapping).forEach(data_type => {
-    matchers[data_type] = cellMatchersMapping[data_type].default(valueData);
+    matchers[data_type] = cellMatchersMapping[data_type].default();
   });
 
   React.useEffect(() => {
@@ -250,7 +257,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   };
 
   if (!attribute) {
-    return <div>LOADING</div>;
+    return (
+      <TableInputValuePlaceholderContainer>
+        <div />
+      </TableInputValuePlaceholderContainer>
+    );
   }
 
   const [firstColumn, ...otherColumns] = attribute.table_configuration;

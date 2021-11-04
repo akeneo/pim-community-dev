@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
-import {useAttributeContext} from '../contexts/AttributeContext';
+import {AttributeContext} from '../contexts/AttributeContext';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -102,7 +102,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   Object.keys(filterValuesMapping).forEach(dataType => {
     valueRenderers[dataType] = {};
     Object.keys(filterValuesMapping[dataType]).forEach(operator => {
-      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer(attributeCode);
+      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer();
     });
   });
 

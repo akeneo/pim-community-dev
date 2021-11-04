@@ -85,7 +85,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
 
   return (
     <FilterSelectorListContainer inline={inline}>
-      <RowSelector attribute={attribute} value={filter.row} onChange={handleRowChange} />
+      <RowSelector value={filter.row} onChange={handleRowChange} />
       <ColumnDefinitionSelector attribute={attribute} onChange={handleColumnChange} value={filter.column} />
       <OperatorSelector
         dataType={filter.column?.data_type}
@@ -101,7 +101,6 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
           value={filter.value}
           filterValuesMapping={filterValuesMapping}
           columnCode={filter.column.code}
-          attribute={attribute}
         />
       )}
     </FilterSelectorListContainer>

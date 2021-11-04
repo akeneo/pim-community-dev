@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
-import {AddingValueIllustration, Dropdown, Link, TableInput} from 'akeneo-design-system';
-import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
+import {AddingValueIllustration, Button, Dropdown, Link, TableInput, useBooleanState} from 'akeneo-design-system';
+import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode} from '../../models';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
 import {useAttributeContext} from '../../contexts/AttributeContext';
+import {ManageOptionsModal} from '../../attribute';
+import {SelectOptionRepository} from '../../repositories';
 
 const BATCH_SIZE = 20;
 
@@ -21,6 +23,11 @@ type TableInputSelectProps = {
 const FakeInput = styled.div`
   margin: 0 10px;
   height: 20px;
+`;
+
+const EditOptionsContainer = styled.div`
+  margin: 10px;
+  text-align: center;
 `;
 
 const SelectInput: React.FC<TableInputSelectProps> = ({
@@ -40,13 +47,13 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
+  const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState(false);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const options = getOptionsFromColumnCode(columnCode);
 
-  const isLoading = !attribute || typeof options === 'undefined';
   let option = null;
   if (value && typeof options !== 'undefined') {
     option = options.find(option => option.code.toLowerCase() === value.toLowerCase());
@@ -88,7 +95,17 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     }
   };
 
-  if (!isLoading) {
+  const handleSaveOptions = (selectOptions: SelectOption[]) => {
+    if (attribute) {
+      SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
+        if (result) {
+          setAttribute({...attribute});
+        }
+      });
+    }
+  };
+
+  if (!attribute || typeof options === 'undefined') {
     return (
       <LoadingPlaceholderContainer>
         <FakeInput>{translate('pim_common.loading')}</FakeInput>
@@ -128,11 +145,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
             {hasEditPermission ? (
               <div>
                 {translate('pim_table_attribute.form.product.no_add_options', {
-                  attributeLabel: getLabel(
-                    (attribute as TableAttribute).labels,
-                    userContext.get('catalogLocale'),
-                    (attribute as TableAttribute).code
-                  ),
+                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
                 })}{' '}
                 <Link onClick={handleRedirect}>
                   {translate('pim_table_attribute.form.product.no_add_options_link')}
@@ -140,11 +153,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
               </div>
             ) : (
               translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                attributeLabel: getLabel(
-                  (attribute as TableAttribute).labels,
-                  userContext.get('catalogLocale'),
-                  (attribute as TableAttribute).code
-                ),
+                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
               })
             )}
           </CenteredHelper>
@@ -157,6 +166,23 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
             {translate('pim_table_attribute.form.attribute.please_try_again')}
           </CenteredHelper>
         </CenteredHelper.Container>
+      )}
+      {hasEditPermission && (
+        <EditOptionsContainer>
+          <Button onClick={openManageOptions} ghost level='secondary'>
+            Edit options
+          </Button>
+          {isManageOptionsOpen && (
+            <ManageOptionsModal
+              onClose={closeManageOptions}
+              attribute={attribute}
+              columnDefinition={
+                attribute.table_configuration.find(column => column.code === columnCode) as SelectColumnDefinition
+              }
+              onChange={handleSaveOptions}
+            />
+          )}
+        </EditOptionsContainer>
       )}
     </TableInput.Select>
   );
