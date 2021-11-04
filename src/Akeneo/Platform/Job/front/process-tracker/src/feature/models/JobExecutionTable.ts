@@ -8,6 +8,11 @@ type JobExecutionRow = {
   username: string | null;
   status: JobStatus;
   warning_count: number;
+  error_count: number;
+  tracking: {
+    current_step: number;
+    total_step: number;
+  },
 };
 
 type JobExecutionTable = {

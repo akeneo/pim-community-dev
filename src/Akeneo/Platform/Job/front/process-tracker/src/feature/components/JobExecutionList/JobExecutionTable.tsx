@@ -37,7 +37,7 @@ const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRo
               {jobExecutionRow.job_name}
             </Table.Cell>
             <Table.Cell>
-              {jobExecutionRow.type}
+              {translate(`pim_import_export.widget.last_operations.job_type.${jobExecutionRow.type}`)}
             </Table.Cell>
             <Table.Cell>
               {jobExecutionRow.started_at && dateFormatter(jobExecutionRow.started_at, {day: '2-digit', hour: '2-digit', minute: '2-digit', month: '2-digit', year: 'numeric'})}
@@ -49,9 +49,9 @@ const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRo
               <JobExecutionStatus
                 status={jobExecutionRow.status}
                 hasWarning={jobExecutionRow.warning_count > 0}
-                currentStep={0}
-                hasError={false}
-                totalSteps={3}
+                hasError={jobExecutionRow.error_count > 0}
+                currentStep={jobExecutionRow.tracking.current_step}
+                totalSteps={jobExecutionRow.tracking.total_step}
               />
             </Table.Cell>
             <Table.Cell>

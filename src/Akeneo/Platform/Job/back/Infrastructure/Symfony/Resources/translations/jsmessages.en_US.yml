@@ -7,7 +7,7 @@ akeneo_job_process_tracker:
       headers:
         job_name: Job
         type: Type
-        started_at: Started At
+        started_at: Started at
         username: Username
         status: Status
         warnings: Warnings
