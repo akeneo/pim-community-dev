@@ -174,4 +174,5 @@ services:
             - '@akeneoasset_manager.tests.helper.web_client_helper'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'

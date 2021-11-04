@@ -71,3 +71,10 @@ Feature: Connection to MDM or ERP systems
     When the connector collects the Australia attribute option whose data does not comply with the business rules
     Then the PIM notifies the connector about an error indicating that the option attribute has data that does not comply with the business rules
 
+  @integration-back
+  Scenario: Notify an error when trying to collect a new attribute option of a single or multiple option attribute for an asset family from the ERP without permission
+    Given the Brand asset family asset family existing both in the ERP and in the PIM
+    And the Sales area attribute existing both in the ERP and in the PIM
+    And the USA attribute option that only exists in the ERP but not in the PIM
+    When the connector collects the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission

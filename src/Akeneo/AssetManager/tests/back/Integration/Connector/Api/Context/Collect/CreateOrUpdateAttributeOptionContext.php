@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -40,6 +41,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeOptionContext implements Context
@@ -62,18 +64,38 @@ class CreateOrUpdateAttributeOptionContext implements Context
 
     private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
-        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
         $this->activatedLocales = $activatedLocales;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 
     /**
@@ -439,6 +461,37 @@ class CreateOrUpdateAttributeOptionContext implements Context
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
             self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When the connector collects the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission
+     */
+    public function theConnectorCollectsTheUsaAttributeOptionOfTheSalesAreaAttributeOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_usa_attribute_option_creation.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingTheUsaAttributeOptionOfTheSalesAreaAttributeOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_usa_attribute_option_creation.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 }
