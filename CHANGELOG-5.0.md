@@ -1,5 +1,8 @@
 # 5.0.x
 
+## Bug fixes
+- PIM-10128: Fixed disabled user activation after password reset
+
 # 5.0.55 (2021-11-03)
 
 ## Bug fixes
