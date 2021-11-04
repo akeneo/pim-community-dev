@@ -23,7 +23,6 @@ const Menu = styled.div`
 
 const Page = styled.div`
   flex: 1;
-  padding: 40px;
 `;
 
 const FakePIM = () => {

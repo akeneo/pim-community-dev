@@ -1,12 +1,13 @@
-import React from 'react';
-import {Breadcrumb} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {Breadcrumb, Pagination} from 'akeneo-design-system';
 import {useTranslate, useRoute, PimView, PageHeader, PageContent} from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks/useJobExecutionTable';
-import {JobExecutionTable} from "../components/JobExecutionList/JobExecutionTable";
+import {JobExecutionTable} from '../components/JobExecutionList/JobExecutionTable';
 
 const JobExecutionList = () => {
   const translate = useTranslate();
-  const jobExecutionTable = useJobExecutionTable();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const jobExecutionTable = useJobExecutionTable(currentPage);
   const activityHref = useRoute('pim_dashboard_index');
   const jobExecutionMatches = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
@@ -34,6 +35,14 @@ const JobExecutionList = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
+        {jobExecutionTable && jobExecutionTable.total_count > 0 && (
+          <Pagination
+            sticky={0}
+            currentPage={currentPage}
+            totalItems={jobExecutionTable.matches_count}
+            followPage={setCurrentPage}
+          />
+        )}
         <JobExecutionTable jobExecutionRows={jobExecutionTable?.rows ?? []} />
       </PageContent>
     </>

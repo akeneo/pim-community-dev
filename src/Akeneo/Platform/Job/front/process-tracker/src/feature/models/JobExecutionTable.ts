@@ -1,4 +1,4 @@
-import {JobStatus} from './JobStatus'
+import {JobStatus} from './JobStatus';
 
 type JobExecutionRow = {
   job_execution_id: number;
@@ -12,7 +12,7 @@ type JobExecutionRow = {
   tracking: {
     current_step: number;
     total_step: number;
-  },
+  };
 };
 
 type JobExecutionTable = {

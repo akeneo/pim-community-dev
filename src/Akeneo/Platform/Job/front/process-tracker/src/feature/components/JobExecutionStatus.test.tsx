@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {JobExecutionStatus} from './JobExecutionStatus';
-import {JobStatus} from '../models/JobStatus'
+import {JobStatus} from '../models/JobStatus';
 
 test.each<JobStatus>(['COMPLETED', 'STOPPING', 'STOPPED', 'FAILED', 'ABANDONED', 'UNKNOWN'])(
   'It displays the job status "%s" without the progress',

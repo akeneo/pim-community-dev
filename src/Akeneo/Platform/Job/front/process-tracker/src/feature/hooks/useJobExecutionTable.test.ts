@@ -16,7 +16,7 @@ beforeEach(() => {
 });
 
 test('It fetches job execution table', async () => {
-  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable());
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(1));
   await act(async () => {
     await waitForNextUpdate();
   });
@@ -25,7 +25,7 @@ test('It fetches job execution table', async () => {
 });
 
 test('It returns job execution table only if hook is mounted', async () => {
-  const {result, unmount} = renderHookWithProviders(() => useJobExecutionTable());
+  const {result, unmount} = renderHookWithProviders(() => useJobExecutionTable(1));
 
   unmount();
 
