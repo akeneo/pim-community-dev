@@ -10,8 +10,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrat
  */
 class AttributeHydratorRegistry
 {
-    /** @var AttributeHydratorInterface */
-    private $attributeHydrators;
+    private array $attributeHydrators;
 
     public function __construct()
     {

@@ -3,6 +3,7 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage;
@@ -16,14 +17,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorReferenceEntityAction
 {
-    /** @var FindConnectorReferenceEntityByReferenceEntityIdentifierInterface */
-    private $findConnectorReferenceEntity;
+    private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var AddHalDownloadLinkToReferenceEntityImage */
-    private $addHalLinksToReferenceEntityImage;
+    private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage;
 
     private SecurityFacade $securityFacade;
 
@@ -63,7 +61,7 @@ class GetConnectorReferenceEntityAction
 
         $referenceEntity = $this->findConnectorReferenceEntity->find($code);
 
-        if (null === $referenceEntity) {
+        if (!$referenceEntity instanceof ConnectorReferenceEntity) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $code));
         }
 

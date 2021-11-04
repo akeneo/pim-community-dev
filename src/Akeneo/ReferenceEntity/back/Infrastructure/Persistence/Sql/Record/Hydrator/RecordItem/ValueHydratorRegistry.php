@@ -21,8 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class ValueHydratorRegistry implements ValueHydratorInterface
 {
-    /** @var ValueHydratorInterface */
-    private $valueHydrators;
+    private array $valueHydrators;
 
     public function __construct()
     {
@@ -49,7 +48,7 @@ class ValueHydratorRegistry implements ValueHydratorInterface
     {
         $valueHydrator = $this->findHydrator($attribute);
 
-        if (null === $valueHydrator) {
+        if (!$valueHydrator instanceof ValueHydratorInterface) {
             return $normalizedValue;
         }
 

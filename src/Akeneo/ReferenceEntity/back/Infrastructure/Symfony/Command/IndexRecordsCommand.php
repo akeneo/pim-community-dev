@@ -36,20 +36,15 @@ class IndexRecordsCommand extends Command
     public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
     private const ERROR_CODE_USAGE = 1;
 
-    /** @var Client */
-    private $recordClient;
+    private Client $recordClient;
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
 
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    private RecordIndexerInterface $recordIndexer;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var string */
-    private $recordIndexName;
+    private string $recordIndexName;
 
     public function __construct(
         Client $client,
@@ -100,7 +95,7 @@ class IndexRecordsCommand extends Command
 
         if ($isIndexAll) {
             $this->indexAll($output);
-        } elseif (0 < count($referenceEntityCodes)) {
+        } elseif (0 < (is_countable($referenceEntityCodes) ? count($referenceEntityCodes) : 0)) {
             $this->indexByReferenceEntity($referenceEntityCodes, $output);
         } else {
             $output->writeln('<error>Please specify a list of reference entity codes to index or use the flag --all to index all records</error>');

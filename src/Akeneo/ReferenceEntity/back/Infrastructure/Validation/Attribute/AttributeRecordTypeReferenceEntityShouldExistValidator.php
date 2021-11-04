@@ -22,8 +22,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
     public function __construct(ReferenceEntityExistsInterface $referenceEntityExists)
     {
@@ -36,7 +35,7 @@ class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintV
         $this->checkCommandType($command);
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->recordType);
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             $this->context->buildViolation(AttributeRecordTypeReferenceEntityShouldExist::ERROR_MESSAGE)
                 ->atPath('reference_entity_code')
                 ->setParameter('%reference_entity_code%', $command->recordType)

@@ -33,14 +33,11 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
     private const VALUES_FIELD = 'values';
 
-    /** @var FindValueKeysToIndexForAllChannelsAndLocalesInterface */
-    private $findValueKeysToIndexForAllChannelsAndLocales;
+    private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
 
-    /** @var SqlFindSearchableRecords */
-    private $findSearchableRecords;
+    private SqlFindSearchableRecords $findSearchableRecords;
 
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
@@ -55,7 +52,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array
     {
         $searchableRecordItem = $this->findSearchableRecords->byRecordIdentifier($recordIdentifier);
-        if (null === $searchableRecordItem) {
+        if (!$searchableRecordItem instanceof SearchableRecordItem) {
             throw RecordNotFoundException::withIdentifier($recordIdentifier);
         }
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier);
@@ -121,18 +118,15 @@ class RecordNormalizer implements RecordNormalizerInterface
     {
         $valuesToIndex = array_intersect_key($searchableRecordItem->values, array_flip($valueKeys));
         $dataToIndex = array_map(
-            function (array $value) {
-                return $value['data'];
-            },
+            static fn (array $value) => $value['data'],
             $valuesToIndex
         );
 
         $stringToIndex = implode(' ', $dataToIndex);
         $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
-        $result = sprintf('%s %s', $searchableRecordItem->code, $cleanedData);
 
-        return $result;
+        return sprintf('%s %s', $searchableRecordItem->code, $cleanedData);
     }
 
     private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem): array
@@ -147,7 +141,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         array $filledValueKeysMatrix,
         array $filterableValues
     ): array {
-        $normalizedRecord = [
+        return [
             self::IDENTIFIER => $searchableRecordItem->identifier,
             self::CODE => $searchableRecordItem->code,
             self::REFERENCE_ENTITY_CODE => $searchableRecordItem->referenceEntityIdentifier,
@@ -157,8 +151,6 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
             self::VALUES_FIELD => $filterableValues
         ];
-
-        return $normalizedRecord;
     }
 
     private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array

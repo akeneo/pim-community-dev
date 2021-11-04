@@ -27,8 +27,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
  */
 class RecordValueHydrator implements ValueHydratorInterface
 {
-    /** @var FindRecordLabelsByCodesInterface */
-    private $findRecordLabelsByCodes;
+    private FindRecordLabelsByCodesInterface $findRecordLabelsByCodes;
 
     public function __construct(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
     {
@@ -46,11 +45,7 @@ class RecordValueHydrator implements ValueHydratorInterface
         $data = array_values(array_intersect(array_keys($context['labels']), $recordIdentifiers));
         $labels = array_intersect_key($context['labels'], array_flip($recordIdentifiers));
         if ('record' === $attribute->getType()) {
-            if (empty($data)) {
-                $normalizedValue['data'] = null;
-            } else {
-                $normalizedValue['data'] = $data[0];
-            }
+            $normalizedValue['data'] = empty($data) ? null : $data[0];
         } else {
             $normalizedValue['data'] = $data;
         }

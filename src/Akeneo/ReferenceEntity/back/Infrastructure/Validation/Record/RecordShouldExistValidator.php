@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RecordShouldExistValidator extends ConstraintValidator
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    private RecordExistsInterface $recordExists;
 
     public function __construct(RecordExistsInterface $recordExists)
     {

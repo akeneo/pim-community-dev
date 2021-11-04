@@ -26,11 +26,9 @@ use PDO;
  */
 class SqlFindRecordLabelsByCodes implements FindRecordLabelsByCodesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var SqlFindReferenceEntityAttributeAsLabel */
-    private $findReferenceEntityAttributeAsLabel;
+    private SqlFindReferenceEntityAttributeAsLabel $findReferenceEntityAttributeAsLabel;
 
     public function __construct(
         Connection $sqlConnection,

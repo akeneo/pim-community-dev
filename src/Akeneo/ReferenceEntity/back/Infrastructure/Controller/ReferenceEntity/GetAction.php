@@ -29,14 +29,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    /** @var FindReferenceEntityDetailsInterface */
-    private $findOneReferenceEntityQuery;
+    private FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery,
@@ -68,7 +65,7 @@ class GetAction
     private function findReferenceEntityDetailsOr404(ReferenceEntityIdentifier $identifier): ReferenceEntityDetails
     {
         $result = $this->findOneReferenceEntityQuery->find($identifier);
-        if (null === $result) {
+        if (!$result instanceof ReferenceEntityDetails) {
             throw new NotFoundHttpException();
         }
 

@@ -21,11 +21,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var array */
-    private $cachedResult = [];
+    private array $cachedResult = [];
 
     public function __construct(Connection $sqlConnection)
     {

@@ -33,14 +33,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
@@ -83,7 +80,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
-        $recordDetails = new RecordDetails(
+        return new RecordDetails(
             RecordIdentifier::fromString($recordIdentifier),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             RecordCode::fromString($recordCode),
@@ -94,8 +91,6 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             $allValues,
             true
         );
-
-        return $recordDetails;
     }
 
     private function createEmptyValues(array $emptyValues, array $valueCollection): array
@@ -133,9 +128,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     {
         $imageValue = array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
-            }
+            static fn (array $value) => $value['attribute'] === $attributeAsImage
         );
 
         $result = Image::createEmpty();

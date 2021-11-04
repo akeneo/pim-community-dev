@@ -33,11 +33,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param Connection $sqlConnection
@@ -198,7 +196,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $result = $statement->fetch();
 
-        return intval($result['total']);
+        return (int) $result['total'];
     }
 
     private function hydrateReferenceEntity(
@@ -214,15 +212,13 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
 
-        $referenceEntity = ReferenceEntity::createWithAttributes(
+        return ReferenceEntity::createWithAttributes(
             ReferenceEntityIdentifier::fromString($identifier),
             $labels,
             $entityImage,
             AttributeAsLabelReference::createFromNormalized($attributeAsLabel),
             AttributeAsImageReference::createFromNormalized($attributeAsImage)
         );
-
-        return $referenceEntity;
     }
 
     private function getSerializedLabels(ReferenceEntity $referenceEntity): string

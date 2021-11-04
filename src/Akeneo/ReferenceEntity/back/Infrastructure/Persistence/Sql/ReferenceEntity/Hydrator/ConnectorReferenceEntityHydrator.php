@@ -29,11 +29,9 @@ use Doctrine\DBAL\Types\Type;
  */
 class ConnectorReferenceEntityHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
+    private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
         Connection $connection,

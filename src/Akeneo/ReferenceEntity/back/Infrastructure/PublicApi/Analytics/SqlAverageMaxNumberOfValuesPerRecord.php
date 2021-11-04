@@ -14,8 +14,7 @@ use Doctrine\DBAL\Connection;
 class SqlAverageMaxNumberOfValuesPerRecord
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     private int $limit;
 
@@ -34,13 +33,12 @@ class SqlAverageMaxNumberOfValuesPerRecord
             FROM akeneo_reference_entity_record;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
-        $volume = new AverageMaxVolumes(
+
+        return new AverageMaxVolumes(
             (int) $result['max'],
             (int) $result['average'],
             $this->limit,
             self::VOLUME_NAME
         );
-
-        return $volume;
     }
 }

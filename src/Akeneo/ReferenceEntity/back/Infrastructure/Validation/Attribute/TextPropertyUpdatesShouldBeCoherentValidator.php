@@ -24,8 +24,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(AttributeRepositoryInterface $attributeRepository)
     {

@@ -22,7 +22,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema;
 class RecordValueValidatorRegistry
 {
     /** @var RecordValueValidatorInterface[] */
-    private $validators = [];
+    private array $validators = [];
 
     public function __construct(iterable $validators)
     {

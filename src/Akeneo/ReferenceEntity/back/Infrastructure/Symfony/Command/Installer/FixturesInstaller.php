@@ -21,17 +21,13 @@ class FixturesInstaller
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var FileStorerInterface */
-    private $storer;
+    private FileStorerInterface $storer;
 
-    /** @var Client */
-    private $recordClient;
+    private Client $recordClient;
 
-    /** @var CommandLauncher */
-    private $commandLauncher;
+    private CommandLauncher $commandLauncher;
 
     public function __construct(
         Connection $sqlConnection,
@@ -239,10 +235,11 @@ SQL;
         ];
         $code = $cityCodes[array_rand($cityCodes)];
         $label = str_replace('_', ' ', ucfirst($code));
-        $temp = rand(5, 30);
-        $speed = rand(10, 50);
+        $temp = random_int(5, 30);
+        $speed = random_int(10, 50);
         $uuid = Uuid::uuid4()->toString();
-        $sprintf = sprintf(
+
+        return sprintf(
             $fakeCity,
             $code,
             $uuid,
@@ -257,8 +254,6 @@ SQL;
             $label,
             $label
         );
-
-        return $sprintf;
     }
 
     private function loadMainColors(): void

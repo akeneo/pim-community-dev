@@ -26,14 +26,11 @@ use Symfony\Component\Validator\Validation;
 
 class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintValidator
 {
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var int */
-    private $attributeOptionsLimit;
+    private int $attributeOptionsLimit;
 
     public function __construct(
         GetAttributeIdentifierInterface $getAttributeIdentifier,
@@ -86,7 +83,7 @@ class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintVali
         );
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
 
-        if (count($attribute->getAttributeOptions()) >= $this->attributeOptionsLimit - 1) {
+        if ((is_countable($attribute->getAttributeOptions()) ? count($attribute->getAttributeOptions()) : 0) >= $this->attributeOptionsLimit - 1) {
             $this->context->buildViolation(ThereShouldBeLessAttributeOptionsThanLimit::MESSAGE_TOO_MANY_OPTIONS)
                 ->setParameter('{{ limit }}', (string)$this->attributeOptionsLimit)
                 ->setCode(Count::TOO_MANY_ERROR)

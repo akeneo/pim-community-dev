@@ -35,14 +35,11 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
 
-    /** @var FixturesInstaller */
-    private $fixturesInstaller;
+    private FixturesInstaller $fixturesInstaller;
 
-    /** @var AssetsInstaller */
-    private $assetInstaller;
+    private AssetsInstaller $assetInstaller;
 
-    /** @var bool */
-    private $shouldLoadReferenceEntitiesFixtures;
+    private bool $shouldLoadReferenceEntitiesFixtures;
 
     public function __construct(
         FixturesInstaller $fixturesInstaller,

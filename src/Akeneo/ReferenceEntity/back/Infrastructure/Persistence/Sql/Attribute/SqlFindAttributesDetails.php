@@ -25,11 +25,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAttributesDetails implements FindAttributesDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
@@ -72,7 +70,7 @@ SQL;
         );
         $result = $statement->fetchAllAssociative();
 
-        return !$result ? [] : $result;
+        return [];
     }
 
     /**

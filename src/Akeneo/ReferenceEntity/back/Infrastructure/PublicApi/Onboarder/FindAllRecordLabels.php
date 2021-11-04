@@ -11,8 +11,7 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllRecordLabels
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

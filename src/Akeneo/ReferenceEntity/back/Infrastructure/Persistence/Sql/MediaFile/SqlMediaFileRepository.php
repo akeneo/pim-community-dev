@@ -24,8 +24,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 class SqlMediaFileRepository implements MediaFileRepositoryInterface
 {
-    /** @var ApiResourceRepositoryInterface */
-    private $fileRepository;
+    private ApiResourceRepositoryInterface $fileRepository;
 
     public function __construct(ApiResourceRepositoryInterface $fileRepository)
     {

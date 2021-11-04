@@ -17,6 +17,10 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumb
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueCommand as EditNumberValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\IsFalse;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -88,10 +92,11 @@ class EditNumberValueCommandValidator extends ConstraintValidator
     private function checkType(EditNumberValueCommand $command): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate(
+
+        return $validator->validate(
             $command->number,
             [
-                new Constraints\Type(
+                new Type(
                     [
                         'type'    => 'string',
                         'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_STRING,
@@ -99,8 +104,6 @@ class EditNumberValueCommandValidator extends ConstraintValidator
                 ),
             ]
         );
-
-        return $violations;
     }
 
     private function checkNumericValue(EditNumberValueCommand $command): ConstraintViolationListInterface
@@ -130,7 +133,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
             $violations = $validator->validate(
                 $command->number,
                 [
-                    new Constraints\Range(['min' => $command->attribute->minValue()])
+                    new Range(['min' => $command->attribute->minValue()])
                 ]
             );
         }
@@ -147,7 +150,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
             $violations = $validator->validate(
                 $command->number,
                 [
-                    new Constraints\Range(['max' => $command->attribute->maxValue()])
+                    new Range(['max' => $command->attribute->maxValue()])
                 ]
             );
         }
@@ -184,14 +187,14 @@ class EditNumberValueCommandValidator extends ConstraintValidator
         $validator = Validation::createValidator();
         $violations = $validator->validate(
             $this->isInteger($command),
-            new Constraints\IsTrue(['message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_INTEGER])
+            new IsTrue(['message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_INTEGER])
         );
 
         if (0 === $violations->count()) {
             $violations->addAll(
                 $validator->validate(
                     $this->isTooLong($command),
-                    new Constraints\IsFalse(['message' => EditNumberValueCommandConstraint::INTEGER_TOO_LONG])
+                    new IsFalse(['message' => EditNumberValueCommandConstraint::INTEGER_TOO_LONG])
                 )
             );
         }
@@ -201,7 +204,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
 
     private function isInteger(EditNumberValueCommand $command): bool
     {
-        return 1 === preg_match('/^-?[0-9]+$/', $command->number);
+        return 1 === preg_match('/^-?\d+$/', $command->number);
     }
 
     /**

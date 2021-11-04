@@ -33,11 +33,9 @@ class DownloadMediaFileAction
 {
     private const FILE_STORAGE_ALIAS = 'catalogStorage';
 
-    /** @var MediaFileRepositoryInterface */
-    private $mediaFileRepository;
+    private MediaFileRepositoryInterface $mediaFileRepository;
 
-    /** @var FilesystemProvider */
-    private $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
     private SecurityFacade $securityFacade;
 

@@ -22,8 +22,7 @@ use Doctrine\DBAL\Connection;
  */
 class FindRecordLabelsByIdentifiers
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -79,15 +78,11 @@ SQL;
             ]
         );
 
-        $recordsLabels = array_map(function ($record) {
-            return new RecordLabels(
-                $record['identifier'],
-                json_decode($record['labels'], true),
-                $record['code'],
-                $record['reference_entity_identifier']
-            );
-        }, $statement->fetchAllAssociative());
-
-        return $recordsLabels;
+        return array_map(static fn (array $record) => new RecordLabels(
+            $record['identifier'],
+            json_decode($record['labels'], true),
+            $record['code'],
+            $record['reference_entity_identifier']
+        ), $statement->fetchAllAssociative());
     }
 }

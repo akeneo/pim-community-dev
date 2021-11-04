@@ -42,14 +42,14 @@ final class RecordWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function write(array $createAndEditRecordCommands): void
     {
-        if (0 === count($createAndEditRecordCommands)) {
+        if ([] === $createAndEditRecordCommands) {
             return;
         }
 
         foreach ($createAndEditRecordCommands as $createAndEditRecordCommand) {
             Assert::isInstanceOf($createAndEditRecordCommand, CreateAndEditRecordCommand::class);
 
-            if ($this->stepExecution) {
+            if ($this->stepExecution !== null) {
                 $this->stepExecution->incrementSummaryInfo(
                     $createAndEditRecordCommand->createRecordCommand ? 'create' : 'process'
                 );

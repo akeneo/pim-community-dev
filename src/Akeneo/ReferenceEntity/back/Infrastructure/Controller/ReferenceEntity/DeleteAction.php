@@ -36,23 +36,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private NormalizerInterface $normalizer;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var DeleteReferenceEntityHandler */
-    private $deleteReferenceEntityHandler;
+    private DeleteReferenceEntityHandler $deleteReferenceEntityHandler;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         SecurityFacade $securityFacade,
@@ -111,8 +105,6 @@ class DeleteAction
 
     private function getDeleteCommand(string $identifier): DeleteReferenceEntityCommand
     {
-        $command = new DeleteReferenceEntityCommand($identifier);
-
-        return $command;
+        return new DeleteReferenceEntityCommand($identifier);
     }
 }

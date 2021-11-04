@@ -25,8 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -49,17 +48,15 @@ class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
             WHERE identifier = :identifier 
         ) as is_existing
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $referenceEntityIdentifier]);
 
-        return $statement;
+        return $this->sqlConnection->executeQuery($query, ['identifier' => (string) $referenceEntityIdentifier]);
     }
 
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

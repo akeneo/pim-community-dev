@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private RecordQueryBuilderInterface $recordQueryBuilder;
     private Client $recordClient;
     private DeleteRecordsHandler $deleteRecordsHandler;
@@ -125,7 +125,7 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
             return;
         }
 
-        if (count($recordCodesToDelete) > 0) {
+        if ($recordCodesToDelete !== []) {
             $this->deleteRecords($referenceEntityIdentifier, $recordCodesToDelete);
         }
 

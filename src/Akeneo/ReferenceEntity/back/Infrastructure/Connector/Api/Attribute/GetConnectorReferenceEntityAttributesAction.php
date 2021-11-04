@@ -25,14 +25,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorReferenceEntityAttributesAction
 {
-    /** @var FindConnectorAttributesByReferenceEntityIdentifierInterface */
-    private $findConnectorReferenceEntityAttributes;
+    private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var AddHalSelfLinkToNormalizedConnectorAttribute */
-    private $addHalSelfLinkToNormalizedConnectorAttribute;
+    private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute;
 
     private SecurityFacade $securityFacade;
 
@@ -71,7 +68,7 @@ class GetConnectorReferenceEntityAttributesAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 

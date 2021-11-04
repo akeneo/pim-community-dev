@@ -27,8 +27,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveUserGroupSubscriber implements EventSubscriberInterface
 {
-    /** @var SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight */
-    private $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
+    private SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
 
     public function __construct(
         SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight
@@ -52,7 +51,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
 
         $referenceEntityIdentifiers = $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
-        if (count($referenceEntityIdentifiers) > 0) {
+        if ($referenceEntityIdentifiers !== []) {
             throw new ResourceDeletionDeniedException(
                 sprintf(
                     'You cannot delete this group, it is the only user group with "edit" permission on reference entity "%s".',

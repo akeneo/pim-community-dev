@@ -34,14 +34,11 @@ use Webmozart\Assert\Assert;
  */
 final class CreateRecordLabelValidator extends ConstraintValidator
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
-    private $findAttributeAsLabel;
+    private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $sqlFindAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
 
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $editValueCommandFactoryRegistry;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
         FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel,
@@ -77,7 +74,6 @@ final class CreateRecordLabelValidator extends ConstraintValidator
     private function getEditLabelCommands(CreateRecordCommand $command): array
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        /** @var AttributeAsLabelReference $attributeAsLabelReference */
         $attributeAsLabelReference = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
         if ($attributeAsLabelReference->isEmpty()) {
             return [];

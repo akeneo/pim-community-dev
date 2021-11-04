@@ -45,38 +45,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordsAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    private RecordExistsInterface $recordExists;
 
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    private EditRecordCommandFactory $editRecordCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    private EditRecordHandler $editRecordHandler;
 
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
+    private CreateRecordHandler $createRecordHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var ValidatorInterface */
-    private $recordDataValidator;
+    private ValidatorInterface $recordDataValidator;
 
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
+    private ViolationNormalizer $violationNormalizer;
 
-    /** @var RecordValidator */
-    private $recordStructureValidator;
+    private RecordValidator $recordStructureValidator;
 
-    /** @var RecordListValidator */
-    private $recordListValidator;
+    private RecordListValidator $recordListValidator;
 
-    /** @var int */
-    private $maximumRecordsPerRequest;
+    private int $maximumRecordsPerRequest;
 
     private SecurityFacade $securityFacade;
 
@@ -200,7 +189,7 @@ class CreateOrUpdateRecordsAction
         $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $createRecordCommand = null;
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createRecordCommand = new CreateRecordCommand(
                 $referenceEntityIdentifier->normalize(),
                 $normalizedRecord['code'],
@@ -220,7 +209,7 @@ class CreateOrUpdateRecordsAction
             throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createRecordHandler)($createRecordCommand);
         }
 

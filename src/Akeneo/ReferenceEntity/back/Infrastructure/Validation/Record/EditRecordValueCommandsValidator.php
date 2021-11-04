@@ -26,8 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditRecordValueCommandsValidator extends ConstraintValidator
 {
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(ValidatorInterface $validator)
     {

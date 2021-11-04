@@ -11,11 +11,9 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRe
  */
 class RefreshAllRecords
 {
-    /** @var SelectRecordIdentifiersInterface */
-    private $selectRecordIdentifiers;
+    private SelectRecordIdentifiersInterface $selectRecordIdentifiers;
 
-    /** @var RefreshRecord */
-    private $refreshRecord;
+    private RefreshRecord $refreshRecord;
 
     public function __construct(
         SelectRecordIdentifiersInterface $selectRecordIdentifiers,

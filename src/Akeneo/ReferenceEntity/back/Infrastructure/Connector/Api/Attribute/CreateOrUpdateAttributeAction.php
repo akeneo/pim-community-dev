@@ -34,44 +34,31 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    /** @var CreateAttributeCommandFactoryRegistry */
-    private $createAttributeCommandFactoryRegistry;
+    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
 
-    /** @var FindAttributeNextOrderInterface */
-    private $attributeNextOrder;
+    private FindAttributeNextOrderInterface $attributeNextOrder;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
+    private CreateAttributeHandler $createAttributeHandler;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var EditAttributeCommandFactory */
-    private $editAttributeCommandFactory;
+    private EditAttributeCommandFactory $editAttributeCommandFactory;
 
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
+    private EditAttributeHandler $editAttributeHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var AttributeCreationValidator */
-    private $jsonSchemaCreateValidator;
+    private AttributeCreationValidator $jsonSchemaCreateValidator;
 
-    /** @var AttributeEditionValidator */
-    private $jsonSchemaEditValidator;
+    private AttributeEditionValidator $jsonSchemaEditValidator;
 
-    /** @var ValidateAttributePropertiesImmutability */
-    private $validateAttributePropertiesImmutability;
+    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
 
     private SecurityFacade $securityFacade;
 
@@ -126,7 +113,7 @@ class CreateOrUpdateAttributeAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 

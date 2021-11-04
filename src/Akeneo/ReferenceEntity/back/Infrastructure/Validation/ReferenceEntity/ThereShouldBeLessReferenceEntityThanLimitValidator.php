@@ -25,11 +25,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
 
-    /** @var int */
-    private $referenceEntityLimit;
+    private int $referenceEntityLimit;
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,

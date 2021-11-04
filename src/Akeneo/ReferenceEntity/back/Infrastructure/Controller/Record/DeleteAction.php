@@ -36,26 +36,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    /** @var DeleteRecordHandler */
-    private $deleteRecordHandler;
+    private DeleteRecordHandler $deleteRecordHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    private RecordIndexerInterface $recordIndexer;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         DeleteRecordHandler $deleteRecordHandler,

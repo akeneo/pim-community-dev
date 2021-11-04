@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 
 /**
@@ -29,8 +30,7 @@ class ValidateAttributePropertiesImmutability
         'reference_entity_code',
     ];
 
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
-    private $findConnectorAttribute;
+    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute;
 
     public function __construct(FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute)
     {
@@ -50,7 +50,7 @@ class ValidateAttributePropertiesImmutability
         array $editedProperties
     ): array {
         $attribute = $this->findConnectorAttribute->find($referenceEntityIdentifier, $attributeCode);
-        if (null === $attribute) {
+        if (!$attribute instanceof ConnectorAttribute) {
             throw new \RuntimeException(sprintf('Attribute %s was not found.', $editedProperties['code']));
         }
 

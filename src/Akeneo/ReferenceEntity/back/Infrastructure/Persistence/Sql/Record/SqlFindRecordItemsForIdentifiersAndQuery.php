@@ -28,11 +28,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var BulkRecordItemHydrator */
-    private $bulkRecordItemHydrator;
+    private BulkRecordItemHydrator $bulkRecordItemHydrator;
 
     public function __construct(
         Connection $sqlConnection,
@@ -47,9 +45,7 @@ class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIden
         $normalizedRecordItems = $this->fetchAll($identifiers);
         $normalizedRecordItemsOrdered = $this->orderRecordItems($normalizedRecordItems, $identifiers);
 
-        $recordItems = $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItemsOrdered, $query);
-
-        return $recordItems;
+        return $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItemsOrdered, $query);
     }
 
     private function fetchAll(array $identifiers): array

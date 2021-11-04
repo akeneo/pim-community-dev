@@ -24,8 +24,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -58,8 +57,7 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $isLinked = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_linked'], $platform);
 
-        return $isLinked;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_linked'], $platform);
     }
 }

@@ -30,20 +30,15 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindRecordDetails implements FindRecordDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var RecordDetailsHydratorInterface */
-    private $recordDetailsHydrator;
+    private RecordDetailsHydratorInterface $recordDetailsHydrator;
 
-    /** @var GenerateEmptyValuesInterface */
-    private $generateEmptyValues;
+    private GenerateEmptyValuesInterface $generateEmptyValues;
 
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     public function __construct(
         Connection $sqlConnection,
@@ -70,9 +65,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
             return null;
         }
 
-        $recordDetails = $this->hydrateRecordDetails($result);
-
-        return $recordDetails;
+        return $this->hydrateRecordDetails($result);
     }
 
     private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): array
@@ -99,7 +92,7 @@ SQL;
         $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
-        return !$result ? [] : $result;
+        return $result ? $result : [];
     }
 
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier

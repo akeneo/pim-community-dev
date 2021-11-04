@@ -18,6 +18,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOptio
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionCollectionValueCommand as EditOptionCollectionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -72,10 +74,10 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
     private function validType(EditOptionCollectionValueCommand $command): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->optionCodes, new Constraints\All(
+        $violations = $validator->validate($command->optionCodes, new All(
             [
                 'constraints' => [
-                    new Constraints\Type('string'),
+                    new Type('string'),
                 ],
             ]
         ));
@@ -101,9 +103,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
 
     private function checkOptionExists(EditOptionCollectionValueCommand $command): void
     {
-        $existingOptionCodes = array_map(function (AttributeOption $attributeOption) {
-            return (string) $attributeOption->getCode();
-        }, $command->attribute->getAttributeOptions());
+        $existingOptionCodes = array_map(static fn (AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
 
         $unexistingOptionCodes = array_diff($command->optionCodes, $existingOptionCodes);
 

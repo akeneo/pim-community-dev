@@ -34,23 +34,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
+    private EditRecordCommandFactory $editRecordCommandFactory;
 
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
+    private EditRecordHandler $editRecordHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private NormalizerInterface $normalizer;
 
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         EditRecordCommandFactory $editRecordCommandFactory,
@@ -119,8 +113,7 @@ class EditAction
     private function getEditCommand(Request $request): EditRecordCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-        $command = $this->editRecordCommandFactory->create($normalizedCommand);
 
-        return $command;
+        return $this->editRecordCommandFactory->create($normalizedCommand);
     }
 }

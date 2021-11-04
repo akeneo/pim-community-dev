@@ -22,8 +22,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChannelsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     // TODO caching ?
 

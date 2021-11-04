@@ -27,17 +27,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeOptionsAction
 {
-    /** @var FindConnectorAttributeOptionsInterface */
-    private $findConnectorAttributeOptionsQuery;
+    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
+    private AttributeSupportsOptions $attributeSupportsOptions;
 
     private SecurityFacade $securityFacade;
 
@@ -79,7 +75,7 @@ class GetConnectorAttributeOptionsAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
@@ -91,7 +87,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
@@ -101,7 +97,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 

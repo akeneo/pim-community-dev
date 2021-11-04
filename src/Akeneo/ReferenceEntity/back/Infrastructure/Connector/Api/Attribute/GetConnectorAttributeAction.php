@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -13,8 +14,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -27,11 +28,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeAction
 {
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
-    private $findConnectorAttributeQuery;
+    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
 
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
     private SecurityFacade $securityFacade;
 
@@ -70,13 +69,13 @@ class GetConnectorAttributeAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $attribute = $this->findConnectorAttributeQuery->find($referenceEntityIdentifier, $attributeCode);
 
-        if (null === $attribute) {
+        if (!$attribute instanceof ConnectorAttribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the reference entity "%s".', $code, $referenceEntityIdentifier));
         }
 
