@@ -45,7 +45,7 @@ final class GetBlacklistedAttributeJobExecutionIdIntegration extends TestCase
 
     private function getJobExecutionId(): int
     {
-        $jobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "clean_removed_attribute_job";')->fetchColumn();
+        $jobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "clean_removed_attribute_job";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES (:job_instance_id, null, 'admin', 2, null, null, '2020-10-16 09:38:16', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{}');

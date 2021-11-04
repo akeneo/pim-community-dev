@@ -215,7 +215,7 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $productId = $this->get('database_connection')->executeQuery(
             "SELECT id FROM pim_catalog_product WHERE identifier = :identifier;",
             ['identifier' => $productIdentifier]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (int) $productId;
     }
