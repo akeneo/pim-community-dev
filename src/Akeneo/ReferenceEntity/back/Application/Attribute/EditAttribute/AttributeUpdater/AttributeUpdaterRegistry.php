@@ -14,7 +14,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 class AttributeUpdaterRegistry implements AttributeUpdaterRegistryInterface
 {
     /** @var AttributeUpdaterInterface[]  */
-    private $updaters = [];
+    private array $updaters = [];
 
     public function register(AttributeUpdaterInterface $attributeUpdater): void
     {
