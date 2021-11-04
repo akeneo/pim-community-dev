@@ -12,7 +12,7 @@ import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
-import {useAttributeContext} from '../contexts/AttributeContext';
+import {useAttributeContext} from '../contexts';
 
 export type BackendTableProductExportFilterValue = {
   operator: FilterOperator;

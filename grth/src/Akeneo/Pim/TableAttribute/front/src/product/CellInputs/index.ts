@@ -1,6 +1,6 @@
 import React from 'react';
 import {TableRowWithId} from '../TableFieldApp';
-import {ColumnDefinition, TableAttribute} from '../../models';
+import {ColumnDefinition} from '../../models';
 
 export type CellInput = React.FC<{
   row: TableRowWithId;
@@ -8,7 +8,7 @@ export type CellInput = React.FC<{
   onChange: (value: any) => void;
   inError: boolean;
   // Still used ?
-  attribute: TableAttribute;
+  // attribute: TableAttribute;
   highlighted: boolean;
 }>;
 

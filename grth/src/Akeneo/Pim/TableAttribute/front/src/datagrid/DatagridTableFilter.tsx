@@ -3,7 +3,6 @@ import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-
 import {
   AttributeCode,
   BackendTableFilterValue,
-  ColumnCode,
   ColumnDefinition,
   isFilterValid,
   PendingBackendTableFilterValue,
@@ -11,13 +10,14 @@ import {
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
-import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
-import {AttributeContext} from '../contexts/AttributeContext';
+import {AttributeContext} from '../contexts';
+import {DatagridTableCriteria} from './DatagridTableCriteria';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -62,8 +62,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 }) => {
   const router = useRouter();
   const translate = useTranslate();
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
@@ -98,14 +96,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     setFilterValue(pendingFilter);
   }, [optionsForFirstColumn, attribute]);
 
-  const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
-  Object.keys(filterValuesMapping).forEach(dataType => {
-    valueRenderers[dataType] = {};
-    Object.keys(filterValuesMapping[dataType]).forEach(operator => {
-      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer();
-    });
-  });
-
   const handleValidate = () => {
     if (filterValue && isFilterValid(filterValue)) {
       close();
@@ -127,29 +117,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       handleValidate();
     }
   };
-
-  let criteriaHint = translate('pim_common.all');
-  if (filterValue && isFilterValid(filterValue) && attribute) {
-    criteriaHint = '';
-    criteriaHint +=
-      typeof filterValue.row === 'undefined' || filterValue.row === null
-        ? translate('pim_table_attribute.datagrid.any') + ' '
-        : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
-    criteriaHint +=
-      getLabel(
-        (filterValue.column as ColumnDefinition).labels,
-        catalogLocale,
-        (filterValue.column as ColumnDefinition).code
-      ) + ' ';
-    criteriaHint += translate(`pim_common.operators.${filterValue.operator}`) + ' ';
-
-    const valueRenderer = (valueRenderers[(filterValue.column as ColumnDefinition).data_type || ''] || {})[
-      filterValue.operator || ''
-    ];
-    if (valueRenderer) {
-      criteriaHint += valueRenderer(filterValue.value, (filterValue.column as ColumnDefinition).code);
-    }
-  }
 
   return (
     <AttributeContext.Provider value={{attribute, setAttribute}}>
@@ -180,9 +147,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
           {showLabel && attribute && (
             <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>
           )}
-          <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
-            {criteriaHint}
-          </span>
+          <DatagridTableCriteria filterValue={filterValue} filterValuesMapping={filterValuesMapping} />
           <span className='AknFilterBox-filterCaret' />
         </FilterBox>
         {canDisable && (

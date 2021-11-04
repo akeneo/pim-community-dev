@@ -4,7 +4,7 @@ import {MultiSelectInput} from 'akeneo-design-system';
 import {useFetchOptions} from '../../product';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectOptionCode} from '../../models';
-import {useAttributeContext} from '../../contexts/AttributeContext';
+import {useAttributeContext} from '../../contexts';
 
 const StringFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
   const translate = useTranslate();

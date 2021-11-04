@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
-import {useAttributeContext} from '../../contexts/AttributeContext';
+import {useAttributeContext} from '../../contexts';
 import {ManageOptionsModal} from '../../attribute';
 import {SelectOptionRepository} from '../../repositories';
 
@@ -113,61 +113,43 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     );
   }
 
-  return (
-    <TableInput.Select
-      highlighted={highlighted}
-      value={label}
-      onClear={handleClear}
-      clearLabel={translate('pim_common.clear')}
-      openDropdownLabel={translate('pim_common.open')}
-      searchPlaceholder={translate('pim_common.search')}
-      searchTitle={translate('pim_common.search')}
-      onNextPage={handleNextPage}
-      searchValue={searchValue}
-      onSearchChange={handleSearchValue}
-      inError={inError || notFoundOption}
-      closeTick={closeTick}
-      {...rest}
-    >
-      {itemsToDisplay.map(option => {
-        return (
-          <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>
-            {getLabel(option.labels, userContext.get('catalogLocale'), option.code)}
-          </Dropdown.Item>
-        );
-      })}
-      {searchValue === '' && itemsToDisplay.length === 0 && (
-        <CenteredHelper.Container>
-          <CenteredHelper illustration={<AddingValueIllustration />}>
-            <CenteredHelper.Title>
-              {translate('pim_table_attribute.form.product.no_add_options_title')}
-            </CenteredHelper.Title>
-            {hasEditPermission ? (
-              <div>
-                {translate('pim_table_attribute.form.product.no_add_options', {
-                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                })}{' '}
-                <Link onClick={handleRedirect}>
-                  {translate('pim_table_attribute.form.product.no_add_options_link')}
-                </Link>
-              </div>
-            ) : (
-              translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+  let BottomHelper = undefined;
+  if (searchValue === '' && itemsToDisplay.length === 0) {
+    BottomHelper = (
+      <CenteredHelper.Container>
+        <CenteredHelper illustration={<AddingValueIllustration />}>
+          <CenteredHelper.Title>
+            {translate('pim_table_attribute.form.product.no_add_options_title')}
+          </CenteredHelper.Title>
+          {hasEditPermission ? (
+            <div>
+              {translate('pim_table_attribute.form.product.no_add_options', {
                 attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-              })
-            )}
-          </CenteredHelper>
-        </CenteredHelper.Container>
-      )}
-      {searchValue !== '' && itemsToDisplay.length === 0 && (
-        <CenteredHelper.Container>
-          <CenteredHelper illustration={<AddingValueIllustration />}>
-            <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelper.Title>
-            {translate('pim_table_attribute.form.attribute.please_try_again')}
-          </CenteredHelper>
-        </CenteredHelper.Container>
-      )}
-      {hasEditPermission && (
+              })}{' '}
+              <Link onClick={handleRedirect}>{translate('pim_table_attribute.form.product.no_add_options_link')}</Link>
+            </div>
+          ) : (
+            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+            })
+          )}
+        </CenteredHelper>
+      </CenteredHelper.Container>
+    );
+  } else if (searchValue !== '' && itemsToDisplay.length === 0) {
+    BottomHelper = (
+      <CenteredHelper.Container>
+        <CenteredHelper illustration={<AddingValueIllustration />}>
+          <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelper.Title>
+          {translate('pim_table_attribute.form.attribute.please_try_again')}
+        </CenteredHelper>
+      </CenteredHelper.Container>
+    );
+  }
+  if (hasEditPermission) {
+    BottomHelper = (
+      <>
+        {BottomHelper}
         <EditOptionsContainer>
           <Button onClick={openManageOptions} ghost level='secondary'>
             Edit options
@@ -183,7 +165,34 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
             />
           )}
         </EditOptionsContainer>
-      )}
+      </>
+    );
+  }
+
+  return (
+    <TableInput.Select
+      highlighted={highlighted}
+      value={label}
+      onClear={handleClear}
+      clearLabel={translate('pim_common.clear')}
+      openDropdownLabel={translate('pim_common.open')}
+      searchPlaceholder={translate('pim_common.search')}
+      searchTitle={translate('pim_common.search')}
+      onNextPage={handleNextPage}
+      searchValue={searchValue}
+      onSearchChange={handleSearchValue}
+      inError={inError || notFoundOption}
+      closeTick={closeTick}
+      bottomHelper={BottomHelper}
+      {...rest}
+    >
+      {itemsToDisplay.map(option => {
+        return (
+          <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>
+            {getLabel(option.labels, userContext.get('catalogLocale'), option.code)}
+          </Dropdown.Item>
+        );
+      })}
     </TableInput.Select>
   );
 };

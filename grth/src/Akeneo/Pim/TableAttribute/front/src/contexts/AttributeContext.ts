@@ -2,18 +2,16 @@ import React from 'react';
 import {TableAttribute} from '../models';
 
 type AttributeContextState = {
-  attribute: TableAttribute | undefined;
+  attribute?: TableAttribute;
   setAttribute: (tableAttribute: TableAttribute) => void;
 };
 
-export const AttributeContext = React.createContext<AttributeContextState | undefined>(undefined);
+export const AttributeContext = React.createContext<AttributeContextState>({
+  setAttribute: () => {
+    console.error('AttributeContext setAttribute can not be called');
+  },
+});
 
 export const useAttributeContext = () => {
-  const context = React.useContext(AttributeContext);
-
-  if (undefined === context) {
-    throw new Error('The AttributeContext was not initialized.');
-  }
-
-  return context;
+  return React.useContext(AttributeContext);
 };

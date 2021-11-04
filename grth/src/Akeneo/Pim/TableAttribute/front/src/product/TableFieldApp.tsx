@@ -12,7 +12,7 @@ import {useToggleRow} from './useToggleRow';
 import {SelectOptionRepository} from '../repositories';
 import {CellMatchersMapping} from './CellMatchers';
 import {CellInputsMapping} from './CellInputs';
-import {AttributeContext} from '../contexts/AttributeContext';
+import {AttributeContext} from '../contexts';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>

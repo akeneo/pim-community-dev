@@ -3,6 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, fireEvent, screen} from '@testing-library/react';
 import MultiSelectFilterValue from '../../../../src/datagrid/FilterValues/MultiSelectFilterValue';
 import {getComplexTableAttribute} from '../../../factories';
+import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
 
@@ -17,12 +18,9 @@ window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverM
 describe('MultiSelectFilterValue', () => {
   it('should display current value', async () => {
     renderWithProviders(
-      <MultiSelectFilterValue
-        value={['F', 'B']}
-        onChange={jest.fn()}
-        columnCode={'nutrition_score'}
-        attribute={getComplexTableAttribute()}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <MultiSelectFilterValue value={['F', 'B']} onChange={jest.fn()} columnCode={'nutrition_score'} />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('F')).toBeInTheDocument();

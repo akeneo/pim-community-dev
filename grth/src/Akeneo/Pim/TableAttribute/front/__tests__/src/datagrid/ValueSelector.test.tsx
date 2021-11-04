@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {ValueSelector} from '../../../src/datagrid';
-import {defaultFilterValuesMapping, getComplexTableAttribute} from '../../factories';
+import {defaultFilterValuesMapping} from '../../factories';
 
 describe('ValueSelector', () => {
   it('should display empty value selector', () => {
@@ -11,7 +11,6 @@ describe('ValueSelector', () => {
         operator={'EMPTY'}
         onChange={jest.fn()}
         columnCode={'part'}
-        attribute={getComplexTableAttribute()}
         filterValuesMapping={defaultFilterValuesMapping}
       />
     );

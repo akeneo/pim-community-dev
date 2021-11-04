@@ -1,6 +1,6 @@
 import {useFetchOptions} from '../useFetchOptions';
 import {CellMatcher} from './index';
-import {useAttributeContext} from '../../contexts/AttributeContext';
+import {useAttributeContext} from '../../contexts';
 
 const useSearch: CellMatcher = () => {
   const {attribute, setAttribute} = useAttributeContext();

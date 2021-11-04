@@ -8,7 +8,7 @@ import {
   MoreVerticalIcon,
   TableInput,
 } from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition, TableAttribute, TableCell} from '../models';
+import {ColumnCode, ColumnDefinition, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
@@ -18,7 +18,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {CellInputsMapping} from './CellInputs';
 import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
-import {useAttributeContext} from '../contexts/AttributeContext';
+import {useAttributeContext} from '../contexts';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -242,7 +242,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
       return (
         <CellInput
-          attribute={attribute as TableAttribute}
           row={row}
           columnDefinition={columnDefinition}
           onChange={value => handleChange(row[UNIQUE_ID_KEY], columnCode, value)}

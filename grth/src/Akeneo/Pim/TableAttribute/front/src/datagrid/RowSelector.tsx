@@ -3,7 +3,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {SelectInput} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../models';
 import {useFetchOptions} from '../product';
-import {useAttributeContext} from '../contexts/AttributeContext';
+import {useAttributeContext} from '../contexts';
 
 type RowSelectorProps = {
   onChange: (option: SelectOption | undefined | null) => void;

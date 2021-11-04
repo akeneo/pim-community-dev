@@ -7,6 +7,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
   AddRowsButton,
+  AttributeContext,
   TableInputValue,
   TableValueWithId,
   useToggleRow,
@@ -34,11 +35,12 @@ const TableValue: React.FC<InputValueProps> = ({
   const UserContext = useUserContext();
   const {cellMatchersMapping, cellInputsMapping} = useContext(ConfigContext);
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
+  const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute as TableAttribute);
 
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     addUniqueIds(value || [])
   );
-  const firstColumnCode = (attribute as TableAttribute).table_configuration[0]
+  const firstColumnCode = attributeState.table_configuration[0]
     .code;
 
   const handleChange = (value: TableValueWithId) => {
@@ -53,30 +55,31 @@ const TableValue: React.FC<InputValueProps> = ({
   );
 
   return (
-    <TableValueContainer>
-      <AttributeLabel>
-        {getLabel(
-          attribute.labels,
-          UserContext.get('catalogLocale'),
-          attribute.code
-        )}
-        <AddRowsButton
-          attribute={attribute as TableAttribute}
-          columnCode={firstColumnCode}
-          checkedOptionCodes={tableValue.map(
-            row => (row[firstColumnCode] ?? '') as string
+    <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
+      <TableValueContainer>
+        <AttributeLabel>
+          {getLabel(
+            attributeState.labels,
+            UserContext.get('catalogLocale'),
+            attributeState.code
           )}
-          toggleChange={handleToggleRow}
+          <AddRowsButton
+            attribute={attributeState}
+            columnCode={firstColumnCode}
+            checkedOptionCodes={tableValue.map(
+              row => (row[firstColumnCode] ?? '') as string
+            )}
+            toggleChange={handleToggleRow}
+          />
+        </AttributeLabel>
+        <TableInputValue
+          valueData={tableValue}
+          onChange={handleChange}
+          cellInputsMapping={cellInputsMapping}
+          cellMatchersMapping={cellMatchersMapping}
         />
-      </AttributeLabel>
-      <TableInputValue
-        attribute={attribute as TableAttribute}
-        valueData={tableValue}
-        onChange={handleChange}
-        cellInputsMapping={cellInputsMapping}
-        cellMatchersMapping={cellMatchersMapping}
-      />
-    </TableValueContainer>
+      </TableValueContainer>
+    </AttributeContext.Provider>
   );
 };
 

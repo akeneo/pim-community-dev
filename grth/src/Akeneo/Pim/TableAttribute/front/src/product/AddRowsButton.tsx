@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import {CenteredHelper} from '../shared';
 import {SelectOptionRepository} from '../repositories';
 import {ManageOptionsModal} from '../attribute';
-import {useAttributeContext} from '../contexts/AttributeContext';
+import {useAttributeContext} from '../contexts';
 import {useFetchOptions} from './useFetchOptions';
 
 const BATCH_SIZE = 20;

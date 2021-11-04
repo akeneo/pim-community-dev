@@ -39,10 +39,16 @@ const useFetchOptions: (
   const getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined = columnCode => {
     if (!attribute) return undefined;
     const i = attribute?.table_configuration.findIndex(columnDefinition => columnDefinition.code === columnCode);
-    return (attribute?.table_configuration[i] as SelectColumnDefinition).options;
+    return (attribute?.table_configuration[i] as SelectColumnDefinition | undefined)?.options;
   };
 
-  // Undefined = loading ; null = not found ; string = label
+  /**
+   * @returns
+   *   - undefined: attribute or option is not fetched
+   *   - null: the option is not found
+   *   - string: the label of the found
+   * @param value
+   */
   const getOptionLabel = (columnCode: ColumnCode, value: string) => {
     if (!attribute) return undefined;
     const options = getOptionsFromColumnCode(columnCode);
