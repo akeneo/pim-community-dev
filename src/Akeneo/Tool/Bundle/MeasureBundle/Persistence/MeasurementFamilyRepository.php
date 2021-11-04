@@ -231,7 +231,7 @@ SQL;
             $sql,
             ['measurement_family_code' => $measurementFamilyCode->normalize()]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw new MeasurementFamilyNotFoundException();

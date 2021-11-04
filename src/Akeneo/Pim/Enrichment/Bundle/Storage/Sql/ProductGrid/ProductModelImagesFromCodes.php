@@ -262,7 +262,7 @@ SQL;
             $row = $this->connection->executeQuery(
                 $sql,
                 ['code' => $code, 'channel_code' => $channelCode, 'locale_code' => $localeCode]
-            )->fetch();
+            )->fetchAssociative();
             if (!isset($row['code'])) {
                 continue;
             }
@@ -362,7 +362,7 @@ SQL;
             $row = $this->connection->executeQuery(
                 $sql,
                 ['code' => $code, 'channel_code' => $channelCode, 'locale_code' => $localeCode]
-            )->fetch();
+            )->fetchAssociative();
 
             if (!isset($row['code'])) {
                 continue;

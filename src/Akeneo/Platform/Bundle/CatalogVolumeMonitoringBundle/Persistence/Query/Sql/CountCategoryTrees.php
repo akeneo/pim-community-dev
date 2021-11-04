@@ -42,7 +42,7 @@ class CountCategoryTrees implements CountQuery
             FROM pim_catalog_category
             WHERE lvl = 0;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

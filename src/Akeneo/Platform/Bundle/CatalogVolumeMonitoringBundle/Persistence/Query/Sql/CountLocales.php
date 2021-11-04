@@ -42,7 +42,7 @@ class CountLocales implements CountQuery
             FROM pim_catalog_locale 
             WHERE is_activated = 1;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

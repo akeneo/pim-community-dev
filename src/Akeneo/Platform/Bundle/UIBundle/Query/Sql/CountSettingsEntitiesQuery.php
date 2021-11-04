@@ -38,7 +38,7 @@ SELECT
     (SELECT COUNT(*) FROM pim_catalog_group) AS count_groups
 SQL;
 
-        $result = $this->dbConnection->executeQuery($query)->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->dbConnection->executeQuery($query)->fetchAssociative();
 
         return array_map(fn ($rawCount) => intval($rawCount), $result);
     }

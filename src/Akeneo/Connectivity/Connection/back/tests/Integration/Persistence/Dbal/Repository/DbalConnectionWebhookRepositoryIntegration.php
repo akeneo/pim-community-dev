@@ -53,7 +53,7 @@ SELECT webhook_enabled, webhook_url
 FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
-        $webhook = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
+        $webhook = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetchAssociative();
 
         Assert::assertEquals($enabled, (bool) $webhook['webhook_enabled']);
         Assert::assertEquals($url, $webhook['webhook_url']);

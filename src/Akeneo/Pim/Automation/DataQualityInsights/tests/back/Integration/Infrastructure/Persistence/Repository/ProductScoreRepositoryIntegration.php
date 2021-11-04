@@ -136,7 +136,7 @@ SQL,
                 'productId' => $expectedProductScore->getProductId()->toInt(),
                 'evaluatedAt' => $expectedProductScore->getEvaluatedAt()->format('Y-m-d'),
             ]
-        )->fetch(\PDO::FETCH_ASSOC);
+        )->fetchAssociative();
 
         $this->assertNotEmpty($productScore);
 

@@ -42,7 +42,7 @@ SELECT SUM(JSON_EXTRACT(volume, '$.value')) AS value
 FROM pim_aggregated_volume WHERE volume_name IN ('count_product_values', 'count_product_model_values')
 SQL;
 
-        $sqlResult = $this->connection->query($sql)->fetch();
+        $sqlResult = $this->connection->executeQuery($sql)->fetchAssociative();
         $volumeValue = isset($sqlResult['value']) ? (int) $sqlResult['value'] : 0;
 
         return new CountVolume($volumeValue, $this->limit, self::VOLUME_NAME);
