@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class MigrateProductCriterionEvaluationCommand extends Command
 {
+    protected static $defaultName = 'pimee:data-quality-insights:migrate-product-criterion-evaluation';
+    protected static $defaultDescription = 'Migrate the products criteria evaluations with empty results and pending status.';
+
     private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
@@ -26,10 +29,7 @@ final class MigrateProductCriterionEvaluationCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pimee:data-quality-insights:migrate-product-criterion-evaluation')
-            ->setDescription('Migrate the products criteria evaluations with empty results and pending status.')
-            ->setHidden(true);
+        $this->setHidden(true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -37,7 +37,7 @@ final class MigrateProductCriterionEvaluationCommand extends Command
         if ($this->isMigrationDone()) {
             $output->writeln('The migration has already been performed.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->writeln('Start migration of products...');
@@ -70,7 +70,7 @@ SQL
 
         $output->writeln('Migration done.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function isMigrationDone(): bool
