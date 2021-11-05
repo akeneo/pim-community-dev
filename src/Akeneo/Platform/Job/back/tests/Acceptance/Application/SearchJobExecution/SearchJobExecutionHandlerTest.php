@@ -38,20 +38,28 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
     {
         $jobExecutionRows = [
             new JobExecutionRow(
+                1,
                 'first_job',
                 'export',
-                '2020-01-02T00:00:00+00:00',
+                new \DateTime('2020-01-02T00:00:00+00:00'),
                 'admin',
                 'COMPLETED',
-                3
+                3,
+                0,
+                1,
+                2
             ),
             new JobExecutionRow(
+                2,
                 'second_job',
                 'export',
-                '2020-01-03T00:00:00+00:00',
+                new \DateTime('2020-01-03T00:00:00+00:00'),
                 'admin',
-                'COMPLETED',
-                4
+                'FAILED',
+                4,
+                1,
+                1,
+                2
             ),
         ];
 
