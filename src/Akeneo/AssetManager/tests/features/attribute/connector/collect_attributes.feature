@@ -112,4 +112,4 @@ Feature: Connection to MDM or ERP systems
     Given the Designer asset family existing both in the ERP and in the PIM
     And the media_link attribute Preview that is both part of the structure of the Designer asset family in the ERP and in the PIM but with some unsynchronized properties
     When the connector collects this attribute from the ERP to synchronize it with the PIM without permission
-    Then the PIM notifies the connector about missing permissions for collecting this attribute from the ERP to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting this attribute from the ERP to synchronize it with the PIM

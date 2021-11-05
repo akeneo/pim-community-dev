@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersForQuery;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -1076,9 +1076,9 @@ class GetConnectorAssetsContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for requesting all complete assets of the Brand asset family on the Ecommerce channel for the French and English locales without permission
+     * @Then the PIM notifies the connector about missing permissions for requesting all complete assets of the Brand asset family on the Ecommerce channel for the French and English locales
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocalesWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion

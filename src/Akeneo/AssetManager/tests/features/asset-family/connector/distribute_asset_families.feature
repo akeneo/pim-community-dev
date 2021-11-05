@@ -31,10 +31,10 @@ Feature: Connection to e-commerce platforms and marketplaces
   Scenario: Notify an error when trying to get an asset family without permission
     Given the Brand asset family
     When the connector requests the Brand asset family without permission
-    Then the PIM notifies the connector about missing permissions for requesting the Brand asset family without permission
+    Then the PIM notifies the connector about missing permissions for requesting the Brand asset family
 
   @integration-back
   Scenario: Notify an error when trying to get all the asset families without permission
     Given 7 asset families in the PIM
     When the connector requests all asset families of the PIM without permission
-    Then the PIM notifies the connector about missing permissions for requesting all asset families of the PIM without permission
+    Then the PIM notifies the connector about missing permissions for requesting all asset families of the PIM

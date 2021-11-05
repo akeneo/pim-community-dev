@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetFamilyItems;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -227,9 +227,9 @@ class GetConnectorAssetFamiliesContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for requesting all asset families of the PIM without permission
+     * @Then the PIM notifies the connector about missing permissions for requesting all asset families of the PIM
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllAssetFamiliesOfThePimWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllAssetFamiliesOfThePim()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion

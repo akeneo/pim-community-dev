@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
 use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;

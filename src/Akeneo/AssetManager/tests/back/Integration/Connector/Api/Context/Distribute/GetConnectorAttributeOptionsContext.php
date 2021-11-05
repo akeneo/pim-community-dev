@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAttributeOptions;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -430,9 +430,9 @@ class GetConnectorAttributeOptionsContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for requesting all the options of the Nationality attribute for the Brand asset family without permission
+     * @Then the PIM notifies the connector about missing permissions for requesting all the options of the Nationality attribute for the Brand asset family
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllTheOptionsOfTheNationalityAttributeForTheBrandAssetFamilyWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllTheOptionsOfTheNationalityAttributeForTheBrandAssetFamily()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion

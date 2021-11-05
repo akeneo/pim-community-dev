@@ -77,4 +77,4 @@ Feature: Connection to MDM or ERP systems
     And the Sales area attribute existing both in the ERP and in the PIM
     And the USA attribute option that only exists in the ERP but not in the PIM
     When the connector collects the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission
-    Then the PIM notifies the connector about missing permissions for collecting the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting the USA attribute option of the Sales area Attribute of the Brand asset family from the ERP to synchronize it with the PIM

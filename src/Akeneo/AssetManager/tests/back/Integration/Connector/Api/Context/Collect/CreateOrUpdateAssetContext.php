@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -1258,9 +1258,9 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for collecting this asset from the ERP to synchronize it with the PIM without permission
+     * @Then the PIM notifies the connector about missing permissions for collecting this asset from the ERP to synchronize it with the PIM
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAssetFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAssetFromTheErpToSynchronizeItWithThePim()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion

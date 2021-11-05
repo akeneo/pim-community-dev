@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode;
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -213,9 +213,9 @@ class GetConnectorAssetContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for requesting the Kartell asset for the Brand asset family without permission
+     * @Then the PIM notifies the connector about missing permissions for requesting the Kartell asset for the Brand asset family
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheKartellAssetForTheBrandAssetFamilyWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheKartellAssetForTheBrandAssetFamily()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion

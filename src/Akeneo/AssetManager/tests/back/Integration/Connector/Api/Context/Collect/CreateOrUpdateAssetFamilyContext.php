@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -510,9 +510,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
     }
 
     /**
-     * @Then the PIM notifies the connector about missing permissions for collecting the properties of the Brand asset family from the ERP to synchronize it with the PIM without permission
+     * @Then the PIM notifies the connector about missing permissions for collecting the properties of the Brand asset family from the ERP to synchronize it with the PIM
      */
-    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThePropertiesOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThePropertiesOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePim()
     {
         /**
          * TODO CXP-922: Assert 403 instead of success & remove logger assertion
