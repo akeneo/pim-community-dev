@@ -43,7 +43,7 @@ SQL;
             ['resource_names' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         );
 
-        $loggedAt = $stmt->fetch(\PDO::FETCH_ASSOC)['last_update'];
+        $loggedAt = $stmt->fetch(\PDO::FETCH_ASSOC)['last_update'] ?? null;
 
         if (null === $loggedAt) {
             return 0;
