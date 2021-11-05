@@ -109,8 +109,8 @@ class CreateOrUpdateReferenceEntityContext implements Context
      */
     public function before()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
         $this->securityFacade->setIsGranted('pim_api_record_edit', true);
         $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
@@ -327,7 +327,7 @@ class CreateOrUpdateReferenceEntityContext implements Context
      */
     public function theConnectorCollectsTheseReferenceEntitiesFromTheErpToSynchronizeThemWithThePimWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', false);
 
         $client = $this->clientFactory->logIn('julia');
 
@@ -350,7 +350,7 @@ class CreateOrUpdateReferenceEntityContext implements Context
             self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entities_synchronization.json'
         );
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
             'Expected warning not found in the logs.'
         );
     }

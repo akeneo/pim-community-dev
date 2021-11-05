@@ -90,7 +90,7 @@ class GetConnectorReferenceEntityAttributesAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_entity_list';
+        $acl = 'pim_api_reference_entity_list';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

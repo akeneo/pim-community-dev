@@ -209,7 +209,7 @@ class CreateOrUpdateReferenceEntityAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_entity_edit';
+        $acl = 'pim_api_reference_entity_edit';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

@@ -103,8 +103,8 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function before()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
         $this->securityFacade->setIsGranted('pim_api_record_edit', true);
         $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
@@ -631,7 +631,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theConnectorCollectsTheMainColorAttributeOfTheColorReferenceEntityFromTheERPToSynchronizeItWithThePIMWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', false);
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
@@ -653,7 +653,7 @@ class CreateOrUpdateAttributeContext implements Context
         );
 
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
             'Expected warning not found in the logs.'
         );
     }

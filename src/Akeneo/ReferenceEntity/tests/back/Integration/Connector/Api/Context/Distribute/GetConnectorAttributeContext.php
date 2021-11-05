@@ -88,8 +88,8 @@ class GetConnectorAttributeContext implements Context
      */
     public function before()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
         $this->securityFacade->setIsGranted('pim_api_record_edit', true);
         $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
@@ -139,7 +139,7 @@ class GetConnectorAttributeContext implements Context
      */
     public function theConnectorRequestsTheDescriptionAttributeOfTheBrandReferenceEntityWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_list', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', false);
         $client = $this->clientFactory->logIn('julia');
 
         $this->attributeForReferenceEntity = $this->webClientHelper->requestFromFile(
@@ -161,7 +161,7 @@ class GetConnectorAttributeContext implements Context
             self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entity_description_attribute.json'
         );
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_list"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_list"'),
             'Expected warning not found in the logs.'
         );
     }

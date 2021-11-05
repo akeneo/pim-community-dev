@@ -97,8 +97,8 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function before()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
         $this->securityFacade->setIsGranted('pim_api_record_edit', true);
         $this->securityFacade->setIsGranted('pim_api_record_list', true);
     }
@@ -391,7 +391,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIMWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_entity_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', false);
         $this->requestContract = 'forbidden_australia_attribute_option_update.json';
         $client = $this->clientFactory->logIn('julia');
 
@@ -415,7 +415,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
         );
 
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_entity_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
             'Expected warning not found in the logs.'
         );
     }
