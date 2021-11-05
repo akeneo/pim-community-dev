@@ -52,7 +52,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={jest.fn()}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -70,7 +69,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={jest.fn()}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -101,7 +99,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -135,7 +132,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -166,7 +162,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -198,7 +193,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -234,7 +228,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -266,7 +259,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
@@ -297,7 +289,6 @@ describe('DatagridTableFilter', () => {
       <DatagridTableFilter
         onChange={handleChange}
         showLabel={true}
-        label={'Nutrition'}
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
