@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactElement, ReactNode} from 'react';
 import {Dropdown} from '../../../Dropdown/Dropdown';
 import {useBooleanState} from '../../../../hooks';
 import {ArrowDownIcon, CloseIcon} from '../../../../icons';
@@ -70,6 +70,7 @@ type TableInputSelectProps = {
   searchTitle: string;
   inError?: boolean;
   closeTick?: boolean;
+  bottomHelper?: ReactElement;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -86,6 +87,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   children,
   inError,
   closeTick = false,
+  bottomHelper,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -166,6 +168,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
             />
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={onNextPage}>{children}</Dropdown.ItemCollection>
+          {bottomHelper}
         </Dropdown.Overlay>
       )}
     </SelectButtonDropdown>
