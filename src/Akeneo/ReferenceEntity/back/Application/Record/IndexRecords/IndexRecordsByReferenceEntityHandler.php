@@ -15,8 +15,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
  */
 class IndexRecordsByReferenceEntityHandler
 {
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
+    private RecordIndexerInterface $recordIndexer;
 
     public function __construct(RecordIndexerInterface $recordIndexer)
     {

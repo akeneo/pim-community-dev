@@ -16,17 +16,14 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class EditAttributeHandler
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var AttributeUpdaterRegistryInterface */
-    private $AttributeUpdaterRegistry;
+    private AttributeRepositoryInterface $attributeRepository;
+    private AttributeUpdaterRegistryInterface $attributeUpdaterRegistry;
 
     public function __construct(
         AttributeUpdaterRegistryInterface $attributeUpdaterRegistry,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->AttributeUpdaterRegistry = $attributeUpdaterRegistry;
+        $this->attributeUpdaterRegistry = $attributeUpdaterRegistry;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -48,7 +45,7 @@ class EditAttributeHandler
     private function editAttribute(AbstractAttribute $attribute, EditAttributeCommand $command): AbstractAttribute
     {
         foreach ($command->editCommands as $editCommand) {
-            $editAttributeUpdater = $this->AttributeUpdaterRegistry->getUpdater($attribute, $editCommand);
+            $editAttributeUpdater = $this->attributeUpdaterRegistry->getUpdater($attribute, $editCommand);
             $attribute = ($editAttributeUpdater)($attribute, $editCommand);
         }
 

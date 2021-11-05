@@ -14,9 +14,7 @@ use Webmozart\Assert\Assert;
 class AttributeLimit
 {
     private const LIMITLESS = null;
-
-    /** @var ?string */
-    private $limit;
+    private ?string $limit;
 
     private function __construct(?string $limit)
     {

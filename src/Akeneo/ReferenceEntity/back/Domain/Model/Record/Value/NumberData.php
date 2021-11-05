@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class NumberData implements ValueDataInterface
 {
-    /** @var string */
-    private $number;
+    private string $number;
 
     private function __construct(string $number)
     {

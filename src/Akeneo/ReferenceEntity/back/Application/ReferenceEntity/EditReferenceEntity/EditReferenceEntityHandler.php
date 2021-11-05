@@ -28,14 +28,9 @@ class EditReferenceEntityHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
-
-    /** @var FileStorerInterface */
-    private $storer;
-
-    /** @var FileExistsInterface */
-    private $fileExists;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
+    private FileStorerInterface $storer;
+    private FileExistsInterface $fileExists;
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
@@ -76,7 +71,7 @@ class EditReferenceEntityHandler
     {
         $fileExists = $this->fileExists->exists($imageData['filePath']);
 
-        if (true === $fileExists) {
+        if ($fileExists) {
             $storedFile = (new FileInfo())
                 ->setKey($imageData['filePath'])
                 ->setOriginalFilename($imageData['originalFilename']);
@@ -85,8 +80,6 @@ class EditReferenceEntityHandler
             $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
         }
 
-        $storedImage = Image::fromFileInfo($storedFile);
-
-        return $storedImage;
+        return Image::fromFileInfo($storedFile);
     }
 }

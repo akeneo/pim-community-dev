@@ -31,11 +31,9 @@ class EditDecimalsAllowedCommandFactory implements EditAttributeCommandFactoryIn
             throw new \RuntimeException('Impossible to create an edit "decimals allowed" property command.');
         }
 
-        $command = new EditDecimalsAllowedCommand(
+        return new EditDecimalsAllowedCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['decimals_allowed']
         );
-
-        return $command;
     }
 }

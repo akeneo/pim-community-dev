@@ -2,6 +2,8 @@ batch_jobs.xlsx_tailored_product_export.label: XSLX로 맞춤화된 제품 내�
 batch_jobs.xlsx_tailored_product_model_export.label: XSLX로 맞춤화된 제품 모델 내보내기
 batch_jobs.csv_tailored_product_export.label: CSV로 맞춤화된 제품 내보내기
 batch_jobs.csv_tailored_product_model_export.label: CSV로 맞춤화된 제품 모델 내보내기
+pim_common:
+  quality_score: 품질 점수
 akeneo.tailored_export:
   filters:
     completeness:
@@ -10,8 +12,12 @@ akeneo.tailored_export:
         placeholder: 일부 로케일 선택
         remove: 로케일 제거
     quality_score:
+      score:
+        remove: 품질 점수 제거
       locales:
+        placeholder: 일부 로케일 선택
         label: 품질 점수 관련 로케일 정의
+        remove: 로케일 제거
   form:
     job_instance:
       tab:
@@ -89,10 +95,12 @@ akeneo.tailored_export:
             locale: 레이블로 사용된 특성이 로케일별 값을 가진 경우, 특정 로케일을 선택할 수 있습니다. 
             channel: 레이블로 사용된 특성이 채널별 값을 가진 경우, 특정 채널을 선택할 수 있습니다. 
         measurement:
+          information: 이 특성의 경우 값, 단위 코드, 단위 레이블이나 값 및 단위 레이블을 내보낼 수 있습니다.
           value: 값
           unit_locale: 단위 로케일
           unit_code: 단위 코드
           unit_label: 단위 레이블
+          value_and_unit_label: 값 및 단위 레이블
         price:
           currency_code: 통화 코드
           currency_label: 통화 레이블
@@ -127,6 +135,9 @@ akeneo.tailored_export:
           no: '''아니요'' 대체 값'
           edit_mapping: 대체 값 편집
           modal:
+            records: 레코드 관리
+            options: 옵션 관리
+            subtitle: 대체
             no_result:
               title: 죄송합니다. 이 특성에 대한 값이 없습니다
             empty_result:

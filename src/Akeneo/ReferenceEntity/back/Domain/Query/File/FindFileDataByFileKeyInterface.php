@@ -18,11 +18,11 @@ namespace Akeneo\ReferenceEntity\Domain\Query\File;
  *
  * Example:
  * [
- *    'filePath'         => '0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg',
+ *    'filePath' => '0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg',
  *    'originalFilename' => 'kartell.jpg',
- *    'size'             => 1024,
- *    'mimeType'         => 'image/jpg',
- *    'extension'        => 'jpg'
+ *    'size' => 1024,
+ *    'mimeType' => 'image/jpg',
+ *    'extension' => 'jpg'
  * ]
  */
 interface FindFileDataByFileKeyInterface
