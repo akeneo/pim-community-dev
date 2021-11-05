@@ -1243,4 +1243,35 @@ class CreateOrUpdateAssetContext implements Context
             'Expected warning not found in the logs.'
         );
     }
+
+    /**
+     * @When the connector collects this asset from the ERP to synchronize it with the PIM without permission
+     */
+    public function theConnectorCollectsThisAssetFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_house_asset_creation.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting this asset from the ERP to synchronize it with the PIM without permission
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAssetFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_house_asset_creation.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            'Expected warning not found in the logs.'
+        );
+    }
 }
