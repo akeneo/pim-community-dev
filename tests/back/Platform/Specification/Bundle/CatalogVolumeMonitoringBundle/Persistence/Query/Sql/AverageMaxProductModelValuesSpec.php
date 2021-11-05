@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductModelValues;
@@ -29,18 +30,18 @@ class AverageMaxProductModelValuesSpec extends ObjectBehavior
         $this->shouldImplement(AverageMaxQuery::class);
     }
 
-    function it_gets_average_and_max_volume($connection, Statement $statement)
+    function it_gets_average_and_max_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['average' => '4', 'max' => '10']);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['average' => '4', 'max' => '10']);
 
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_product_model_values'));
     }
 
-    function it_gets_average_and_max_volume_of_an_empty_catalog($connection, Statement $statement)
+    function it_gets_average_and_max_volume_of_an_empty_catalog(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['average' => null, 'max' => null]);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['average' => null, 'max' => null]);
 
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 12, 'average_max_product_model_values'));
     }

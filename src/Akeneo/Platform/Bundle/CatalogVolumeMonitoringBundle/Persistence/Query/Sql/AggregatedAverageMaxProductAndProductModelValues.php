@@ -60,7 +60,7 @@ CEIL(
     )
 ) AS average
 SQL;
-        $sqlResult = $this->connection->query($sql)->fetch();
+        $sqlResult = $this->connection->executeQuery($sql)->fetchAssociative();
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 

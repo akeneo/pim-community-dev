@@ -200,7 +200,7 @@ SQL;
     FROM akeneo_measurement;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         $measurementFamiliesIndexByCodes = [];
         foreach ($results as $result) {
@@ -231,7 +231,7 @@ SQL;
             $sql,
             ['measurement_family_code' => $measurementFamilyCode->normalize()]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw new MeasurementFamilyNotFoundException();

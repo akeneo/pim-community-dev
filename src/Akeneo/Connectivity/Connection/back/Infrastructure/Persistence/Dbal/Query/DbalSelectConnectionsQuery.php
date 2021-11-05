@@ -33,7 +33,7 @@ FROM akeneo_connectivity_connection
 ORDER BY created ASC
 SQL;
 
-        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
+        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAllAssociative();
 
         $connections = [];
         foreach ($dataRows as $dataRow) {

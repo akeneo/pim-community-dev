@@ -65,7 +65,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery($sql, $params, $types);
 
         $productsCriteriaEvaluations = [];
-        while ($resultRow = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($resultRow = $stmt->fetchAssociative()) {
             $productId = new ProductId(intval($resultRow['product_id']));
             $criteria = json_decode($resultRow['criteria']);
             $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);

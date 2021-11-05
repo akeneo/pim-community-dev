@@ -105,7 +105,7 @@ SQL;
             [
                 'attributeIds' => Connection::PARAM_INT_ARRAY
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (bool)$result;
     }

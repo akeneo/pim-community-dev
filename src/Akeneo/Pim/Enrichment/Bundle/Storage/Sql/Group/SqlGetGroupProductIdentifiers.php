@@ -39,6 +39,6 @@ SQL;
             ['groupId' => \PDO::PARAM_INT]
         );
 
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchFirstColumn();
     }
 }

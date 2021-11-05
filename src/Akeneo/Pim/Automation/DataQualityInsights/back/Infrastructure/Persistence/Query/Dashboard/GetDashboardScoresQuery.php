@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Result;
 
 final class GetDashboardScoresQuery implements GetDashboardScoresQueryInterface
 {
@@ -71,9 +71,9 @@ SQL;
         return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
+    private function buildResult(Result $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
     {
-        $result = $stmt->fetchColumn(0);
+        $result = $stmt->fetchOne();
         if ($result === null || $result === false) {
             return null;
         }

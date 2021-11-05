@@ -42,6 +42,6 @@ SQL;
                 'from_datetime' => Types::DATETIME_IMMUTABLE,
                 'to_datetime' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
     }
 }

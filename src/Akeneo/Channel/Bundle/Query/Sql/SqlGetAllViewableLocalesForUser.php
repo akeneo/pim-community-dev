@@ -34,7 +34,7 @@ class SqlGetAllViewableLocalesForUser implements GetAllViewableLocalesForUserInt
                 FROM pim_catalog_locale locale
             SQL;
 
-            $this->cache = $this->sqlConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
+            $this->cache = $this->sqlConnection->executeQuery($query)->fetchFirstColumn();
         }
 
         return $this->cache;

@@ -51,7 +51,7 @@ SQL;
         $results = $this->dbalConnection->executeQuery(
             $selectSql,
             ['since' => $since->format('Y-m-d')]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         if (null !== $results && !empty($results)) {
             array_walk($results, function (array &$combinations) {

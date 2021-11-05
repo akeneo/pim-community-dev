@@ -61,7 +61,7 @@ class DbalPurgeAuditErrorQueryIntegration extends TestCase
         $query = <<<SQL
 SELECT connection_code FROM akeneo_connectivity_connection_audit_error ORDER BY error_datetime ASC;
 SQL;
-        $errors = $this->connection->executeQuery($query)->fetchAll(FetchMode::COLUMN);
+        $errors = $this->connection->executeQuery($query)->fetchFirstColumn();
 
         Assert::assertEquals('9days', $errors[0]);
         Assert::assertEquals('now', $errors[1]);

@@ -32,7 +32,7 @@ FROM akeneo_connectivity_connection
 GROUP BY flow_type, auditable
 SQL;
 
-        $data = $this->connection->executeQuery($query)->fetchAll(FetchMode::ASSOCIATIVE);
+        $data = $this->connection->executeQuery($query)->fetchAllAssociative();
 
         return $this->normalize($data);
     }

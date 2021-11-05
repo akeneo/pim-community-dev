@@ -39,7 +39,7 @@ SQL;
             ]
         );
 
-        $productIdentifier = $statement->fetchColumn();
+        $productIdentifier = $statement->fetchOne();
 
         if (false === $productIdentifier) {
             throw new \Exception(sprintf('No identifier found for product id %s', $productId));

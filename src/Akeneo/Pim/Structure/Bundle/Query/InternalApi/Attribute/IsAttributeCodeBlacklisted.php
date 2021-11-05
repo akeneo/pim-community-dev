@@ -28,7 +28,7 @@ SQL;
 
         $statement = $this->connection->executeQuery($sql, ['attribute_code' => $attributeCode]);
         $platform = $this->connection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_blacklisted'], $platform);
     }

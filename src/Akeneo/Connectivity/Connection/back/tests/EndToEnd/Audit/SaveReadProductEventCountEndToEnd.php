@@ -108,7 +108,7 @@ WHERE connection_code = :connection_code
 AND event_type = 'product_read'
 SQL;
 
-        return $this->dbalConnection->fetchColumn($sql, [
+        return $this->dbalConnection->fetchOne($sql, [
             'connection_code' => $connectionCode,
         ]);
     }

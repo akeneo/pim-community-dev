@@ -42,7 +42,7 @@ SQL;
         );
 
         $productIds = [];
-        while ($productId = $stmt->fetchColumn()) {
+        while ($productId = $stmt->fetchOne()) {
             $productIds[] = new ProductId(intval($productId));
 
             if (count($productIds) >= $bulkSize) {
@@ -69,6 +69,6 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, ['updatedSince' => $updatedSince->format(Clock::TIME_FORMAT)]);
 
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchFirstColumn();
     }
 }

@@ -29,6 +29,6 @@ FROM akeneo_connectivity_connection
 WHERE auditable = 1
 SQL;
 
-        return $this->dbalConnection->executeQuery($selectSQL)->fetchAll(FetchMode::COLUMN);
+        return $this->dbalConnection->executeQuery($selectSQL)->fetchFirstColumn();
     }
 }

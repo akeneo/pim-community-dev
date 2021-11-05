@@ -35,7 +35,7 @@ class SqlIsCategoryTreeLinkedToUser implements IsCategoryTreeLinkedToUser
             [
                 'treeId' => $categoryTreeId
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (bool) $exists;
     }

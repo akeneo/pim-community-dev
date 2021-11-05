@@ -156,7 +156,7 @@ SQL;
                     'formerId' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (empty($rows)) {
                 return;
@@ -169,7 +169,7 @@ SQL;
 
     private function getTotalNumberOfProducts(): int
     {
-        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn(0);
+        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
     private function getExistingProductIdentifiers(array $identifiers): array
@@ -188,7 +188,7 @@ SQL;
             [
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll(FetchMode::COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     /**
