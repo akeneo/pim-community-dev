@@ -27,23 +27,12 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
  */
 class Record
 {
-    /** @var RecordIdentifier */
-    private $identifier;
-
-    /** @var RecordCode */
-    private $code;
-
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
-
-    /** @var ValueCollection */
-    private $valueCollection;
-
-    /** @var \DateTimeImmutable */
-    private $createdAt;
-
-    /** @var \DateTimeImmutable */
-    private $updatedAt;
+    private RecordIdentifier $identifier;
+    private RecordCode $code;
+    private ReferenceEntityIdentifier $referenceEntityIdentifier;
+    private ValueCollection $valueCollection;
+    private \DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $updatedAt;
 
     private function __construct(
         RecordIdentifier $identifier,

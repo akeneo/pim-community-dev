@@ -282,6 +282,7 @@ free_trial:
 connectors:
   bigcommerce:
     enabled: false
+    challengePapoActivation: true
 
 mysql:
   image:

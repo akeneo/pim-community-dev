@@ -22,7 +22,7 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Abstract
 class ValueUpdaterRegistry implements ValueUpdaterRegistryInterface
 {
     /** @var ValueUpdaterInterface[]  */
-    private $updaters = [];
+    private array $updaters = [];
 
     public function register(ValueUpdaterInterface $valueUpdater): void
     {

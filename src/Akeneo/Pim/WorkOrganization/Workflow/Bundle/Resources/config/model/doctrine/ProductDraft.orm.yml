@@ -13,7 +13,7 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft:
             column: created_at
             nullable: false
         changes:
-            type: json_array
+            type: json
             nullable: false
         rawValues:
             type: json

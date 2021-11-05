@@ -32,7 +32,7 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
         $this->checkCommonProperties($normalizedCommand);
         $this->checkAdditionalProperties($normalizedCommand);
 
-        $command = new CreateRecordAttributeCommand(
+        return new CreateRecordAttributeCommand(
             $normalizedCommand['reference_entity_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -41,21 +41,19 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['value_per_locale'],
             $normalizedCommand['record_type'] ?? null
         );
-
-        return $command;
     }
 
     /**
      * @throws \InvalidArgumentException
      */
-    private function checkAdditionalProperties(array $nomalizedCommand): void
+    private function checkAdditionalProperties(array $normalizedCommand): void
     {
         $keysToCheck = [
             'record_type',
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
-            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+            if (!array_key_exists($keyToCheck, $normalizedCommand)) {
                 throw new \InvalidArgumentException(
                     sprintf('Expects normalized command to have key "%s"', $keyToCheck)
                 );

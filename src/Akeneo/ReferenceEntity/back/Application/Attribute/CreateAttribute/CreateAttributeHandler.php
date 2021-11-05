@@ -25,14 +25,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class CreateAttributeHandler
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var AttributeFactoryRegistryInterface */
-    private $attributeFactoryRegistry;
-
-    /** @var FindAttributeNextOrderInterface */
-    private $attributeNextOrder;
+    private AttributeRepositoryInterface $attributeRepository;
+    private AttributeFactoryRegistryInterface $attributeFactoryRegistry;
+    private FindAttributeNextOrderInterface $attributeNextOrder;
 
     public function __construct(
         AttributeFactoryRegistryInterface $attributeFactoryRegistry,

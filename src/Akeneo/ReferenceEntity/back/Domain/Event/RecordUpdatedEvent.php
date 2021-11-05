@@ -16,14 +16,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class RecordUpdatedEvent extends Event
 {
-    /** @var RecordIdentifier */
-    private $recordIdentifier;
-
-    /** @var RecordCode */
-    private $recordCode;
-
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    private RecordIdentifier $recordIdentifier;
+    private RecordCode $recordCode;
+    private ReferenceEntityIdentifier $referenceEntityIdentifier;
 
     public function __construct(
         RecordIdentifier $recordIdentifier,

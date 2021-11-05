@@ -28,7 +28,7 @@ table_attribute_template:
         total_carbohydrate: 炭水化物 (g)
         dietary_fiber: 食物繊維 (g)
         total_sugars: 糖類 (g)
-        included_added_sugars: 含まれる添加糖類 (g)
+        included_added_sugars: 添加糖類 (g)
         protein: タンパク質 (g)
     amount_per_serving:
       label: 一食あたりの量

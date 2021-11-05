@@ -66,7 +66,7 @@ fi
 terraform init
 
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
-find ${PWD} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
+find -L ${PWD} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 
 TF_STATE_LIST=$(terraform state list)

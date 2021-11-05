@@ -25,11 +25,8 @@ class ImageAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'image';
 
-    /** @var AttributeMaxFileSize */
-    private $maxFileSize;
-
-    /** @var AttributeAllowedExtensions */
-    private $allowedExtensions;
+    private AttributeMaxFileSize $maxFileSize;
+    private AttributeAllowedExtensions $allowedExtensions;
 
     protected function __construct(
         AttributeIdentifier $identifier,

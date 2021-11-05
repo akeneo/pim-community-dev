@@ -36,9 +36,9 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
 
         $maxFileSize = isset($normalizedCommand['max_file_size']) ?
             (string)$normalizedCommand['max_file_size'] : self::NO_LIMIT;
-        $allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
-            $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
-        $command = new CreateImageAttributeCommand(
+        $allowedExtensions = $normalizedCommand['allowed_extensions'] ?? AttributeAllowedExtensions::ALL_ALLOWED;
+
+        return new CreateImageAttributeCommand(
             $normalizedCommand['reference_entity_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -48,7 +48,5 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
             $maxFileSize,
             $allowedExtensions
         );
-
-        return $command;
     }
 }

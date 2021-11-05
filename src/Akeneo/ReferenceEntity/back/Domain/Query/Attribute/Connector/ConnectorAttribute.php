@@ -39,26 +39,14 @@ class ConnectorAttribute
         'record_type' => 'reference_entity_code'
     ];
 
-    /** @var AttributeIdentifier */
-    private $code;
-
-    /** @var LabelCollection */
-    private $labelCollection;
-
-    /** @var string */
-    private $type;
-
-    /** @var bool */
-    private $valuePerLocale;
-
-    /** @var bool */
-    private $valuePerChannel;
-
-    /** @var bool */
-    private $isRequired;
-
-    /** @var array */
-    private $additionalProperties;
+    private AttributeCode $code;
+    private LabelCollection $labelCollection;
+    private string $type;
+    private AttributeValuePerLocale $valuePerLocale;
+    private AttributeValuePerChannel $valuePerChannel;
+    private AttributeIsRequired $isRequired;
+    /** @var array<string, string> */
+    private array $additionalProperties;
 
     public function __construct(
         AttributeCode $identifier,

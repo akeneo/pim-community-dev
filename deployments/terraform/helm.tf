@@ -26,32 +26,34 @@ data "template_file" "helm_pim_config" {
       0,
       min(63, length(var.papo_project_code)),
     )
-    papoProjectCodeHashed                       = md5(var.papo_project_code)
-    pimVersion                                  = var.pim_version
-    monitoring_authentication_token             = local.monitoring_authentication_token
-    mysql_disk_name                             = google_compute_disk.mysql-disk.name
-    mysql_disk_size                             = google_compute_disk.mysql-disk.size
-    mysql_disk_storage_class                    = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
-    subscription_webhook                        = google_pubsub_subscription.webhook.name
-    subscription_job_queue_ui                   = google_pubsub_subscription.job-queue-ui.name
-    subscription_job_queue_import_export        = google_pubsub_subscription.job-queue-import-export.name
-    subscription_job_queue_data_maintenance     = google_pubsub_subscription.job-queue-data-maintenance.name
-    topic_business_event                        = google_pubsub_topic.business-event.name
-    topic_job_queue_ui                          = google_pubsub_topic.job-queue-ui.name
-    topic_job_queue_import_export               = google_pubsub_topic.job-queue-import-export.name
-    topic_job_queue_data_maintenance            = google_pubsub_topic.job-queue-data-maintenance.name
-    akeneo_connect_saml_entity_id               = var.akeneo_connect_saml_entity_id
-    akeneo_connect_saml_certificate             = var.akeneo_connect_saml_certificate
-    akeneo_connect_saml_sp_certificate_base64   = var.akeneo_connect_saml_sp_certificate_base64
-    akeneo_connect_saml_sp_private_key_base64   = var.akeneo_connect_saml_sp_private_key_base64
-    akeneo_connect_api_client_secret            = var.akeneo_connect_api_client_secret
-    akeneo_connect_api_client_password          = var.akeneo_connect_api_client_password
-    ft_catalog_api_client_id                    = var.ft_catalog_api_client_id
-    ft_catalog_api_password                     = var.ft_catalog_api_password
-    ft_catalog_api_secret                       = var.ft_catalog_api_secret
-    bigcommerce_connector_enabled               = contains(local.bc_enabled_projects, var.google_project_id)
-    bigcommerce_connector_topic                 = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_topic.connector_bigcommerce[0].name : "fakeValue"
-    bigcommerce_connector_subscription          = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
+    papoProjectCodeHashed                                    = md5(var.papo_project_code)
+    pimVersion                                               = var.pim_version
+    monitoring_authentication_token                          = local.monitoring_authentication_token
+    mysql_disk_name                                          = google_compute_disk.mysql-disk.name
+    mysql_disk_size                                          = google_compute_disk.mysql-disk.size
+    mysql_disk_storage_class                                 = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+    subscription_webhook                                     = google_pubsub_subscription.webhook.name
+    subscription_job_queue_ui                                = google_pubsub_subscription.job-queue-ui.name
+    subscription_job_queue_import_export                     = google_pubsub_subscription.job-queue-import-export.name
+    subscription_job_queue_data_maintenance                  = google_pubsub_subscription.job-queue-data-maintenance.name
+    topic_business_event                                     = google_pubsub_topic.business-event.name
+    topic_job_queue_ui                                       = google_pubsub_topic.job-queue-ui.name
+    topic_job_queue_import_export                            = google_pubsub_topic.job-queue-import-export.name
+    topic_job_queue_data_maintenance                         = google_pubsub_topic.job-queue-data-maintenance.name
+    akeneo_connect_saml_entity_id                            = var.akeneo_connect_saml_entity_id
+    akeneo_connect_saml_certificate                          = var.akeneo_connect_saml_certificate
+    akeneo_connect_saml_sp_certificate_base64                = var.akeneo_connect_saml_sp_certificate_base64
+    akeneo_connect_saml_sp_private_key_base64                = var.akeneo_connect_saml_sp_private_key_base64
+    akeneo_connect_api_client_secret                         = var.akeneo_connect_api_client_secret
+    akeneo_connect_api_client_password                       = var.akeneo_connect_api_client_password
+    ft_catalog_api_client_id                                 = var.ft_catalog_api_client_id
+    ft_catalog_api_password                                  = var.ft_catalog_api_password
+    ft_catalog_api_secret                                    = var.ft_catalog_api_secret
+    bigcommerce_connector_enabled                            = contains(local.bc_enabled_projects, var.google_project_id)
+    bigcommerce_connector_topic                              = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_topic.connector_bigcommerce[0].name : "fakeValue"
+    bigcommerce_connector_subscription                       = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
+    bigcommerce_connector_akeneo_connect_bot_password        = contains(local.bc_enabled_projects, var.google_project_id) ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data : "fakeValue"
+    bigcommerce_connector_akeneo_connect_bot_client_secret   = contains(local.bc_enabled_projects, var.google_project_id) ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data : "fakeValue"
   }
 }
 

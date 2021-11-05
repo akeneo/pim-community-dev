@@ -14,8 +14,7 @@ class OptionCode
 {
     public const REGULAR_EXPRESSION = '/^[a-zA-Z0-9_]+$/';
 
-    /** @var string */
-    private $code;
+    private string $code;
 
     private function __construct(string $code)
     {

@@ -26,7 +26,7 @@ class AttributeAllowedExtensions
     public const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
     /** @var string[] */
-    private $allowedExtensions;
+    private array $allowedExtensions;
 
     private function __construct(array $allowedExtensions)
     {

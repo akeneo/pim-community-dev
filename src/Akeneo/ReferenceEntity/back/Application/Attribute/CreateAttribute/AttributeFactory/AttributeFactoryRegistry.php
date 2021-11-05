@@ -21,8 +21,8 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateA
  */
 class AttributeFactoryRegistry implements AttributeFactoryRegistryInterface
 {
-    /** @var AttributeFactoryInterface */
-    private $factories;
+    /** @var AttributeFactoryInterface[] */
+    private array $factories;
 
     public function __construct()
     {

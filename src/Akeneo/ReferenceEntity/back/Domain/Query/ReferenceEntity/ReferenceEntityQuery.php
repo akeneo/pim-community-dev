@@ -23,11 +23,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ReferenceEntityQuery
 {
-    /** @var int|null */
-    private $size;
-
-    /** @var ReferenceEntityIdentifier|null */
-    private $searchAfterIdentifier;
+    private int $size;
+    private ?ReferenceEntityIdentifier $searchAfterIdentifier;
 
     private function __construct(
         int $size,

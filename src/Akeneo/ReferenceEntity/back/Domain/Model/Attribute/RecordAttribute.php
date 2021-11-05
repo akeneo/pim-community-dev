@@ -24,8 +24,7 @@ class RecordAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'record';
 
-    /** @var ReferenceEntityIdentifier */
-    private $recordType;
+    private ReferenceEntityIdentifier $recordType;
 
     protected function __construct(
         AttributeIdentifier $identifier,

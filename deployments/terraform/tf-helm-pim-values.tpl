@@ -8,6 +8,8 @@ connectors:
     pubsub:
       topic_name: ${bigcommerce_connector_topic}
       subscription_name: ${bigcommerce_connector_subscription}
+    akeneo_connect_bot_password: ${bigcommerce_connector_akeneo_connect_bot_password}
+    akeneo_connect_bot_client_secret: ${bigcommerce_connector_akeneo_connect_bot_client_secret}
 
 elasticsearch:
   cluster:

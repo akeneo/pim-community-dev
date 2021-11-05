@@ -32,14 +32,9 @@ class EditRecordHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    /** @var ValueUpdaterRegistryInterface  */
-    private $valueUpdaterRegistry;
-
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
-
-    /** @var FileStorerInterface */
-    private $storer;
+    private ValueUpdaterRegistryInterface $valueUpdaterRegistry;
+    private RecordRepositoryInterface $recordRepository;
+    private FileStorerInterface $storer;
 
     public function __construct(
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
@@ -69,9 +64,8 @@ class EditRecordHandler
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($editRecordCommand->referenceEntityIdentifier);
         $code = RecordCode::fromString($editRecordCommand->code);
-        $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
 
-        return $record;
+        return $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
     private function editValues(Record $record, EditRecordCommand $editRecordCommand): void

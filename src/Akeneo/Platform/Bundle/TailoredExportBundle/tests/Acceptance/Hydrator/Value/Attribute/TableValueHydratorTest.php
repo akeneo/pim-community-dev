@@ -25,7 +25,10 @@ class TableValueHydratorTest extends AbstractAttributeValueHydratorTest
     public function it_hydrates_a_string_value_from_product_value()
     {
         $expectedValue = new StringValue('[{"identifier":"my value"}]');
-        $productValue = TableValue::value('table_attribute_code', Table::fromNormalized([['identifier' => 'my value']]));
+        $productValue = TableValue::value(
+            'table_attribute_code',
+            Table::fromNormalized([['identifier_48bb84cd-3b3d-4b61-bee3-b8743448ef7f' => 'my value']]),
+        );
 
         $this->assertHydratedValueEquals($expectedValue, $productValue);
     }

@@ -35,9 +35,18 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntit
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeValueHydrator
 {
+    private NormalizerInterface $normalizer;
+
+    public function __construct(
+        NormalizerInterface $normalizer
+    ) {
+        $this->normalizer = $normalizer;
+    }
+
     public function hydrate(
         ?ValueInterface $value,
         string $attributeType,
@@ -116,7 +125,10 @@ class AttributeValueHydrator
                     throw new \LogicException('Malformed value for Table attribute');
                 }
 
-                return new StringValue(json_encode($data->normalize(), JSON_THROW_ON_ERROR));
+                return new StringValue(json_encode(
+                    $this->normalizer->normalize($data, 'standard'),
+                    JSON_THROW_ON_ERROR,
+                ));
             default:
                 throw new \InvalidArgumentException(sprintf('Unsupported attribute type "%s"', $attributeType));
         }

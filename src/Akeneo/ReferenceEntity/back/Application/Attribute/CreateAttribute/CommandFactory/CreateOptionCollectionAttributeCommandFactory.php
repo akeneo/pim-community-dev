@@ -22,7 +22,7 @@ class CreateOptionCollectionAttributeCommandFactory extends AbstractCreateAttrib
     {
         $this->checkCommonProperties($normalizedCommand);
 
-        $command = new CreateOptionCollectionAttributeCommand(
+        return new CreateOptionCollectionAttributeCommand(
             $normalizedCommand['reference_entity_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -30,7 +30,5 @@ class CreateOptionCollectionAttributeCommandFactory extends AbstractCreateAttrib
             $normalizedCommand['value_per_channel'],
             $normalizedCommand['value_per_locale']
         );
-
-        return $command;
     }
 }
