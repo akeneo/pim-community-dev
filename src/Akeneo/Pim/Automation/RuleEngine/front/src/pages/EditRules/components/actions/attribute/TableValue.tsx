@@ -1,5 +1,8 @@
 import React, {useContext} from 'react';
-import {TableAttribute, TableValue,} from '@akeneo-pim-ge/table_attribute/src/models';
+import {
+  TableAttribute,
+  TableValue,
+} from '@akeneo-pim-ge/table_attribute/src/models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
@@ -32,13 +35,14 @@ const TableValue: React.FC<InputValueProps> = ({
   const UserContext = useUserContext();
   const {cellMatchersMapping, cellInputsMapping} = useContext(ConfigContext);
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
-  const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute as TableAttribute);
+  const [attributeState, setAttributeState] = React.useState<TableAttribute>(
+    attribute as TableAttribute
+  );
 
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     addUniqueIds(value || [])
   );
-  const firstColumnCode = attributeState.table_configuration[0]
-    .code;
+  const firstColumnCode = attributeState.table_configuration[0].code;
 
   const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
@@ -52,7 +56,9 @@ const TableValue: React.FC<InputValueProps> = ({
   );
 
   return (
-    <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
+    <AttributeContext.Provider
+      value={{attribute: attributeState, setAttribute: setAttributeState}}
+    >
       <TableValueContainer>
         <AttributeLabel>
           {getLabel(
