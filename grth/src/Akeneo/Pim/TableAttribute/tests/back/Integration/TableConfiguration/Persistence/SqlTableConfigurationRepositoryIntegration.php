@@ -61,7 +61,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAllAssociative(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
         self::assertSame(0, (int)$rows[0]['column_order']);
@@ -106,7 +106,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAllAssociative(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
         self::assertSame('ingredient', $rows[0]['code']);
@@ -146,7 +146,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
             ['attribute_id' => $this->tableAttributeId]
-        )->fetchAllAssociative(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         self::assertCount(3, $rows);
         self::assertSame('ingredient', $rows[0]['code']);
