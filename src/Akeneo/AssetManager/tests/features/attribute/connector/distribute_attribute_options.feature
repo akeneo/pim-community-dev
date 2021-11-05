@@ -68,3 +68,11 @@ Feature: Connection to e-commerce platforms and marketplaces
     And the French option that is one of the options of the Nationality attribute
     When the connector requests the French option of the Nationality attribute for the Brand asset family without permission
     Then the PIM notifies the connector about missing permissions for requesting the French option of the Nationality attribute for the Brand asset family without permission
+
+  @integration-back
+  Scenario: Notify an error when trying to get all the options of a given single option attribute for a given asset family without permission
+    Given the Brand asset family
+    And the Nationality single option attribute that is part of the structure of the Brand asset family
+    And the 4 options of the Nationality single option attribute
+    When the connector requests all the options of the Nationality attribute for the Brand asset family without permission
+    Then the PIM notifies the connector about missing permissions for requesting all the options of the Nationality attribute for the Brand asset family without permission
