@@ -127,7 +127,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_family_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAssetFamilyContext
