@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetIdentifiersForQuery;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
+use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -56,6 +57,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
@@ -102,6 +104,10 @@ class GetConnectorAssetsContext implements Context
 
     private InMemoryDateRepository $dateRepository;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -113,7 +119,9 @@ class GetConnectorAssetsContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
         InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales,
         InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
-        InMemoryDateRepository $dateRepository
+        InMemoryDateRepository $dateRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -127,6 +135,8 @@ class GetConnectorAssetsContext implements Context
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
         $this->dateRepository = $dateRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -1049,6 +1059,37 @@ class GetConnectorAssetsContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->updatedSinceWrongFormatResponse,
             self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_assets_for_wrong_format.json'
+        );
+    }
+
+    /**
+     * @When the connector requests all complete assets of the Brand asset family on the Ecommerce channel for the French and English locales without permission
+     */
+    public function theConnectorRequestsAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocalesWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_list', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->assetPages[1] = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_complete_brand_assets.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for requesting all complete assets of the Brand asset family on the Ecommerce channel for the French and English locales without permission
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingAllCompleteAssetsOfTheBrandAssetFamilyOnTheEcommerceChannelForTheFrenchAndEnglishLocalesWithoutPermission()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->assetPages[1],
+            self::REQUEST_CONTRACT_DIR . 'forbidden_complete_brand_assets.json'
+        );
+        \PHPUnit\Framework\Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 }
