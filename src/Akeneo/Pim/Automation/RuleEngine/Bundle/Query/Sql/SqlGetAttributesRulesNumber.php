@@ -50,7 +50,7 @@ SQL;
                 'attribute_codes' => Connection::PARAM_STR_ARRAY,
                 'resource_name' => \PDO::PARAM_STR,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $rule) {

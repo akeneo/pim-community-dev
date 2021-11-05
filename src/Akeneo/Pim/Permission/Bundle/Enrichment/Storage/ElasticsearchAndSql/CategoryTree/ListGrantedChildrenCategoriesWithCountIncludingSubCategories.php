@@ -173,7 +173,7 @@ SQL;
                 'user_id' => $userId,
                 'locale' => $translationLocaleCode
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $categories = [];
         foreach ($rows as $row) {
@@ -307,7 +307,7 @@ SQL;
             [
                 'user_group_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function ($row) {
             return (int) $row['id'];

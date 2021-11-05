@@ -72,7 +72,7 @@ SQL;
             'identifiers' => $identifiers,
         ], ['identifiers' => Connection::PARAM_STR_ARRAY]);
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAllAssociative();
     }
 
     private function orderRecordItems(array $normalizedRecordItems, array $orderedIdentifiers): array

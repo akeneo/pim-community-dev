@@ -70,7 +70,7 @@ class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
         ) AS fi ON fi.file_key = ee.image
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $statement->closeCursor();
 
         return $results;

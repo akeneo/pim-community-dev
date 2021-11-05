@@ -60,7 +60,7 @@ SQL;
         $rawResults = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_reduce($rawResults, function (array $results, array $item) {
             $results[$item['asset_family_identifier']] = json_decode($item['asset_code'], true);

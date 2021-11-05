@@ -7,20 +7,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 final class InitializeCriteriaEvaluation
 {
     private const BATCH_OF_PRODUCTS = 100;
 
-    /** @var FeatureFlag */
-    private $featureFlag;
-
-    /** @var Connection */
-    private $db;
-
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
+    private FeatureFlag $featureFlag;
+    private Connection $db;
+    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations;
 
     public function __construct(
         FeatureFlag $featureFlag,
@@ -40,8 +34,8 @@ final class InitializeCriteriaEvaluation
             );
         }
 
-        $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null');
-        $nb = $query->fetch();
+        $queryReslt = $this->db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null');
+        $nb = $queryReslt->fetchAssociative();
 
         if ($nb['nb']===0) {
             return;
@@ -50,10 +44,10 @@ final class InitializeCriteriaEvaluation
         $steps = ceil($nb['nb']/intval(self::BATCH_OF_PRODUCTS));
 
         for ($i = 0; $i<$steps; $i++) {
-            $stmt = $this->db->query('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*intval(self::BATCH_OF_PRODUCTS) . ',' . intval(self::BATCH_OF_PRODUCTS));
+            $stmt = $this->db->executeQuery('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*intval(self::BATCH_OF_PRODUCTS) . ',' . intval(self::BATCH_OF_PRODUCTS));
             $ids = array_map(function ($id) {
                 return intval($id);
-            }, $stmt->fetchAll(FetchMode::COLUMN, 0));
+            }, $stmt->fetchFirstColumn());
 
             $productIds = array_map(function ($id) {
                 return new ProductId($id);

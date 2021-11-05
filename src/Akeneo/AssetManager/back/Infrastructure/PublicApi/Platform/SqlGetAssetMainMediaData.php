@@ -49,7 +49,7 @@ SQL;
             $sql,
             ['assetFamilyIdentifier' => $assetFamilyIdentifier, 'assetCodes' => $assetCodes],
             ['assetCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $assetMainMediaData = [];
         foreach ($rawResults as $rawResult) {

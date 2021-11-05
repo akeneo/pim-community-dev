@@ -47,7 +47,7 @@ WHERE l.is_activated = 1
 GROUP BY l.code
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         return array_map(
             fn (array $row) => Type::getType(Type::STRING)->convertToPHPValue(

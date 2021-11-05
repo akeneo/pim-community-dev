@@ -28,7 +28,7 @@ FROM pim_catalog_attribute attribute
 WHERE attribute.is_unique = 1
 SQL;
 
-        $uniqueAttributeCodes = $this->connection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
+        $uniqueAttributeCodes = $this->connection->executeQuery($query)->fetchFirstColumn();
 
         return $uniqueAttributeCodes;
     }

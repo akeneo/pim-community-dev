@@ -35,7 +35,7 @@ class SqlFindSearchableRecords implements FindSearchableRecordsInterface
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['record_identifier' => (string) $recordIdentifier]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         return !$result ? null : $this->hydrateRecordToIndex(
             $result['identifier'],
@@ -57,7 +57,7 @@ SQL;
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['reference_entity_identifier' => (string) $referenceEntityIdentifier]);
-        while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while (false !== $result = $statement->fetchAssociative()) {
             yield $this->hydrateRecordToIndex(
                 $result['identifier'],
                 $result['reference_entity_identifier'],

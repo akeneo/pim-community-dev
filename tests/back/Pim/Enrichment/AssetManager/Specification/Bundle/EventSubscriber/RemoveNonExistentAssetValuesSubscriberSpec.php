@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,7 +33,7 @@ class RemoveNonExistentAssetValuesSubscriberSpec extends ObjectBehavior
         Connection $connection,
         TokenInterface $token,
         UserInterface $julia,
-        Statement $statement
+        Result $statement
     ) {
         $connection->executeQuery(
             'SELECT code, properties FROM pim_catalog_attribute WHERE attribute_type = :type',
@@ -40,7 +41,7 @@ class RemoveNonExistentAssetValuesSubscriberSpec extends ObjectBehavior
                 'type' => AssetCollectionType::ASSET_COLLECTION,
             ]
         )->willReturn($statement);
-        $statement->fetchAll()->willReturn(
+        $statement->fetchAllAssociative()->willReturn(
             [
                 [
                     'code' => 'packshot_assets',

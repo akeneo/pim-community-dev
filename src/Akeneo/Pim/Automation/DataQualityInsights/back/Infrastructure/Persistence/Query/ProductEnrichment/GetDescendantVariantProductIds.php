@@ -44,6 +44,6 @@ SQL;
             $sql,
             ['ids' => $productModelIds],
             ['ids' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 }

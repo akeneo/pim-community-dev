@@ -56,7 +56,7 @@ SQL;
         );
 
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         $identifiers = [];
         foreach ($results as $result) {
