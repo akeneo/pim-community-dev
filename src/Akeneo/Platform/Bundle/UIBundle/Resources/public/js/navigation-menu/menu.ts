@@ -91,7 +91,7 @@ class Menu extends BaseForm {
         entries: this.findMainEntries(),
         activeEntryCode: this.activeEntryCode,
         activeSubEntryCode: this.activeSubEntryCode,
-        freeTrialEnabled: featureFlags.isEnabled('free_trial'),
+        freeTrialEnabled: featureFlags.isEnabled('free_trial') || true,
       },
       this.el
     );

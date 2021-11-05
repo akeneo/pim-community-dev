@@ -1,4 +1,4 @@
-import {formatSecondsIntl} from 'pimui/js/intl-duration';
+import {formatSecondsIntl} from './intl-duration';
 
 const translate = (key: string, _params: any, count: number) => {
   switch (key) {
