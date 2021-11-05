@@ -71,6 +71,7 @@ type TableInputSelectProps = {
   inError?: boolean;
   closeTick?: boolean;
   bottomHelper?: ReactElement;
+  withSearch?: boolean;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -88,6 +89,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   inError,
   closeTick = false,
   bottomHelper,
+  withSearch = true,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -158,15 +160,17 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       </IconsPart>
       {isOpen && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">
-          <Dropdown.Header>
-            <Search
-              inputRef={searchRef}
-              onSearchChange={handleSearchChange}
-              placeholder={searchPlaceholder}
-              searchValue={searchValue}
-              title={searchTitle}
-            />
-          </Dropdown.Header>
+          {withSearch && (
+            <Dropdown.Header>
+              <Search
+                inputRef={searchRef}
+                onSearchChange={handleSearchChange}
+                placeholder={searchPlaceholder}
+                searchValue={searchValue}
+                title={searchTitle}
+              />
+            </Dropdown.Header>
+          )}
           <Dropdown.ItemCollection onNextPage={onNextPage}>{children}</Dropdown.ItemCollection>
           {bottomHelper}
         </Dropdown.Overlay>
