@@ -30,7 +30,6 @@ class CatalogVolumeController extends ReactController {
     return /pim_enrich_catalog_volume_index/;
   }
 
-  // @ts-ignore to ensure compatibility with old CVM page, return Promise or JQueryPromise
   renderRoute() {
     if (featureFlags.isEnabled('control_volume_monitoring_new_page')) {
       mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
@@ -51,7 +50,7 @@ class CatalogVolumeController extends ReactController {
       errorView.setElement(this.$el).render();
     });
 
-    return this.formPromise;
+    return jQuery.Deferred().resolve(this.formPromise);
   }
 
   renderForm(): JQueryPromise<BaseView> {
