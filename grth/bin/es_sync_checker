@@ -1,0 +1,317 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+$dbUser = "akeneo_pim";
+$dbName = "akeneo_pim";
+$dbPassword = getenv("APP_DATABASE_PASSWORD");
+$dbHost = getenv("APP_DATABASE_HOST");
+$indexHosts = getenv("APP_INDEX_HOSTS");
+$batchSize = 10000;
+
+$short_options  = ""; // not using short_options
+$long_options  = array(
+    "index:",
+    "only-count",
+    "print-data",
+    "help"
+);
+$options = getopt($short_options, $long_options);
+
+if(isset($options["help"])){
+    echo "index: [Required value] Analyze a specific index, accepted values are index aliases\n" .
+    "only-count: [No value] Only count data from ES and DB\n" .
+    "print-data: [No value] Print the missing data from DB and ES. by default no print\n" .
+    "help: [No value] Print options\n" .
+    "Example: php script.php --index akeneo_referenceentity_record --only-count\n";
+    exit(1);
+}
+
+$indexTableMap = [
+    [
+        "index" => "akeneo_pim_product_proposal",
+        "db" => [
+            [
+                "table" => "pimee_workflow_product_draft",
+                "where" => "status = 1",
+                "identifier" => "product_id"
+            ]
+        ]
+    ],
+    [
+        "index" => "akeneo_pim_published_product",
+        "db" => [
+            [
+                "table" => "pimee_workflow_published_product",
+                "identifier" => "identifier"
+            ]
+        ]
+    ],
+    [
+        "index" => "akeneo_referenceentity_record",
+        "db" => [
+            [
+                "table" => "akeneo_reference_entity_record",
+                "identifier" => "identifier"
+            ]
+        ]
+    ],
+    [
+        "index" => "akeneo_assetmanager_asset",
+        "db" => [
+            [
+                "table" => "akeneo_asset_manager_asset",
+                "identifier" => "identifier"
+            ]
+        ]
+    ],
+    [
+        "index" => "akeneo_pim_product_and_product_model",
+        "db" => [
+            [
+                "table" => "pim_catalog_product",
+                "identifier" => "id",
+                "prefix" => "product_"
+            ],
+            [
+                "table" => "pim_catalog_product_model",
+                "identifier" => "id",
+                "prefix" => "product_model_"
+            ]
+        ]
+    ]
+];
+
+function analyzeIndex(mysqli $connection, array $data, string $host, int $batchSize, array $options): bool {
+    $rowCount = 0;
+    $docCount = getDocumentsCount($data['index'], $host);
+
+    foreach ($data['db'] as $dbData) {
+        if(isset($dbData['where'])) {
+            $rowCount += getTableCount($connection, $dbData['table'], $dbData['where']);
+        }
+        else {
+            $rowCount += getTableCount($connection, $dbData['table']);
+        }
+    }
+
+    if ($docCount === $rowCount) {
+        echo "Index " . $data['index'] . " synced with DB (ES: $docCount, DB: $rowCount)\n";
+
+        return true;
+    }
+
+    echo "Index " . $data['index'] . " NOT synced with DB (ES: $docCount, DB: $rowCount)\n";
+
+    $isSync = false;
+
+    if(isset($options["only-count"])){
+        return $isSync;
+    }
+    foreach ($data['db'] as $dbData) {
+        $unindexedData = getUnindexedData($connection, $host, $data['index'], $dbData, $rowCount, $batchSize);
+        echo "Checking the data in the table are indexed in the ES (will take few minutes)...\n";
+        echo "The number of identifiers presented in the table but not in the index [" . count($unindexedData) . "]\n";
+        if(isset($options["print-data"])){
+            echo empty($unindexedData) ? "All data in the table are presented in the index!\n":
+                "List of identifiers presented in the table but not in the index:\n";
+            echo implode("\n", $unindexedData);
+            echo "\n";
+        }
+        $unusedDocuments = getUnusedDocuments($connection, $host, $data['index'], $dbData, $docCount, $batchSize);
+        echo "Checking the data in the ES are presented in the DB (will take few minutes)...\n";
+        echo "The number of identifiers presented in the index but not in the table [" . count($unusedDocuments) . "]\n";
+        if(isset($options["print-data"])){
+            echo empty($unusedDocuments) ? "All documents in the ES are presented in the table!\n":
+                "List of identifiers presented in the index but not in the table:\n";
+            echo implode("\n", $unusedDocuments);
+            echo "\n";
+        }
+    }
+
+    return $isSync;
+}
+
+function getDocumentsCount(string $index, string $host): int {
+    $curl_result = curlHandler($host . "/". $index . "/_count");
+    $result = json_decode($curl_result, true);
+
+    return (int) $result['count'];
+}
+
+function getTableCount(mysqli $connection, string $table, string $where = null): int {
+    $sql  = "SELECT count(*) FROM ".$table;
+    if (!is_null($where)) {
+        $sql .= " WHERE  ".$where;
+    }
+
+    $result = $connection->query($sql);
+    $rows = $result->fetch_row();
+
+    return (int) $rows[0];
+}
+
+function getUnindexedData(mysqli $connection, string $host, string $index, array $data, int $rowCount, int $batchSize): array
+{
+    $offset = 0;
+    $unindexedData = [];
+    for($loop=0; $loop < ($rowCount/$batchSize); $loop++){
+        $sql = "SELECT " . $data['identifier'] . " FROM ".$data['table'];
+        if (isset($data['where'])) {
+            $sql .= " WHERE  ".$data['where'];
+        }
+        $sql .= " LIMIT ". $batchSize . " OFFSET ".$offset;
+
+        $result = $connection->query($sql);
+        $query_count = (int) $result->num_rows;
+
+        if ($query_count == 0) {
+            break;
+        }
+
+        $rows = [];
+        while($row = $result->fetch_assoc()) {
+            if (isset($data['prefix'])) {
+                $rows[] = $data['prefix'] . $row[$data['identifier']];
+            }
+            $rows[] = $row[$data['identifier']];
+        }
+        $payload = [ "query" => [ "ids" => [ "values"=> $rows ] ] ];
+        // counting the hits is much faster than retrieving the docs
+        $curl_result = curlHandler($host . "/". $index . "/_count?filter_path=count", $payload);
+        $result = json_decode($curl_result, true);
+        $count_result = (int) $result['count'];
+
+        // No need to check the ids if the count of hits == batchSize
+        if($count_result != $query_count){
+            $curl_result = curlHandler($host . "/". $index . "/_search?filter_path=hits.hits._id,hits.total.value", $payload);
+            $result = json_decode($curl_result, true);
+            $docs = [];
+            foreach ($result["hits"]['hits'] as $hit){
+                $docs[] = $hit["_id"];
+            }
+            $unindexedData = array_merge($unindexedData, array_diff($rows, $docs));
+        }
+        $offset+=$batchSize;
+    }
+
+    return $unindexedData;
+}
+
+function getUnusedDocuments(mysqli $connection, string $host, string $index, array $data, int $docsCount, int $batchSize): array
+{
+    $unusedDocuments = [];
+    $scroll_id = NULL;
+    $scroll_req = "/". $index . "/_search?scroll=1m";
+    $scroll_body = ["sort" => [ "_doc" ], "_source" => "false", "size" => (string) $batchSize ];
+    if (isset($data['prefix'])) {
+        $scroll_body["query"] = ["prefix" => [ "id" => (string) $data['prefix'] ]];
+    }
+    for($loop=0; $loop < ($docsCount/$batchSize); $loop++){
+        $curl_result = curlHandler($host . $scroll_req, $scroll_body);
+        $result = json_decode($curl_result, true);
+        $docs = [];
+
+        if (!isset($result["_scroll_id"])){
+            echo "Can not retrieve [_scroll_id] \n";
+            break;
+        }
+
+        $scroll_id = (string) $result["_scroll_id"];
+
+        foreach ($result["hits"]['hits'] as $hit){
+            $docs[] = $hit["_id"];
+        }
+
+        if (isset($data['prefix'])) {
+            $docs = str_replace($data['prefix'],"",$docs);
+        }
+
+        if (count($docs) == 0){
+            break;
+        }
+
+        $sql = "SELECT " . $data['identifier'] . " FROM ".$data['table'];
+
+        $sql .= " WHERE " . $data['identifier'] . " IN ('" . join("','", $docs) . "')";
+
+        if (array_key_exists("where", $data)) {
+            $sql .= " AND  ".$data['where'];
+        }
+
+        $result = $connection->query($sql);
+
+        if (mysqli_errno($connection) != 0) {
+            echo "An error occurred with code [" . mysqli_errno($connection) .
+                "] and message [". mysqli_error($connection) . "]\n";
+        }
+
+        $query_count = (int) $result->num_rows;
+
+        if ($query_count === 0 and $result->fetch_assoc() == NULL){
+            $unusedDocuments = array_merge($unusedDocuments, $docs);
+        }
+        elseif ($query_count != count($docs)){
+            $rows = [];
+            while($row = $result->fetch_assoc()) {
+                if (isset($data['prefix'])) {
+                    $rows[] = $data['prefix'] . $row[$data['identifier']];
+                }
+                $rows[] = $row[$data['identifier']];
+            }
+            $unusedDocuments = array_merge($unusedDocuments, array_diff($docs, $rows));
+        }
+        $scroll_req = "/_search/scroll";
+        $scroll_body = [ "scroll" => "1m", "scroll_id" => $scroll_id];
+    }
+
+    return $unusedDocuments;
+}
+
+function curlHandler(string $request, array $payload=NULL): string {
+    $curl = curl_init($request);
+
+    curl_setopt($curl,CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+
+    if (is_array($payload)){
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, json_encode($payload));
+    }
+
+    $curlResult = curl_exec($curl);
+
+    if (false === $curlResult) {
+        die("Executing ES request failed: " . curl_error($curl) . "\n");
+    }
+
+    curl_close($curl);
+
+    return $curlResult;
+}
+
+$allSync = true;
+
+$con = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
+
+if ($con->connect_error) {
+    die("Connection to MySQL failed: " . $con->connect_error . "\n");
+}
+foreach ($indexTableMap as $indexTable) {
+    if(isset($options["index"]) && $indexTable["index"] != $options["index"]){
+        continue;
+    }
+    $indexSync = analyzeIndex($con, $indexTable, $indexHosts, $batchSize, $options);
+
+    if (false === $indexSync) {
+        $allSync = false;
+        continue;
+    }
+}
+
+$con->close();
+
+if (true === $allSync) {
+    exit(0);
+} else {
+    exit(1);
+}
