@@ -167,7 +167,6 @@ pim_table_attribute:
             no_add_options_title: To add rows
             no_add_options: Manage your "{{ attributeLabel }}" options
             no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
-            no_add_options_link: here
             no_edit_permission: No edit permission
             actions:
                 delete_row: Delete this row
@@ -177,6 +176,7 @@ pim_table_attribute:
             order: Order
             edit_options: Edit options
             save_options_error: An error occured while saving the options
+            save_options_success: Options successfully updated
     properties:
         data_type:
             text: Text

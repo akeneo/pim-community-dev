@@ -1,21 +1,12 @@
 import React, {useState} from 'react';
-import {AddingValueIllustration, Button, Dropdown, Link, TableInput, useBooleanState} from 'akeneo-design-system';
-import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
-import {
-  getLabel,
-  NotificationLevel,
-  useNotify,
-  useRouter,
-  useSecurity,
-  useTranslate,
-  useUserContext,
-} from '@akeneo-pim-community/shared';
+import {AddingValueIllustration, Button, Dropdown, TableInput} from 'akeneo-design-system';
+import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
+import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
-import {ManageOptionsModal} from '../../attribute';
-import {SelectOptionRepository} from '../../repositories';
+import {useManageOptions} from '../useManageOptions';
 
 const BATCH_SIZE = 20;
 
@@ -52,13 +43,11 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const translate = useTranslate();
   const userContext = useUserContext();
   const security = useSecurity();
-  const router = useRouter();
-  const notify = useNotify();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
-  const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState(false);
+  const {ManageOptionsModal, openManageOptions} = useManageOptions(columnCode);
 
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
@@ -99,23 +88,6 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     })
     .slice(0, numberOfDisplayedItems);
 
-  const handleRedirect = () => {
-    setCloseTick(!closeTick);
-    if (attribute) {
-      router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
-    }
-  };
-
-  const handleSaveOptions = (selectOptions: SelectOption[]) => {
-    if (attribute) {
-      SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
-        result
-          ? setAttribute({...attribute})
-          : notify(NotificationLevel.ERROR, translate('pim_table_attribute.form.product.save_options_error'));
-      });
-    }
-  };
-
   if (!attribute || typeof options === 'undefined') {
     return (
       <LoadingPlaceholderContainer>
@@ -132,18 +104,13 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
           <CenteredHelper.Title>
             {translate('pim_table_attribute.form.product.no_add_options_title')}
           </CenteredHelper.Title>
-          {hasEditPermission ? (
-            <div>
-              {translate('pim_table_attribute.form.product.no_add_options', {
+          {hasEditPermission
+            ? translate('pim_table_attribute.form.product.no_add_options', {
                 attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-              })}{' '}
-              <Link onClick={handleRedirect}>{translate('pim_table_attribute.form.product.no_add_options_link')}</Link>
-            </div>
-          ) : (
-            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-            })
-          )}
+              })
+            : translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+              })}
         </CenteredHelper>
       </CenteredHelper.Container>
     );
@@ -162,50 +129,50 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
       <>
         {BottomHelper}
         <EditOptionsContainer>
-          <Button onClick={openManageOptions} ghost level='secondary'>
+          <Button
+            onClick={() => {
+              setCloseTick(!closeTick);
+              openManageOptions();
+            }}
+            ghost
+            level='secondary'
+          >
             {translate('pim_table_attribute.form.product.edit_options')}
           </Button>
-          {isManageOptionsOpen && (
-            <ManageOptionsModal
-              onClose={closeManageOptions}
-              attribute={attribute}
-              columnDefinition={
-                attribute.table_configuration.find(column => column.code === columnCode) as SelectColumnDefinition
-              }
-              onChange={handleSaveOptions}
-              confirmLabel={translate('pim_common.save')}
-            />
-          )}
         </EditOptionsContainer>
       </>
     );
   }
 
   return (
-    <TableInput.Select
-      highlighted={highlighted}
-      value={label}
-      onClear={handleClear}
-      clearLabel={translate('pim_common.clear')}
-      openDropdownLabel={translate('pim_common.open')}
-      searchPlaceholder={translate('pim_common.search')}
-      searchTitle={translate('pim_common.search')}
-      onNextPage={handleNextPage}
-      searchValue={searchValue}
-      onSearchChange={handleSearchValue}
-      inError={inError || notFoundOption}
-      closeTick={closeTick}
-      bottomHelper={BottomHelper}
-      {...rest}
-    >
-      {itemsToDisplay.map(option => {
-        return (
-          <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>
-            {getLabel(option.labels, userContext.get('catalogLocale'), option.code)}
-          </Dropdown.Item>
-        );
-      })}
-    </TableInput.Select>
+    <>
+      <TableInput.Select
+        highlighted={highlighted}
+        value={label}
+        onClear={handleClear}
+        clearLabel={translate('pim_common.clear')}
+        openDropdownLabel={translate('pim_common.open')}
+        searchPlaceholder={translate('pim_common.search')}
+        searchTitle={translate('pim_common.search')}
+        onNextPage={handleNextPage}
+        searchValue={searchValue}
+        onSearchChange={handleSearchValue}
+        inError={inError || notFoundOption}
+        closeTick={closeTick}
+        bottomHelper={BottomHelper}
+        withSearch={searchValue !== '' || itemsToDisplay.length > 0}
+        {...rest}
+      >
+        {itemsToDisplay.map(option => {
+          return (
+            <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>
+              {getLabel(option.labels, userContext.get('catalogLocale'), option.code)}
+            </Dropdown.Item>
+          );
+        })}
+      </TableInput.Select>
+      <ManageOptionsModal />
+    </>
   );
 };
 

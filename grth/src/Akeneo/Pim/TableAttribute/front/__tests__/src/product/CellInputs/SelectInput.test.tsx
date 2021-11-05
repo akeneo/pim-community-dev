@@ -7,6 +7,7 @@ import {ColumnDefinition, SelectColumnDefinition, SelectOption} from '../../../.
 import {getComplexTableAttribute} from '../../../factories';
 import {nutritionScoreSelectOptions} from '../../../../src/fetchers/__mocks__/SelectOptionsFetcher';
 import {SelectOptionRepository} from '../../../../src/repositories';
+import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../../src/attribute/ManageOptionsModal');
 
@@ -193,7 +194,7 @@ describe('SelectInput', () => {
     expect(await screen.findByText('pim_table_attribute.form.attribute.please_try_again')).toBeInTheDocument();
   });
 
-  it('should display a link when there is no option', async () => {
+  it('should display a message when there is no option', async () => {
     fetchGetSelectOptions([]);
 
     renderWithProviders(
@@ -211,8 +212,7 @@ describe('SelectInput', () => {
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
-      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
-      fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
+      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options')).toBeInTheDocument();
     });
   });
 
@@ -239,29 +239,27 @@ describe('SelectInput', () => {
     const setAttribute = jest.fn();
 
     renderWithProviders(
-      <SelectInput
-        columnDefinition={nutritionScoreColumn}
-        highlighted={false}
-        inError={false}
-        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-        onChange={jest.fn()}
-        attribute={getComplexAttributeWithOptions()}
-        setAttribute={setAttribute}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <SelectInput
+          columnDefinition={nutritionScoreColumn}
+          highlighted={false}
+          inError={false}
+          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+          onChange={jest.fn()}
+          attribute={getComplexAttributeWithOptions()}
+          setAttribute={setAttribute}
+        />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('B')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('pim_common.open'));
     expect(await screen.findByText('pim_table_attribute.form.product.edit_options')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.form.product.edit_options'));
-    fireEvent.click(screen.getByText('Fake confirm'));
+    await act(async () => {
+      fireEvent.click(await screen.findByText('Fake confirm'));
+    });
     expect(hasCalledPostAttribute).toBeTruthy();
-    expect(setAttribute).toBeCalledWith(
-      expect.objectContaining({
-        table_configuration: expect.arrayContaining([
-          {...nutritionScoreColumn, options: [{code: 'fake_code', labels: {en_US: 'fake label'}}]},
-        ]),
-      })
-    );
+    expect(setAttribute).toBeCalled();
   });
 });

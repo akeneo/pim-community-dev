@@ -128,7 +128,7 @@ describe('AddRowsButton', () => {
     expect(await screen.findByText('U')).toBeInTheDocument();
   });
 
-  it('should redirect from helper when there is no option', async () => {
+  it('should display a message when there is no option', async () => {
     const attribute = getComplexTableAttribute();
     attribute.table_configuration[0].code = 'no_options';
     renderWithProviders(
@@ -140,9 +140,8 @@ describe('AddRowsButton', () => {
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
     await act(async () => {
       fireEvent.click(button);
-      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
+      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options')).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
   });
 
   it('should open manage options directly', async () => {
