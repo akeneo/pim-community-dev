@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.56 (2021-11-05)
+
 ## Bug fixes
 
 - PIM-10141: [Backport] PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
