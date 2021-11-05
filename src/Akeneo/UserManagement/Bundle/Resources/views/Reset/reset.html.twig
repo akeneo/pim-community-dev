@@ -16,7 +16,6 @@
     }) }}
     <div class="InputGroup">
         {{ form_widget(form.plainPassword, {'required': true}) }}
-        {{ form_widget(form._token) }}
         <div class="CancelPasswordReset">
             <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
         </div>

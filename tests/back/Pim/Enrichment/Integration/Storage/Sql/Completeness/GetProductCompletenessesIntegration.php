@@ -243,7 +243,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $productId = $this->get('database_connection')->executeQuery(
             'SELECT id from pim_catalog_product where identifier = :identifier',
             ['identifier' => $identifier]
-        )->fetchColumn();
+        )->fetchOne();
 
         return $productId ? (int)$productId : null;
     }

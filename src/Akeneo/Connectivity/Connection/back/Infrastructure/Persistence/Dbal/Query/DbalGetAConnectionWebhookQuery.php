@@ -29,7 +29,7 @@ class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQuery
     FROM akeneo_connectivity_connection
     WHERE code = :code
 SQL;
-        $connectionWebhook = $this->dbalConnection->executeQuery($query, ['code' => $code])->fetch();
+        $connectionWebhook = $this->dbalConnection->executeQuery($query, ['code' => $code])->fetchAssociative();
 
         if (false === $connectionWebhook) {
             return null;

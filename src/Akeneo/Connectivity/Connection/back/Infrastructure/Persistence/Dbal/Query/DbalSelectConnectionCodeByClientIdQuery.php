@@ -26,7 +26,7 @@ SQL;
 
         $connectionCode = $this->dbalConnection
             ->executeQuery($sqlQuery, ['client_id' => $clientId])
-            ->fetchColumn();
+            ->fetchOne();
 
         if (false === $connectionCode) {
             return null;

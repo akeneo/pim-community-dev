@@ -31,7 +31,7 @@ WHERE attribute_group_code = :attributeGroupCode;
 SQL;
 
         $result = $this->dbConnection->executeQuery($query, ['attributeGroupCode' => $attributeGroupCode])
-            ->fetchColumn();
+            ->fetchOne();
 
         return false !== $result ? new AttributeGroupActivation($attributeGroupCode, (bool) $result) : null;
     }

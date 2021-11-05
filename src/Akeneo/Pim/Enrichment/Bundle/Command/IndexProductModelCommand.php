@@ -180,7 +180,7 @@ SQL;
                     'formerId' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (empty($rows)) {
                 return;
@@ -206,14 +206,14 @@ SQL;
             [
                 'codes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll(FetchMode::COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     private function getTotalNumberOfRootProductModels(): int
     {
         return (int)$this->connection->executeQuery(
             'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
-        )->fetchColumn(0);
+        )->fetchOne();
     }
 
     /**

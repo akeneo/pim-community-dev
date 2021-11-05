@@ -39,7 +39,7 @@ SQL;
         );
 
         $productIds = [];
-        while ($product = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($product = $stmt->fetchAssociative()) {
             $productIds[$product['identifier']] = new ProductId(intval($product['id']));
         }
 

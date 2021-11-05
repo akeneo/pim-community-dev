@@ -66,7 +66,7 @@ GROUP BY product_id
 SQL,
             $andWhere
         );
-        $rows = $this->connection->executeQuery($sql, $params, $types)->fetchAll();
+        $rows = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
         $results = array_reduce(
             $rows,

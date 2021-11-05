@@ -169,7 +169,7 @@ WITH
     LEFT JOIN product_model_family_labels ON product_model_family_labels.family_id = product_model.family_id
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
@@ -259,7 +259,7 @@ FROM product_model_completeness_by_channel
 GROUP BY product_model_code
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
@@ -347,7 +347,7 @@ INNER JOIN family_variant_attributes_per_level ON family_variant_attributes_per_
 WHERE product_model.code IN (:productModelCodes)
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]

@@ -43,7 +43,7 @@ final class SqlGetAttributeOptionCodes implements GetAttributeOptionCodes
                     'limit' => self::BATCH_QUERY_SIZE,
                 ],
                 ['limit' => \PDO::PARAM_INT]
-            )->fetchAll();
+            )->fetchAllAssociative();
             foreach ($results as $result) {
                 yield $result['code'];
                 $searchAfterId = $result['id'];

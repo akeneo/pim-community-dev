@@ -55,7 +55,7 @@ FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
 
-        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetchAssociative();
 
         return $dataRow ?
             new Connection(

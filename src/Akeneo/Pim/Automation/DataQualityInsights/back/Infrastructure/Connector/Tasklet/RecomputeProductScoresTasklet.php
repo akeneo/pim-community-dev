@@ -88,7 +88,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
 
         return array_map(function ($resultRow) {
             return intval($resultRow['id']);
-        }, $stmt->fetchAll());
+        }, $stmt->fetchAllAssociative());
     }
 
     private function isTimeboxReached(int $startTime): bool

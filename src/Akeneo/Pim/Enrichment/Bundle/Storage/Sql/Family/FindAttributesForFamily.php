@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 
 /**
  * Checks if an attribute is part of the family attributes.
@@ -17,8 +17,7 @@ use Doctrine\DBAL\Driver\Statement;
  */
 class FindAttributesForFamily
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -26,10 +25,6 @@ class FindAttributesForFamily
     }
 
     /**
-     * @param FamilyInterface $family
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     *
      * @return string[]
      */
     public function execute(FamilyInterface $family): array
@@ -41,23 +36,17 @@ class FindAttributesForFamily
           INNER JOIN pim_catalog_attribute a ON fa.attribute_id = a.id
         WHERE (f.code = :family_code)
 SQL;
-        $stmt = $this->connection->executeQuery($sql, ['family_code' => $family->getCode()]);
 
-        return $this->getAttributeCodes($stmt);
+        return $this->getAttributeCodes($this->connection->executeQuery($sql, ['family_code' => $family->getCode()]));
     }
 
     /**
-     * @param Statement $query
-     *
      * @return string[]
      */
-    private function getAttributeCodes(Statement $query): array
+    private function getAttributeCodes(Result $result): array
     {
-        $results = $query->fetchAll();
-        $attributeCodes = array_map(function (array $result) {
+        return array_map(function (array $result) {
             return $result['code'];
-        }, $results);
-
-        return $attributeCodes;
+        }, $result->fetchAllAssociative());
     }
 }

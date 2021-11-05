@@ -69,7 +69,7 @@ SQL;
 
 
         $attributes = [];
-        foreach (new EditableAttributeFilter($statement->fetchAll()) as $attribute) {
+        foreach (new EditableAttributeFilter($statement->fetchAllAssociative()) as $attribute) {
             $attributes[] = new Attribute(
                 new AttributeCode($attribute['code']),
                 new AttributeType($attribute['type']),

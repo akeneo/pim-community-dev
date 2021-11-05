@@ -78,7 +78,7 @@ GROUP BY ch.code;
 SQL;
         $statement = $this->entityManager->getConnection()->executeQuery($sql);
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $currenciesIndexedByChannel = [];
         foreach ($results as $result) {
             $currenciesIndexedByChannel[$result['channel_code']] = json_decode($result['activated_currencies'], false);

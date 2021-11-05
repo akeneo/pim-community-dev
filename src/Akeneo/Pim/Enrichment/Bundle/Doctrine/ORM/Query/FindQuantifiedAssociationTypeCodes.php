@@ -38,6 +38,6 @@ class FindQuantifiedAssociationTypeCodes implements FindQuantifiedAssociationTyp
         SELECT code FROM pim_catalog_association_type WHERE is_quantified = true
 SQL;
 
-        return $this->connection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
+        return $this->connection->executeQuery($query)->fetchFirstColumn();
     }
 }

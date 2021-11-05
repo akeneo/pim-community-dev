@@ -46,7 +46,7 @@ SQL;
             [
                 'association_type_code' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $associationTypes = [];
         foreach ($rows as $row) {

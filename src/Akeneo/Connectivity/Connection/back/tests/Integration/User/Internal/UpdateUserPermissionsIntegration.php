@@ -45,7 +45,7 @@ class UpdateUserPermissionsIntegration extends TestCase
 SELECT id FROM oro_user WHERE username = :username
 SQL;
 
-        return (int) $this->getDatabaseConnection()->fetchColumn($sqlQuery, ['username' => $username]);
+        return (int) $this->getDatabaseConnection()->fetchOne($sqlQuery, ['username' => $username]);
     }
 
     private function assertConnectionRole(int $userId, int $userRoleId): void
@@ -55,7 +55,7 @@ SELECT COUNT(1) FROM oro_user_access_role WHERE user_id = :user_id AND role_id =
 SQL;
         $rolesCount = $this
             ->getDatabaseConnection()
-            ->fetchColumn($sqlQuery, ['user_id' => $userId, 'role_id' => $userRoleId]);
+            ->fetchOne($sqlQuery, ['user_id' => $userId, 'role_id' => $userRoleId]);
         Assert::assertEquals(1, $rolesCount);
     }
 
@@ -66,7 +66,7 @@ SELECT COUNT(1) FROM oro_user_access_group WHERE user_id = :user_id AND group_id
 SQL;
         $groupsCount = $this
             ->getDatabaseConnection()
-            ->fetchColumn($sqlQuery, ['user_id' => $userId, 'group_id' => $userGroupId]);
+            ->fetchOne($sqlQuery, ['user_id' => $userId, 'group_id' => $userGroupId]);
         Assert::assertEquals(1, $groupsCount);
     }
 
@@ -98,13 +98,13 @@ SQL;
     {
         return (int) $this
             ->getDatabaseConnection()
-            ->fetchColumn('SELECT id FROM oro_access_role where id != :role_id', ['role_id' => $currentRoleId]);
+            ->fetchOne('SELECT id FROM oro_access_role where id != :role_id', ['role_id' => $currentRoleId]);
     }
 
     private function fetchNewGroupId(int $currentGroupId): int
     {
         return (int) $this
             ->getDatabaseConnection()
-            ->fetchColumn('SELECT id FROM oro_access_group where id != :group_id', ['group_id' => $currentGroupId]);
+            ->fetchOne('SELECT id FROM oro_access_group where id != :group_id', ['group_id' => $currentGroupId]);
     }
 }

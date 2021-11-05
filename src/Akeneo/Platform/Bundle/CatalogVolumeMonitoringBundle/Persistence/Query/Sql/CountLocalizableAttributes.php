@@ -42,7 +42,7 @@ class CountLocalizableAttributes implements CountQuery
             FROM pim_catalog_attribute 
             WHERE is_localizable = 1 AND is_scopable = 0;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

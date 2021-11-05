@@ -107,7 +107,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $row) {
@@ -140,7 +140,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         $products = [];
@@ -198,7 +198,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $label = $valueCollections[$row['identifier']]['value_collection']->getByCodes(
@@ -238,7 +238,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $image = $valueCollections[$row['identifier']]['value_collection']->getByCodes($row['image_code']);
@@ -274,7 +274,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers, 'locale_code' => $localeCode, 'channel_code' => $channelCode],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $result[$row['identifier']]['completeness'] = (int) $row['ratio'];
@@ -306,7 +306,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers, 'locale_code' => $localeCode],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $result[$row['identifier']]['family_label'] = $row['family_label'];
@@ -341,7 +341,7 @@ SQL;
             $sql,
             ['identifiers' => $identifiers, 'locale_code' => $localeCode],
             ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $result[$row['identifier']]['groups'] = json_decode($row['product_groups']);

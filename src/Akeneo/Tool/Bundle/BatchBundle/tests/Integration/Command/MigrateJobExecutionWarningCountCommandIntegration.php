@@ -67,7 +67,7 @@ SQL;
             $stepExecutionWarningCount = $this->dbConnection->executeQuery(
                 $query,
                 ['id' => $stepExecution->getId()]
-            )->fetchColumn();
+            )->fetchOne();
 
             $this->assertSame($expectedCount, intval($stepExecutionWarningCount));
         }
@@ -82,7 +82,7 @@ SQL;
         $status = $this->dbConnection->executeQuery(
             $query,
             ['code' => 'akeneo:batch:migrate-job-execution-warning-count']
-        )->fetchColumn();
+        )->fetchOne();
 
         $this->assertSame('done', $status);
     }

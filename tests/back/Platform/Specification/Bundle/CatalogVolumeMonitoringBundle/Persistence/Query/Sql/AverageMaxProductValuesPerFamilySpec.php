@@ -8,6 +8,7 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQue
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValuesPerFamily;
 use Prophecy\Argument;
@@ -29,17 +30,17 @@ class AverageMaxProductValuesPerFamilySpec extends ObjectBehavior
         $this->shouldImplement(AverageMaxQuery::class);
     }
 
-    function it_gets_average_and_max_volume($connection, Statement $statement)
+    function it_gets_average_and_max_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['average' => '5', 'max' => '10']);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['average' => '5', 'max' => '10']);
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 5, 100, 'average_max_product_values_per_family'));
     }
 
-    function it_gets_average_and_max_volume_of_an_empty_catalog($connection, Statement $statement)
+    function it_gets_average_and_max_volume_of_an_empty_catalog(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['average' => null, 'max' => null]);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['average' => null, 'max' => null]);
 
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 100, 'average_max_product_values_per_family'));
     }

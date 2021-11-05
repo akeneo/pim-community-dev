@@ -56,7 +56,7 @@ WHERE p.identifier IN (?)
 GROUP BY p.id, p.identifier
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             [$productIdentifiers, $productIdentifiers],
             [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]

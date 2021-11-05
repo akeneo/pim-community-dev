@@ -37,7 +37,7 @@ SQL;
 
         $dataRows = $this->dbalConnection
             ->executeQuery($selectSQL, ['type' => ConnectionType::DEFAULT_TYPE])
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $connections = [];
         foreach ($dataRows as $dataRow) {

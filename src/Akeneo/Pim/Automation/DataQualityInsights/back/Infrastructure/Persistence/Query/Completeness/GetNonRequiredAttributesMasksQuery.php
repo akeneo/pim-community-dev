@@ -84,7 +84,7 @@ SQL;
             $sql,
             ['familyCodes' => $familyCodes],
             ['familyCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $masksPerFamily = array_fill_keys($familyCodes, []);
         foreach ($rows as $masksPerChannelAndLocale) {

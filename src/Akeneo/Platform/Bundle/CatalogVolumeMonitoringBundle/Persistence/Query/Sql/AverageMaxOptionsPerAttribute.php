@@ -53,7 +53,7 @@ class AverageMaxOptionsPerAttribute implements AverageMaxQuery
                 GROUP BY ao.attribute_id
             ) as opa
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

@@ -48,7 +48,7 @@ class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
         $sql = <<<SQL
         SELECT connection_code, username FROM akeneo_connectivity_connection_wrong_credentials_combination;
         SQL;
-        $result = $this->dbalConnection->executeQuery($sql)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         Assert::assertSame($expected, $result);
     }
@@ -69,7 +69,7 @@ class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
         $sql = <<<SQL
         SELECT connection_code, username FROM akeneo_connectivity_connection_wrong_credentials_combination;
         SQL;
-        $result = $this->dbalConnection->executeQuery($sql)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         Assert::assertSame($expected, $result);
     }
@@ -81,12 +81,12 @@ class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
         SQL;
 
         $this->repository->create(new Write\WrongCredentialsCombination('erp', 'admin'));
-        $previous = $this->dbalConnection->executeQuery($sql)->fetchAll();
+        $previous = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         sleep(1);
 
         $this->repository->create(new Write\WrongCredentialsCombination('erp', 'admin'));
-        $current = $this->dbalConnection->executeQuery($sql)->fetchAll();
+        $current = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         Assert::assertNotSame($previous, $current);
     }

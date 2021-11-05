@@ -137,7 +137,7 @@ class ResetController extends AbstractController
     /**
      * Reset user password
      *
-     * @Template("@PimUser/Reset:reset.html.twig")
+     * @Template("@PimUser/Reset/reset.html.twig")
      */
     public function reset($token)
     {

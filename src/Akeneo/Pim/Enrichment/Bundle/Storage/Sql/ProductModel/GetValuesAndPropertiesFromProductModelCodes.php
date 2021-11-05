@@ -56,7 +56,7 @@ LEFT JOIN pim_catalog_product_model parent_product_model ON parent_product_model
 WHERE product_model.code IN (:productModelCodes)
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
