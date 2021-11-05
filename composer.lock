@@ -3722,16 +3722,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "499313f8b65f9a4dae1c779cd974d59a6fcf0f15"
+                "reference": "8f037e8f3321d5fd4178dcd4d91498220cebd688"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/499313f8b65f9a4dae1c779cd974d59a6fcf0f15",
-                "reference": "499313f8b65f9a4dae1c779cd974d59a6fcf0f15",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8f037e8f3321d5fd4178dcd4d91498220cebd688",
+                "reference": "8f037e8f3321d5fd4178dcd4d91498220cebd688",
                 "shasum": ""
             },
             "require": {
@@ -3748,7 +3748,7 @@
                 "aws/aws-sdk-php": "^3.132.4",
                 "composer/semver": "^3.0",
                 "ext-fileinfo": "*",
-                "friendsofphp/php-cs-fixer": "^2.16",
+                "friendsofphp/php-cs-fixer": "^3.2",
                 "google/cloud-storage": "^1.23",
                 "phpseclib/phpseclib": "^2.0",
                 "phpstan/phpstan": "^0.12.26",
@@ -3787,7 +3787,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/2.3.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/2.3.1"
             },
             "funding": [
                 {
@@ -3803,7 +3803,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-22T06:09:19+00:00"
+            "time": "2021-11-04T20:29:23+00:00"
         },
         {
             "name": "league/flysystem-memory",
