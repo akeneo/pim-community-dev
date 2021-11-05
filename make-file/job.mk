@@ -3,6 +3,10 @@ job-lint-back: #Doc: launch PHPStan for job bounded context
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Job/back/tests/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Platform/Job
 
+.PHONY: job-lint-fix-back
+job-lint-fix-back: #Doc: launch PHPStan for job bounded context
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/Platform/Job
+
 .PHONY: job-coupling-back
 job-coupling-back: #Doc: launch coupling detector for job bounded context
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Job/back/tests/.php_cd.php src/Akeneo/Platform/Job/back

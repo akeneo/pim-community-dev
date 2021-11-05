@@ -9,6 +9,11 @@ use PhpSpec\ObjectBehavior;
 
 class JobExecutionRowSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith('jobName', 'export', '2021-11-02 13:20:27', 'admin', 'COMPLETED', 10);
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(JobExecutionRow::class);
@@ -16,6 +21,27 @@ class JobExecutionRowSpec extends ObjectBehavior
 
     public function it_normalizes_itself()
     {
-        $this->normalize()->shouldReturn([]);
+        $this->normalize()->shouldReturn([
+            'job_name' => 'jobName',
+            'type' => 'export',
+            'start_at' => '2021-11-02 13:20:27',
+            'username' => 'admin',
+            'status' => 'COMPLETED',
+            'warning_count' => 10,
+        ]);
+    }
+
+    public function it_normalizes_itself_with_null_value()
+    {
+        $this->beConstructedWith('jobName', 'export', null, null, 'COMPLETED', 10);
+
+        $this->normalize()->shouldReturn([
+            'job_name' => 'jobName',
+            'type' => 'export',
+            'start_at' => null,
+            'username' => null,
+            'status' => 'COMPLETED',
+            'warning_count' => 10,
+        ]);
     }
 }

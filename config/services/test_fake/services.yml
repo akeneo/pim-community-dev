@@ -15,6 +15,8 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
+    # Job Bundle
+    - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:

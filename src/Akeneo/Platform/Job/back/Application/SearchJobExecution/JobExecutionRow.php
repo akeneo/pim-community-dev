@@ -11,8 +11,32 @@ namespace Akeneo\Platform\Job\Application\SearchJobExecution;
  */
 final class JobExecutionRow
 {
+    private string $jobName;
+    private string $type;
+    private ?string $startAt;
+    private ?string $username;
+    private string $status;
+    private int $warningCount;
+
+    public function __construct(string $jobName, string $type, ?string $startAt, ?string $username, string $status, int $warningCount)
+    {
+        $this->jobName = $jobName;
+        $this->type = $type;
+        $this->startAt = $startAt;
+        $this->username = $username;
+        $this->status = $status;
+        $this->warningCount = $warningCount;
+    }
+
     public function normalize(): array
     {
-        return [];
+        return [
+            'job_name' => $this->jobName,
+            'type' => $this->type,
+            'start_at' => $this->startAt,
+            'username' => $this->username,
+            'status' => $this->status,
+            'warning_count' => $this->warningCount,
+        ];
     }
 }

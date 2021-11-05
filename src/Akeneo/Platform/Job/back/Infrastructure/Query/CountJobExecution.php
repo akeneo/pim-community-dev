@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface;
+use Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class CountJobExecutionQuery implements CountJobExecutionQueryInterface
+final class CountJobExecution implements CountJobExecutionInterface
 {
     private Connection $connection;
 

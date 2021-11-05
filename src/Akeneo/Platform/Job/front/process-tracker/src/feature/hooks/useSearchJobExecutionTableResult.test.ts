@@ -4,7 +4,7 @@ import {SearchJobExecutionTableResult} from '../models/SearchJobExecutionTableRe
 import {act} from '@testing-library/react-hooks';
 
 const expectedFetchedSearchJobExecutionTableResult: SearchJobExecutionTableResult = {
-  items: [],
+  rows: [],
   matches_count: 0,
   total_count: 0,
 };

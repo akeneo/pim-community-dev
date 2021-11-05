@@ -11,24 +11,24 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class SearchJobExecutionTableResult
+final class JobExecutionTable
 {
-    private const ITEMS = 'items';
+    private const ROWS = 'rows';
     private const MATCHES_COUNT = 'matches_count';
     private const TOTAL_COUNT = 'total_count';
 
     /** @var JobExecutionRow[] */
-    public array $items;
+    public array $rows;
     public int $matchesCount;
     public int $totalCount;
 
     public function __construct(
-        array $jobItems,
+        array $jobExecutionRows,
         int $matchesCount,
         int $totalCount
     ) {
-        Assert::allIsInstanceOf($jobItems, JobExecutionRow::class);
-        $this->items = $jobItems;
+        Assert::allIsInstanceOf($jobExecutionRows, JobExecutionRow::class);
+        $this->rows = $jobExecutionRows;
         $this->matchesCount = $matchesCount;
         $this->totalCount = $totalCount;
     }
@@ -36,7 +36,7 @@ final class SearchJobExecutionTableResult
     public function normalize(): array
     {
         return [
-            self::ITEMS => array_map(static fn (JobExecutionRow $jobItem) => $jobItem->normalize(), $this->items),
+            self::ROWS => array_map(static fn (JobExecutionRow $jobItem) => $jobItem->normalize(), $this->rows),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

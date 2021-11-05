@@ -10,7 +10,7 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 
 jest.mock('../hooks/useSearchJobExecutionTableResult', () => ({
   useSearchJobExecutionTableResult: (): SearchJobExecutionTableResult => ({
-    items: [],
+    rows: [],
     matches_count: 0,
     total_count: 0,
   }),
