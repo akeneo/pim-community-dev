@@ -46,7 +46,7 @@ SQL;
             ['attribute_code' => \PDO::PARAM_STR]
         );
 
-        $attribute = $statement->fetch(\PDO::FETCH_ASSOC);
+        $attribute = $statement->fetchAssociative();
 
         if (empty($attribute)) {
             return null;

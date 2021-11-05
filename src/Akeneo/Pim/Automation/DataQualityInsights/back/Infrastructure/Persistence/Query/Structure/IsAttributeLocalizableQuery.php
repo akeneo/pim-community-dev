@@ -35,7 +35,7 @@ SQL;
 
         $attributeData = $this->dbConnection->executeQuery($query, [
             'attributeCode' => $attributeCode
-        ])->fetch(\PDO::FETCH_ASSOC);
+        ])->fetchAssociative();
 
         return (bool) ($attributeData['is_localizable'] ?? false);
     }

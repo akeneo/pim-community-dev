@@ -81,7 +81,7 @@ FROM pim_catalog_product
 WHERE product_model_id IS NULL
 SQL
         );
-        $products = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $products = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -90,7 +90,7 @@ FROM pim_catalog_product
 WHERE product_model_id IS NOT NULL
 SQL
         );
-        $variant_products = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $variant_products = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -98,7 +98,7 @@ SELECT count(*) AS number_of_product_models
 FROM pim_catalog_product_model
 SQL
         );
-        $product_models = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $product_models = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -107,7 +107,7 @@ FROM pim_catalog_locale
 WHERE is_activated = 1
 SQL
         );
-        $locales = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $locales = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -115,7 +115,7 @@ SELECT JSON_ARRAYAGG(code) AS codes
 FROM pim_catalog_channel
 SQL
         );
-        $channels = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $channels = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -123,7 +123,7 @@ SELECT count(*) AS number_of_families
 FROM pim_catalog_family
 SQL
         );
-        $families = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $families = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -131,7 +131,7 @@ SELECT count(*) AS number_of_categories
 FROM pim_catalog_category
 SQL
         );
-        $categories = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $categories = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -140,7 +140,7 @@ FROM pim_catalog_attribute
 WHERE attribute_type IN ('pim_catalog_text', 'pim_catalog_textarea');
 SQL
         );
-        $attributesTextAndTextarea = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributesTextAndTextarea = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -151,7 +151,7 @@ AND is_scopable=1
 AND is_localizable=0;
 SQL
         );
-        $attributesTextAndTextareaScopable = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributesTextAndTextareaScopable = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -162,7 +162,7 @@ AND is_scopable=0
 AND is_localizable=1;
 SQL
         );
-        $attributesTextAndTextareaLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributesTextAndTextareaLocalizable = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -173,7 +173,7 @@ AND is_scopable=1
 AND is_localizable=1;
 SQL
         );
-        $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetchAssociative();
 
         $stmt = $this->db->executeQuery(
             <<<SQL

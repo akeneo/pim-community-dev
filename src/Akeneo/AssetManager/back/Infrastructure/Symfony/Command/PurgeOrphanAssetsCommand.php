@@ -181,7 +181,7 @@ class PurgeOrphanAssetsCommand extends Command
         $progressBar = new ProgressBar($output, $this->countFilesToPurge());
         $progressBar->start();
         $fileRemoved = 0;
-        while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while (false !== $result = $statement->fetchAssociative()) {
             try {
                 $fs->delete($result['file_key']);
             } catch (FilesystemException $exception) {

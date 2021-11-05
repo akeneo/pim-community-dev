@@ -41,7 +41,7 @@ final class SqlIsUserGroupAttachedToProject implements IsUserGroupAttachedToProj
         $statement = $this->connection->executeQuery($query, ['userGroupId' => $userGroupId]);
 
         $platform = $this->connection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
         return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);

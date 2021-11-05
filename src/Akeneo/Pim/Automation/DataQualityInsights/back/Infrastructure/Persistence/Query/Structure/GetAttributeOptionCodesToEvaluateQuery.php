@@ -57,7 +57,7 @@ SQL;
             ['updatedOptionsIds' => Connection::PARAM_INT_ARRAY]
         );
 
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetchAssociative()) {
             yield new AttributeOptionCode(new AttributeCode($row['attribute_code']), $row['attribute_option_code']);
         }
     }

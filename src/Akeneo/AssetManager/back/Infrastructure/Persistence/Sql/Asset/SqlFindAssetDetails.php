@@ -89,7 +89,7 @@ SQL;
             'code' => (string) $assetCode,
             'asset_family_identifier' => (string) $assetFamilyIdentifier,
         ]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
         return $result ? $result : [];

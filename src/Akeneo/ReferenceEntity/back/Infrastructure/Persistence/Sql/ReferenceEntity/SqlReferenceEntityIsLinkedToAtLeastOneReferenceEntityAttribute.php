@@ -57,7 +57,7 @@ SQL;
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $isLinked = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_linked'], $platform);
 
         return $isLinked;
