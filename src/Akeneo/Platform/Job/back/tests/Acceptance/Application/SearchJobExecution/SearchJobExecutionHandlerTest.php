@@ -8,11 +8,11 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecution;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class SearchJobExecutionHandlerTest extends KernelTestCase
+class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 {
     protected function setUp(): void
     {
@@ -70,16 +70,16 @@ class SearchJobExecutionHandlerTest extends KernelTestCase
 
     private function getCountJobExecution(): InMemoryCountJobExecution
     {
-        return static::$container->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
+        return $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
     }
 
     private function getSearchJobExecution(): InMemorySearchJobExecution
     {
-        return static::$container->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
     }
 
     private function getHandler(): SearchJobExecutionHandler
     {
-        return static::$container->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler');
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler');
     }
 }

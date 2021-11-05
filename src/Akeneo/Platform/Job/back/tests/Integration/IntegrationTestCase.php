@@ -25,9 +25,9 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**
