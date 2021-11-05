@@ -10,7 +10,15 @@ import {
   Search,
   useBooleanState,
 } from 'akeneo-design-system';
-import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  getLabel,
+  NotificationLevel,
+  useNotify,
+  useRouter,
+  useSecurity,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode} from '../models';
 import styled from 'styled-components';
 import {CenteredHelper} from '../shared';
@@ -55,6 +63,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   const translate = useTranslate();
   const security = useSecurity();
   const userContext = useUserContext();
+  const notify = useNotify();
   const {attribute, setAttribute} = useAttributeContext();
 
   const [isOpen, open, close] = useBooleanState(false);
@@ -112,9 +121,9 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
   const handleSaveOptions = (selectOptions: SelectOption[]) => {
     if (attribute) {
       SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
-        if (result) {
-          setAttribute({...attribute});
-        }
+        result
+          ? setAttribute({...attribute})
+          : notify(NotificationLevel.ERROR, translate('pim_table_attribute.form.product.save_options_error'));
       });
     }
   };
@@ -201,6 +210,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
                   attribute={attribute}
                   columnDefinition={attribute.table_configuration[0] as SelectColumnDefinition}
                   onChange={handleSaveOptions}
+                  confirmLabel={translate('pim_common.save')}
                 />
               )}
             </EditOptionsContainer>

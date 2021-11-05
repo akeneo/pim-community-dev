@@ -1,7 +1,15 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Button, Dropdown, Link, TableInput, useBooleanState} from 'akeneo-design-system';
 import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
-import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  getLabel,
+  NotificationLevel,
+  useNotify,
+  useRouter,
+  useSecurity,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
@@ -45,6 +53,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const userContext = useUserContext();
   const security = useSecurity();
   const router = useRouter();
+  const notify = useNotify();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
@@ -100,9 +109,9 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   const handleSaveOptions = (selectOptions: SelectOption[]) => {
     if (attribute) {
       SelectOptionRepository.save(router, attribute, columnCode, selectOptions).then(result => {
-        if (result) {
-          setAttribute({...attribute});
-        }
+        result
+          ? setAttribute({...attribute})
+          : notify(NotificationLevel.ERROR, translate('pim_table_attribute.form.product.save_options_error'));
       });
     }
   };
@@ -164,6 +173,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
                 attribute.table_configuration.find(column => column.code === columnCode) as SelectColumnDefinition
               }
               onChange={handleSaveOptions}
+              confirmLabel={translate('pim_common.save')}
             />
           )}
         </EditOptionsContainer>

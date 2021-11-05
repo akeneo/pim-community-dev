@@ -146,8 +146,10 @@ describe('AddRowsButton', () => {
   });
 
   it('should open manage options directly', async () => {
+    let hasCalledPostAttribute = false;
     fetchMock.mockResponse((request: Request) => {
       if (request.url.includes('pim_enrich_attribute_rest_post')) {
+        hasCalledPostAttribute = true;
         return Promise.resolve(JSON.stringify(true));
       }
 
@@ -169,5 +171,6 @@ describe('AddRowsButton', () => {
     expect(await screen.findByText('pim_table_attribute.form.product.edit_options')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.form.product.edit_options'));
     fireEvent.click(screen.getByText('Fake confirm'));
+    expect(hasCalledPostAttribute).toBeTruthy();
   });
 });

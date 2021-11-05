@@ -176,6 +176,7 @@ pim_table_attribute:
                 move_last: Move to last position
             order: Order
             edit_options: Edit options
+            save_options_error: An error occured while saving the options
     properties:
         data_type:
             text: Text
