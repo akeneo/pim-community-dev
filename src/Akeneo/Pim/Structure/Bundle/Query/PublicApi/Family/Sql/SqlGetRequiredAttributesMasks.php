@@ -84,7 +84,7 @@ SQL;
             $sql,
             ['familyCodes' => $familyCodes],
             ['familyCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $families = array_map(function (array $row): string {
             return $row['family_code'];

@@ -23,6 +23,12 @@ https://docs.akeneo.com/master/install_pim/manual/system_requirements/system_req
 To install Akeneo PIM for a PIM project or for evaluation, please follow:
 https://docs.akeneo.com/master/install_pim/index.html
 
+### Build the Docker image for local development
+
+```bash
+docker build --target dev -t akeneo/pim-php-dev:master .
+```
+
 ## Upgrade instructions
 
 To upgrade Akeneo PIM to a newer version, please follow:

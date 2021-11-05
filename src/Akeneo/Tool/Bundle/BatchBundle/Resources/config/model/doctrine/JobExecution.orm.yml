@@ -61,7 +61,7 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             column: log_file
             nullable: true
         rawParameters:
-            type: json_array
+            type: json
             column: raw_parameters
     oneToMany:
         stepExecutions:

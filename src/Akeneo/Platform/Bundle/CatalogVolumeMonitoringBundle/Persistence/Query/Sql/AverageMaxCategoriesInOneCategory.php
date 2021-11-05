@@ -47,7 +47,7 @@ class AverageMaxCategoriesInOneCategory implements AverageMaxQuery
                   GROUP BY c.parent_id
              ) as count_parent;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
 
         $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
 

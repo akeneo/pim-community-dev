@@ -43,7 +43,7 @@ class CountUseableAsGridFilterAttributes implements CountQuery
             FROM pim_catalog_attribute 
             WHERE useable_as_grid_filter = 1;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

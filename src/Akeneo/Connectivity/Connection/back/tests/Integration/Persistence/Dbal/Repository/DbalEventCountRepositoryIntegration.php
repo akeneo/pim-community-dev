@@ -40,7 +40,7 @@ SELECT connection_code, event_datetime, event_count, event_type, updated
 FROM akeneo_connectivity_connection_audit_product
 ORDER BY event_type, event_datetime
 SQL;
-        $eventCounts = $this->getDbalConnection()->fetchAll($sql);
+        $eventCounts = $this->getDbalConnection()->fetchAllAssociative($sql);
 
         Assert::assertCount(2, $eventCounts);
         $this->assertEqualsHourlyEventCount($event1, $eventCounts[0]);
@@ -74,7 +74,7 @@ SELECT connection_code, event_datetime, event_count, event_type, updated
 FROM akeneo_connectivity_connection_audit_product
 ORDER BY event_type, event_datetime
 SQL;
-        $eventCounts = $this->getDbalConnection()->fetchAll($sql);
+        $eventCounts = $this->getDbalConnection()->fetchAllAssociative($sql);
 
         Assert::assertCount(1, $eventCounts);
         $this->assertEqualsHourlyEventCount($event2, $eventCounts[0]);

@@ -36,7 +36,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery($query);
 
         $treesChildren = [];
-        while ($tree = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($tree = $stmt->fetchAssociative()) {
             $treesChildren[$tree['code']] = intval($tree['count_children']);
         }
 

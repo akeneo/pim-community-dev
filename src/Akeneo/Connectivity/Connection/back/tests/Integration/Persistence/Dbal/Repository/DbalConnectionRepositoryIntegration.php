@@ -87,6 +87,6 @@ class DbalConnectionRepositoryIntegration extends TestCase
 SQL;
         $statement = $this->dbalConnection->executeQuery($query, ['code' => $code]);
 
-        return $statement->fetch();
+        return $statement->fetchAssociative();
     }
 }

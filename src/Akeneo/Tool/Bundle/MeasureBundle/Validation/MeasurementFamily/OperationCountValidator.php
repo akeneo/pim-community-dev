@@ -35,7 +35,7 @@ class OperationCountValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'array|\Countable');
         }
 
-        $count = \count($value);
+        $count = is_countable($value) ? \count($value) : 0;
 
         if ($count > $this->max) {
             $this->context->buildViolation($constraint->maxMessage)

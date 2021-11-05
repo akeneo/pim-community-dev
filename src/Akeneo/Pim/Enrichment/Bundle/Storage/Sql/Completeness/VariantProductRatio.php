@@ -119,8 +119,6 @@ SQL;
             $statement->bindValue($parameter['name'], $parameter['value']);
         }
 
-        $statement->execute();
-
-        return new CompleteVariantProducts($statement->fetchAll());
+        return new CompleteVariantProducts($statement->executeQuery()->fetchAllAssociative());
     }
 }

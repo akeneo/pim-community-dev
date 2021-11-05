@@ -181,8 +181,6 @@ class PimRequirements
      */
     protected function getMySQLVariableValue(string $variableName) : ?string
     {
-        $variableValue = null;
-
         $stmt = $this->getConnection()->query(
             sprintf("SELECT @@GLOBAL.%s", $variableName)
         );

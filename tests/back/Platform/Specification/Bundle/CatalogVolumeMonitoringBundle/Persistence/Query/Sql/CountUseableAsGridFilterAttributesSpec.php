@@ -8,6 +8,7 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes;
 use Prophecy\Argument;
@@ -29,10 +30,10 @@ class CountUseableAsGridFilterAttributesSpec extends ObjectBehavior
         $this->shouldImplement(CountQuery::class);
     }
 
-    function it_gets_count_volume($connection, Statement $statement)
+    function it_gets_count_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['count' => '7']);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['count' => '7']);
         $this->fetch()->shouldBeLike(new CountVolume(7, 14, 'count_useable_as_grid_filter_attributes'));
     }
 }

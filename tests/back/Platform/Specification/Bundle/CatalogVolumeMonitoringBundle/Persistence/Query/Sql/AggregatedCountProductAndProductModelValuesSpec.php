@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedCountProductAndProductModelValues;
@@ -29,18 +30,18 @@ class AggregatedCountProductAndProductModelValuesSpec extends ObjectBehavior
         $this->shouldImplement(CountQuery::class);
     }
 
-    function it_fetches_a_count_volume($connection, Statement $statement)
+    function it_fetches_a_count_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['value' => 123]);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['value' => 123]);
 
         $this->fetch()->shouldBeLike(new CountVolume(123, 30, 'count_product_and_product_model_values'));
     }
 
-    function it_fetches_a_count_volume_with_an_empty_value_if_no_aggregated_volume_has_been_found($connection, Statement $statement)
+    function it_fetches_a_count_volume_with_an_empty_value_if_no_aggregated_volume_has_been_found(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(null);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(null);
 
         $this->fetch()->shouldBeLike(new CountVolume(0, 30, 'count_product_and_product_model_values'));
     }

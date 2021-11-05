@@ -258,7 +258,7 @@ SQL;
                 'count' => Types::INTEGER,
                 'type' => Types::STRING,
             ]
-        )->fetchAll(FetchMode::COLUMN);
+        )->fetchFirstColumn();
 
         Assert::assertCount(1, $result);
         Assert::assertEquals('1', $result[0]);

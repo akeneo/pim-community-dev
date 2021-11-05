@@ -46,8 +46,7 @@ FROM pim_aggregated_volume WHERE volume_name = :volumeName;
 SQL;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('volumeName', self::VOLUME_NAME, Types::STRING);
-        $stmt->execute();
-        $sqlResult = $stmt->fetch();
+        $sqlResult = $stmt->executeQuery()->fetchAssociative();
 
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;

@@ -59,7 +59,7 @@ class DbalPurgeAuditProductQueryIntegration extends TestCase
         $query = <<<SQL
 SELECT connection_code FROM akeneo_connectivity_connection_audit_product;
 SQL;
-        $connectionCode = $this->connection->executeQuery($query)->fetchColumn();
+        $connectionCode = $this->connection->executeQuery($query)->fetchOne();
         Assert::assertEquals('now', $connectionCode);
     }
 

@@ -49,7 +49,7 @@ class QueryCountCalculator
             $sqlParameters,
             $parameterTypes
         );
-        $result = $statement->fetchColumn();
+        $result = $statement->fetchOne();
 
         return $result ? (int) $result : 0;
     }

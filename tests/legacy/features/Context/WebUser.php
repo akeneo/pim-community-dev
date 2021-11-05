@@ -1005,6 +1005,16 @@ class WebUser extends PimContext
 
             $this->getCurrentPage()->fillField($field, $value);
 
+            $this->spin(function () use ($field, $value) {
+                try {
+                    $this->getCurrentPage()->assertFieldIsFilled($field, $value);
+                } catch (\BadMethodCallException $e) {
+                    return true;
+                }
+
+                return true;
+            }, sprintf('Cannot assert that the field "%s" was correctly filled', $field));
+
             return true;
         }, sprintf('Cannot fill the field "%s"', $field));
     }

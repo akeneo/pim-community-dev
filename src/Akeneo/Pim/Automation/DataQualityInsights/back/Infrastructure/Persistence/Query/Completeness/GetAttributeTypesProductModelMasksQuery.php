@@ -98,7 +98,7 @@ SQL;
                 'productModelId' => \PDO::PARAM_INT,
                 'attributeTypes' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        )->fetchAllAssociative();
 
         if (empty($rows)) {
             return null;

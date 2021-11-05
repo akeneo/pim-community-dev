@@ -58,7 +58,7 @@ SQL;
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAllAssociative();
 
         if (!is_array($result)) {
             return [];

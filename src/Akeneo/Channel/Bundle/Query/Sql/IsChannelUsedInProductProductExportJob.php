@@ -38,7 +38,7 @@ SQL;
             $query,
             ['jobNames' => $this->productExportJobNames],
             ['jobNames' => Connection::PARAM_STR_ARRAY]
-        )->fetchColumn();
+        )->fetchOne();
 
         return boolval($result);
     }

@@ -48,9 +48,8 @@ abstract class AbstractItemCategoryRepository implements
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $item->getId());
 
-        $stmt->execute();
         $categories = [];
-        foreach ($stmt->fetchAll() as $categoryId) {
+        foreach ($stmt->executeQuery()->fetchAllAssociative() as $categoryId) {
             $categories[] = $this->em->getRepository($config['categoryClass'])->find($categoryId['id']);
         }
 
@@ -79,9 +78,7 @@ abstract class AbstractItemCategoryRepository implements
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $item->getId());
-
-        $stmt->execute();
-        $items = $stmt->fetchAll();
+        $items = $stmt->executeQuery()->fetchAllAssociative();
 
         return $this->buildItemCountByTree($items, $config['categoryClass']);
     }

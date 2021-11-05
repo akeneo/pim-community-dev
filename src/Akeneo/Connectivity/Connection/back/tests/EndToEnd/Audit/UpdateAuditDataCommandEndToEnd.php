@@ -158,7 +158,7 @@ SQL;
             'event_type' => $eventType,
         ];
 
-        return (int) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchColumn();
+        return (int) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchOne();
     }
 
     private function setVersioningAuthorAndDate(

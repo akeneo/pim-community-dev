@@ -553,6 +553,86 @@ class ProductEditForm extends Form
     }
 
     /**
+     * Checks if the specified field is set to the expected value, raises an exception if not
+     *
+     * @throws ExpectationException
+     */
+    public function assertFieldIsFilled(string $label, string $expected)
+    {
+        [$expected, $actual] = $this->parseCurrentFieldValue($label, $expected);
+
+        if ($expected != $actual) {
+            throw new ExpectationException(
+                sprintf(
+                    'Expected product field "%s" to contain "%s", but got "%s".',
+                    $label,
+                    $expected,
+                    $actual
+                ),
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
+     * @return array{0: string, 1: string} [$expected, $actual]
+     */
+    protected function parseCurrentFieldValue(string $label, string $expected): array
+    {
+        $fieldContainer = $this->findFieldContainer($label);
+        $fieldType = $this->getFieldType($fieldContainer);
+        $subContainerSelector = '.AknFieldContainer';
+        $subContainer = $fieldContainer->find('css', $subContainerSelector);
+
+        switch ($fieldType) {
+            case 'textArea':
+                return [$expected, $this->getTextAreaFieldValue($subContainer)];
+            case 'metric':
+                $actual = $this->getMetricFieldValue($subContainer);
+                if (preg_match('| ([\w ]+)$|', $actual) && !preg_match('| ([\w ]+)$|', $expected)) {
+                    $actual = preg_replace('| [\w ]+$|', '', $actual);
+                }
+                return [$expected, $actual];
+            case 'multiSelect':
+                $actual = $this->getMultiSelectFieldValueLabels($subContainer);
+                $expected = $this->listToArray($expected);
+                sort($actual);
+                sort($expected);
+                $actual = implode(', ', $actual);
+                $expected = implode(', ', $expected);
+                return [$expected, $actual];
+            case 'select':
+                $actual = $this->getSelectFieldValue($subContainer);
+                if ($expected == $actual) {
+                    return [$expected, $actual];
+                }
+                $actual = $this->getSelectFieldValueLabel($subContainer);
+                if (preg_match('|^\[(.*)\]$|', $actual, $matches)) {
+                    $actual = $matches[1];
+                }
+                return [$expected, $actual];
+            case 'media':
+                return [$expected, $this->getMediaFieldValue($subContainer)];
+            case 'switch':
+                $actual   = $this->isSwitchFieldChecked($subContainer);
+                $expected = ('on' === $expected);
+                return [$expected, $actual];
+            case 'price':
+                if (preg_match('| ([A-Z]{3})$|', $expected, $matches)) {
+                    $label = sprintf('%s in %s', $label, $matches[1]);
+                    $expected = preg_replace('| [A-Z]{3}$|', '', $expected);
+                }
+                $actual = $this->findField($label)->getValue();
+                return [$expected, $actual];
+            case 'text':
+            case 'date':
+            case 'number':
+            default:
+                return [$expected, $this->findField($label)->getValue()];
+        }
+    }
+
+    /**
      * Returns the current value of a textarea
      * Handles both simple textarea and wysiwyg editor
      *
@@ -611,6 +691,17 @@ class ProductEditForm extends Form
         return '' === $input->getValue() ? [] : explode(',', $input->getValue());
     }
 
+    protected function getMultiSelectFieldValueLabels(NodeElement $subContainer): array
+    {
+        $select2Container = $this->spin(function () use ($subContainer) {
+            return $subContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
+
+        $choices = $select2Container->findAll('css', '.select2-search-choice > div:first-child');
+
+        return array_map(fn (NodeElement $element) => $element->getAttribute('title'), $choices);
+    }
+
     /**
      * Return the current value of a select field
      *
@@ -625,6 +716,18 @@ class ProductEditForm extends Form
         }, 'Cannot find ".select-field" in simple select field');
 
         return $input->getValue();
+    }
+
+    protected function getSelectFieldValueLabel(NodeElement $subContainer): string
+    {
+        $select2Container = $this->spin(function () use ($subContainer) {
+            return $subContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
+
+        /** @var NodeElement $choice */
+        $choice = $select2Container->find('css', '.select2-chosen');
+
+        return $choice->getText();
     }
 
     /**

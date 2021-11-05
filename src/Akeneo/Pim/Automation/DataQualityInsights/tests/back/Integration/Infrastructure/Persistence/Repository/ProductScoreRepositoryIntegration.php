@@ -121,7 +121,7 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $countProductsScores = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pim_data_quality_insights_product_score;
 SQL
-        )->fetchColumn();
+        )->fetchOne();
 
         $this->assertSame($expectedCount, intval($countProductsScores));
     }
@@ -136,7 +136,7 @@ SQL,
                 'productId' => $expectedProductScore->getProductId()->toInt(),
                 'evaluatedAt' => $expectedProductScore->getEvaluatedAt()->format('Y-m-d'),
             ]
-        )->fetch(\PDO::FETCH_ASSOC);
+        )->fetchAssociative();
 
         $this->assertNotEmpty($productScore);
 

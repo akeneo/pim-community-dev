@@ -32,7 +32,7 @@ SQL;
             [
                 'attribute_code' => \PDO::PARAM_STR
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         if (false === $result) {
             return null;

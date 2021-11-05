@@ -45,7 +45,7 @@ SQL;
         $statement = $this->db->executeQuery($query);
 
         $channelsLocales = [];
-        foreach ($statement->fetchAll() as $channelLocale) {
+        foreach ($statement->fetchAllAssociative() as $channelLocale) {
             $channelsLocales[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
         }
 

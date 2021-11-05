@@ -106,7 +106,7 @@ SQL;
             [
                 'name' => $name,
             ]
-        )->fetchColumn();
+        )->fetchOne();
     }
 
     private function updateConnection(ConnectionWithCredentials $connection, string $secret, ?string $url, bool $enabled): void

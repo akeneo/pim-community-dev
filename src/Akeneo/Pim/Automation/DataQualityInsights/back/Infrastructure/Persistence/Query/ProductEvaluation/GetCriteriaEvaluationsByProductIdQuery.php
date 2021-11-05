@@ -59,7 +59,7 @@ SQL;
             $sql,
             ['product_id' => $productId->toInt()],
             ['product_id' => \PDO::PARAM_INT]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         $criteriaEvaluations = new Read\CriterionEvaluationCollection();
         foreach ($rows as $rawCriterionEvaluation) {

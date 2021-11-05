@@ -54,7 +54,7 @@ SQL;
         );
 
         $productsScores = [];
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetchAssociative()) {
             $productId = intval($row['product_id']);
             $productsScores[$productId] = $this->hydrateScores($row['scores']);
         }

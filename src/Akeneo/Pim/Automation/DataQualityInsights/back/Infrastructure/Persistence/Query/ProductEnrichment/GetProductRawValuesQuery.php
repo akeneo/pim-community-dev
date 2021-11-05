@@ -47,7 +47,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetchColumn();
+        $result = $statement->fetchOne();
 
         return false === $result ? [] : json_decode($result, true);
     }

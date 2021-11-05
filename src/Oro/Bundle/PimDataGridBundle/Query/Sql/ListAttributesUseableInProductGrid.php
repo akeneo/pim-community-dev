@@ -57,7 +57,7 @@ SQL;
         $stmt->bindValue('search', "%$searchOnLabel%", Types::STRING);
 
         $stmt->execute();
-        $attributes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $attributes = $stmt->fetchAllAssociative();
 
         $attributes = array_map(function ($attribute) {
             $attribute['order'] = (int) $attribute['order'];

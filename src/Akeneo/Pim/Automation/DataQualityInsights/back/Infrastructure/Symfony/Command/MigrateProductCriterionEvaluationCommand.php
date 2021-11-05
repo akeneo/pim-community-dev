@@ -78,7 +78,7 @@ SQL
         $query = <<<SQL
 SHOW TABLES LIKE 'pim_data_quality_insights_product_%_depr';
 SQL;
-        $tablesToMigrate = $this->dbConnection->executeQuery($query)->fetchAll();
+        $tablesToMigrate = $this->dbConnection->executeQuery($query)->fetchAllAssociative();
 
         return empty($tablesToMigrate);
     }

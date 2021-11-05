@@ -231,8 +231,8 @@ pim_common:
     DOES NOT CONTAIN: '次を含まない:'
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
-    IN: リストにあります
-    "NOT IN": リストにありません
+    IN: リスト内
+    "NOT IN": リスト外
   read_more: 続きを読む
   channel: チャンネル
   locale: ロケール

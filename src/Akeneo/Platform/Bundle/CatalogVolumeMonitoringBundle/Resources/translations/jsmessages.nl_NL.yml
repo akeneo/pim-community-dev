@@ -26,6 +26,5 @@ pim_catalog_volume:
     count_category_trees: Categorie boomstructuren
     count_variant_products: Variant products
     count_product_models: Productmodels
-    warning: Wow! Je hebt een record met deze as bereikt! Aarzel niet om contact met ons op te nemen als je hulp nodig hebt met dit soort volume.
   mean: 'Gemiddelde:'
   max: 'Max:'

@@ -90,7 +90,7 @@ SQL;
             'exclude_codes' => Connection::PARAM_STR_ARRAY,
             'limit' => \PDO::PARAM_INT,
             'offset' => \PDO::PARAM_INT,
-        ])->fetchAll(\PDO::FETCH_ASSOC);
+        ])->fetchAllAssociative();
 
         return array_map(
             static fn (array $attributeOption) => new AttributeOption(
@@ -133,7 +133,7 @@ SQL;
             'locale_code' => \PDO::PARAM_STR,
             'include_codes' => Connection::PARAM_STR_ARRAY,
             'exclude_codes' => Connection::PARAM_STR_ARRAY,
-        ])->fetchColumn();
+        ])->fetchOne();
 
         return (int) $matchesCount;
     }
@@ -143,7 +143,7 @@ SQL;
         $attributeProperties = unserialize($this->connection->executeQuery(
             'SELECT properties from pim_catalog_attribute attribute WHERE attribute.code = :attribute_code',
             ['attribute_code' => $attributeCode],
-        )->fetchColumn());
+        )->fetchOne());
 
         return $attributeProperties['auto_option_sorting'] ?? false;
     }

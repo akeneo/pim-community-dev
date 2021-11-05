@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class CodeMustBeUnique extends Constraint
 {
-    public $message = 'pim_measurements.validation.measurement_family.code.must_be_unique';
+    public string $message = 'pim_measurements.validation.measurement_family.code.must_be_unique';
 
     public function validatedBy()
     {
