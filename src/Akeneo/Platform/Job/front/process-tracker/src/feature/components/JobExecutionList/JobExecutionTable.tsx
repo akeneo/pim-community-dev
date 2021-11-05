@@ -1,16 +1,21 @@
 import React from 'react';
-import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
+import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow} from '../../models/JobExecutionTable';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 
-const JobExecutionTable = ({jobExecutionRows}: {jobExecutionRows: JobExecutionRow[]}) => {
+type JobExecutionTableProps = {
+  sticky?: number;
+  jobExecutionRows: JobExecutionRow[];
+};
+
+const JobExecutionTable = ({sticky, jobExecutionRows}: JobExecutionTableProps) => {
   const translate = useTranslate();
   const dateFormatter = useDateFormatter();
 
   return (
     <Table>
-      <Table.Header sticky={25 < jobExecutionRows.length ? 44 : 0}>
+      <Table.Header sticky={sticky}>
         <Table.HeaderCell>
           {translate('akeneo_job_process_tracker.job_execution_list.table.headers.job_name')}
         </Table.HeaderCell>

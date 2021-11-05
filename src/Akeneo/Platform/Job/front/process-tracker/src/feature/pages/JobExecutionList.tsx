@@ -4,12 +4,14 @@ import {useTranslate, useRoute, PimView, PageHeader, PageContent} from '@akeneo-
 import {useJobExecutionTable} from '../hooks/useJobExecutionTable';
 import {JobExecutionTable} from '../components/JobExecutionList/JobExecutionTable';
 
+const ITEMS_PER_PAGE = 25;
+
 const JobExecutionList = () => {
   const translate = useTranslate();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const jobExecutionTable = useJobExecutionTable(currentPage);
+  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE);
   const activityHref = useRoute('pim_dashboard_index');
-  const jobExecutionMatches = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
+  const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
   return (
     <>
@@ -29,8 +31,8 @@ const JobExecutionList = () => {
         <PageHeader.Title>
           {translate(
             'pim_enrich.entity.job_execution.page_title.index',
-            {count: jobExecutionMatches.toString()},
-            jobExecutionMatches
+            {count: matchesCount.toString()},
+            matchesCount
           )}
         </PageHeader.Title>
       </PageHeader>
@@ -38,12 +40,18 @@ const JobExecutionList = () => {
         {jobExecutionTable && jobExecutionTable.total_count > 0 && (
           <Pagination
             sticky={0}
+            itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
             totalItems={jobExecutionTable.matches_count}
             followPage={setCurrentPage}
           />
         )}
-        <JobExecutionTable jobExecutionRows={jobExecutionTable?.rows ?? []} />
+        {jobExecutionTable && (
+          <JobExecutionTable
+            sticky={ITEMS_PER_PAGE < jobExecutionTable.matches_count ? 44 : 0}
+            jobExecutionRows={jobExecutionTable.rows}
+          />
+        )}
       </PageContent>
     </>
   );

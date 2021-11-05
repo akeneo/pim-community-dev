@@ -28,6 +28,7 @@ test('it renders a Job execution Table', () => {
   expect(screen.getByText('pim_import_export.widget.last_operations.job_type.export')).toBeInTheDocument();
   expect(screen.getByText('admin')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.job_status.STARTED 1/2')).toBeInTheDocument();
+  expect(screen.getByText('4')).toBeInTheDocument();
 
   // One header and one row
   expect(screen.getAllByRole('row')).toHaveLength(2);

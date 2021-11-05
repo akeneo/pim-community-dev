@@ -87,7 +87,8 @@ SQL;
                 $errorCount += count(unserialize($error));
             }
 
-            $startTime = Type::getType(Types::DATETIME_MUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
+            $startTime = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
+
             return new JobExecutionRow(
                 (int) $rawJobExecution['id'],
                 $rawJobExecution['label'],
