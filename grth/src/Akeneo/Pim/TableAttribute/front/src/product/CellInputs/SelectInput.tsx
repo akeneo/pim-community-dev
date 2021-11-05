@@ -137,7 +137,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
             ghost
             level='secondary'
           >
-            {translate('pim_table_attribute.form.product.edit_options')}
+            {translate('pim_table_attribute.form.attribute.manage_options')}
           </Button>
         </EditOptionsContainer>
       </>

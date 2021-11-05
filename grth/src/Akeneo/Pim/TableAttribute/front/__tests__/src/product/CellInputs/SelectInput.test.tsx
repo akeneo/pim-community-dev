@@ -254,8 +254,8 @@ describe('SelectInput', () => {
 
     expect(await screen.findByText('B')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('pim_common.open'));
-    expect(await screen.findByText('pim_table_attribute.form.product.edit_options')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_table_attribute.form.product.edit_options'));
+    expect(await screen.findByText('pim_table_attribute.form.attribute.manage_options')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
     await act(async () => {
       fireEvent.click(await screen.findByText('Fake confirm'));
     });

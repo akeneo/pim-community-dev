@@ -167,8 +167,8 @@ describe('AddRowsButton', () => {
       expect(await screen.findByText('Sugar')).toBeInTheDocument();
     });
 
-    expect(await screen.findByText('pim_table_attribute.form.product.edit_options')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_table_attribute.form.product.edit_options'));
+    expect(await screen.findByText('pim_table_attribute.form.attribute.manage_options')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
     fireEvent.click(screen.getByText('Fake confirm'));
     expect(hasCalledPostAttribute).toBeTruthy();
   });

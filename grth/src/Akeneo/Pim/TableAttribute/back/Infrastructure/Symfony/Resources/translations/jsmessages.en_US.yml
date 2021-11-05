@@ -174,7 +174,6 @@ pim_table_attribute:
                 move_first: Move to first position
                 move_last: Move to last position
             order: Order
-            edit_options: Edit options
             save_options_error: An error occured while saving the options
             save_options_success: Options successfully updated
     properties:
