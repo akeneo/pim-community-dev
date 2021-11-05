@@ -9,7 +9,7 @@ namespace Akeneo\Platform\Job\Domain\Query;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-interface CountJobExecutionQueryInterface
+interface CountJobExecutionInterface
 {
     public function all(): int;
 }

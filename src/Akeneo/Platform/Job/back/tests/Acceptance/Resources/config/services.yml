@@ -1,12 +1,6 @@
 services:
-  Akeneo\Platform\Job\Domain\Query\CountJobExecutionQueryInterface:
-    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecutionQuery
-    arguments:
-      - '@Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobExecutionRepository'
-
-  Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobExecutionRepository: ~
+  Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecution
 
   Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution
-    arguments:
-      - '@Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobExecutionRepository'

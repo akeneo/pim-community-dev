@@ -10,32 +10,20 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 
 class InMemorySearchJobExecution implements SearchJobExecutionInterface
 {
-    private InMemoryJobExecutionRepository $jobExecutionRepository;
+    private array $jobExecutionRows = [];
 
-    public function __construct(InMemoryJobExecutionRepository $jobExecutionRepository)
+    public function mockSearchResult(array $jobExecutionRows): void
     {
-        $this->jobExecutionRepository = $jobExecutionRepository;
+        $this->jobExecutionRows = $jobExecutionRows;
     }
 
     public function search(SearchJobExecutionQuery $query): array
     {
-        $jobExecutions = $this->jobExecutionRepository->all();
-        $paginatedJobExecution = array_slice($jobExecutions, $query->page * $query->size, $query->size);
-
-        return array_map(static fn (array $normalizedJobExecution) => new JobExecutionRow(
-            $normalizedJobExecution['jobName'],
-            $normalizedJobExecution['type'],
-            $normalizedJobExecution['startAt'] ?? null,
-            $normalizedJobExecution['username'] ?? null,
-            $normalizedJobExecution['status'],
-            $normalizedJobExecution['warningCount'],
-        ), $paginatedJobExecution);
+        return $this->jobExecutionRows;
     }
 
     public function count(SearchJobExecutionQuery $query): int
     {
-        $jobExecutions = $this->jobExecutionRepository->all();
-
-        return count($jobExecutions);
+        return count($this->jobExecutionRows);
     }
 }

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\SearchJobExecution;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecution;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class SearchJobExecutionHandlerTest extends KernelTestCase
@@ -19,13 +22,60 @@ class SearchJobExecutionHandlerTest extends KernelTestCase
     /**
      * @test
      */
-    public function it_returns_the_search_result()
+    public function it_returns_an_empty_job_execution_table_when_no_result()
     {
         $query = new SearchJobExecutionQuery();
         $result = $this->getHandler()->search($query);
         $expectedResult = new JobExecutionTable([], 0, 0);
 
         $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_job_execution_table()
+    {
+        $jobExecutionRows = [
+            new JobExecutionRow(
+                'first_job',
+                'export',
+                '2020-01-02T00:00:00+00:00',
+                'admin',
+                'COMPLETED',
+                3
+            ),
+            new JobExecutionRow(
+                'second_job',
+                'export',
+                '2020-01-03T00:00:00+00:00',
+                'admin',
+                'COMPLETED',
+                4
+            ),
+        ];
+
+        $this->getCountJobExecution()->mockResult(3);
+        $this->getSearchJobExecution()->mockSearchResult($jobExecutionRows);
+
+        $query = new SearchJobExecutionQuery();
+        // TODO RAC-937 Add filter to have a more revelant test
+        $query->page = 1;
+
+        $result = $this->getHandler()->search($query);
+        $expectedResult = new JobExecutionTable($jobExecutionRows, 2, 3);
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    private function getCountJobExecution(): InMemoryCountJobExecution
+    {
+        return static::$container->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
+    }
+
+    private function getSearchJobExecution(): InMemorySearchJobExecution
+    {
+        return static::$container->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
     }
 
     private function getHandler(): SearchJobExecutionHandler
