@@ -183,7 +183,7 @@ SQL;
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
         $statement->closeCursor();
 
         foreach ($results as $result) {

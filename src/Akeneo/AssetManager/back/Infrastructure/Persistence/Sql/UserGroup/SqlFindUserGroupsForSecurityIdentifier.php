@@ -45,7 +45,7 @@ SQL;
             ['security_identifier' => $securityIdentifier->stringValue()]
         );
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAllAssociative();
     }
 
     private function hydrateUserGroupIdentifiers($results): array

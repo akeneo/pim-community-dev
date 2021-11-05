@@ -93,7 +93,7 @@ SQL;
             ]
         );
 
-        $attributeGroups = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $attributeGroups = $stmt->fetchAllAssociative();
 
         foreach ($attributeGroups as $attributeGroup) {
             $columnGroups[] = [

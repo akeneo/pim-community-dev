@@ -125,7 +125,7 @@ class PurgeOrphanAssetsCommand extends Command
                     'formerIdentifier' => \PDO::PARAM_STR,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (empty($rows)) {
                 return;

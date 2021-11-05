@@ -76,7 +76,7 @@ SQL;
             ]
         );
 
-        return array_reduce($statement->fetchAll(PDO::FETCH_ASSOC), function ($labelsIndexedByAsset, $current) {
+        return array_reduce($statement->fetchAllAssociative(), function ($labelsIndexedByAsset, $current) {
             $labelsIndexedByAsset[$current['identifier']] = [
                 'labels' => json_decode($current['labels'], true),
                 'code' => $current['code'],

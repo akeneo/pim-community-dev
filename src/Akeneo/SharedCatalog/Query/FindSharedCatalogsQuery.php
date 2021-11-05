@@ -49,7 +49,7 @@ SQL;
             ]
         );
 
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
         $hydratedResults = $this->hydrate($results);
 
         return $hydratedResults;

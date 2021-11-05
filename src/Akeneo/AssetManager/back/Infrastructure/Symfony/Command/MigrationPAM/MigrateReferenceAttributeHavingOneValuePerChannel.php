@@ -283,7 +283,7 @@ SQL;
 
         return array_map(
             fn ($row) => $row['identifier'],
-            $this->getReadConnection()->fetchAll(
+            $this->getReadConnection()->fetchAllAssociative(
                 $sqlReferenceAttributes,
                 [
                     'reference_code' => $referenceCode,

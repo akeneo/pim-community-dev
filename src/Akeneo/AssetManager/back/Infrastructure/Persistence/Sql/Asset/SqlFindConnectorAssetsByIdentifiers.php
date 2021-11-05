@@ -72,7 +72,7 @@ SQL;
             ['identifiers' => $identifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         return empty($results) ? [] : $this->hydrateAssets($results, $assetQuery);
     }

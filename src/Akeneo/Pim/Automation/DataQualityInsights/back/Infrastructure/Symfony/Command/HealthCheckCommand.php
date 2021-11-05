@@ -245,7 +245,7 @@ SQL;
 
         $stmt = $this->db->executeQuery($query);
 
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
     }
 
     private function outputCriteriaInfo(SymfonyStyle $io)
@@ -264,7 +264,7 @@ SELECT COUNT(DISTINCT product_id)
 FROM pim_data_quality_insights_product_criteria_evaluation
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Number of product models with criteria evaluated');
         $stmt = $this->db->executeQuery(
@@ -273,7 +273,7 @@ SELECT COUNT(DISTINCT product_id)
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Status of product criteria evaluations - total');
         $stmt = $this->db->executeQuery(
@@ -284,7 +284,7 @@ GROUP BY status
 ORDER BY status
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Status of product model criteria evaluations - total');
         $stmt = $this->db->executeQuery(
@@ -295,7 +295,7 @@ GROUP BY status
 ORDER BY status
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Product criteria on error with last error date');
         $stmt = $this->db->executeQuery(
@@ -307,7 +307,7 @@ GROUP BY status, criterion_code
 ORDER BY status
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Product models criteria on error with last error date');
         $stmt = $this->db->executeQuery(
@@ -319,7 +319,7 @@ GROUP BY status, criterion_code
 ORDER BY status
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
     }
 
     private function outputDictionaryInfo(SymfonyStyle $io)
@@ -372,7 +372,7 @@ GROUP BY locale_code
 SQL
         );
 
-        $ignored_words = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $ignored_words = $stmt->fetchAllAssociative();
 
         $this->outputAsTable($io, $ignored_words);
     }
@@ -404,7 +404,7 @@ SQL;
                 ]
             );
 
-            $data = $stmt->fetchAll();
+            $data = $stmt->fetchAllAssociative();
 
             if (empty($data)) {
                 $io->warning('No data found.');
@@ -435,7 +435,7 @@ WHERE product_id = :product_id;
 SQL;
             $stmt = $this->db->executeQuery($query, ['product_id' => $productId], ['product_id' => \PDO::PARAM_INT]);
 
-            $data = $stmt->fetchAll();
+            $data = $stmt->fetchAllAssociative();
 
             if (empty($data)) {
                 $io->warning('No data found.');
@@ -465,7 +465,7 @@ SQL;
 
         $stmt = $this->db->executeQuery($query);
 
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
     }
 
     private function outputEvaluationJobInfo(SymfonyStyle $io)
@@ -487,7 +487,7 @@ SQL;
 
         $stmt = $this->db->executeQuery($query);
 
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->section('Attributes and options evaluation jobs');
 
@@ -504,7 +504,7 @@ SQL;
 
         $stmt = $this->db->executeQuery($query);
 
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
     }
 
     private function estimatedTimeOfArrivalForRemainingProducts(): ?\DateTimeImmutable
@@ -568,7 +568,7 @@ SQL
 SELECT COUNT(*) AS total, SUM(to_improve) FROM pimee_dqi_attribute_spellcheck
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Attributes quality');
         $stmt = $this->db->executeQuery(
@@ -577,7 +577,7 @@ SELECT quality, COUNT(*) AS number_of_attributes
 FROM pimee_dqi_attribute_quality GROUP BY quality;
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
 
         $io->comment('Attribute options spellcheck');
         $stmt = $this->db->executeQuery(
@@ -585,7 +585,7 @@ SQL
 SELECT COUNT(*) AS total, SUM(to_improve)  FROM pimee_dqi_attribute_option_spellcheck
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
+        $this->outputAsTable($io, $stmt->fetchAllAssociative());
     }
 
     private function outputAsTable(SymfonyStyle $io, array $data)

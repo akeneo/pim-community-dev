@@ -158,7 +158,7 @@ final class DemoHelperCommand extends Command
 
         $statement = $this->db->executeQuery('select type, code, scores from pim_data_quality_insights_dashboard_scores_projection');
 
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         $idealCatalogScores = [
             0 => [ 'rank_1' => 80, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 5 ],
@@ -315,10 +315,10 @@ final class DemoHelperCommand extends Command
         $progressBar->start();
 
         for ($i = 0; $i<$nbSteps; $i++) {
-            $stmt = $this->db->query('select id from pim_catalog_product LIMIT ' . $i*100 . ',100');
+            $result = $this->db->executeQuery('select id from pim_catalog_product LIMIT ' . $i*100 . ',100');
             $ids = array_map(function ($id) {
                 return intval($id);
-            }, $stmt->fetchAll(FetchMode::COLUMN, 0));
+            }, $result->fetchFirstColumn());
 
             $this->evaluateProducts($ids);
 
@@ -331,7 +331,7 @@ final class DemoHelperCommand extends Command
     private function fullSynchronousProductModelsCriteriaEvaluation(SymfonyStyle $io): void
     {
         $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product_model');
-        $nbProducts = $query->fetch();
+        $nbProducts = $query->fetchAssociative();
 
         $nbProducts = intval($nbProducts['nb']);
         if ($nbProducts===0) {
@@ -345,10 +345,10 @@ final class DemoHelperCommand extends Command
         $progressBar->start();
 
         for ($i = 0; $i<$nbSteps; $i++) {
-            $stmt = $this->db->query('select id from pim_catalog_product_model LIMIT ' . $i*100 . ',100');
+            $stmt = $this->db->executeQuery('select id from pim_catalog_product_model LIMIT ' . $i*100 . ',100');
             $ids = array_map(function ($id) {
                 return intval($id);
-            }, $stmt->fetchAll(FetchMode::COLUMN, 0));
+            }, $stmt->fetchFirstColumn());
 
             $this->evaluateProductModels($ids);
 
@@ -360,11 +360,13 @@ final class DemoHelperCommand extends Command
 
     private function partialSynchronousCriteriaEvaluation(SymfonyStyle $io): void
     {
-        $stmt = $this->db->query('select max(id) as id from pim_catalog_product where product_model_id is null group by family_id');
+        $stmt = $this->db->executeQuery(
+            'select max(id) as id from pim_catalog_product where product_model_id is null group by family_id'
+        );
 
         $ids = array_map(function ($id) {
             return intval($id);
-        }, $stmt->fetchAll(FetchMode::COLUMN, 0));
+        }, $stmt->fetchFirstColumn());
 
         if (count($ids) === 0) {
             $io->error('No products to evaluate');

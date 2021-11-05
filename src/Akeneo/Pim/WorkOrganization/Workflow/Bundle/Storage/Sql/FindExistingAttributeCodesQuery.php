@@ -48,6 +48,6 @@ SQL;
             ['attribute_codes' => Connection::PARAM_STR_ARRAY]
         );
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        return $statement->fetchFirstColumn();
     }
 }

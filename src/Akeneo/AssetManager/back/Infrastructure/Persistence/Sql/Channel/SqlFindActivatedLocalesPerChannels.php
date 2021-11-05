@@ -44,7 +44,7 @@ WHERE l.is_activated = 1
 GROUP BY c.code
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         $matrix = [];
         foreach ($results as $result) {

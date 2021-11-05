@@ -65,7 +65,7 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $db->query(Argument::any())->willReturn($productIdsResultStatement);
 
         $ids = range(1, 100);
-        $productIdsResultStatement->fetchAll(FetchMode::COLUMN, 0)->willReturn($ids);
+        $productIdsResultStatement->fetchFirstColumn(FetchMode::COLUMN, 0)->willReturn($ids);
 
         $createProductsCriteriaEvaluations->createAll(Argument::type('array'))->shouldBeCalled();
 
