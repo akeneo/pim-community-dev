@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cd4e74f63c00050deedbc2037528bf4",
+    "content-hash": "7348c194bb09d87285caf6e12452af35",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -2758,22 +2758,21 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.0.3",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "b4302ede2e247a6cc884b302a5f7146e08bd1b18"
+                "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
+                "reference": "8c02cee09e3dd43799ec3b84b619b19982c47f43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/b4302ede2e247a6cc884b302a5f7146e08bd1b18",
-                "reference": "b4302ede2e247a6cc884b302a5f7146e08bd1b18",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/8c02cee09e3dd43799ec3b84b619b19982c47f43",
+                "reference": "8c02cee09e3dd43799ec3b84b619b19982c47f43",
                 "shasum": ""
             },
             "require": {
                 "behat/transliterator": "~1.2",
-                "doctrine/annotations": "^1.2",
-                "doctrine/cache": "^1.0",
+                "doctrine/annotations": "^1.13",
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.13 || ^3.0",
                 "doctrine/event-manager": "^1.0",
@@ -2782,6 +2781,7 @@
             "conflict": {
                 "doctrine/mongodb": "<1.3",
                 "doctrine/mongodb-odm": "<2.0",
+                "doctrine/orm": ">=2.10",
                 "sebastian/comparator": "<2.0"
             },
             "provide": {
@@ -2789,15 +2789,20 @@
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
+                "doctrine/cache": "^1.11 || ^2.0",
+                "doctrine/dbal": "^2.13",
+                "doctrine/doctrine-bundle": "^2.3",
                 "doctrine/mongodb-odm": "^2.0",
-                "doctrine/orm": "^2.6.3",
-                "friendsofphp/php-cs-fixer": "^2.16",
+                "doctrine/orm": "^2.9.6",
+                "friendsofphp/php-cs-fixer": "^3.0",
                 "phpunit/phpunit": "^8.5",
+                "symfony/cache": "^4.4 || ^5.0",
                 "symfony/yaml": "^4.1"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
-                "doctrine/orm": "to use the extensions with the ORM"
+                "doctrine/orm": "to use the extensions with the ORM",
+                "symfony/cache": "to cache parsed annotations"
             },
             "type": "library",
             "extra": {
@@ -2847,11 +2852,11 @@
             ],
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
-                "issues": "https://github.com/Atlantic18/DoctrineExtensions/issues",
-                "source": "https://github.com/Atlantic18/DoctrineExtensions/tree/v3.0.3",
+                "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.2.0",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
-            "time": "2021-01-23T23:40:14+00:00"
+            "time": "2021-10-05T15:25:14+00:00"
         },
         {
             "name": "google/auth",
