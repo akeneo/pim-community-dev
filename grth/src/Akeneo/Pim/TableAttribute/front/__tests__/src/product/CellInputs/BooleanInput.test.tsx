@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {fireEvent, screen} from '@testing-library/react';
-import {getComplexTableConfiguration} from '../../../factories';
+import {getComplexTableAttribute, getComplexTableConfiguration} from '../../../factories';
 import BooleanInput from '../../../../src/product/CellInputs/BooleanInput';
 
 describe('Boolean', () => {
@@ -14,6 +14,8 @@ describe('Boolean', () => {
         inError={false}
         row={{'unique id': 'uniqueIdB', is_allergenic: true}}
         onChange={jest.fn()}
+        attribute={getComplexTableAttribute()}
+        setAttribute={jest.fn()}
       />
     );
 
@@ -30,6 +32,8 @@ describe('Boolean', () => {
         inError={false}
         row={{'unique id': 'uniqueIdB', is_allergenic: true}}
         onChange={handleChange}
+        attribute={getComplexTableAttribute()}
+        setAttribute={jest.fn()}
       />
     );
 

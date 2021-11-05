@@ -3,9 +3,8 @@ import 'jest-fetch-mock';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import SelectInput from '../../../../src/product/CellInputs/SelectInput';
-import {ColumnDefinition, SelectOption} from '../../../../src/models';
+import {ColumnDefinition, SelectColumnDefinition, SelectOption} from '../../../../src/models';
 import {getComplexTableAttribute} from '../../../factories';
-import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
 import {nutritionScoreSelectOptions} from '../../../../src/fetchers/__mocks__/SelectOptionsFetcher';
 import {SelectOptionRepository} from '../../../../src/repositories';
 
@@ -34,7 +33,16 @@ const nutritionScoreColumn: ColumnDefinition = {
   code: 'nutrition_score',
   validations: {},
   data_type: 'select',
-  labels: {},
+  labels: {en_US: 'Nutrition score'},
+};
+
+const getComplexAttributeWithOptions = (options = nutritionScoreSelectOptions) => {
+  const tableAttribute = getComplexTableAttribute();
+  tableAttribute.table_configuration[4] = {
+    ...(tableAttribute.table_configuration[4] as SelectColumnDefinition),
+    options,
+  };
+  return tableAttribute;
 };
 
 describe('SelectInput', () => {
@@ -47,15 +55,15 @@ describe('SelectInput', () => {
     fetchGetSelectOptions(nutritionScoreSelectOptions);
 
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={jest.fn()}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
 
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -66,15 +74,15 @@ describe('SelectInput', () => {
 
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={handleChange}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={handleChange}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
 
@@ -87,15 +95,15 @@ describe('SelectInput', () => {
 
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', no_options: 'B'}}
-          onChange={handleChange}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={{...nutritionScoreColumn, code: 'no_options'}}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', no_options: 'B'}}
+        onChange={handleChange}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
 
     expect(screen.queryByText('B')).not.toBeInTheDocument();
@@ -105,15 +113,15 @@ describe('SelectInput', () => {
     fetchGetSelectOptions(nutritionScoreSelectOptions);
 
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={jest.fn()}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
 
@@ -132,19 +140,18 @@ describe('SelectInput', () => {
 
   it('should updates the value', async () => {
     fetchGetSelectOptions(nutritionScoreSelectOptions);
-
     const handleChange = jest.fn();
 
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={handleChange}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={handleChange}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
 
@@ -161,15 +168,15 @@ describe('SelectInput', () => {
     fetchGetSelectOptions(nutritionScoreSelectOptions);
 
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={jest.fn()}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={jest.fn()}
+      />
     );
     expect(await screen.findByText('B')).toBeInTheDocument();
 
@@ -190,15 +197,15 @@ describe('SelectInput', () => {
     fetchGetSelectOptions([]);
 
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB'}}
-          onChange={jest.fn()}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB'}}
+        onChange={jest.fn()}
+        attribute={getComplexAttributeWithOptions([])}
+        setAttribute={jest.fn()}
+      />
     );
     expect(await screen.findByTitle('pim_common.open')).toBeInTheDocument();
 
@@ -229,16 +236,18 @@ describe('SelectInput', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
+    const setAttribute = jest.fn();
+
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectInput
-          columnDefinition={nutritionScoreColumn}
-          highlighted={false}
-          inError={false}
-          row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
-          onChange={jest.fn()}
-        />
-      </TestAttributeContextProvider>
+      <SelectInput
+        columnDefinition={nutritionScoreColumn}
+        highlighted={false}
+        inError={false}
+        row={{'unique id': 'uniqueIdB', nutrition_score: 'B'}}
+        onChange={jest.fn()}
+        attribute={getComplexAttributeWithOptions()}
+        setAttribute={setAttribute}
+      />
     );
 
     expect(await screen.findByText('B')).toBeInTheDocument();
@@ -247,6 +256,12 @@ describe('SelectInput', () => {
     fireEvent.click(screen.getByText('pim_table_attribute.form.product.edit_options'));
     fireEvent.click(screen.getByText('Fake confirm'));
     expect(hasCalledPostAttribute).toBeTruthy();
-    expect(await screen.findByText('[B]')).toBeInTheDocument();
+    expect(setAttribute).toBeCalledWith(
+      expect.objectContaining({
+        table_configuration: expect.arrayContaining([
+          {...nutritionScoreColumn, options: [{code: 'fake_code', labels: {en_US: 'fake label'}}]},
+        ]),
+      })
+    );
   });
 });

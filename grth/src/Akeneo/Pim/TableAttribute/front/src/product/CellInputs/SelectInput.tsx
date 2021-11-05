@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Button, Dropdown, Link, TableInput, useBooleanState} from 'akeneo-design-system';
-import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode} from '../../models';
+import {ColumnCode, SelectColumnDefinition, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
 import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
-import {useAttributeContext} from '../../contexts';
 import {ManageOptionsModal} from '../../attribute';
 import {SelectOptionRepository} from '../../repositories';
 
@@ -18,6 +17,8 @@ type TableInputSelectProps = {
   inError?: boolean;
   highlighted?: boolean;
   columnCode: ColumnCode;
+  attribute: TableAttribute;
+  setAttribute: (tableAttribute: TableAttribute) => void;
 };
 
 const FakeInput = styled.div`
@@ -36,13 +37,14 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   inError = false,
   highlighted = false,
   columnCode,
+  attribute,
+  setAttribute,
   ...rest
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const security = useSecurity();
   const router = useRouter();
-  const {attribute, setAttribute} = useAttributeContext();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
@@ -197,7 +199,16 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   );
 };
 
-const renderer: CellInput = ({row, columnDefinition, onChange, inError, highlighted, ...rest}) => {
+const renderer: CellInput = ({
+  row,
+  columnDefinition,
+  onChange,
+  inError,
+  highlighted,
+  attribute,
+  setAttribute,
+  ...rest
+}) => {
   const cell = row[columnDefinition.code] as SelectOptionCode | undefined;
 
   return (
@@ -207,6 +218,8 @@ const renderer: CellInput = ({row, columnDefinition, onChange, inError, highligh
       onChange={onChange}
       inError={inError}
       columnCode={columnDefinition.code}
+      attribute={attribute}
+      setAttribute={setAttribute}
       {...rest}
     />
   );

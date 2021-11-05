@@ -1,18 +1,15 @@
 import React, {useContext} from 'react';
-import {
-  TableAttribute,
-  TableValue,
-} from '@akeneo-pim-ge/table_attribute/src/models';
+import {TableAttribute, TableValue,} from '@akeneo-pim-ge/table_attribute/src/models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
   AddRowsButton,
-  AttributeContext,
   TableInputValue,
   TableValueWithId,
   useToggleRow,
   useUniqueIds,
 } from '@akeneo-pim-ge/table_attribute/src/product';
+import {AttributeContext} from '@akeneo-pim-ge/table_attribute/src/contexts';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {ConfigContext} from '../../../../../context/ConfigContext';
 import {InputValueProps} from './AttributeValue';
@@ -64,7 +61,6 @@ const TableValue: React.FC<InputValueProps> = ({
             attributeState.code
           )}
           <AddRowsButton
-            attribute={attributeState}
             columnCode={firstColumnCode}
             checkedOptionCodes={tableValue.map(
               row => (row[firstColumnCode] ?? '') as string

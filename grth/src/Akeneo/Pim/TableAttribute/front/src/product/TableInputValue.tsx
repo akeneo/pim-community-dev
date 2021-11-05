@@ -226,7 +226,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const tableInputCell = (row: TableRowWithId, columnDefinition: ColumnDefinition) => {
     const CellInput = cellInputsMapping[columnDefinition.data_type]?.default;
-    if (CellInput) {
+    if (attribute && CellInput) {
       const matchSearch = matchers[columnDefinition.data_type];
       const columnCode = columnDefinition.code;
       const cell = row[columnCode];
@@ -239,6 +239,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           data-testid={`input-${row[UNIQUE_ID_KEY]}-${columnCode}`}
           inError={isInErrorFromBackend(row[UNIQUE_ID_KEY], columnCode)}
           highlighted={matchSearch(cell, searchText, columnCode)}
+          attribute={attribute}
+          setAttribute={setAttribute}
         />
       );
     }
