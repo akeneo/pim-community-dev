@@ -152,7 +152,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
         {BottomHelper}
         <EditOptionsContainer>
           <Button onClick={openManageOptions} ghost level='secondary'>
-            Edit options
+            {translate('pim_table_attribute.form.product.edit_options')}
           </Button>
           {isManageOptionsOpen && (
             <ManageOptionsModal

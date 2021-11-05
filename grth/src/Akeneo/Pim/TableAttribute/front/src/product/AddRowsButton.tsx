@@ -193,7 +193,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
           {hasEditPermission && (
             <EditOptionsContainer>
               <Button onClick={openManageOptions} ghost level='secondary'>
-                Edit options TODO TRANSLATE
+                {translate('pim_table_attribute.form.product.edit_options')}
               </Button>
               {isManageOptionsOpen && (
                 <ManageOptionsModal
