@@ -7,8 +7,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
-use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -35,15 +34,16 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
     }
 
     public function it_initialize_nothing_if_their_is_no_product(
-        $featureFlag,
-        $db,
+        FeatureFlag $featureFlag,
+        Connection $db,
         $createProductsCriteriaEvaluations,
-        ResultStatement $resultStatement
+        Result $resultStatement
     ) {
         $featureFlag->isEnabled()->willReturn(true);
 
-        $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')->willReturn($resultStatement);
-        $resultStatement->fetch()->willReturn(['nb' => 0]);
+        $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')
+            ->willReturn($resultStatement);
+        $resultStatement->fetchAssociative()->willReturn(['nb' => 0]);
 
         $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -51,21 +51,22 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
     }
 
     public function it_initialize_products_evaluation(
-        $featureFlag,
-        $db,
-        $createProductsCriteriaEvaluations,
-        ResultStatement $countResultStatement,
-        ResultStatement $productIdsResultStatement
+        FeatureFlag $featureFlag,
+        Connection $db,
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
+        Result $countResult,
+        Result $productIdsResult
     ) {
         $featureFlag->isEnabled()->willReturn(true);
 
-        $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')->willReturn($countResultStatement);
-        $countResultStatement->fetch()->willReturn(['nb' => 99]);
+        $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')
+            ->willReturn($countResult);
+        $countResult->fetchAssociative()->willReturn(['nb' => 99]);
 
-        $db->query(Argument::any())->willReturn($productIdsResultStatement);
+        $db->executeQuery(Argument::any())->willReturn($productIdsResult);
 
         $ids = range(1, 100);
-        $productIdsResultStatement->fetchFirstColumn(FetchMode::COLUMN, 0)->willReturn($ids);
+        $productIdsResult->fetchFirstColumn()->willReturn($ids);
 
         $createProductsCriteriaEvaluations->createAll(Argument::type('array'))->shouldBeCalled();
 

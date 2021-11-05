@@ -14,7 +14,8 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -77,15 +78,15 @@ class SqlRepositorySpec extends ObjectBehavior
         $this->save($config);
     }
 
-    function it_finds_an_existing_configuration($connection, Statement $statement)
+    function it_finds_an_existing_configuration($connection, Statement $statement, Result $result)
     {
         $connection
             ->prepare(Argument::type('string'))
             ->willReturn($statement)
         ;
-        $statement->execute(['code' => 'authentication_sso'])->shouldBeCalled();
-        $statement
-            ->fetch(\PDO::FETCH_ASSOC)
+        $statement->executeQuery(['code' => 'authentication_sso'])->shouldBeCalled()->willReturn($result);
+        $result
+            ->fetchAssociative()
             ->willReturn(
                 [
                     'code'   => 'authentication_sso',
@@ -116,15 +117,15 @@ class SqlRepositorySpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_no_configuration_is_found($connection, Statement $statement)
+    function it_throws_an_exception_when_no_configuration_is_found(Connection $connection, Statement $statement, Result $result)
     {
         $connection
             ->prepare(Argument::type('string'))
             ->willReturn($statement)
         ;
-        $statement->execute(['code' => 'authentication_sso'])->shouldBeCalled();
-        $statement
-            ->fetch(\PDO::FETCH_ASSOC)
+        $statement->executeQuery(['code' => 'authentication_sso'])->shouldBeCalled()->willReturn($result);
+        $result
+            ->fetchAssociative()
             ->willReturn(false)
         ;
 
