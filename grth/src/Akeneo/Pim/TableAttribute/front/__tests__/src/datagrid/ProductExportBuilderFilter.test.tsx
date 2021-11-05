@@ -4,7 +4,6 @@ import {defaultFilterValuesMapping, getComplexTableAttribute} from '../../factor
 import {act, screen} from '@testing-library/react';
 import {ProductExportBuilderFilter} from '../../../src/datagrid/ProductExportBuilderFilter';
 import {fireEvent} from '@testing-library/dom';
-import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -43,13 +42,12 @@ describe('ProductExportBuilderFilter', () => {
   it('should call handleChange', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <ProductExportBuilderFilter
-          initialDataFilter={{}}
-          onChange={handleChange}
-          filterValuesMapping={defaultFilterValuesMapping}
-        />
-      </TestAttributeContextProvider>
+      <ProductExportBuilderFilter
+        attribute={getComplexTableAttribute()}
+        initialDataFilter={{}}
+        onChange={handleChange}
+        filterValuesMapping={defaultFilterValuesMapping}
+      />
     );
 
     expect(await screen.findByPlaceholderText('pim_table_attribute.datagrid.select_your_operator')).toBeInTheDocument();

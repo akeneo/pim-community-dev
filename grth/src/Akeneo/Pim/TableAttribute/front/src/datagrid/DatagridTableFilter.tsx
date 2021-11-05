@@ -130,7 +130,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
                 </FilterSectionTitleTitle>
               </FilterSectionTitle>
               <FilterSelectorList
-                attribute={attribute}
                 filterValuesMapping={filterValuesMapping}
                 onChange={setFilterValue}
                 initialFilter={filterValue}
