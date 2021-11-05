@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
-import {useUserContext} from "./useUserContext";
+import {useUserContext} from './useUserContext';
 
-export const useDateFormatter = () => {
+const useDateFormatter = () => {
   const user = useUserContext();
   const locale = user.get('uiLocale')?.replace('_', '-') ?? 'en-US';
   const timeZone = user.get('timezone');
@@ -25,3 +25,5 @@ export const useDateFormatter = () => {
     [locale, timeZone]
   );
 };
+
+export {useDateFormatter};
