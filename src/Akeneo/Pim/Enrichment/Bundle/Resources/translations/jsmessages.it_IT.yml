@@ -285,7 +285,7 @@ pim_enrich.export.product:
     title: Impostazioni Globali
 pim_enrich.mass_edit.product:
   title: Azioni di massa sui prodotti
-  confirm: "{0}Sei in procinto di aggiornare alcuni prodotti con le seguenti informazioni, ti preghiamo di confermare.{1}Sei in procinto di aggiornare un prodotto con le seguenti informazioni, ti preghiamo di confermare. ]1, Inf[Sei in procinto di aggiornare {{ itemsCount }} prodotti con le seguenti informazioni, ti preghiamo di confermare."
+  confirm: "{0}Sei in procinto di aggiornare alcuni prodotti con le seguenti informazioni, ti preghiamo di confermare.|{1}Sei in procinto di aggiornare un prodotto con le seguenti informazioni, ti preghiamo di confermare.|]1, Inf[Sei in procinto di aggiornare {{ itemsCount }} prodotti con le seguenti informazioni, ti preghiamo di confermare."
   step:
     select:
       label: Scegli gli articoli
