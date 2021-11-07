@@ -124,7 +124,7 @@ SQL;
     {
         $sql = "SELECT id FROM akeneo_batch_job_instance WHERE code = 'compute_product_models_descendants'";
 
-        $jobId = $this->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN, 0)[0] ?? null;
+        $jobId = $this->getConnection()->executeQuery($sql)->fetchFirstColumn()[0] ?? null;
 
         return $jobId === null ? null : (int) $jobId;
     }

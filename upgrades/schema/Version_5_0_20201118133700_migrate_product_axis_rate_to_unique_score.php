@@ -47,7 +47,7 @@ SQL;
             ['productId' => $productId, 'limit' => $limit ],
             ['productId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT ]
 
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return $products ?? [];
     }
