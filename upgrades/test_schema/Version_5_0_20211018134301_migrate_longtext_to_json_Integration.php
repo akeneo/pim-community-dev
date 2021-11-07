@@ -42,7 +42,7 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json_Integration exte
 
         Assert::assertSame('json', $this->getColumnType('oro_user', 'properties'));
         Assert::assertSame('NO', $this->getColumnNullable('oro_user', 'properties'));
-        $properties = $this->connection->executeQuery('SELECT properties FROM oro_user WHERE username = \'test\'')->fetch(\PDO::FETCH_COLUMN);
+        $properties = $this->connection->executeQuery('SELECT properties FROM oro_user WHERE username = \'test\'')->fetchOne();
         Assert::assertNotFalse($properties);
         Assert::assertSame(['a' => 'b'], \json_decode($properties, true));
     }
@@ -61,7 +61,7 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json_Integration exte
             'column_name' => $columnName,
         ]);
 
-        return $statement->fetch(\PDO::FETCH_COLUMN);
+        return $statement->fetchOne();
     }
 
     private function getColumnNullable(string $tableName, string $columnName): string
@@ -78,7 +78,7 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json_Integration exte
             'column_name' => $columnName,
         ]);
 
-        return $statement->fetch(\PDO::FETCH_COLUMN);
+        return $statement->fetchOne();
     }
 
     private function getMigrationLabel(): string
