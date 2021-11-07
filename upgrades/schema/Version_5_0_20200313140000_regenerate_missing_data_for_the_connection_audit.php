@@ -23,7 +23,7 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
 
     public function up(Schema $schema): void
     {
-        $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchColumn();
+        $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchOne();
         if ($auditDataExists > 0) {
             return;
         }

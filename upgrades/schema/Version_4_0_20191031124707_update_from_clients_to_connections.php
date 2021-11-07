@@ -88,7 +88,7 @@ WHERE code = :code
 SQL;
         $retrieveStatement = $this->dbalConnection()->executeQuery($retrieveNewConnectionClientId, ['code' => $code]);
 
-        return $retrieveStatement->fetchColumn();
+        return $retrieveStatement->fetchOne();
     }
 
     /**

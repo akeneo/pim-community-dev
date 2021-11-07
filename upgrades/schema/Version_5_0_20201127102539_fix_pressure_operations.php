@@ -40,7 +40,7 @@ SET m.units = :units
 WHERE m.code = 'Pressure';
 SQL;
 
-        $existingUnits = $this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn();
+        $existingUnits = $this->connection->executeQuery($selectPressureUnitsSql)->fetchOne();
         if (false === $existingUnits) { // The "Pressure" family has been remove before migration
             return;
         }

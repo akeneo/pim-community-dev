@@ -146,13 +146,13 @@ SQL;
         $this->dbalConnection->executeQuery('DELETE FROM akeneo_connectivity_connection');
 
         $stmt = $this->dbalConnection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product');
-        $this->assertEquals(0, $stmt->fetchColumn());
+        $this->assertEquals(0, $stmt->fetchOne());
     }
 
     private function assertAuditProductTableEntryCount(int $expectedCount): void
     {
         $stmt = $this->dbalConnection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product');
-        $this->assertEquals($expectedCount, $stmt->fetchColumn());
+        $this->assertEquals($expectedCount, $stmt->fetchOne());
     }
 
     private function insertVersionRow(string $userApi, int $resourceId, bool $created, $loggedAt): void

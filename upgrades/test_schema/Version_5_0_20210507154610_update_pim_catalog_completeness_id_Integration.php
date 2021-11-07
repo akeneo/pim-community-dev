@@ -31,7 +31,7 @@ where
 SQL;
         $result = $this->get('database_connection')
             ->executeQuery($sql)
-            ->fetchColumn();
+            ->fetchOne();
 
         $this->assertEquals('bigint', $result);
     }
