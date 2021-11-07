@@ -275,7 +275,7 @@ SQL,
     {
         return array_map(function($row) {
             return $row['identifier'];
-        }, $this->connection->fetchAll(
+        }, $this->connection->fetchAllAssociative(
             <<<SQL
 SELECT identifier
 FROM acl_security_identities

@@ -80,7 +80,7 @@ FROM (
 SQL;
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $operationValues = json_decode($connection->fetchAll($operationValuesSql)[0]['concatenated_operations']);
+        $operationValues = json_decode($connection->fetchAllAssociative($operationValuesSql)[0]['concatenated_operations']);
 
         foreach ($operationValues as $operationValue) {
             foreach($operationValue as $value) {

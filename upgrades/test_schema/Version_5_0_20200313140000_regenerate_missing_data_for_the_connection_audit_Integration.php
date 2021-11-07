@@ -71,7 +71,7 @@ SELECT connection_code, event_type, event_count FROM akeneo_connectivity_connect
 WHERE event_count != 0
 ORDER BY event_datetime ASC, connection_code, event_type
 SQL;
-        $auditRows = $this->dbalConnection->fetchAll($selectAuditProductSql);
+        $auditRows = $this->dbalConnection->fetchAllAssociative($selectAuditProductSql);
 
         $expectedRows = [
             ['connection_code' => '<all>', 'event_count' => 1, 'event_type' => 'product_created'],
@@ -112,7 +112,7 @@ SELECT connection_code, event_type, event_count FROM akeneo_connectivity_connect
 WHERE event_count != 0
 ORDER BY event_type, connection_code
 SQL;
-        $auditRows = $this->dbalConnection->fetchAll($selectAuditProductSql);
+        $auditRows = $this->dbalConnection->fetchAllAssociative($selectAuditProductSql);
 
         $expectedRows = [
             ['connection_code' => '<all>', 'event_count' => 4, 'event_type' => 'product_created'],

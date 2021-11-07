@@ -76,7 +76,7 @@ SQL;
             'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
-        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
+        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAllAssociative();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
@@ -107,7 +107,7 @@ SQL;
             'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
-        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
+        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAllAssociative();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
@@ -150,7 +150,7 @@ SQL;
 SELECT code FROM akeneo_connectivity_connection
 WHERE flow_type = 'data_source'
 SQL;
-            $this->connectionsData = $this->connection->executeQuery($selectConnectionsSql)->fetchAll();
+            $this->connectionsData = $this->connection->executeQuery($selectConnectionsSql)->fetchAllAssociative();
         }
 
         return $this->connectionsData;

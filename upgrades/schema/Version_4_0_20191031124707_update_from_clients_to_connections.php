@@ -46,7 +46,7 @@ final class Version_4_0_20191031124707_update_from_clients_to_connections
     SELECT id, label FROM pim_api_client
 SQL;
         $clientsStatement = $this->dbalConnection()->executeQuery($selectClients);
-        $clients = $clientsStatement->fetchAll();
+        $clients = $clientsStatement->fetchAllAssociative();
 
         $this->skipIf(empty($clients), 'No API connection to migrate.');
         $this->write(sprintf('%s API connections found. They will be migrate to Connection.', count($clients)));

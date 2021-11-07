@@ -48,7 +48,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
             FROM oro_user ou
                      INNER JOIN pim_catalog_category pcc on ou.defaultTree_id = pcc.id
             WHERE pcc.parent_id IS NOT NULL
-        SQL)->fetchAll();
+        SQL)->fetchAllAssociative();
     }
 
     private function findChannelsHavingLinkToSubCategory(): array
@@ -58,7 +58,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
             FROM pim_catalog_channel pc_ch
                  INNER JOIN pim_catalog_category pc_cat on pc_ch.category_id = pc_cat.id
             WHERE pc_cat.parent_id IS NOT NULL
-        SQL)->fetchAll();
+        SQL)->fetchAllAssociative();
     }
 
     private function aSubCategory(): void
