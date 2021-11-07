@@ -143,12 +143,12 @@ SQL;
 
     private function numberOfJobExecutions(): int
     {
-        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution')->fetch()['count'];
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution')->fetchAssociative()['count'];
     }
 
     private function numberOfJobsInQueue(): int
     {
-        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetch()['count'];
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetchAssociative()['count'];
     }
 
     private function getMigrationLabel(): string

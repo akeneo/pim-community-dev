@@ -119,7 +119,7 @@ SQL;
         $lines = [];
         $stmt = $this->db->executeQuery($query);
 
-        while ($line = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($line = $stmt->fetchAssociative()) {
             $lines[] = $line;
             if (count($lines) >= $bulkSize) {
                 yield $lines;

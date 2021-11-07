@@ -51,7 +51,7 @@ final class Version_5_0_20200504084844_add_quantified_column_on_association_type
     {
         $connection = $this->get('database_connection');
         $stmt = $connection->executeQuery('SELECT is_quantified FROM pim_catalog_association_type LIMIT 1');
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAssociative();
 
         Assert::assertSame('0', $result['is_quantified']);
     }

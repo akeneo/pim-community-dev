@@ -76,7 +76,7 @@ SQL;
         $stmt = $this->db->executeQuery($query, ['products' => $productsToMigrate], ['products' => Connection::PARAM_INT_ARRAY]);
 
         $productsUniqueScores = [];
-        while ($productRates = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($productRates = $stmt->fetchAssociative()) {
             $rates = json_decode($productRates['rates'], true);
             $uniqueScores = $this->computeUniqueScores($rates);
             $productsUniqueScores[] = sprintf("(%d, '%s', '%s')", $productRates['product_id'], $productRates['evaluated_at'], json_encode($uniqueScores));
