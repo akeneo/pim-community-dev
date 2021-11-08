@@ -40,7 +40,8 @@ class FindAConnectionHandlerSpec extends ObjectBehavior
             'username',
             'user_role_id',
             'user_group_id',
-            true
+            true,
+            'default'
         );
 
         $selectConnectionWithCredentialsByCodeQuery->execute('bynder')->willReturn($connection);

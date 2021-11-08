@@ -48,7 +48,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
             FROM oro_user ou
                      INNER JOIN pim_catalog_category pcc on ou.defaultTree_id = pcc.id
             WHERE pcc.parent_id IS NOT NULL
-        SQL)->fetchAll();
+        SQL)->fetchAllAssociative();
     }
 
     private function findChannelsHavingLinkToSubCategory(): array
@@ -58,7 +58,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
             FROM pim_catalog_channel pc_ch
                  INNER JOIN pim_catalog_category pc_cat on pc_ch.category_id = pc_cat.id
             WHERE pc_cat.parent_id IS NOT NULL
-        SQL)->fetchAll();
+        SQL)->fetchAllAssociative();
     }
 
     private function aSubCategory(): void
@@ -66,7 +66,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
         $masterCategoryId = $this->get('database_connection')->executeQuery(<<<SQL
             SELECT id FROM pim_catalog_category pcc 
             WHERE pcc.code = 'master'
-        SQL)->fetchColumn();
+        SQL)->fetchOne();
 
         $this->get('database_connection')->executeQuery(<<<SQL
             INSERT INTO pim_catalog_category (parent_id, code, created, root, lvl, lft, rgt) 
@@ -79,12 +79,12 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
         $subCategoryId = $this->get('database_connection')->executeQuery(<<<SQL
             SELECT id FROM pim_catalog_category pcc 
             WHERE pcc.code = 'aSubCategory'
-        SQL)->fetchColumn();
+        SQL)->fetchOne();
 
         $localeId = $this->get('database_connection')->executeQuery(<<<SQL
             SELECT id FROM pim_catalog_locale pcl 
             WHERE pcl.code = 'en_US'
-        SQL)->fetchColumn();
+        SQL)->fetchOne();
 
         $this->get('database_connection')->executeQuery(<<<SQL
             INSERT INTO oro_user (ui_locale_id, username, email, enabled, salt, password, login_count, createdAt, updatedAt, emailNotifications, timezone, user_type, properties, defaultTree_id) 
@@ -97,7 +97,7 @@ class Version_6_0_20210330143635_sanitize_users_and_channels_having_link_to_subc
         $subCategoryId = $this->get('database_connection')->executeQuery(<<<SQL
             SELECT id FROM pim_catalog_category pcc 
             WHERE pcc.code = 'aSubCategory'
-        SQL)->fetchColumn();
+        SQL)->fetchOne();
 
         $this->get('database_connection')->executeQuery(<<<SQL
             INSERT INTO pim_catalog_channel (category_id, code, conversionUnits) 

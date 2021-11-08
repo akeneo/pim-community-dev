@@ -23,7 +23,7 @@ class Version_5_0_20201118133701_migrate_dashboard_rates_projection_to_unique_sc
     SELECT count(scores) as total FROM pim_data_quality_insights_dashboard_scores_projection
     SQL;
 
-        $result = $this->getConnection()->executeQuery($query)->fetchColumn();
+        $result = $this->getConnection()->executeQuery($query)->fetchOne();
 
         $this->assertEquals($result, 0);
     }
@@ -74,7 +74,7 @@ SQL);
                 'type' => $type,
                 'code' => $code,
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         $this->assertEquals($result, $scores);
     }

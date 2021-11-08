@@ -102,6 +102,7 @@ class FixturesLoader
             'flow_type' => FlowType::DATA_DESTINATION,
             'image' => $image->getKey(),
             'auditable' => true,
+            'type' => 'default',
         ]);
 
         // SAP Connection
@@ -130,6 +131,7 @@ class FixturesLoader
             'flow_type' => FlowType::DATA_SOURCE,
             'image' => $image->getKey(),
             'auditable' => true,
+            'type' => 'default',
         ]);
 
         // Alkemics Connection
@@ -158,6 +160,7 @@ class FixturesLoader
             'flow_type' => FlowType::DATA_SOURCE,
             'image' => $image->getKey(),
             'auditable' => true,
+            'type' => 'default',
         ]);
 
         // Translations.com Connection
@@ -186,6 +189,7 @@ class FixturesLoader
             'flow_type' => FlowType::OTHER,
             'image' => $image->getKey(),
             'auditable' => false,
+            'type' => 'default',
         ]);
     }
 

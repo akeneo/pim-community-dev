@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PrepareEvaluationsCommand extends Command
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
+    protected static $defaultName = 'pim:data-quality-insights:prepare-evaluations';
+    protected static $defaultDescription = 'Prepare the evaluations of products and structure';
 
-    /** @var RunUniqueProcessJob */
-    private $runUniqueProcessJob;
+    private FeatureFlag $featureFlag;
+    private RunUniqueProcessJob $runUniqueProcessJob;
 
     public function __construct(
         RunUniqueProcessJob $runUniqueProcessJob,
@@ -35,18 +35,11 @@ class PrepareEvaluationsCommand extends Command
         $this->featureFlag = $featureFlag;
     }
 
-    protected function configure()
-    {
-        $this
-            ->setName('pim:data-quality-insights:prepare-evaluations')
-            ->setDescription('Prepare the evaluations of products and structure');
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
-            return 0;
+            return Command::SUCCESS;
         }
 
         try {
@@ -64,6 +57,6 @@ class PrepareEvaluationsCommand extends Command
             exit(0);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
