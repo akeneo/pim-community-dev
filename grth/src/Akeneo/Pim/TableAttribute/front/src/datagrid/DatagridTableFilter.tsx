@@ -10,7 +10,7 @@ import {
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
@@ -62,6 +62,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 }) => {
   const router = useRouter();
   const translate = useTranslate();
+  const catalogLocale = useUserContext().get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
