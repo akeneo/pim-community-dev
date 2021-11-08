@@ -150,6 +150,20 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
+    pim_table_attribute.job.clean_table_values_following_deleted_options:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_table_values_following_deleted_options'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - []
+        public: false
+        tags:
+            -   name: akeneo_batch.job
+                connector: 'internal'
+                type: 'clean_table_values_following_deleted_options'
+            -   name: akeneo_batch.job.not_visible
+
     # Steps
     pim_table_attribute.step.csv_option_export:
         class: '%pim_connector.step.item_step.class%'
