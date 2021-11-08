@@ -27,17 +27,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateAspellDictionaryFromProductValuesCommand extends Command
 {
-    /** @var ProductValueInDatabaseDictionarySource */
-    private $productValueInDatabaseDictionarySource;
+    protected static $defaultName = 'pimee:data-quality-insights:generate-aspell-dictionary-from-product-values';
+    protected static $defaultDescription = 'Extract most present words in the product values to create a spelling dictionary';
 
-    /** @var AspellDictionary */
-    private $aspellDictionary;
-
-    /** @var AspellDictionaryGenerator */
-    private $aspellDictionaryGenerator;
-
-    /** @var GetAllActivatedLocalesQueryInterface */
-    private $allActivatedLocalesQuery;
+    private ProductValueInDatabaseDictionarySource $productValueInDatabaseDictionarySource;
+    private AspellDictionary $aspellDictionary;
+    private AspellDictionaryGenerator $aspellDictionaryGenerator;
+    private GetAllActivatedLocalesQueryInterface $allActivatedLocalesQuery;
 
     public function __construct(
         ProductValueInDatabaseDictionarySource $productValueInDatabaseDictionarySource,
@@ -56,8 +52,6 @@ class GenerateAspellDictionaryFromProductValuesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:generate-aspell-dictionary-from-product-values')
-            ->setDescription('Extract most present words in the product values to create a spelling dictionary')
             ->addOption(
                 'language-codes',
                 'l',
@@ -72,7 +66,7 @@ class GenerateAspellDictionaryFromProductValuesCommand extends Command
         if (!empty($input->getOption('language-codes'))) {
             $this->customLanguageCodes($input, $output);
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $this->aspellDictionaryGenerator
@@ -81,7 +75,7 @@ class GenerateAspellDictionaryFromProductValuesCommand extends Command
 
         $output->writeln('<info>Dictionaries generated and pushed to shared filesystem.</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function customLanguageCodes(InputInterface $input, OutputInterface $output)

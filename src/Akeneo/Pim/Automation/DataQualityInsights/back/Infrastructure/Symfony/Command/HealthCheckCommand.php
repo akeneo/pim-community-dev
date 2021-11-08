@@ -16,12 +16,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class HealthCheckCommand extends Command
 {
+    protected static $defaultName = 'pimee:data-quality-insights:health-check';
+
     private Connection $db;
-
     private FeatureFlag $featureFlag;
-
     private AspellDictionaryLocalFilesystemInterface $aspellDictionaryLocalFilesystem;
-
     private FilesystemProvider $filesystemProvider;
 
     public function __construct(
@@ -40,8 +39,7 @@ final class HealthCheckCommand extends Command
 
     protected function configure()
     {
-        $this->setName('pimee:data-quality-insights:health-check')
-            ->addOption('products', 'p', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY)
+        $this->addOption('products', 'p', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY)
             ->addOption('productModels', 'pm', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY)
             ->setHidden(true);
     }

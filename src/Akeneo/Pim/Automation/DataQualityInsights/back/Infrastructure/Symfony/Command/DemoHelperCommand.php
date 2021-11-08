@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,26 +29,19 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DemoHelperCommand extends Command
 {
+    protected static $defaultName = 'pimee:data-quality-insights:demo-helper';
+    protected static $defaultDescription = 'DO NOT USE IN PRODUCTION - Command to help generate data quality data for several weeks.';
+
     private DictionarySource $productValueInDatabaseDictionarySource;
-
     private AspellDictionaryGenerator $aspellDictionaryGenerator;
-
     private ConsolidateDashboardRates $consolidateDashboardRates;
-
     private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
-
     private Connection $db;
-
     private CreateCriteriaEvaluations $createProductsCriteriaEvaluations    ;
-
     private EvaluatePendingCriteria $evaluatePendingCriteria;
-
     private ConsolidateProductScores $consolidateProductScores;
-
     private UpdateProductsIndex $updateProductsIndex;
-
     private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations;
-
     private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria;
 
     public function __construct(
@@ -83,8 +75,6 @@ final class DemoHelperCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:demo-helper')
-            ->setDescription('DO NOT USE IN PRODUCTION - Command to help generate data quality data for several weeks.')
             ->addOption('full-catalog-evaluation', 'f', InputOption::VALUE_NONE, 'Execute synchronous criteria evaluation for all products')
             ->setHidden(true);
     }
@@ -130,7 +120,7 @@ final class DemoHelperCommand extends Command
         }
 
         if (false === $confirm) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         $now = new ConsolidationDate(new \DateTimeImmutable());
