@@ -24,17 +24,17 @@ class JobExecutionTableSpec extends ObjectBehavior
                     1,
                     'jobName',
                     'export',
-                    new \DateTime('2021-11-02T11:20:27+02:00'),
+                    new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
                     'admin',
                     'COMPLETED',
                     10,
                     0,
                     1,
-                    2
-                )
+                    2,
+                ),
             ],
             1,
-            2
+            2,
         );
 
         $this->normalize()->shouldReturn([
@@ -51,8 +51,8 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'tracking' => [
                         'current_step' => 1,
                         'total_step' => 2,
-                    ]
-                ]
+                    ],
+                ],
             ],
             'matches_count' => 1,
             'total_count' => 2,

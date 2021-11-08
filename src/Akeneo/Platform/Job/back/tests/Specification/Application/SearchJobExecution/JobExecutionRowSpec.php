@@ -15,7 +15,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             1,
             'jobName',
             'export',
-            new \DateTime('2021-11-02T11:20:27+02:00'),
+            new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
             'admin',
             'COMPLETED',
             10,

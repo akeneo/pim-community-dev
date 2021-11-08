@@ -14,7 +14,7 @@ final class JobExecutionRow
     private int $jobExecutionId;
     private string $jobName;
     private string $type;
-    private ?\DateTime $startedAt;
+    private ?\DateTimeImmutable $startedAt;
     private ?string $username;
     private string $status;
     private int $warningCount;
@@ -26,7 +26,7 @@ final class JobExecutionRow
         int $jobExecutionId,
         string $jobName,
         string $type,
-        ?\DateTime $startedAt,
+        ?\DateTimeImmutable $startedAt,
         ?string $username,
         string $status,
         int $warningCount,
