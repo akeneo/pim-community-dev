@@ -10,6 +10,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,12 +22,14 @@ class CleanOptionsJobSubscriberSpec extends ObjectBehavior
     function let(
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        CreateJobInstanceInterface $createJobInstance
     ) {
         $this->beConstructedWith(
             $tokenStorage,
             $jobInstanceRepository,
             $jobLauncher,
+            $createJobInstance,
             'clean_table_values_following_deleted_options'
         );
     }
@@ -87,6 +90,43 @@ class CleanOptionsJobSubscriberSpec extends ObjectBehavior
             'removed_options_per_column_code' => [
                 'ingredients' => ['salt', 'sugar'],
                 'nutrition_score' => ['B'],
+            ]
+        ])->shouldBeCalled();
+
+        $event->getSubject()->shouldBeCalled()->willReturn($attribute);
+        $attribute->getCode()->shouldBeCalled()->willReturn('nutrition');
+        $this->createCleanOptionsJobIfNeeded($event);
+    }
+
+    function it_creates_job_instance_and_launches_a_job(
+        TokenStorageInterface $tokenStorage,
+        JobInstanceRepository $jobInstanceRepository,
+        JobLauncherInterface $jobLauncher,
+        CreateJobInstanceInterface $createJobInstance,
+        GenericEvent $event,
+        TokenInterface $token,
+        UserInterface $user,
+        AttributeInterface $attribute,
+        JobInstance $jobInstance
+    ) {
+        $selectOptionWasDeleted = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
+        $this->anOptionWasDeleted($selectOptionWasDeleted);
+
+        $tokenStorage->getToken()->shouldBeCalled()->willReturn($token);
+        $token->getUser()->shouldBeCalled()->willReturn($user);
+
+        $jobInstanceRepository->findOneByIdentifier('clean_table_values_following_deleted_options')->shouldBeCalled()
+            ->willReturn(null, $jobInstance);
+        $createJobInstance->createJobInstance([
+            'code' => 'clean_table_values_following_deleted_options',
+            'label' => 'Remove the non existing table option values from product and product models',
+            'job_name' => 'clean_table_values_following_deleted_options',
+            'type' => 'clean_table_values_following_deleted_options',
+        ])->shouldBeCalled();
+        $jobLauncher->launch($jobInstance, $user, [
+            'attribute_code' => 'nutrition',
+            'removed_options_per_column_code' => [
+                'ingredients' => ['salt'],
             ]
         ])->shouldBeCalled();
 

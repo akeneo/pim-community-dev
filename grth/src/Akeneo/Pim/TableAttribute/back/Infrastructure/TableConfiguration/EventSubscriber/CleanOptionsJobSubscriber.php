@@ -17,17 +17,19 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Webmozart\Assert\Assert;
 
 class CleanOptionsJobSubscriber implements EventSubscriberInterface
 {
     private JobLauncherInterface $jobLauncher;
     private JobInstanceRepository $jobInstanceRepository;
     private TokenStorageInterface $tokenStorage;
+    private CreateJobInstanceInterface $createJobInstance;
     private string $jobName;
     /** @var array<int, SelectOptionWasDeleted> */
     private array $deletedEvents = [];
@@ -36,11 +38,13 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
+        CreateJobInstanceInterface $createJobInstance,
         string $jobName
     ) {
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->createJobInstance = $createJobInstance;
         $this->jobName = $jobName;
     }
 
@@ -74,8 +78,24 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
         ];
 
         $user = $this->tokenStorage->getToken()->getUser();
+
+        $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
+    }
+
+    private function getOrCreateJobInstance(): JobInstance
+    {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-        Assert::notNull($jobInstance, sprintf("The '%s' is not found", $this->jobName));
-        $this->jobLauncher->launch($jobInstance, $user, $configuration);
+        if (null === $jobInstance) {
+            $this->createJobInstance->createJobInstance([
+                'code' => $this->jobName,
+                'label' => 'Remove the non existing table option values from product and product models',
+                'job_name' => $this->jobName,
+                'type' => $this->jobName,
+            ]);
+
+            $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        }
+
+        return $jobInstance;
     }
 }
