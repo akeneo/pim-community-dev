@@ -14,7 +14,6 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Constraints as ValidatorAssert;
 use PHPUnit\Framework\Assert;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
@@ -51,7 +50,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
-        }))->willReturn(new Response(200, [], null, '1.1', 'OK'));
+        }), ['allow_redirects' => false])->willReturn(new Response(200, [], null, '1.1', 'OK'));
         $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
@@ -108,6 +107,121 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         );
     }
 
+    public function it_checks_url_is_good_and_reachable_but_have_301_redirect_response($client, $validator): void
+    {
+        $validUrl = 'http://172.17.0.1:8000/webhook';
+        $secret = '1234';
+
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }), ['allow_redirects' => false])->willReturn(new Response(301, [], null, '1.1', 'Moved Permanently'));
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
+
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+
+        Assert::assertEquals(
+            $resultUrlReachabilityStatus->getWrappedObject(),
+            new UrlReachabilityStatus(false, '301 Detected a prohibited redirection from the server')
+        );
+    }
+
+    public function it_checks_url_is_good_and_reachable_but_have_302_redirect_response($client, $validator): void
+    {
+        $validUrl = 'http://172.17.0.1:8000/webhook';
+        $secret = '1234';
+
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }), ['allow_redirects' => false])->willReturn(new Response(302, [], null, '1.1', 'Found'));
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
+
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+
+        Assert::assertEquals(
+            $resultUrlReachabilityStatus->getWrappedObject(),
+            new UrlReachabilityStatus(false, '302 Detected a prohibited redirection from the server')
+        );
+    }
+
+    public function it_checks_url_is_good_and_reachable_but_have_303_redirect_response($client, $validator): void
+    {
+        $validUrl = 'http://172.17.0.1:8000/webhook';
+        $secret = '1234';
+
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }), ['allow_redirects' => false])->willReturn(new Response(303, [], null, '1.1', 'See Other'));
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
+
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+
+        Assert::assertEquals(
+            $resultUrlReachabilityStatus->getWrappedObject(),
+            new UrlReachabilityStatus(false, '303 Detected a prohibited redirection from the server')
+        );
+    }
+
+    public function it_checks_url_is_good_and_reachable_but_have_307_redirect_response($client, $validator): void
+    {
+        $validUrl = 'http://172.17.0.1:8000/webhook';
+        $secret = '1234';
+
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }), ['allow_redirects' => false])->willReturn(new Response(307, [], null, '1.1', 'Temporary Redirect'));
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
+
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+
+        Assert::assertEquals(
+            $resultUrlReachabilityStatus->getWrappedObject(),
+            new UrlReachabilityStatus(false, '307 Detected a prohibited redirection from the server')
+        );
+    }
+
+    public function it_checks_url_is_good_and_reachable_but_have_308_redirect_response($client, $validator): void
+    {
+        $validUrl = 'http://172.17.0.1:8000/webhook';
+        $secret = '1234';
+
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }), ['allow_redirects' => false])->willReturn(new Response(308, [], null, '1.1', 'Permanent Redirect'));
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
+
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
+
+        Assert::assertEquals(
+            $resultUrlReachabilityStatus->getWrappedObject(),
+            new UrlReachabilityStatus(false, '308 Detected a prohibited redirection from the server')
+        );
+    }
+
     public function it_checks_url_is_not_reachable_and_has_response($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
@@ -124,7 +238,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
-        }))->willThrow($requestException);
+        }), ['allow_redirects' => false])->willThrow($requestException);
         $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
@@ -149,7 +263,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
-        }))->willThrow($connectException);
+        }), ['allow_redirects' => false])->willThrow($connectException);
         $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
@@ -173,7 +287,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
-        }))->willThrow($transferException);
+        }), ['allow_redirects' => false])->willThrow($transferException);
         $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
