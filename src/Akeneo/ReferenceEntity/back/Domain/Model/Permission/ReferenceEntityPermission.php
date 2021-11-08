@@ -25,11 +25,10 @@ class ReferenceEntityPermission
     private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     private const PERMISSIONS = 'permissions';
 
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    private ReferenceEntityIdentifier $referenceEntityIdentifier;
 
     /** @var UserGroupPermission[] */
-    private $permissions;
+    private array $permissions;
 
     private function __construct(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
@@ -74,9 +73,7 @@ class ReferenceEntityPermission
     {
         return [
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
-            self::PERMISSIONS                 => array_map(function (UserGroupPermission $userGroupPermission) {
-                return $userGroupPermission->normalize();
-            }, $this->permissions),
+            self::PERMISSIONS => array_map(static fn (UserGroupPermission $userGroupPermission) => $userGroupPermission->normalize(), $this->permissions),
         ];
     }
 
@@ -123,7 +120,7 @@ class ReferenceEntityPermission
      */
     private function findPermissionsByUserGroupIdentifiers(array $userGroupIdentifiers): array
     {
-        $permissions = array_filter(
+        return array_filter(
             $this->permissions,
             function (UserGroupPermission $userGroupPermission) use ($userGroupIdentifiers) {
                 foreach ($userGroupIdentifiers as $userGroupIdentifier) {
@@ -135,8 +132,6 @@ class ReferenceEntityPermission
                 return false;
             }
         );
-
-        return $permissions;
     }
 
     /**
@@ -146,9 +141,7 @@ class ReferenceEntityPermission
     {
         $editPermissions = array_filter(
             $userGroupPermissions,
-            function (UserGroupPermission $userGroupPermission) {
-                return $userGroupPermission->isAllowedToEdit();
-            }
+            static fn (UserGroupPermission $userGroupPermission) => $userGroupPermission->isAllowedToEdit()
         );
 
         return !empty($editPermissions);

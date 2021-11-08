@@ -30,10 +30,3 @@ docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.
 echo Pushing Docker image ${NEW_IMAGE_TAG}
 docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${NEW_IMAGE_TAG}
 IMAGE_TAG=${NEW_IMAGE_TAG} make push-php-image-prod
-
-if [[ ${TYPE} == "srnt" ]]; then
-    echo Tagging EE dev repository
-    git push origin master
-    git tag -a ${NEW_IMAGE_TAG} -m "Tagging SaaS version ${NEW_IMAGE_TAG}"
-    git push origin ${NEW_IMAGE_TAG}
-fi

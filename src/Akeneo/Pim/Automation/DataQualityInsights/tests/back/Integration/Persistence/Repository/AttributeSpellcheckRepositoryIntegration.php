@@ -110,7 +110,7 @@ class AttributeSpellcheckRepositoryIntegration extends TestCase
             "SELECT * FROM pimee_dqi_attribute_spellcheck WHERE attribute_code = '$attributeCode';"
         );
 
-        $attributeSpellcheck = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributeSpellcheck = $stmt->fetchAssociative();
         $this->assertIsArray($attributeSpellcheck, sprintf('No attribute spellcheck for "%s"', $attributeCode));
 
         return $attributeSpellcheck;

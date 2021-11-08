@@ -63,7 +63,7 @@ SQL;
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         return array_map(function ($result) use ($platform) {
             return Type::getType(Type::STRING)->convertToPhpValue($result['code'], $platform);

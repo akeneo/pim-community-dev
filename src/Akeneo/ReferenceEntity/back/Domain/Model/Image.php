@@ -17,8 +17,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 class Image
 {
-    /** @var FileInfoInterface|null */
-    private $file;
+    private ?FileInfoInterface $file;
 
     private function __construct(?FileInfoInterface $file)
     {
@@ -42,7 +41,7 @@ class Image
 
     public function isEmpty(): bool
     {
-        return null === $this->file;
+        return !$this->file instanceof FileInfoInterface;
     }
 
     public function normalize(): ?array

@@ -53,7 +53,7 @@ SQL;
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         if (empty($result)) {
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }

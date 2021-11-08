@@ -208,7 +208,7 @@ SQL;
                 'record_identifier' => (string) $identifier,
             ]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw RecordNotFoundException::withIdentifier($identifier);

@@ -48,7 +48,7 @@ FROM
 JOIN pim_catalog_category category ON category.id = editable_category.category_id;
 SQL;
 
-        $categoryCodes = $this->connection->fetchAll($query, [$groupIds], [Connection::PARAM_INT_ARRAY]);
+        $categoryCodes = $this->connection->fetchAllAssociative($query, [$groupIds], [Connection::PARAM_INT_ARRAY]);
 
         return array_map(function ($categoryCode) : string {
             return $categoryCode['category_code'];

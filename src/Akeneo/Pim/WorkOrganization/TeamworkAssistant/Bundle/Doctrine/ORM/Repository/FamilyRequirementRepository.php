@@ -92,7 +92,7 @@ WHERE
 GROUP BY attribute_group_id
 SQL;
 
-        $rows = $connection->fetchAll(
+        $rows = $connection->fetchAllAssociative(
             $sql,
             [
                 'localeId' => $locale->getId(),

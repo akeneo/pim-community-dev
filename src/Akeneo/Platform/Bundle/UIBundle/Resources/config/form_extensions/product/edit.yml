@@ -122,7 +122,7 @@ extensions:
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
-        position: 100
+        position: 105
 
     pim-product-edit-form-associations:
         module: pimee/product-edit-form/associations

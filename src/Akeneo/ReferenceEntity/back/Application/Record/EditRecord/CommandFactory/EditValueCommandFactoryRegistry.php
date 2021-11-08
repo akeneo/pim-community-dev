@@ -11,7 +11,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistryInterface
 {
-    private $commandFactories = [];
+    /** @var EditValueCommandFactoryInterface[] */
+    private array $commandFactories = [];
 
     public function register(EditValueCommandFactoryInterface $editDataCommandFactory): void
     {

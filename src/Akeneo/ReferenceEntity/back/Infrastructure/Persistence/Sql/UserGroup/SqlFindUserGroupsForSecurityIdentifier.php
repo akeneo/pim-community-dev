@@ -45,7 +45,7 @@ SQL;
             $query,
             ['security_identifier' => $securityIdentifier->stringValue()]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         return $results;
     }

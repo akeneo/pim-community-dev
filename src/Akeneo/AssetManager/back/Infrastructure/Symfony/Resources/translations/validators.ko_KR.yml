@@ -92,6 +92,7 @@ pim_asset_manager:
         not_main_media_attribute: '기본 미디어로 필요한 특성은 ''%main_media_attribute%''입니다. ''%attribute%''이(가) 지정되었습니다.'
       media_link:
         protocol_not_allowed: '이 필드는 유효한 프로토콜로 시작해야 합니다. 허용된 프로토콜은 %allowed_protocols%입니다.'
+        domain_not_allowed: '이 URL은 허용되지 않습니다.'
   attribute:
     validation:
       options:

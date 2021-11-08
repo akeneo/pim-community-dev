@@ -93,7 +93,7 @@ SQL;
             ]
         );
 
-        $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);
+        $rows = $statement->fetchFirstColumn();
 
         return $this->createValueKeyCollection($rows);
     }

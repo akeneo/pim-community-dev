@@ -57,7 +57,7 @@ SQL;
 
         $familyCriterionEvaluation = $this->get('database_connection')->executeQuery(
             $query, ['familyId' => $expectedFamilyCriterionEvaluation->getFamilyId()->toInt()], ['familyId' => \PDO::PARAM_INT]
-        )->fetch(\PDO::FETCH_ASSOC);
+        )->fetchAssociative();
 
         $this->assertIsArray($familyCriterionEvaluation);
         $this->assertEquals($expectedFamilyCriterionEvaluation->getCriterionCode(), $familyCriterionEvaluation['criterion_code']);

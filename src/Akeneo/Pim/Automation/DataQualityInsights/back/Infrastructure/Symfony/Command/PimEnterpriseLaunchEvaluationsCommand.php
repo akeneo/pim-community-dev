@@ -24,11 +24,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PimEnterpriseLaunchEvaluationsCommand extends Command
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
+    protected static $defaultName = 'pim:data-quality-insights:evaluations';
+    protected static $defaultDescription = 'Launch the evaluations of products and structure';
 
-    /** @var RunUniqueProcessJob */
-    private $runUniqueProcessJob;
+    private FeatureFlag $featureFlag;
+    private RunUniqueProcessJob $runUniqueProcessJob;
 
     public function __construct(
         RunUniqueProcessJob $runUniqueProcessJob,
@@ -40,19 +40,11 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
         $this->runUniqueProcessJob = $runUniqueProcessJob;
     }
 
-    protected function configure()
-    {
-        $this
-            ->setName('pim:data-quality-insights:evaluations')
-            ->setDescription('Launch the evaluations of products and structure');
-    }
-
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
-            return 0;
+            return Command::SUCCESS;
         }
 
         try {
@@ -63,7 +55,7 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
             exit(0);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function getJobParameters(?JobExecution $lastJobExecution): array

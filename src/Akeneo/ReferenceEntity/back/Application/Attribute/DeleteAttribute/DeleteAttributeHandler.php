@@ -26,14 +26,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
-    private $findReferenceEntityAttributeAsLabel;
-
-    /** @var FindReferenceEntityAttributeAsImageInterface */
-    private $findReferenceEntityAttributeAsImage;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel;
+    private FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,

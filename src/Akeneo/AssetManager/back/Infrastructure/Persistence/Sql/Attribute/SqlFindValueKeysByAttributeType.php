@@ -95,7 +95,7 @@ SQL;
             ]
         );
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        return $statement->fetchFirstColumn();
     }
 
     private function getCacheKey(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): string

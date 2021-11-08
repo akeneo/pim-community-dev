@@ -23,14 +23,9 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ConnectorReferenceEntity
 {
-    /** @var ReferenceEntityIdentifier */
-    private $identifier;
-
-    /** @var LabelCollection */
-    private $labelCollection;
-
-    /** @var Image */
-    private $image;
+    private ReferenceEntityIdentifier $identifier;
+    private LabelCollection $labelCollection;
+    private Image $image;
 
     public function __construct(
         ReferenceEntityIdentifier $identifier,

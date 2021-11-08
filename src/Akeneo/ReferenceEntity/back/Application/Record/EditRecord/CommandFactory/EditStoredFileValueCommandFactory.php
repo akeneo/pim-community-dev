@@ -23,8 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
  */
 class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    /** @var FindFileDataByFileKeyInterface */
-    private $findFileData;
+    private FindFileDataByFileKeyInterface $findFileData;
 
     public function __construct(FindFileDataByFileKeyInterface $findFileData)
     {
@@ -33,7 +32,7 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
 
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        if (!key_exists('data', $normalizedValue)) {
+        if (!array_key_exists('data', $normalizedValue)) {
             return false;
         }
 
@@ -47,8 +46,7 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
     {
         $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
         $storedFile = is_string($fileKey) ? $this->findFileData->find($fileKey) : [];
-
-        $command = new EditStoredFileValueCommand(
+        return new EditStoredFileValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
@@ -58,6 +56,5 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
             $storedFile['mimeType'] ?? null,
             $storedFile['extension'] ?? null
         );
-        return $command;
     }
 }

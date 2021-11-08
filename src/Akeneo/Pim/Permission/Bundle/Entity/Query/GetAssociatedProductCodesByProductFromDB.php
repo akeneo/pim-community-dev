@@ -85,7 +85,7 @@ SQL;
 
         $codes = array_map(function ($row) {
             return $row['code'];
-        }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        }, $stmt->fetchAllAssociative());
 
         return $codes;
     }

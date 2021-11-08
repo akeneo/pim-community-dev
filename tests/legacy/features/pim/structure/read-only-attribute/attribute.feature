@@ -29,7 +29,6 @@ Feature: Display available field options
       | Text Area   | Read only, Max characters, Rich text editor enabled                                                    |
       | Text        | Read only, Max characters, Validation rule                                                             |
 
-  @skip @info to be fixed in RAC-966
   Scenario: Successfully set attribute to read only
     Given I am on the "description" attribute page
     And I check the "Read only" switch

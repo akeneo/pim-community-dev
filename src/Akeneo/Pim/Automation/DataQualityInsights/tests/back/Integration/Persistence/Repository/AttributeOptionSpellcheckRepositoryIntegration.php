@@ -104,7 +104,7 @@ SQL;
             'optionCode' => $optionCode,
         ]);
 
-        $attributeOptionSpellcheck = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $attributeOptionSpellcheck = $stmt->fetchAssociative();
         $this->assertIsArray($attributeOptionSpellcheck, sprintf('No attribute option spellcheck found for "%s"', $attributeCode));
 
         return $attributeOptionSpellcheck;

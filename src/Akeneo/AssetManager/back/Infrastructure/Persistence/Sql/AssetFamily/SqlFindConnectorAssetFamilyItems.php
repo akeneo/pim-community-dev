@@ -71,7 +71,7 @@ SQL;
             ]
         );
 
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         if (empty($results)) {
             return [];

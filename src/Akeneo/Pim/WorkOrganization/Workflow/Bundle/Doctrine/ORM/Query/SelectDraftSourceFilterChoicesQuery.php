@@ -42,7 +42,7 @@ SQL;
         $stmt = $this->connection->executeQuery($sql);
 
         $sources = [];
-        foreach ($stmt->fetchAll() as $result) {
+        foreach ($stmt->fetchAllAssociative() as $result) {
             $sources[$result['source_label']] = $result['source'];
         }
 

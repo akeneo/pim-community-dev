@@ -66,7 +66,7 @@ SQL;
             ['asset_family_identifier' => $assetFamilyIdentifier->normalize()]
         );
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 
     /**

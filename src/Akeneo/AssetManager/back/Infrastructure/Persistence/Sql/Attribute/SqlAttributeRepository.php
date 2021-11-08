@@ -257,7 +257,7 @@ SQL;
                 'asset_family_identifier' => $assetFamilyIdentifier,
             ]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         $attributes = [];
         foreach ($results as $result) {

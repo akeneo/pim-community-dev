@@ -23,13 +23,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RefreshAssetsCommand extends Command
 {
     protected static $defaultName = self::REFRESH_ASSETS_COMMAND_NAME;
+    protected static $defaultDescription = 'Refresh all assets referencing a deleted asset or a deleted attribute option.';
 
     public const REFRESH_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:refresh-assets';
     private const BULK_SIZE = 100;
 
     private FindAllAssetIdentifiers $findAllAssetIdentifiers;
     private RefreshAsset $refreshAsset;
-    private CountAssets $countAssets;
+    private CountAssetsInterface $countAssets;
 
     public function __construct(
         FindAllAssetIdentifiers $findAllAssetIdentifiers,
@@ -49,17 +50,15 @@ class RefreshAssetsCommand extends Command
     protected function configure()
     {
         $this
-            ->setName(self::REFRESH_ASSETS_COMMAND_NAME)
             ->addOption(
                 'all',
                 true,
                 InputOption::VALUE_NONE,
                 'Refresh all existing assets'
-            )
-            ->setDescription('Refresh all assets referencing a deleted asset or a deleted attribute option.');
+            );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $isIndexAll = $input->getOption('all');
         if (!$isIndexAll) {
@@ -81,6 +80,6 @@ class RefreshAssetsCommand extends Command
         }
         $progressBar->finish();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

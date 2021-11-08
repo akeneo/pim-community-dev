@@ -28,8 +28,8 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "free-trial:build": "yarn --cwd=front-packages/free-trial install --frozen-lockfile; yarn --cwd=front-packages/free-trial lib:build",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build; yarn free-trial:build",
+    "free-trial:build": "yarn --cwd=front-packages/free-trial install --frozen-lockfile && yarn --cwd=front-packages/free-trial lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn free-trial:build",
     "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
   },
   "devDependencies": {
@@ -39,6 +39,7 @@
     "@types/react-draft-wysiwyg": "^1.13.0",
     "@types/react-redux": "^7.1.0",
     "@types/resize-observer-browser": "^0.1.3",
+    "@types/styled-components": "^5.1.1",
     "babel-plugin-styled-components": "^1.10.6",
     "mutationobserver-shim": "^0.3.5",
     "redux-devtools-extension": "^2.13.2",

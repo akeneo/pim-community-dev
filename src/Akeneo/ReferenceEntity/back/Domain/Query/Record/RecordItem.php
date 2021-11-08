@@ -29,37 +29,24 @@ class RecordItem
     private const VALUES = 'values';
     private const COMPLETENESS = 'completeness';
 
-    /** @var string */
-    public $identifier;
-
-    /** @var string */
-    public $referenceEntityIdentifier;
-
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels;
-
-    /** @var array */
-    public $image;
-
-    /** @var []|null */
-    public $values;
-
-    /** @var array */
-    public $completeness;
+    public string $identifier;
+    public string $referenceEntityIdentifier;
+    public string $code;
+    public array $labels;
+    public ?array $image = null;
+    public ?array $values = null;
+    public array $completeness;
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                  => $this->identifier,
+            self::IDENTIFIER => $this->identifier,
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
-            self::CODE                        => $this->code,
-            self::LABELS                      => $this->labels,
-            self::IMAGE                       => $this->image,
-            self::VALUES                      => $this->values,
-            self::COMPLETENESS                => $this->completeness,
+            self::CODE => $this->code,
+            self::LABELS => $this->labels,
+            self::IMAGE => $this->image,
+            self::VALUES => $this->values,
+            self::COMPLETENESS => $this->completeness,
         ];
     }
 }

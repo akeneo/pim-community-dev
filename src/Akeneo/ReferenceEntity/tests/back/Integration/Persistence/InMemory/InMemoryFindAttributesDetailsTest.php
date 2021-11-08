@@ -62,8 +62,9 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails
     {
         $textAttributeDetails = new AttributeDetails();
-        $textAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        $textAttributeDetails->code = AttributeCode::fromString($attributeCode);
+        $textAttributeDetails->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $textAttributeDetails->code = $attributeCode;
+        $textAttributeDetails->labels = [];
 
         return $textAttributeDetails;
     }

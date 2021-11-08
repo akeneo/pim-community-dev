@@ -171,7 +171,7 @@ CSV;
 
         $res = $this->get('database_connection')->executeQuery(
             'SELECT id, code FROM pim_catalog_table_column'
-        )->fetchAll();
+        )->fetchAllAssociative();
         foreach ($res as $row) {
             $this->columnIdsIndexedByCode[$row['code']] = $row['id'];
         }

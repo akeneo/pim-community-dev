@@ -60,7 +60,7 @@ SQL;
                     'search_after_id' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT
                 ]
-            )->fetchAll(\PDO::FETCH_COLUMN);
+            )->fetchFirstColumn();
 
             if (empty($rows)) {
                 return;
@@ -101,7 +101,7 @@ SQL;
                     'search_after_id' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT
                 ]
-            )->fetchAll(\PDO::FETCH_COLUMN);
+            )->fetchFirstColumn();
 
             if (empty($rows)) {
                 return;

@@ -30,7 +30,7 @@ class RecordQuery
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    /** @var array */
+    /** @var array<{field: string, operator:string, value: string}> */
     private array $filters;
     private ChannelReference $channel;
     private LocaleReference $locale;
@@ -62,9 +62,9 @@ class RecordQuery
         ?RecordCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
-            if (!(key_exists('field', $filter) &&
-                key_exists('operator', $filter) &&
-                key_exists('value', $filter))) {
+            if (!(array_key_exists('field', $filter) &&
+                array_key_exists('operator', $filter) &&
+                array_key_exists('value', $filter))) {
                 throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
             }
         }
@@ -88,11 +88,11 @@ class RecordQuery
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
     {
-        if (!(key_exists('channel', $normalizedQuery) &&
-            key_exists('locale', $normalizedQuery) &&
-            key_exists('filters', $normalizedQuery) &&
-            key_exists('page', $normalizedQuery) &&
-            key_exists('size', $normalizedQuery))) {
+        if (!(array_key_exists('channel', $normalizedQuery) &&
+            array_key_exists('locale', $normalizedQuery) &&
+            array_key_exists('filters', $normalizedQuery) &&
+            array_key_exists('page', $normalizedQuery) &&
+            array_key_exists('size', $normalizedQuery))) {
             throw new \InvalidArgumentException('RecordQuery expect a channel, a locale, filters, a page and a size');
         }
 
@@ -118,9 +118,9 @@ class RecordQuery
         array $filters
     ): RecordQuery {
         $filters[] = [
-            'field'    => 'reference_entity',
+            'field' => 'reference_entity',
             'operator' => '=',
-            'value'    => (string)$referenceEntityIdentifier
+            'value' => (string)$referenceEntityIdentifier
         ];
 
         return new RecordQuery(
@@ -145,9 +145,9 @@ class RecordQuery
         array $filters
     ): RecordQuery {
         $filters[] = [
-            'field'    => 'reference_entity',
+            'field' => 'reference_entity',
             'operator' => '=',
-            'value'    => (string) $referenceEntityIdentifier
+            'value' => (string) $referenceEntityIdentifier
         ];
 
         return new RecordQuery(
@@ -205,7 +205,7 @@ class RecordQuery
         }));
 
         if (empty($filters)) {
-            throw new \InvalidArgumentException(sprintf('No filter found on values'));
+            throw new \InvalidArgumentException('No filter found on values');
         }
 
         return $filters;
@@ -213,9 +213,7 @@ class RecordQuery
 
     public function getFilter(string $field): array
     {
-        $filter = current(array_filter($this->filters, function ($filter) use ($field) {
-            return $filter['field'] === $field;
-        }));
+        $filter = current(array_filter($this->filters, static fn ($filter) => $filter['field'] === $field));
 
         if (false === $filter) {
             throw new \InvalidArgumentException(sprintf('The query needs to contains a filter on the "%s" field', $field));

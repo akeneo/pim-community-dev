@@ -96,6 +96,8 @@ services:
             - 'pim_enrich_product_categories_view'
             - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
             - '@pim_catalog.manager.category'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.product_model:
         public: true
@@ -108,6 +110,8 @@ services:
             - 'pim_enrich_product_model_categories_view'
             - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
             - '@pim_catalog.manager.category'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.locale:
         public: true

@@ -96,7 +96,7 @@ SQL;
             'code' => (string) $recordCode,
             'reference_entity_identifier' => (string) $referenceEntityIdentifier,
         ]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
         return !$result ? [] : $result;

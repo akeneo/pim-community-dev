@@ -20,7 +20,6 @@ final class SearchConnectorRecordResult
 {
     /** @var ConnectorRecord[] */
     private array $records;
-
     private ?string $lastSortValue;
 
     /**

@@ -25,6 +25,13 @@ class TableFilter extends AbstractFilter {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
+  private reset() {
+    this.initialDataFilter = {};
+    return super.reset();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private _writeDOMValue(value) {
     this.initialDataFilter = value;
     ReactDOM.unmountComponentAtNode(this.el);
@@ -47,7 +54,6 @@ class TableFilter extends AbstractFilter {
         <ThemeProvider theme={pimTheme}>
           <DatagridTableFilter
             showLabel={this.showLabel}
-            label={this.label}
             canDisable={this.canDisable}
             onDisable={onDisable}
             attributeCode={this.name}
