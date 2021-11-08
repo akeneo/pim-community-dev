@@ -28,12 +28,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class DeleteCommand extends Command
 {
     protected static $defaultName = 'akeneo:rule:delete';
+    protected static $defaultDescription = 'Deletes all the rules or only one if a code is provided.';
 
-    /** @var RuleDefinitionRepositoryInterface */
-    private $ruleDefinitionRepository;
-
-    /** @var BulkRemoverInterface */
-    private $bulkRemover;
+    private RuleDefinitionRepositoryInterface $ruleDefinitionRepository;
+    private BulkRemoverInterface $bulkRemover;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
@@ -50,11 +48,7 @@ class DeleteCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setName('akeneo:rule:delete')
-            ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to delete')
-            ->setDescription('Deletes all the rules or only one if a code is provided.')
-        ;
+        $this->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to delete');
     }
 
     /**
@@ -73,14 +67,7 @@ class DeleteCommand extends Command
         return Command::SUCCESS;
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param string          $code
-     *
-     * @return bool
-     */
-    protected function confirmDeletion(InputInterface $input, OutputInterface $output, $code)
+    protected function confirmDeletion(InputInterface $input, OutputInterface $output, ?string $code): bool
     {
         $question = null !== $code ?
             sprintf('Are you sure you want to delete the rule "%s"?', $code) :
@@ -92,11 +79,9 @@ class DeleteCommand extends Command
     }
 
     /**
-     * @param string $code
-     *
      * @return RuleDefinition[]
      */
-    protected function getRules($code)
+    protected function getRules(?string $code)
     {
         if (null !== $code) {
             $rule = $this->ruleDefinitionRepository->findOneBy(['code' => $code]);
