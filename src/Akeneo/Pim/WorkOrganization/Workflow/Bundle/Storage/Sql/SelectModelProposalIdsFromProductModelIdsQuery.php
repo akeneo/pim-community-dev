@@ -41,7 +41,7 @@ SQL;
             $sql,
             ['productModelIds' => $productModelIds, 'status' => EntityWithValuesDraftInterface::READY],
             ['productModelIds' => Connection::PARAM_INT_ARRAY, 'status' => \PDO::PARAM_INT]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function ($rowData) {
             return (int) $rowData['id'];

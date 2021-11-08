@@ -88,7 +88,7 @@ SQL;
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }

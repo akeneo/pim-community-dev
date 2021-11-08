@@ -53,6 +53,6 @@ SQL;
             ]
         );
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        return $statement->fetchFirstColumn();
     }
 }

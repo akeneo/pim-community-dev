@@ -78,6 +78,6 @@ SQL;
             $queryParamTypes,
         );
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 }

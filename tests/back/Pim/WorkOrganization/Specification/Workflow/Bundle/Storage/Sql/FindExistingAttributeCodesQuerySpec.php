@@ -16,6 +16,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCo
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -34,10 +35,10 @@ class FindExistingAttributeCodesQuerySpec extends ObjectBehavior
 
     public function it_returns_existing_attribute_codes(
         $connection,
-        Statement $statement
+        Result $result
     ) {
-        $connection->executeQuery(Argument::cetera())->willReturn($statement);
-        $statement->fetchAll(\PDO::FETCH_COLUMN)->willReturn(['description', 'color', 'sku']);
+        $connection->executeQuery(Argument::cetera())->willReturn($result);
+        $result->fetchFirstColumn()->willReturn(['description', 'color', 'sku']);
 
         $this->execute(['description', 'color', 'sku', 'turbulette'])->shouldReturn(['description', 'color', 'sku']);
     }

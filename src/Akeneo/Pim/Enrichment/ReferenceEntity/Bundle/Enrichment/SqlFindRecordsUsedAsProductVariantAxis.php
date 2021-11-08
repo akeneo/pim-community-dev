@@ -119,7 +119,7 @@ SQL;
             ],
         );
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $statement->closeCursor();
 
         $platform = $this->sqlConnection->getDatabasePlatform();

@@ -62,7 +62,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAllAssociative();
 
         return array_map(function ($row) {
             $stringAttributeCode = Type::getType(Type::STRING)->convertToPHPValue(

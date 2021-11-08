@@ -92,7 +92,7 @@ SQL;
             'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
 
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
         $values = [];
         foreach ($rows as $row) {
             $key = $row['key'];

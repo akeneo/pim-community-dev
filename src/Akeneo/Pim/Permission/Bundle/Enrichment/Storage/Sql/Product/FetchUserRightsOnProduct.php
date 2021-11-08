@@ -102,7 +102,7 @@ SQL;
             $sql,
             ['productIdentifiers' => $productIdentifiers, 'user_id' =>$userId],
             ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function (array $row) use ($userId) {
             return new UserRightsOnProduct(

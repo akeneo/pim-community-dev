@@ -49,7 +49,7 @@ SQL;
         $spellcheckData = $this->dbConnection->executeQuery($query, [
             'attributeCode' => $attributeOptionCode->getAttributeCode(),
             'attributeOptionCode' => $attributeOptionCode,
-        ])->fetch(\PDO::FETCH_ASSOC);
+        ])->fetchAssociative();
 
         if (!is_array($spellcheckData)) {
             return null;
@@ -83,7 +83,7 @@ SQL;
         );
 
         $results = [];
-        while ($option = $spellchecks->fetch(\PDO::FETCH_ASSOC)) {
+        while ($option = $spellchecks->fetchAssociative()) {
             $results[$option['attribute_option_code']] = $this->buildAttributeOptionSpellcheck($option, $attributeCode);
         }
 
@@ -101,7 +101,7 @@ SQL;
             'evaluatedSince' => $evaluatedSince->format(Clock::TIME_FORMAT)
         ]);
 
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetchAssociative()) {
             yield $this->buildAttributeOptionSpellcheck($row, new AttributeCode($row['attribute_code']));
         }
     }
@@ -125,7 +125,7 @@ SQL;
         );
 
         $results = [];
-        while ($option = $spellchecks->fetch(\PDO::FETCH_ASSOC)) {
+        while ($option = $spellchecks->fetchAssociative()) {
             $results[$option['attribute_option_code']] = $this->buildAttributeOptionSpellcheck($option, $attributeCode);
         }
 
@@ -145,7 +145,7 @@ SQL;
         ]);
 
         $attributeOptionSpellchecks = new AttributeOptionSpellcheckCollection();
-        while ($spellcheckData = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($spellcheckData = $stmt->fetchAssociative()) {
             $attributeOptionSpellchecks->add(
                 $this->buildAttributeOptionSpellcheck($spellcheckData, $attributeCode)
             );
