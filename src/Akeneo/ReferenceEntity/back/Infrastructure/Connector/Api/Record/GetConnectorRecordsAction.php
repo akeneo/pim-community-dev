@@ -233,7 +233,7 @@ class GetConnectorRecordsAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_record_list';
+        $acl = 'pim_api_reference_entity_record_list';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

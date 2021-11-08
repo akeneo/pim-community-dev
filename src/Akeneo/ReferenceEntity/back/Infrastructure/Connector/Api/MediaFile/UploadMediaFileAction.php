@@ -91,7 +91,7 @@ class UploadMediaFileAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_record_edit';
+        $acl = 'pim_api_reference_entity_record_edit';
 
         if (!$this->securityFacade->isGranted($acl)) {
             $token = $this->tokenStorage->getToken();

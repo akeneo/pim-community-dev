@@ -19,8 +19,8 @@ final class Version_6_0_20211026142500_add_ref_entity_web_api_acl extends Abstra
     private const ACLS = [
         'pim_api_reference_entity_edit' => true,
         'pim_api_reference_entity_list' => true,
-        'pim_api_record_edit' => true,
-        'pim_api_record_list' => true,
+        'pim_api_reference_entity_record_edit' => true,
+        'pim_api_reference_entity_record_list' => true,
         'pim_api_record_remove' => true,
     ];
 

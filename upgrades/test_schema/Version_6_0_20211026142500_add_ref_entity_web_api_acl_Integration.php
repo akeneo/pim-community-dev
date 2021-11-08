@@ -48,24 +48,24 @@ class Version_6_0_20211026142500_add_ref_entity_web_api_acl_Integration extends 
         $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
         // This role has only its initial ACLs
         $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => false,
-            'pim_api_record_edit' => false,
-            'pim_api_record_list' => false,
+            'pim_api_reference_entity_record_edit' => false,
+            'pim_api_reference_entity_record_list' => false,
             'pim_api_record_remove' => false,
         ]);
         // This role has no ACLs
         $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
             'pim_api_reference_entity_edit' => false,
             'pim_api_reference_entity_list' => false,
-            'pim_api_record_edit' => false,
-            'pim_api_record_list' => false,
+            'pim_api_reference_entity_record_edit' => false,
+            'pim_api_reference_entity_record_list' => false,
             'pim_api_record_remove' => false,
         ]);
 
@@ -79,15 +79,15 @@ class Version_6_0_20211026142500_add_ref_entity_web_api_acl_Integration extends 
         $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITH_PERMS', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
         $this->assertRoleAclsAreStoredInTheDatabase('ROLE_WITHOUT_PERMS', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
 
@@ -95,24 +95,24 @@ class Version_6_0_20211026142500_add_ref_entity_web_api_acl_Integration extends 
         $this->assertRoleAclsAreGranted('ROLE_ADMINISTRATOR', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
         // After the migration, this role has the new ACLs while keeping the initial ones
         $this->assertRoleAclsAreGranted('ROLE_WITH_PERMS', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
         // After the migration, this role has only the new ACLs
         $this->assertRoleAclsAreGranted('ROLE_WITHOUT_PERMS', [
             'pim_api_reference_entity_edit' => true,
             'pim_api_reference_entity_list' => true,
-            'pim_api_record_edit' => true,
-            'pim_api_record_list' => true,
+            'pim_api_reference_entity_record_edit' => true,
+            'pim_api_reference_entity_record_list' => true,
             'pim_api_record_remove' => true,
         ]);
     }

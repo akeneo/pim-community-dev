@@ -73,12 +73,12 @@ pim_api_reference_entity_list:
     label: pim_api.acl.reference_entity.list
     group_name: pim_api.acl_group.reference_entity
 
-pim_api_record_edit:
+pim_api_reference_entity_record_edit:
     type: action
     label: pim_api.acl.record.create
     group_name: pim_api.acl_group.reference_entity
 
-pim_api_record_list:
+pim_api_reference_entity_record_list:
     type: action
     label: pim_api.acl.record.list
     group_name: pim_api.acl_group.reference_entity

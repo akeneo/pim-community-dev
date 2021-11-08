@@ -95,8 +95,8 @@ class GetConnectorAttributesContext implements Context
     {
         $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
         $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
-        $this->securityFacade->setIsGranted('pim_api_record_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_record_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**

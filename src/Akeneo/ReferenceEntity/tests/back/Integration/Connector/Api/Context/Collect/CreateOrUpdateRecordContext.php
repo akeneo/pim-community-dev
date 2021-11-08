@@ -146,8 +146,8 @@ class CreateOrUpdateRecordContext implements Context
     {
         $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
         $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
-        $this->securityFacade->setIsGranted('pim_api_record_edit', true);
-        $this->securityFacade->setIsGranted('pim_api_record_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -243,7 +243,7 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theConnectorCollectsThisRecordFromTheErpToSynchronizeItWithThePimWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_record_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
         $client = $this->clientFactory->logIn('julia');
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -518,7 +518,7 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theConnectorCollectsTheseRecordsFromTheErpToSynchronizeThemWithThePimWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_record_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
         $client = $this->clientFactory->logIn('julia');
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -541,7 +541,7 @@ class CreateOrUpdateRecordContext implements Context
         );
 
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_record_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
             'Expected warning not found in the logs.'
         );
     }
@@ -728,7 +728,7 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theConnectorCollectsAMediaFileForTheKartellRecordFromTheDAMToSynchronizeItWithThePIMWithoutPermission()
     {
-        $this->securityFacade->setIsGranted('pim_api_record_edit', false);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
         $client = $this->clientFactory->logIn('julia');
 
         $this->uploadImageResponse = $this->webClientHelper->requestFromFile(
@@ -751,7 +751,7 @@ class CreateOrUpdateRecordContext implements Context
         );
 
         Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_record_edit"'),
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
             'Expected warning not found in the logs.'
         );
     }
