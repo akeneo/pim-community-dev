@@ -43,9 +43,9 @@ const InviteUserApp = () => {
   const handleInvitedUsersChange = (emails: string[]) => {
     const validEmails = emails.filter((email: string) => {
       return email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-    })
+    });
     setNewInvitedUsers(validEmails);
-  }
+  };
 
   return (
     <>

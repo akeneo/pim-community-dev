@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button} from "akeneo-design-system";
-import {useTranslate} from "@akeneo-pim-community/shared";
-import styled from "styled-components";
+import {Button} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 
 const StyledButton = styled(Button)`
   margin-right: 10px;
