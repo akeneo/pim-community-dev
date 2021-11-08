@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class CleanOptionsJobSubscriber implements EventSubscriberInterface
 {
@@ -74,6 +75,7 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
 
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        Assert::notNull($jobInstance, sprintf("The '%s' is not found", $this->jobName));
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 }

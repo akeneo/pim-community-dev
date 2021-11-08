@@ -15,6 +15,9 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 
+/**
+ * @phpstan-implements \IteratorAggregate<string, SelectOption>
+ */
 final class SelectOptionCollection implements \IteratorAggregate
 {
     public const MAX_OPTIONS = 20000;

@@ -15,9 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
-use Symfony\Contracts\EventDispatcher\Event;
 
-final class SelectOptionWasDeleted extends Event
+final class SelectOptionWasDeleted implements Event
 {
     private ColumnCode $columnCode;
     private SelectOptionCode $optionCode;

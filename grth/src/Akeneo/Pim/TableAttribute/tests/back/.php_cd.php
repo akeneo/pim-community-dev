@@ -29,9 +29,10 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
             'Symfony\Component\HttpFoundation',
-            'Symfony\Contracts\Translation\TranslatorInterface',
+            'Symfony\Contracts',
             'Symfony\Component\Form\Extension\Core\Type\FormType',
             'Symfony\Component\Form\FormBuilderInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Twig\Environment',
 
             // doctrine
@@ -97,6 +98,8 @@ $rules = [
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
             'Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility',
             'Oro\Bundle\PimFilterBundle\Form\Type\UnstructuredType',
+            'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
+            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

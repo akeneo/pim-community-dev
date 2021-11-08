@@ -17,6 +17,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Doctrine\DBAL\Connection;
 
 class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepository
@@ -31,8 +32,11 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
     /**
      * {@inheritDoc}
      */
-    public function save(string $attributeCode, ColumnCode $columnCode, SelectOptionCollection $selectOptionCollection): void
-    {
+    public function save(
+        string $attributeCode,
+        ColumnCode $columnCode,
+        WriteSelectOptionCollection $selectOptionCollection
+    ): void {
         if ($this->connection->isTransactionActive()) {
             $this->doSave($attributeCode, $columnCode, $selectOptionCollection);
             return;
@@ -44,7 +48,7 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
     private function doSave(
         string $attributeCode,
         ColumnCode $columnCode,
-        SelectOptionCollection $selectOptionCollection
+        WriteSelectOptionCollection $selectOptionCollection
     ): void {
         $newOptionCodes = $selectOptionCollection->getOptionCodes();
         if ($newOptionCodes === []) {

@@ -21,11 +21,9 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOption;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -43,12 +41,14 @@ class TableConfigurationSaver implements SaverInterface
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
         ColumnFactory $columnFactory,
-        TableConfigurationUpdater $tableConfigurationUpdater
+        TableConfigurationUpdater $tableConfigurationUpdater,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->optionCollectionRepository = $optionCollectionRepository;
         $this->columnFactory = $columnFactory;
         $this->tableConfigurationUpdater = $tableConfigurationUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function save($attribute, array $options = []): void

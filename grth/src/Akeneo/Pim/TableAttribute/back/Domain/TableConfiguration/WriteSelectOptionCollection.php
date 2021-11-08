@@ -13,10 +13,10 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
  * file that was distributed with this source code.
  */
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\Event;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteSelectOptionCollection
 {
@@ -41,6 +41,9 @@ class WriteSelectOptionCollection
         return new WriteSelectOptionCollection($collection);
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $normalizedCollection
+     */
     public function update(ColumnCode $columnCode, array $normalizedCollection): void
     {
         foreach ($normalizedCollection as $normalizedOption) {
@@ -55,16 +58,41 @@ class WriteSelectOptionCollection
         foreach ($this->options as $code => $option) {
             if (!\array_key_exists($code, $indexedUpdatedCodes)) {
                 unset($this->options[$code]);
-                $this->events[] = new SelectOptionWasDeleted($columnCode, SelectOptionCode::fromString($code));
+                $this->events[] = new SelectOptionWasDeleted($columnCode, SelectOptionCode::fromString((string) $code));
             }
         }
     }
 
+    /**
+     * @return Event[]
+     */
     public function releaseEvents(): array
     {
         $events = $this->events;
         $this->events = [];
 
         return $events;
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public function normalize(): array
+    {
+        return array_map(
+            fn (SelectOption $option): array => $option->normalize(),
+            \array_values($this->options),
+        );
+    }
+
+    /**
+     * @return SelectOptionCode[]
+     */
+    public function getOptionCodes(): array
+    {
+        return \array_values(\array_map(
+            fn (SelectOption $selectOption): SelectOptionCode => $selectOption->code(),
+            $this->options
+        ));
     }
 }

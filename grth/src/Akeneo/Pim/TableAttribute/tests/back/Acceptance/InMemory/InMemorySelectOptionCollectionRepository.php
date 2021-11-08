@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 
 class InMemorySelectOptionCollectionRepository implements SelectOptionCollectionRepository
 {
@@ -25,9 +26,11 @@ class InMemorySelectOptionCollectionRepository implements SelectOptionCollection
     public function save(
         string $attributeCode,
         ColumnCode $columnCode,
-        SelectOptionCollection $selectOptionCollection
+        WriteSelectOptionCollection $selectOptionCollection
     ): void {
-        $this->options[$attributeCode][$columnCode->asString()] = $selectOptionCollection;
+        $this->options[$attributeCode][$columnCode->asString()] = SelectOptionCollection::fromNormalized(
+            $selectOptionCollection->normalize()
+        );
     }
 
     public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
