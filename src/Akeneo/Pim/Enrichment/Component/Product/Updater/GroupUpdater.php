@@ -154,12 +154,13 @@ class GroupUpdater implements ObjectUpdaterInterface
     protected function setProducts(GroupInterface $group, array $productIdentifiers)
     {
         $oldProductIdentifiers = [];
-        foreach ($group->getProducts() as $product) {
-            $oldProductIdentifiers[] = $product->getIdentifier();
-            // Remove products that are no longer in the group
-            if (!in_array($product->getIdentifier(), $productIdentifiers)) {
+
+        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()])
+        ->addFilter('identifier',Operators::NOT_IN_LIST, $productIdentifiers);
+        $products = $pqb->execute();
+        foreach ($products as $product) {
                 $group->removeProduct($product);
-            }
         }
 
         // Extract the products that are not already in the group to add them to it
