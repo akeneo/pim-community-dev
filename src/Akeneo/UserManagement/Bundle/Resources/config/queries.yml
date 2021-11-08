@@ -6,3 +6,8 @@ services:
         class: '%pim_user.query.is_there_user_without_role.class%'
         arguments:
         - '@doctrine.orm.entity_manager'
+
+    pim_user.query.is_category_tree_linked_to_user:
+        class: 'Akeneo\UserManagement\Bundle\Storage\Query\SqlIsCategoryTreeLinkedToUser'
+        arguments:
+            - '@database_connection'
