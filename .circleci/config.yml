@@ -187,6 +187,9 @@ jobs:
       - restore_cache:
             name: Restore front package Shared cache
             key: front-packages-shared-{{ checksum "~/shared.hash" }}
+      - restore_cache:
+          name: Restore micro-frontend Catalog Volume Monitoring cache
+          key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
       - run:
           name: Set font package directories owner to docker
           command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
@@ -224,6 +227,11 @@ jobs:
             key: front-packages-shared-{{ checksum "~/shared.hash" }}
             paths:
                 - << parameters.path_to_front_packages >>/shared/
+      - save_cache:
+          name: Save micro-frontend Catalog Volume Monitoring cache
+          key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+          paths:
+            - src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
       - persist_to_workspace:
           root: ~/
           paths:
