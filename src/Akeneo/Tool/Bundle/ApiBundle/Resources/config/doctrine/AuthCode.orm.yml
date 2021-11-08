@@ -13,8 +13,10 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode:
             joinColumns:
                 client_id:
                     referenceColumnName: id
+                    onDelete: CASCADE
         user:
             targetEntity: Akeneo\UserManagement\Component\Model\User
             joinColumns:
                 user_id:
                     referenceColumnName: id
+                    onDelete: CASCADE
