@@ -254,6 +254,7 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.google_analytics_account_id "UA-113156045-4"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.addAdmin.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.hotjar_id "2672696"
+	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.heap_id "2875170433"
 endif
 	@echo "cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml"
 	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
