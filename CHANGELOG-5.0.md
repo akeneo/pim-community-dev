@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.57 (2021-11-08)
+
 ## Bug fixes
 
 - PIM-10075: Impossible to classify products in a new tab/window from a right click on the product grid
