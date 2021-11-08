@@ -25,11 +25,8 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class SearchConnectorRecord
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
-
-    /** @var FindConnectorRecordsByIdentifiersInterface */
-    private $findConnectorRecordsByIdentifiers;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
+    private FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,

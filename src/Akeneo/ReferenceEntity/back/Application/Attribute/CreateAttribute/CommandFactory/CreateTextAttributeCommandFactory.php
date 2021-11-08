@@ -33,7 +33,7 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
     {
         $this->checkCommonProperties($normalizedCommand);
 
-        $command = new CreateTextAttributeCommand(
+        return new CreateTextAttributeCommand(
             $normalizedCommand['reference_entity_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -46,7 +46,5 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
             $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE,
             $normalizedCommand['regular_expression'] ?? null
         );
-
-        return $command;
     }
 }

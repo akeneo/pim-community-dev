@@ -22,11 +22,9 @@ class EditIsRequiredCommandFactory implements EditAttributeCommandFactoryInterfa
             throw new \RuntimeException('Impossible to create an edit required property command.');
         }
 
-        $command = new EditIsRequiredCommand(
+        return new EditIsRequiredCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['is_required']
         );
-
-        return $command;
     }
 }

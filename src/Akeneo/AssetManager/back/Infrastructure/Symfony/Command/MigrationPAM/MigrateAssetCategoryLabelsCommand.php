@@ -159,7 +159,7 @@ INNER JOIN pimee_product_asset_category_translation t ON c.id = t.foreign_key
 WHERE code IN (:attributeOptionCodes)
 SQL;
 
-        return $this->connection->fetchAll(
+        return $this->connection->fetchAllAssociative(
             $query,
             ['attributeOptionCodes' => $attributeOptionCodes],
             ['attributeOptionCodes' => Connection::PARAM_STR_ARRAY]

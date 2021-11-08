@@ -23,8 +23,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ReferenceEntityCreatedEvent extends Event
 {
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    private ReferenceEntityIdentifier $referenceEntityIdentifier;
 
     public function __construct(ReferenceEntityIdentifier $referenceEntityIdentifier)
     {

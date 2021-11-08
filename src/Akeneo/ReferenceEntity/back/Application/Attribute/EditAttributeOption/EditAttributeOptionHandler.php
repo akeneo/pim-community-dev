@@ -14,11 +14,8 @@ use Webmozart\Assert\Assert;
 
 class EditAttributeOptionHandler
 {
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         GetAttributeIdentifierInterface $getAttributeIdentifier,

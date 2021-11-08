@@ -72,6 +72,6 @@ SQL;
             ]
         );
 
-        return array_column($stmt->fetchAll(), 'code');
+        return array_column($stmt->fetchAllAssociative(), 'code');
     }
 }

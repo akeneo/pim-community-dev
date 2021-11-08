@@ -31,13 +31,11 @@ class EditOptionValueCommandFactory implements EditValueCommandFactoryInterface
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditOptionValueCommand(
+        return new EditOptionValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
             $normalizedValue['data']
         );
-
-        return $command;
     }
 }

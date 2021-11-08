@@ -86,7 +86,7 @@ SQL;
                 $record['code'],
                 $record['reference_entity_identifier']
             );
-        }, $statement->fetchAll());
+        }, $statement->fetchAllAssociative());
 
         return $recordsLabels;
     }

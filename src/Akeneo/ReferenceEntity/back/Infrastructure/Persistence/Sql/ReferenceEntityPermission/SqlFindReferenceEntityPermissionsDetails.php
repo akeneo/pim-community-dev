@@ -48,7 +48,7 @@ FROM oro_access_group ug
 WHERE ug.name <> 'All';
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAllAssociative();
 
         return false !== $result ? $result : [];
     }
@@ -64,7 +64,7 @@ SQL;
             $query,
             ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
         );
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAllAssociative();
 
         return false !== $result ? $result : [];
     }

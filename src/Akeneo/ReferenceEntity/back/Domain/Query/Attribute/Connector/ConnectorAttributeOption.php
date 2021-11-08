@@ -19,11 +19,8 @@ class ConnectorAttributeOption
     private const OPTION_CODE = 'code';
     private const LABELS = 'labels';
 
-    /** @var OptionCode */
-    private $code;
-
-    /** @var LabelCollection */
-    private $labels;
+    private OptionCode $code;
+    private LabelCollection $labels;
 
     public function __construct(OptionCode $code, LabelCollection $labels)
     {
@@ -37,7 +34,7 @@ class ConnectorAttributeOption
 
         return [
             self::OPTION_CODE => (string) $this->code,
-            self::LABELS      => empty($normalizedLabels) ? (object) [] : $normalizedLabels
+            self::LABELS => empty($normalizedLabels) ? (object) [] : $normalizedLabels
         ];
     }
 }

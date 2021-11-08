@@ -124,7 +124,7 @@ class RemoveNonExistentAssetValuesSubscriber implements EventSubscriberInterface
                 [
                     'type' => AssetCollectionType::ASSET_COLLECTION,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             foreach ($rows as $row) {
                 $properties = \unserialize($row['properties']);

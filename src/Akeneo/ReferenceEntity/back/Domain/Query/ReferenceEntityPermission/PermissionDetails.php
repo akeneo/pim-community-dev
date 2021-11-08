@@ -10,21 +10,16 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission;
  */
 class PermissionDetails
 {
-    /** @var int */
-    public $userGroupIdentifier;
-
-    /** @var string */
-    public $userGroupName;
-
-    /** @var string */
-    public $rightLevel;
+    public int $userGroupIdentifier;
+    public string $userGroupName;
+    public string $rightLevel;
 
     public function normalize()
     {
         return [
             'user_group_identifier' => $this->userGroupIdentifier,
-            'user_group_name'       => $this->userGroupName,
-            'right_level'           => $this->rightLevel,
+            'user_group_name' => $this->userGroupName,
+            'right_level' => $this->rightLevel,
         ];
     }
 }

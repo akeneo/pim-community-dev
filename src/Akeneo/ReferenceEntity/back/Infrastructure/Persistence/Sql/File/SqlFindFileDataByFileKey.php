@@ -36,7 +36,7 @@ class SqlFindFileDataByFileKey implements FindFileDataByFileKeyInterface
 SQL;
 
         $statement = $this->connection->executeQuery($sql, ['file_key' => $fileKey]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (false === $result) {
             return null;

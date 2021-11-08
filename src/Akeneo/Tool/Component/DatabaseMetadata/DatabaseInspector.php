@@ -60,7 +60,7 @@ SQL;
             ["excluded_tables" => Connection::PARAM_STR_ARRAY]
         );
 
-        return $result->fetchAll(FetchMode::ASSOCIATIVE);
+        return $result->fetchAllAssociative();
     }
 
     /**
@@ -87,7 +87,7 @@ SQL;
             ["excluded_tables" => Connection::PARAM_STR_ARRAY]
         );
 
-        return $result->fetchAll(FetchMode::ASSOCIATIVE);
+        return $result->fetchAllAssociative();
     }
 
     /**
@@ -98,6 +98,6 @@ SQL;
         $sql = sprintf("select %s as value from %s order by 1 asc", $column, $table);
         $result = $this->db->executeQuery($sql, []);
 
-        return $result->fetchAll(FetchMode::ASSOCIATIVE);
+        return $result->fetchAllAssociative();
     }
 }

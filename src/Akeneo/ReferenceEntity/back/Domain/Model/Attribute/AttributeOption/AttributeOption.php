@@ -15,11 +15,8 @@ class AttributeOption
     private const OPTION_CODE = 'code';
     private const LABELS = 'labels';
 
-    /** @var OptionCode */
-    private $code;
-
-    /** @var LabelCollection */
-    private $labels;
+    private OptionCode $code;
+    private LabelCollection $labels;
 
     private function __construct(OptionCode $code, LabelCollection $labels)
     {
@@ -43,7 +40,7 @@ class AttributeOption
     {
         return [
             self::OPTION_CODE => (string) $this->code,
-            self::LABELS      => $this->labels->normalize()
+            self::LABELS => $this->labels->normalize()
         ];
     }
 

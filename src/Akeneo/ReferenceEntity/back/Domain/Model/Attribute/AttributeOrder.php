@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeOrder
 {
-    /** @var int */
-    private $order;
+    private int $order;
 
     private function __construct(int $order)
     {

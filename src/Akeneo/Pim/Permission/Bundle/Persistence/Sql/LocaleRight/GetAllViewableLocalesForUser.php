@@ -56,7 +56,7 @@ SQL;
             ->executeQuery(
                 $query,
                 ['userId' => $userId]
-            )->fetchAll(\PDO::FETCH_COLUMN);
+            )->fetchFirstColumn();
 
         $this->cache[$userId] = $result;
 

@@ -176,7 +176,7 @@ SQL;
                 'asset_identifier' => (string) $identifier,
             ]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw AssetNotFoundException::withIdentifier($identifier);

@@ -60,7 +60,7 @@ SQL;
             ]
         );
 
-        $attributes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $attributes = $stmt->fetchAllAssociative();
 
         $attributes = array_map(function ($attribute) {
             $attribute['order'] = (int) $attribute['order'];
