@@ -78,6 +78,14 @@ services:
             - '@validator'
             - '@pim_user.saver.group'
 
+    akeneo_connectivity.connection.fixtures.enrichment.user_role_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader'
+        arguments:
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@validator'
+            - '@pim_user.saver.role'
+
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
         arguments:
