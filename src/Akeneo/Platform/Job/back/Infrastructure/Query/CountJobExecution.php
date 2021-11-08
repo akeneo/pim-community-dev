@@ -27,7 +27,7 @@ final class CountJobExecution implements CountJobExecutionInterface
 SELECT count(*) as count FROM akeneo_batch_job_execution;
 SQL;
 
-        $result = $this->connection->query($sql)->fetchColumn();
+        $result = $this->connection->executeQuery($sql)->fetchOne();
 
         return (int) $result;
     }

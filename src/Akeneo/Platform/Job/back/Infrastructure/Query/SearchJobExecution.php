@@ -60,7 +60,7 @@ SQL;
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ]
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        )->fetchAllAssociative();
 
         return $this->buildJobExecutionRows($rawJobExecutions);
     }
@@ -73,7 +73,7 @@ SQL;
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
 SQL;
 
-        return (int) $this->connection->executeQuery($sql)->fetchColumn();
+        return (int) $this->connection->executeQuery($sql)->fetchOne();
     }
 
     private function buildJobExecutionRows(array $rawJobExecutions): array

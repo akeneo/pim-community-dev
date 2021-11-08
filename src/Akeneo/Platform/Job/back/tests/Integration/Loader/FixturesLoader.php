@@ -35,7 +35,7 @@ SQL;
         $this->dbalConnection->executeQuery($resetQuery);
     }
 
-    public function loadProductImportFixtures()
+    public function loadProductImportExportFixtures()
     {
         $jobInstances = [
             'a_product_import' => $this->createJobInstance([
@@ -49,6 +49,24 @@ SQL;
                 'job_name' => 'another_product_import',
                 'label' => 'another_product_import',
                 'type' => 'import',
+            ]),
+            'a_product_export' => $this->createJobInstance([
+                'code' => 'a_product_export',
+                'job_name' => 'a_product_export',
+                'label' => 'a_product_export',
+                'type' => 'export',
+            ]),
+            'another_product_export' => $this->createJobInstance([
+                'code' => 'another_product_export',
+                'job_name' => 'another_product_export',
+                'label' => 'another_product_export',
+                'type' => 'export',
+            ]),
+            'prepare_evaluation' => $this->createJobInstance([
+                'code' => 'prepare_evaluation',
+                'job_name' => 'prepare_evaluation',
+                'label' => 'prepare_evaluation',
+                'type' => 'data_quality_insights',
             ]),
         ];
 

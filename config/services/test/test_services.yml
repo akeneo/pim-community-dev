@@ -14,6 +14,8 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/services.yml }
     # Akeneo/Platform/CommunicationChannel
     - { resource: ../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
+    # AkeneoJobBundle
+    - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
 
 services:
 
