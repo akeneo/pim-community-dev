@@ -156,7 +156,7 @@ SQL;
         FROM akeneo_reference_entity_reference_entity;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
         $statement->closeCursor();
 
         foreach ($results as $result) {

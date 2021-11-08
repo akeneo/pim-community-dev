@@ -123,7 +123,7 @@ SQL;
         $result = $this->connection->executeQuery($sql, [
             'attributeCode' => $attributeCode,
             'columnCode' => $columnCode->asString(),
-        ])->fetchAll();
+        ])->fetchAllAssociative();
 
         $options = array_map(function ($rawOption) {
             return [

@@ -66,7 +66,7 @@ SQL;
             $query,
             ['reference_entity_identifier' => $referenceEntityIdentifier->normalize()]
         );
-        $result = $statement->fetchAll();
+        $result = $statement->fetchAllAssociative();
 
         return !$result ? [] : $result;
     }

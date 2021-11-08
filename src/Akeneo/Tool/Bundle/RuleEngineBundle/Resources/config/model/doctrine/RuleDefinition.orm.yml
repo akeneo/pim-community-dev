@@ -23,7 +23,7 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition:
             nullable: false
             column: type
         content:
-            type: json_array
+            type: json
             nullable: true
             column: content
         priority:

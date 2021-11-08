@@ -15,11 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class IndexRecordSubscriber implements EventSubscriberInterface
 {
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
-
-    /** @var IndexByReferenceEntityInBackgroundInterface */
-    private $indexByReferenceEntityInBackground;
+    private RecordIndexerInterface $recordIndexer;
+    private IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground;
 
     public function __construct(
         RecordIndexerInterface $recordIndexer,

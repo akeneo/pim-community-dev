@@ -30,20 +30,20 @@ final class GetActivatedFamilyAttributesCodesQuery implements GetFamilyAttribute
     public function byFamilyId(FamilyId $familyId): array
     {
         $query = <<<SQL
-SELECT attribute.code 
-FROM pim_catalog_family_attribute AS family_attribute 
+SELECT attribute.code
+FROM pim_catalog_family_attribute AS family_attribute
     INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = family_attribute.attribute_id
     LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
     LEFT JOIN pim_data_quality_insights_attribute_group_activation AS activation ON activation.attribute_group_code = attribute_group.code
 WHERE family_attribute.family_id = :familyId
-    AND (activation.activated IS NULL OR activation.activated = 1) 
+    AND (activation.activated IS NULL OR activation.activated = 1)
 SQL;
 
         $attributesCodes = $this->dbConnection->executeQuery(
             $query,
             ['familyId' => $familyId->toInt()],
             ['familyId' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return array_map(fn ($attributeCode) => new AttributeCode($attributeCode), $attributesCodes);
     }

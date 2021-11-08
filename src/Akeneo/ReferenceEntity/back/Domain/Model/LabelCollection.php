@@ -19,8 +19,8 @@ namespace Akeneo\ReferenceEntity\Domain\Model;
  */
 class LabelCollection
 {
-    /** @var array */
-    private $translatedLabels;
+    /** @var array<string, string> */
+    private array $translatedLabels;
 
     private function __construct(array $translatedLabels)
     {
@@ -75,9 +75,7 @@ class LabelCollection
     {
         $localeCodes = $localeIdentifiers->normalize();
 
-        $filteredLabels = array_filter($this->translatedLabels, function ($labelCode) use ($localeCodes) {
-            return in_array($labelCode, $localeCodes);
-        }, ARRAY_FILTER_USE_KEY);
+        $filteredLabels = array_filter($this->translatedLabels, static fn ($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
 
         return new self($filteredLabels);
     }

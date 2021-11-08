@@ -88,7 +88,7 @@ SQL;
             'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
 
-        $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);
+        $rows = $statement->fetchFirstColumn();
 
         return $this->createValueKeyCollection($rows);
     }

@@ -19,20 +19,11 @@ class FileData implements ValueDataInterface
     private const MIME_TYPE = 'mimeType';
     private const EXTENSION = 'extension';
 
-    /** @var string */
-    private $key;
-
-    /** @var string */
-    private $originalFilename;
-
-    /** @var int */
-    private $size;
-
-    /** @var string */
-    private $mimeType;
-
-    /** @var string */
-    private $extension;
+    private string $key;
+    private string $originalFilename;
+    private ?int $size;
+    private ?string $mimeType;
+    private ?string $extension;
 
     // TODO: make the optional args mandatory
     private function __construct(string $key, string $originalFilename, ?int $size = 0, ?string $mimeType = '', ?string $extension = '')

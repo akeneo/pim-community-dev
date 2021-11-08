@@ -56,7 +56,7 @@ SQL;
 
         $statement = $this->sqlConnection->executeQuery($fetch);
 
-        foreach ($statement->fetchAll() as $record) {
+        foreach ($statement->fetchAllAssociative() as $record) {
             yield new RecordLabels(
                 $record['identifier'],
                 json_decode($record['labels'], true),

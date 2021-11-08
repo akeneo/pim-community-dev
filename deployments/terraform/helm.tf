@@ -52,8 +52,8 @@ data "template_file" "helm_pim_config" {
     bigcommerce_connector_enabled                            = contains(local.bc_enabled_projects, var.google_project_id)
     bigcommerce_connector_topic                              = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_topic.connector_bigcommerce[0].name : "fakeValue"
     bigcommerce_connector_subscription                       = contains(local.bc_enabled_projects, var.google_project_id) ? google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
-    bigcommerce_connector_akeneo_connect_bot_password        = data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data
-    bigcommerce_connector_akeneo_connect_bot_client_secret   = data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data
+    bigcommerce_connector_akeneo_connect_bot_password        = contains(local.bc_enabled_projects, var.google_project_id) ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data : "fakeValue"
+    bigcommerce_connector_akeneo_connect_bot_client_secret   = contains(local.bc_enabled_projects, var.google_project_id) ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data : "fakeValue"
   }
 }
 

@@ -23,11 +23,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
  */
 class ConnectorRecord
 {
-    /** @var RecordCode */
-    private $code;
-
-    /** @var array */
-    private $normalizedValues;
+    private RecordCode $code;
+    /** @var array<string, array> */
+    private array $normalizedValues;
 
     public function __construct(RecordCode $code, array $normalizedValues)
     {
@@ -38,7 +36,7 @@ class ConnectorRecord
     public function normalize(): array
     {
         return [
-            'code'   => $this->code->normalize(),
+            'code' => $this->code->normalize(),
             'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
         ];
     }
@@ -47,10 +45,8 @@ class ConnectorRecord
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {
-            $filteredValue = array_values(array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
-                return null === $value['channel']
-                    || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']));
-            }));
+            $filteredValue = array_values(array_filter($normalizedValue, static fn (array $value) => null === $value['channel']
+                || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']))));
 
             if (!empty($filteredValue)) {
                 $filteredValues[$key] = $filteredValue;
@@ -64,16 +60,10 @@ class ConnectorRecord
     {
         $localeCodes = $localeIdentifiers->normalize();
 
-        $filteredValues = array_map(function ($normalizedValue) use ($localeCodes) {
-            return array_values(array_filter($normalizedValue, function ($value) use ($localeCodes) {
-                return null === $value['locale']
-                    || in_array($value['locale'], $localeCodes);
-            }));
-        }, $this->normalizedValues);
+        $filteredValues = array_map(static fn ($normalizedValue) => array_values(array_filter($normalizedValue, static fn ($value) => null === $value['locale']
+            || in_array($value['locale'], $localeCodes))), $this->normalizedValues);
 
-        $filteredValues = array_filter($filteredValues, function ($filteredValue) {
-            return !empty($filteredValue);
-        });
+        $filteredValues = array_filter($filteredValues, static fn ($filteredValue) => !empty($filteredValue));
 
         return new self($this->code, $filteredValues);
     }

@@ -41,7 +41,7 @@ SQL;
             ['author' => $username, 'statuses' => $draftStatuses],
             ['author' => \PDO::PARAM_STR, 'statuses' => Connection::PARAM_INT_ARRAY]
         );
-        $resultRows = $stmt->fetchAll();
+        $resultRows = $stmt->fetchAllAssociative();
 
         $productModelIds = [];
         foreach ($resultRows as $resultRow) {

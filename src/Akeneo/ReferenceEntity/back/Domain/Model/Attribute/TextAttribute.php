@@ -26,20 +26,11 @@ class TextAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'text';
 
-    /** @var AttributeMaxLength */
-    private $maxLength;
-
-    /** @var AttributeIsTextarea */
-    private $isTextarea;
-
-    /** @var AttributeValidationRule */
-    private $validationRule;
-
-    /** @var AttributeRegularExpression */
-    private $regularExpression;
-
-    /** @var AttributeIsRichTextEditor */
-    private $isRichTextEditor;
+    private AttributeMaxLength $maxLength;
+    private AttributeIsTextarea $isTextarea;
+    private AttributeValidationRule $validationRule;
+    private AttributeRegularExpression $regularExpression;
+    private AttributeIsRichTextEditor $isRichTextEditor;
 
     /**
      * TextAttribute constructor.
@@ -169,11 +160,11 @@ class TextAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'max_length'          => $this->maxLength->normalize(),
-                'is_textarea'        => $this->isTextarea->normalize(),
+                'max_length' => $this->maxLength->normalize(),
+                'is_textarea' => $this->isTextarea->normalize(),
                 'is_rich_text_editor' => $this->isRichTextEditor->normalize(),
-                'validation_rule'     => $this->validationRule->normalize(),
-                'regular_expression'  => $this->regularExpression->normalize(),
+                'validation_rule' => $this->validationRule->normalize(),
+                'regular_expression' => $this->regularExpression->normalize(),
             ]
         );
     }

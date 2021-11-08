@@ -36,7 +36,7 @@ SQL;
 
         $statement = $this->connection->executeQuery($sql, ['file_key' => $fileKey]);
         $platform = $this->connection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }

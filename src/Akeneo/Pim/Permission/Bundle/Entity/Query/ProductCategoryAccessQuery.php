@@ -72,6 +72,6 @@ SQL;
             ]
         );
 
-        return array_column($stmt->fetchAll(), 'identifier');
+        return array_column($stmt->fetchAllAssociative(), 'identifier');
     }
 }

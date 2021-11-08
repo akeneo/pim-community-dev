@@ -1,0 +1,232 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: 평균 영양소 값
+      options:
+        energy: 에너지
+        fat: 지방
+        saturated_fat: 포화 지방
+        carbohydrate: 탄수화물
+        sugars: 당분
+        protein: 단백질
+        salt: 염분
+    per_100g:
+      label: '100g당'
+    per_serving:
+      label: '1인분당(x g)'
+    percentage_reference_intake:
+      label: '기준 섭취량의 %(100g 또는 1인분당)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: 영양 성분 정보
+      options:
+        total_fat: 총 지방(g)
+        saturated_fat: 포화 지방(g)
+        trans_fat: 트랜스 지방(g)
+        cholesterol: 콜레스테롤(g)
+        sodium: 나트륨(g)
+        total_carbohydrate: 총 탄수화물(g)
+        dietary_fiber: 식이 섬유(g)
+        total_sugars: 총 당분(g)
+        included_added_sugars: 포함된 첨가당(G)
+        protein: 단백질(g)
+    amount_per_serving:
+      label: 1인분 양
+    percentage_daily_value:
+      label: '일일 섭취량 %'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: 영양성분
+      options:
+        energy: 에너지
+        fat: 지방
+        of_which_saturates: 그중 포함된 포화 지방
+        carbohydrate: 탄수화물
+        of_which_sugars: 그중 포함된 당분
+        fibre: 섬유질
+        protein: 단백질
+        salt: 염분
+    per_100g:
+      label: 100g당
+    percentage_reference_intake:
+      label: '기준 섭취량 %'
+    your_reference_intake:
+      label: '내 기준 섭취량 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: 성분
+      options:
+        wheat_flour: 밀가루
+        butter: 버터
+        water: 물
+        sugar: 설탕
+    percentage:
+      label: '%'
+    allergen:
+      label: 알레르기 유발 성분
+  clothing_composition:
+    composition:
+      label: 성분
+      options:
+        cotton: 면
+        polyester: 폴리에스테르
+        elastane: 엘라스테인
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: 크기
+      options:
+        length: 가로(cm)
+        width: 폭(cm)
+        height: 세로(cm)
+        weight: 무게(kg)
+    value:
+      label: 값
+  dimensions-imperial:
+    dimensions:
+      label: 크기
+      options:
+        length: 가로(인치)
+        width: 폭(인치)
+        height: 세로(인치)
+        weight: 무게(파운드)
+    value:
+      label: 값
+  packaging-metric:
+    parcel:
+      label: 소포
+      options:
+        parcel1: 소포 1
+        parcel2: 소포 2
+        parcel3: 소포 3
+        parcel4: 소포 4
+    width:
+      label: 폭(cm)
+    length:
+      label: 가로(cm)
+    height:
+      label: 세로(cm)
+  packaging-imperial:
+    parcel:
+      label: 소포
+      options:
+        parcel1: 소포 1
+        parcel2: 소포 2
+        parcel3: 소포 3
+        parcel4: 소포 4
+    width:
+      label: 폭(인치)
+    length:
+      label: 가로(인치)
+    height:
+      label: 세로(인치)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: 테이블 구조
+      table_attribute: 테이블 특성
+      add_column: 새 열 추가
+      select_type: 유형 선택
+      data_type: 열 유형
+      labels: 레이블 번역
+      column_management: 열 관리
+      please_type: '''{{ text }}''을(를) 입력하십시오.'
+      confirm_column_delete: 이 열을 삭제하시겠습니까?
+      confirm_option_delete: 이 옵션을 삭제하시겠습니까?
+      empty_title: 테이블 구조가 비어 있습니다.
+      empty_subtitle: 첫 단계는 열을 정의하는 것입니다.
+      unique_title: 테이블 특성이 거의 완료되었습니다.
+      unique_subtitle: 테이블을 사용하려면 최소 2개 이상의 열을 정의해야 합니다.
+      new_option_placeholder: 새 옵션 레이블 작성
+      manage_options: 옵션 관리
+      column_code: 열 코드
+      properties_helper: 테이블 특성을 저장하려면 테이블 구조와 2개 이상의 열을 먼저 정의해야 합니다
+      table_structure_helper_text: 테이블 특성에는 열이 2개 이상 있어야 합니다. 첫 번째 열은 항상 '선택' 열 유형이어야 합니다. 첫 번째 열을 생성한 후에는 옵션을 추가해야 합니다. 추가하려면 '옵션 관리'를 클릭하고 최대 {{ limit }}개의 옵션을 추가하십시오. 그런 다음, 이 각각의 옵션을 제품 테이블의 열로 사용할 수 있습니다.
+      table_structure_helper_link: 이 문서에서는 테이블 특성을 자세히 배울 수 있습니다.
+      limit_option_reached: '{{ limit }}개 옵션 제한에 도달했습니다.'
+      template_label: 기본 '{{ templateLabel }}' 테이블 선택
+      delete_column_helper: 이 열을 삭제하면 '{{ attributeLabel }}' 테이블 특성을 사용하는 모든 제품에서 해당 열의 모든 값이 제거됩니다.
+      delete_first_column_option_helper: 이 옵션을 삭제하면 '{{ attributeLabel }}' 테이블 특성을 사용하는 모든 제품에서 전체 행이 삭제됩니다.
+      delete_other_column_option_helper: 이 옵션을 삭제하면 '{{ attributeLabel }}' 테이블 특성을 사용하는 모든 제품에서 셀 값이 제거됩니다.
+      no_options_helper: 첫 번째 옵션을 추가하십시오.
+      no_options: 옵션을 찾을 수 없습니다.
+      please_try_again: 다시 시도하십시오.
+      first_column_type_helper: 테이블의 첫 번째 열은 항상 '셀렉트' 열 유형입니다.
+      discard_changes: 이 페이지를 나가면 셀렉트 옵션에 대한 변경 사항이 손실됩니다.
+    product:
+      items_per_page: 페이지당 항목 수
+      current_items: "{{ minItem }}~{{ maxItem }}/{{ itemCount }}"
+      current_page: "{{ currentPage }}/{{ pageCount }}페이지"
+      no_search_result: "죄송합니다. 검색할 라인이 없습니다."
+      no_rows_title: "{{ attributeLabel }} 테이블이 비어 있습니다."
+      no_rows_subtitle: 행을 추가하여 새 속성 정의
+      no_rows_subtitle_on_readonly: 이 특성을 편집하려면 특성 설정 페이지로 이동하거나 PIM 관리자에게 문의하십시오.
+      no_add_options_title: 행 추가
+      no_add_options: '''{{ attributeLabel }}'' 옵션 관리'
+      no_add_options_unallowed: '''{{ attributeLabel }}'' 옵션을 관리하려면 PIM 관리자에게 문의하십시오'
+      no_add_options_link: 여기
+      no_edit_permission: 편집 권한이 없습니다
+      actions:
+        delete_row: 이 행 삭제
+        clear_row: 이 행 지우기
+        move_first: 맨 처음 위치로 이동
+        move_last: 맨 끝 위치로 이동
+      order: 주문
+  properties:
+    data_type:
+      text: 텍스트
+      number: 숫자
+      boolean: 예/아니요
+      select: 선택
+  validations:
+    column_code_must_be_filled: 코드를 입력해야 합니다
+    column_data_type_must_be_filled: 데이터 유형을 입력해야 합니다
+    invalid_column_code: 열 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+    invalid_code: 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+    duplicated_column_code: 각 열에는 고유한 코드가 필요합니다. {{ duplicateCode }}은(는) 이미 사용 중입니다
+    duplicated_select_code: 각 코드는 고유해야 합니다
+    max_greater_than_min: 최댓값은 최솟값보다 커야 합니다
+    max_length: 최대 글자 수(최대 100자)
+    min: 최솟값
+    max: 최댓값
+    decimals_allowed: 소수 값 허용됨
+    max_length_range: 최대 글자 수를 {{ maximum }} 이하로 정의하십시오
+  templates:
+    choose_template: 템플릿 선택
+    choose_template_subtitle: 이 템플릿은 예시일 뿐이며 이대로 사용할 필요는 없습니다. 특성 구조를 저장하기 전에 편집할 수 있습니다.
+    empty_table: 빈 테이블
+    nutrition: 영양성분
+    nutrition-unitedkingdom: 영양성분(영국)
+    nutrition-europe: 평균 영양성분 값(유럽)
+    nutrition-unitedstates: 영양성분 정보(미국)
+    food_composition: 식품 성분
+    clothing_composition: 의류 소재
+    dimensions: 제품 크기
+    dimensions-metric: 크기(미터법)
+    dimensions-imperial: 크기(야드파운드법)
+    packaging: 포장 크기
+    packaging-metric: 포장 크기(미터법)
+    packaging-imperial: 포장 크기(야드파운드법)
+  product_edit_form:
+    add_rows: 행 추가
+    search: 검색
+  datagrid:
+    placeholder: 미리보기를 사용할 수 없습니다. 테이블 특성 값에 액세스하려면 제품 페이지를 여십시오
+    any: 전체
+    select_your_column: 열 선택
+    select_your_row: 행 선택
+    select_your_operator: 연산자 선택
+    select_your_value: 값 선택
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: 테이블
+batch_jobs:
+  csv_table_attribute_options_export.label: CSV로 테이블 특성 셀렉트 옵션 내보내기
+  xlsx_table_attribute_options_export.label: XLSX로 테이블 특성 셀렉트 옵션 내보내기
+  csv_table_attribute_options_import.label: CSV로 테이블 특성 셀렉트 옵션 가져오기
+  xlsx_table_attribute_options_import.label: XLSX로 테이블 특성 셀렉트 옵션 가져오기

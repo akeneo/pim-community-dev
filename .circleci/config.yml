@@ -2074,14 +2074,14 @@ workflows:
           name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
           matrix:
             parameters:
-              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+              PRODUCT_TYPE: ["srnt", "grth"]
           requires:
             - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
       - test_upgrade_from_last_release:
           name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
           matrix:
             parameters:
-              PRODUCT_TYPE: ["srnt", "grth", "tria"]
+              PRODUCT_TYPE: ["srnt", "grth"]
           requires:
             - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
       - release:
@@ -2105,10 +2105,17 @@ workflows:
           name: "[<< matrix.PRODUCT_TYPE >>] Release"
           matrix:
             parameters:
-              PRODUCT_TYPE: ["grth", "tria"]
+              PRODUCT_TYPE: ["grth"]
           requires:
             - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
             - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+      - release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["tria"]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
 
   nightly_srnt_release:
       triggers:
