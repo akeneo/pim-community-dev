@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class SchedulePeriodicTasksCommand extends Command
 {
-    /** @var SchedulePeriodicTasks */
-    private $schedulePeriodicTasks;
+    protected static $defaultName = 'pim:data-quality-insights:schedule-periodic-tasks';
+    protected static $defaultDescription = 'Schedule the periodic tasks of Data-Quality-Insights.';
 
-    /** @var FeatureFlag */
-    private $featureFlag;
+    private SchedulePeriodicTasks $schedulePeriodicTasks;
+    private FeatureFlag $featureFlag;
 
     public function __construct(SchedulePeriodicTasks $schedulePeriodicTasks, FeatureFlag $featureFlag)
     {
@@ -30,23 +30,16 @@ final class SchedulePeriodicTasksCommand extends Command
         $this->featureFlag = $featureFlag;
     }
 
-    protected function configure()
-    {
-        $this
-            ->setName('pim:data-quality-insights:schedule-periodic-tasks')
-            ->setDescription('Schedule the periodic tasks of Data-Quality-Insights.');
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
-            return 0;
+            return Command::SUCCESS;
         }
         $this->schedulePeriodicTasks->schedule(new \DateTimeImmutable('-1 DAY'));
 
         $output->writeln('Data-Quality-Insights periodic tasks have been scheduled');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
