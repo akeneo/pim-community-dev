@@ -28,7 +28,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
     /** @var string */
     const CONNECTION_FAILED = 'Failed to connect to server';
-    private const PROHIBITED_REDIRECTION = 'Detected a prohibited redirection from the server';
+    private const PROHIBITED_REDIRECTION = 'Prohibited redirection detected from the server.';
 
     private ClientInterface $client;
 

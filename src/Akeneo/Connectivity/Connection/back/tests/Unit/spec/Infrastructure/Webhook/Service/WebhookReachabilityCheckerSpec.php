@@ -126,7 +126,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '301 Detected a prohibited redirection from the server')
+            new UrlReachabilityStatus(false, '301 Prohibited redirection detected from the server.')
         );
     }
 
@@ -149,7 +149,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '302 Detected a prohibited redirection from the server')
+            new UrlReachabilityStatus(false, '302 Prohibited redirection detected from the server.')
         );
     }
 
@@ -172,7 +172,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '303 Detected a prohibited redirection from the server')
+            new UrlReachabilityStatus(false, '303 Prohibited redirection detected from the server.')
         );
     }
 
@@ -195,7 +195,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '307 Detected a prohibited redirection from the server')
+            new UrlReachabilityStatus(false, '307 Prohibited redirection detected from the server.')
         );
     }
 
@@ -218,7 +218,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '308 Detected a prohibited redirection from the server')
+            new UrlReachabilityStatus(false, '308 Prohibited redirection detected from the server.')
         );
     }
 
