@@ -210,7 +210,7 @@ class FiltersColumn extends BaseView {
     for (let groupName in groupedFilters) {
       const group: GridFilter[] = groupedFilters[groupName];
       const groupElement = this.renderFilterGroup(group, groupName);
-      list.appendChild($(groupElement).get(0));
+      list.appendChild($(groupElement).get(0) as any);
     }
 
     filterColumn.append(list);
