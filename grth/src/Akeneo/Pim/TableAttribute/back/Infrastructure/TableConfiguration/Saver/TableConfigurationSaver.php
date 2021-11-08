@@ -25,7 +25,10 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOption;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 class TableConfigurationSaver implements SaverInterface
@@ -34,6 +37,7 @@ class TableConfigurationSaver implements SaverInterface
     private SelectOptionCollectionRepository $optionCollectionRepository;
     private ColumnFactory $columnFactory;
     private TableConfigurationUpdater $tableConfigurationUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
@@ -70,11 +74,23 @@ class TableConfigurationSaver implements SaverInterface
                 }
 
                 Assert::isArray($rawColumnDefinition['options'] ?? []);
+                $selectOptionCollection = $this->optionCollectionRepository->getByColumn(
+                    $attribute->getCode(),
+                    ColumnCode::fromString($rawColumnDefinition['code'])
+                );
+                $writeSelectOptionCollection = WriteSelectOptionCollection::fromReadSelectOptionCollection(
+                    $selectOptionCollection
+                );
+                $columnCode = ColumnCode::fromString($rawColumnDefinition['code']);
+                $writeSelectOptionCollection->update($columnCode, $rawColumnDefinition['options'] ?? []);
                 $this->optionCollectionRepository->save(
                     $attribute->getCode(),
-                    ColumnCode::fromString($rawColumnDefinition['code']),
-                    SelectOptionCollection::fromNormalized($rawColumnDefinition['options'] ?? [])
+                    $columnCode,
+                    $writeSelectOptionCollection
                 );
+                foreach ($writeSelectOptionCollection->releaseEvents() as $event) {
+                    $this->eventDispatcher->dispatch($event);
+                }
             }
         }
     }

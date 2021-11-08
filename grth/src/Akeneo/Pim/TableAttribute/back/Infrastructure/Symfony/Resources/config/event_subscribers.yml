@@ -17,3 +17,12 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\CleanOptionsJobSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - 'clean_table_values_from_deleted_options'
+        tags:
+            - { name: kernel.event_subscriber }
