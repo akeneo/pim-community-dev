@@ -23,7 +23,7 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
 
     public function up(Schema $schema): void
     {
-        $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchColumn();
+        $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchOne();
         if ($auditDataExists > 0) {
             return;
         }
@@ -76,7 +76,7 @@ SQL;
             'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
-        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
+        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAllAssociative();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
@@ -107,7 +107,7 @@ SQL;
             'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
-        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
+        $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAllAssociative();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
@@ -150,7 +150,7 @@ SQL;
 SELECT code FROM akeneo_connectivity_connection
 WHERE flow_type = 'data_source'
 SQL;
-            $this->connectionsData = $this->connection->executeQuery($selectConnectionsSql)->fetchAll();
+            $this->connectionsData = $this->connection->executeQuery($selectConnectionsSql)->fetchAllAssociative();
         }
 
         return $this->connectionsData;

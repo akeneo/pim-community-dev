@@ -46,7 +46,7 @@ final class Version_4_0_20200117080512_remove_product_model_empty_raw_values
                 $lastProductModelCode !== null ? sprintf('WHERE code > "%s"', $lastProductModelCode) : '',
                 self::BATCH_SIZE
             );
-            $rows = $this->connection->executeQuery($sql)->fetchAll();
+            $rows = $this->connection->executeQuery($sql)->fetchAllAssociative();
 
             foreach ($rows as $row) {
                 $productModelsToProcess = true;

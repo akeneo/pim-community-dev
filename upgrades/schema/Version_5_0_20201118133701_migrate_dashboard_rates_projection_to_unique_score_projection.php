@@ -119,7 +119,7 @@ SQL;
         $lines = [];
         $stmt = $this->db->executeQuery($query);
 
-        while ($line = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($line = $stmt->fetchAssociative()) {
             $lines[] = $line;
             if (count($lines) >= $bulkSize) {
                 yield $lines;
@@ -154,7 +154,7 @@ SQL;
         $statement = $this->db->executeQuery($query);
 
         $channelsLocales = [];
-        foreach ($statement->fetchAll() as $channelLocale) {
+        foreach ($statement->fetchAllAssociative() as $channelLocale) {
             $channelsLocales[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
         }
 

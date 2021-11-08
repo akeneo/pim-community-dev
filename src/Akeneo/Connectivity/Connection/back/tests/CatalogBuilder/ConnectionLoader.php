@@ -35,9 +35,10 @@ class ConnectionLoader
         string $code,
         string $label,
         string $flowType,
-        bool $auditable
+        bool $auditable,
+        ?string $type = null
     ): ConnectionWithCredentials {
-        $command = new CreateConnectionCommand($code, $label, $flowType, $auditable);
+        $command = new CreateConnectionCommand($code, $label, $flowType, $auditable, $type);
 
         return $this->createConnectionHandler->handle($command);
     }

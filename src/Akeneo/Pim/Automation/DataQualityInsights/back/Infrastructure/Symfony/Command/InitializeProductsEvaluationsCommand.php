@@ -19,12 +19,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class InitializeProductsEvaluationsCommand extends Command
 {
+    protected static $defaultName = 'pim:data-quality-insights:initialize-products-evaluations';
+    protected static $defaultDescription = 'Initialize the evaluations of all the products and product models.';
+
     private const BATCH_SIZE = 100;
 
     private Connection $dbConnection;
-
     private CriteriaEvaluationRegistry $productCriteriaRegistry;
-
     private CriteriaEvaluationRegistry $productModelCriteriaRegistry;
 
     public function __construct(
@@ -41,10 +42,7 @@ final class InitializeProductsEvaluationsCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pim:data-quality-insights:initialize-products-evaluations')
-            ->setDescription('Initialize the evaluations of all the products and product models.')
-            ->setHidden(true);
+        $this->setHidden(true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -61,14 +59,14 @@ final class InitializeProductsEvaluationsCommand extends Command
 
             if ($confirm !== true) {
                 $io->text('Operation aborted. Nothing has been done.');
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
         $this->initializeProducts($io);
         $this->initializeProductModels($io);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function initializeProducts(SymfonyStyle $io): void

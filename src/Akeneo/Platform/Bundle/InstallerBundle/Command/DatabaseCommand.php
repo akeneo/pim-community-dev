@@ -7,7 +7,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -31,6 +31,7 @@ use Symfony\Component\Process\Process;
 class DatabaseCommand extends Command
 {
     protected static $defaultName = 'pim:installer:db';
+    protected static $defaultDescription = 'Prepare database and load fixtures';
 
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
@@ -65,8 +66,6 @@ class DatabaseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pim:installer:db')
-            ->setDescription('Prepare database and load fixtures')
             ->addOption(
                 'fixtures',
                 null,

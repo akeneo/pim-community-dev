@@ -71,7 +71,7 @@ final class Version_5_0_20200217155537_add_measurement_table_Integration extends
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
         $stmt = $connection->executeQuery('SELECT COUNT(*) FROM akeneo_measurement;');
-        $actualNumberOfMeasurements = $stmt->fetch(\PDO::FETCH_COLUMN);
+        $actualNumberOfMeasurements = $stmt->fetchOne();
         Assert::assertEquals($expectedNumberOfMeasurements, $actualNumberOfMeasurements);
     }
 }

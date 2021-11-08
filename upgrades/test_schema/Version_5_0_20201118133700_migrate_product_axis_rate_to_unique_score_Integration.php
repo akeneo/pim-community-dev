@@ -23,7 +23,7 @@ class Version_5_0_20201118133700_migrate_product_axis_rate_to_unique_score_Integ
     SELECT count(scores) as total FROM pim_data_quality_insights_product_score
     SQL;
 
-        $result = $this->getConnection()->executeQuery($query)->fetchColumn();
+        $result = $this->getConnection()->executeQuery($query)->fetchOne();
 
         $this->assertEquals($result, 0);
     }
@@ -79,7 +79,7 @@ SQL);
             [
                 'productId' => $productId,
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         $this->assertEquals($result, $scores);
     }

@@ -10,7 +10,7 @@ final class Version_5_0_20201211081205_fix_duration_conversion extends AbstractM
     public function up(Schema $schema) : void
     {
         $query = "SELECT standard_unit, units FROM akeneo_measurement WHERE code = 'Duration';";
-        $duration = $this->connection->executeQuery($query)->fetch(\PDO::FETCH_ASSOC);
+        $duration = $this->connection->executeQuery($query)->fetchAssociative();
 
         if (null === $duration) {
             // The duration measurement was removed.

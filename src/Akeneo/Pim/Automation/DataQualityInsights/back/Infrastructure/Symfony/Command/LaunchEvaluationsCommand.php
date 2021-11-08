@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\Console\Command\Command;
@@ -19,11 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class LaunchEvaluationsCommand extends Command
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
+    protected static $defaultName = 'pim:data-quality-insights:evaluations';
+    protected static $defaultDescription = 'Launch the evaluations of products and structure';
 
-    /** @var RunUniqueProcessJob */
-    private $runUniqueProcessJob;
+    private FeatureFlag $featureFlag;
+    private RunUniqueProcessJob $runUniqueProcessJob;
 
     public function __construct(
         RunUniqueProcessJob $runUniqueProcessJob,
@@ -35,18 +34,11 @@ class LaunchEvaluationsCommand extends Command
         $this->runUniqueProcessJob = $runUniqueProcessJob;
     }
 
-    protected function configure()
-    {
-        $this
-            ->setName('pim:data-quality-insights:evaluations')
-            ->setDescription('Launch the evaluations of products and structure');
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
-            return 0;
+            return Command::SUCCESS;
         }
 
         try {
@@ -57,6 +49,6 @@ class LaunchEvaluationsCommand extends Command
             exit(0);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
