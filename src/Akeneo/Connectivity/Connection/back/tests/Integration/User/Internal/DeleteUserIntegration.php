@@ -25,7 +25,7 @@ class DeleteUserIntegration extends TestCase
 
         $this->getDeleteUserService()->execute(new UserId($user->id()));
 
-        $results = $this->getDatabaseConnection()->fetchAll('SELECT username FROM oro_user');
+        $results = $this->getDatabaseConnection()->fetchAllAssociative('SELECT username FROM oro_user');
         Assert::assertCount(0, $results);
     }
 

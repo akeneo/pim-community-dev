@@ -141,7 +141,7 @@ SQL;
         $rawValuesInDb = $this->get('database_connection')->executeQuery(
             'SELECT JSON_EXTRACT(raw_values, "$.a_multi_select") from pim_catalog_product where identifier = :identifier',
             ['identifier' => 'product_with_duplicate_options'],
-        )->fetchColumn();
+        )->fetchOne();
         Assert::assertEquals(
             ['optionA', 'OPTIONA', 'optionb', 'OptionB'],
             \json_decode($rawValuesInDb, true)['<all_channels>']['<all_locales>'] ?? null

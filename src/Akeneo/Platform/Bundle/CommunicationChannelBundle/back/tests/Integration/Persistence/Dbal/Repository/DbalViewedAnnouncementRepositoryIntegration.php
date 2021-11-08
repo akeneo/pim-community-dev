@@ -84,7 +84,7 @@ class DbalViewedAnnouncementRepositoryIntegration extends TestCase
 SQL;
         $statement = $this->dbalConnection->executeQuery($query);
 
-        return $statement->fetch();
+        return $statement->fetchAssociative();
     }
 
     private function selectViewedAnnouncementByUserFromDb(int $userId)
@@ -96,6 +96,6 @@ SQL;
 SQL;
         $statement = $this->dbalConnection->executeQuery($query, ['userId' => $userId]);
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 }

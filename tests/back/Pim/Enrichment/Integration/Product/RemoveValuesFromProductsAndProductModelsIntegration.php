@@ -115,7 +115,7 @@ SQL,
 
                 'product_identifiers' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (int) $result;
     }
@@ -143,7 +143,7 @@ SQL,
 
                 'product_model_codes' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return (int) $result;
     }

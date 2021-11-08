@@ -42,7 +42,7 @@ class CountProductValues implements CountQuery
            SELECT SUM(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) as sum_product_values
            FROM pim_catalog_product
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
 
         $volume = new CountVolume((int) $result['sum_product_values'], $this->limit, self::VOLUME_NAME);
 

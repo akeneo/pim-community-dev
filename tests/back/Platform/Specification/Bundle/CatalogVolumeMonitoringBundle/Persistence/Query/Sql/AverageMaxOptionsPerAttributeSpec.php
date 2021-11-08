@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Per
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
@@ -29,10 +30,10 @@ class AverageMaxOptionsPerAttributeSpec extends ObjectBehavior
         $this->shouldImplement(AverageMaxQuery::class);
     }
 
-    function it_gets_average_and_max_volume($connection, Statement $statement)
+    function it_gets_average_and_max_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['average' => '4', 'max' => '10']);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['average' => '4', 'max' => '10']);
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_options_per_attribute'));
     }
 }

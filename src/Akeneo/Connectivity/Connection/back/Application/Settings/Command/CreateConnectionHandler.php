@@ -62,7 +62,8 @@ final class CreateConnectionHandler
             $client->id(),
             $user->id(),
             null,
-            $command->auditable()
+            $command->auditable(),
+            $command->type()
         );
         $this->repository->create($connection);
 

@@ -60,6 +60,6 @@ SELECT type
 FROM oro_access_role
 SQL;
 
-        return array_column($this->getConnection()->fetchAll($query), 'type');
+        return array_column($this->getConnection()->fetchAllAssociative($query), 'type');
     }
 }

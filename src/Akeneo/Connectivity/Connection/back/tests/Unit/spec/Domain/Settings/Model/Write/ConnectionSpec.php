@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
@@ -20,7 +21,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -29,7 +30,8 @@ class ConnectionSpec extends ObjectBehavior
             42,
             24,
             null,
-            true
+            true,
+            'connection_type'
         );
     }
 
@@ -119,5 +121,25 @@ class ConnectionSpec extends ObjectBehavior
 
         $this->disableAudit();
         $this->auditable()->shouldBe(false);
+    }
+
+    public function it_returns_the_type(): void
+    {
+        $this->type()->shouldBeLike(new ConnectionType('connection_type'));
+    }
+
+    public function it_returns_the_default_type_when_type_is_omitted(): void
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            42,
+            24,
+            null,
+            true
+        );
+
+        $this->type()->shouldBeLike(new ConnectionType('default'));
     }
 }

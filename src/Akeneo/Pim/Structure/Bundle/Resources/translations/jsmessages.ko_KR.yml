@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: 서식 있는 텍스트 편집기 활성화됨
     default_value: 기본값
+    code:
+      must_be_filled: 코드를 입력해야 합니다
+      invalid: 코드가 유효하지 않습니다
+      not_available: 이 코드는 사용할 수 없습니다
+      is_duplicate: 이 코드는 이미 사용 중입니다
   module:
     add_attribute:
       no_available_attributes: 추가할 특성이 더 이상 없습니다.
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: 이 특성을 삭제하시겠습니까?
       product_count: '{0}0개 제품|{1}1개 제품|]1, Inf[{{ count }}개 제품'
       product_model_count: '{0}0개 제품 모델|{1}1개 제품 모델|]1, Inf[{{ count }}개 제품 모델'
+      used: ']-Inf,1]이 특성에 대한 값 세트가 현재 있습니다. 이 값은 제거됩니다.|]1, Inf[이 특성에 대한 값 세트가 현재 있습니다. 이 값은 제거됩니다.'
       helper:
         content: 기존 특성 값에 계속 액세스하면서 특성 유형을 변경하거나 지역화 또는 확장 가능하도록 만들어야 하는 경우
+        link: 자세한 내용은 도움말을 확인하십시오.
       type: '''{{ attributeCode }}''을(를) 입력하십시오.'
       confirm_from_family: 패밀리에서 이 특성을 삭제하시겠습니까?
       confirm_from_group: 이 특성 그룹에서 {{ attribute }} 특성을 제거하시겠습니까?

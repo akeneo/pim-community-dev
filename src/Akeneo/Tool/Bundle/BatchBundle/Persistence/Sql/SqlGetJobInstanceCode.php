@@ -29,7 +29,7 @@ final class SqlGetJobInstanceCode implements GetJobInstanceCode
         WHERE execution.id = :id
         SQL;
 
-        $code = $this->connection->executeQuery($sql, ['id' => $jobExecutionId])->fetchColumn();
+        $code = $this->connection->executeQuery($sql, ['id' => $jobExecutionId])->fetchOne();
 
         return false === $code ? null : $code;
     }

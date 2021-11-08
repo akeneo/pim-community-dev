@@ -89,6 +89,6 @@ SELECT body
 FROM messenger_messages
 SQL;
 
-        return $this->dbalConnection->executeQuery($sql)->fetchAll(FetchMode::COLUMN);
+        return $this->dbalConnection->executeQuery($sql)->fetchFirstColumn();
     }
 }

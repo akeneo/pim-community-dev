@@ -25,7 +25,7 @@ WHERE
 SQL;
 
         $sql = strtr($sql, ['{db_name}' => $this->connection->getDatabase()]);
-        return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
+        return $this->connection->executeQuery($sql)->fetchFirstColumn();
     }
 
     public function up(Schema $schema) : void

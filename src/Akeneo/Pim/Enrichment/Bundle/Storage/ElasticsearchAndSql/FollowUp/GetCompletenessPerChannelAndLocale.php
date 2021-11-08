@@ -114,7 +114,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                 root.parent_id IS NULL
 SQL;
 
-        $rows = $this->connection->executeQuery($sql)->fetchAll();
+        $rows = $this->connection->executeQuery($sql)->fetchAllAssociative();
 
         foreach ($rows as $i => $categoriesCodeAndLocalesByChannel) {
             $rows[$i]['locales'] = \json_decode($categoriesCodeAndLocalesByChannel['locales']);

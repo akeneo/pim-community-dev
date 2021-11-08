@@ -151,7 +151,7 @@ class Version_4_0_20191031124707_update_from_clients_to_connections_Integration 
 
     private function assertClientCount(int $expectedCount): void
     {
-        $results = $this->getDbalConnection()->fetchAll('SELECT * FROM pim_api_client');
+        $results = $this->getDbalConnection()->fetchAllAssociative('SELECT * FROM pim_api_client');
         Assert::assertCount($expectedCount, $results);
     }
 
@@ -162,13 +162,13 @@ class Version_4_0_20191031124707_update_from_clients_to_connections_Integration 
 SELECT * FROM pim_api_client WHERE id = :id AND random_id = :random_id AND secret = :secret AND label = :label
 SQL;
 
-        $results = $this->getDbalConnection()->fetchAll($sqlQuery, ['id' => $id, 'random_id' => $randomId, 'secret' => $secret, 'label' => $label]);
+        $results = $this->getDbalConnection()->fetchAllAssociative($sqlQuery, ['id' => $id, 'random_id' => $randomId, 'secret' => $secret, 'label' => $label]);
         Assert::assertCount(1, $results);
     }
 
     private function assertConnectionCount(int $expectedCount): void
     {
-        $results = $this->getDbalConnection()->fetchAll('SELECT * FROM akeneo_connectivity_connection');
+        $results = $this->getDbalConnection()->fetchAllAssociative('SELECT * FROM akeneo_connectivity_connection');
         Assert::assertCount($expectedCount, $results);
     }
 
@@ -180,7 +180,7 @@ SELECT * FROM akeneo_connectivity_connection conn
 INNER JOIN pim_api_client cli ON cli.id = conn.client_id
 WHERE conn.code = :code AND conn.label = :label AND conn.client_id = :id AND cli.random_id = :random_id
 SQL;
-        $results = $this->getDbalConnection()->fetchAll($sqlQuery, ['id' => $id, 'random_id' => $randomId, 'code' => $code, 'label' => $label]);
+        $results = $this->getDbalConnection()->fetchAllAssociative($sqlQuery, ['id' => $id, 'random_id' => $randomId, 'code' => $code, 'label' => $label]);
         Assert::assertCount(1, $results);
     }
 

@@ -157,14 +157,12 @@ SQL;
         );
 
         $evaluations = [];
-        while ($evaluation = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($evaluation = $stmt->fetchAssociative()) {
             $evaluationResult = isset($evaluation['result']) ? json_decode($evaluation['result'], true) : null;
-            $evaluations[$evaluation['product_id']] = is_array($evaluation)
-                ? [
-                    'attributes_with_rates' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']] ?? [],
-                    'total_number_of_attributes' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0
-                ]
-                : null;
+            $evaluations[$evaluation['product_id']] = [
+                'attributes_with_rates' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']] ?? [],
+                'total_number_of_attributes' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0,
+            ];
         }
 
         return $evaluations;

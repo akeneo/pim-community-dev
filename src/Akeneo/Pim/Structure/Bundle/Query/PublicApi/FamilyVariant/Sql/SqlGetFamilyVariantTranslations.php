@@ -39,7 +39,7 @@ SQL;
                 'locale' => $locale
             ],
             ['familyVariantCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $familyVariantTranslations = [];
         foreach ($rows as $row) {

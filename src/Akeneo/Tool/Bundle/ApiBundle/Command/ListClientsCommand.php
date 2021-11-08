@@ -18,26 +18,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListClientsCommand extends Command
 {
     protected static $defaultName = 'pim:oauth-server:list-clients';
+    protected static $defaultDescription = 'Lists all existing pairs of client id / secret for the web API';
 
-    /** @var EntityRepository */
-    private $clientRepository;
+    private EntityRepository $clientRepository;
 
     public function __construct(EntityRepository $clientRepository)
     {
         parent::__construct();
 
         $this->clientRepository = $clientRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('pim:oauth-server:list-clients')
-            ->setDescription('Lists all existing pairs of client id / secret for the web API')
-        ;
     }
 
     /**
@@ -50,7 +39,7 @@ class ListClientsCommand extends Command
         if (empty($clients)) {
             $output->writeln('No client is currently registered.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $table = new Table($output);
@@ -66,6 +55,6 @@ class ListClientsCommand extends Command
 
         $table->render($output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

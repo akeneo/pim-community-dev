@@ -28,7 +28,7 @@ FROM akeneo_file_storage_file_info
 WHERE file_key = :filePath
 SQL;
 
-        $count = $this->dbalConnection->executeQuery($selectSQL, ['filePath' => $filePath])->fetch()['count'];
+        $count = $this->dbalConnection->executeQuery($selectSQL, ['filePath' => $filePath])->fetchAssociative()['count'];
 
         return boolval($count);
     }

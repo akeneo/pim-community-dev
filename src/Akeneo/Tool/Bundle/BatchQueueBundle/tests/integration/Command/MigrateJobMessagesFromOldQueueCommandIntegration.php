@@ -115,7 +115,7 @@ final class MigrateJobMessagesFromOldQueueCommandIntegration extends TestCase
     {
         $query = 'SELECT count(id) FROM akeneo_batch_job_execution_queue WHERE consumer IS NULL';
 
-        return (int) $this->connection->executeQuery($query)->fetchColumn();
+        return (int) $this->connection->executeQuery($query)->fetchOne();
     }
 
     private function createJobQueueTableIfNeeded(): void

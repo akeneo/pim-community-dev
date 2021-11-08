@@ -43,7 +43,8 @@ SELECT
     u.username,
     urole.role_id,
     g.id as group_id,
-    c.auditable
+    c.auditable,
+    c.type
 FROM akeneo_connectivity_connection c
 INNER JOIN pim_api_client client ON c.client_id = client.id
 INNER JOIN oro_user u ON c.user_id = u.id
@@ -60,7 +61,7 @@ SQL;
                 'code' => $code,
                 'default_group' => User::GROUP_DEFAULT
             ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         if (0 === count($data)) {
             return null;
@@ -84,7 +85,8 @@ SQL;
             $row['username'],
             $row['role_id'],
             $row['group_id'],
-            (bool) $row['auditable']
+            (bool) $row['auditable'],
+            $row['type']
         );
     }
 }

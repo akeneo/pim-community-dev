@@ -52,7 +52,7 @@ SQL;
 SELECT COUNT(*) FROM pim_data_quality_insights_product_score;
 SQL;
 
-        $countScores = $this->get('database_connection')->executeQuery($query)->fetchColumn();
+        $countScores = $this->get('database_connection')->executeQuery($query)->fetchOne();
 
         $this->assertSame('0', $countScores, 'Products scores should be empty.');
     }
@@ -63,7 +63,7 @@ SQL;
 SELECT id FROM akeneo_batch_job_instance WHERE code = 'data_quality_insights_recompute_products_scores';
 SQL;
 
-        $jobInstanceId = $this->get('database_connection')->executeQuery($findJobInstance)->fetchColumn();
+        $jobInstanceId = $this->get('database_connection')->executeQuery($findJobInstance)->fetchOne();
         $this->assertNotFalse($jobInstanceId, 'Job instance not found.');
     }
 }

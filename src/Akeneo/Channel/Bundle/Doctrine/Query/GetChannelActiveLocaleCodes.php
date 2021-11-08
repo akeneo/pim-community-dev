@@ -38,6 +38,6 @@ SQL;
 
         return array_map(function ($value) {
             return $value['code'];
-        }, $statement->fetchAll());
+        }, $statement->fetchAllAssociative());
     }
 }

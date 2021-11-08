@@ -45,7 +45,7 @@ FROM oro_user
 WHERE oro_user.user_type = :type
 SQL;
 
-        $result = $this->connection->executeQuery($sql, ['type' => User::TYPE_USER])->fetch();
+        $result = $this->connection->executeQuery($sql, ['type' => User::TYPE_USER])->fetchAssociative();
         $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

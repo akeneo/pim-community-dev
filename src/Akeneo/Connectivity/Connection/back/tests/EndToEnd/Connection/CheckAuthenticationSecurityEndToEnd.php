@@ -43,7 +43,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateClientSecret('magento');
@@ -55,7 +55,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -124,7 +124,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateClientSecret('magento');
@@ -136,7 +136,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -162,7 +162,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateUserPassword('magento');
@@ -174,7 +174,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -240,7 +240,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateUserPassword('magento');
@@ -252,7 +252,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 

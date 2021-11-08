@@ -75,7 +75,7 @@ SQL;
             [
                 'locale' => $translationLocaleCode
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return $categories;
     }

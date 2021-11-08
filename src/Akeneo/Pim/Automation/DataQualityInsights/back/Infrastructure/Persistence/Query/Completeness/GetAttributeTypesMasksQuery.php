@@ -90,7 +90,7 @@ SQL;
                 'familyCodes' => Connection::PARAM_STR_ARRAY,
                 'attributeTypes' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         $masksPerFamily = array_fill_keys($familyCodes, []);
         foreach ($rows as $masksPerChannelAndLocale) {

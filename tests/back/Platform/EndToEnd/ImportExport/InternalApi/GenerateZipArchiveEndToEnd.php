@@ -40,7 +40,7 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
             INNER JOIN akeneo_batch_job_instance inst ON ex.job_instance_id = inst.id
             WHERE inst.code = 'csv_product_export_with_media'
             SQL
-        )->fetchColumn();
+        )->fetchOne();
         $this->authenticate($this->getAdminUser());
 
         // get the content of the generated zip file
