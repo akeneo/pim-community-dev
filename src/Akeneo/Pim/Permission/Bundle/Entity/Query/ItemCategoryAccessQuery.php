@@ -89,7 +89,7 @@ class ItemCategoryAccessQuery
         );
 
         $grantedItemIds = [];
-        foreach ($stmt->fetchAll() as $id) {
+        foreach ($stmt->fetchAllAssociative() as $id) {
             $grantedItemIds[$id['id']] = $id['id'];
         }
 

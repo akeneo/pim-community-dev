@@ -42,7 +42,7 @@ class IdentifiersForQueryResult
     public function normalize(): array
     {
         return [
-            self::IDENTIFIERS   => $this->identifiers,
+            self::IDENTIFIERS => $this->identifiers,
             self::MATCHES_COUNT => $this->matchesCount,
         ];
     }

@@ -57,7 +57,7 @@ SQL;
 
         $statement = $this->sqlConnection->executeQuery($fetch);
 
-        foreach ($statement->fetchAll() as $asset) {
+        foreach ($statement->fetchAllAssociative() as $asset) {
             yield new Asset(
                 $asset['identifier'],
                 json_decode($asset['labels'], true),

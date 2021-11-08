@@ -98,6 +98,7 @@ class CreateAttributeContext implements Context
         ($this->handler)($command);
 
         $attributeDetails = new AttributeDetails();
+        $attributeDetails->identifier = $attributeCode;
         $attributeDetails->referenceEntityIdentifier = $referenceEntityIdentifier;
         $attributeDetails->code = $attributeCode;
         $attributeDetails->type = $type;
@@ -106,6 +107,8 @@ class CreateAttributeContext implements Context
         $attributeDetails->isRequired = $attributeData['is_required'];
         $attributeDetails->labels = $attributeData['labels'];
         $attributeDetails->order = $attributeData['order'];
+        $attributeDetails->additionalProperties = [];
+
         $this->findAttributesDetails->save($attributeDetails);
     }
 

@@ -38,7 +38,7 @@ SELECT
 
 SQL;
 
-        $enterpriseSettingsEntities = $this->dbConnection->executeQuery($query)->fetch(\PDO::FETCH_ASSOC);
+        $enterpriseSettingsEntities = $this->dbConnection->executeQuery($query)->fetchAssociative();
         $enterpriseSettingsEntities = array_map(fn ($rawCount) => intval($rawCount), $enterpriseSettingsEntities);
 
         return array_merge($communitySettingsEntities, $enterpriseSettingsEntities);

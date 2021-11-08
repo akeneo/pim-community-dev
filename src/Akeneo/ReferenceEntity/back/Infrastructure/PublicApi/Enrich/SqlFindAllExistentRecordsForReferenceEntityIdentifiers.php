@@ -61,7 +61,7 @@ SQL;
         $rawResults = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_reduce($rawResults, static function (array $results, array $item) {
             $results[strtolower($item['reference_entity_identifier'])] = json_decode($item['record_code'], true);

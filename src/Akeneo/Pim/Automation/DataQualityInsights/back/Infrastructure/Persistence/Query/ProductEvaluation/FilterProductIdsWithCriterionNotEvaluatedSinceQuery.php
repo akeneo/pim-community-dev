@@ -38,7 +38,7 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQuery implements Filte
         $tableName = $this->tableName;
 
         $query = <<<SQL
-SELECT product_id 
+SELECT product_id
 FROM $tableName AS evaluation
 WHERE product_id IN (:productIds) AND criterion_code = :criterionCode
     AND status != 'pending' AND (evaluated_at IS NULL OR evaluated_at < :evaluateSince)
@@ -58,6 +58,6 @@ SQL;
 
         return array_map(function ($productId) {
             return new ProductId(intval($productId));
-        }, $stmt->fetchAll(\PDO::FETCH_COLUMN));
+        }, $stmt->fetchFirstColumn());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 /*
@@ -61,8 +63,9 @@ class GetConnectorAttributeAction
 
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        } catch (\Exception $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage());
+            $attributeCode = AttributeCode::fromString($code);
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
@@ -71,7 +74,6 @@ class GetConnectorAttributeAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $attributeCode = AttributeCode::fromString($code);
         $attribute = $this->findConnectorAttributeQuery->find($referenceEntityIdentifier, $attributeCode);
 
         if (null === $attribute) {

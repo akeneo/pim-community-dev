@@ -50,7 +50,7 @@ SQL;
             ['identifiers' => $assetIdentifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
-        $rawResults = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rawResults = $statement->fetchAllAssociative();
 
         $results = [];
         foreach ($rawResults as $rawResult) {

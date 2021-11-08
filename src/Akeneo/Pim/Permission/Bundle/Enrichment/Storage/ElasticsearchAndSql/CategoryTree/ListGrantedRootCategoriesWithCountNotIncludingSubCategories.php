@@ -83,7 +83,7 @@ SQL;
                 'locale' => $translationLocaleCode,
                 'user_id' => $userId,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return $categories;
     }

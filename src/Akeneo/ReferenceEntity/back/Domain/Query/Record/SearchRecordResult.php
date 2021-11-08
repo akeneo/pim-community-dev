@@ -28,13 +28,9 @@ class SearchRecordResult
     private const TOTAL_COUNT = 'total_count';
 
     /** @var RecordItem[] */
-    public $items;
-
-    /** @var int */
-    public $matchesCount;
-
-    /** @var int */
-    public $totalCount;
+    public array $items;
+    public int $matchesCount;
+    public int $totalCount;
 
     public function __construct(array $recordItems, int $matchesCount, int $totalCount)
     {
@@ -47,9 +43,7 @@ class SearchRecordResult
     public function normalize(): array
     {
         return [
-            self::ITEMS         => array_map(function (RecordItem $recordItem) {
-                return $recordItem->normalize();
-            }, $this->items),
+            self::ITEMS => array_map(static fn (RecordItem $recordItem) => $recordItem->normalize(), $this->items),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

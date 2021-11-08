@@ -1,5 +1,21 @@
 # 5.0.x
 
+# 5.0.54 (2021-10-29)
+
+## Bug fixes
+
+- PIM-10126: Check if the locale is supported for the spellcheck feature before create spellcheck elements
+
+# 5.0.53 (2021-10-25)
+
+# 5.0.52 (2021-10-22)
+
+## Bug fixes
+
+- PIM-10040: Fix longtext types instead of json type in old catalogs
+
+# 5.0.51 (2021-10-18)
+
 # 5.0.50 (2021-10-11)
 
 # 5.0.49 (2021-10-11)

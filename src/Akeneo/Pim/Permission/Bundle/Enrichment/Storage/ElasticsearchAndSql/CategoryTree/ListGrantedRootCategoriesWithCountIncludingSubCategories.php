@@ -85,7 +85,7 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
                 child.root
         SQL;
 
-        $childrenCategoriesRows = $this->connection->executeQuery($childrenCategoriesSql, ['user_id' => $userId])->fetchAll();
+        $childrenCategoriesRows = $this->connection->executeQuery($childrenCategoriesSql, ['user_id' => $userId])->fetchAllAssociative();
         $childrenCategoriesIndexedByRootId = array_combine(
             array_column($childrenCategoriesRows, 'root_id'),
             array_column($childrenCategoriesRows, 'children_codes')
@@ -119,7 +119,7 @@ SQL;
                 'locale' => $translationLocaleCode,
                 'user_id' => $userId
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $categories = [];
         foreach ($rows as $row) {

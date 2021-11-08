@@ -46,8 +46,7 @@ final class SqlRepository implements Repository
     public function find(string $code): Configuration
     {
         $statement = $this->connection->prepare('SELECT * FROM pim_configuration WHERE code = :code;');
-        $statement->execute(['code' => $code]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->executeQuery(['code' => $code])->fetchAssociative();
 
         if (false === $result) {
             throw new ConfigurationNotFound(

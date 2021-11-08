@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class Limit
 {
-    /** @var int */
-    private $limit;
+    private int $limit;
 
     public function __construct(int $limit)
     {

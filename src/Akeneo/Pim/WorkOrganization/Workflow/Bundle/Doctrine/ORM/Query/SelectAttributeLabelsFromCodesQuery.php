@@ -43,7 +43,7 @@ SQL;
         );
 
         $attributeLabels = array_fill_keys($attributeCodes, []);
-        foreach ($statement->fetchAll() as $resultRow) {
+        foreach ($statement->fetchAllAssociative() as $resultRow) {
             $attributeLabels[$resultRow['code']] = json_decode($resultRow['labels'], true, JSON_THROW_ON_ERROR);
         }
 

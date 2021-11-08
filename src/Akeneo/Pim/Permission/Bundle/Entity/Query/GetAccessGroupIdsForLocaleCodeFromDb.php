@@ -56,7 +56,7 @@ SQL;
             $this->connection->executeQuery(
                 $sql,
                 ['localeCode' => $localeCode],
-            )->fetchAll(),
+            )->fetchAllAssociative(),
             'id'
         );
     }

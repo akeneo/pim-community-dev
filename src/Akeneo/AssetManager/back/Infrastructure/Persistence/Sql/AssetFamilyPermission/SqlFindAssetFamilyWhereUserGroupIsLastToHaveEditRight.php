@@ -51,6 +51,6 @@ class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight
             ['userGroupId' => PDO::PARAM_INT]
         );
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchFirstColumn();
     }
 }

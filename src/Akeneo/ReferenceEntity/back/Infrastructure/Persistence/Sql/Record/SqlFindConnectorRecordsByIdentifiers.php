@@ -73,7 +73,7 @@ SQL;
             ['identifiers' => $identifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $orderedResults = $this->orderRecordItems($results, $identifiers);
 
         return empty($orderedResults) ? [] : $this->hydrateRecords($orderedResults, $recordQuery);

@@ -22,11 +22,9 @@ class EditAllowedExtensionsCommandFactory implements EditAttributeCommandFactory
             throw new \RuntimeException('Impossible to create an edit allowed extensions property command.');
         }
 
-        $command = new EditAllowedExtensionsCommand(
+        return new EditAllowedExtensionsCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['allowed_extensions']
         );
-
-        return $command;
     }
 }

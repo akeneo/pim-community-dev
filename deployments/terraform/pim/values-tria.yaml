@@ -86,6 +86,7 @@ free_trial:
   akeneo_portal_api_client_base_uri: "https://portal.akeneo.com/"
   hotjar_id: "2273004"
   google_analytics_account_id: UA-35417741-13
+  heap_id: "3348469633"
 
 elasticsearch:
   keystore: null

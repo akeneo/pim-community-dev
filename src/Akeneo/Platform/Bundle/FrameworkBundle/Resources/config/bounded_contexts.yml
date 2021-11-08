@@ -36,6 +36,7 @@ parameters:
         # Should probably be part of a "Job" context
         'Akeneo\Tool\Bundle\ConnectorBundle': 'Tool'
 
+        'Akeneo\Tool\Bundle\MeasureBundle': 'Measurement'
         'Akeneo\Tool\Bundle\RuleEngineBundle': 'Rule Engine'
         'Akeneo\Tool\Bundle\VersioningBundle': 'Workflow'
         'Akeneo\Tool\Bundle': 'Tool'

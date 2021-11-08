@@ -47,7 +47,7 @@ SQL;
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         $indexedCodes = [];
         foreach ($results as $result) {

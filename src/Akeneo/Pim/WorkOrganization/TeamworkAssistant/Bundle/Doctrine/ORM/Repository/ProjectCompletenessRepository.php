@@ -158,7 +158,7 @@ SQL;
         }
 
         $connection = $this->entityManager->getConnection();
-        $productIdentifiers = $connection->fetchAll($sql, $parameters);
+        $productIdentifiers = $connection->fetchAllAssociative($sql, $parameters);
 
         return array_column($productIdentifiers, 'identifier');
     }
@@ -211,7 +211,7 @@ SQL;
         }
 
         $connection = $this->entityManager->getConnection();
-        $productIdentifiers = $connection->fetchAll($sql, $parameters);
+        $productIdentifiers = $connection->fetchAllAssociative($sql, $parameters);
 
         return array_column($productIdentifiers, 'identifier');
     }

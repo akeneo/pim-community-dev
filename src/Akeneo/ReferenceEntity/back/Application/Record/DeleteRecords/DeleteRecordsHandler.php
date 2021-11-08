@@ -32,7 +32,7 @@ class DeleteRecordsHandler
     public function __invoke(DeleteRecordsCommand $deleteRecordsCommand): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteRecordsCommand->referenceEntityIdentifier);
-        $recordCodes = array_map(fn ($code) => RecordCode::fromString($code), $deleteRecordsCommand->recordCodes);
+        $recordCodes = array_map(static fn ($code) => RecordCode::fromString($code), $deleteRecordsCommand->recordCodes);
 
         $this->recordRepository->deleteByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
     }

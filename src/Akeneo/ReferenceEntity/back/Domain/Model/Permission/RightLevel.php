@@ -26,8 +26,7 @@ class RightLevel
 
     public const LEVELS = [self::VIEW, self::EDIT];
 
-    /** @var string */
-    private $rightLevel;
+    private string $rightLevel;
 
     private function __construct(string $rightLevel)
     {

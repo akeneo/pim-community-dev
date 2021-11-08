@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 class RecordCollectionData implements ValueDataInterface
 {
     /** @var string[] */
-    private $recordCodes;
+    private array $recordCodes;
 
     private function __construct(array $recordCodes)
     {

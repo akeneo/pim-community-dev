@@ -26,8 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
  */
 class AttributeAsLabelReference
 {
-    /** @var AttributeIdentifier|null */
-    private $identifier;
+    private ?AttributeIdentifier $identifier;
 
     private function __construct(?AttributeIdentifier $attributeIdentifier)
     {
@@ -60,7 +59,7 @@ class AttributeAsLabelReference
 
     public function normalize(): ?string
     {
-        if (null === $this->identifier) {
+        if (!$this->identifier instanceof AttributeIdentifier) {
             return null;
         }
 
@@ -69,6 +68,6 @@ class AttributeAsLabelReference
 
     public function isEmpty(): bool
     {
-        return null === $this->identifier;
+        return !$this->identifier instanceof AttributeIdentifier;
     }
 }

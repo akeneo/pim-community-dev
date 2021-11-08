@@ -50,7 +50,7 @@ SQL;
         $families = $this->dbConnection->executeQuery($query, [
             'familyClass' => $this->familyClass,
             'evaluatedSince' => $evaluatedSince->format(Clock::TIME_FORMAT),
-        ])->fetchAll(\PDO::FETCH_ASSOC);
+        ])->fetchAllAssociative();
 
         return array_map(function ($result) {
             return new UpdatedFamily(intval($result['id']), $this->clock->fromString($result['updated_at']));

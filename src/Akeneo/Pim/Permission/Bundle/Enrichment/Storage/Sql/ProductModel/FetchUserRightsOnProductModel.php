@@ -83,7 +83,7 @@ SQL;
             $sql,
             ['productModelCodes' => $productModelCodes, 'user_id' =>$userId],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function (array $data) use ($userId) {
             return new UserRightsOnProductModel(

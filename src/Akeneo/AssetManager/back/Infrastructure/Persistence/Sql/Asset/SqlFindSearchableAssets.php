@@ -34,7 +34,7 @@ class SqlFindSearchableAssets implements FindSearchableAssetsInterface
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['asset_identifier' => (string) $assetIdentifier]);
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         return $result ? $this->hydrateAssetToIndex(
             $result['identifier'],
@@ -62,7 +62,7 @@ SQL;
             ['asset_identifiers' => Connection::PARAM_STR_ARRAY]
         );
 
-        while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while (false !== $result = $statement->fetchAssociative()) {
             yield $this->hydrateAssetToIndex(
                 $result['identifier'],
                 $result['asset_family_identifier'],

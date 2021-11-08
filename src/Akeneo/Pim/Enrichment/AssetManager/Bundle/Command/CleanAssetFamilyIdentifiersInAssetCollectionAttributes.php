@@ -80,7 +80,7 @@ SQL;
 
         $stmt = $this->dbalConnection->executeQuery($query);
 
-        while ($attribute = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($attribute = $stmt->fetchAssociative()) {
             yield $attribute;
         }
     }

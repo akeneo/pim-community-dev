@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class ReferenceEntityIdentifier
 {
-    /** @var string */
-    private $identifier;
+    private string $identifier;
 
     private function __construct(string $identifier)
     {

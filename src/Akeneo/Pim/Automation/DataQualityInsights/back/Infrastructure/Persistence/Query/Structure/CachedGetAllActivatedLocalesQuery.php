@@ -45,7 +45,7 @@ SQL;
 
         $this->locales = new LocaleCollection(array_map(function ($row) {
             return new LocaleCode($row['code']);
-        }, $statement->fetchAll(\PDO::FETCH_ASSOC)));
+        }, $statement->fetchAllAssociative()));
 
         return $this->locales;
     }

@@ -28,14 +28,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
  */
 class SearchRecord
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
-
-    /** @var FindRecordItemsForIdentifiersAndQueryInterface */
-    private $findRecordItemsForIdentifiersAndQuery;
-
-    /** @var CountRecordsInterface */
-    private $countRecords;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
+    private FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery;
+    private CountRecordsInterface $countRecords;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
@@ -60,8 +55,7 @@ class SearchRecord
     private function countTotalRecords(RecordQuery $recordQuery): int
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($recordQuery->getFilter('reference_entity')['value']);
-        $totalCount = $this->countRecords->forReferenceEntity($referenceEntityIdentifier);
 
-        return $totalCount;
+        return $this->countRecords->forReferenceEntity($referenceEntityIdentifier);
     }
 }
