@@ -33,6 +33,7 @@ final class IndexAction
 
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
         $searchJobExecutionQuery->page = $request->query->getInt('page', 1);
+        $searchJobExecutionQuery->size = $request->query->getInt('size', 25);
 
         $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 

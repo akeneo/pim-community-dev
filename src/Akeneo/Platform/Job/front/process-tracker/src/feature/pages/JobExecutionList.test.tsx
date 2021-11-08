@@ -2,14 +2,14 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {JobExecutionList} from './JobExecutionList';
-import {SearchJobExecutionTableResult} from '../models/SearchJobExecutionTableResult';
+import {JobExecutionTable} from '../models/JobExecutionTable';
 
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
 }));
 
-jest.mock('../hooks/useSearchJobExecutionTableResult', () => ({
-  useSearchJobExecutionTableResult: (): SearchJobExecutionTableResult => ({
+jest.mock('../hooks/useJobExecutionTable', () => ({
+  useJobExecutionTable: (): JobExecutionTable => ({
     rows: [],
     matches_count: 0,
     total_count: 0,

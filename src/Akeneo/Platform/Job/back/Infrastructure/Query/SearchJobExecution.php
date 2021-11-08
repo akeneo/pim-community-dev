@@ -9,6 +9,8 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterfa
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -28,12 +30,15 @@ class SearchJobExecution implements SearchJobExecutionInterface
     {
         $sql = <<<SQL
     SELECT
+        je.id,
         ji.label,
         ji.type,
         je.start_time,
         je.user,
         je.status,
-        SUM(IFNULL(se.warning_count, 0)) as warning_count
+        SUM(IFNULL(se.warning_count, 0)) as warning_count,
+        COUNT(se.job_execution_id) AS current_step_number,
+        JSON_MERGE(JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')), JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))) as errors
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
@@ -73,17 +78,29 @@ SQL;
 
     private function buildJobExecutionRows(array $rawJobExecutions): array
     {
-        return array_map(
-            static fn ($rawJobExecution) =>
-                new JobExecutionRow(
-                    $rawJobExecution['label'],
-                    $rawJobExecution['type'],
-                    $rawJobExecution['start_time'],
-                    $rawJobExecution['user'],
-                    (string) new BatchStatus((int) $rawJobExecution['status']),
-                    (int) $rawJobExecution['warning_count'],
-                ),
-            $rawJobExecutions
-        );
+        $platform = $this->connection->getDatabasePlatform();
+
+        return array_map(function (array $rawJobExecution) use ($platform): JobExecutionRow {
+            $errors = json_decode($rawJobExecution['errors'], true); // TODO revalidate that currently the errors are here
+            $errorCount = 0;
+            foreach ($errors as $error) {
+                $errorCount += count(unserialize($error));
+            }
+
+            $startTime = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
+
+            return new JobExecutionRow(
+                (int) $rawJobExecution['id'],
+                $rawJobExecution['label'],
+                $rawJobExecution['type'],
+                $startTime,
+                $rawJobExecution['user'],
+                (string) new BatchStatus((int) $rawJobExecution['status']),
+                (int) $rawJobExecution['warning_count'],
+                $errorCount,
+                (int) $rawJobExecution['current_step_number'] ?? 0,
+                3 #TODO RAC-1009
+            );
+        }, $rawJobExecutions);
     }
 }
