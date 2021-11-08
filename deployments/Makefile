@@ -17,11 +17,12 @@ TYPE_LONG ?= serenity
 ENV_NAME ?= dev
 EDITION_VERSION_FILE ?= EnterpriseVersion.php
 
-BUCKET ?= growth-edition-dev
+BUCKET ?= serenity-edition-dev
 ifeq ($(TYPE),grth)
 	TYPE_LONG := growth_edition
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
 	EDITION_VERSION_FILE := GrowthEditionVersion.php
+	BUCKET := growth-edition-dev
 endif
 ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
@@ -332,28 +333,12 @@ endif
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
 .PHONY: change-terraform-source-version
-change-terraform-source-version: change-terraform-pim-source-$(TYPE) change-terraform-pim-monitoring-source-$(TYPE) #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
+change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
+endif
 	@echo "Terraform pim and monitoring source updated"
-
-change-terraform-pim-source-srnt:
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=$(IMAGE_TAG)"
-change-terraform-pim-source-grth:
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
-change-terraform-pim-source-tria:
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
-
-change-terraform-pim-monitoring-source-srnt:
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=$(IMAGE_TAG)"
-endif
-change-terraform-pim-monitoring-source-grth:
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
-endif
-change-terraform-pim-monitoring-source-tria:
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
-endif
 
 $(CLOUD_CUSTOMERS_DEV_DIR):
 	mkdir -p $(CLOUD_CUSTOMERS_DEV_DIR)
@@ -381,12 +366,6 @@ uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
 ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
-ifeq ($(TYPE),srnt)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform"
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}//deployments/terraform/monitoring"
-endif
-endif
 else
 ifeq ($(TYPE),srnt)
 	PIM_VERSION=$(shell yq r "/root/cloud-customers-dev/saas/projects/akecld-saas-dev/europe-west3-a/releases/$(PFID)/main.tf.json" 'module.pim.pim_version'); \
@@ -440,11 +419,6 @@ test-prod:
 
 .PHONY: release
 release:
-ifeq ($(CI),true)
-	git config user.name "Michel Tag"
-	git config user.email "akeneo-ci@akeneo.com"
-	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-endif
 	TYPE=$(TYPE) bash $(DEPLOYMENT_DIR)/bin/release.sh $(OLD_IMAGE_TAG) $(NEW_IMAGE_TAG)
 
 .PHONY: slack_helpdesk
@@ -561,17 +535,7 @@ test_upgrade_from_flexibility_clone:
 	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
 
 .PHONY: php-image-prod
-php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
-ifeq ($(TYPE),srnt)
-	git config user.name "Michel Tag"
-	git config user.email "akeneo-ci@akeneo.com"
-
-	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/EnterpriseVersion.php
-	git add $(PIM_SRC_PATH)/src/Akeneo/Platform/EnterpriseVersion.php
-	git commit -m "Prepare SaaS ${IMAGE_TAG}"
-endif
-
+php-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
 	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
