@@ -66,7 +66,7 @@ SQL;
 
         return json_decode($this->connection->executeQuery($selectPressureUnitsSql, [
             'measurement_family_code' => $measurementFamilyCode
-        ])->fetchColumn(), true);
+        ])->fetchOne(), true);
     }
 
     private function updateMeasurementFamilyUnits(string $measurementFamilyCode, array $units): void

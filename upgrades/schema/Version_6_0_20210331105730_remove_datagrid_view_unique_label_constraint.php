@@ -33,7 +33,7 @@ SELECT DISTINCT CONSTRAINT_NAME
 FROM information_schema.TABLE_CONSTRAINTS
 WHERE table_name = 'pim_datagrid_view' AND constraint_type = 'UNIQUE' AND TABLE_SCHEMA = 'akeneo_pim';
 SQL;
-        $uniqueConstraintKeyName = $this->dbalConnection()->executeQuery($selectUniqueConstraint)->fetch(FetchMode::COLUMN);
+        $uniqueConstraintKeyName = $this->dbalConnection()->executeQuery($selectUniqueConstraint)->fetchOne();
 
         $this->addSql(<<<SQL
 ALTER TABLE pim_datagrid_view

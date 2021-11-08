@@ -24,8 +24,7 @@ WHERE table_schema=DATABASE()
     AND index_name='IDX_VIEWED_ANNOUNCEMENTS_user_id_announcement_id'
 SQL;
 
-        $stmt = $this->connection->query($sql);
-        $result = $stmt->fetchAll();
+        $result = $this->connection->executeQuery($sql)->fetchAllAssociative();
 
         if ($result[0]['has_index'] != 0) {
           return;

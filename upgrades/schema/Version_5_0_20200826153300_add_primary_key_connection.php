@@ -62,7 +62,7 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
             [
                 ':index' => $index,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return count($rows) > 0;
     }
@@ -79,7 +79,7 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
             [
                 ':constraint' => $constraint,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return count($rows) > 0;
     }

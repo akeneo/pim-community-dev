@@ -59,7 +59,7 @@ final class Version_4_0_20200117145507_remove_compute_model_descendant_jobs exte
                 AND queue.consumer IS NULL
 SQL;
 
-        return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
+        return $this->connection->executeQuery($sql)->fetchFirstColumn();
     }
 
     private function removeComputeModelDescendantJobs()
