@@ -23,6 +23,6 @@ services:
             - '@security.token_storage'
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - 'clean_table_values_from_deleted_options'
+            - 'clean_table_values_following_deleted_options'
         tags:
             - { name: kernel.event_subscriber }
