@@ -4,7 +4,7 @@
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'], function (
+define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'], function(
   $,
   _,
   BaseForm,
@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'],
 ) {
   return BaseForm.extend({
     template: _.template(attributeTemplate),
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -21,7 +21,7 @@ define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'],
     /**
      * {@inheritDoc}
      */
-    addFieldExtension: function (event) {
+    addFieldExtension: function(event) {
       var attribute = event.field.attribute;
       if (!this.isAttributeEditable(attribute)) {
         event.field.setEditable(false);
@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'],
      *
      * @return {Boolean}
      */
-    isAttributeEditable: function (attribute) {
+    isAttributeEditable: function(attribute) {
       return !attribute.is_read_only;
     },
   });

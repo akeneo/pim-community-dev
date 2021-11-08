@@ -44,7 +44,7 @@ export const view = connect(
     onOptionEditionStart: () => {
       dispatch((dispatch: any, getState: () => EditState) => {
         const attribute = hydrateAttribute(getState().attribute.data);
-        dispatch(optionEditionStart((attribute as any as AttributeWithOptions).getOptions()));
+        dispatch(optionEditionStart(((attribute as any) as AttributeWithOptions).getOptions()));
       });
     },
   })

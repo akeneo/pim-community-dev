@@ -55,78 +55,72 @@ export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
   });
 };
 
-export const getIcon =
-  (config: AttributeConfig) =>
-  (attributeType: string): string => {
-    return config[attributeType].icon;
-  };
+export const getIcon = (config: AttributeConfig) => (attributeType: string): string => {
+  return config[attributeType].icon;
+};
 
-export const getDenormalizer =
-  (config: AttributeConfig) =>
-  (normalizedAttribute: NormalizedAttribute): Denormalizer => {
-    const typeConfiguration = config[normalizedAttribute.type];
+export const getDenormalizer = (config: AttributeConfig) => (
+  normalizedAttribute: NormalizedAttribute
+): Denormalizer => {
+  const typeConfiguration = config[normalizedAttribute.type];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/attribute:
             ${normalizedAttribute.type}:
                 denormalize: '@my_attribute_denormalizer'`;
 
-      throw new InvalidArgument(
-        `Cannot get the attribute denormalizer for type "${
-          normalizedAttribute.type
-        }". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the attribute denormalizer for type "${
+        normalizedAttribute.type
+      }". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.denormalize.denormalize) {
-      const capitalizedAttributeType =
-        normalizedAttribute.type.charAt(0).toUpperCase() + normalizedAttribute.type.slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.denormalize.denormalize) {
+    const capitalizedAttributeType =
+      normalizedAttribute.type.charAt(0).toUpperCase() + normalizedAttribute.type.slice(1);
+    const moduleExample = `
 export const denormalize = (normalized${capitalizedAttributeType}Attribute: NormalizedAttribute) => {
   return new ${capitalizedAttributeType}Attribute(normalized${capitalizedAttributeType}Attribute);
 };`;
 
-      throw new InvalidArgument(
-        `The module you are exposing to denormalize an attribute of type "${normalizedAttribute.type}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to denormalize an attribute of type "${normalizedAttribute.type}" needs to
 export a "denormalize" property. Here is an example of a valid denormalize es6 module:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.denormalize.denormalize;
-  };
+  return typeConfiguration.denormalize.denormalize;
+};
 
-export const getReducer =
-  (config: AttributeConfig) =>
-  (normalizedAttribute: NormalizedAttribute): Reducer => {
-    const typeConfiguration = config[normalizedAttribute.type];
+export const getReducer = (config: AttributeConfig) => (normalizedAttribute: NormalizedAttribute): Reducer => {
+  const typeConfiguration = config[normalizedAttribute.type];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.reducer) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.reducer) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/attribute:
             ${normalizedAttribute.type}:
                 reducer: '@my_attribute_reducer'`;
 
-      throw new InvalidArgument(
-        `Cannot get the attribute reducer for type "${
-          normalizedAttribute.type
-        }". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the attribute reducer for type "${normalizedAttribute.type}". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.reducer.reducer) {
-      const capitalizedAttributeType =
-        normalizedAttribute.type.charAt(0).toUpperCase() + normalizedAttribute.type.slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.reducer.reducer) {
+    const capitalizedAttributeType =
+      normalizedAttribute.type.charAt(0).toUpperCase() + normalizedAttribute.type.slice(1);
+    const moduleExample = `
 export reducer = (
   normalizedAttribute: Normalized${capitalizedAttributeType}Attribute,
   propertyCode: string,
@@ -144,39 +138,41 @@ export reducer = (
   return normalizedAttribute;
 };`;
 
-      throw new InvalidArgument(
-        `The module you are exposing as reducer for attribute of type "${normalizedAttribute.type}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing as reducer for attribute of type "${normalizedAttribute.type}" needs to
 export a "reducer" property. Here is an example of a valid reducer es6 module:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.reducer.reducer;
-  };
+  return typeConfiguration.reducer.reducer;
+};
 
-export const getView =
-  (config: AttributeConfig) =>
-  (attribute: Attribute): View => {
-    const typeConfiguration = config[attribute.getType()];
+export const getView = (config: AttributeConfig) => (attribute: Attribute): View => {
+  const typeConfiguration = config[attribute.getType()];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/attribute:
             ${attribute.getType()}:
                 view: '@my_attribute_view'`;
 
-      throw new InvalidArgument(
-        `Cannot get the attribute view for type "${attribute.getType()}". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the attribute view for type "${attribute.getType()}". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.view.view) {
-      const capitalizedAttributeType = attribute.getType().charAt(0).toUpperCase() + attribute.getType().slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.view.view) {
+    const capitalizedAttributeType =
+      attribute
+        .getType()
+        .charAt(0)
+        .toUpperCase() + attribute.getType().slice(1);
+    const moduleExample = `
 const ${capitalizedAttributeType}View = ({
   attribute,
   onAdditionalPropertyUpdated,
@@ -227,15 +223,15 @@ const ${capitalizedAttributeType}View = ({
 
 export view = TextView;`;
 
-      throw new InvalidArgument(
-        `The module you are exposing to view an attribute of type "${attribute.getType()}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to view an attribute of type "${attribute.getType()}" needs to
 export a "view" property. Here is an example of a valid view es6 module:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.view.view;
-  };
+  return typeConfiguration.view.view;
+};
 
 /**
  * Expanation about the __moduleConfig variable:

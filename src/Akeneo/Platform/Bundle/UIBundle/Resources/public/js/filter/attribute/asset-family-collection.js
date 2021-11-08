@@ -11,14 +11,14 @@ define([
   'pim/i18n',
   'akeneoassetmanager/infrastructure/fetcher/asset',
   'jquery.select2',
-], function ($, _, __, Routing, SelectFilter, FetcherRegistry, UserContext, i18n, assetFetcher) {
+], function($, _, __, Routing, SelectFilter, FetcherRegistry, UserContext, i18n, assetFetcher) {
   return SelectFilter.extend({
     resultsPerPage: 20,
 
     /**
      * {@inheritdoc}
      */
-    getSelect2Options: function (attribute) {
+    getSelect2Options: function(attribute) {
       const ajaxConfig = {
         url: this.getChoiceUrl(attribute),
         quietMillis: 250,
@@ -105,7 +105,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    getType: function () {
+    getType: function() {
       return 'akeneo-attribute-select-reference-data-filter';
     },
 
@@ -115,7 +115,7 @@ define([
      *
      * @returns {Promise}
      */
-    cleanInvalidValues: function (attribute, currentValues) {
+    cleanInvalidValues: function(attribute, currentValues) {
       return this.getChoices(attribute).then(response => {
         var possibleValues = _.pluck(response.items, 'code');
         currentValues = undefined !== currentValues ? currentValues : [];

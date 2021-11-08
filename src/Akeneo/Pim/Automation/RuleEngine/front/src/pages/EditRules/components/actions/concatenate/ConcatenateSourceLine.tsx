@@ -38,8 +38,11 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const {formName, getFormValue, isFormFieldInError} =
-    useControlledFormInputAction<string | null>(lineNumber);
+  const {
+    formName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
   const {setValue, watch} = useFormContext();
 
   const getText = () =>
@@ -50,8 +53,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
     <li
       className={`AknRuleOperation-line`}
       data-line-number={operationLineNumber}
-      data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}
-    >
+      data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}>
       <div className={'AknRuleOperation-details'}>
         <div className={'AknRuleOperation-detailsContainer'}>
           <span
@@ -85,8 +87,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
                     ? 'AknInputSizer--error'
                     : ''
                 }`}
-                data-value={getText()}
-              >
+                data-value={getText()}>
                 <InputText
                   defaultValue={getText()}
                   className={'AknInputSizer-input'}
@@ -123,8 +124,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
         <DeleteButton
           type={'button'}
           onClick={removeOperation(operationLineNumber)}
-          data-testid={`edit-rules-action-operation-list-${operationLineNumber}-remove-button`}
-        >
+          data-testid={`edit-rules-action-operation-list-${operationLineNumber}-remove-button`}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
             src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'

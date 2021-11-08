@@ -9,7 +9,7 @@ const ActiveHighlightsOnIntersection: FC<ActiveHighlightsOnIntersectionProps> = 
   const {element, activate, deactivate} = useHighlightableContentContext();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(function (entries) {
+    const observer = new IntersectionObserver(function(entries) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           activate();

@@ -86,8 +86,7 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
         role='button'
         sizeMode={sizeMode}
         type={type}
-        {...rest}
-      >
+        {...rest}>
         {children}
       </BasicButton>
     );

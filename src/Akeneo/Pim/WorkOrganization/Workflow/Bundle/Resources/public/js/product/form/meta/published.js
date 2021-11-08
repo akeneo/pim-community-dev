@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta/published'], function (
+define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta/published'], function(
   _,
   __,
   BaseForm,
@@ -14,7 +14,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
     /**
      * {@inheritdoc}
      */
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -23,7 +23,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
     /**
      * {@inheritdoc}
      */
-    render: function () {
+    render: function() {
       var product = this.getFormData();
 
       if (product.meta.published) {
@@ -47,7 +47,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pimee/template/product/meta
      *
      * @returns {int}
      */
-    getPublishedVersion: function (product) {
+    getPublishedVersion: function(product) {
       return _.result(product.meta.published, 'version', null);
     },
   });

@@ -3,16 +3,14 @@ import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribut
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 import {notifyAttributeListUpdateFailed} from 'akeneoassetmanager/application/action/attribute/notify';
 
-export const updateAttributeList =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const assetFamily = getState().form.data;
-    try {
-      const attributes = await attributeFetcher.fetchAll(assetFamily.identifier);
-      dispatch(attributeListUpdated(attributes));
-    } catch (error) {
-      dispatch(notifyAttributeListUpdateFailed());
+export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const assetFamily = getState().form.data;
+  try {
+    const attributes = await attributeFetcher.fetchAll(assetFamily.identifier);
+    dispatch(attributeListUpdated(attributes));
+  } catch (error) {
+    dispatch(notifyAttributeListUpdateFailed());
 
-      throw error;
-    }
-  };
+    throw error;
+  }
+};

@@ -34,7 +34,7 @@ const prepareCacheAttributes = async (
   await getAttributesByIdentifiers(fieldIdentifiers, router);
 };
 
-const denormalize = async function (
+const denormalize = async function(
   json: any,
   router: Router
 ): Promise<RuleDefinition> {

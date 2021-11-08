@@ -7,31 +7,30 @@ const updateResultsWithFetcher = <Object>(
   stateToQuery: (state: any) => Promise<Query>
 ) =>
   ((requestCount: number = 0) => {
-    return (append: boolean = false): any =>
-      async (dispatch: any, getState: any): Promise<void> => {
-        requestCount++;
-        const state = getState();
-        const currentRequestCount = requestCount;
-        if (append && state.grid.isFetching) {
-          return Promise.resolve();
-        }
+    return (append: boolean = false): any => async (dispatch: any, getState: any): Promise<void> => {
+      requestCount++;
+      const state = getState();
+      const currentRequestCount = requestCount;
+      if (append && state.grid.isFetching) {
+        return Promise.resolve();
+      }
 
-        dispatch(startLoading());
+      dispatch(startLoading());
 
-        if (append) {
-          dispatch(goNextPage());
-        } else {
-          dispatch(goFirstPage());
-        }
+      if (append) {
+        dispatch(goNextPage());
+      } else {
+        dispatch(goFirstPage());
+      }
 
-        const query = await stateToQuery(getState());
-        const {items, matchesCount, totalCount} = await fetcher.search(query);
+      const query = await stateToQuery(getState());
+      const {items, matchesCount, totalCount} = await fetcher.search(query);
 
-        if (requestCount === currentRequestCount) {
-          dispatch(dataReceived<Object>(items, matchesCount, totalCount, append));
-          dispatch(stopLoading());
-        }
-      };
+      if (requestCount === currentRequestCount) {
+        dispatch(dataReceived<Object>(items, matchesCount, totalCount, append));
+        dispatch(stopLoading());
+      }
+    };
   })();
 
 export default updateResultsWithFetcher;

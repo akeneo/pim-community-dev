@@ -15,8 +15,7 @@ const Label: React.FC<Props> = ({htmlFor, label, hiddenLabel}) => {
   const HTMLLabel = (
     <StyledLabel
       className='AknFieldContainer-label control-label'
-      htmlFor={htmlFor}
-    >
+      htmlFor={htmlFor}>
       {label}
     </StyledLabel>
   );

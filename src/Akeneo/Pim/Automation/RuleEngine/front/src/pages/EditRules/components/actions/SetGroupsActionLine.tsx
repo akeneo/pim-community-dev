@@ -96,8 +96,7 @@ export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.set_groups.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>
@@ -108,8 +107,7 @@ export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
             <AknActionFormContainer
               className={
                 isFormFieldInError('value') ? 'select2-container-error' : ''
-              }
-            >
+              }>
               <Controller
                 as={GroupsSelector}
                 id={`edit-rules-actions-${lineNumber}-value`}
