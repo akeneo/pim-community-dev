@@ -1102,6 +1102,12 @@ jobs:
               name: Launch Tria in test mode
               command: make pim-test
           - run:
+              name: Lint Front
+              command: PIM_CONTEXT=test make lint-front
+          - run:
+              name: Unit Front
+              command: PIM_CONTEXT=test make unit-front
+          - run:
               name: Lint Back
               command: PIM_CONTEXT=test make lint-back
           - run:
