@@ -27,7 +27,7 @@ class CheckAttributeOnDeletionSubscriberSpec extends ObjectBehavior
     {
         $event = new RemoveEvent($attribute->getWrappedObject(), 42, ['unitary' => true]);
         $attribute->getId()->willReturn(42);
-        $statement->fetchColumn()->willReturn('1');
+        $statement->fetchOne()->willReturn('1');
         $dbConnection->executeQuery(Argument::type('string'), ['attributeIds' => [42]], Argument::cetera())->shouldBeCalled()->willReturn($statement);
         $this->shouldThrow(AttributeRemovalException::class)->during('preRemove', [$event]);
     }

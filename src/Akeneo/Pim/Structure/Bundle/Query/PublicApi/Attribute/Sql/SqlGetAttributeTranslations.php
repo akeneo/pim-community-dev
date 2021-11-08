@@ -38,7 +38,7 @@ SQL;
             [
                 'attributeCodes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $attributeTranslations = [];
         foreach ($rows as $attribute) {

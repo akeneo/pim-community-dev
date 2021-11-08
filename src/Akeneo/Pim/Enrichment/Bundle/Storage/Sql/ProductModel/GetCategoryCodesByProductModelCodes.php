@@ -61,7 +61,7 @@ SQL;
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($queryResults as $queryResult) {
             $categoryCodes = json_decode($queryResult['category_codes']);

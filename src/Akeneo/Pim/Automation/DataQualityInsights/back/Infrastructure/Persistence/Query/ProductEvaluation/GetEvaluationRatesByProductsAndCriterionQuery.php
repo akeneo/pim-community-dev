@@ -49,7 +49,7 @@ SQL;
         );
 
         $evaluationRates = [];
-        while ($evaluationResult = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($evaluationResult = $stmt->fetchAssociative()) {
             $evaluationRates[$evaluationResult['product_id']] = $this->formatEvaluationRates($evaluationResult);
         }
 

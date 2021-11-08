@@ -34,6 +34,6 @@ SQL;
                 'labelPath' => sprintf('$.labels.%s', $localeCode),
                 'measurementFamilyCode' => $measurementFamilyCode
             ]
-        )->fetchAll(\PDO::FETCH_KEY_PAIR);
+        )->fetchAllKeyValue();
     }
 }

@@ -288,7 +288,7 @@ SQL;
 
         return $this
             ->connection
-            ->fetchAll($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
+            ->fetchAllAssociative($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
     }
 
     private function calculateAttributeCodeAncestors(array $rows): array

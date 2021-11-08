@@ -32,7 +32,7 @@ class DbalErrorCountRepositoryIntegration extends TestCase
 SELECT connection_code, error_datetime, error_type, error_count
 FROM akeneo_connectivity_connection_audit_error
 SQL;
-        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAllAssociative();
 
         Assert::assertCount(1, $result);
         Assert::assertEquals('2020-05-15 17:00:00', $result[0]['error_datetime']);
@@ -50,7 +50,7 @@ SQL;
 SELECT connection_code, error_datetime, error_type, error_count
 FROM akeneo_connectivity_connection_audit_error
 SQL;
-        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAllAssociative();
 
         Assert::assertCount(1, $result);
         Assert::assertEquals('2020-05-15 17:00:00', $result[0]['error_datetime']);
@@ -73,7 +73,7 @@ SQL;
 SELECT connection_code, error_datetime, error_type, error_count
 FROM akeneo_connectivity_connection_audit_error
 SQL;
-        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAll();
+        $result = $this->dbalConnection->executeQuery($selectQuery)->fetchAllAssociative();
 
         Assert::assertCount(4, $result);
     }

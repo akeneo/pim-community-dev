@@ -27,7 +27,7 @@ class ProductSaverIntegration extends TestCase
         $this->saveProduct($product);
 
         $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product WHERE identifier = "just-a-variant-product-with-a-few-values"');
-        $jsonRawValues = $stmt->fetchColumn();
+        $jsonRawValues = $stmt->fetchOne();
         $rawValues = json_decode($jsonRawValues, true);
         NormalizedProductCleaner::cleanOnlyValues($rawValues);
 

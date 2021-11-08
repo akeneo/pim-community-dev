@@ -42,7 +42,7 @@ SQL;
             $query,
             ['version_ids' => $versionIds],
             ['version_ids' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return array_map('intval', $results);
     }

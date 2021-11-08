@@ -43,6 +43,6 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
-        return (int)$stmt->fetchColumn();
+        return (int)$stmt->fetchOne();
     }
 }

@@ -120,8 +120,7 @@ SQL;
 
         $stmt = $this->dbalConnection->prepare($query);
         $stmt->bindValue('identifier', $identifier);
-        $stmt->execute();
-        $idFromDatabase = $stmt->fetchColumn();
+        $idFromDatabase = $stmt->executeQuery()->fetchOne();
 
         if (false === $idFromDatabase) {
             throw new \InvalidArgumentException(sprintf(
@@ -143,8 +142,7 @@ SQL;
 
         $stmt = $this->dbalConnection->prepare($query);
         $stmt->bindValue('code', $code);
-        $stmt->execute();
-        $idFromDatabase = $stmt->fetchColumn();
+        $idFromDatabase = $stmt->executeQuery()->fetchOne();
 
         if (false === $idFromDatabase) {
             throw new \InvalidArgumentException(sprintf(

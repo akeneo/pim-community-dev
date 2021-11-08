@@ -34,7 +34,7 @@ WHERE parent.code = :category_code;
 SQL;
 
         $statement = $this->connection->executeQuery($query, ['category_code' => $categoryCode]);
-        $categoryCodes = $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
+        $categoryCodes = $statement->fetchFirstColumn();
 
         if (empty($categoryCodes)) {
             throw new \RuntimeException(sprintf('The category %s was not found.', $categoryCode));

@@ -44,7 +44,7 @@ class GetUserProfileQueryIntegration extends TestCase
 
     protected function createUser(string $username, ?string $profile = null)
     {
-        $localeId = $this->dbalConnection->fetchColumn('SELECT id FROM pim_catalog_locale LIMIT 1');
+        $localeId = $this->dbalConnection->fetchOne('SELECT id FROM pim_catalog_locale LIMIT 1');
 
         $sqlInsert = <<<SQL
             INSERT INTO oro_user

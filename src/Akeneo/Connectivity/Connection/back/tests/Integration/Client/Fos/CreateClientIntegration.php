@@ -51,7 +51,7 @@ class CreateClientIntegration extends TestCase
 SELECT id, random_id, secret, label, allowed_grant_types FROM pim_api_client
 SQL;
 
-        return $this->getDatabaseConnection()->fetchAll($sqlQuery);
+        return $this->getDatabaseConnection()->fetchAllAssociative($sqlQuery);
     }
 
     private function getDatabaseConnection(): Connection

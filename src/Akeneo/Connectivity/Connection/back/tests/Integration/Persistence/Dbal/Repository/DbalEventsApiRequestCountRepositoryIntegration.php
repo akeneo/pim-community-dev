@@ -61,7 +61,7 @@ FROM akeneo_connectivity_connection_events_api_request_count
 ORDER BY event_minute
 SQL;
 
-        return $this->getDbalConnection()->fetchAll($sql);
+        return $this->getDbalConnection()->fetchAllAssociative($sql);
     }
 
     private function assertEqualsEventApiRequestCount(array $expected, array $actual): void

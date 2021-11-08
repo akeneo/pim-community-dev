@@ -40,7 +40,7 @@ SQL;
             [
                 'attributeCodes' => Connection::PARAM_STR_ARRAY,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $sortOrders[$row['attribute_code']] = (int) $row['sort_order'];

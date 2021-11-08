@@ -86,7 +86,7 @@ final class JobExecutionMessageHandlerIntegration extends TestCase
     {
         $sql = 'SELECT status, exit_code, health_check_time from akeneo_batch_job_execution where id = :id';
 
-        return $this->getConnection()->executeQuery($sql, ['id' => $jobExecution->getId()])->fetch();
+        return $this->getConnection()->executeQuery($sql, ['id' => $jobExecution->getId()])->fetchAssociative();
     }
 
     protected function getConnection(): Connection

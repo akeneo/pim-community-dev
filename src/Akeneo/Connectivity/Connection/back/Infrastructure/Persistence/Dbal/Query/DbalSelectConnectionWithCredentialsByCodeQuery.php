@@ -60,7 +60,7 @@ SQL;
                 'code' => $code,
                 'default_group' => User::GROUP_DEFAULT
             ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        )->fetchAllAssociative();
 
         if (0 === count($data)) {
             return null;

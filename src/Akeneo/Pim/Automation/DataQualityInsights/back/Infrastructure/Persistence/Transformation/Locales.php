@@ -50,7 +50,7 @@ class Locales
     {
         $locales = $this->dbConnection->executeQuery(
             'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_locale WHERE is_activated = 1;'
-        )->fetchColumn();
+        )->fetchOne();
 
         if ($locales) {
             $this->localeCodesByIds = json_decode($locales, true);
