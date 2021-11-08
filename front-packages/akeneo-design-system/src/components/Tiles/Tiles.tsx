@@ -104,10 +104,8 @@ type TileProps = Override<
 const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
   const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     if (null !== event.currentTarget && event.key === Key.Enter) {
-      if (event.key === Key.Enter) {
-        onClick?.();
-        event.preventDefault();
-      }
+      onClick?.();
+      event.preventDefault();
     }
   }, []);
 
