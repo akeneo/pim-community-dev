@@ -80,7 +80,7 @@ SQL;
             ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 
     /**

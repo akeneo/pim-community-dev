@@ -57,7 +57,7 @@ SQL;
             ['product_model_id' => $productId->toInt()],
             ['product_model_id' => \PDO::PARAM_INT]
         );
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         return array_map(
             function ($results) {

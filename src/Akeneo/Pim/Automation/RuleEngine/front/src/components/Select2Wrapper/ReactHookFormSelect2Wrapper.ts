@@ -35,14 +35,15 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
     }
   }, [currentFormValue]);
 
-  const handleValueChange: (value: Select2Value | Select2Value[]) => void =
-    value => {
-      setLastKnownValue(value);
-      setValue(name, value);
-      if (onChange) {
-        onChange(value);
-      }
-    };
+  const handleValueChange: (
+    value: Select2Value | Select2Value[]
+  ) => void = value => {
+    setLastKnownValue(value);
+    setValue(name, value);
+    if (onChange) {
+      onChange(value);
+    }
+  };
 
   React.useEffect(() => {
     register({name}, validation);

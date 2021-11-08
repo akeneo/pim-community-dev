@@ -41,8 +41,10 @@ const ConcatenateSourceList: React.FC<Props> = ({
     string | null
   >(lineNumber);
   const {watch} = useFormContext();
-  const [operationLineToRemoveStack, setOperationLineToRemoveStack] =
-    React.useState<number[]>([]);
+  const [
+    operationLineToRemoveStack,
+    setOperationLineToRemoveStack,
+  ] = React.useState<number[]>([]);
 
   const {fields, remove, move, append} = useFieldArray({
     name: formName('from'),
@@ -126,8 +128,7 @@ const ConcatenateSourceList: React.FC<Props> = ({
         className={`AknRuleOperation${
           isFormFieldInError('type') ? ' AknRuleOperation--error' : ''
         }`}
-        ref={dragulaDecorator}
-      >
+        ref={dragulaDecorator}>
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
@@ -158,8 +159,7 @@ const ConcatenateSourceList: React.FC<Props> = ({
             }
             handleAddText('');
           }}
-          className={'AknButtonList-item'}
-        >
+          className={'AknButtonList-item'}>
           {translate(
             'pimee_catalog_rule.form.edit.actions.concatenate.add_text'
           )}
@@ -200,8 +200,7 @@ const ConcatenateSourceList: React.FC<Props> = ({
                 }
                 handleAddNewLine();
               }}
-              className={'AknButtonList-item'}
-            >
+              className={'AknButtonList-item'}>
               {translate(
                 'pimee_catalog_rule.form.edit.actions.concatenate.add_new_line'
               )}

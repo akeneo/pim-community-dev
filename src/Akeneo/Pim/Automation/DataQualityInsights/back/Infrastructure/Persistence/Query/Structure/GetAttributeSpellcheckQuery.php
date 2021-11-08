@@ -63,7 +63,7 @@ SQL;
         );
 
         $attributeSpellChecks = [];
-        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetchAssociative()) {
             $attributeSpellChecks[$row['attribute_code']] = $this->buildAttributeSpellcheck(
                 new AttributeCode($row['attribute_code']),
                 $row['evaluated_at'],

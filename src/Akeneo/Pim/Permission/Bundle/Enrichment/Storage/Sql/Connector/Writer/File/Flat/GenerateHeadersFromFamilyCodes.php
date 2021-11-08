@@ -86,7 +86,7 @@ final class GenerateHeadersFromFamilyCodes implements GenerateFlatHeadersFromFam
     {
         return $this->connection->executeQuery(
             "SELECT code FROM pim_catalog_currency WHERE is_activated = 1"
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     /**
@@ -104,7 +104,7 @@ SQL;
         return $this->connection->executeQuery(
             $channelCurrencyCodesSql,
             ['channelCode' => $channelCode]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     /**
@@ -126,7 +126,7 @@ SQL;
             $grantedLocaleCodesSql,
             ['localeCodes' => $localeCodes, 'userId' => $userId],
             ['localeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     /**
@@ -165,6 +165,6 @@ SQL;
             $attributesDataSql,
             ['familyCodes' => $familyCodes, 'userId' => $userId],
             ['familyCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
     }
 }

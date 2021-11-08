@@ -9,48 +9,48 @@ const Mediator = require('oro/mediator');
 const Router = require('pim/router');
 
 interface EventOptions {
-  code?: string,
-  codes?: [],
-  name?: string,
-  attribute?: string,
-  gridName?: string,
-  identifier?: string,
-  value?: string,
-  column?: string,
-  localeCode?: string,
-  context?: string,
-  count?: number,
-  entityHint?: string,
+  code?: string;
+  codes?: [];
+  name?: string;
+  attribute?: string;
+  gridName?: string;
+  identifier?: string;
+  value?: string;
+  column?: string;
+  localeCode?: string;
+  context?: string;
+  count?: number;
+  entityHint?: string;
   model?: {
     attributes?: {
-      identifier?: string,
-      code?: string,
-      label?: string,
-    },
-  }
+      identifier?: string;
+      code?: string;
+      label?: string;
+    };
+  };
   attributes?: {
-    identifier?: string,
-    code?: string,
-    label?: string,
-  },
-  url?: string,
-  type?: string,
-  inputName?: string,
-  actions?: [Action],
-  values?: object,
+    identifier?: string;
+    code?: string;
+    label?: string;
+  };
+  url?: string;
+  type?: string;
+  inputName?: string;
+  actions?: [Action];
+  values?: object;
 }
 
 interface Action {
-  attribute_code?: string,
-  channel_code?: string,
-  is_required?: boolean
+  attribute_code?: string;
+  channel_code?: string;
+  is_required?: boolean;
 }
 
 interface Event {
-  name?: string,
-  checklistName?: string,
-  flowName?: string,
-  flowId?: string,
+  name?: string;
+  checklistName?: string;
+  flowName?: string;
+  flowId?: string;
 }
 
 const FLOW_GUIDED_TOUR_ID = 'd413bbd2-02cf-4664-bcd2-1e799624f639';
@@ -72,11 +72,19 @@ const AppcuesOnboarding: PimOnboarding = {
         case 'grid:item:selected':
           if (eventOptions) {
             if (eventOptions.name === 'product-grid' && eventOptions.entityHint === 'product') {
-              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'PLGCHAELK001') {
+              if (
+                eventOptions.model &&
+                eventOptions.model.attributes &&
+                eventOptions.model.attributes.identifier === 'PLGCHAELK001'
+              ) {
                 appcues.track('Product "Elka Peacock Armchair" selected');
               }
 
-              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.identifier === 'BFGoodrich - Advantage T/A Sport') {
+              if (
+                eventOptions.model &&
+                eventOptions.model.attributes &&
+                eventOptions.model.attributes.identifier === 'BFGoodrich - Advantage T/A Sport'
+              ) {
                 appcues.track('Product model "BFGoodrich - Advantage T/A Sport" selected');
               }
 
@@ -84,7 +92,11 @@ const AppcuesOnboarding: PimOnboarding = {
             }
 
             if (eventOptions.name === 'export-profile-grid' && eventOptions.entityHint === 'export profile') {
-              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
+              if (
+                eventOptions.model &&
+                eventOptions.model.attributes &&
+                eventOptions.model.attributes.code === 'printers_amazon'
+              ) {
                 appcues.track('Export profile "Printers for Amazon (weekly)" selected');
               }
 
@@ -92,7 +104,11 @@ const AppcuesOnboarding: PimOnboarding = {
             }
 
             if (eventOptions.name === 'family-grid' && eventOptions.entityHint === 'family') {
-              if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.label === 'Tires') {
+              if (
+                eventOptions.model &&
+                eventOptions.model.attributes &&
+                eventOptions.model.attributes.label === 'Tires'
+              ) {
                 appcues.track('Family "Tires" selected');
               }
 
@@ -127,7 +143,12 @@ const AppcuesOnboarding: PimOnboarding = {
           appcues.track('View saved');
           break;
         case 'product-grid:column:selected':
-          if (eventOptions && eventOptions.gridName === 'product-grid' && eventOptions.column && eventOptions.column.includes('designer')) {
+          if (
+            eventOptions &&
+            eventOptions.gridName === 'product-grid' &&
+            eventOptions.column &&
+            eventOptions.column.includes('designer')
+          ) {
             appcues.track('Column "Designer" added in the product grid');
           }
 
@@ -286,7 +307,12 @@ const AppcuesOnboarding: PimOnboarding = {
           }
           break;
         case 'translation:form:value-changed':
-          if (eventOptions && eventOptions.code && eventOptions.code.includes('pim-attribute') && eventOptions.localeCode) {
+          if (
+            eventOptions &&
+            eventOptions.code &&
+            eventOptions.code.includes('pim-attribute') &&
+            eventOptions.localeCode
+          ) {
             appcues.track('On attribute form, the translation label of "' + eventOptions.localeCode + '" changed');
           }
           break;
@@ -323,7 +349,11 @@ const AppcuesOnboarding: PimOnboarding = {
           break;
         case 'form:edit:opened':
           if (eventOptions && eventOptions.code === 'pim-job-instance-xlsx-product-export-edit') {
-            if (eventOptions.model && eventOptions.model.attributes && eventOptions.model.attributes.code === 'printers_amazon') {
+            if (
+              eventOptions.model &&
+              eventOptions.model.attributes &&
+              eventOptions.model.attributes.code === 'printers_amazon'
+            ) {
               appcues.track('Edit export profile "Printers for Amazon (weekly)"');
             }
 
@@ -369,15 +399,15 @@ const AppcuesOnboarding: PimOnboarding = {
     });
 
     appcues.identify(UserContext.get('username'), {
-      'email': UserContext.get('email'),
-      'first_name': UserContext.get('first_name'),
-      'last_name': UserContext.get('last_name'),
+      email: UserContext.get('email'),
+      first_name: UserContext.get('first_name'),
+      last_name: UserContext.get('last_name'),
     });
 
     appcues.loadLaunchpad('#appcues-launchpad-btn', {
       position: 'left',
       header: "<p style='font-size: 18px;'>Tutorials</p>",
-      icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
+      icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg',
     });
 
     appcues.on('checklist_completed', (event: Event) => {
@@ -391,11 +421,16 @@ const AppcuesOnboarding: PimOnboarding = {
     appcues.on('flow_started', async (event: Event) => {
       if (event.flowId === FLOW_GUIDED_TOUR_ID) {
         // Set the "Pain Management" category id in session in order to deploy it when the user has launched the flow "FT - Guided Tour"
-        const categoryRoute = Router.generate('pim_enrich_category_rest_get', {identifier: CATEGORY_PAIN_MANAGEMENT_CODE});
+        const categoryRoute = Router.generate('pim_enrich_category_rest_get', {
+          identifier: CATEGORY_PAIN_MANAGEMENT_CODE,
+        });
         const categoryResponse = await fetch(categoryRoute);
         const categoryPainManagement: Category = await categoryResponse.json();
 
-        sessionStorage.setItem('lastSelectedCategory', JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id}));
+        sessionStorage.setItem(
+          'lastSelectedCategory',
+          JSON.stringify({treeId: '1', categoryId: categoryPainManagement.id})
+        );
       }
     });
   },

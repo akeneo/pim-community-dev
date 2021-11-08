@@ -164,7 +164,7 @@ SQL;
         }
 
         $stmt = $this->connection->executeQuery($sql, $queryParameters, $queryParametersTypes);
-        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAllAssociative();
 
         $attributes = [];
         foreach ($results as $resultRow) {

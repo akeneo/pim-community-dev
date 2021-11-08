@@ -27,6 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CleanAttributeGroupAccessesCommand extends Command
 {
     protected static $defaultName = 'pimee:installer:clean-attribute-group-accesses';
+    protected static $defaultDescription = 'Removing the group "ALL" from attribute groups\' permissions after a clean installation.';
 
     /** @var AttributeGroupAccessRepository */
     private $attributeGroupAccessRepository;
@@ -42,15 +43,6 @@ class CleanAttributeGroupAccessesCommand extends Command
 
         $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
         $this->groupRepository = $groupRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Removing the group "ALL" from attribute groups\' permissions after a clean installation.');
     }
 
     /**

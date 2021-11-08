@@ -20,7 +20,9 @@ class AttributeFilterAllImprovableAttributes extends BaseForm {
     const missing_attributes = await this.fetchProductEvaluation(product);
     const valuesToFill = _pick(values, missing_attributes);
 
-    return $.Deferred().resolve(valuesToFill).promise();
+    return $.Deferred()
+      .resolve(valuesToFill)
+      .promise();
   }
 
   async fetchProductEvaluation(product: any) {

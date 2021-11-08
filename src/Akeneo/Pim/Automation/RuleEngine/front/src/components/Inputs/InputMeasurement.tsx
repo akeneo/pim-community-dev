@@ -103,8 +103,7 @@ const InputMeasurement: React.FC<Props> = ({
         hiddenLabel={hiddenLabel}
       />
       <MeasurementUnitContainer
-        className={hasError ? 'select2-glued-container-error' : ''}
-      >
+        className={hasError ? 'select2-glued-container-error' : ''}>
         <MeasurementUnitSelector
           data-testid={`${id}-unit`}
           attribute={attribute}

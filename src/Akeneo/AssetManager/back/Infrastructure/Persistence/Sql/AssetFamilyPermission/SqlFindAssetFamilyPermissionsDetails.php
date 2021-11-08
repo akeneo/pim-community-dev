@@ -47,7 +47,7 @@ FROM oro_access_group ug
 WHERE ug.name <> 'All';
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAllAssociative();
 
         return false !== $result ? $result : [];
     }
@@ -63,7 +63,7 @@ SQL;
             $query,
             ['asset_family_identifier' => (string) $assetFamilyIdentifier]
         );
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAllAssociative();
 
         return false !== $result ? $result : [];
     }

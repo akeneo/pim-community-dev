@@ -1,4 +1,4 @@
-import {getHeapAgent} from "./heap-agent";
+import {getHeapAgent} from './heap-agent';
 
 const UserContext = require('pim/user-context');
 
@@ -6,7 +6,7 @@ const Heap = {
   init: async () => {
     const heapAgent = await getHeapAgent();
 
-    if(null === heapAgent) {
+    if (null === heapAgent) {
       throw new Error('Heap is not initialized');
     }
 

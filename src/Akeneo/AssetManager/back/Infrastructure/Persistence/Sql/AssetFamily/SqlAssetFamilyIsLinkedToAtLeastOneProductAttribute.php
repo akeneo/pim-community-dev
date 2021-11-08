@@ -57,7 +57,7 @@ SQL;
             ]
         );
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $statement->closeCursor();
 
         return $results;

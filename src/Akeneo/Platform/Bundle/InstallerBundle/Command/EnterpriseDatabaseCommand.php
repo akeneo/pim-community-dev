@@ -11,7 +11,6 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -21,6 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class EnterpriseDatabaseCommand extends DatabaseCommand
 {
+    protected static $defaultName = 'pim:installer:db';
+    protected static $defaultDescription = 'Prepare database and load fixtures';
+
     /**
      * {@inheritdoc}
      */

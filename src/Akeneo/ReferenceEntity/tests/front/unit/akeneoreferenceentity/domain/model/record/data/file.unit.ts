@@ -28,7 +28,9 @@ describe('akeneo > reference entity > domain > model > record > data --- file', 
 
   test('I can get the file of a FileData', () => {
     expect(
-      denormalize({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'}).getFile().normalize()
+      denormalize({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'})
+        .getFile()
+        .normalize()
     ).toEqual({
       originalFilename: 'starck.png',
       filePath: '/a/g/d/f/fzefzgezgafzgzg.png',

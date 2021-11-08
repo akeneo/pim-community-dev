@@ -149,8 +149,7 @@ const CategorySelector: React.FC<Props> = ({
         {...popover}
         aria-label={translate('pimee_catalog_rule.category.tree')}
         hideOnEsc
-        hideOnClickOutside
-      >
+        hideOnClickOutside>
         <ContainerCategoryTree>
           {initCategoryTreeOpenBranch.status === 'PENDING' ||
           !initCategoryTreeOpenBranch.data ? (
@@ -171,8 +170,7 @@ const CategorySelector: React.FC<Props> = ({
       </CategoryPopover>
       <CategoryArtifact
         {...remainingProps}
-        className='AknTextField category-artifact'
-      >
+        className='AknTextField category-artifact'>
         {selectedCategory ? (
           <>
             {getCategoryLabel(selectedCategory, locale)}

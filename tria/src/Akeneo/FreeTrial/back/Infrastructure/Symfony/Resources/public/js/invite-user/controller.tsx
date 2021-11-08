@@ -4,7 +4,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {InviteUserApp} from 'akeneo-pim-free-trial';
-import {PimInvitedUserProvider} from "./PimInvitedUserProvider";
+import {PimInvitedUserProvider} from './PimInvitedUserProvider';
 
 const mediator = require('oro/mediator');
 
@@ -16,7 +16,7 @@ class InviteUserController extends ReactController {
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>
           <PimInvitedUserProvider>
-              <InviteUserApp/>
+            <InviteUserApp />
           </PimInvitedUserProvider>
         </DependenciesProvider>
       </ThemeProvider>

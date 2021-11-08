@@ -23,7 +23,7 @@ export class AttributeOptionSaver {
       {
         identifier: normalizedOptionAttribute.identifier,
         reference_entity_identifier: normalizedOptionAttribute.reference_entity_identifier,
-        options: (attribute as any as AttributeWithOptions).getOptions().map((option: Option) => option.normalize()),
+        options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option.normalize()),
       }
     ).catch(handleError);
   }

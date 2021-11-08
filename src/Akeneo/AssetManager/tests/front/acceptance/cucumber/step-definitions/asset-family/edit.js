@@ -9,7 +9,7 @@ const {
   tools: {convertDataTable, convertItemTable, answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
   const assert = require('assert');
 
@@ -30,7 +30,7 @@ module.exports = async function (cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const changeAssetFamily = async function (editPage, identifier, updates) {
+  const changeAssetFamily = async function(editPage, identifier, updates) {
     const properties = await editPage.getProperties();
 
     const labels = convertDataTable(updates).labels;
@@ -43,7 +43,7 @@ module.exports = async function (cucumber) {
     }
   };
 
-  const savedAssetFamilyWillBe = function (page, identifier, updates) {
+  const savedAssetFamilyWillBe = function(page, identifier, updates) {
     page.on('request', request => {
       if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
@@ -57,20 +57,20 @@ module.exports = async function (cucumber) {
 
   When('the user asks for the asset family {string}', askForAssetFamily);
 
-  When(
-    'the user gets the asset family {string} with label {string}',
-    async function (expectedIdentifier, expectedLabel) {
-      const editPage = await await getElement(this.page, 'Edit');
-      const properties = await editPage.getProperties();
-      const identifierValue = await properties.getIdentifier();
-      assert.strictEqual(identifierValue, expectedIdentifier);
+  When('the user gets the asset family {string} with label {string}', async function(
+    expectedIdentifier,
+    expectedLabel
+  ) {
+    const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    const identifierValue = await properties.getIdentifier();
+    assert.strictEqual(identifierValue, expectedIdentifier);
 
-      const labelValue = await properties.getLabel();
-      assert.strictEqual(labelValue, expectedLabel);
-    }
-  );
+    const labelValue = await properties.getLabel();
+    assert.strictEqual(labelValue, expectedLabel);
+  });
 
-  When('the user updates the asset family {string} with:', async function (identifier, updates) {
+  When('the user updates the asset family {string} with:', async function(identifier, updates) {
     await askForAssetFamily.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -81,7 +81,7 @@ module.exports = async function (cucumber) {
     await editPage.save();
   });
 
-  When('the user changes the asset family {string} with:', async function (identifier, updates) {
+  When('the user changes the asset family {string} with:', async function(identifier, updates) {
     await askForAssetFamily.apply(this, [identifier]);
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
@@ -90,7 +90,7 @@ module.exports = async function (cucumber) {
     await changeAssetFamily.apply(this, [editPage, identifier, updates]);
   });
 
-  Then('the asset family {string} should be:', async function (identifier, updates) {
+  Then('the asset family {string} should be:', async function(identifier, updates) {
     const assetFamily = convertItemTable(updates)[0];
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -106,23 +106,23 @@ module.exports = async function (cucumber) {
     }
   });
 
-  Then('the saved asset family {string} will be:', async function (identifier, updates) {
+  Then('the saved asset family {string} will be:', async function(identifier, updates) {
     await savedAssetFamilyWillBe(this.page, identifier, updates);
   });
 
-  Then('the user saves the changes', async function () {
+  Then('the user saves the changes', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.save();
   });
 
-  Then('the user should see the saved notification', async function () {
+  Then('the user should see the saved notification', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await editPage.hasSuccessNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the asset family {string} save will fail', function (identifier) {
+  Then('the asset family {string} save will fail', function(identifier) {
     this.page.on('request', request => {
       if (`http://pim.com/rest/asset_manager/${identifier}` === request.url() && 'POST' === request.method()) {
         request.respond({
@@ -134,14 +134,14 @@ module.exports = async function (cucumber) {
     });
   });
 
-  Then('the user should see the saved notification error', async function () {
+  Then('the user should see the saved notification error', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasErrorNotification = await editPage.hasErrorNotification();
 
     assert.strictEqual(hasErrorNotification, true);
   });
 
-  When('the user deletes the asset family {string}', async function (identifier) {
+  When('the user deletes the asset family {string}', async function(identifier) {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
@@ -162,7 +162,7 @@ module.exports = async function (cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user fails to delete the asset family {string}', async function (identifier) {
+  When('the user fails to delete the asset family {string}', async function(identifier) {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
@@ -197,7 +197,7 @@ module.exports = async function (cucumber) {
     await modalPage.confirmDeletion();
   });
 
-  When('the user refuses to delete the current asset family', async function () {
+  When('the user refuses to delete the current asset family', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
@@ -211,35 +211,35 @@ module.exports = async function (cucumber) {
     await header.clickOnDeleteButton();
   });
 
-  Then('the user should see the deleted notification', async function () {
+  Then('the user should see the deleted notification', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await editPage.hasSuccessNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the user should see the delete notification error', async function () {
+  Then('the user should see the delete notification error', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasErrorNotification = await editPage.hasErrorNotification();
 
     assert.strictEqual(hasErrorNotification, true);
   });
 
-  Then('the user should not be notified that deletion has been made', async function () {
+  Then('the user should not be notified that deletion has been made', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasNoNotification = await editPage.hasNoNotification();
 
     assert.strictEqual(hasNoNotification, true);
   });
 
-  Then('the user should not see the deletion button', async function () {
+  Then('the user should not see the deletion button', async function() {
     const header = await await getElement(this.page, 'Header');
     const isDeleteButtonVisible = await header.isDeleteButtonVisible();
 
     assert.strictEqual(isDeleteButtonVisible, false);
   });
 
-  Then('the label of the asset family {string} should be read only', async function (identifier) {
+  Then('the label of the asset family {string} should be read only', async function(identifier) {
     await askForAssetFamily.apply(this, [identifier]);
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
@@ -248,7 +248,7 @@ module.exports = async function (cucumber) {
     await properties.labelIsReadOnly();
   });
 
-  Then('the save button should not be displayed', async function () {
+  Then('the save button should not be displayed', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.hasNoSaveButton();
   });

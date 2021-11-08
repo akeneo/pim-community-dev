@@ -9,8 +9,9 @@ const FallbackActionLine: React.FC<ActionLineProps> = ({
   handleDelete,
 }) => {
   const {watch} = useFormContext();
-  const {formName, getFormValue} =
-    useControlledFormInputAction<boolean>(lineNumber);
+  const {formName, getFormValue} = useControlledFormInputAction<boolean>(
+    lineNumber
+  );
   const getActionValues = () => watch(`content.actions[${lineNumber}]`);
 
   return (
@@ -19,8 +20,7 @@ const FallbackActionLine: React.FC<ActionLineProps> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}
-      lineNumber={lineNumber}
-    >
+      lineNumber={lineNumber}>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
           <div className='AknGrid-bodyCell'>
@@ -28,8 +28,7 @@ const FallbackActionLine: React.FC<ActionLineProps> = ({
               style={{
                 fontFamily:
                   'Courier, "MS Courier New", Prestige, "Everson Mono"',
-              }}
-            >
+              }}>
               {JSON.stringify(getActionValues())}
               {Object.keys(getActionValues() ?? {}).map((key: string) => (
                 <Controller

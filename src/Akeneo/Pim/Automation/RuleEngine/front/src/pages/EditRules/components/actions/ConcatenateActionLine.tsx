@@ -59,15 +59,21 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   const currentCatalogLocale = useUserCatalogLocale();
   const removeNewLineDialog = useDialogState();
   const {setValue, watch, getValues} = useFormContext();
-  const {formName, typeFormName, getFormValue, isFormFieldInError} =
-    useControlledFormInputAction<string | null>(lineNumber);
+  const {
+    formName,
+    typeFormName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
   watch(formName('source'));
   watch(formName('to.field'));
   const [attributeTarget, setAttributeTarget] = React.useState<
     Attribute | null | undefined
   >(undefined);
-  const [attributeTargetPending, setAttributeTargetPending] =
-    React.useState<Attribute | null>(null);
+  const [
+    attributeTargetPending,
+    setAttributeTargetPending,
+  ] = React.useState<Attribute | null>(null);
 
   const scopeFormName = formName('to.scope');
   const getScopeFormValue = () => getFormValue('to.scope');
@@ -152,8 +158,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
         'pimee_catalog_rule.form.edit.actions.concatenate.helper'
       )}
       handleDelete={handleDelete}
-      lineNumber={lineNumber}
-    >
+      lineNumber={lineNumber}>
       <Controller
         name={typeFormName}
         as={<span hidden />}
@@ -201,8 +206,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
             <SelectorBlock
               className={
                 isFormFieldInError('to.field') ? 'select2-container-error' : ''
-              }
-            >
+              }>
               <AttributeSelector
                 data-testid={`edit-rules-action-${lineNumber}-to-field`}
                 name={formName('to.field')}
@@ -239,8 +243,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
                       href={createAttributeLink(
                         router,
                         getFormValue('to.field')
-                      )}
-                    >
+                      )}>
                       {translate(
                         'pimee_catalog_rule.exceptions.create_attribute_link'
                       )}
@@ -255,8 +258,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('to.scope')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={ScopeSelector}
                   data-testid={`edit-rules-action-${lineNumber}-to-scope`}
@@ -284,8 +286,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('to.locale')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={LocaleSelector}
                   data-testid={`edit-rules-action-${lineNumber}-to-locale`}

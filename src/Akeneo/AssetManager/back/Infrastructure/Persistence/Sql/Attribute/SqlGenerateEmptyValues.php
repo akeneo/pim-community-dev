@@ -90,7 +90,7 @@ SQL;
             'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
 
-        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAllAssociative();
         $values = [];
         foreach ($rows as $row) {
             $key = $row['key'];

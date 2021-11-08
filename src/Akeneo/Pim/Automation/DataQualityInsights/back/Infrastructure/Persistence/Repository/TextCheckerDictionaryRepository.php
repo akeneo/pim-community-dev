@@ -57,7 +57,7 @@ SQL;
                 $localeCode,
                 new DictionaryWord($row['word'])
             );
-        }, $statement->fetchAll(FetchMode::ASSOCIATIVE));
+        }, $statement->fetchAllAssociative());
     }
 
     public function filterExistingWords(LocaleCode $localeCode, array $words): array
@@ -82,7 +82,7 @@ SQL;
                 'localeCode' => \PDO::PARAM_STR,
                 'words' => Connection::PARAM_STR_ARRAY,
             ],
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return array_filter($words, fn ($word) => in_array(mb_strtolower(strval($word)), $dictionaryWords));
     }
@@ -162,7 +162,7 @@ SQL;
             ->setFirstResult(($page-1) * $itemsPerPage)
             ->setMaxResults($itemsPerPage);
 
-        $words = $qb->execute()->fetchAll(FetchMode::ASSOCIATIVE);
+        $words = $qb->execute()->fetchAllAssociative();
 
         return [
             'results' => $words,

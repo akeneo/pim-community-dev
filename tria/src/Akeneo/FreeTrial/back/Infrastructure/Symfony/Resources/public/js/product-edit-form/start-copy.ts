@@ -1,4 +1,4 @@
-import {CompareTranslateButton} from "akeneo-pim-free-trial";
+import {CompareTranslateButton} from 'akeneo-pim-free-trial';
 
 const StartCopy = require('pim/product-edit-form/start-copy');
 
@@ -11,16 +11,16 @@ class FreeTrialStartCopy extends StartCopy {
 
   render() {
     this.renderReact(
-        CompareTranslateButton,
-        {
-          onClick: () => {
-            this.startCopy();
-            this.buttonDisabled = true;
-            this.render();
-          },
-          disabled: this.buttonDisabled,
+      CompareTranslateButton,
+      {
+        onClick: () => {
+          this.startCopy();
+          this.buttonDisabled = true;
+          this.render();
         },
-        this.el
+        disabled: this.buttonDisabled,
+      },
+      this.el
     );
   }
 
