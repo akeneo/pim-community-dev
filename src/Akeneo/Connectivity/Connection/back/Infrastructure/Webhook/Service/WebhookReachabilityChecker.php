@@ -101,6 +101,6 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
     private function isRedirectResponse(int $statusCode): bool
     {
-        return in_array($statusCode, [301, 302, 303, 307, 308]);
+        return $statusCode >= 300 && $statusCode < 400;
     }
 }

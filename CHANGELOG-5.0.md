@@ -1,9 +1,5 @@
 # 5.0.x
 
-## Bug fixes
-
-- PIM-10142: Block HTTP redirection in Webhook URLs
-
 # 5.0.54 (2021-10-29)
 
 # 5.0.53 (2021-10-25)
