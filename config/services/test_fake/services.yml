@@ -15,7 +15,7 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
-    # Job Bundle
+    # AkeneoJobBundle
     - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
 
 services:

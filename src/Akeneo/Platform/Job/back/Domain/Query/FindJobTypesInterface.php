@@ -1,15 +1,16 @@
 <?php
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Akeneo\Platform\Job\Domain\Query;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class SearchJobExecutionQuery
+interface FindJobTypesInterface
 {
-    public int $page = 1;
-    public int $size = 25;
-    public array $type = [];
+    /**
+     * @return string[]
+     */
+    public function visible(): array;
 }

@@ -10,9 +10,9 @@ use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class IndexActionTest extends ControllerIntegrationTestCase
+class GetJobTypesActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'akeneo_job_index_action';
+    private const ROUTE = 'akeneo_job_get_job_types_action';
     private WebClientHelper $webClientHelper;
 
     public function setUp(): void
@@ -24,12 +24,17 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->fixturesLoader->loadProductImportExportFixtures();
     }
 
-    public function test_it_returns_job_total_count(): void
+    public function test_it_returns_job_types(): void
     {
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
 
+        $expectedJobTypes = [
+            'import',
+            'export',
+        ];
+
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-        Assert::assertSame(json_decode($response->getContent(), true)['total_count'], 1);
+        Assert::assertEqualsCanonicalizing(json_decode($response->getContent(), true), $expectedJobTypes);
     }
 }

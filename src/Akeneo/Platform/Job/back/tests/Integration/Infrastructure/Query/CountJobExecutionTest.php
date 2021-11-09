@@ -13,7 +13,7 @@ class CountJobExecutionTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fixtures = $this->fixturesLoader->loadProductImportFixtures();
+        $this->fixtures = $this->fixturesLoader->loadProductImportExportFixtures();
     }
 
     public function test_it_counts_job(): void

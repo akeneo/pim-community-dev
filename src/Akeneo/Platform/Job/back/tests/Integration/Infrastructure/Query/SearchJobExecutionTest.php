@@ -31,7 +31,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $expectedJobExecutions = [
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
-                'another_product_import',
+                'a_product_import',
                 'import',
                 null,
                 null,
@@ -42,16 +42,16 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
             ),
             new JobExecutionRow(
-                $this->jobExecutionIds[1],
-                'another_product_import',
-                'import',
-                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                $this->jobExecutionIds[3],
+                'a_product_export',
+                'export',
                 null,
-                'STARTED',
+                null,
+                'STARTING',
                 0,
-                2,
-                1,
-                3
+                0,
+                0,
+                3,
             ),
         ];
 
@@ -63,8 +63,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                null,
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
+            new JobExecutionRow(
                 $this->jobExecutionIds[0],
-                'another_product_import',
+                'a_product_import',
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 null,
@@ -82,36 +94,94 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_filtered_job_executions(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->type = ['export'];
+        $query->size = 10;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'a_product_export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_job_execution_count_related_to_query()
     {
         $query = new SearchJobExecutionQuery();
 
-        $this->assertEquals(3, $this->getQuery()->count($query));
+        $this->assertEquals(4, $this->getQuery()->count($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_job_execution_count_filtered_by_type()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->type = ['export'];
+
+        $this->assertEquals(1, $this->getQuery()->count($query));
     }
 
     private function loadFixtures()
     {
-        $jobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'a_product_import',
+            'job_name' => 'a_product_import',
+            'label' => 'a_product_import',
+            'type' => 'import',
+        ]);
+
+        $anotherProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
             'code' => 'another_product_import',
             'job_name' => 'another_product_import',
             'label' => 'another_product_import',
             'type' => 'import',
         ]);
 
+        $aProductExportJobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'a_product_export',
+            'job_name' => 'a_product_export',
+            'label' => 'a_product_export',
+            'type' => 'export',
+        ]);
+
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
-            'job_instance_id' => $jobInstanceId,
+            'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'status' => 1,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
-            'job_instance_id' => $jobInstanceId,
+            'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
             'status' => 3,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
-            'job_instance_id' => $jobInstanceId,
+            'job_instance_id' => $aProductImportJobInstanceId,
+            'start_time' => null,
+            'status' => 2,
+        ]);
+
+        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $aProductExportJobInstanceId,
             'start_time' => null,
             'status' => 2,
         ]);

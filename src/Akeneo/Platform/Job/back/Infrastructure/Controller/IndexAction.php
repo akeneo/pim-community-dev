@@ -32,6 +32,7 @@ final class IndexAction
         }
 
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
+        $searchJobExecutionQuery->type = json_decode($request->query->get('type', '[]'));
         $searchJobExecutionQuery->page = $request->query->getInt('page', 1);
         $searchJobExecutionQuery->size = $request->query->getInt('size', 25);
 
