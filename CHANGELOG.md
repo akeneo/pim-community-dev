@@ -148,6 +148,7 @@
 
 - PIM-9716: Autoselect last element of pasted list in choice filter
 - PIM-9985: Improve channels sentence display in the settings menu
+- PIM-10108: Improve english error message when trying to remove an association type used in products
 
 # Technical Improvements
 
