@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\DeleteUserGroupInter
 use Akeneo\Connectivity\Connection\Application\Apps\Service\DeleteUserRoleInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface;
+use Akeneo\Connectivity\Connection\Application\TransactionnalCommandHandlerInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\DeleteConnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppDeletionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
@@ -17,7 +18,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class DeleteAppHandler
+final class DeleteAppHandler implements TransactionnalCommandHandlerInterface
 {
     private GetAppDeletionQueryInterface $getAppDeletionQuery;
     private DeleteConnectedAppQueryInterface $deleteConnectedAppQuery;
@@ -45,7 +46,7 @@ final class DeleteAppHandler
         $this->deleteUserRole = $deleteUserRole;
     }
 
-    public function handle(DeleteAppCommand $command): void
+    public function __invoke(DeleteAppCommand $command): void
     {
         $appDeletion = $this->getAppDeletionQuery->execute($command->getAppId());
 
