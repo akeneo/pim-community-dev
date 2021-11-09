@@ -504,36 +504,185 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202101-01
+      resource_class: medium
+      working_directory: ~/project
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+              fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-              name: Build PROD PIM docker image
-              command: IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make -C deployments/ php-image-prod
+              name: Define value for next steps
+              command: |
+                TYPE="srnt"
+                TYPE_LONG="serenity"
+                IMAGE_TAG=${CIRCLE_SHA1}
+                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                PRODUCT_REFERENCE_TYPE="serenity_instance"
+                PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+                echo "Image tag: ${IMAGE_TAG}"
+                echo "Serenity release name: ${RELEASE_NAME}"
           - run:
-              name: Push PROD PIM image on docker registry
+              name: Build the Serenity Edition prod image
+              command: make -C deployments/ php-image-prod
+          - run:
+              name: Push the Serenity Edition prod image on docker registry
               command: make -C deployments/ push-php-image-prod
+          - run:
+              name: Push Terraform modules to GCS
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}/
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export TYPE=${TYPE} > persisted_env_vars
+                echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
 
   test_deploy:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+                echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
+          - run:
               name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%3Asrnt-pimci-${IMAGE_TAG_SHORTED}&stream_sort=time%2Casc&to_ts=-1"
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: make -C deployments/ deploy-serenity
+              command: |
+                  NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  make -C deployments/ commit-instance
           - run:
               name: Test PIM connexion on kubernetes
               command: make -C deployments/ test-prod
+          - run:
+              name: Display Deployment Errors
+              command: cat deployment.log
+              when: on_fail
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - store_artifacts:
+              path: deployment.log
+              destination: test_deploy_<<parameters.PRODUCT_TYPE>>_deployment.log
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
+          - run:
+              name: Remove env on kubernetes
+              command: make -C deployments/ uncommit
+              when: always
+
+  deploy_pr_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      resource_class: small
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci-pr
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+                ACTIVATE_MONITORING=true
+                DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+                echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+              name: Check Circle CI PR
+              command: |
+                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
+          - run:
+              name: Deploy PR environment
+              command: |
+                NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                make -C deployments/ commit-instance
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> persisted_env_vars
+                echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> persisted_env_vars
           - run:
               name: Prepare infrastructure artifacts
               command: make -C deployments/ prepare-infrastructure-artifacts
@@ -542,82 +691,7 @@ jobs:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: make -C deployments/ delete
-              when: always
-
-  test_upgrade_from_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Get latest release & export variables
-                command: |
-                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
-                    echo $LATEST_RELEASE
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7) >> $BASH_ENV
-                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
-          - run:
-                name: Deploy instance with latest release
-                command: |
-                    make -C deployments/ create-ci-release-files
-                    make -C deployments/ change-terraform-source-version
-                    make -C deployments/ deploy
-          - run:
-                name: Upgrade
-                command: UPGRADE_STEP_2=true IMAGE_TAG=$CIRCLE_SHA1 make -C deployments/ deploy-serenity
-          - run:
-                name: Production tests on upgraded env
-                command: make -C deployments/ test-prod
-          - run:
-                name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=srnt-pimup-$(echo $CIRCLE_SHA1 | cut -c -7) | grep pim-upgrader
-          - run:
-                name: Prepare infrastructure artifacts
-                command: make -C deployments/ prepare-infrastructure-artifacts
-                when: on_fail
-          - store_artifacts:
-                path: ~/artifacts/infra
-          - run:
-                name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 make -C deployments/ delete
-                when: always
-
-  deploy_pr_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Deploy PR environment
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
-          - run:
-                name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false make -C deployments/ deploy-serenity
-          - run:
-              name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make -C deployments/ prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make -C deployments/ delete
+              command: make -C deployments/ uncommit
               when: on_fail
 
   delete_pr_environment:
@@ -628,12 +702,11 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
-                name: delete environments
+                name: Remove env on kubernetes
                 command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make -C deployments/ delete-serenity
+                    make -C deployments/ delete-uncommit
 
   test_back_missing_structure_migrations:
       machine:
