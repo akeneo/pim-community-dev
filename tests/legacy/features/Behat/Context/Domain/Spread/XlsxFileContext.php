@@ -5,8 +5,7 @@ namespace Pim\Behat\Context\Domain\Spread;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -25,7 +24,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
@@ -47,7 +46,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
@@ -70,7 +69,7 @@ class XlsxFileContext extends PimContext
         $expectedLines = $expectedLines->getRows();
         unset($expectedLines[0]);
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
 
         foreach ($archivePaths as $archivePath) {
             $reader->open($jobContext->copyArchiveLocally($archivePath));
@@ -105,7 +104,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code);
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
@@ -129,7 +128,7 @@ class XlsxFileContext extends PimContext
             throw new ExpectationException(sprintf('File %s does not exist.', $fileName), $this->getSession());
         }
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($fileName);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
@@ -172,7 +171,7 @@ class XlsxFileContext extends PimContext
             $categories[] = $category;
         }
 
-        $reader = ReaderFactory::create(Type::XLSX);
+        $reader = ReaderEntityFactory::createXLSXReader();
         $reader->open($fileName);
 
         $sheet = current(iterator_to_array($reader->getSheetIterator()));

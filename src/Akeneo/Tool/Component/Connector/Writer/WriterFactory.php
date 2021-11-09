@@ -4,17 +4,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Connector\Writer;
 
-use Box\Spout\Writer\WriterFactory as SpoutWriterFactory;
+use Box\Spout\Common\Exception\UnsupportedTypeException;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\WriterAbstract;
 
-/**
- * @todo CPM-248 remove this class
- */
-final class WriterFactory extends SpoutWriterFactory
+final class WriterFactory
 {
-    public static function create($writerType)
+    public static function create($writerType): WriterAbstract
     {
-        $writer = parent::create($writerType);
-        $writer->setGlobalFunctionsHelper(new GlobalFunctionsHelper());
+        switch ($writerType) {
+            case Type::XLSX:
+                $writer = WriterEntityFactory::createXLSXWriter();
+                break;
+            case Type::ODS:
+                $writer = WriterEntityFactory::createODSWriter();
+                break;
+            case Type::CSV:
+                $writer = WriterEntityFactory::createCSVWriter();
+                break;
+            default:
+                throw new UnsupportedTypeException();
+        }
+
 
         return $writer;
     }

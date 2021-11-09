@@ -5,8 +5,9 @@ namespace Akeneo\Tool\Component\Connector\Reader\File;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\IteratorInterface;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Reader\ReaderAbstract;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -22,36 +23,19 @@ use Symfony\Component\Finder\Finder;
  */
 class FlatFileIterator implements FileIteratorInterface
 {
-    /** @var string */
-    protected $type;
-
-    /** @var string */
-    protected $filePath;
-
-    /** @var FileReaderInterface */
-    protected $reader;
-
-    /** @var \SplFileInfo */
-    protected $fileInfo;
-
-    /** @var string */
-    protected $archivePath;
-
-    /** @var IteratorInterface */
-    protected $rows;
-
-    /** @var array */
-    protected $headers;
+    protected string $type;
+    protected string $filePath;
+    protected ?ReaderAbstract $reader = null;
+    protected ?\SplFileInfo $fileInfo = null;
+    protected ?string $archivePath = null;
+    protected ?IteratorInterface $rows;
+    protected array $headers = [];
 
     /**
-     * @param string $type
-     * @param string $filePath
-     * @param array  $options
-     *
      * @throws UnsupportedTypeException
      * @throws FileNotFoundException
      */
-    public function __construct($type, $filePath, array $options = [])
+    public function __construct(string $type, string $filePath, array $options = [])
     {
         $this->type = $type;
         $this->filePath = $filePath;
@@ -66,7 +50,19 @@ class FlatFileIterator implements FileIteratorInterface
             $this->extractZipArchive();
         }
 
-        $this->reader = ReaderFactory::create($type);
+        switch ($type) {
+            case Type::XLSX:
+                $this->reader = ReaderEntityFactory::createXLSXReader();
+                break;
+            case Type::CSV:
+                $this->reader = ReaderEntityFactory::createCSVReader();
+                break;
+            case Type::ODS:
+                $this->reader = ReaderEntityFactory::createODSReader();
+                break;
+            default:
+                throw new UnsupportedTypeException('Invalid type for FlatIterator reader');
+        }
         if (isset($options['reader_options'])) {
             $this->setReaderOptions($options['reader_options']);
         }
@@ -76,14 +72,14 @@ class FlatFileIterator implements FileIteratorInterface
         $sheet = $this->reader->getSheetIterator()->current();
         $sheet->getRowIterator()->rewind();
 
-        $this->headers = $sheet->getRowIterator()->current();
+        $this->headers = $sheet->getRowIterator()->current()->toArray();
         $this->rows = $sheet->getRowIterator();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->rows->rewind();
     }
@@ -109,7 +105,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->rows->next();
     }
@@ -130,10 +126,7 @@ class FlatFileIterator implements FileIteratorInterface
         return $this->rows->valid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDirectoryPath()
+    public function getDirectoryPath(): ?string
     {
         if (null === $this->archivePath) {
             return $this->fileInfo->getPath();
@@ -158,10 +151,7 @@ class FlatFileIterator implements FileIteratorInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }

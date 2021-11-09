@@ -4,21 +4,17 @@ namespace Pim\Behat\Context\Domain;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\CSV\Reader as CsvReader;
-use Box\Spout\Reader\ReaderFactory;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class ImportExportContext extends PimContext
 {
     /**
-     * @param array  $expectedLines
-     * @param array  $actualLines
-     * @param string $path
-     *
      * @throws \Exception
      */
-    protected function compareFile(array $expectedLines, array $actualLines, $path)
+    protected function compareFile(array $expectedLines, array $actualLines, string $path)
     {
         $expectedCount = count($expectedLines);
         $actualCount = count($actualLines);
@@ -60,8 +56,7 @@ class ImportExportContext extends PimContext
                 sprintf(
                     "Header in the file %s does not match the expected one. Given:\n\t%s\nDuplicated fields detected.",
                     $path,
-                    implode(' | ', $currentActualLines),
-                    implode(' | ', $headerDiff)
+                    implode(' | ', $currentActualLines)
                 )
             );
         }
@@ -82,13 +77,9 @@ class ImportExportContext extends PimContext
         }
     }
     /**
-     * @param array  $expectedLines
-     * @param array  $actualLines
-     * @param string $path
-     *
      * @throws \Exception
      */
-    public function compareLines(array $expectedLines, array $actualLines, $path)
+    public function compareLines(array $expectedLines, array $actualLines, string $path)
     {
         $currentActualLines = current($actualLines);
         $currentExpectedLines = current($expectedLines);
@@ -122,8 +113,7 @@ class ImportExportContext extends PimContext
                 sprintf(
                     "Header in the file %s does not match the expected one. Given:\n\t%s\nDuplicated fields detected.",
                     $path,
-                    implode(' | ', $currentActualLines),
-                    implode(' | ', $headerDiff)
+                    implode(' | ', $currentActualLines)
                 )
             );
         }
@@ -158,16 +148,10 @@ class ImportExportContext extends PimContext
         return false;
     }
 
-    /**
-     * @param PyStringNode $behatData
-     * @param array        $config
-     *
-     * @return array
-     */
-    protected function getExpectedLines(PyStringNode $behatData, $config)
+    protected function getExpectedLines(PyStringNode $behatData, array $config): array
     {
-        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '';
+        $delimiter = $config['delimiter'] ?? ';';
+        $enclosure = $config['enclosure'] ?? '';
 
         $expectedLines = [];
         foreach ($behatData->getStrings() as $line) {
@@ -183,7 +167,19 @@ class ImportExportContext extends PimContext
     {
         $jobContext = $this->getMainContext()->getSubcontext('job');
 
-        $reader = ReaderFactory::create($fileType);
+        switch ($fileType) {
+            case Type::XLSX:
+                $reader = ReaderEntityFactory::createXLSXReader();
+                break;
+            case Type::CSV:
+                $reader = ReaderEntityFactory::createCSVReader();
+                break;
+            case Type::ODS:
+                $reader = ReaderEntityFactory::createODSReader();
+                break;
+            default:
+                throw new \LogicException('Invalid type for FlatIterator reader');
+        }
 
         if (Type::CSV === $fileType && $reader instanceof CsvReader) {
             $reader
@@ -200,35 +196,21 @@ class ImportExportContext extends PimContext
         return $lines;
     }
 
-    /**
-     * @param string $code
-     *
-     * @return array
-     */
-    protected function getCsvJobConfiguration($code)
+    protected function getCsvJobConfiguration(string $code): array
     {
         $config = $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
-        $config['delimiter'] = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $config['enclosure'] = isset($config['enclosure']) ? $config['enclosure'] : '"';
-        $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
+        $config['delimiter'] = $config['delimiter'] ?? ';';
+        $config['enclosure'] = $config['enclosure'] ?? '"';
+        $config['escape'] = $config['escape'] ?? '\\';
 
         return $config;
     }
 
-    /**
-     * @param string $code
-     *
-     * @return array
-     */
-    protected function getXlsxJobConfiguration($code)
+    protected function getXlsxJobConfiguration(string $code): array
     {
         return $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
     }
 
-    /**
-     * @param array $expectedHeaders
-     * @param array $actualHeaders
-     */
     protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
     {
         Assert::assertEquals(
