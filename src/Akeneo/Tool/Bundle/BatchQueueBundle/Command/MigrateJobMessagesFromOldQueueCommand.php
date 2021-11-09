@@ -130,7 +130,7 @@ final class MigrateJobMessagesFromOldQueueCommand extends Command
     {
         $query = 'SELECT count(id) FROM akeneo_batch_job_execution_queue WHERE consumer IS NULL';
 
-        return (int) $this->connection->executeQuery($query)->fetchColumn();
+        return (int) $this->connection->executeQuery($query)->fetchOne();
     }
 
     private function getNotConsumedJobExecutionMessages(): \Iterator
@@ -151,7 +151,7 @@ final class MigrateJobMessagesFromOldQueueCommand extends Command
                 $query,
                 ['batch' => self::BATCH, 'id' => $lastId],
                 ['batch' => Types::INTEGER, 'id' => Types::INTEGER]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (0 === count($rows)) {
                 break;

@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeleteMeasurementFamilyEndToEnd extends WebTestCase
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private ?MeasurementFamilyRepositoryInterface $measurementFamilyRepository = null;
 
     public function setUp(): void
     {

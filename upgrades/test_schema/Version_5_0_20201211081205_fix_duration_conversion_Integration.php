@@ -41,7 +41,7 @@ class Version_5_0_20201211081205_fix_duration_conversion_Integration extends Tes
     private function getMonthConversionValue(): string
     {
         $query = "SELECT units FROM akeneo_measurement WHERE code = 'Duration';";
-        $units = $this->connection->executeQuery($query)->fetchColumn();
+        $units = $this->connection->executeQuery($query)->fetchOne();
 
         $monthUnit = current(array_filter(
             \json_decode($units, true),
@@ -55,7 +55,7 @@ class Version_5_0_20201211081205_fix_duration_conversion_Integration extends Tes
     private function setMonthConversionValue(string $value): void
     {
         $query = "SELECT units FROM akeneo_measurement WHERE code = 'Duration';";
-        $units = \json_decode($this->connection->executeQuery($query)->fetchColumn(), true);
+        $units = \json_decode($this->connection->executeQuery($query)->fetchOne(), true);
 
         $newUnits = array_map(
             function (array $unit) use ($value): array {

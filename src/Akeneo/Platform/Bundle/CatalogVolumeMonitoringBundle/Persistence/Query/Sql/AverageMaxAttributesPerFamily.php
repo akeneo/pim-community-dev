@@ -47,7 +47,7 @@ class AverageMaxAttributesPerFamily implements AverageMaxQuery
                 GROUP BY family_id
             ) a
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
         $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
 
         return $volume;

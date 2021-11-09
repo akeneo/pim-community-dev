@@ -30,7 +30,7 @@ class Version_6_0_20210505180000_add_updated_to_category_Integration extends Tes
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertTrue($this->updatedColumnExists());
 
-        $row = $connection->executeQuery('SELECT * from pim_catalog_category')->fetch();
+        $row = $connection->executeQuery('SELECT * from pim_catalog_category')->fetchAssociative();
         Assert::assertEquals($row['created'], $row['updated']);
     }
 

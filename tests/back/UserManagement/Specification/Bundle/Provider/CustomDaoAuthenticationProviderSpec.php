@@ -5,19 +5,15 @@ namespace Specification\Akeneo\UserManagement\Bundle\Provider;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
 use Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PhpSpec\Matcher\Matcher;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Webmozart\Assert\Assert;
 
 class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 {
@@ -72,7 +68,14 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $this->shouldNotChangeState($userManager);
     }
 
-    public function it_increase_failed_attempts_counter(EncoderFactoryInterface $encoderFactory, UserManager $userManager, UserProviderInterface $userProvider, PasswordEncoderInterface $passwordEncoder, UserInterface $user, UsernamePasswordToken $usernamePasswordToken)
+    public function it_increase_failed_attempts_counter(
+        EncoderFactoryInterface $encoderFactory,
+        UserManager $userManager,
+        UserProviderInterface $userProvider,
+        PasswordEncoderInterface $passwordEncoder,
+        UserInterface $user,
+        UsernamePasswordToken $usernamePasswordToken
+    )
     {
         $this->initUser(
             $user,
@@ -81,7 +84,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         );
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
-        $userProvider->loadUserByUsername(self::USERNAME)->willReturn($user);
+        $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
         $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
         $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
 
@@ -100,7 +103,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         );
         $user->getConsecutiveAuthenticationFailureCounter()->willReturn(0);
         $this->initUsernamePasswordToken($usernamePasswordToken);
-        $userProvider->loadUserByUsername(self::USERNAME)->willReturn($user);
+        $userProvider->loadUserByIdentifier(self::USERNAME)->willReturn($user);
         $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
 
         $this->shouldThrow(BadCredentialsException::class)
@@ -135,11 +138,11 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     private function initUsernamePasswordToken(UsernamePasswordToken $usernamePasswordToken)
     {
         $usernamePasswordToken->getUser()->willReturn(self::USERNAME);
-        $usernamePasswordToken->getProviderKey()->willReturn(self::PROVIDER_KEY);
-        $usernamePasswordToken->getRoles(false)->willReturn([]);
+        $usernamePasswordToken->getFirewallName()->willReturn(self::PROVIDER_KEY);
+        $usernamePasswordToken->getRoleNames(false)->willReturn([]);
         $usernamePasswordToken->getAttributes()->willReturn([]);
-        $usernamePasswordToken->getUsername()->willReturn(self::USERNAME);
-        $usernamePasswordToken->getCredentials()->willReturn([]);
+        $usernamePasswordToken->getUserIdentifier()->willReturn(self::USERNAME);
+        $usernamePasswordToken->getCredentials()->willReturn('');
     }
 
     private function initUser(UserInterface $user, int $i, \DateTime $initialFailureDate): void
@@ -166,10 +169,10 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     private function initUserNamePasswordTokenWithUser(UsernamePasswordToken $usernamePasswordToken, UserInterface $user): void
     {
         $usernamePasswordToken->getUser()->willReturn($user);
-        $usernamePasswordToken->getProviderKey()->willReturn(self::PROVIDER_KEY);
-        $usernamePasswordToken->getRoles(false)->willReturn([]);
+        $usernamePasswordToken->getFirewallName()->willReturn(self::PROVIDER_KEY);
+        $usernamePasswordToken->getRoleNames()->willReturn([]);
         $usernamePasswordToken->getAttributes()->willReturn([]);
-        $usernamePasswordToken->getUsername()->willReturn(self::USERNAME);
+        $usernamePasswordToken->getUserIdentifier()->willReturn(self::USERNAME);
         $usernamePasswordToken->getCredentials()->willReturn([]);
     }
 

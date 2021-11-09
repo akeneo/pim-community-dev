@@ -86,6 +86,9 @@
     "doctrine/dbal": {
         "version": "v2.7.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
         "recipe": {
@@ -100,9 +103,6 @@
             "src/Entity/.gitignore",
             "src/Repository/.gitignore"
         ]
-    },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.4.0"
     },
     "doctrine/doctrine-fixtures-bundle": {
         "version": "3.0",
@@ -152,6 +152,9 @@
     },
     "doctrine/reflection": {
         "version": "1.2.2"
+    },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
     },
     "dompdf/dompdf": {
         "version": "v0.6.2"
@@ -287,9 +290,6 @@
     },
     "instaclick/php-webdriver": {
         "version": "1.4.6"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
@@ -627,6 +627,9 @@
     "symfony/acl-bundle": {
         "version": "v1.0.0"
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.3.7"
+    },
     "symfony/asset": {
         "version": "v4.3.4"
     },
@@ -658,9 +661,6 @@
     "symfony/css-selector": {
         "version": "v3.4.31"
     },
-    "symfony/debug": {
-        "version": "v4.3.4"
-    },
     "symfony/debug-bundle": {
         "version": "4.1",
         "recipe": {
@@ -681,6 +681,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v4.3.4"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v5.3.7"
     },
     "symfony/dom-crawler": {
         "version": "v4.3.4"
@@ -749,9 +752,6 @@
     "symfony/http-kernel": {
         "version": "v4.3.4"
     },
-    "symfony/inflector": {
-        "version": "v4.3.4"
-    },
     "symfony/intl": {
         "version": "v4.3.4"
     },
@@ -792,6 +792,9 @@
     },
     "symfony/options-resolver": {
         "version": "v4.3.4"
+    },
+    "symfony/password-hasher": {
+        "version": "v5.3.7"
     },
     "symfony/polyfill-apcu": {
         "version": "v1.4.0"
@@ -835,8 +838,14 @@
     "symfony/property-access": {
         "version": "v4.3.4"
     },
+    "symfony/property-info": {
+        "version": "v5.3.7"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.3.4"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.3.7"
     },
     "symfony/requirements-checker": {
         "version": "1.0",
@@ -983,15 +992,6 @@
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
         ]
-    },
-    "symfony/web-server-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
-        }
     },
     "symfony/yaml": {
         "version": "v4.3.4"

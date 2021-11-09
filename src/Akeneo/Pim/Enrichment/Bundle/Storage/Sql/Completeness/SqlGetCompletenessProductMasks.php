@@ -88,7 +88,7 @@ SQL;
                 $sql,
                 ['productIdentifiers' => $productIdentifiers],
                 ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
-            )->fetchAll()
+            )->fetchAllAssociative()
         );
 
         return $this->buildProductMasks($rows);

@@ -44,7 +44,7 @@ class AverageMaxProductModelValues implements AverageMaxQuery
               CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*')))) AS average
             FROM pim_catalog_product_model;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
 
         $volume = new AverageMaxVolumes((int)$result['max'], (int)$result['average'], $this->limit, self::VOLUME_NAME);
 

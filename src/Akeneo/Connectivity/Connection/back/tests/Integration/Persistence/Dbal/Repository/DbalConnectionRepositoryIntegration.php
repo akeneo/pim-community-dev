@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\Db
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 
 class DbalConnectionRepositoryIntegration extends TestCase
@@ -50,6 +51,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertIsInt($connection->userId()->id());
         Assert::assertGreaterThan(0, $connection->userId()->id());
         Assert::assertIsBool($connection->auditable());
+        Assert::assertSame('default', (string) $connection->type());
     }
 
     public function test_it_updates_a_connection_from_its_code()
@@ -73,6 +75,36 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertNotNull($result['user_id']);
     }
 
+    public function test_it_creates_a_connection(): void
+    {
+        $user = $this->createAdminUser();
+
+        $clientId = $this->createClient('new_client');
+
+        $connection = new Connection(
+            'new_connection',
+            'new_connection_label',
+            FlowType::OTHER,
+            $clientId,
+            $user->getId(),
+            null,
+            true,
+            'connection_type'
+        );
+
+        $this->repository->create($connection);
+
+        $result = $this->selectConnectionFromDb('new_connection');
+
+        Assert::assertSame('new_connection', $result['code']);
+        Assert::assertSame('new_connection_label', $result['label']);
+        Assert::assertSame(FlowType::OTHER, $result['flow_type']);
+        Assert::assertNotNull($result['client_id']);
+        Assert::assertNotNull($result['user_id']);
+        Assert::assertTrue((bool) $result['auditable']);
+        Assert::assertSame('connection_type' , $result['type']);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
@@ -81,12 +113,32 @@ class DbalConnectionRepositoryIntegration extends TestCase
     private function selectConnectionFromDb(string $code): array
     {
         $query = <<<SQL
-    SELECT code, label, flow_type, client_id, user_id, image
+    SELECT code, label, flow_type, client_id, user_id, image, auditable, type
     FROM akeneo_connectivity_connection
     WHERE code = :code
 SQL;
         $statement = $this->dbalConnection->executeQuery($query, ['code' => $code]);
 
-        return $statement->fetch();
+        return $statement->fetchAssociative();
+    }
+
+    private function createClient(string $label): int
+    {
+        $this->dbalConnection->insert(
+            'pim_api_client',
+            [
+                'label' => $label,
+                'random_id' => $label,
+                'secret' => $label,
+                'allowed_grant_types' => [],
+                'redirect_uris' => [],
+            ],
+            [
+                'allowed_grant_types' => Types::ARRAY,
+                'redirect_uris' => Types::ARRAY
+            ]
+        );
+
+        return (int) $this->dbalConnection->lastInsertId();
     }
 }

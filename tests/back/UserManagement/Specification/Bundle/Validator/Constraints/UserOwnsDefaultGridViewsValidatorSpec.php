@@ -79,7 +79,7 @@ class UserOwnsDefaultGridViewsValidatorSpec extends ObjectBehavior
         $view->getDatagridAlias()->willReturn('product-grid');
         $view->getLabel()->willReturn('My private view');
         $user->getDefaultGridViews()->willReturn(new ArrayCollection([$view->getWrappedObject()]));
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
 
         $context->buildViolation(
             Argument::type('string'),

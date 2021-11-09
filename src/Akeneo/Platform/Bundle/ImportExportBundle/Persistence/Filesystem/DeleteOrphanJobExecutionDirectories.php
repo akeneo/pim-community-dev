@@ -65,7 +65,7 @@ final class DeleteOrphanJobExecutionDirectories
             $exists = $this->connection->executeQuery(
                 $sql,
                 ['job_execution_id' => $jobExecutionId]
-            )->fetchColumn();
+            )->fetchOne();
 
             $this->jobExecutionIds[$jobExecutionId] = (bool) $exists;
         }

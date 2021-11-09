@@ -56,7 +56,7 @@ SQL;
         $rawResults = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $indexedResults = [];
         foreach ($rawResults as $rawResult) {

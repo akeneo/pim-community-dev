@@ -49,6 +49,6 @@ SQL;
             $sql,
             ['codes' => $productModelCodes],
             ['codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 }

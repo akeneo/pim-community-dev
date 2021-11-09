@@ -26,8 +26,8 @@ class DbalConnectionRepository implements ConnectionRepository
     public function create(Connection $connection): void
     {
         $insertQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type, auditable)
-VALUES (:client_id, :user_id, :code, :label, :flow_type, :auditable)
+INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type, auditable, type)
+VALUES (:client_id, :user_id, :code, :label, :flow_type, :auditable, :type)
 SQL;
 
         $this->dbalConnection->executeQuery(
@@ -38,7 +38,8 @@ SQL;
                 'code' => (string) $connection->code(),
                 'label' => (string) $connection->label(),
                 'flow_type' => (string) $connection->flowType(),
-                'auditable' => (bool) $connection->auditable(),
+                'auditable' => $connection->auditable(),
+                'type' => $connection->type(),
             ],
             [
                 'auditable' => Types::BOOLEAN,
@@ -54,7 +55,7 @@ FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
 
-        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetchAssociative();
 
         return $dataRow ?
             new Connection(

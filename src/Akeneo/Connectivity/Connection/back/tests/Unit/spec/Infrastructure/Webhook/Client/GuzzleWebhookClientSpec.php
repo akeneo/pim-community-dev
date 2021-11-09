@@ -42,6 +42,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
+        $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
@@ -63,6 +64,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
+        $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $mock = new MockHandler(
             [
                 new Response(200, ['Content-Length' => 0]),

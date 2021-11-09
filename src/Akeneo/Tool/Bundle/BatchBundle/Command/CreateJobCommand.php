@@ -83,7 +83,7 @@ class CreateJobCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connector = $input->getArgument('connector');
         $jobName = $input->getArgument('job');

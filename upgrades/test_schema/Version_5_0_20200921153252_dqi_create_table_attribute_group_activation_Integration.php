@@ -52,7 +52,7 @@ SQL;
                 'attributeGroupCode' => $attributeGroupCode,
                 'updatedAt' => $updatedAt,
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         $this->assertTrue($attributeGroupExists);
     }

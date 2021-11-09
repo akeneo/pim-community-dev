@@ -154,7 +154,7 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         $row = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
-        )->fetch();
+        )->fetchAssociative();
 
 
         return isset($row['result']) ? json_decode($row['result'], true) : [];

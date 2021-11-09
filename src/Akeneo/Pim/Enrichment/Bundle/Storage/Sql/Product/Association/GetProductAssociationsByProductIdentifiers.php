@@ -93,7 +93,7 @@ FROM (
 GROUP BY result_by_identifier_and_type.product_identifier
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             [$productIdentifiers, $productIdentifiers, $productIdentifiers],
             [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]

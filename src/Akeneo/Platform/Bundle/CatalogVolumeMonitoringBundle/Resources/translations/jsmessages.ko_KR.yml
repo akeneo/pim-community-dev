@@ -26,6 +26,5 @@ pim_catalog_volume:
     count_category_trees: 카테고리 트리
     count_variant_products: 변형 제품
     count_product_models: 제품 모델
-    warning: 주의! 이 축에서 레코드에 도달했습니다! 이러한 유형의 볼륨에 대해 도움이 필요한 경우는 언제든지 문의해주십시오.
   mean: '평균:'
   max: '최대:'

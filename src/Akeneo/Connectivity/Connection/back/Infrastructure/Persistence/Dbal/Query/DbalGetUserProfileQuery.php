@@ -24,6 +24,6 @@ FROM oro_user
 WHERE username = :username
 SQL;
 
-        return $this->connection->fetchColumn($sql, ['username' => $username]);
+        return $this->connection->fetchOne($sql, ['username' => $username]);
     }
 }

@@ -1,37 +1,37 @@
 {% macro submitBtn(text, icon, class = '') %}
-{% spaceless %}
+{% apply spaceless %}
     {% set text = text|default('pim_common.save')|trans|capitalize %}
     <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
-{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle, errorMessage) %}{% spaceless %}
+{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle, errorMessage) %}{% apply spaceless %}
     {% set message = message|default('pim_enrich.entity.fallback.module.delete.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
     {% set successMessage = successMessage|default('flash.entity.removed'|trans) %}
     {% set errorMessage = errorMessage|default('The element could not be deleted')|trans %}
     href="javascript:void(0);" data-dialog="delete" data-title="{{ title }}" data-subtitle="{{ subTitle }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{{ errorMessage }}" data-success-message="{{ successMessage }}"
-{% endspaceless %}{% endmacro %}
+{% endapply %}{% endmacro %}
 
-{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '', subTitle = '', errorMessage = '') %}{% spaceless %}
+{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '', subTitle = '', errorMessage = '') %}{% apply spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
         <a class="{{ class }}" title="{{ 'pim_common.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle, errorMessage)}} >
             {{ 'pim_common.delete'|trans|capitalize }}
         </a>
     {% endif %}
-{% endspaceless %}{% endmacro %}
+{% endapply %}{% endmacro %}
 
 {% macro link(text, url, opts = {}) %}
-{% spaceless %}
+{% apply spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
     <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="{{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {{ text|trans|capitalize }}
     </a>
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
 {% macro page_header(options) %}
@@ -134,7 +134,7 @@
 {% endmacro %}
 
 {% macro updated(formId) %}
-{% spaceless %}
+{% apply spaceless %}
     <div id="entity-updated" style="opacity: 0">
         <span class="AknState">{{ 'info.updated'|trans }}</span>
     </div>
@@ -149,7 +149,7 @@
             }
         );
     </script>
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
 {% macro form_container(content) %}

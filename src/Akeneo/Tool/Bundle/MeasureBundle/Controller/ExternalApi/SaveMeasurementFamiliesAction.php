@@ -32,29 +32,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SaveMeasurementFamiliesAction
 {
-    /** @var MeasurementFamilyListValidator */
-    private $measurementFamilyListValidator;
+    private MeasurementFamilyListValidator $measurementFamilyListValidator;
 
-    /** @var MeasurementFamilyCommonStructureValidator */
-    private $measurementFamilyCommonStructureValidator;
+    private MeasurementFamilyCommonStructureValidator $measurementFamilyCommonStructureValidator;
 
-    /** @var MeasurementFamilyValidator */
-    private $measurementFamilyStructureValidator;
+    private MeasurementFamilyValidator $measurementFamilyStructureValidator;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
+    private ViolationNormalizer $violationNormalizer;
 
-    /** @var SaveMeasurementFamilyHandler */
-    private $saveMeasurementFamilyHandler;
+    private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler;
 
-    /** @var CreateMeasurementFamilyHandler */
-    private $createMeasurementFamilyHandler;
+    private CreateMeasurementFamilyHandler $createMeasurementFamilyHandler;
 
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
 
     public function __construct(
         MeasurementFamilyListValidator $measurementFamilyListValidator,
@@ -108,7 +100,7 @@ class SaveMeasurementFamiliesAction
                 $measurementFamilyCode = MeasurementFamilyCode::fromString($normalizedMeasurementFamily['code']);
                 $measurementFamily = $this->findMeasurementFamily($measurementFamilyCode);
 
-                if (null === $measurementFamily) {
+                if (!$measurementFamily instanceof MeasurementFamily) {
                     $responses[] = $this->createMeasurementFamily($normalizedMeasurementFamily);
                 } else {
                     $responses[] = $this->updateMeasurementFamily($normalizedMeasurementFamily, $measurementFamily);
@@ -287,13 +279,11 @@ class SaveMeasurementFamiliesAction
      */
     private function getNormalizedUnitsFromNormalizedMeasurementFamily(array $normalizedMeasurementFamily): array
     {
-        return array_map(function (array $unit) {
-            return [
-              'code' => $unit['code'],
-              'convert_from_standard' => $unit['convert_from_standard'],
-              'labels' => $unit['labels'] ?? [],
-              'symbol' => $unit['symbol'] ?? '',
-            ];
-        }, array_values($normalizedMeasurementFamily['units'] ?? []));
+        return array_map(static fn (array $unit) => [
+          'code' => $unit['code'],
+          'convert_from_standard' => $unit['convert_from_standard'],
+          'labels' => $unit['labels'] ?? [],
+          'symbol' => $unit['symbol'] ?? '',
+        ], array_values($normalizedMeasurementFamily['units'] ?? []));
     }
 }

@@ -58,6 +58,6 @@ final class Version_4_1_20200127171059_unauthorized_view_all_jobs_permission ext
     {
         $sql = 'SELECT role FROM oro_access_role';
 
-        return $this->connection->executeQuery($sql)->fetchAll(FetchMode::COLUMN);
+        return $this->connection->executeQuery($sql)->fetchFirstColumn();
     }
 }

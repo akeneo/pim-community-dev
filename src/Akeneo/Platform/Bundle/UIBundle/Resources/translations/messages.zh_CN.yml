@@ -68,6 +68,7 @@ pim_common:
   product_models: 产品模型
   products: 产品
   properties: 属性
+  quality_score: 质量评分
   quantity: 数量
   remove: 移除
   save: 保存

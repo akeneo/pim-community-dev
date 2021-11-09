@@ -89,7 +89,7 @@ SQL;
                 'localeCode' => \PDO::PARAM_STR,
                 'search' => \PDO::PARAM_STR,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $flattenAttributes = [];
         foreach ($rawResults as $rawResult) {

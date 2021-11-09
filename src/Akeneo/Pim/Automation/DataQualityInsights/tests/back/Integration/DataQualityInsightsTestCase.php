@@ -347,7 +347,7 @@ SQL;
         $localeId = $this->get('database_connection')->executeQuery(
             'SELECT id FROM pim_catalog_locale WHERE code = :code',
             ['code' => $code]
-        )->fetchColumn();
+        )->fetchOne();
 
         return intval($localeId);
     }

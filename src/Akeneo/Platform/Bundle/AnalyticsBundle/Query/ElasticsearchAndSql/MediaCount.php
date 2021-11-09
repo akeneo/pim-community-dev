@@ -101,7 +101,7 @@ class MediaCount implements MediaCountQuery
             WHERE attribute_type = :attribute_type
         SQL;
 
-        return $this->connection->executeQuery($sql, ['attribute_type' => $attributeType])->fetchAll(FetchMode::COLUMN);
+        return $this->connection->executeQuery($sql, ['attribute_type' => $attributeType])->fetchFirstColumn();
     }
 
     private function countMediasFromES(array $fieldPaths): int

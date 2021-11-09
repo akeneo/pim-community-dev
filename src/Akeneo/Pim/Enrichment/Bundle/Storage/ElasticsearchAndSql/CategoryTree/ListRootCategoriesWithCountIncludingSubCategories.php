@@ -91,7 +91,7 @@ SQL;
             [
                 'locale' => $translationLocaleCode
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $categories = [];
         foreach ($rows as $row) {

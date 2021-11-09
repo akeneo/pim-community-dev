@@ -17,8 +17,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConsolidateDashboardRatesCommand extends Command
 {
-    /** @var ConsolidateDashboardRates */
-    private $consolidateDashboardRates;
+    protected static $defaultName = 'pim:data-quality-insights:consolidate-dashboard-rates';
+    protected static $defaultDescription = 'Consolidate the Data-Quality-Insights dashboard rates.';
+
+    private ConsolidateDashboardRates $consolidateDashboardRates;
 
     public function __construct(ConsolidateDashboardRates $consolidateDashboardRates)
     {
@@ -29,13 +31,10 @@ final class ConsolidateDashboardRatesCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pim:data-quality-insights:consolidate-dashboard-rates')
-            ->setDescription('Consolidate the Data-Quality-Insights dashboard rates.')
-            ->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
+        $this->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $consolidationDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getArgument('day'));
 
@@ -49,6 +48,6 @@ final class ConsolidateDashboardRatesCommand extends Command
         $this->consolidateDashboardRates->consolidate($consolidationDate);
         $output->writeln('Consolidation done.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use DateInterval;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Types;
 use PhpSpec\ObjectBehavior;
@@ -119,7 +120,8 @@ class JobExecutionManagerSpec extends ObjectBehavior
     function it_gets_exit_status(
         Connection $connection,
         JobExecutionMessage $jobExecutionMessage,
-        Statement $stmt
+        Statement $stmt,
+        Result $result
     ) {
         $connection
             ->prepare(Argument::type('string'))
@@ -127,8 +129,8 @@ class JobExecutionManagerSpec extends ObjectBehavior
 
         $jobExecutionMessage->getJobExecutionId()->willReturn(1);
         $stmt->bindValue('id', 1)->shouldBeCalled();
-        $stmt->execute()->shouldBeCalled();
-        $stmt->fetch()->willReturn(['exit_code' => 'COMPLETED']);
+        $stmt->executeQuery()->shouldBeCalled()->willReturn($result);
+        $result->fetchAssociative()->willReturn(['exit_code' => 'COMPLETED']);
 
         $this->getExitStatus($jobExecutionMessage)->shouldBeLike(new ExitStatus('COMPLETED'));
     }

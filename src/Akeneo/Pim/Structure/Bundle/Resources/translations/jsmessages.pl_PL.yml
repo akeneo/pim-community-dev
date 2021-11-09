@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Włączony edytor tekstu rozszerzonego
     default_value: Wartość domyślna
+    code:
+      must_be_filled: Trzeba uzupełnić kod.
+      invalid: Kod nieprawidłowy
+      not_available: Kod niedostępny
+      is_duplicate: Ten kod jest już używany.
   module:
     add_attribute:
       no_available_attributes: Nie ma więcej atrybutów do dodania
@@ -226,8 +231,10 @@ pim_enrich.entity.attribute:
       confirm: Czy na pewno chcesz usunąć ten atrybut?
       product_count: '{0}0 produktów|{1}1 produkt|]1, Inf[{{ count }} produktów'
       product_model_count: '{0}0 modeli produktów|{1}1 model produktu|]1, Inf[{{ count }} modeli produktów'
+      used: ']-Inf,1]obecnie ma wartości określone dla tego atrybutu. Zostaną one usunięte.|]1, Inf[obecnie mają wartości określone dla tego atrybutu. Zostaną one usunięte.'
       helper:
         content: Jeśli chcesz zmienić typ atrybutu, aby był tłumaczony lub zmienny, zachowując jednocześnie dostęp do istniejących wartości atrybutu,
+        link: zajrzyj do naszego Centrum Pomocy (aby uzyskać więcej informacji).
       type: Wprowadź "{{ attributeCode }}"
       confirm_from_family: Czy na pewno chcesz usunąć ten atrybut z rodziny?
       confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?

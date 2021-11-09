@@ -49,7 +49,7 @@ SQL;
         $rawResults = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $results =  array_reduce($rawResults, function (array $results, array  $item): array {
             $results[$item['attribute_code']] = json_decode($item['option_codes'], true);

@@ -788,12 +788,14 @@ class WebUser extends PimContext
      */
     public function theFieldShouldContain($label, $expected)
     {
-        $page  = $this->getCurrentPage();
-        $field = $this->spin(function () use ($page, $label) {
-            return $page->findField($label);
-        }, sprintf('Field "%s" not found.', $label));
+        $this->spin(function () use ($label, $expected) {
+            $page  = $this->getCurrentPage();
+            $field = $page->findField($label);
+            if (null === $field) {
+                throw new ElementNotFoundException($this->getSession());
+            }
 
-        $this->spin(function () use ($field, $label, $expected) {
+
             if ($field->hasClass('select2-focusser')) {
                 for ($i = 0; $i < 2; ++$i) {
                     $parent = $field->getParent();
@@ -1002,6 +1004,16 @@ class WebUser extends PimContext
             }
 
             $this->getCurrentPage()->fillField($field, $value);
+
+            $this->spin(function () use ($field, $value) {
+                try {
+                    $this->getCurrentPage()->assertFieldIsFilled($field, $value);
+                } catch (\BadMethodCallException $e) {
+                    return true;
+                }
+
+                return true;
+            }, sprintf('Cannot assert that the field "%s" was correctly filled', $field));
 
             return true;
         }, sprintf('Cannot fill the field "%s"', $field));

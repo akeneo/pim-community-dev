@@ -5,7 +5,7 @@ namespace Specification\Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -58,7 +58,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Request $request,
         SessionInterface $session,
         Connection $connection,
-        Statement $statement
+        Result $result
     ) {
         $event->getRequest()->willReturn($request);
         $request->hasSession()->willReturn(true);
@@ -66,9 +66,9 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $session->get('_locale')->willReturn(null);
 
         $em->getConnection()->willReturn($connection);
-        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($result);
 
-        $statement->fetchColumn(Argument::any())->willReturn(false);
+        $result->fetchOne()->willReturn(false);
 
         $request->setLocale()->shouldNotBeCalled();
 
@@ -81,7 +81,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Request $request,
         SessionInterface $session,
         Connection $connection,
-        Statement $statement
+        Result $result
     ) {
         $event->getRequest()->willReturn($request);
         $request->hasSession()->willReturn(true);
@@ -89,9 +89,9 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $session->get('_locale')->willReturn(null);
 
         $em->getConnection()->willReturn($connection);
-        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($result);
 
-        $statement->fetchColumn(Argument::any())->willReturn('fr_FR');
+        $result->fetchOne()->willReturn('fr_FR');
 
         $request->setLocale('fr_FR')->shouldBeCalled();
 
@@ -110,7 +110,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($user);
         $event->getArgument('current_user')->willReturn($user);
 
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
         $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
 

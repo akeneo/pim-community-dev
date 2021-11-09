@@ -57,7 +57,7 @@ class CalculateCompletenessCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->lock()) {
             $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
@@ -83,7 +83,7 @@ class CalculateCompletenessCommand extends Command
 
     private function getTotalNumberOfProducts(): int
     {
-        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn();
+        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
     private function getProductIdentifiers(): iterable
@@ -107,7 +107,7 @@ SQL;
                     'formerId' => \PDO::PARAM_INT,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            )->fetchAllAssociative();
 
             if (empty($rows)) {
                 return;

@@ -48,7 +48,7 @@ SQL;
 
         $existingUnits = $this->connection->executeQuery($selectUnitsSql, [
             'measurement_family_code' => $measurementFamilyCode
-        ])->fetchColumn();
+        ])->fetchOne();
 
         if (false === $existingUnits) {
             // The measurement family has been removed

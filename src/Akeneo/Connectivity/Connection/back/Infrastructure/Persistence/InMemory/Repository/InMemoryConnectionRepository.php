@@ -30,6 +30,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
             'password' => uniqid(),
             'image' => null,
             'auditable' => $connection->auditable(),
+            'type' => 'default',
         ];
     }
 
@@ -47,7 +48,8 @@ class InMemoryConnectionRepository implements ConnectionRepository
             $dataRow['client_id'],
             $dataRow['user_id'],
             $dataRow['image'],
-            $dataRow['auditable']
+            $dataRow['auditable'],
+            $dataRow['type']
         );
     }
 

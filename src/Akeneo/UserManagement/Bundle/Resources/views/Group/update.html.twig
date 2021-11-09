@@ -1,5 +1,6 @@
-{% extends 'PimUIBundle:actions:update.html.twig' %}
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+{% extends '@PimUI/actions/update.html.twig' %}
+{% import '@PimUI/macros.html.twig' as UI %}
+{% import '@PimDataGrid/macros.html.twig' as dataGrid %}
 {% import '@PimUI/Default/page_elements.html.twig' as elements %}
 
 {% set entityId = form.vars.value.id %}
@@ -17,9 +18,7 @@
     }
     %}
 {% else %}
-    {% block breadcrumbs %}
-        {{ title }}
-    {% endblock breadcrumbs %}
+    {% set breadcrumbs = title %}
 {% endif %}
 
 {% block navButtons %}
@@ -41,7 +40,6 @@
           </div>
         </div>
     {% endif %}
-
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
 {% endblock navButtons %}
 
@@ -55,7 +53,6 @@
             {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
-    {{ form_end(form) }}
     <script type="text/javascript" nonce="{{ js_nonce() }}">
         require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
 

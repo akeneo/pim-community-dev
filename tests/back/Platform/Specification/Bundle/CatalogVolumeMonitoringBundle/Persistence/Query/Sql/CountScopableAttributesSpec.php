@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
@@ -29,10 +29,10 @@ class CountScopableAttributesSpec extends ObjectBehavior
         $this->shouldImplement(CountQuery::class);
     }
 
-    function it_gets_count_volume($connection, Statement $statement)
+    function it_gets_count_volume(Connection $connection, Result $statement)
     {
-        $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['count' => '4']);
+        $connection->executeQuery(Argument::type('string'))->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(['count' => '4']);
         $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_scopable_attributes'));
     }
 }

@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,6 +34,9 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator
     ) {
+        $eventDispatcher->dispatch(Argument::type(StepExecutionEvent::class),Argument::type('string'))
+            ->willReturn(Argument::type('object'));
+
         $this->beConstructedWith(
             $familyVariantRepository,
             $productQueryBuilderFactory,

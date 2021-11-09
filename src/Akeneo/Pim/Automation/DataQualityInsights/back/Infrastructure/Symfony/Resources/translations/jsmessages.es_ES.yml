@@ -71,14 +71,14 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Una forma de mejorar esta proporción es asegurarse de definir cuidadosamente los atributos más relevantes. <a href="{{ link }}" target="_blank">Eche un vistazo a nuestro centro de ayuda</a>.
-              message2: '¿Su PIM sigue siendo un misterio para usted? <a href="{{ link }}" target="_blank">Aprenda a sacarle el máximo partido</a>.'
+              message2: '¿Su PIM sigue siendo un misterio para usted? <a href=«{{ link }}» target="_blank">Aprenda a sacarle el máximo partido</a>.'
               message3: Nuestros equipos desarrollaron el PIM, ¡usted lo hace vivir!
               message4: La información detallada de los productos marca una verdadera diferencia para sus clientes. ¡Usted puede cambiar las reglas del juego!
             second_step:
               message1: '¡Intentemos apuntar un poco más alto! Sus clientes se lo agradecerán.'
               message2: Ya está a mitad de camino. Continúe y sus productos se enriquecerán de forma notable.
               message3: Los detalles son lo más importante, ¡incluso en su sector!
-              message4: '¿Necesita que le echen una mano para pulir el enriquecimiento de su producto? Aprenda a seleccionar cuidadosamente los atributos más relevantes <a href="{{ link }}" target="_blank">aquí</a>.'
+              message4: '¿Necesita que le echen una mano para pulir el enriquecimiento de su producto? Aprenda a seleccionar cuidadosamente los atributos más relevantes <a href=«{{ link }}» target="_blank">aquí</a>.'
             third_step:
               message1: Hasta aquí todo bien, ¡ahora puede ir un poco más allá!
               message2: Es una proporción muy buena, pero ¿no quedaría bien un 100 %?
@@ -141,7 +141,7 @@ akeneo_data_quality_insights:
     activated: Habilitado
     disabled: Deshabilitado
     used_groups_helper: "Los siguientes grupos de atributos se tienen en cuenta en el cálculo de los Informes de Calidad de datos:"
-    all_groups_evaluated: Todos los grupos de atributos de este producto se tienen en cuenta para el cálculo de la puntuación de calidad. Para obtener la puntuación de calidad más relevante, <a href="{{ link }}" target="_blank">aprenda a desactivar los grupos de atributos en nuestro centro de ayuda.</a>
+    all_groups_evaluated: Todos los grupos de atributos de este producto se tienen en cuenta para el cálculo de la puntuación de calidad. Para obtener la puntuación de calidad más relevante, <a href=«{{ link }}» target="_blank">aprenda a desactivar los grupos de atributos en nuestro centro de ayuda.</a>
   product_grid:
     filter_label:
       quality_score: Puntuación de calidad

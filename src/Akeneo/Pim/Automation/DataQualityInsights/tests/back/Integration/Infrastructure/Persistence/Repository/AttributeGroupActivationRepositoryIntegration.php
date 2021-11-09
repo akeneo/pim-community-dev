@@ -81,6 +81,6 @@ SQL;
                 'attributeGroupCode' => \PDO::PARAM_STR,
                 'activated' => \PDO::PARAM_BOOL,
             ]
-        )->fetchColumn();
+        )->fetchOne();
     }
 }

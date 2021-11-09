@@ -73,7 +73,7 @@ class ClientProviderIntegration extends TestCase
         $sql = 'SELECT id FROM pim_api_client WHERE marketplace_public_app_id = :id';
         $results = $this->connection->executeQuery($sql, [
             'id' => $app->getId(),
-        ])->fetchAll(\PDO::FETCH_ASSOC);
+        ])->fetchAllAssociative();
         $this->assertEmpty($results);
     }
 
@@ -82,7 +82,7 @@ class ClientProviderIntegration extends TestCase
         $sql = 'SELECT id FROM pim_api_client WHERE marketplace_public_app_id = :id';
         $results = $this->connection->executeQuery($sql, [
             'id' => $app->getId(),
-        ])->fetchAll(\PDO::FETCH_ASSOC);
+        ])->fetchAllAssociative();
         $this->assertCount(1, $results);
     }
 
@@ -113,6 +113,6 @@ class ClientProviderIntegration extends TestCase
     {
         $sql = "SELECT COUNT(id) FROM pim_api_client";
 
-        return (int) $this->connection->executeQuery($sql)->fetchColumn();
+        return (int) $this->connection->executeQuery($sql)->fetchOne();
     }
 }

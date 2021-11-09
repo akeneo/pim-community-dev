@@ -43,6 +43,6 @@ class OperationValueValidator extends ConstraintValidator
 
     private function isStringNumericWithoutScientificNotation($value)
     {
-        return is_string($value) && preg_match('~^[0-9]*\.?[0-9]+$~', $value) === 1;
+        return is_string($value) && preg_match('~^\d*\.?\d+$~', $value) === 1;
     }
 }

@@ -26,6 +26,7 @@ class RoleWithPermissionsSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         AclManager $aclManager
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith($objectManager, $eventDispatcher, $aclManager);
     }
 

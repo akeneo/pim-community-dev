@@ -36,7 +36,7 @@ SQL;
             $query,
             ['product_ids' => $productIds],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll(), 'identifier', 'id');
+        )->fetchAllAssociative(), 'identifier', 'id');
 
         return IdMapping::createFromMapping($mapping);
     }

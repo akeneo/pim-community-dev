@@ -61,6 +61,32 @@ class SimpleSelectTranslatorSpec extends ObjectBehavior
         )->shouldReturn([$redTranslation, $yellowTranslation, $optionWithoutTranslation]);
     }
 
+    function it_translates_simple_select_value_with_numeric_label(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $attributeCode = 'color';
+
+        $redOptionCode = '0';
+        $redOptionKey = $this->optionKey($attributeCode, $redOptionCode);
+        $redTranslation = 'zero';
+
+        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
+            [$redOptionKey]
+        )->willReturn(
+            [
+                $redOptionKey => [$locale => $redTranslation],
+            ]
+        );
+
+        $this->translate(
+            $attributeCode,
+            [],
+            [$redOptionCode],
+            $locale
+        )->shouldReturn([$redTranslation]);
+    }
+
     function it_puts_the_option_code_between_brackets_when_the_option_does_have_a_translation(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ) {

@@ -43,7 +43,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateClientSecret('magento');
@@ -55,7 +55,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -65,6 +65,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         $this->regenerateClientSecret('magento');
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -96,6 +97,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
             'CONTENT_TYPE'  => 'application/json',
         ];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -114,6 +116,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $decodedResponse = json_decode($responseContent, true);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
@@ -121,18 +124,19 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateClientSecret('magento');
 
         // Assert API client
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -158,7 +162,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateUserPassword('magento');
@@ -170,7 +174,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_access_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 
@@ -180,6 +184,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         $this->regenerateUserPassword('magento');
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -208,6 +213,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
             'CONTENT_TYPE'  => 'application/json',
         ];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request(
             'POST',
@@ -226,6 +232,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         $decodedResponse = json_decode($responseContent, true);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
@@ -233,18 +240,19 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         // Assert DB content
         $arrayClientId = explode('_', $apiConnection->clientId());
         $dbalConnection = $this->get('database_connection');
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(1, $results);
 
         $this->regenerateUserPassword('magento');
 
         // Assert API client
+        static::ensureKernelShutdown();
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token', $authParams, [], $serverParams);
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
 
         // Assert DB content
-        $results = $dbalConnection->fetchAll('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
+        $results = $dbalConnection->fetchAllAssociative('SELECT id FROM pim_api_refresh_token WHERE client = '. $arrayClientId[0]);
         Assert::assertCount(0, $results);
     }
 

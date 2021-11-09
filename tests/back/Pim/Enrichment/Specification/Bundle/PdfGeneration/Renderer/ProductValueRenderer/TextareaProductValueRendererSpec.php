@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use PhpSpec\ObjectBehavior;
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 
 class TextareaProductValueRendererSpec extends ObjectBehavior
 {
@@ -16,10 +17,9 @@ class TextareaProductValueRendererSpec extends ObjectBehavior
         $this->supportsAttributeType(AttributeTypes::BOOLEAN)->shouldReturn(false);
     }
 
-    function it_does_not_escape_value(
-        ValueInterface $value
-    ) {
-        $environment = new Environment();
+    function it_does_not_escape_value(ValueInterface $value, LoaderInterface $loader)
+    {
+        $environment = new Environment($loader->getWrappedObject());
         $attribute = new Attribute();
         $attribute->setWysiwygEnabled(true);
 
@@ -31,10 +31,9 @@ class TextareaProductValueRendererSpec extends ObjectBehavior
         $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('<div>a text</div>');
     }
 
-    function it_escapes_value(
-        ValueInterface $value
-    ) {
-        $environment = new Environment();
+    function it_escapes_value(ValueInterface $value, LoaderInterface $loader)
+    {
+        $environment = new Environment($loader->getWrappedObject());
         $attribute = new Attribute();
         $attribute->setWysiwygEnabled(false);
 

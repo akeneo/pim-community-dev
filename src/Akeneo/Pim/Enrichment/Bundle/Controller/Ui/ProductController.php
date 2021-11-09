@@ -22,14 +22,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ProductController extends AbstractListCategoryController
 {
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var SaverInterface */
-    protected $productSaver;
+    protected TranslatorInterface $translator;
+    protected ProductRepositoryInterface $productRepository;
+    protected SaverInterface $productSaver;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -52,13 +47,9 @@ class ProductController extends AbstractListCategoryController
     /**
      * Toggle product status (enabled/disabled)
      *
-     * @param string $id
-     *
-     * @return Response
-     *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
-    public function toggleStatusAction($id)
+    public function toggleStatusAction(string $id): JsonResponse
     {
         $product = $this->findEntityWithCategoriesOr404($id);
 
@@ -76,13 +67,9 @@ class ProductController extends AbstractListCategoryController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param string $id the product id
-     *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findEntityWithCategoriesOr404(string $id)
+    protected function findEntityWithCategoriesOr404(string $id): ProductInterface
     {
         $product = $this->productRepository->find($id);
         if (null === $product) {

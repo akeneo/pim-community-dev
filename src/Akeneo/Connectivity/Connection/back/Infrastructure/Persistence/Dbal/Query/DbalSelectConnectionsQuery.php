@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 
@@ -30,10 +31,13 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQuery
         $selectSQL = <<<SQL
 SELECT code, label, flow_type, image, auditable
 FROM akeneo_connectivity_connection
+WHERE type = :type
 ORDER BY created ASC
 SQL;
 
-        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
+        $dataRows = $this->dbalConnection
+            ->executeQuery($selectSQL, ['type' => ConnectionType::DEFAULT_TYPE])
+            ->fetchAllAssociative();
 
         $connections = [];
         foreach ($dataRows as $dataRow) {
