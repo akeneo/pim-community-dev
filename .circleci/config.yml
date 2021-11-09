@@ -200,7 +200,9 @@ jobs:
               find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
               find front-packages/tailored-export -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
-              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash
+              find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
+
+            date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/catalog-volume-monitoring.hash
       - run:
           name: Set front package directories owner to circleci
           command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages front-packages/
@@ -216,6 +218,9 @@ jobs:
       - restore_cache:
             name: Restore front package Tailored Export cache
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+      - restore_cache:
+          name: Restore micro-frontend Catalog Volume Monitoring cache
+          key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
       - run:
           name: Set front packages directories owner to docker
           command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
@@ -258,6 +263,11 @@ jobs:
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
             paths:
                 - front-packages/tailored-export/
+      - save_cache:
+          name: Save micro-frontend Catalog Volume Monitoring cache
+          key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+          paths:
+            - vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front/
       - persist_to_workspace:
           root: ~/
           paths:
