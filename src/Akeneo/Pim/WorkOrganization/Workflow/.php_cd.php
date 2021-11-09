@@ -65,6 +65,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator',
 
         // TODO: permission
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
@@ -276,6 +277,7 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+        'Akeneo\Pim\TableAttribute\Domain\Value\Table',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Component'),
 ];
 

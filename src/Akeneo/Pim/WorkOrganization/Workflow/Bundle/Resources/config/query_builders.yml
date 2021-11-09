@@ -492,3 +492,9 @@ services:
             - [ 'IN', 'EMPTY', 'NOT EMPTY', 'NOT IN' ]
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.published_product_filter', priority: 30 }
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TableFilter:
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.published_product_filter', priority: 30 }

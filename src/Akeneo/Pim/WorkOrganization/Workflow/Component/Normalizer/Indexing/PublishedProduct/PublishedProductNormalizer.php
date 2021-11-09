@@ -41,6 +41,8 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $context['is_published_product'] = true;
+
         $data = [];
 
         $data[self::FIELD_ID] = (string)$publishedProduct->getId();
