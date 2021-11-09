@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10147: Make timezones offset dynamic with summer/winter time change in user interface settings
+
 # 5.0.57 (2021-11-08)
 
 ## Bug fixes

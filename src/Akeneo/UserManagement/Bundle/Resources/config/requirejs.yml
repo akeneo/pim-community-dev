@@ -56,5 +56,6 @@ config:
         pim/user/fields/default-product-grid-view:        pimuser/js/fields/default-product-grid-view.ts
         pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
         pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
+        pim/user/tools/timezone-formatter: pimuser/js/tools/timezone-formatter
         pim/user-edit-form/delete:                        pimuser/js/form/delete
         pim/remover/user:                                 pimuser/js/remover/user
