@@ -15,6 +15,7 @@ describe('Boolean', () => {
         row={{'unique id': 'uniqueIdB', is_allergenic: true}}
         onChange={jest.fn()}
         attribute={getComplexTableAttribute()}
+        setAttribute={jest.fn()}
       />
     );
 
@@ -32,6 +33,7 @@ describe('Boolean', () => {
         row={{'unique id': 'uniqueIdB', is_allergenic: true}}
         onChange={handleChange}
         attribute={getComplexTableAttribute()}
+        setAttribute={jest.fn()}
       />
     );
 
