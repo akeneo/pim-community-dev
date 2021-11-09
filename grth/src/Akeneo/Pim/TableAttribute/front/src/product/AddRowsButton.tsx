@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   AddingValueIllustration,
   ArrowDownIcon,
-  Badge,
   Button,
   Checkbox,
   Dropdown,
@@ -25,13 +24,6 @@ type AddRowsButtonProps = {
   toggleChange: (optionCode: SelectOptionCode) => void;
   maxRowCount?: number;
 };
-
-const NoEditPermission = styled(Badge)`
-  position: absolute;
-  z-index: 2;
-  right: 20px;
-  top: 24px;
-`;
 
 const EditOptionsContainer = styled.div`
   margin: 10px;
@@ -111,11 +103,6 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
           <Dropdown.Overlay horizontalPosition='left' onClose={close}>
             {(searchValue !== '' || itemsToDisplay.length > 0) && (
               <Dropdown.Header>
-                {searchValue === '' && itemsToDisplay.length === 0 && !hasEditPermission && (
-                  <NoEditPermission level='danger'>
-                    {translate('pim_table_attribute.form.product.no_edit_permission')}
-                  </NoEditPermission>
-                )}
                 <Search
                   inputRef={searchRef}
                   onSearchChange={handleSearchValue}
@@ -144,15 +131,12 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
                 <CenteredHelper.Container>
                   <CenteredHelper illustration={<AddingValueIllustration />}>
                     <CenteredHelper.Title>
-                      {translate('pim_table_attribute.form.product.no_add_options_title')}
+                      {translate('pim_table_attribute.form.product.no_options')}
                     </CenteredHelper.Title>
-                    {hasEditPermission
-                      ? translate('pim_table_attribute.form.product.no_add_options', {
-                          attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                        })
-                      : translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                          attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                        })}
+                    {!hasEditPermission &&
+                      translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+                        attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                      })}
                   </CenteredHelper>
                 </CenteredHelper.Container>
               )}
@@ -160,9 +144,10 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
                 <CenteredHelper.Container>
                   <CenteredHelper illustration={<AddingValueIllustration />}>
                     <CenteredHelper.Title>
-                      {translate('pim_table_attribute.form.attribute.no_options')}
+                      <CenteredHelper.Title>
+                        {translate('pim_table_attribute.form.product.no_results')}
+                      </CenteredHelper.Title>
                     </CenteredHelper.Title>
-                    {translate('pim_table_attribute.form.attribute.please_try_again')}
                   </CenteredHelper>
                 </CenteredHelper.Container>
               )}

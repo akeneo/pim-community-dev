@@ -101,16 +101,11 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     BottomHelper = (
       <CenteredHelper.Container>
         <CenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>
-            {translate('pim_table_attribute.form.product.no_add_options_title')}
-          </CenteredHelper.Title>
-          {hasEditPermission
-            ? translate('pim_table_attribute.form.product.no_add_options', {
-                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-              })
-            : translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-              })}
+          <CenteredHelper.Title>{translate('pim_table_attribute.form.product.no_options')}</CenteredHelper.Title>
+          {!hasEditPermission &&
+            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+            })}
         </CenteredHelper>
       </CenteredHelper.Container>
     );
@@ -118,8 +113,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     BottomHelper = (
       <CenteredHelper.Container>
         <CenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelper.Title>
-          {translate('pim_table_attribute.form.attribute.please_try_again')}
+          <CenteredHelper.Title>{translate('pim_table_attribute.form.product.no_results')}</CenteredHelper.Title>
         </CenteredHelper>
       </CenteredHelper.Container>
     );

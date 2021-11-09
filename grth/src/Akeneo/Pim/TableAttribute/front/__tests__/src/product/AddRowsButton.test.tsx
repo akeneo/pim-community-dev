@@ -140,7 +140,7 @@ describe('AddRowsButton', () => {
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
     await act(async () => {
       fireEvent.click(button);
-      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options')).toBeInTheDocument();
+      expect(await screen.findByText('pim_table_attribute.form.product.no_options')).toBeInTheDocument();
     });
   });
 

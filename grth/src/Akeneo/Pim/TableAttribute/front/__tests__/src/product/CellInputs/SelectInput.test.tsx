@@ -191,7 +191,7 @@ describe('SelectInput', () => {
     expect(screen.queryByText('A')).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByPlaceholderText('pim_common.search'), {target: {value: 'foobarz'}});
-    expect(await screen.findByText('pim_table_attribute.form.attribute.please_try_again')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.form.product.no_results')).toBeInTheDocument();
   });
 
   it('should display a message when there is no option', async () => {
@@ -212,7 +212,7 @@ describe('SelectInput', () => {
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
-      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options')).toBeInTheDocument();
+      expect(await screen.findByText('pim_table_attribute.form.product.no_options')).toBeInTheDocument();
     });
   });
 

@@ -145,7 +145,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
         )}
         <FilterBox className='AknFilterBox-filter' onClick={open}>
           {showLabel && attribute && (
-            <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>
+            <span className='AknFilterBox-filterLabel'>
+              {getLabel(attribute.labels, catalogLocale, attribute.code)}
+            </span>
           )}
           <DatagridTableCriteria filterValue={filterValue} filterValuesMapping={filterValuesMapping} />
           <span className='AknFilterBox-filterCaret' />
