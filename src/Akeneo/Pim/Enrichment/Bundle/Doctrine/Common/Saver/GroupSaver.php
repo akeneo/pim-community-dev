@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -13,6 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -52,16 +54,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
     private GetGroupProductIdentifiers $getGroupProductIdentifiers;
 
-    /**
-     * @param ObjectManager                       $objectManager
-     * @param BulkSaverInterface                  $productSaver
-     * @param VersionContext                      $versionContext
-     * @param SavingOptionsResolverInterface      $optionsResolver
-     * @param EventDispatcherInterface            $eventDispatcher
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     * @param BulkObjectDetacherInterface         $detacher
-     * @param string                              $productClassName
-     */
+    private EntityManager $entityManager;
+
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
@@ -70,8 +64,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkObjectDetacherInterface $detacher,
-        $productClassName,
-        GetGroupProductIdentifiers $getGroupProductIdentifiers
+        string $productClassName,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
+        EntityManager $entityManager
     ) {
         $this->objectManager = $objectManager;
         $this->productSaver = $productSaver;
@@ -81,7 +76,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->detacher = $detacher;
         $this->productClassName = $productClassName;
-        $this->getGroupProductIdentifiers  = $getGroupProductIdentifiers;
+        $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -141,29 +137,30 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveAssociatedProducts(GroupInterface $group)
     {
+        if (null == $group->getId()) {
+            return;
+        }
+
+
+        $uptodateProductIds = $this->getGroupProductIdentifiers->byGroupId($group->getId());
+        $oldProductIds = $this->computeOldProductIds($group);
+
+        $newProductIds = array_diff($uptodateProductIds, $oldProductIds);
+        $removedProductIds = array_diff($oldProductIds, $uptodateProductIds);
+
         $productsToUpdate = [];
-
-        foreach ($this->getGroupProductIdentifiers->byGroupId($group->getId()) as $product) {
-            $productsToUpdate[$product] = $product;
+        foreach ($newProductIds as $newProductId) {
+            $dbProduct = $this->entityManager->find(Product::class, $newProductId);
+            $dbProduct->addGroup($group);
+            $productsToUpdate[] = $dbProduct;
+        }
+        foreach ($removedProductIds as $removedProductId) {
+            $dbProduct = $this->entityManager->find(Product::class, $removedProductId);
+            $dbProduct->removeGroup($group);
+            $productsToUpdate[] = $dbProduct;
         }
 
-        if (null !== $group->getId()) {
-            $pqb = $this->productQueryBuilderFactory->create();
-            $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
-            $oldProducts = $pqb->execute();
-            foreach ($oldProducts as $oldProduct) {
-                if (!isset($productsToUpdate[$oldProduct->getId()])) {
-                    $oldProduct->removeGroup($group);
-                    $productsToUpdate[$oldProduct->getId()] = $oldProduct;
-                } else {
-                    unset($productsToUpdate[$oldProduct->getId()]);
-                }
-            }
-        }
-
-        if (!empty($productsToUpdate)) {
-            $this->productSaver->saveAll(array_values($productsToUpdate));
-        }
+        $this->productSaver->saveAll($productsToUpdate);
     }
 
     protected function validateGroup($group)
@@ -190,5 +187,17 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->saveAssociatedProducts($group);
 
         $this->versionContext->unsetContextInfo($context);
+    }
+
+    protected function computeOldProductIds(GroupInterface $group): array
+    {
+        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
+
+        $oldProductIds = [];
+        foreach ($pqb->execute() as $oldProduct) {
+            $oldProductIds[] = $oldProduct->getId();
+        }
+        return $oldProductIds;
     }
 }
