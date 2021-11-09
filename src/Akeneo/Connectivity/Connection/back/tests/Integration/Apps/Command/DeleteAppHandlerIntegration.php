@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
-use Akeneo\Connectivity\Connection\Application\CommandHandlerInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
@@ -33,7 +32,7 @@ class DeleteAppHandlerIntegration extends TestCase
     private OAuthStorage $OAuthStorage;
     private ClientProviderInterface $clientProvider;
     private UserRepositoryInterface $userRepository;
-    private CommandHandlerInterface $deleteAppHandler;
+    private DeleteAppHandler $deleteAppHandler;
     private CreateUserGroupInterface $createUserGroup;
     private CreateUserInterface $createUser;
     private CreateConnectionInterface $createConnection;
@@ -111,7 +110,7 @@ class DeleteAppHandlerIntegration extends TestCase
             'magento',
         ], $this->findNameOfOAuthRefreshToken());
 
-        ($this->deleteAppHandler)(new DeleteAppCommand('2677e764-f852-4956-bf9b-1a1ec1b0d145'));
+        $this->deleteAppHandler->handle(new DeleteAppCommand('2677e764-f852-4956-bf9b-1a1ec1b0d145'));
 
         Assert::assertSame([
             'akeneo_print',
