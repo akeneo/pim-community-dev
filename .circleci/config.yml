@@ -623,7 +623,7 @@ jobs:
                 - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
-              command: make -C deployments/ uncommit
+              command: make -C deployments/ uncommit-instance
               when: always
 
   deploy_pr_environment:
@@ -699,11 +699,22 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Remove env on kubernetes
+                name: Delete environments
+                no_output_timeout: 30m
                 command: |
+                    TYPE="<<parameters.PRODUCT_TYPE>>"
+                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
                     make -C deployments/ uncommit-instance
 
   test_back_missing_structure_migrations:
