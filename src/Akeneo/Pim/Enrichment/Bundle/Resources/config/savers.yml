@@ -43,6 +43,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pim_catalog.entity.product.class%'
+            - '@akeneo.pim.enrichment.group.query.get_group_product_identifiers'
 
     pim_catalog.saver.association_type:
         class: '%pim_catalog.saver.base.class%'
