@@ -36,8 +36,9 @@ const AttributeOptionTable = ({
     attributeOptions,
     attributeContext.autoSortOptions
   );
-  const [filteredAttributeOptions, setFilteredAttributeOptions] =
-    useState<AttributeOption[] | null>(sortedAttributeOptions);
+  const [filteredAttributeOptions, setFilteredAttributeOptions] = useState<AttributeOption[] | null>(
+    sortedAttributeOptions
+  );
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
   const [searchString, setSearchString] = useState('');
