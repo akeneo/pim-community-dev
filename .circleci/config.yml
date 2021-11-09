@@ -681,6 +681,10 @@ jobs:
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> persisted_env_vars
                 echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
           - run:
               name: Prepare infrastructure artifacts
               command: make -C deployments/ prepare-infrastructure-artifacts
