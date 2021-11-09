@@ -5,7 +5,9 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\WriterInterface;
 
 /**
@@ -22,12 +24,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var ColumnSorterInterface */
-    protected $columnSorter;
-
-    /** @var ColumnPresenterInterface */
-    private $columnPresenter;
+    protected ?ColumnSorterInterface $columnSorter;
+    private ColumnPresenterInterface $columnPresenter;
 
     public function __construct(ColumnPresenterInterface $columnPresenter, ColumnSorterInterface $columnSorter = null)
     {
@@ -39,18 +37,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * Flushes the flat item buffer into one or multiple output files.
      * Several output files are created if the buffer contains more items that maximum lines authorized per output file.
      *
-     * @param FlatItemBuffer $buffer
-     * @param array          $writerOptions
-     * @param string         $basePathname
-     * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
-     *
      * @return array the list of file paths that have been written
      */
     public function flush(
         FlatItemBuffer $buffer,
         array $writerOptions,
-        $basePathname,
-        $maxLinesPerFile = -1
+        string $basePathname,
+        ?int $maxLinesPerFile = -1 // by default -1, which means there is no limit of lines
     ) {
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
             $writtenFiles = $this->writeIntoSeveralFiles(
@@ -83,7 +76,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $hollowItem = array_fill_keys($headers, '');
 
         $writer = $this->getWriter($filePath, $writerOptions);
-        $writer->addRow($headers);
+        $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
 
         foreach ($buffer as $incompleteItem) {
             $incompleteKeys = $this->columnPresenter->present(
@@ -94,7 +87,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
@@ -141,7 +134,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
-                $writer->addRow($headers);
+                $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
             }
 
             $incompleteKeys = $this->columnPresenter->present(
@@ -152,7 +145,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
             $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
@@ -177,12 +170,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * @param array $headers
-     *
-     * @return array
-     */
-    protected function sortHeaders(array $headers)
+    protected function sortHeaders(array $headers): array
     {
         if (null !== $this->columnSorter) {
             $headers = $this->columnSorter->sort($headers, $this->stepExecution->getJobParameters()->all());

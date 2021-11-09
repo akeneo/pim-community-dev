@@ -38,11 +38,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     /** @var array */
     protected $options;
 
-    /**
-     * @param FileIteratorFactory     $fileIteratorFactory
-     * @param ArrayConverterInterface $converter
-     * @param array                   $options
-     */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,

@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
@@ -97,6 +98,10 @@ class FlatFileIterator implements FileIteratorInterface
             $this->rewind();
 
             return null;
+        }
+
+        if ($data instanceof Row) {
+            return $data->toArray();
         }
 
         return $data;
