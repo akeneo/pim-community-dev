@@ -126,7 +126,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '301 Prohibited redirection detected from the server.')
+            new UrlReachabilityStatus(false, '301 Server response contains a redirection. This is not allowed.')
         );
     }
 
@@ -149,7 +149,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '302 Prohibited redirection detected from the server.')
+            new UrlReachabilityStatus(false, '302 Server response contains a redirection. This is not allowed.')
         );
     }
 
@@ -172,7 +172,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '303 Prohibited redirection detected from the server.')
+            new UrlReachabilityStatus(false, '303 Server response contains a redirection. This is not allowed.')
         );
     }
 
@@ -195,7 +195,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '307 Prohibited redirection detected from the server.')
+            new UrlReachabilityStatus(false, '307 Server response contains a redirection. This is not allowed.')
         );
     }
 
@@ -218,7 +218,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
-            new UrlReachabilityStatus(false, '308 Prohibited redirection detected from the server.')
+            new UrlReachabilityStatus(false, '308 Server response contains a redirection. This is not allowed.')
         );
     }
 
