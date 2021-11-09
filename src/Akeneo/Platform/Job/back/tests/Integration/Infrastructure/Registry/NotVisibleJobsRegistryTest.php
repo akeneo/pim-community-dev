@@ -11,11 +11,6 @@ use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
  */
 class NotVisibleJobsRegistryTest extends IntegrationTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_it_return_not_visible_jobs_codes(): void
     {
         $notVisibleJobsRegistry = $this->get('Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry');

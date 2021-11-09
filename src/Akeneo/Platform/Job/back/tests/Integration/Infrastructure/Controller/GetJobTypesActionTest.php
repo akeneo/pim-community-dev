@@ -21,13 +21,20 @@ class GetJobTypesActionTest extends ControllerIntegrationTestCase
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
+        $this->fixturesLoader->loadProductImportExportFixtures();
     }
 
-    public function test_it_returns_job_total_count(): void
+    public function test_it_returns_job_types(): void
     {
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
 
+        $expectedJobTypes = [
+            'import',
+            'export',
+        ];
+
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+        Assert::assertEqualsCanonicalizing(json_decode($response->getContent(), true), $expectedJobTypes);
     }
 }

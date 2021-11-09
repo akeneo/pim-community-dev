@@ -42,36 +42,32 @@ class SearchJobExecution implements SearchJobExecutionInterface
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
-    GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
     %s
+    GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
     ORDER BY ISNULL(je.start_time) DESC, je.start_time DESC
     LIMIT :offset, :limit;
 SQL;
-        $havingSqlPart = '';
+        $whereSqlPart = $this->buildSqlWherePart($query);
 
-        $type = $query->type;
+        $sql = sprintf($sql, $whereSqlPart);
+        $queryParams = $this->buildQueryParams($query->type);
+        $queryParamsTypes = $this->buildQueryParamsTypes();
 
-        if (!empty($type)) {
-            $havingSqlPart = 'HAVING ji.type IN (:type)';
-        }
-
-        $sql = sprintf($sql, $havingSqlPart);
+        $sql = sprintf($sql, $whereSqlPart);
 
         $page = $query->page;
         $size = $query->size;
 
         $rawJobExecutions = $this->connection->executeQuery(
             $sql,
-            [
-                'type' => $type,
+            array_merge($queryParams, [
                 'offset' => ($page - 1) * $size,
                 'limit' => $size,
-            ],
-            [
-                'type' => Connection::PARAM_STR_ARRAY,
+            ]),
+            array_merge($queryParamsTypes, [
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
-            ]
+            ]),
         )->fetchAllAssociative();
 
         return $this->buildJobExecutionRows($rawJobExecutions);
@@ -85,25 +81,43 @@ SQL;
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     %s
 SQL;
-        $whereSqlPart = '';
-
-        $type = $query->type;
-
-        if (!empty($type)) {
-            $whereSqlPart = 'WHERE ji.type IN (:type)';
-        }
+        $whereSqlPart = $this->buildSqlWherePart($query);
 
         $sql = sprintf($sql, $whereSqlPart);
+        $queryParams = $this->buildQueryParams($query->type);
+        $queryParamsTypes = $this->buildQueryParamsTypes();
 
         return (int) $this->connection->executeQuery(
             $sql,
-            [
-                'type' => $type,
-            ],
-            [
-                'type' => Connection::PARAM_STR_ARRAY,
-            ]
+            $queryParams,
+            $queryParamsTypes
         )->fetchOne();
+    }
+
+    private function buildSqlWherePart(SearchJobExecutionQuery $query): string
+    {
+        $sqlWhereParts = [];
+        $type = $query->type;
+
+        if (!empty($type)) {
+            $sqlWhereParts[] = 'ji.type IN (:type)';
+        }
+
+        return empty($sqlWhereParts) ? '' : 'WHERE ' . implode(' AND ', $sqlWhereParts);
+    }
+
+    private function buildQueryParams(array $type): array
+    {
+        return [
+            'type' => $type,
+        ];
+    }
+
+    private function buildQueryParamsTypes(): array
+    {
+        return [
+            'type' => Connection::PARAM_STR_ARRAY,
+        ];
     }
 
     private function buildJobExecutionRows(array $rawJobExecutions): array
