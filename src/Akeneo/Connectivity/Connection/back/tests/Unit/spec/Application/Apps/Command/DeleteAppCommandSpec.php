@@ -9,8 +9,18 @@ use PhpSpec\ObjectBehavior;
 
 class DeleteAppCommandSpec extends ObjectBehavior
 {
-    public function it_is_a_delete_app_handler(): void
+    public function let(): void
+    {
+        $this->beConstructedWith('test');
+    }
+
+    public function it_is_a_delete_app_command(): void
     {
         $this->shouldHaveType(DeleteAppCommand::class);
+    }
+
+    public function it_gets_app_id()
+    {
+        $this->getAppId()->shouldReturn('test');
     }
 }
