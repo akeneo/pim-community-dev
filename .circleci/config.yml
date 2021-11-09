@@ -617,7 +617,7 @@ jobs:
               path: ~/artifacts/infra
           - store_artifacts:
               path: deployment.log
-              destination: test_deploy_<<parameters.PRODUCT_TYPE>>_deployment.log
+              destination: test_deploy_srnt_deployment.log
           - persist_to_workspace:
               root: ~/
               paths:
