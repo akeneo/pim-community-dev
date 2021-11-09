@@ -50,8 +50,7 @@ const RulesHeader: React.FC<Props> = ({
               form={formId}
               type='submit'
               disabled={!saveable}
-              aria-disabled={!saveable}
-            >
+              aria-disabled={!saveable}>
               {translate(buttonLabel)}
             </PrimaryButton>
           </div>

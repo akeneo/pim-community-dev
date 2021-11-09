@@ -3,7 +3,8 @@ import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/struct
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const attributeGroupFetcher = () => fetcherRegistry.getFetcher('attribute-group');
-export const fetchAssetAttributeGroups =
-  (attributeGroupFetcher: any) => async (): Promise<AttributeGroupCollection> => {
-    return await promisify(attributeGroupFetcher.fetchAll());
-  };
+export const fetchAssetAttributeGroups = (attributeGroupFetcher: any) => async (): Promise<
+  AttributeGroupCollection
+> => {
+  return await promisify(attributeGroupFetcher.fetchAll());
+};

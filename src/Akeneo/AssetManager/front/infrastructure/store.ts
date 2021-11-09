@@ -7,26 +7,25 @@ import userContextMiddleware from 'akeneoassetmanager/infrastructure/middleware/
 import {composeWithDevTools} from 'redux-devtools-extension';
 const router = require('pim/router');
 
-export default (debug: boolean = true) =>
-  (reducer: any): Store<any> => {
-    return createStore(
-      combineReducers(reducer),
-      true === debug
-        ? composeWithDevTools(
-            applyMiddleware(
-              thunkMiddleware,
-              routerMiddleware(router),
-              formNotifier(),
-              gridMiddleware(),
-              userContextMiddleware()
-            )
-          )
-        : applyMiddleware(
+export default (debug: boolean = true) => (reducer: any): Store<any> => {
+  return createStore(
+    combineReducers(reducer),
+    true === debug
+      ? composeWithDevTools(
+          applyMiddleware(
             thunkMiddleware,
             routerMiddleware(router),
             formNotifier(),
             gridMiddleware(),
             userContextMiddleware()
           )
-    ) as any;
-  };
+        )
+      : applyMiddleware(
+          thunkMiddleware,
+          routerMiddleware(router),
+          formNotifier(),
+          gridMiddleware(),
+          userContextMiddleware()
+        )
+  ) as any;
+};

@@ -101,8 +101,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
     <li
       className={`AknRuleOperation-line`}
       data-line-number={operationLineNumber}
-      data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}
-    >
+      data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}>
       <div className={'AknRuleOperation-details'}>
         <div className={'AknRuleOperation-detailsContainer'}>
           <span
@@ -126,8 +125,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
             <span
               className={`AknRuleOperation-element AknRuleOperation-elementOperator${
                 isOperatorInError ? ' select2-container-error' : ''
-              }`}
-            >
+              }`}>
               <CalculateOperatorSelector
                 value={getOperator()}
                 hiddenLabel
@@ -184,8 +182,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
         <DeleteButton
           type={'button'}
           onClick={removeOperation(operationLineNumber)}
-          data-testid={`edit-rules-action-operation-list-${operationLineNumber}-remove-button`}
-        >
+          data-testid={`edit-rules-action-operation-list-${operationLineNumber}-remove-button`}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
             src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'

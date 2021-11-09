@@ -33,8 +33,7 @@ class EditRules extends ReactController {
             attributeValueConfig,
             cellInputsMapping,
             cellMatchersMapping,
-          }}
-        >
+          }}>
           <EditRulesPage
             ruleDefinitionCode={routeParams.params.code}
             setIsDirty={this.setIsDirty.bind(this)}

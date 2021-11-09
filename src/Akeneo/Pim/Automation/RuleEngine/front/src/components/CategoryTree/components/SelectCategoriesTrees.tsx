@@ -71,21 +71,21 @@ const SelectCategoriesTrees: React.FC<Props> = ({
     padding: '0',
     background: 'none',
   };
-  const handleOnClick =
-    (category: CategoryTreeModel) => (event: React.MouseEvent) => {
-      menu.hide();
-      if (onClick) {
-        onClick(category, event);
-      }
-    };
+  const handleOnClick = (category: CategoryTreeModel) => (
+    event: React.MouseEvent
+  ) => {
+    menu.hide();
+    if (onClick) {
+      onClick(category, event);
+    }
+  };
   return (
     <>
       <CategoryTop>
         <CategoryButtonMenu
           aria-haspopup='listbox'
           {...menu}
-          onClick={() => menu.toggle()}
-        >
+          onClick={() => menu.toggle()}>
           <span>
             {translate('pimee_catalog_rule.form.category.catalog')}:&nbsp;
           </span>
@@ -100,8 +100,7 @@ const SelectCategoriesTrees: React.FC<Props> = ({
       </CategoryTop>
       <CategoriesMenu
         {...menu}
-        aria-label={translate('pimee_catalog_rule.form.category.menu')}
-      >
+        aria-label={translate('pimee_catalog_rule.form.category.menu')}>
         <ul tabIndex={-1} role='menu'>
           {categoryTrees.map(category => (
             <CategoryTreeItem key={category.code} role='none'>
@@ -109,8 +108,7 @@ const SelectCategoriesTrees: React.FC<Props> = ({
                 {...menu}
                 as='button'
                 onClick={handleOnClick(category)}
-                style={styleMenuItem}
-              >
+                style={styleMenuItem}>
                 {category.labels[locale]}
               </MenuItem>
             </CategoryTreeItem>

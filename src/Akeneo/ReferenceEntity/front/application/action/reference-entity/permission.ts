@@ -15,32 +15,30 @@ import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/refere
 import {denormalizePermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {refreshReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
 
-export const savePermission =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const referenceEntityIdentifier = ReferenceEntityIdentifier.create(getState().form.data.identifier);
-    const permission = denormalizePermissionCollection(getState().permission.data);
+export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const referenceEntityIdentifier = ReferenceEntityIdentifier.create(getState().form.data.identifier);
+  const permission = denormalizePermissionCollection(getState().permission.data);
 
-    try {
-      const errors = await permissionSaver.save(referenceEntityIdentifier, permission);
+  try {
+    const errors = await permissionSaver.save(referenceEntityIdentifier, permission);
 
-      if (errors) {
-        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-        dispatch(permissionEditionErrorOccurred(validationErrors));
-        dispatch(notifyPermissionSaveFailed());
-
-        return;
-      }
-    } catch (error) {
+    if (errors) {
+      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+      dispatch(permissionEditionErrorOccurred(validationErrors));
       dispatch(notifyPermissionSaveFailed());
 
       return;
     }
+  } catch (error) {
+    dispatch(notifyPermissionSaveFailed());
 
-    dispatch(permissionEditionSucceeded());
-    dispatch(notifyPermissionWellSaved());
+    return;
+  }
 
-    const updatedPermission = await permissionFetcher.fetch(referenceEntityIdentifier);
-    dispatch(permissionEditionReceived(updatedPermission));
-    dispatch(refreshReferenceEntity(referenceEntityIdentifier, false));
-  };
+  dispatch(permissionEditionSucceeded());
+  dispatch(notifyPermissionWellSaved());
+
+  const updatedPermission = await permissionFetcher.fetch(referenceEntityIdentifier);
+  dispatch(permissionEditionReceived(updatedPermission));
+  dispatch(refreshReferenceEntity(referenceEntityIdentifier, false));
+};

@@ -16,8 +16,8 @@ const GoogleAnalytics = {
       gtag('event', 'page_view', {
         page_title: name,
         page_location: window.location.href,
-        page_path: `/${ window.location.hash}`,
-      })
+        page_path: `/${window.location.hash}`,
+      });
     });
   },
 };

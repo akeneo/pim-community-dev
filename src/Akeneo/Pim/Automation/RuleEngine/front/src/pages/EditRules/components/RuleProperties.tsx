@@ -20,8 +20,7 @@ const RuleProperties: React.FC<Props> = ({locales}) => {
       <FormSubsection
         title={translate(
           'pimee_catalog_rule.form.edit.properties.section.general'
-        )}
-      >
+        )}>
         <div className='AknFormContainer'>
           <div className='AknFieldContainer'>
             <InputText
@@ -62,8 +61,7 @@ const RuleProperties: React.FC<Props> = ({locales}) => {
       <FormSubsection
         title={translate(
           'pimee_catalog_rule.form.edit.properties.section.labels'
-        )}
-      >
+        )}>
         <div className='AknFormContainer'>
           {locales &&
             locales.map(locale => {

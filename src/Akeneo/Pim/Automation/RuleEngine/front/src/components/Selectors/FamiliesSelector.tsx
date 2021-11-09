@@ -43,14 +43,16 @@ const handleResults = (
 ) => {
   return {
     more: 20 === Object.keys(families).length,
-    results: Object.keys(families).map((familyIdentifier): Select2Option => {
-      return {
-        id: families[familyIdentifier].code,
-        text:
-          families[familyIdentifier].labels[currentCatalogLocale] ||
-          `[${families[familyIdentifier].code}]`,
-      };
-    }),
+    results: Object.keys(families).map(
+      (familyIdentifier): Select2Option => {
+        return {
+          id: families[familyIdentifier].code,
+          text:
+            families[familyIdentifier].labels[currentCatalogLocale] ||
+            `[${families[familyIdentifier].code}]`,
+        };
+      }
+    ),
   };
 };
 

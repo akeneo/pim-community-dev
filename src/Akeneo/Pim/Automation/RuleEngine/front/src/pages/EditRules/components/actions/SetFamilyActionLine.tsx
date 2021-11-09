@@ -46,8 +46,7 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
         helper='This feature is under development. Please use the import to manage your rules.'
         legend='This feature is under development. Please use the import to manage your rules.'
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>
@@ -58,8 +57,7 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
             <AknActionFormContainer
               className={
                 isFormFieldInError('value') ? 'select2-container-error' : ''
-              }
-            >
+              }>
               <Controller
                 as={FamilySelector}
                 label={`${translate(

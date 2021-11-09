@@ -16,9 +16,9 @@ export const areValuesEqual = (first: EditionValue, second: EditionValue): boole
   localeReferenceAreEqual(first.locale, second.locale) &&
   first.attribute.identifier === second.attribute.identifier;
 
-export const getValueForAttributeIdentifierFilter =
-  (attributeIdentifier: AttributeIdentifier) => (value: EditionValue) =>
-    value.attribute.identifier === attributeIdentifier;
+export const getValueForAttributeIdentifierFilter = (attributeIdentifier: AttributeIdentifier) => (
+  value: EditionValue
+) => value.attribute.identifier === attributeIdentifier;
 
 export const getValueFilter = (
   attributeIdentifier: AttributeIdentifier,

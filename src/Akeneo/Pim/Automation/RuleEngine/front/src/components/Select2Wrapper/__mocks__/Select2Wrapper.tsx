@@ -63,11 +63,9 @@ const Select2Wrapper: typeof BaseWrapper = ({
             ) => {
               if (fetchedOptions.hasOwnProperty('results')) {
                 setOptions(
-                  (
-                    fetchedOptions as {
-                      results: (Select2Option | Select2OptionGroup)[];
-                    }
-                  ).results
+                  (fetchedOptions as {
+                    results: (Select2Option | Select2OptionGroup)[];
+                  }).results
                 );
               } else {
                 setOptions(
@@ -89,9 +87,9 @@ const Select2Wrapper: typeof BaseWrapper = ({
 
   const getSelect2Value = (value: any) => {
     if (options.length && options[0].hasOwnProperty('children')) {
-      const optionGroup: Select2OptionGroup | undefined = (
-        options as Select2OptionGroup[]
-      ).find(optionGroup => {
+      const optionGroup:
+        | Select2OptionGroup
+        | undefined = (options as Select2OptionGroup[]).find(optionGroup => {
         return getSelect2ValueFromOptions(optionGroup.children, value);
       });
       return optionGroup
@@ -127,8 +125,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
         onChange={handleChange}
         onClick={handleClick}
         multiple={multiple}
-        value={value === null ? (multiple ? [] : '') : (value as string)}
-      >
+        value={value === null ? (multiple ? [] : '') : (value as string)}>
         {placeholder ? (
           <option disabled value={''}>
             {placeholder}

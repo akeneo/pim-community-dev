@@ -39,8 +39,9 @@ const AddAssociationTypeButton: React.FC<Props> = ({
 
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
   const [data, setData] = React.useState<Select2OptionGroup[]>();
-  const [associationTypes, setAssociationTypes] =
-    React.useState<AssociationType[]>();
+  const [associationTypes, setAssociationTypes] = React.useState<
+    AssociationType[]
+  >();
 
   const isFieldAlreadySelected = (
     target: Target,
@@ -54,9 +55,10 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   };
 
   React.useEffect(() => {
-    getAssociationTypesFromQuantified(router, quantified).then(
-      associationTypes => setAssociationTypes(associationTypes)
-    );
+    getAssociationTypesFromQuantified(
+      router,
+      quantified
+    ).then(associationTypes => setAssociationTypes(associationTypes));
   }, []);
 
   React.useEffect(() => {

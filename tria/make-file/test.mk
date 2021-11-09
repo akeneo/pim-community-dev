@@ -11,6 +11,14 @@ lint-back: #Doc: launch all PHP linter tests
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration=src/Akeneo/FreeTrial/tests/back/phpstan.neon.dist
 
+.PHONY: lint-front
+lint-front:
+	$(YARN_RUN) lint
+
+.PHONY: lint-front-fix
+lint-front-fix:
+	$(YARN_RUN) lint-fix
+
 ### Unit tests
 .PHONY: unit-back
 unit-back: $(PIM_SRC_PATH)/var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests

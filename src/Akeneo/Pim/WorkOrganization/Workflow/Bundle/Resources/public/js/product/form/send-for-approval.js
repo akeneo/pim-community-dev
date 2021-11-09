@@ -16,18 +16,7 @@ define([
   'pimee/template/product/submit-draft',
   'pimee/template/product/submit-draft-sequential-edit',
   'pim/form-modal',
-], function (
-  $,
-  _,
-  Backbone,
-  Routing,
-  messenger,
-  __,
-  BaseForm,
-  submitTemplate,
-  submitSequentialEditTemplate,
-  FormModal
-) {
+], function($, _, Backbone, Routing, messenger, __, BaseForm, submitTemplate, submitSequentialEditTemplate, FormModal) {
   const DraftStatus = {IN_PROGRESS: 0, READY: 1};
 
   return BaseForm.extend({
@@ -45,7 +34,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    initialize: function (meta) {
+    initialize: function(meta) {
       this.config = _.extend({}, meta.config);
     },
 
@@ -54,7 +43,7 @@ define([
      *
      * @returns {Promise}
      */
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
       this.listenTo(this.getRoot(), 'pim_enrich:form:sequential-edit', ({isLast}) => {
         this.sequentialEdit = {isLast};
@@ -69,7 +58,7 @@ define([
      *
      * @return {number}
      */
-    getProductId: function () {
+    getProductId: function() {
       return this.getFormData().meta.id;
     },
 
@@ -79,7 +68,7 @@ define([
      *
      * @returns {number|null}
      */
-    getDraftStatus: function () {
+    getDraftStatus: function() {
       return this.getFormData().meta.draft_status;
     },
 
@@ -88,7 +77,7 @@ define([
      *
      * @returns {boolean}
      */
-    isOwner: function () {
+    isOwner: function() {
       return this.getFormData().meta.is_owner;
     },
 
@@ -97,7 +86,7 @@ define([
      *
      * @returns {Object}
      */
-    render: function () {
+    render: function() {
       if (this.isOwner()) {
         return this;
       }
@@ -117,7 +106,7 @@ define([
      *
      * @return {Promise<void>}
      */
-    onSubmitDraft: function () {
+    onSubmitDraft: function() {
       if (
         DraftStatus.READY === this.getDraftStatus() &&
         false === this.parent.getExtension('state').hasModelChanged()
@@ -147,15 +136,15 @@ define([
     /**
      * @return {void}
      */
-    onSubmitDraftAndContinue: function () {
+    onSubmitDraftAndContinue: function() {
       this.onSubmitDraft().then(() => this.parent.getExtension('sequential-edit').continue());
     },
 
     /**
      * @return {FormModal}
      */
-    createCommentFormModal: function () {
-      const callback = function () {
+    createCommentFormModal: function() {
+      const callback = function() {
         const deferred = $.Deferred();
 
         deferred.resolve();
@@ -178,7 +167,7 @@ define([
      *
      * @return {Promise<void>}
      */
-    submitDraft: function (comment) {
+    submitDraft: function(comment) {
       const postData = {
         comment: comment,
       };
@@ -187,7 +176,7 @@ define([
 
       return $.post(Routing.generate(this.config.routes.ready, postData))
         .then(
-          function (product) {
+          function(product) {
             this.setData(product);
 
             this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
@@ -195,7 +184,7 @@ define([
             messenger.notify('success', __('pimee_enrich.entity.product_draft.flash.create.success'));
           }.bind(this)
         )
-        .fail(function () {
+        .fail(function() {
           messenger.notify('error', __('pimee_enrich.entity.product_draft.flash.create.fail'));
         });
     },

@@ -5,7 +5,10 @@ import {locales, scopes, uiLocales} from '../../../../factories';
 
 describe('ClearAssociationsActionLine', () => {
   it('should display the clear associations action line', async () => {
-    const {findByText, findAllByText} = renderWithProviders(
+    const {
+      findByText,
+      findAllByText,
+    } = renderWithProviders(
       <ClearAssociationsActionLine
         currentCatalogLocale={'en_US'}
         lineNumber={1}

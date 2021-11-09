@@ -12,20 +12,20 @@ define([
   'pimee/template/product/original-product',
   'pim/router',
   'pim/user-context',
-], function (_, BaseForm, template, router, UserContext) {
+], function(_, BaseForm, template, router, UserContext) {
   return BaseForm.extend({
     className: 'AknButtonList-item',
     template: _.template(template),
     events: {
       'click .got-to-original': 'goToOriginalProduct',
     },
-    configure: function () {
+    configure: function() {
       UserContext.off('change:catalogLocale change:catalogScope', this.render);
       this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
-    render: function () {
+    render: function() {
       if (!this.getFormData().meta) {
         return;
       }
@@ -34,7 +34,7 @@ define([
 
       return this;
     },
-    goToOriginalProduct: function () {
+    goToOriginalProduct: function() {
       router.redirectToRoute(__moduleConfig.urls.product_edit, {
         id: this.getFormData().meta.original_product_id,
         dataLocale: UserContext.get('catalogLocale'),

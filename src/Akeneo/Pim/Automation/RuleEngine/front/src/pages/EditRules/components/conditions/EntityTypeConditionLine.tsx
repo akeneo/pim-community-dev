@@ -41,8 +41,7 @@ const EntityTypeConditionLine: React.FC<ConditionLineProps> = ({
           className={'AknGrid-bodyCell--highlight'}
           title={translate(
             'pimee_catalog_rule.form.edit.fields.entity_type.label'
-          )}
-        >
+          )}>
           {translate('pimee_catalog_rule.form.edit.fields.entity_type.label')}
         </FieldColumn>
         <OperatorColumn>
@@ -60,8 +59,7 @@ const EntityTypeConditionLine: React.FC<ConditionLineProps> = ({
         <ValueColumn
           className={
             isFormFieldInError('value') ? 'select2-container-error' : ''
-          }
-        >
+          }>
           <Controller
             name={valueFormName}
             as={EntityTypeSelector}

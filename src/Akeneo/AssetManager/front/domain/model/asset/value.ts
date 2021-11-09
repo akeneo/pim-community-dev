@@ -16,11 +16,11 @@ type Value = {
 
 export const setValueData = <T extends Value = Value>(value: T, data: Data): T => ({...value, data});
 export const isValueEmpty = (value: Value): boolean => null === value.data;
-export const getValueForChannelAndLocaleFilter =
-  (channel: ChannelReference, locale: LocaleReference) =>
-  (value: Value): boolean =>
-    (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
-    (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale));
+export const getValueForChannelAndLocaleFilter = (channel: ChannelReference, locale: LocaleReference) => (
+  value: Value
+): boolean =>
+  (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
+  (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale));
 
 export const getValuesForChannelAndLocale = <T extends Value = Value>(
   values: T[],

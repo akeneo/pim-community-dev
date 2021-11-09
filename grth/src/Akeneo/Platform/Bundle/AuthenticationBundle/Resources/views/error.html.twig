@@ -1,12 +1,25 @@
-{% extends '@PimUser/layout.html.twig' %}
-
-{% block bodyClass %}{% endblock %}
-
-{% block content %}
-    <div class="AknInfoBlock AknInfoBlock--error">
-        <img src="/bundles/pimui/images/illustration-error-404.svg"/>
-        <div class="AknMessageBox AknMessageBox--danger AknMessageBox--centered">
-            {{ 'akeneo_authentication.sso.unknown_user_error'|trans }}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block head_style %}
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+            <link rel="stylesheet" href="{{asset ('css/pim.css', 'frontend') }}"/>
+        {% endblock %}
+    {% endblock %}
+</head>
+<body>
+<div id="page">
+    <div id="top-page">
+        <div class="AknInfoBlock AknInfoBlock--error">
+            <img src="/bundles/pimui/images/illustration-error-404.svg"/>
+            <div class="AknMessageBox AknMessageBox--danger AknMessageBox--centered">
+                {{ 'akeneo_authentication.sso.unknown_user_error'|trans }}
+            </div>
         </div>
     </div>
-{% endblock content %}
+</div>
+</body>
+</html>

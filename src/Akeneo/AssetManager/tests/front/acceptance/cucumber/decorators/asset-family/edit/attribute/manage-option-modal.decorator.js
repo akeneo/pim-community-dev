@@ -134,7 +134,11 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
     return await page.evaluate(code => {
       const isLabelInputFocused = 'label' === document.activeElement.name;
-      const isRightRowFocused = code === $(document.activeElement).closest('[data-code]').data('code');
+      const isRightRowFocused =
+        code ===
+        $(document.activeElement)
+          .closest('[data-code]')
+          .data('code');
 
       return isLabelInputFocused && isRightRowFocused;
     }, code);
@@ -145,7 +149,11 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
     return await page.evaluate(code => {
       const isCodeInputFocused = 'code' === document.activeElement.name;
-      const isRightRowFocused = code === $(document.activeElement).closest('[data-code]').data('code');
+      const isRightRowFocused =
+        code ===
+        $(document.activeElement)
+          .closest('[data-code]')
+          .data('code');
 
       return isCodeInputFocused && isRightRowFocused;
     }, code);

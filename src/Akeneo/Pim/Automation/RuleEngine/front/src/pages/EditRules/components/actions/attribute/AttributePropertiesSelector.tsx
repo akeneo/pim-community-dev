@@ -129,8 +129,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       <span
         className={`AknRuleOperation-element${
           hasOptions ? ' AknRuleOperation-element--glued' : ''
-        }`}
-      >
+        }`}>
         <Controller
           as={<input type='hidden' />}
           name={fieldFormName}
@@ -143,8 +142,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(fieldFormName)
               ? ' AknRuleOperation-elementField--error'
               : '')
-          }
-        >
+          }>
           {null === attribute && `[${attributeCode}]`}
           {attribute && getAttributeLabel(attribute, currentCatalogLocale)}
         </span>
@@ -161,8 +159,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(labelLocaleFormName)
               ? ' select2-container-error'
               : '')
-          }
-        >
+          }>
           <Controller
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-label-locale`}
             as={<input type='hidden' />}
@@ -222,8 +219,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(currencyFormName)
               ? ' select2-container-error'
               : '')
-          }
-        >
+          }>
           <Controller
             as={<input type='hidden' />}
             name={currencyFormName}
@@ -260,8 +256,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(unitLabelLocaleFormName)
               ? ' select2-container-error'
               : '')
-          }
-        >
+          }>
           <Controller
             as={<input type='hidden' />}
             name={unitLabelLocaleFormName}
@@ -293,8 +288,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(scopeFormName)
               ? ' select2-container-error'
               : '')
-          }
-        >
+          }>
           <Controller
             as={<input type='hidden' />}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
@@ -325,8 +319,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             (isFullFormFieldInError(localeFormName)
               ? ' select2-container-error'
               : '')
-          }
-        >
+          }>
           <Controller
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             as={<input type='hidden' />}
