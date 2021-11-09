@@ -2,12 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\GroupType;
@@ -28,7 +31,9 @@ class GroupSaverSpec extends ObjectBehavior
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkObjectDetacherInterface $detacher
+        BulkObjectDetacherInterface $detacher,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
+        EntityManager $entityManager
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -38,7 +43,9 @@ class GroupSaverSpec extends ObjectBehavior
             $eventDispatcher,
             $pqbFactory,
             $detacher,
-            'Pim\Bundle\CatalogBundle\Model'
+            'Pim\Bundle\CatalogBundle\Model',
+            $getGroupProductIdentifiers,
+            $entityManager
         );
     }
 
@@ -52,7 +59,10 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $eventDispatcher,
         GroupInterface $group,
-        GroupType $type
+        GroupType $type,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilderInterface $pqb
     ) {
         $optionsResolver->resolveSaveOptions([])->willReturn(
             [
@@ -61,10 +71,13 @@ class GroupSaverSpec extends ObjectBehavior
             ]
         );
 
-        $group->getProducts()->willReturn(new ArrayCollection([]));
+        $getGroupProductIdentifiers->byGroupId(Argument::any())->willReturn([]);
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter(Argument::any(),Argument::any(),Argument::any())->willReturn($pqb);
+        $pqb->execute()->willReturn([]);
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
-        $group->getId()->willReturn(null);
+        $group->getId()->willReturn(1);
 
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -80,7 +93,11 @@ class GroupSaverSpec extends ObjectBehavior
         $productSaver,
         $eventDispatcher,
         GroupInterface $group,
-        GroupType $type
+        GroupType $type,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        EntityManager $entityManager
     ) {
         $addedProduct = new Product();
         $addedProduct->setId(42);
@@ -92,10 +109,14 @@ class GroupSaverSpec extends ObjectBehavior
             ]
         );
 
-        $group->getProducts()->willReturn(new ArrayCollection([$addedProduct]));
+        $getGroupProductIdentifiers->byGroupId(Argument::any())->willReturn([42]);
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter(Argument::any(),Argument::any(),Argument::any())->willReturn($pqb);
+        $pqb->execute()->willReturn([]);
+        $entityManager->find(Product::class, 42)->willReturn($addedProduct);
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
-        $group->getId()->willReturn(null);
+        $group->getId()->willReturn(1);
 
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -114,9 +135,11 @@ class GroupSaverSpec extends ObjectBehavior
         $productSaver,
         $eventDispatcher,
         $pqbFactory,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
         GroupInterface $group,
         GroupType $type,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        EntityManager $entityManager
     ) {
         $productAlreadyInGroup = (new Product())->setId(42);
         $addedProduct = (new Product())->setId(123);
@@ -133,7 +156,9 @@ class GroupSaverSpec extends ObjectBehavior
         $pqb->addFilter('groups', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$removedProduct, $productAlreadyInGroup]);
 
-        $group->getProducts()->willReturn(new ArrayCollection([$productAlreadyInGroup, $addedProduct]));
+        $getGroupProductIdentifiers->byGroupId(Argument::any())->willReturn([42,123]);
+        $entityManager->find(Product::class, 123)->willReturn($addedProduct);
+        $entityManager->find(Product::class, 456)->willReturn($removedProduct);
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
         $group->getId()->willReturn(42);
