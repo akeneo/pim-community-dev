@@ -689,7 +689,7 @@ jobs:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: make -C deployments/ uncommit
+              command: make -C deployments/ uncommit-instance
               when: on_fail
 
   delete_pr_environment:
@@ -704,7 +704,7 @@ jobs:
           - run:
                 name: Remove env on kubernetes
                 command: |
-                    make -C deployments/ delete-uncommit
+                    make -C deployments/ uncommit-instance
 
   test_back_missing_structure_migrations:
       machine:
