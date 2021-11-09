@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,18 +25,21 @@ final class DeleteAppAction
     private FeatureFlag $featureFlag;
     private SecurityFacade $security;
     private ConnectedAppRepositoryInterface $connectedAppRepository;
+    private DeleteAppHandler $deleteAppHandler;
 
     public function __construct(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository
+        ConnectedAppRepositoryInterface $connectedAppRepository,
+        DeleteAppHandler $deleteAppHandler
     ) {
         $this->featureFlag = $featureFlag;
         $this->security = $security;
         $this->connectedAppRepository = $connectedAppRepository;
+        $this->deleteAppHandler = $deleteAppHandler;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, string $connectionCode): Response
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
@@ -49,6 +53,16 @@ final class DeleteAppAction
             throw new AccessDeniedHttpException();
         }
 
-        return new JsonResponse();
+        $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
+
+        if (null === $connectedApp) {
+            throw new NotFoundHttpException(
+                sprintf('Connected app with connection code "%s" does not exist.', $connectionCode)
+            );
+        }
+
+        $this->deleteAppHandler->handle(new DeleteAppCommand($connectedApp->getId()));
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }
