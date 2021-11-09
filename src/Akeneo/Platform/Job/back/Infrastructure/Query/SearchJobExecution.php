@@ -43,9 +43,19 @@ class SearchJobExecution implements SearchJobExecutionInterface
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
     GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
+    %s
     ORDER BY ISNULL(je.start_time) DESC, je.start_time DESC
     LIMIT :offset, :limit;
 SQL;
+        $havingSqlPart = '';
+
+        $type = $query->type;
+
+        if (!empty($type)) {
+            $havingSqlPart = 'HAVING ji.type IN (:type)';
+        }
+
+        $sql = sprintf($sql, $havingSqlPart);
 
         $page = $query->page;
         $size = $query->size;
@@ -53,10 +63,12 @@ SQL;
         $rawJobExecutions = $this->connection->executeQuery(
             $sql,
             [
+                'type' => $type,
                 'offset' => ($page - 1) * $size,
                 'limit' => $size,
             ],
             [
+                'type' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ]
@@ -71,9 +83,27 @@ SQL;
     SELECT count(*)
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
+    %s
 SQL;
+        $whereSqlPart = '';
 
-        return (int) $this->connection->executeQuery($sql)->fetchOne();
+        $type = $query->type;
+
+        if (!empty($type)) {
+            $whereSqlPart = 'WHERE ji.type IN (:type)';
+        }
+
+        $sql = sprintf($sql, $whereSqlPart);
+
+        return (int) $this->connection->executeQuery(
+            $sql,
+            [
+                'type' => $type,
+            ],
+            [
+                'type' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchOne();
     }
 
     private function buildJobExecutionRows(array $rawJobExecutions): array
