@@ -31,7 +31,9 @@ services:
     akeneo_connectivity.connection.marketplace.guzzle_client:
         class: GuzzleHttp\Client
         arguments:
-            - base_uri: '%akeneo_pim_marketplace_url%'
+            -
+                base_uri: '%akeneo_pim_marketplace_url%'
+                headers: {User-Agent: ~}
 
     akeneo_connectivity.connection.marketplace.web_marketplace_api:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi
