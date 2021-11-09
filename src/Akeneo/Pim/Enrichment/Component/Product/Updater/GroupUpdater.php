@@ -157,10 +157,10 @@ class GroupUpdater implements ObjectUpdaterInterface
 
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()])
-        ->addFilter('identifier',Operators::NOT_IN_LIST, $productIdentifiers);
+        ->addFilter('identifier', Operators::NOT_IN_LIST, $productIdentifiers);
         $products = $pqb->execute();
         foreach ($products as $product) {
-                $group->removeProduct($product);
+            $group->removeProduct($product);
         }
 
         // Extract the products that are not already in the group to add them to it

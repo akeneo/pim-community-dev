@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -49,6 +50,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var string */
     protected $productClassName;
 
+    private GetGroupProductIdentifiers $getGroupProductIdentifiers;
+
     /**
      * @param ObjectManager                       $objectManager
      * @param BulkSaverInterface                  $productSaver
@@ -67,7 +70,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkObjectDetacherInterface $detacher,
-        $productClassName
+        $productClassName,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers
     ) {
         $this->objectManager = $objectManager;
         $this->productSaver = $productSaver;
@@ -77,6 +81,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->detacher = $detacher;
         $this->productClassName = $productClassName;
+        $this->getGroupProductIdentifiers  = $getGroupProductIdentifiers;
     }
 
     /**
@@ -137,8 +142,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     protected function saveAssociatedProducts(GroupInterface $group)
     {
         $productsToUpdate = [];
-        foreach ($group->getProducts() as $product) {
-            $productsToUpdate[$product->getId()] = $product;
+
+        foreach ($this->getGroupProductIdentifiers->byGroupId($group->getId()) as $product) {
+            $productsToUpdate[$product] = $product;
         }
 
         if (null !== $group->getId()) {
