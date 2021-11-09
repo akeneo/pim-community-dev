@@ -53,14 +53,16 @@ const isValidError = (error: any): error is ValidationError => {
 };
 
 export const denormalizeErrorCollection = (normalizedErrors: any): ValidationError[] => {
-  const errorCollection = normalizedErrors.map((normalizedError: any): ValidationError => {
-    const error = {
-      ...normalizedError,
-      channel: normalizedError.scope,
-    };
+  const errorCollection = normalizedErrors.map(
+    (normalizedError: any): ValidationError => {
+      const error = {
+        ...normalizedError,
+        channel: normalizedError.scope,
+      };
 
-    return error;
-  });
+      return error;
+    }
+  );
 
   return errorCollection;
 };

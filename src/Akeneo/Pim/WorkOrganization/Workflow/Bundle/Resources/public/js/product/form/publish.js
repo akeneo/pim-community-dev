@@ -12,7 +12,7 @@ define([
   'pim/router',
   'oro/messenger',
   'pim/dialog',
-], function (
+], function(
   $,
   _,
   __,
@@ -31,12 +31,12 @@ define([
       'click .publish-product:not(.disabled)': 'publish',
       'click .unpublish-product': 'unpublish',
     },
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
-    render: function () {
+    render: function() {
       if (!this.getFormData().meta.is_owner) {
         return this.remove();
       }
@@ -50,7 +50,7 @@ define([
 
       return this;
     },
-    publish: function () {
+    publish: function() {
       Dialog.confirm(
         __('pimee_enrich.entity.product.module.publish.content'),
         __('pimee_enrich.entity.product.module.publish.title'),
@@ -58,7 +58,7 @@ define([
         __('pim_enrich.entity.product.plural_label')
       );
     },
-    unpublish: function () {
+    unpublish: function() {
       Dialog.confirm(
         __('pimee_enrich.entity.product.module.unpublish.content'),
         __('pimee_enrich.entity.product.module.unpublish.title'),
@@ -66,27 +66,30 @@ define([
         __('pim_menu.item.published_product')
       );
     },
-    doPublish: function () {
+    doPublish: function() {
       this.togglePublished(true);
     },
-    doUnpublish: function () {
+    doUnpublish: function() {
       this.togglePublished(false);
     },
-    togglePublished: function (publish) {
+    togglePublished: function(publish) {
       var productId = this.getProductId();
       var loadingMask = new LoadingMask();
-      loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+      loadingMask
+        .render()
+        .$el.appendTo(this.getRoot().$el)
+        .show();
 
       var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
 
       // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
       return method(productId)
         .done(
-          function () {
+          function() {
             FetcherRegistry.getFetcher('product')
               .fetch(this.getFormData().meta.id)
               .done(
-                function (product) {
+                function(product) {
                   loadingMask.hide().$el.remove();
                   messenger.notify(
                     'success',
@@ -105,7 +108,7 @@ define([
               );
           }.bind(this)
         )
-        .fail(function () {
+        .fail(function() {
           messenger.notify(
             'error',
             __(
@@ -115,11 +118,11 @@ define([
             )
           );
         })
-        .always(function () {
+        .always(function() {
           loadingMask.hide().$el.remove();
         });
     },
-    getProductId: function () {
+    getProductId: function() {
       return this.getFormData().meta.id;
     },
   });

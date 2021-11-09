@@ -18,7 +18,7 @@ define([
   'pim/date-context',
   'pim/user-context',
   'pim/fetcher-registry',
-], function (
+], function(
   $,
   _,
   __,
@@ -44,7 +44,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function () {
+    render: function() {
       var isProject = 'project' === this.getRoot().currentViewType;
       var isOwner = UserContext.get('meta').id === this.getRoot().currentView.owner_id;
 
@@ -68,7 +68,7 @@ define([
     /**
      * Prompt the edit project modal
      */
-    promptEditProject: function () {
+    promptEditProject: function() {
       var modal = new Backbone.BootstrapModal({
         subtitle: __('teamwork_assistant.grid.view_selector.projects'),
         title: __('teamwork_assistant.edit_project_modal.title'),
@@ -88,7 +88,7 @@ define([
       FetcherRegistry.getFetcher('project')
         .fetch(this.getRoot().currentView.label)
         .then(
-          function (project) {
+          function(project) {
             project = $.extend(true, {}, project);
 
             this.form = new CreateForm();
@@ -102,20 +102,20 @@ define([
 
       modal.on(
         'cancel',
-        function () {
+        function() {
           modal.remove();
         }.bind(this)
       );
 
       modal.on(
         'ok',
-        function () {
+        function() {
           if ($('.modal .ok').hasClass('AknButton--disabled')) {
             return;
           }
 
           this.form.save().done(
-            function () {
+            function() {
               modal.close();
               modal.remove();
               this.getRoot().trigger('grid:view-selector:project-edited');
@@ -129,7 +129,7 @@ define([
      * Method called on update field value of the modal.
      * It receives the field and the valid status of it to toggle button for example.
      */
-    onFieldValueValidated: function (field, isValid) {
+    onFieldValueValidated: function(field, isValid) {
       this.fieldsStatuses[field] = isValid;
 
       if (_.every(_.values(this.fieldsStatuses))) {

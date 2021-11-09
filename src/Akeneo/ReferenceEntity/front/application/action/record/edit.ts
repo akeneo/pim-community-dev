@@ -22,37 +22,32 @@ import {redirectToRecordIndex} from 'akeneoreferenceentity/application/action/re
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 
-export const saveRecord =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const record = denormalizeRecord(getState().form.data);
+export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const record = denormalizeRecord(getState().form.data);
 
-    dispatch(recordEditionSubmission());
-    try {
-      const errors = await recordSaver.save(record);
+  dispatch(recordEditionSubmission());
+  try {
+    const errors = await recordSaver.save(record);
 
-      if (errors) {
-        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-        dispatch(recordEditionErrorOccurred(validationErrors));
-        dispatch(notifyRecordSaveValidationError());
-
-        return;
-      }
-    } catch (error) {
-      dispatch(notifyRecordSaveFailed());
+    if (errors) {
+      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+      dispatch(recordEditionErrorOccurred(validationErrors));
+      dispatch(notifyRecordSaveValidationError());
 
       return;
     }
+  } catch (error) {
+    dispatch(notifyRecordSaveFailed());
 
-    dispatch(recordEditionSucceeded());
-    dispatch(notifyRecordWellSaved());
-    const savedRecord: RecordResult = await recordFetcher.fetch(
-      record.getReferenceEntityIdentifier(),
-      record.getCode()
-    );
+    return;
+  }
 
-    dispatch(recordEditionReceived(savedRecord.record));
-  };
+  dispatch(recordEditionSucceeded());
+  dispatch(notifyRecordWellSaved());
+  const savedRecord: RecordResult = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
+
+  dispatch(recordEditionReceived(savedRecord.record));
+};
 
 export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
   dispatch(recordEditionLabelUpdated(value, locale));

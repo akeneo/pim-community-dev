@@ -57,8 +57,7 @@ const AddAssociationsActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.add_associations.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <Controller
           as={AssociationTypesSelector}
           name={itemsFormName}

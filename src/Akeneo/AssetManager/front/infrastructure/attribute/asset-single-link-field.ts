@@ -18,7 +18,7 @@ class AssetFamilyField extends (BaseField as {new (config: any): any}) {
     super(config);
 
     this.events = {
-      'change select': function (event: any) {
+      'change select': function(event: any) {
         this.errors = [];
         this.updateModel(this.getFieldValue(event.target));
         this.getRoot().render();

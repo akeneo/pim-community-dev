@@ -1,6 +1,7 @@
 const BaseAssetSelector =
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require('akeneoassetmanager/application/component/app/asset-selector').default;
+  require('akeneoassetmanager/application/component/app/asset-selector')
+    .default;
 import * as React from 'react';
 
 type AssetCode = string;

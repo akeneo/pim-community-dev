@@ -7,18 +7,18 @@ define([
   'react',
   'react-dom',
   'akeneosharedcatalog/job/form/recipients',
-], function (_, BaseForm, __, React, ReactDOM, Recipients) {
+], function(_, BaseForm, __, React, ReactDOM, Recipients) {
   return BaseForm.extend({
     className: 'tabbable recipients',
     validationErrors: [],
 
-    initialize: function (meta) {
+    initialize: function(meta) {
       this.config = _.extend({}, meta.config);
 
       return BaseForm.prototype.initialize.call(this, arguments);
     },
 
-    configure: function () {
+    configure: function() {
       this.trigger('tab:register', {
         code: this.config.tabCode ? this.config.tabCode : this.code,
         label: __(this.config.title),
@@ -29,7 +29,7 @@ define([
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
-    render: function () {
+    render: function() {
       ReactDOM.unmountComponentAtNode(this.el);
       this.$el.empty();
 

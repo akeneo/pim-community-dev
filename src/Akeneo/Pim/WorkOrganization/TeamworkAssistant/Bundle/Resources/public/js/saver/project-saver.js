@@ -5,7 +5,7 @@
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-define(['jquery', 'routing'], function ($, Routing) {
+define(['jquery', 'routing'], function($, Routing) {
   return {
     /**
      * Save the given Project represented by params.
@@ -15,7 +15,7 @@ define(['jquery', 'routing'], function ($, Routing) {
      *
      * @returns {Promise}
      */
-    save: function (project) {
+    save: function(project) {
       var saveRoute = Routing.generate(__moduleConfig.url);
 
       return $.post(saveRoute, {project: project});

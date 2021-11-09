@@ -29,31 +29,29 @@ const getProductModelCompleteness = (normalizedProduct: any): NormalizedComplete
   };
 };
 
-export const hydrator =
-  (denormalize: (denormalizeProduct: NormalizedProduct) => Product) =>
-  (
-    normalizedProduct: any,
-    context: {
-      locale: LocaleReference;
-    }
-  ): Product => {
-    const expectedKeys = ['id', 'identifier', 'document_type', 'label', 'image'];
-    validateKeys(normalizedProduct, expectedKeys, 'The provided raw product seems to be malformed.');
+export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) => Product) => (
+  normalizedProduct: any,
+  context: {
+    locale: LocaleReference;
+  }
+): Product => {
+  const expectedKeys = ['id', 'identifier', 'document_type', 'label', 'image'];
+  validateKeys(normalizedProduct, expectedKeys, 'The provided raw product seems to be malformed.');
 
-    const completeness =
-      PRODUCT_TYPE === normalizedProduct.document_type
-        ? getProductCompleteness(normalizedProduct)
-        : getProductModelCompleteness(normalizedProduct);
+  const completeness =
+    PRODUCT_TYPE === normalizedProduct.document_type
+      ? getProductCompleteness(normalizedProduct)
+      : getProductModelCompleteness(normalizedProduct);
 
-    return denormalize({
-      id: String(normalizedProduct.id),
-      identifier: normalizedProduct.identifier,
-      type: normalizedProduct.document_type,
-      labels: {[context.locale.stringValue()]: normalizedProduct.label},
-      image: normalizedProduct.image,
-      completeness,
-    });
-  };
+  return denormalize({
+    id: String(normalizedProduct.id),
+    identifier: normalizedProduct.identifier,
+    type: normalizedProduct.document_type,
+    labels: {[context.locale.stringValue()]: normalizedProduct.label},
+    image: normalizedProduct.image,
+    completeness,
+  });
+};
 
 const hydrateProduct = hydrator(denormalizeProduct);
 

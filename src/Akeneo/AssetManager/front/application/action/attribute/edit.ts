@@ -27,129 +27,131 @@ import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/ty
 import attributeOptionSaver from 'akeneoassetmanager/infrastructure/saver/options';
 import {attributecodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/code';
 
-export const saveAttribute =
-  (dismiss: boolean = true) =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    if (getState().attribute.isSaving) {
-      return;
-    }
+export const saveAttribute = (dismiss: boolean = true) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  if (getState().attribute.isSaving) {
+    return;
+  }
 
-    dispatch(attributeEditionSubmission());
-    const normalizedAttribute = getState().attribute.data;
-    const attribute = denormalizeAttribute(normalizedAttribute);
+  dispatch(attributeEditionSubmission());
+  const normalizedAttribute = getState().attribute.data;
+  const attribute = denormalizeAttribute(normalizedAttribute);
 
-    try {
-      let errors = await attributeSaver.save(attribute);
-      if (errors) {
-        if (Array.isArray(errors)) {
-          dispatch(attributeEditionErrorOccured(errors));
-        } else {
-          console.error(errors);
-        }
-        dispatch(notifyAttributeSaveValidationError());
-
-        return;
+  try {
+    let errors = await attributeSaver.save(attribute);
+    if (errors) {
+      if (Array.isArray(errors)) {
+        dispatch(attributeEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
       }
-    } catch (error) {
-      dispatch(attributeEditionErrorOccured([]));
-      dispatch(notifyAttributeSaveFailed());
+      dispatch(notifyAttributeSaveValidationError());
 
       return;
     }
-
-    dispatch(attributeEditionSucceeded());
-    dispatch(notifyAttributeWellSaved());
-    if (dismiss) {
-      dispatch(attributeEditionCancel());
-    }
-    await dispatch(updateAttributeList());
+  } catch (error) {
+    dispatch(attributeEditionErrorOccured([]));
+    dispatch(notifyAttributeSaveFailed());
 
     return;
-  };
+  }
 
-export const saveOptions =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    if (getState().options.isSaving) {
+  dispatch(attributeEditionSucceeded());
+  dispatch(notifyAttributeWellSaved());
+  if (dismiss) {
+    dispatch(attributeEditionCancel());
+  }
+  await dispatch(updateAttributeList());
+
+  return;
+};
+
+export const saveOptions = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  if (getState().options.isSaving) {
+    return;
+  }
+
+  dispatch(optionEditionSubmission());
+  const normalizedAttribute = getState().attribute.data;
+  const attribute = (denormalizeAttribute(normalizedAttribute) as any) as AttributeWithOptions;
+  const options = getState().options.options;
+  const updatedAttribute = attribute.setOptions(options);
+
+  try {
+    let errors = await attributeOptionSaver.save((updatedAttribute as any) as Attribute);
+    if (errors) {
+      const validationErrors = Object.values(
+        errors.reduce((filteredErrors: {[propertyPath: string]: ValidationError}, error: ValidationError) => {
+          filteredErrors[error.propertyPath] = error;
+
+          return filteredErrors;
+        }, {})
+      );
+      dispatch(optionEditionErrorOccured(validationErrors));
+
       return;
     }
-
-    dispatch(optionEditionSubmission());
-    const normalizedAttribute = getState().attribute.data;
-    const attribute = denormalizeAttribute(normalizedAttribute) as any as AttributeWithOptions;
-    const options = getState().options.options;
-    const updatedAttribute = attribute.setOptions(options);
-
-    try {
-      let errors = await attributeOptionSaver.save(updatedAttribute as any as Attribute);
-      if (errors) {
-        const validationErrors = Object.values(
-          errors.reduce((filteredErrors: {[propertyPath: string]: ValidationError}, error: ValidationError) => {
-            filteredErrors[error.propertyPath] = error;
-
-            return filteredErrors;
-          }, {})
-        );
-        dispatch(optionEditionErrorOccured(validationErrors));
-
-        return;
-      }
-    } catch (error) {
-      dispatch(optionEditionErrorOccured([]));
-
-      return;
-    }
-
-    dispatch(optionEditionSucceeded());
-    await dispatch(updateAttributeList());
+  } catch (error) {
+    dispatch(optionEditionErrorOccured([]));
 
     return;
-  };
+  }
 
-export const attributeEditionStartByCode =
-  (attributeCode: AttributeCode) =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const state = getState();
-    if (null === state.attributes.attributes) {
-      return;
-    }
+  dispatch(optionEditionSucceeded());
+  await dispatch(updateAttributeList());
 
-    const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
-      attributecodesAreEqual(attribute.code, attributeCode)
-    );
+  return;
+};
 
-    dispatch(attributeEditionStart(attributeToEdit));
-  };
+export const attributeEditionStartByCode = (attributeCode: AttributeCode) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  const state = getState();
+  if (null === state.attributes.attributes) {
+    return;
+  }
 
-export const attributeEditionStartByIdentifier =
-  (attributeIdentifier: AttributeIdentifier) =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const state = getState();
-    if (null === state.attributes.attributes) {
-      return;
-    }
+  const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
+    attributecodesAreEqual(attribute.code, attributeCode)
+  );
 
-    const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
-      attributeidentifiersAreEqual(attribute.identifier, attributeIdentifier)
-    );
+  dispatch(attributeEditionStart(attributeToEdit));
+};
 
-    dispatch(attributeEditionStart(attributeToEdit));
-  };
+export const attributeEditionStartByIdentifier = (attributeIdentifier: AttributeIdentifier) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  const state = getState();
+  if (null === state.attributes.attributes) {
+    return;
+  }
 
-export const attributeEditionStart =
-  (attribute: NormalizedAttribute | undefined) =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    if (undefined === attribute) {
-      return;
-    }
+  const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
+    attributeidentifiersAreEqual(attribute.identifier, attributeIdentifier)
+  );
 
-    const attributeState = getState().attribute;
+  dispatch(attributeEditionStart(attributeToEdit));
+};
 
-    if (attributeState.isDirty) {
-      await dispatch(saveAttribute(false));
-    }
+export const attributeEditionStart = (attribute: NormalizedAttribute | undefined) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  if (undefined === attribute) {
+    return;
+  }
 
-    if (!getState().attribute.isDirty) {
-      dispatch(attributeEditionStartEvent(denormalizeAttribute(attribute)));
-    }
-  };
+  const attributeState = getState().attribute;
+
+  if (attributeState.isDirty) {
+    await dispatch(saveAttribute(false));
+  }
+
+  if (!getState().attribute.isDirty) {
+    dispatch(attributeEditionStartEvent(denormalizeAttribute(attribute)));
+  }
+};

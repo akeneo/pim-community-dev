@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function (
+define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function(
   $,
   Routing,
   mediator,
@@ -14,9 +14,9 @@ define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function 
      *
      * @return {Promise}
      */
-    get: function (id) {
+    get: function(id) {
       return $.getJSON(Routing.generate(__moduleConfig.urls.get, {id: id}))
-        .then(function (product) {
+        .then(function(product) {
           var cacheInvalidator = new CacheInvalidator();
           cacheInvalidator.checkStructureVersion(product);
 
@@ -34,7 +34,7 @@ define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function 
      *
      * @return {Promise}
      */
-    publish: function (id) {
+    publish: function(id) {
       return $.ajax({
         type: 'PUT',
         url: Routing.generate('pimee_workflow_published_product_rest_publish', {originalId: id}),
@@ -49,7 +49,7 @@ define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function 
      *
      * @return {Promise}
      */
-    unpublish: function (id) {
+    unpublish: function(id) {
       return $.ajax({
         type: 'DELETE',
         url: Routing.generate('pimee_workflow_published_product_rest_unpublish', {originalId: id}),

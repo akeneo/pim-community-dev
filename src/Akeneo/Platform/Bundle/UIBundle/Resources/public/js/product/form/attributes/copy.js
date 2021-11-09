@@ -11,7 +11,7 @@ define([
   'pim/form/common/attributes/copy',
   'pim/fetcher-registry',
   'pim/user-context',
-], function (_, __, Backbone, Copy, FetcherRegistry, UserContext) {
+], function(_, __, Backbone, Copy, FetcherRegistry, UserContext) {
   /**
    * Internal function that returns an union of current sources without drafts and the given drafts
    *
@@ -20,16 +20,16 @@ define([
    *
    * @return {Array}
    */
-  var mergeSourcesAndDrafts = function (sources, drafts) {
-    drafts = _.reject(drafts, function (draft) {
+  var mergeSourcesAndDrafts = function(sources, drafts) {
+    drafts = _.reject(drafts, function(draft) {
       return draft.author === UserContext.get('username');
     });
 
     return _.union(
-      _.reject(sources, function (source) {
+      _.reject(sources, function(source) {
         return 'draft' === source.type;
       }),
-      _.map(_.pluck(drafts, 'author'), function (author) {
+      _.map(_.pluck(drafts, 'author'), function(author) {
         return {
           code: 'draft_of_' + author,
           label: __('pimee_enrich.entity.product.module.copy.draft_of', {author: author}),
@@ -49,7 +49,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    initialize: function () {
+    initialize: function() {
       this.sources = [
         {
           code: 'working_copy',
@@ -73,7 +73,7 @@ define([
     /**
      * @inheritdoc
      */
-    configure: function () {
+    configure: function() {
       this.otherDraftsPromise = null;
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.startCopyingWorkingCopy);
@@ -88,7 +88,7 @@ define([
     /**
      * @inheritdoc
      */
-    render: function () {
+    render: function() {
       if (this.copying && !this.otherDraftsPromise) {
         const fetcherId =
           this.options && this.options.config && this.options.config.fetcher
@@ -97,7 +97,7 @@ define([
         this.otherDraftsPromise = FetcherRegistry.getFetcher(fetcherId)
           .fetchAllById(this.getFormData().meta.id)
           .then(
-            function (drafts) {
+            function(drafts) {
               this.otherDrafts = drafts;
               this.sources = mergeSourcesAndDrafts(this.sources, drafts);
             }.bind(this)
@@ -106,7 +106,7 @@ define([
 
       if (this.copying) {
         this.otherDraftsPromise.then(
-          function () {
+          function() {
             return Copy.prototype.render.apply(this, arguments);
           }.bind(this)
         );
@@ -120,7 +120,7 @@ define([
     /**
      * @inheritdoc
      */
-    getSourceData: function () {
+    getSourceData: function() {
       switch (this.currentSource.type) {
         case 'working_copy':
           return _.result(this.getFormData().meta.working_copy, 'values', {});
@@ -134,7 +134,7 @@ define([
     /**
      * @inheritdoc
      */
-    canBeCopied: function (field) {
+    canBeCopied: function(field) {
       var params = {
         field: field,
         canBeCopied: Copy.prototype.canBeCopied.apply(this, arguments),
@@ -164,10 +164,10 @@ define([
      *
      * @param {Object} context
      */
-    ensureSwitcherContext: function (context) {
+    ensureSwitcherContext: function(context) {
       // If the user owns the product, my_draft is not a valid source
       if (null === this.getFormData().meta.draft_status) {
-        context.sources = _.reject(this.sources, function (source) {
+        context.sources = _.reject(this.sources, function(source) {
           return 'my_draft' === source.code;
         });
       } else {
@@ -182,7 +182,7 @@ define([
      *
      * @param {string} code
      */
-    changeCurrentSource: function (code) {
+    changeCurrentSource: function(code) {
       this.currentSource = _.findWhere(this.sources, {code: code});
       this.triggerContextChange();
     },
@@ -190,7 +190,7 @@ define([
     /**
      * Set the current source to "working copy" and enter in copy mode
      */
-    startCopyingWorkingCopy: function () {
+    startCopyingWorkingCopy: function() {
       this.currentSource = _.findWhere(this.sources, {code: 'working_copy'});
       this.startCopying();
     },
@@ -198,7 +198,7 @@ define([
     /**
      * Invalid the cached promises on user drafts
      */
-    invalidDraftPromise: function () {
+    invalidDraftPromise: function() {
       this.otherDraftsPromise = null;
       this.changeCurrentSource('working_copy');
       this.stopCopying();

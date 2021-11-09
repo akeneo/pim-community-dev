@@ -1,5 +1,5 @@
 import {PimMessaging} from './pim-messaging';
-import {getCrispAgent} from "./crisp-agent";
+import {getCrispAgent} from './crisp-agent';
 
 const UserContext = require('pim/user-context');
 
@@ -10,8 +10,8 @@ const CrispMessaging: PimMessaging = {
         return;
       }
 
-      crisp.push(["set", "user:email", UserContext.get('email')]);
-      crisp.push(["set", "user:nickname", UserContext.get('first_name')]);
+      crisp.push(['set', 'user:email', UserContext.get('email')]);
+      crisp.push(['set', 'user:nickname', UserContext.get('first_name')]);
     });
   },
 };

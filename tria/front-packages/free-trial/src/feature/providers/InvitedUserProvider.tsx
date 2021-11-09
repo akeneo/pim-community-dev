@@ -4,7 +4,7 @@ import {InvitedUser} from '../models';
 export type InviteUsersResponse = {
   success: boolean;
   errors: string[];
-}
+};
 
 type InvitedUserState = {
   saveNewInvitedUsers: (emails: string[]) => Promise<InviteUsersResponse>;
@@ -16,9 +16,12 @@ const InvitedUserContext = createContext<InvitedUserState>({
   retrieveInvitedUsers: () => Promise.resolve([]),
 });
 
-
 const InvitedUserProvider: FC<InvitedUserState> = ({children, saveNewInvitedUsers, retrieveInvitedUsers}) => {
-  return <InvitedUserContext.Provider value={{saveNewInvitedUsers: saveNewInvitedUsers, retrieveInvitedUsers}}>{children}</InvitedUserContext.Provider>;
+  return (
+    <InvitedUserContext.Provider value={{saveNewInvitedUsers: saveNewInvitedUsers, retrieveInvitedUsers}}>
+      {children}
+    </InvitedUserContext.Provider>
+  );
 };
 
 export {InvitedUserProvider, InvitedUserContext};

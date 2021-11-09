@@ -44,170 +44,158 @@ type ValueConfig = {
   };
 };
 
-export const hasCellView =
-  (config: ValueConfig) =>
-  (attributeType: string): boolean => {
-    return undefined !== config[attributeType] && undefined !== config[attributeType].cell;
-  };
+export const hasCellView = (config: ValueConfig) => (attributeType: string): boolean => {
+  return undefined !== config[attributeType] && undefined !== config[attributeType].cell;
+};
 
-export const hasFilterView =
-  (config: ValueConfig) =>
-  (attributeType: string): boolean => {
-    return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
-  };
+export const hasFilterView = (config: ValueConfig) => (attributeType: string): boolean => {
+  return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
+};
 
-export const getDenormalizer =
-  (config: ValueConfig) =>
-  (normalizedValue: NormalizedValue): Denormalizer => {
-    const typeConfiguration = config[normalizedValue.attribute.type];
+export const getDenormalizer = (config: ValueConfig) => (normalizedValue: NormalizedValue): Denormalizer => {
+  const typeConfiguration = config[normalizedValue.attribute.type];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${normalizedValue.attribute.type}:
                 denormalize: '@my_value_denormalizer'`;
 
-      throw new InvalidArgument(
-        `Cannot get the value denormalizer for type "${
-          normalizedValue.attribute.type
-        }". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the value denormalizer for type "${
+        normalizedValue.attribute.type
+      }". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.denormalize.denormalize) {
-      const moduleExample = `
+  if (undefined === typeConfiguration.denormalize.denormalize) {
+    const moduleExample = `
 export const denormalize = (normalizedBooleanData: boolean) => {
   return new BooleanData(normalizedBooleanData);
 };
 `;
 
-      throw new InvalidArgument(
-        `The module you are exposing to denormalize a value of type "${normalizedValue.attribute.type}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to denormalize a value of type "${normalizedValue.attribute.type}" needs to
 export a "denormalize" property. Here is an example of a valid denormalize es6 module:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.denormalize.denormalize;
-  };
+  return typeConfiguration.denormalize.denormalize;
+};
 
-export const getFieldView =
-  (config: ValueConfig) =>
-  (value: Value): ViewGenerator => {
-    const attributeType = value.attribute.getType();
-    const typeConfiguration = config[attributeType];
+export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerator => {
+  const attributeType = value.attribute.getType();
+  const typeConfiguration = config[attributeType];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
                 view: '@my_data_view'`;
 
-      throw new InvalidArgument(
-        `Cannot get the data field view generator for type "${attributeType}". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the data field view generator for type "${attributeType}". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.view.view) {
-      const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.view.view) {
+    const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
+    const moduleExample = `
 export const view = (value: ${capitalizedAttributeType}Value, onChange: (value: Value) => void) => {
   return <input value={value.getData()} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(value.setData(create${capitalizedAttributeType}Data(event.currentTarget.value)));
   }} />;
 };`;
 
-      throw new InvalidArgument(
-        `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
 export a "view" property. Here is an example of a valid view es6 module for the "${attributeType}" type:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.view.view;
-  };
+  return typeConfiguration.view.view;
+};
 
-export const getCellView =
-  (config: ValueConfig) =>
-  (attributeType: string): CellView => {
-    const typeConfiguration = config[attributeType];
+export const getCellView = (config: ValueConfig) => (attributeType: string): CellView => {
+  const typeConfiguration = config[attributeType];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
                 cell: '@my_data_cell_view'`;
 
-      throw new InvalidArgument(
-        `Cannot get the data cell view generator for type "${attributeType}". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the data cell view generator for type "${attributeType}". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.cell.cell) {
-      const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.cell.cell) {
+    const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
+    const moduleExample = `
 export const cell = (value: Normalized${capitalizedAttributeType}Value) => {
   return <span>{{value.getData()}}</span>;
 };`;
 
-      throw new InvalidArgument(
-        `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
 export a "cell" property. Here is an example of a valid view es6 module for the "${attributeType}" type:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.cell.cell;
-  };
+  return typeConfiguration.cell.cell;
+};
 
-export const getFilterView =
-  (config: ValueConfig) =>
-  (attributeType: string): FilterView => {
-    const typeConfiguration = config[attributeType];
+export const getFilterView = (config: ValueConfig) => (attributeType: string): FilterView => {
+  const typeConfiguration = config[attributeType];
 
-    if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
-      const expectedConfiguration = `config:
+  if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
                 filter: '@my_data_filter_view'`;
 
-      throw new InvalidArgument(
-        `Cannot get the data filter view generator for type "${attributeType}". The configuration should look like this:
+    throw new InvalidArgument(
+      `Cannot get the data filter view generator for type "${attributeType}". The configuration should look like this:
 ${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
-      );
-    }
+    );
+  }
 
-    if (undefined === typeConfiguration.filter.filter) {
-      const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
-      const moduleExample = `
+  if (undefined === typeConfiguration.filter.filter) {
+    const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
+    const moduleExample = `
 export const filter = (value: Normalized${capitalizedAttributeType}Value) => {
   return <span>{{value.getData()}}</span>;
 };`;
 
-      throw new InvalidArgument(
-        `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
+    throw new InvalidArgument(
+      `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
 export a "filter" property. Here is an example of a valid view es6 module for the "${attributeType}" type:
 ${moduleExample}`
-      );
-    }
+    );
+  }
 
-    return typeConfiguration.filter.filter;
-  };
+  return typeConfiguration.filter.filter;
+};
 
 /**
  * Explanation about the __moduleConfig variable:

@@ -9,25 +9,23 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import {redirectToReferenceEntityListItem} from 'akeneoreferenceentity/application/action/reference-entity/router';
 import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
-export const deleteReferenceEntity =
-  (referenceEntity: ReferenceEntity) =>
-  async (dispatch: any): Promise<void> => {
-    try {
-      const errors = await referenceEntityRemover.remove(referenceEntity.getIdentifier());
+export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async (dispatch: any): Promise<void> => {
+  try {
+    const errors = await referenceEntityRemover.remove(referenceEntity.getIdentifier());
 
-      if (errors) {
-        const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-        dispatch(notifyReferenceEntityDeletionErrorOccurred(validationErrors));
+    if (errors) {
+      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+      dispatch(notifyReferenceEntityDeletionErrorOccurred(validationErrors));
 
-        return;
-      }
-
-      dispatch(notifyReferenceEntityWellDeleted());
-      dispatch(redirectToReferenceEntityListItem());
-      dispatch(closeDeleteModal());
-    } catch (error) {
-      dispatch(notifyReferenceEntityDeleteFailed());
-
-      throw error;
+      return;
     }
-  };
+
+    dispatch(notifyReferenceEntityWellDeleted());
+    dispatch(redirectToReferenceEntityListItem());
+    dispatch(closeDeleteModal());
+  } catch (error) {
+    dispatch(notifyReferenceEntityDeleteFailed());
+
+    throw error;
+  }
+};

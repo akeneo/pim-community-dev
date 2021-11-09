@@ -33,7 +33,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
       lastBoundingClientRect = editor.getBoundingClientRect();
 
       if (!ticking) {
-        requestAnimationFrameId = window.requestAnimationFrame(function () {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
           setEditorBoundingClientRect(lastBoundingClientRect);
           ticking = false;
         });
@@ -75,7 +75,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
       lastBoundingClientRect = editor.getBoundingClientRect();
 
       if (!ticking) {
-        requestAnimationFrameId = window.requestAnimationFrame(function () {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
           setEditorBoundingClientRect(lastBoundingClientRect);
           ticking = false;
         });
@@ -102,7 +102,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
 
     const observer = new MutationObserver(() => {
       if (!ticking) {
-        requestAnimationFrameId = window.requestAnimationFrame(function () {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
           const clientRect = editor.getBoundingClientRect();
           setEditorBoundingClientRect(clientRect);
           ticking = false;

@@ -11,7 +11,7 @@ const getRequestContract = fileName => {
   );
 };
 
-const listenRequest = async function (page, requestContract, once = false) {
+const listenRequest = async function(page, requestContract, once = false) {
   const url = await page.evaluate(
     async (route, query) => {
       const router = require('pim/router');
@@ -40,19 +40,19 @@ const listenRequest = async function (page, requestContract, once = false) {
   }
 };
 
-const answerLocaleList = async function () {
+const answerLocaleList = async function() {
   const requestContract = getRequestContract('Locale/List/ok.json');
 
   await listenRequest(this.page, requestContract);
 };
 
-const answerChannelList = async function () {
+const answerChannelList = async function() {
   const requestContract = getRequestContract('Channel/List/ok.json');
 
   await listenRequest(this.page, requestContract);
 };
 
-const askForAssetFamily = async function (identifier) {
+const askForAssetFamily = async function(identifier) {
   await answerLocaleList.apply(this);
   await answerChannelList.apply(this);
   await this.page.evaluate(async identifier => {

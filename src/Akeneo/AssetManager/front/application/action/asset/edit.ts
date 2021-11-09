@@ -16,38 +16,36 @@ import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetch
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
-export const saveAsset =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<boolean> => {
-    const asset = getState().form.data;
+export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<boolean> => {
+  const asset = getState().form.data;
 
-    dispatch(assetEditionSubmission());
-    try {
-      const errors = await assetSaver.save(asset);
-      if (errors) {
-        if (Array.isArray(errors)) {
-          dispatch(assetEditionErrorOccured(errors));
-        } else {
-          console.error(errors);
-        }
-        dispatch(notifyAssetSaveValidationError());
-
-        return false;
+  dispatch(assetEditionSubmission());
+  try {
+    const errors = await assetSaver.save(asset);
+    if (errors) {
+      if (Array.isArray(errors)) {
+        dispatch(assetEditionErrorOccured(errors));
+      } else {
+        console.error(errors);
       }
-    } catch (error) {
-      dispatch(notifyAssetSaveFailed());
+      dispatch(notifyAssetSaveValidationError());
 
       return false;
     }
+  } catch (error) {
+    dispatch(notifyAssetSaveFailed());
 
-    dispatch(assetEditionSucceeded());
-    dispatch(notifyAssetWellSaved());
-    const savedAsset: AssetResult = await assetFetcher.fetch(asset.assetFamily.identifier, asset.code);
+    return false;
+  }
 
-    dispatch(assetEditionReceived(savedAsset.asset));
+  dispatch(assetEditionSucceeded());
+  dispatch(notifyAssetWellSaved());
+  const savedAsset: AssetResult = await assetFetcher.fetch(asset.assetFamily.identifier, asset.code);
 
-    return true;
-  };
+  dispatch(assetEditionReceived(savedAsset.asset));
+
+  return true;
+};
 
 export const assetValueUpdated = (value: EditionValue) => (dispatch: any, getState: any) => {
   dispatch(assetEditionValueUpdated(value));

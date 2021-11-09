@@ -45,8 +45,7 @@ const AddCategoriesActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.add_category.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <ActionCategoriesSelector
           lineNumber={lineNumber}
           currentCatalogLocale={currentCatalogLocale}

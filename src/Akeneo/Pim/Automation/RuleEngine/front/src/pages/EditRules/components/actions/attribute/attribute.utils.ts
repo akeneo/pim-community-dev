@@ -3,21 +3,22 @@ import {getAttributeByIdentifier} from '../../../../../repositories/AttributeRep
 import {Translate, Router} from '../../../../../dependenciesTools';
 import {AttributeCode, Attribute} from '../../../../../models';
 
-const validateAttribute =
-  (translate: Translate, router: Router) => async (value: any) => {
-    if (!value) {
-      return translate('pimee_catalog_rule.exceptions.required_attribute');
-    }
-    const attribute = await getAttributeByIdentifier(value, router);
-    if (null === attribute) {
-      return `${translate(
-        'pimee_catalog_rule.exceptions.unknown_attribute'
-      )} ${translate(
-        'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
-      )}`;
-    }
-    return true;
-  };
+const validateAttribute = (translate: Translate, router: Router) => async (
+  value: any
+) => {
+  if (!value) {
+    return translate('pimee_catalog_rule.exceptions.required_attribute');
+  }
+  const attribute = await getAttributeByIdentifier(value, router);
+  if (null === attribute) {
+    return `${translate(
+      'pimee_catalog_rule.exceptions.unknown_attribute'
+    )} ${translate(
+      'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
+    )}`;
+  }
+  return true;
+};
 
 const fetchAttribute = async (router: Router, attributeCode: AttributeCode) => {
   return await getAttributeByIdentifier(attributeCode, router);
