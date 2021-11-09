@@ -6,54 +6,25 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
-use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
-use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use FOS\OAuthServerBundle\Storage\OAuthStorage;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class DeleteAppHandlerIntegration extends TestCase
 {
     private Connection $connection;
-    private UserRoleLoader $userRoleLoader;
-    private OAuthStorage $OAuthStorage;
-    private ClientProviderInterface $clientProvider;
-    private UserRepositoryInterface $userRepository;
+    private ConnectedAppLoader $connectedAppLoader;
     private DeleteAppHandler $deleteAppHandler;
-    private CreateUserGroupInterface $createUserGroup;
-    private CreateUserInterface $createUser;
-    private CreateConnectionInterface $createConnection;
-    private CreateConnectedAppInterface $createApp;
-    private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
-        $this->userRoleLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_role_loader');
-        $this->OAuthStorage = $this->get('fos_oauth_server.storage');
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
-        $this->userRepository = $this->get('pim_user.repository.user');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->deleteAppHandler = $this->get(DeleteAppHandler::class);
-        $this->createUserGroup = $this->get('akeneo_connectivity.connection.service.user.create_user_group');
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
-        $this->createConnection = $this->get(CreateConnection::class);
-        $this->createApp = $this->get(CreateConnectedApp::class);
-        $this->unitOfWorkAndRepositoriesClearer = $this->get('pim_connector.doctrine.cache_clearer');
     }
 
     protected function getConfiguration(): Configuration
@@ -63,8 +34,14 @@ class DeleteAppHandlerIntegration extends TestCase
 
     public function test_to_delete_an_app(): void
     {
-        $this->createConnectedApp('2677e764-f852-4956-bf9b-1a1ec1b0d145', 'magento');
-        $this->createConnectedApp('0dfce574-2238-4b13-b8cc-8d257ce7645b', 'akeneo_print');
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'magento'
+        );
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+            'akeneo_print'
+        );
 
         Assert::assertSame([
             'akeneo_print',
@@ -143,55 +120,6 @@ class DeleteAppHandlerIntegration extends TestCase
         Assert::assertSame([
             'akeneo_print',
         ], $this->findNameOfOAuthRefreshToken());
-    }
-
-    private function createConnectedApp(string $id, string $code): void
-    {
-        $marketplaceApp = App::fromWebMarketplaceValues([
-            'id' => $id,
-            'name' => $code,
-            'logo' => 'http://example.com/logo.png',
-            'author' => 'Akeneo',
-            'url' => 'http://marketplace.akeneo.com/foo',
-            'categories' => ['ecommerce'],
-            'activate_url' => 'http://example.com/activate',
-            'callback_url' => 'http://example.com/callback',
-        ]);
-        $client = $this->clientProvider->findOrCreateClient($marketplaceApp);
-        $group = $this->createUserGroup->execute(sprintf('app_%s', $code));
-        $role = $this->userRoleLoader->create([
-            'role' => sprintf('ROLE_%s', strtoupper($code)),
-            'label' => $code,
-            'type' => 'app',
-        ]);
-        $user = $this->createUser->execute(
-            $code,
-            $marketplaceApp->getName(),
-            ' ',
-            [$group->getName()],
-            [$role->getRole()]
-        );
-        $connection = $this->createConnection->execute(
-            $code,
-            $marketplaceApp->getName(),
-            FlowType::OTHER,
-            $client->getId(),
-            $user->id(),
-        );
-        $this->createApp->execute(
-            $marketplaceApp,
-            ['read_products'],
-            $connection->code(),
-            $group->getName()
-        );
-
-        $user = $this->findConnectionUser($code);
-
-        $this->OAuthStorage->createAuthCode($code, $client, $user, '', null);
-        $this->OAuthStorage->createAccessToken($code, $client, $user, null);
-        $this->OAuthStorage->createRefreshToken($code, $client, $user, null);
-
-        $this->unitOfWorkAndRepositoriesClearer->clear();
     }
 
     private function findNameOfConnectedApps(): array
@@ -294,20 +222,5 @@ ORDER BY token
 SQL;
 
         return $this->connection->fetchFirstColumn($query);
-    }
-
-    private function findConnectionUser(string $code): UserInterface
-    {
-        $query = <<<SQL
-SELECT user_id
-FROM akeneo_connectivity_connection
-WHERE code = :code
-SQL;
-
-        $id = $this->connection->fetchOne($query, [
-            'code' => $code,
-        ]);
-
-        return $this->userRepository->findOneById($id);
     }
 }
