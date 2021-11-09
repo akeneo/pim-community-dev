@@ -184,13 +184,16 @@ COPY tmp tmp
 # Build back
 WORKDIR /srv/pim/tmp/build-connector/back/
 
-RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
+ENV APP_ENV=prod
+
+RUN composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \
         --no-dev \
         --prefer-dist \
-        --optimize-autoloader
+        --optimize-autoloader && \
+     composer dump-env prod
 
 FROM node:14 AS builder-bigcommerceconnector-front
 
