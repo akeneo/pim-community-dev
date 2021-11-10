@@ -9,6 +9,8 @@ services:
     _defaults:
         public: true
 
+    Akeneo\Platform\TailoredExport\Infrastructure\Query\DummyFindMediaFileInfoCollection: ~
+
     akeneo.tailored_export.provider.form.job_instance:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
@@ -28,7 +30,7 @@ services:
 
     Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler:
         arguments:
-            - '@Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindMediaFileInfoCollection'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Query\DummyFindMediaFileInfoCollection'
             - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator'
         public: false
 
