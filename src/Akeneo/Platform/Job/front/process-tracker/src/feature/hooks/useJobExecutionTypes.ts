@@ -20,7 +20,7 @@ const useJobExecutionTypes = (): string[] | null => {
     };
 
     fetchJobExecutionTypes();
-  }, [route]);
+  }, [route, isMounted]);
 
   return jobExecutionTypes;
 };
