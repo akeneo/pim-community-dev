@@ -45,7 +45,37 @@ services:
     akeneo.pim.structure.query.sql_get_required_attributes_masks:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetRequiredAttributesMasks'
         arguments:
+            - !tagged akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type
+
+    Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\DefaultSqlGetRequiredAttributesMasks:
+        arguments:
             - '@database_connection'
+            -
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_identifier'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_number'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_textarea'
+                - 'pim_catalog_text'
+                - 'pim_reference_data_multiselect'
+                - 'pim_reference_data_simpleselect'
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
+                - 'pim_assets_collection'
+        tags:
+            - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
+
+    Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\PriceCollectionSqlGetRequiredAttributesMasks:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
 
     akeneo.pim.structure.query.get_required_attributes_masks:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache\LRUCachedGetRequiredAttributesMasks'
