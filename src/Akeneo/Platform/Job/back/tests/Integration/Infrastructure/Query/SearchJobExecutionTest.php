@@ -179,6 +179,69 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->assertEquals(1, $this->getQuery()->count($query));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_ordered_by_warning_count_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'warning_count';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                null,
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                null,
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_column_is_not_supported()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->sortColumn = 'invalid_column';
+
+        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)));
+        $this->getQuery()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_direction_is_not_supported()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->sortDirection = 'DASC';
+
+        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection)));
+        $this->getQuery()->search($query);
+    }
+
     private function loadFixtures()
     {
         $aProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
