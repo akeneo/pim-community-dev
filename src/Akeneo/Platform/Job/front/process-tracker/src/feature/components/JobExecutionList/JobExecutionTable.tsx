@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useCallback, MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
+import {useHistory} from 'react-router-dom';
 
 type JobExecutionTableProps = {
   sticky?: number;
@@ -17,6 +18,20 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
   const translate = useTranslate();
   const dateFormatter = useDateFormatter();
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
+  const history = useHistory();
+  const handleRowClick = useCallback(
+    (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
+      const url = `/show/${jobExecutionId}`;
+      if (event.metaKey || event.ctrlKey) {
+        const newTab = window.open(`#/${url}`, '_blank');
+        newTab?.focus();
+        return;
+      }
+
+      history.push(url);
+    },
+    [history]
+  );
 
   return (
     <Table>
@@ -41,7 +56,7 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
       </Table.Header>
       <Table.Body>
         {jobExecutionRows.map(jobExecutionRow => (
-          <Table.Row key={jobExecutionRow.job_execution_id}>
+          <Table.Row key={jobExecutionRow.job_execution_id} onClick={handleRowClick(jobExecutionRow.job_execution_id)}>
             <Table.Cell rowTitle={true}>{jobExecutionRow.job_name}</Table.Cell>
             <Table.Cell>
               {translate(`pim_import_export.widget.last_operations.job_type.${jobExecutionRow.type}`)}

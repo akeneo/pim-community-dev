@@ -41,7 +41,7 @@ const useJobExecution = (jobExecutionId: string) => {
     if (isMounted()) {
       setJobExecution(jobExecution);
     }
-  }, [route, isFetching]);
+  }, [route, isFetching, isMounted]);
 
   useEffect(() => {
     if (!willRefresh) return;
@@ -51,7 +51,7 @@ const useJobExecution = (jobExecutionId: string) => {
     return () => {
       clearInterval(interval);
     };
-  }, [willRefresh, isFetching]);
+  }, [willRefresh, isFetching, fetchJobExecution]);
 
   return [jobExecution, error, fetchJobExecution, willRefresh] as const;
 };

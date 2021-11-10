@@ -1,6 +1,11 @@
 akeneo_job_process_tracker_index:
   path: /rac-job
 
+akeneo_job_process_tracker_details:
+  path: /rac-job/show/{id}
+  requirements:
+    id: \d+
+
 akeneo_job_index_action:
   path: /rest/process-tracker
   defaults: { _controller: akeneo.job.controller.index_action }
