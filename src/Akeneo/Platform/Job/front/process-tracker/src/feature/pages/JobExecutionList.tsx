@@ -15,6 +15,11 @@ const JobExecutionList = () => {
   const activityHref = useRoute('pim_dashboard_index');
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
+  const handleStatusFilterChange = (statusFilter: JobStatus[]) => {
+    setCurrentPage(1);
+    setStatusFilterValue(statusFilter);
+  };
+
   return (
     <>
       <PageHeader showPlaceholder={null === jobExecutionTable}>
@@ -41,21 +46,21 @@ const JobExecutionList = () => {
       <PageContent>
         {jobExecutionTable && (
           <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={() => {}}>
-            <StatusFilter statusFilterValue={statusFilterValue} onStatusFilterChange={setStatusFilterValue} />
+            <StatusFilter statusFilterValue={statusFilterValue} onStatusFilterChange={handleStatusFilterChange} />
           </Search>
         )}
-        {jobExecutionTable && jobExecutionTable.total_count > 0 && (
+        {jobExecutionTable && matchesCount > 0 && (
           <Pagination
             sticky={44}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
-            totalItems={jobExecutionTable.matches_count}
+            totalItems={matchesCount}
             followPage={setCurrentPage}
           />
         )}
         {jobExecutionTable && (
           <JobExecutionTable
-            sticky={ITEMS_PER_PAGE < jobExecutionTable.matches_count ? 88 : 44}
+            sticky={ITEMS_PER_PAGE < matchesCount ? 88 : 44}
             jobExecutionRows={jobExecutionTable.rows}
           />
         )}
