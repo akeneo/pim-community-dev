@@ -6,10 +6,6 @@
     {% include "AkeneoPimEnrichmentBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}
 
-<script type="text/javascript" nonce="{{ js_nonce() }}">
-    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
-</script>
-
 <script nonce="{{ js_nonce() }}">
     require(
         [
