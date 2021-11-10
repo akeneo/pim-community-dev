@@ -28,15 +28,17 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
         }
 
         $counts = [];
+        $max = 0;
         foreach ($value as $row) {
             foreach (\array_keys($row) as $columnId) {
                 $counts[$columnId] = 1 + ($counts[$columnId] ?? 0);
+                $max = \max($max, $counts[$columnId]);
             }
         }
 
         $filledColumnIds = \array_keys(\array_filter(
             $counts,
-            static fn (int $count): bool => $count === \count($value)
+            static fn (int $count): bool => $count === $max
         ));
         \sort($filledColumnIds);
 

@@ -25,10 +25,18 @@ final class ValidationFactory
             MinValidation::KEY => MinValidation::class,
             MaxValidation::KEY => MaxValidation::class,
             DecimalsAllowedValidation::KEY => DecimalsAllowedValidation::class,
+            RequiredForCompletenessValidation::KEY => RequiredForCompletenessValidation::class,
         ],
         'text' => [
             MaxLengthValidation::KEY => MaxLengthValidation::class,
+            RequiredForCompletenessValidation::KEY => RequiredForCompletenessValidation::class,
         ],
+        'boolean' => [
+            RequiredForCompletenessValidation::KEY => RequiredForCompletenessValidation::class,
+        ],
+        'select' => [
+            RequiredForCompletenessValidation::KEY => RequiredForCompletenessValidation::class,
+        ]
     ];
 
     /**

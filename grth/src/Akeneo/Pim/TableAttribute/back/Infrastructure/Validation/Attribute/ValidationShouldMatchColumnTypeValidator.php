@@ -20,10 +20,10 @@ use Webmozart\Assert\Assert;
 final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
 {
     private const VALIDATION_MAPPING = [
-        'text' => ['max_length'],
-        'number' => ['min', 'max', 'decimals_allowed'],
-        'boolean' => [],
-        'select' => [],
+        'text' => ['max_length', 'required_for_completeness'],
+        'number' => ['min', 'max', 'decimals_allowed', 'required_for_completeness'],
+        'boolean' => ['required_for_completeness'],
+        'select' => ['required_for_completeness'],
     ];
 
     public function validate($value, Constraint $constraint): void
