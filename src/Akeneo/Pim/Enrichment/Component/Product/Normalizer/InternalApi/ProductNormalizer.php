@@ -32,28 +32,70 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected array $supportedFormat = ['internal_api'];
-    protected NormalizerInterface $normalizer;
-    protected NormalizerInterface $versionNormalizer;
-    protected VersionManager $versionManager;
-    protected ImageNormalizer $imageNormalizer;
-    protected LocaleRepositoryInterface $localeRepository;
-    protected StructureVersionProviderInterface $structureVersionProvider;
-    protected FormProviderInterface $formProvider;
-    protected AttributeConverterInterface $localizedConverter;
-    protected ConverterInterface $productValueConverter;
-    protected ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer;
-    protected UserContext $userContext;
-    protected FillMissingValuesInterface $fillMissingProductValues;
-    protected EntityWithFamilyVariantAttributesProvider $attributesProvider;
-    protected VariantNavigationNormalizer $navigationNormalizer;
-    protected AscendantCategoriesInterface $ascendantCategoriesQuery;
-    private NormalizerInterface $parentAssociationsNormalizer;
-    private MissingAssociationAdder $missingAssociationAdder;
-    protected CatalogContext $catalogContext;
-    private MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
-    private MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator;
-    private CompletenessCalculator $completenessCalculator;
+    protected $supportedFormat = ['internal_api'];
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var NormalizerInterface */
+    protected $versionNormalizer;
+
+    /** @var VersionManager */
+    protected $versionManager;
+
+    /** @var ImageNormalizer */
+    protected $imageNormalizer;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /** @var StructureVersionProviderInterface */
+    protected $structureVersionProvider;
+
+    /** @var FormProviderInterface */
+    protected $formProvider;
+
+    /** @var AttributeConverterInterface */
+    protected $localizedConverter;
+
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
+    /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
+    protected $completenessCollectionNormalizer;
+
+    /** @var UserContext */
+    protected $userContext;
+
+    /** @var FillMissingValuesInterface */
+    protected $fillMissingProductValues;
+
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    protected $attributesProvider;
+
+    /** @var VariantNavigationNormalizer */
+    protected $navigationNormalizer;
+
+    /** @var AscendantCategoriesInterface */
+    protected $ascendantCategoriesQuery;
+
+    /** @var NormalizerInterface */
+    private $parentAssociationsNormalizer;
+
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
+    /** @var CatalogContext */
+    protected $catalogContext;
+
+    /** @var CompletenessCalculator */
+    private $completenessCalculator;
+
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
+
+    /** @var MissingRequiredAttributesCalculatorInterface */
+    private $missingRequiredAttributesCalculator;
 
     /**
      * @todo @merge master/5.0: remove the CompletenessCalculator argument, and the default null value for the MissingRequiredAttributesCalculator argument

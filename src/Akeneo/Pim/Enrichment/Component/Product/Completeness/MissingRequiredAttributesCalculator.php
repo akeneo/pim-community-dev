@@ -20,8 +20,11 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
  */
 class MissingRequiredAttributesCalculator implements MissingRequiredAttributesCalculatorInterface
 {
-    private GetCompletenessProductMasks $getCompletenessProductMasks;
-    private GetRequiredAttributesMasks $getRequiredAttributesMasks;
+    /** @var GetCompletenessProductMasks */
+    private $getCompletenessProductMasks;
+
+    /** @var GetRequiredAttributesMasks */
+    private $getRequiredAttributesMasks;
 
     public function __construct(
         GetCompletenessProductMasks $getCompletenessProductMasks,

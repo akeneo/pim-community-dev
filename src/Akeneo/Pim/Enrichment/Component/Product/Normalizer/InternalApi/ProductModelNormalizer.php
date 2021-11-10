@@ -31,28 +31,67 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    private array $supportedFormat = ['internal_api'];
+    private $supportedFormat = ['internal_api'];
 
-    private NormalizerInterface $normalizer;
-    private NormalizerInterface $versionNormalizer;
-    private ImageNormalizer $imageNormalizer;
-    private VersionManager $versionManager;
-    private AttributeConverterInterface $localizedConverter;
-    private ConverterInterface $productValueConverter;
-    private FormProviderInterface $formProvider;
-    private LocaleRepositoryInterface $localeRepository;
-    private FillMissingValuesInterface $fillMissingProductModelValues;
-    private EntityWithFamilyVariantAttributesProvider $attributesProvider;
-    private VariantProductRatioInterface $variantProductRatioQuery;
-    private VariantNavigationNormalizer $navigationNormalizer;
-    private ImageAsLabel $imageAsLabel;
-    private AscendantCategoriesInterface $ascendantCategoriesQuery;
-    private UserContext $userContext;
-    private NormalizerInterface $parentAssociationsNormalizer;
-    private MissingAssociationAdder $missingAssociationAdder;
-    private CatalogContext $catalogContext;
-    private MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator;
-    private MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
+    /** @var NormalizerInterface */
+    private $normalizer;
+
+    /** @var NormalizerInterface */
+    private $versionNormalizer;
+
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
+
+    /** @var VersionManager */
+    private $versionManager;
+
+    /** @var AttributeConverterInterface */
+    private $localizedConverter;
+
+    /** @var ConverterInterface */
+    private $productValueConverter;
+
+    /** @var FormProviderInterface */
+    private $formProvider;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var FillMissingValuesInterface */
+    private $fillMissingProductModelValues;
+
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    private $attributesProvider;
+
+    /** @var VariantProductRatioInterface */
+    private $variantProductRatioQuery;
+
+    /** @var VariantNavigationNormalizer */
+    private $navigationNormalizer;
+
+    /** @var ImageAsLabel */
+    private $imageAsLabel;
+
+    /** @var AscendantCategoriesInterface */
+    private $ascendantCategoriesQuery;
+
+    /** @var UserContext */
+    private $userContext;
+
+    /** @var NormalizerInterface */
+    private $parentAssociationsNormalizer;
+
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
+    /** @var CatalogContext */
+    private $catalogContext;
+
+    /** @var MissingRequiredAttributesCalculatorInterface */
+    private $missingRequiredAttributesCalculator;
+
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
 
     public function __construct(
         NormalizerInterface $normalizer,
