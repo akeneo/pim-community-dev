@@ -57,8 +57,7 @@ const TableValue: React.FC<InputValueProps> = ({
 
   return (
     <AttributeContext.Provider
-      value={{attribute: attributeState, setAttribute: setAttributeState}}
-    >
+      value={{attribute: attributeState, setAttribute: setAttributeState}}>
       <TableValueContainer>
         <AttributeLabel>
           {getLabel(
