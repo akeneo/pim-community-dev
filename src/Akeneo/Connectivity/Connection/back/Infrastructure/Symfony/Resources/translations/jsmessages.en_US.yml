@@ -38,6 +38,16 @@ pim_title:
     akeneo_connectivity_connection_settings_redirect: Connections
     akeneo_connectivity_connection_connect_connected_apps: Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
+    akeneo_connectivity_connection_connect_connected_apps_delete: App delete
+
+akeneo_connectivity.app:
+    apps: Apps
+    delete_app:
+        title: Confirm deletion
+        description: Are you sure you want to delete the app? Not sure about the impacts?
+        link: Here is what will happen.
+        flash:
+            success: App successfully deleted.
 
 akeneo_connectivity.connection:
     connect:
