@@ -3,14 +3,17 @@ import {Breadcrumb, Pagination} from 'akeneo-design-system';
 import {useTranslate, useRoute, PimView, PageHeader, PageContent} from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks/useJobExecutionTable';
 import {JobExecutionTable} from '../components/JobExecutionList/JobExecutionTable';
+import {JobExecutionTypeFilter} from '../components/JobExecutionTypeFilter';
 
 const ITEMS_PER_PAGE = 25;
 
 const JobExecutionList = () => {
-  const translate = useTranslate();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE);
   const activityHref = useRoute('pim_dashboard_index');
+  const translate = useTranslate();
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [typesFilterValue, setTypesFilterValue] = useState<string[]>([]);
+  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE, typesFilterValue);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
   return (
@@ -37,6 +40,10 @@ const JobExecutionList = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
+        <JobExecutionTypeFilter
+          selected={typesFilterValue}
+          onChange={newTypesFilterValue => setTypesFilterValue(newTypesFilterValue)}
+        />
         {jobExecutionTable && jobExecutionTable.total_count > 0 && (
           <Pagination
             sticky={0}
