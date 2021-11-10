@@ -11,3 +11,14 @@ akeneo_job_process_tracker:
         username: Username
         status: Status
         warnings: Warnings
+  status:
+    label: Status
+    all: All
+    abandoned: Abandoned
+    completed: Completed
+    failed: Failed
+    started: Started
+    starting: Starting
+    stopped: Stopped
+    stopping: Stopping
+    unknown: Unknown

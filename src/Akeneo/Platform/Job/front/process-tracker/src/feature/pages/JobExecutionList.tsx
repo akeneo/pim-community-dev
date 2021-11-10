@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {Breadcrumb, Pagination} from 'akeneo-design-system';
+import {Breadcrumb, Pagination, Search} from 'akeneo-design-system';
 import {useTranslate, useRoute, PimView, PageHeader, PageContent} from '@akeneo-pim-community/shared';
-import {useJobExecutionTable} from '../hooks/useJobExecutionTable';
-import {JobExecutionTable} from '../components/JobExecutionList/JobExecutionTable';
+import {useJobExecutionTable} from '../hooks';
+import {JobExecutionTable, StatusFilter} from '../components';
+import {JobStatus} from '../models';
 
 const ITEMS_PER_PAGE = 25;
 
 const JobExecutionList = () => {
   const translate = useTranslate();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE);
+  const [statusFilterValue, setStatusFilterValue] = useState<JobStatus[]>([]);
+  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE, statusFilterValue);
   const activityHref = useRoute('pim_dashboard_index');
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
@@ -37,9 +39,14 @@ const JobExecutionList = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
+        {jobExecutionTable && (
+          <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={() => {}}>
+            <StatusFilter statusFilterValue={statusFilterValue} onStatusFilterChange={setStatusFilterValue} />
+          </Search>
+        )}
         {jobExecutionTable && jobExecutionTable.total_count > 0 && (
           <Pagination
-            sticky={0}
+            sticky={44}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
             totalItems={jobExecutionTable.matches_count}
@@ -48,7 +55,7 @@ const JobExecutionList = () => {
         )}
         {jobExecutionTable && (
           <JobExecutionTable
-            sticky={ITEMS_PER_PAGE < jobExecutionTable.matches_count ? 44 : 0}
+            sticky={ITEMS_PER_PAGE < jobExecutionTable.matches_count ? 88 : 44}
             jobExecutionRows={jobExecutionTable.rows}
           />
         )}
