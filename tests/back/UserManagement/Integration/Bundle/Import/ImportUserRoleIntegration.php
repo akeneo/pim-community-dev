@@ -6,7 +6,6 @@ namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Box\Spout\Common\Entity\Row;
