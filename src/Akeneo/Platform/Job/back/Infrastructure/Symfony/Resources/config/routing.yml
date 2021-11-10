@@ -4,7 +4,7 @@ akeneo_job_process_tracker_index:
 akeneo_job_index_action:
   path: /rest/process-tracker
   defaults: { _controller: akeneo.job.controller.index_action }
-  methods: [GET]
+  methods: [POST]
 
 akeneo_job_get_job_types_action:
   path: /rest/process-tracker/job-types
