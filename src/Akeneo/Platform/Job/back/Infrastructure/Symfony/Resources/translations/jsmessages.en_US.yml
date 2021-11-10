@@ -11,13 +11,14 @@ akeneo_job_process_tracker:
         username: Username
         status: Status
         warnings: Warnings
-      filters:
-        type:
-          quick_export: Quick Export
-          import: Import
-          export: Export
-          mass_edit: Mass Edit
-          mass_delete: Mass Delete
-          compute_family_variant_structure_changes: Compute family variant structure changes
-          compute_completeness_of_products_family: Compute completeness of products family
-          clean_removed_attribute_job: Cleaning removed attribute values
+  type:
+    label: Type
+    all: All
+    quick_export: Quick Export
+    import: Import
+    export: Export
+    mass_edit: Mass Edit
+    mass_delete: Mass Delete
+    compute_family_variant_structure_changes: Compute family variant structure changes
+    compute_completeness_of_products_family: Compute completeness of products family
+    clean_removed_attribute_job: Cleaning removed attribute values
