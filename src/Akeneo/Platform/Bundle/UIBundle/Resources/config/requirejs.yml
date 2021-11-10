@@ -1010,6 +1010,9 @@ config:
     pim/grid/view-selector/current: pimui/js/grid/view-selector-current
     pim/grid/table: pimui/js/product/grid/table
 
+
+    pim/toolbar: pimui/js/toolbar/bridge
+
     #
     # Templates
     #

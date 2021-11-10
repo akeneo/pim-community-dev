@@ -1,0 +1,4 @@
+extensions:
+    pim-toolbar:
+        module: pim/toolbar
+        parent: pim-app
