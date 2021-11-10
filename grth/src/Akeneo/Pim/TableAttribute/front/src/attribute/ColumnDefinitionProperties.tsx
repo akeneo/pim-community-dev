@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Checkbox, Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, ColumnDefinition, TableAttribute} from '../models';
 import {ColumnDefinitionWithId} from './TableStructureApp';
@@ -42,6 +42,10 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   const handleChange = (selectedColumn: ColumnDefinition) => {
     onChange(selectedColumn as ColumnDefinitionWithId);
   };
+
+  const handleRequiredForCompleteness = (checked: boolean) => {
+    onChange({...selectedColumn, validations: {...selectedColumn.validations, required_for_completeness: checked }});
+  }
 
   const specificProperties = () => {
     const TypeSpecificProperties = columnDefinitionPropertiesMapping[selectedColumn.data_type]?.default;
@@ -98,6 +102,14 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
           />
         </Field>
         {specificProperties()}
+      </FieldsList>
+      <SectionTitle title={'Required for completeness'}>
+        <SectionTitle.Title>Required for completeness</SectionTitle.Title>
+      </SectionTitle>
+      <FieldsList>
+        <Checkbox checked={!!selectedColumn.validations.required_for_completeness} onChange={handleRequiredForCompleteness}>
+          Required for completeness
+        </Checkbox>
       </FieldsList>
       <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
         <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.labels')}</SectionTitle.Title>
