@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use InvalidArgumentException;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -44,12 +45,13 @@ class SearchJobExecution implements SearchJobExecutionInterface
     LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
     %s
     GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
-    ORDER BY ISNULL(je.start_time) DESC, je.start_time DESC
+    %s
     LIMIT :offset, :limit;
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
+        $orderBySqlPart = $this->buildSqlOrderByPart($query);
 
-        $sql = sprintf($sql, $whereSqlPart);
+        $sql = sprintf($sql, $whereSqlPart, $orderBySqlPart);
         $queryParams = $this->buildQueryParams($query);
         $queryParamsTypes = $this->buildQueryParamsTypes();
 
@@ -127,6 +129,40 @@ SQL;
             'type' => Connection::PARAM_STR_ARRAY,
             'status' => Connection::PARAM_STR_ARRAY,
         ];
+    }
+
+    private function buildSqlOrderByPart(SearchJobExecutionQuery $query): string
+    {
+        $sortDirection = $query->sortDirection;
+
+        if (!in_array($sortDirection, ['ASC', 'DESC'])) {
+            throw new InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
+        }
+
+        switch ($query->sortColumn) {
+            case 'job_name':
+                $orderByColumn = "ji.label $sortDirection";
+                break;
+            case 'type':
+                $orderByColumn = "ji.type $sortDirection";
+                break;
+            case 'started_at':
+                $orderByColumn = "ISNULL(je.start_time) $sortDirection, je.start_time $sortDirection";
+                break;
+            case 'username':
+                $orderByColumn = "je.user $sortDirection";
+                break;
+            case 'status':
+                $orderByColumn = "je.status $sortDirection";
+                break;
+            case 'warning_count':
+                $orderByColumn = "warning_count $sortDirection";
+                break;
+            default:
+                throw new InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
+        }
+
+        return sprintf('ORDER BY %s', $orderByColumn);
     }
 
     private function buildJobExecutionRows(array $rawJobExecutions): array
