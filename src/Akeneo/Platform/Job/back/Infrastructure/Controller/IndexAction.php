@@ -34,6 +34,8 @@ final class IndexAction
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
         $searchJobExecutionQuery->page = (int) $request->get('page', 1);
         $searchJobExecutionQuery->size = (int) $request->get('size', 25);
+        $searchJobExecutionQuery->sortColumn = $request->get('sort_column', 'started_at');
+        $searchJobExecutionQuery->sortDirection = $request->get('sort_direction', 'DESC');
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
 
