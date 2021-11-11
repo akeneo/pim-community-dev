@@ -144,11 +144,7 @@ pim_table_attribute:
       no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
       no_rows_subtitle: Füge Zeilen hinzu, um neue Eigenschaften zu definieren
       no_rows_subtitle_on_readonly: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
-      no_add_options_title: Um Zeilen hinzuzufügen
-      no_add_options: Verwalten Sie Ihre "{{ attributeLabel }}" Optionen
       no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten
-      no_add_options_link: hier
-      no_edit_permission: Keine Bearbeitungs-Berechtigung
       actions:
         delete_row: Diese Zeile löschen
         move_first: An erste Position verschieben
