@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetFamilyAndCode;
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
-use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -45,6 +44,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Psr\Log\Test\TestLogger;
