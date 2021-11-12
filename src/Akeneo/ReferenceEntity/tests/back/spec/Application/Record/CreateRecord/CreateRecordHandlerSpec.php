@@ -103,4 +103,49 @@ class CreateRecordHandlerSpec extends ObjectBehavior
 
         $this->__invoke($createRecordCommand);
     }
+
+    function it_creates_and_save_a_new_record_and_ignores_empty_labels(
+        RecordRepositoryInterface $recordRepository,
+        CreateRecordCommand $createRecordCommand,
+        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+    ) {
+        $createRecordCommand->code = 'intel';
+        $createRecordCommand->referenceEntityIdentifier = 'brand';
+        $createRecordCommand->labels = [
+            'en_US' => '',
+            'fr_FR' => '',
+        ];
+
+        $recordIdentifier = RecordIdentifier::fromString('brand_intel_a1677570-a278-444b-ab46-baa1db199392');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
+        $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
+
+        $findAttributeAsLabel
+            ->find(Argument::type(ReferenceEntityIdentifier::class))
+            ->willReturn($labelAttributeReference);
+
+        $recordRepository->nextIdentifier(
+            Argument::type(ReferenceEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($recordIdentifier);
+
+        $recordRepository->create(Argument::that(function ($record) use (
+            $recordIdentifier,
+            $referenceEntityIdentifier,
+            $labelAttributeReference
+        ) {
+            Assert::eq(Record::fromState(
+                $recordIdentifier,
+                $referenceEntityIdentifier,
+                RecordCode::fromString('intel'),
+                ValueCollection::fromValues([]),
+                $record->getCreatedAt(),
+                $record->getUpdatedAt(),
+            ), $record);
+
+            return true;
+        }))->shouldBeCalled();
+
+        $this->__invoke($createRecordCommand);
+    }
 }

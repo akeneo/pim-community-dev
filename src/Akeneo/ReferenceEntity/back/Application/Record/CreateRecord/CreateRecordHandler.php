@@ -74,6 +74,10 @@ class CreateRecordHandler
 
         $labelValues = [];
         foreach ($createRecordCommand->labels as $locale => $label) {
+            if (empty($label)) {
+                continue;
+            }
+
             $labelValues[] = Value::create(
                 $attributeAsLabelReference->getIdentifier(),
                 ChannelReference::noReference(),

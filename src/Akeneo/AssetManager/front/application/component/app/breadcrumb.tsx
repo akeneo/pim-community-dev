@@ -33,12 +33,17 @@ const AssetBreadcrumb = ({assetFamilyIdentifier, assetCode}: AssetBreadcrumbProp
 
   const router = useRouter();
 
+  const handleBreadcrumbClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    router.redirect(href);
+  };
+
   return (
     <Breadcrumb>
-      <Breadcrumb.Step onClick={() => router.redirect(indexHref)}>
+      <Breadcrumb.Step onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleBreadcrumbClick(event, indexHref)} href={indexHref}>
         {translate('pim_asset_manager.asset_family.breadcrumb')}
       </Breadcrumb.Step>
-      <Breadcrumb.Step onClick={() => router.redirect(assetFamilyHref)}>{assetFamilyIdentifier}</Breadcrumb.Step>
+      <Breadcrumb.Step onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleBreadcrumbClick(event, assetFamilyHref)} href={assetFamilyHref}>{assetFamilyIdentifier}</Breadcrumb.Step>
       <Breadcrumb.Step>{assetCode}</Breadcrumb.Step>
     </Breadcrumb>
   );

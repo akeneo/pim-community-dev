@@ -88,7 +88,7 @@ final class CreateRecordLabelValidator extends ConstraintValidator
 
         $editValueCommands = [];
         foreach ($command->labels as $locale => $label) {
-            if (null === $label) {
+            if (empty($label)) {
                 continue;
             }
 
@@ -99,6 +99,7 @@ final class CreateRecordLabelValidator extends ConstraintValidator
                 'locale' => $locale,
                 'data' => $label,
             ];
+
             $editValueCommands[] = $this->editValueCommandFactoryRegistry
                 ->getFactory($attribute, $normalizedValue)
                 ->create($attribute, $normalizedValue);

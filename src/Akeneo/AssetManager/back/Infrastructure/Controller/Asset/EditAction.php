@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,7 +90,11 @@ class EditAction
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->editAssetHandler)($command);
+        try {
+            ($this->editAssetHandler)($command);
+        } catch (AssetNotFoundException) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
 
         $this->indexAssetEventAggregator->flushEvents();
         $this->computeTransformationEventAggregator->flushEvents();

@@ -17,11 +17,24 @@ const RefEntityBreadcrumb = ({referenceEntityIdentifier, recordCode}: RefEntityB
 
   const router = useRouter();
 
+  const handleBreadcrumbClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    router.redirect(href);
+  };
+
   const children = [
-    <Breadcrumb.Step onClick={() => router.redirect(indexHref)}>
+    <Breadcrumb.Step
+      onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleBreadcrumbClick(event, indexHref)}
+      href={indexHref}
+    >
       {translate('pim_reference_entity.reference_entity.breadcrumb')}
     </Breadcrumb.Step>,
-    <Breadcrumb.Step onClick={() => router.redirect(referenceEntityHref)}>{referenceEntityIdentifier}</Breadcrumb.Step>,
+    <Breadcrumb.Step
+      onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleBreadcrumbClick(event, referenceEntityHref)}
+      href={referenceEntityHref}
+    >
+      {referenceEntityIdentifier}
+    </Breadcrumb.Step>,
   ];
 
   if (undefined !== recordCode) {
