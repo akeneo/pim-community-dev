@@ -34,7 +34,7 @@ const useJobExecutionTable = (
     };
 
     searchJobExecution();
-  }, [route, page, size, type, status]);
+  }, [isMounted, route, page, size, type, status]);
 
   return jobExecutionTable;
 };
