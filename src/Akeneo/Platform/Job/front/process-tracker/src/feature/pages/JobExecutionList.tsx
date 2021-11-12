@@ -22,6 +22,9 @@ const JobExecutionList = () => {
     setStatusFilterValue(statusFilter);
   };
 
+  /* istanbul ignore next TODO RAC-938 */
+  const handleSearchChange = () => {};
+
   return (
     <>
       <PageHeader showPlaceholder={null === jobExecutionTable}>
@@ -47,7 +50,7 @@ const JobExecutionList = () => {
       </PageHeader>
       <PageContent>
         {jobExecutionTable && (
-          <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={() => {}}>
+          <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={handleSearchChange}>
             <TypeFilter typeFilterValue={typeFilterValue} onTypeFilterChange={setTypeFilterValue} />
             <StatusFilter statusFilterValue={statusFilterValue} onStatusFilterChange={handleStatusFilterChange} />
           </Search>
