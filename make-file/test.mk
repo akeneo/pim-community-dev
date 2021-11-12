@@ -40,7 +40,6 @@ lint-front:
 	$(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
-### validate the job are launched
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
