@@ -4,6 +4,7 @@ import {PermissionFormProvider} from '../../shared/permission-form-registry';
 
 const FormContainer = styled.div`
     padding-bottom: 10px;
+    width: 460px;
 `;
 
 const PermissionFormWidget = styled.div`

@@ -74,8 +74,10 @@ export const MarketplaceIsLoading: FC = () => {
                     <SkeletonContainer>
                         <SkeletonLeftColumnContainer>
                             <SkeletonItem />
+                            <SkeletonItem />
                         </SkeletonLeftColumnContainer>
                         <SkeletonRightColumnContainer>
+                            <SkeletonItem />
                             <SkeletonItem />
                         </SkeletonRightColumnContainer>
                     </SkeletonContainer>
