@@ -10,7 +10,7 @@ const InfoContainer = styled.div`
     grid-area: INFO;
     padding: 20px 40px;
     border-left: 1px solid ${getColor('brand', 100)};
-    height: 500px;
+    height: 525px;
     overflow-y: scroll;
 `;
 
