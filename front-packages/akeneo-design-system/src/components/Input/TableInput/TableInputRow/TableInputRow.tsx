@@ -162,12 +162,8 @@ const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
     {children, rowIndex = 0, draggable, highlighted = false, onDragStart, onDragEnd, ...rest}: TableInputRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [
-      placeholderPosition,
-      placeholderDragEnter,
-      placeholderDragLeave,
-      placeholderDragEnd,
-    ] = usePlaceholderPosition(rowIndex);
+    const [placeholderPosition, placeholderDragEnter, placeholderDragLeave, placeholderDragEnd] =
+      usePlaceholderPosition(rowIndex);
 
     const {isDragAndDroppable} = useContext(TableInputContext);
 

@@ -66,12 +66,10 @@ const Table = ({
   children,
   ...rest
 }: TableProps) => {
-  const providerValue = useMemo(() => ({isSelectable, displayCheckbox, isDragAndDroppable, onReorder}), [
-    isSelectable,
-    displayCheckbox,
-    isDragAndDroppable,
-    onReorder,
-  ]);
+  const providerValue = useMemo(
+    () => ({isSelectable, displayCheckbox, isDragAndDroppable, onReorder}),
+    [isSelectable, displayCheckbox, isDragAndDroppable, onReorder]
+  );
 
   return (
     <TableContext.Provider value={providerValue}>

@@ -31,7 +31,7 @@ const useShortcut = <NodeType extends HTMLElement>(
 
   useEffect(() => {
     if (typeof ref !== 'function' && null !== ref.current) {
-      const element = (ref.current as unknown) as NodeType;
+      const element = ref.current as unknown as NodeType;
 
       element.addEventListener('keydown', memoizedCallback);
       return () => element.removeEventListener('keydown', memoizedCallback);

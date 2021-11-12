@@ -15,9 +15,9 @@ jobs:
         with:
             ref: gh-pages
       - name: Prepare node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: 13.13
+          node-version: '14'
       - name: Remove old staging folders
         run:
           CLEANUP_TOKEN=${{ secrets.CLEANUP_TOKEN }} node .github/workflows/cleanup-staging.js
