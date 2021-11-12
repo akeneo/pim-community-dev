@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Breadcrumb, Pagination} from 'akeneo-design-system';
+import {Breadcrumb, Pagination, Search} from 'akeneo-design-system';
 import {useTranslate, useRoute, PimView, PageHeader, PageContent} from '@akeneo-pim-community/shared';
-import {useJobExecutionTable} from '../hooks/useJobExecutionTable';
-import {JobExecutionTable} from '../components/JobExecutionList/JobExecutionTable';
-import {TypeFilter} from '../components/TypeFilter';
+import {useJobExecutionTable} from '../hooks';
+import {JobExecutionTable, StatusFilter, TypeFilter} from '../components';
+import {JobStatus} from '../models';
 
 const ITEMS_PER_PAGE = 25;
 
@@ -12,9 +12,18 @@ const JobExecutionList = () => {
   const translate = useTranslate();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [statusFilterValue, setStatusFilterValue] = useState<JobStatus[]>([]);
   const [typeFilterValue, setTypeFilterValue] = useState<string[]>([]);
-  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE, typeFilterValue);
+  const jobExecutionTable = useJobExecutionTable(currentPage, ITEMS_PER_PAGE, typeFilterValue, statusFilterValue);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
+
+  const handleStatusFilterChange = (statusFilter: JobStatus[]) => {
+    setCurrentPage(1);
+    setStatusFilterValue(statusFilter);
+  };
+
+  /* istanbul ignore next TODO RAC-938 */
+  const handleSearchChange = () => {};
 
   return (
     <>
@@ -40,10 +49,15 @@ const JobExecutionList = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <TypeFilter typeFilterValue={typeFilterValue} onTypeFilterChange={setTypeFilterValue} />
-        {matchesCount && matchesCount > 0 && (
+        {jobExecutionTable && (
+          <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={handleSearchChange}>
+            <TypeFilter typeFilterValue={typeFilterValue} onTypeFilterChange={setTypeFilterValue} />
+            <StatusFilter statusFilterValue={statusFilterValue} onStatusFilterChange={handleStatusFilterChange} />
+          </Search>
+        )}
+        {jobExecutionTable && matchesCount > 0 && (
           <Pagination
-            sticky={0}
+            sticky={44}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
             totalItems={matchesCount}
@@ -52,7 +66,7 @@ const JobExecutionList = () => {
         )}
         {jobExecutionTable && (
           <JobExecutionTable
-            sticky={ITEMS_PER_PAGE < matchesCount ? 44 : 0}
+            sticky={ITEMS_PER_PAGE < matchesCount ? 88 : 44}
             jobExecutionRows={jobExecutionTable.rows}
           />
         )}

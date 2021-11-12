@@ -12,6 +12,7 @@ const Container = styled.div<{sticky?: number} & AkeneoThemedProps>`
   background: ${getColor('white')};
   height: 44px;
   box-sizing: border-box;
+  gap: 10px;
 
   :focus-within {
     border-bottom: 1px solid ${getColor('brand', 100)};
@@ -45,9 +46,9 @@ const SearchInput = styled.input`
 `;
 
 const Separator = styled.div`
-  margin-left: 20px;
+  margin-left: 10px;
   border-left: 1px ${getColor('grey', 100)} solid;
-  padding-left: 20px;
+  padding-left: 10px;
   height: 24px;
   display: flex;
 `;

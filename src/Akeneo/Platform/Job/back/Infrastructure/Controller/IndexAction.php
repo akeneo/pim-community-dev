@@ -32,9 +32,10 @@ final class IndexAction
         }
 
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
-        $searchJobExecutionQuery->type = json_decode($request->query->get('type', '[]'));
-        $searchJobExecutionQuery->page = $request->query->getInt('page', 1);
-        $searchJobExecutionQuery->size = $request->query->getInt('size', 25);
+        $searchJobExecutionQuery->page = (int) $request->get('page', 1);
+        $searchJobExecutionQuery->size = (int) $request->get('size', 25);
+        $searchJobExecutionQuery->type = $request->get('type', []);
+        $searchJobExecutionQuery->status = $request->get('status', []);
 
         $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 

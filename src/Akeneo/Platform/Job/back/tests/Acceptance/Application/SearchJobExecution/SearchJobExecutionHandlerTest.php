@@ -67,7 +67,6 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
         $this->getSearchJobExecution()->mockSearchResult($jobExecutionRows);
 
         $query = new SearchJobExecutionQuery();
-        // TODO RAC-937 Add filter to have a more revelant test
         $query->page = 1;
 
         $result = $this->getHandler()->search($query);

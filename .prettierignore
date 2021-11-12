@@ -1,3 +1,4 @@
 src/Akeneo/Connectivity/**/*
 src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib/**/*
-src/Akeneo/Platform/Job/front/process-tracker/**/*
+src/Akeneo/Platform/Job/front/process-tracker/coverage/**/*
+src/Akeneo/Platform/Job/front/process-tracker/lib/**/*

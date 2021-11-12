@@ -8,6 +8,7 @@ use \Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterf
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 class SearchJobExecutionTest extends IntegrationTestCase
 {
@@ -121,6 +122,45 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_filtered_job_executions_on_status(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->status = ['STARTING'];
+        $query->size = 10;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'a_product_import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'a_product_export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_job_execution_count_related_to_query()
     {
         $query = new SearchJobExecutionQuery();
@@ -165,25 +205,25 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
-            'status' => 1,
+            'status' => BatchStatus::COMPLETED,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
-            'status' => 3,
+            'status' => BatchStatus::STARTED,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => null,
-            'status' => 2,
+            'status' => BatchStatus::STARTING,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductExportJobInstanceId,
             'start_time' => null,
-            'status' => 2,
+            'status' => BatchStatus::STARTING,
         ]);
 
         $this->fixturesLoader->createStepExecution([

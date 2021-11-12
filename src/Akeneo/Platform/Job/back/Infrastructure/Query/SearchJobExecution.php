@@ -50,7 +50,7 @@ SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
 
         $sql = sprintf($sql, $whereSqlPart);
-        $queryParams = $this->buildQueryParams($query->type);
+        $queryParams = $this->buildQueryParams($query);
         $queryParamsTypes = $this->buildQueryParamsTypes();
 
         $sql = sprintf($sql, $whereSqlPart);
@@ -84,7 +84,7 @@ SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
 
         $sql = sprintf($sql, $whereSqlPart);
-        $queryParams = $this->buildQueryParams($query->type);
+        $queryParams = $this->buildQueryParams($query);
         $queryParamsTypes = $this->buildQueryParamsTypes();
 
         return (int) $this->connection->executeQuery(
@@ -98,18 +98,26 @@ SQL;
     {
         $sqlWhereParts = [];
         $type = $query->type;
+        $status = $query->status;
 
         if (!empty($type)) {
             $sqlWhereParts[] = 'ji.type IN (:type)';
         }
 
+        if (!empty($status)) {
+            $sqlWhereParts[] = 'je.status IN (:status)';
+        }
+
         return empty($sqlWhereParts) ? '' : 'WHERE ' . implode(' AND ', $sqlWhereParts);
     }
 
-    private function buildQueryParams(array $type): array
+    private function buildQueryParams(SearchJobExecutionQuery $query): array
     {
+        $statusLabels = BatchStatus::getAllLabels();
+
         return [
-            'type' => $type,
+            'type' => $query->type,
+            'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
         ];
     }
 
@@ -117,6 +125,7 @@ SQL;
     {
         return [
             'type' => Connection::PARAM_STR_ARRAY,
+            'status' => Connection::PARAM_STR_ARRAY,
         ];
     }
 
