@@ -22,6 +22,7 @@ class App
     private array $categories;
     private string $activateUrl;
     private string $callbackUrl;
+    private bool $connected;
 
     private const REQUIRED_KEYS = [
         'id',
@@ -32,6 +33,7 @@ class App
         'categories',
         'activate_url',
         'callback_url',
+        'connected'
     ];
 
     private function __construct()
@@ -51,6 +53,7 @@ class App
      *     certified?: bool,
      *     activate_url: string,
      *     callback_url: string,
+     *     connected?: bool,
      * } $values
      */
     public static function fromWebMarketplaceValues(array $values): self
@@ -74,6 +77,7 @@ class App
         $self->certified = $values['certified'] ?? false;
         $self->activateUrl = $values['activate_url'];
         $self->callbackUrl = $values['callback_url'];
+        $self->connected = $values['connected'] ?? false;
 
         return $self;
     }
@@ -131,6 +135,7 @@ class App
      *  certified: bool,
      *  activate_url: string,
      *  callback_url: string,
+     *  connected: bool,
      * }
      */
     public function normalize(): array
@@ -147,6 +152,7 @@ class App
             'certified' => $this->certified,
             'activate_url' => $this->activateUrl,
             'callback_url' => $this->callbackUrl,
+            'connected' => $this->connected,
         ];
     }
 
@@ -206,5 +212,10 @@ class App
     public function getCategories(): array
     {
         return $this->categories;
+    }
+
+    public function isConnected(): bool
+    {
+        return $this->connected;
     }
 }
