@@ -12,3 +12,4 @@ jest.mock('./src/dependenciesTools/provider/dependencies.ts');
 jest.mock('./src/fetch/categoryTree.fetcher.ts');
 jest.mock('./src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector');
 jest.mock('./src/dependenciesTools/components/AssetManager/AssetSelector');
+jest.mock('@akeneo-pim-community/legacy-bridge/src/dependencies');

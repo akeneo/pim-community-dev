@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "La tabella {{ attributeLabel }} è vuota."
       no_rows_subtitle: Aggiungi righe per definire nuove proprietà
       no_rows_subtitle_on_readonly: Per modificare questo attributo, vai alla pagina di impostazione degli attributi oppure contatta il tuo amministratore PIM.
-      no_add_options_title: Per aggiungere righe
-      no_add_options: Gestisci le opzioni "{{ attributeLabel }}"
       no_add_options_unallowed: Contatta l'amministratore PIM per gestire le opzioni "{{ attributeLabel }}"
-      no_add_options_link: qui
-      no_edit_permission: Permesso di modifica mancante
       actions:
         delete_row: Elimina questa riga
         clear_row: Cancella questa riga

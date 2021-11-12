@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "Uw {{ attributeLabel }} tabel is leeg."
       no_rows_subtitle: Voeg rijen toe om nieuwe eigenschappen te definiëren.
       no_rows_subtitle_on_readonly: Om dit attribuut te kunnen bewerken, ga naar de attribuut-instelling pagina of neem contact op met uw PIM-beheerder.
-      no_add_options_title: Om rijen toe te voegen
-      no_add_options: Beheer uw "{{ attributeLabel }}" opties
       no_add_options_unallowed: Neem contact op met uw PIM beheerder om de "{{ attributeLabel }}" opties te beheren
-      no_add_options_link: hier
-      no_edit_permission: Geen toestemming voor bewerken
       actions:
         delete_row: Deze rij verwijderen
         clear_row: Wis deze rij

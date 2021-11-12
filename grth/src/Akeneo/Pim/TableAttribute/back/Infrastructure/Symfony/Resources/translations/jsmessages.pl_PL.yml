@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "Twoja tabela {{ attributeLabel }} jest pusta."
       no_rows_subtitle: Dodaj wiersze, aby zdefiniować nowe właściwości.
       no_rows_subtitle_on_readonly: Aby móc edytować ten atrybut, przejdź do strony z ustawieniami atrybutu lub skontaktuj się z administratorem PIM.
-      no_add_options_title: Aby dodać wiersze
-      no_add_options: Zarządzaj opcjami „{{ attributeLabel }}”
       no_add_options_unallowed: Skontaktuj się z administratorem PIM, aby zarządzać opcjami „{{ attributeLabel }}”.
-      no_add_options_link: tutaj
-      no_edit_permission: Brak uprawnień do edycji
       actions:
         delete_row: Usuń ten wiersz
         clear_row: Wyczyść ten wiersz

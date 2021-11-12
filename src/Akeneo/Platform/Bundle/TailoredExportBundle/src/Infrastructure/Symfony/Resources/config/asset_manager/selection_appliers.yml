@@ -1,0 +1,31 @@
+services:
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionCodeSelectionApplier:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaFileSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaLinkSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+

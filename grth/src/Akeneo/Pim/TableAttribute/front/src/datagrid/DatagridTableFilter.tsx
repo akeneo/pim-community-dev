@@ -3,7 +3,6 @@ import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-
 import {
   AttributeCode,
   BackendTableFilterValue,
-  ColumnCode,
   ColumnDefinition,
   isFilterValid,
   PendingBackendTableFilterValue,
@@ -11,12 +10,14 @@ import {
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
-import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
+import {AttributeContext} from '../contexts';
+import {DatagridTableCriteria} from './DatagridTableCriteria';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;
@@ -61,12 +62,11 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 }) => {
   const router = useRouter();
   const translate = useTranslate();
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
+  const catalogLocale = useUserContext().get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute?.table_configuration, attributeCode, []);
+  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const isMounted = useIsMounted();
 
   useEffect(() => {
@@ -97,14 +97,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     setFilterValue(pendingFilter);
   }, [optionsForFirstColumn, attribute]);
 
-  const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
-  Object.keys(filterValuesMapping).forEach(dataType => {
-    valueRenderers[dataType] = {};
-    Object.keys(filterValuesMapping[dataType]).forEach(operator => {
-      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer(attributeCode);
-    });
-  });
-
   const handleValidate = () => {
     if (filterValue && isFilterValid(filterValue)) {
       close();
@@ -127,66 +119,44 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   };
 
-  let criteriaHint = translate('pim_common.all');
-  if (filterValue && isFilterValid(filterValue) && attribute) {
-    criteriaHint = '';
-    criteriaHint +=
-      typeof filterValue.row === 'undefined' || filterValue.row === null
-        ? translate('pim_table_attribute.datagrid.any') + ' '
-        : getLabel(filterValue.row.labels, catalogLocale, filterValue.row.code) + ' ';
-    criteriaHint +=
-      getLabel(
-        (filterValue.column as ColumnDefinition).labels,
-        catalogLocale,
-        (filterValue.column as ColumnDefinition).code
-      ) + ' ';
-    criteriaHint += translate(`pim_common.operators.${filterValue.operator}`) + ' ';
-
-    const valueRenderer = (valueRenderers[(filterValue.column as ColumnDefinition).data_type || ''] || {})[
-      filterValue.operator || ''
-    ];
-    if (valueRenderer) {
-      criteriaHint += valueRenderer(filterValue.value, (filterValue.column as ColumnDefinition).code);
-    }
-  }
-
   return (
-    <Dropdown {...rest}>
-      {isOpen && attribute && filterValue && (
-        <Dropdown.Overlay onClose={handleClose}>
-          <FilterContainer>
-            <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
-              <FilterSectionTitleTitle>
-                {getLabel(attribute.labels, catalogLocale, attribute.code)}
-              </FilterSectionTitleTitle>
-            </FilterSectionTitle>
-            <FilterSelectorList
-              attribute={attribute}
-              filterValuesMapping={filterValuesMapping}
-              onChange={setFilterValue}
-              initialFilter={filterValue}
-            />
-            <FilterButtonContainer>
-              <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
-                {translate('pim_common.update')}
-              </Button>
-            </FilterButtonContainer>
-          </FilterContainer>
-        </Dropdown.Overlay>
-      )}
-      <FilterBox className='AknFilterBox-filter' onClick={open}>
-        {showLabel && attribute && (
-          <span className='AknFilterBox-filterLabel'>{getLabel(attribute.labels, catalogLocale, attribute.code)}</span>
+    <AttributeContext.Provider value={{attribute, setAttribute}}>
+      <Dropdown {...rest}>
+        {isOpen && attribute && filterValue && (
+          <Dropdown.Overlay onClose={handleClose}>
+            <FilterContainer>
+              <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
+                <FilterSectionTitleTitle>
+                  {getLabel(attribute.labels, catalogLocale, attribute.code)}
+                </FilterSectionTitleTitle>
+              </FilterSectionTitle>
+              <FilterSelectorList
+                filterValuesMapping={filterValuesMapping}
+                onChange={setFilterValue}
+                initialFilter={filterValue}
+              />
+              <FilterButtonContainer>
+                <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
+                  {translate('pim_common.update')}
+                </Button>
+              </FilterButtonContainer>
+            </FilterContainer>
+          </Dropdown.Overlay>
         )}
-        <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
-          {criteriaHint}
-        </span>
-        <span className='AknFilterBox-filterCaret' />
-      </FilterBox>
-      {canDisable && (
-        <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable} />
-      )}
-    </Dropdown>
+        <FilterBox className='AknFilterBox-filter' onClick={open}>
+          {showLabel && attribute && (
+            <span className='AknFilterBox-filterLabel'>
+              {getLabel(attribute.labels, catalogLocale, attribute.code)}
+            </span>
+          )}
+          <DatagridTableCriteria filterValue={filterValue} filterValuesMapping={filterValuesMapping} />
+          <span className='AknFilterBox-filterCaret' />
+        </FilterBox>
+        {canDisable && (
+          <div className='AknFilterBox-disableFilter AknIconButton AknIconButton--remove' onClick={onDisable} />
+        )}
+      </Dropdown>
+    </AttributeContext.Provider>
   );
 };
 

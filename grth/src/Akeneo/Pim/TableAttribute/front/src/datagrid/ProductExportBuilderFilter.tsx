@@ -1,17 +1,18 @@
 import React from 'react';
 import {
   ColumnCode,
-  isFilterValid,
-  PendingTableFilterValue,
-  TableAttribute,
-  SelectOptionCode,
   FilterOperator,
   FilterValue,
+  isFilterValid,
+  PendingTableFilterValue,
+  SelectOptionCode,
+  TableAttribute,
 } from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
 import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
+import {AttributeContext} from '../contexts';
 
 export type BackendTableProductExportFilterValue = {
   operator: FilterOperator;
@@ -48,7 +49,8 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   onChange,
   initialDataFilter,
 }) => {
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute.table_configuration, attribute.code, []);
+  const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute);
+  const {getOptionsFromColumnCode} = useFetchOptions(attributeState, setAttributeState);
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
@@ -63,37 +65,43 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   };
 
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
-  const optionsForFirstColumn = getOptionsFromColumnCode(attribute.table_configuration[0].code);
+  const optionsForFirstColumn = attributeState
+    ? getOptionsFromColumnCode(attributeState.table_configuration[0].code)
+    : [];
 
   React.useEffect(() => {
-    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.value?.column);
+    if (attributeState) {
+      const column = attributeState.table_configuration.find(column => column.code === initialDataFilter.value?.column);
 
-    if (typeof optionsForFirstColumn === 'undefined') {
-      return;
+      if (typeof optionsForFirstColumn === 'undefined') {
+        return;
+      }
+
+      const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
+      setInitialFilter({
+        row,
+        column,
+        value: initialDataFilter.value?.value,
+        operator: initialDataFilter.operator,
+      });
     }
-    const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
-    setInitialFilter({
-      row,
-      column,
-      value: initialDataFilter.value?.value,
-      operator: initialDataFilter.operator,
-    });
-  }, [optionsForFirstColumn]);
+  }, [attributeState, optionsForFirstColumn]);
 
   return (
-    <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
-      <div className='AknFieldContainer-inputContainer'>
-        {initialFilter && (
-          <FilterSelectorList
-            attribute={attribute}
-            filterValuesMapping={filterValuesMapping}
-            onChange={handleChange}
-            initialFilter={initialFilter}
-            inline={true}
-          />
-        )}
-      </div>
-    </FieldContainer>
+    <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
+      <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
+        <div className='AknFieldContainer-inputContainer'>
+          {initialFilter && (
+            <FilterSelectorList
+              filterValuesMapping={filterValuesMapping}
+              onChange={handleChange}
+              initialFilter={initialFilter}
+              inline={true}
+            />
+          )}
+        </div>
+      </FieldContainer>
+    </AttributeContext.Provider>
   );
 };
 

@@ -3,9 +3,11 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, fireEvent, screen} from '@testing-library/react';
 import {AddRowsButton} from '../../../src/product';
 import {getComplexTableAttribute} from '../../factories';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/attribute/ManageOptionsModal');
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 
@@ -19,12 +21,9 @@ window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverM
 describe('AddRowsButton', () => {
   it('should render the component', async () => {
     renderWithProviders(
-      <AddRowsButton
-        attribute={getComplexTableAttribute()}
-        columnCode={'ingredient'}
-        checkedOptionCodes={['salt', 'sugar']}
-        toggleChange={() => {}}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'ingredient'} checkedOptionCodes={['salt', 'sugar']} toggleChange={() => {}} />
+      </TestAttributeContextProvider>
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -47,12 +46,9 @@ describe('AddRowsButton', () => {
   it('should trigger the toggleChange function', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <AddRowsButton
-        attribute={getComplexTableAttribute()}
-        columnCode={'ingredient'}
-        checkedOptionCodes={['salt', 'sugar']}
-        toggleChange={toggleChange}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'ingredient'} checkedOptionCodes={['salt', 'sugar']} toggleChange={toggleChange} />
+      </TestAttributeContextProvider>
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -79,12 +75,9 @@ describe('AddRowsButton', () => {
   it('should search on labels', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <AddRowsButton
-        attribute={getComplexTableAttribute()}
-        columnCode={'ingredient'}
-        checkedOptionCodes={['salt', 'sugar']}
-        toggleChange={toggleChange}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'ingredient'} checkedOptionCodes={['salt', 'sugar']} toggleChange={toggleChange} />
+      </TestAttributeContextProvider>
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -116,12 +109,9 @@ describe('AddRowsButton', () => {
     const attribute = getComplexTableAttribute();
     attribute.table_configuration[0].code = 'nutrition_score';
     renderWithProviders(
-      <AddRowsButton
-        attribute={attribute}
-        columnCode={'nutrition_score'}
-        checkedOptionCodes={['salt', 'sugar']}
-        toggleChange={jest.fn()}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'nutrition_score'} checkedOptionCodes={['salt', 'sugar']} toggleChange={jest.fn()} />
+      </TestAttributeContextProvider>
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -138,18 +128,48 @@ describe('AddRowsButton', () => {
     expect(await screen.findByText('U')).toBeInTheDocument();
   });
 
-  it('should redirect from helper when there is no option', async () => {
+  it('should display a message when there is no option', async () => {
     const attribute = getComplexTableAttribute();
     attribute.table_configuration[0].code = 'no_options';
     renderWithProviders(
-      <AddRowsButton attribute={attribute} columnCode={'no_options'} checkedOptionCodes={[]} toggleChange={jest.fn()} />
+      <TestAttributeContextProvider attribute={attribute}>
+        <AddRowsButton columnCode={'no_options'} checkedOptionCodes={[]} toggleChange={jest.fn()} />
+      </TestAttributeContextProvider>
     );
 
     const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
     await act(async () => {
       fireEvent.click(button);
-      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
+      expect(await screen.findByText('pim_table_attribute.form.product.no_options')).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
+  });
+
+  it('should open manage options directly', async () => {
+    let hasCalledPostAttribute = false;
+    fetchMock.mockResponse((request: Request) => {
+      if (request.url.includes('pim_enrich_attribute_rest_post')) {
+        hasCalledPostAttribute = true;
+        return Promise.resolve(JSON.stringify(true));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <AddRowsButton columnCode={'ingredient'} checkedOptionCodes={[]} toggleChange={jest.fn()} />
+      </TestAttributeContextProvider>
+    );
+
+    const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
+    await act(async () => {
+      fireEvent.click(button);
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
+
+    expect(await screen.findByText('pim_table_attribute.form.attribute.manage_options')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
+    fireEvent.click(screen.getByText('Fake confirm'));
+    expect(hasCalledPostAttribute).toBeTruthy();
   });
 });

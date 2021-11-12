@@ -1,9 +1,10 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {act, screen, fireEvent} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import {RowSelector} from '../../../src/datagrid';
-import {getComplexTableAttribute} from '../../factories';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
+import {getComplexTableAttribute} from '../../factories';
 
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
@@ -18,7 +19,9 @@ window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverM
 describe('RowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
-      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={jest.fn()} />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <RowSelector value={ingredientsSelectOptions[1]} onChange={jest.fn()} />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
@@ -27,7 +30,9 @@ describe('RowSelector', () => {
   it('should display all rows, then update it', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
@@ -49,7 +54,9 @@ describe('RowSelector', () => {
   it('should remove current row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
@@ -60,7 +67,9 @@ describe('RowSelector', () => {
   it('should select any row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <RowSelector attribute={getComplexTableAttribute()} value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+      </TestAttributeContextProvider>
     );
 
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
