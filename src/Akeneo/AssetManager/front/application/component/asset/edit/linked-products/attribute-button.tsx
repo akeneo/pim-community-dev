@@ -8,6 +8,7 @@ interface Props {
   onClick: () => void;
 }
 
+// TODO RAC-1010 Use DSM Dropdown
 export const AttributeButton = ({selectedElement, onClick}: Props) => {
   const translate = useTranslate();
   const handleKeyPress = React.useCallback(
@@ -19,7 +20,7 @@ export const AttributeButton = ({selectedElement, onClick}: Props) => {
 
   return (
     <div
-      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      className="AknActionButton AknActionButton--withoutBorder"
       data-identifier={selectedElement.identifier}
       onClick={onClick}
       tabIndex={0}
