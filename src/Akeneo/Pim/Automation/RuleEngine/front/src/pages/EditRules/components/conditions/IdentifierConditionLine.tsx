@@ -68,8 +68,7 @@ const IdentifierConditionLine: React.FC<ConditionLineProps> = ({
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pimee_catalog_rule.form.edit.fields.identifier')}
-        >
+          title={translate('pimee_catalog_rule.form.edit.fields.identifier')}>
           {translate('pimee_catalog_rule.form.edit.fields.identifier')}
         </FieldColumn>
         <OperatorColumn>
@@ -86,8 +85,7 @@ const IdentifierConditionLine: React.FC<ConditionLineProps> = ({
         <ValueColumn
           className={
             isFormFieldInError('value') ? 'select2-container-error' : ''
-          }
-        >
+          }>
           <Controller
             as={<input type='hidden' />}
             name={valueFormName}

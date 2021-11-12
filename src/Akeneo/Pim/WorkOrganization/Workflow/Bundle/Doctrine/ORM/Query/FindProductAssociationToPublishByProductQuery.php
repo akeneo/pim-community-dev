@@ -33,6 +33,6 @@ FROM pim_catalog_association_product ap
 WHERE ap.product_id =  :product_id
 SQL;
         return $this->connection->executeQuery($sql, ['product_id' => $product->getId()])
-            ->fetchAll(\PDO::FETCH_ASSOC);
+            ->fetchAllAssociative();
     }
 }

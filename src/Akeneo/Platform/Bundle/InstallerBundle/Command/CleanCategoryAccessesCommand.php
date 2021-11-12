@@ -26,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CleanCategoryAccessesCommand extends Command
 {
     protected static $defaultName = 'pimee:installer:clean-category-accesses';
+    protected static $defaultDescription = 'Removing the group "ALL" from categories\' permissions after a clean installation.';
 
     private CategoryAccessRepository $accessRepository;
     private GroupRepositoryInterface $groupRepository;
@@ -41,15 +42,6 @@ class CleanCategoryAccessesCommand extends Command
         $this->accessRepository = $accessRepository;
         $this->groupRepository = $groupRepository;
         $this->objectManager = $objectManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Removing the group "ALL" from categories\' permissions after a clean installation.');
     }
 
     /**

@@ -53,8 +53,12 @@ const DateSystemConditionLine: React.FC<Props> = ({condition, lineNumber}) => {
     ...createTimePeriodClockOptions(translate),
   ];
 
-  const {onChangeOperator, onChangeValue, onDateTypeChange, onPeriodChange} =
-    useDateConditionHandlers(setDateType, setValueFormValue);
+  const {
+    onChangeOperator,
+    onChangeValue,
+    onDateTypeChange,
+    onPeriodChange,
+  } = useDateConditionHandlers(setDateType, setValueFormValue);
 
   return (
     <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>

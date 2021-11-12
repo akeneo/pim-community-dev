@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "Votre tableau {{ attributeLabel }} est vide."
       no_rows_subtitle: Ajouter des lignes pour définir de nouvelles propriétés
       no_rows_subtitle_on_readonly: Pour pouvoir modifier cet attribut, allez dans la page de configuration de l'attribut ou contactez votre administrateur PIM.
-      no_add_options_title: Pour ajouter des lignes
-      no_add_options: Gérez les options de l'attribut "{{ attributeLabel }}"
       no_add_options_unallowed: Contactez votre administrateur PIM pour gérer les options de l'attribut "{{ attributeLabel }}"
-      no_add_options_link: ici
-      no_edit_permission: Aucune permission de modification
       actions:
         delete_row: Supprimer cette ligne
         clear_row: Effacer le contenu de cette ligne

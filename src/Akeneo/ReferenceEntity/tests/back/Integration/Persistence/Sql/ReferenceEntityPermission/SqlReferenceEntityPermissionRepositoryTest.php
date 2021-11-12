@@ -125,7 +125,7 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
     {
         $stmt = $this->get('database_connection')
             ->executeQuery('SELECT * FROM akeneo_reference_entity_reference_entity_permissions;');
-        $actualRows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $actualRows = $stmt->fetchAllAssociative();
         Assert::assertJsonStringEqualsJsonString(
             json_encode($expectedRows),
             json_encode($actualRows),

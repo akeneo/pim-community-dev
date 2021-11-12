@@ -1,8 +1,8 @@
 'use strict';
 
-define(['jquery', 'underscore', 'routing', 'pim/base-fetcher'], function ($, _, Routing, BaseFetcher) {
+define(['jquery', 'underscore', 'routing', 'pim/base-fetcher'], function($, _, Routing, BaseFetcher) {
   return BaseFetcher.extend({
-    fetchAllById: function (id) {
+    fetchAllById: function(id) {
       return $.getJSON(Routing.generate(this.options.urls.product_index, {productId: id})).promise();
     },
   });

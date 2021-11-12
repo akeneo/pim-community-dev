@@ -94,8 +94,7 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pimee_catalog_rule.form.edit.fields.groups')}
-        >
+          title={translate('pimee_catalog_rule.form.edit.fields.groups')}>
           {translate('pimee_catalog_rule.form.edit.fields.groups')}
         </FieldColumn>
         <OperatorColumn>
@@ -113,8 +112,7 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
           <ValueColumn
             className={
               isFormFieldInError('value') ? 'select2-container-error' : ''
-            }
-          >
+            }>
             <Controller
               as={GroupsSelector}
               currentCatalogLocale={currentCatalogLocale}

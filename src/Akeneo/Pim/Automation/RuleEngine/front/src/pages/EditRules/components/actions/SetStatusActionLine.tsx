@@ -63,8 +63,7 @@ const SetStatusActionLine: React.FC<ActionLineProps> = ({
         legend={translate(
           'pimee_catalog_rule.form.edit.actions.set_status.helper'
         )}
-        handleDelete={handleDelete}
-      >
+        handleDelete={handleDelete}>
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

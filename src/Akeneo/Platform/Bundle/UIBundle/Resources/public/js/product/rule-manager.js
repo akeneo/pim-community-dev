@@ -1,9 +1,9 @@
 'use strict';
 
-define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
+define(['jquery', 'underscore', 'routing'], function($, _, Routing) {
   return {
     familyAttributesRulesNumberPromise: null,
-    getFamilyAttributesRulesNumber: function (attributeCodes) {
+    getFamilyAttributesRulesNumber: function(attributeCodes) {
       if (this.familyAttributesRulesNumberPromise) {
         return this.familyAttributesRulesNumberPromise.promise();
       }
@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
       this.familyAttributesRulesNumberPromise = $.Deferred();
 
       $.post(Routing.generate('pimee_enrich_family_attributes_rules_number'), {attributes: attributeCodes}).done(
-        function (familyCode) {
+        function(familyCode) {
           this.familyAttributesRulesNumberPromise.resolve(familyCode);
         }.bind(this)
       );

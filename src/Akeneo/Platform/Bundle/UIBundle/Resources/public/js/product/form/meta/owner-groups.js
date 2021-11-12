@@ -6,7 +6,7 @@ define([
   'pim/form',
   'oro/mediator',
   'pimee/template/product/meta/owner-groups',
-], function (_, __, BaseForm, mediator, formTemplate) {
+], function(_, __, BaseForm, mediator, formTemplate) {
   return BaseForm.extend({
     className: 'AknColumn-block product-owner-groups',
 
@@ -15,7 +15,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function () {
+    render: function() {
       this.$el.html(
         this.template({
           label: __('pimee_enrich.entity.product.module.meta.owner_groups'),
@@ -33,7 +33,7 @@ define([
      *
      * @returns {string}
      */
-    getOwnerGroups: function (product) {
+    getOwnerGroups: function(product) {
       return _.pluck(product.meta.owner_groups, 'name').join(', ');
     },
   });

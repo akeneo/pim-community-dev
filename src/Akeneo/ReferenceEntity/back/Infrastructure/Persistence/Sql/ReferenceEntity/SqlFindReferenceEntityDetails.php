@@ -99,7 +99,7 @@ SQL;
             'identifier' => (string) $identifier,
         ]);
 
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
         return !$result ? [] : $result;

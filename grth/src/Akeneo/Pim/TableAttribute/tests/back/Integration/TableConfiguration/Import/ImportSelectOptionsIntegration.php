@@ -58,7 +58,7 @@ CSV;
             ['code' => 'tutu', 'labels' => ['en_US' => 'label TUTU']],
         ], $options->normalize());
 
-        $warnings = $this->connection->executeQuery('SELECT reason FROM akeneo_batch_warning')->fetchAll();
+        $warnings = $this->connection->executeQuery('SELECT reason FROM akeneo_batch_warning')->fetchAllAssociative();
 
         Assert::assertEqualsCanonicalizing([
             'attribute: The "unknown" attribute does not exist' . PHP_EOL,

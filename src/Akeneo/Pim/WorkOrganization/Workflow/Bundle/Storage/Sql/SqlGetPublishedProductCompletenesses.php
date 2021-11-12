@@ -47,7 +47,7 @@ FROM pimee_workflow_published_product_completeness completeness
 WHERE completeness.product_id = :publishedProductId
 GROUP BY completeness.required_count, channel.code, locale.code
 SQL;
-        $rows = $this->connection->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAll();
+        $rows = $this->connection->executeQuery($sql, ['publishedProductId' => $publishedProductId])->fetchAllAssociative();
 
         return new PublishedProductCompletenessCollection($publishedProductId, array_map(
             function (array $row): PublishedProductCompleteness {

@@ -212,7 +212,7 @@ SQL;
                 'reference_entity_identifier' => $referenceEntityIdentifier,
             ]
         );
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         $attributes = [];
         foreach ($results as $result) {

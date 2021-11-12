@@ -91,7 +91,7 @@ final class GetWorkflowStatusFromProductModelCodes implements PublicApi\GetWorkf
     HAVING workflow_status IS NOT NULL;
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             [
                 'productModelCodes' => $productModelCodes,

@@ -119,7 +119,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 'attributeCode' => $attributeCode,
             ]
         );
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
         if (0 === count($results)) {
             throw TableConfigurationNotFoundException::forAttributeCode($attributeCode);
         }

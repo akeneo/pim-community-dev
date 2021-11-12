@@ -11,7 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 
 class SqlAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
@@ -87,12 +87,12 @@ SQL;
     /**
      * @return UserGroupPermission[]
      */
-    private function hydrateUserGroupPermissions(Statement $statement): array
+    private function hydrateUserGroupPermissions(Result $result): array
     {
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $result->fetchAllAssociative();
         $platform = $this->sqlConnection->getDatabasePlatform();
 
-        if (false !== $result) {
+        if (false !== $rows) {
             return array_map(
                 function (array $normalizedUserGroupPermission) use ($platform) {
                     $userGroupIdentifier = Type::getType(Type::INTEGER)
@@ -105,7 +105,7 @@ SQL;
                         RightLevel::fromString($rightLevel)
                     );
                 },
-                $result
+                $rows
             );
         }
 

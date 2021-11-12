@@ -1,4 +1,4 @@
-define(['jquery', 'underscore'], function ($, _) {
+define(['jquery', 'underscore'], function($, _) {
   'use strict';
 
   var defaults = {
@@ -12,7 +12,7 @@ define(['jquery', 'underscore'], function ($, _) {
     },
   };
 
-  return function (options) {
+  return function(options) {
     var opts = _.extend({}, defaults, options);
     if (!opts.elementId) {
       return;
@@ -26,9 +26,14 @@ define(['jquery', 'underscore'], function ($, _) {
       .append($('<div>', {class: 'controls'}).append($changeList))
       .appendTo($(opts.elementId));
 
-    $(opts.elementId + ' select').on('change', function (e) {
+    $(opts.elementId + ' select').on('change', function(e) {
       var permissionId = 'change-' + $(this).attr('id') + '-';
-      var permissionLabel = $.trim($(this).closest('.AknFieldContainer').find('label:first').text()).toLowerCase();
+      var permissionLabel = $.trim(
+        $(this)
+          .closest('.AknFieldContainer')
+          .find('label:first')
+          .text()
+      ).toLowerCase();
 
       if (!_.isUndefined(e.added)) {
         permissionId += e.added.id;
@@ -42,7 +47,7 @@ define(['jquery', 'underscore'], function ($, _) {
           );
         }
 
-        _.each(opts.update.add[e.target.id], function (selectId) {
+        _.each(opts.update.add[e.target.id], function(selectId) {
           var $toUpdate = $('#' + selectId);
           if ($.inArray(e.added.id, $toUpdate.val()) === -1) {
             var values = $.makeArray($toUpdate.val());
@@ -67,12 +72,18 @@ define(['jquery', 'underscore'], function ($, _) {
           );
         }
 
-        _.each(opts.update.remove[e.target.id], function (selectId) {
+        _.each(opts.update.remove[e.target.id], function(selectId) {
           var $toUpdate = $('#' + selectId);
           if ($.inArray(e.removed.id, $toUpdate.val()) > -1) {
             var propagateEvent = $.Event('change');
             propagateEvent.removed = e.removed;
-            $toUpdate.val($($toUpdate.val()).not([e.removed.id]).get()).trigger(propagateEvent);
+            $toUpdate
+              .val(
+                $($toUpdate.val())
+                  .not([e.removed.id])
+                  .get()
+              )
+              .trigger(propagateEvent);
           }
         });
       }

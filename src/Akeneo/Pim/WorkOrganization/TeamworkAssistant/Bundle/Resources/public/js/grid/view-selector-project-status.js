@@ -13,7 +13,7 @@ define([
   'teamwork-assistant/templates/grid/view-selector/project-status',
   'pim/formatter/date',
   'pim/date-context',
-], function ($, _, __, BaseForm, template, DateFormatter, DateContext) {
+], function($, _, __, BaseForm, template, DateFormatter, DateContext) {
   return BaseForm.extend({
     template: _.template(template),
     dueDate: null,

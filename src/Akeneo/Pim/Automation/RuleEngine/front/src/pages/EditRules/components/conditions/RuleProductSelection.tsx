@@ -130,46 +130,47 @@ const RuleProductSelection: React.FC<Props> = ({
     getValuesFromFormData(getValues)
   );
 
-  const createCondition: (fieldCode: string) => Promise<Condition> =
-    async fieldCode => {
-      const factories: ConditionFactory[] = [
-        // System
-        createCategoryCondition,
-        createCompletenessCondition,
-        createDateSystemCondition,
-        createEntityTypeCondition,
-        createFamilyCondition,
-        createFamilyVariantCondition,
-        createIdentifierCondition,
-        createGroupsCondition,
-        createParentCondition,
-        createStatusCondition,
-        // Attributes
-        createAssetCollectionAttributeCondition,
-        createBooleanAttributeCondition,
-        createDateAttributeCondition,
-        createFileAttributeCondition,
-        createIdentifierAttributeCondition,
-        createMeasurementAttributeCondition,
-        createNumberAttributeCondition,
-        createPictureAttributeCondition,
-        createSimpleMultiOptionsAttributeCondition,
-        createSimpleMultiReferenceEntitiesAttributeCondition,
-        createTextAttributeCondition,
-        createTextareaAttributeCondition,
-        createPriceCollectionAttributeCondition,
-      ];
+  const createCondition: (
+    fieldCode: string
+  ) => Promise<Condition> = async fieldCode => {
+    const factories: ConditionFactory[] = [
+      // System
+      createCategoryCondition,
+      createCompletenessCondition,
+      createDateSystemCondition,
+      createEntityTypeCondition,
+      createFamilyCondition,
+      createFamilyVariantCondition,
+      createIdentifierCondition,
+      createGroupsCondition,
+      createParentCondition,
+      createStatusCondition,
+      // Attributes
+      createAssetCollectionAttributeCondition,
+      createBooleanAttributeCondition,
+      createDateAttributeCondition,
+      createFileAttributeCondition,
+      createIdentifierAttributeCondition,
+      createMeasurementAttributeCondition,
+      createNumberAttributeCondition,
+      createPictureAttributeCondition,
+      createSimpleMultiOptionsAttributeCondition,
+      createSimpleMultiReferenceEntitiesAttributeCondition,
+      createTextAttributeCondition,
+      createTextareaAttributeCondition,
+      createPriceCollectionAttributeCondition,
+    ];
 
-      for (let i = 0; i < factories.length; i++) {
-        const factory = factories[i];
-        const condition = await factory(fieldCode, router);
-        if (condition !== null) {
-          return condition;
-        }
+    for (let i = 0; i < factories.length; i++) {
+      const factory = factories[i];
+      const condition = await factory(fieldCode, router);
+      if (condition !== null) {
+        return condition;
       }
+    }
 
-      throw new Error(`Unknown factory for field ${fieldCode}`);
-    };
+    throw new Error(`Unknown factory for field ${fieldCode}`);
+  };
 
   const addCondition = (fieldCode: string) => {
     createCondition(fieldCode).then(condition => handleAddCondition(condition));
@@ -267,8 +268,7 @@ const RuleProductSelection: React.FC<Props> = ({
         <a
           href='https://help.akeneo.com/pim/serenity/articles/manage-your-rules.html#product-selection'
           target='_blank'
-          rel='noopener noreferrer'
-        >
+          rel='noopener noreferrer'>
           {translate(
             'pimee_catalog_rule.form.helper.product_selection_doc_link'
           )}

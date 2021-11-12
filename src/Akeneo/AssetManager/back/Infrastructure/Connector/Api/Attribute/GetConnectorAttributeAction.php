@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
 /*
@@ -26,7 +28,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class GetConnectorAttributeAction
 {
     private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
-
     private AssetFamilyExistsInterface $assetFamilyExists;
 
     private SecurityFacade $securityFacade;
@@ -59,8 +60,9 @@ class GetConnectorAttributeAction
 
         try {
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
-        } catch (\Exception $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage());
+            $attributeCode = AttributeCode::fromString($code);
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
         $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
@@ -69,7 +71,6 @@ class GetConnectorAttributeAction
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
-        $attributeCode = AttributeCode::fromString($code);
         $attribute = $this->findConnectorAttributeQuery->find($assetFamilyIdentifier, $attributeCode);
 
         if (null === $attribute) {

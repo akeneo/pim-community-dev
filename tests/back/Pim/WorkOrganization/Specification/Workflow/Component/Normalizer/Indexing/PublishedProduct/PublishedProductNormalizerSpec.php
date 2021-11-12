@@ -54,22 +54,22 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $dateTime = new \DateTime('2019-07-16');
         $publishedProduct->getCreated()->willReturn($dateTime);
         $publishedProduct->getUpdated()->willReturn($dateTime);
-        $normalizer->normalize($dateTime, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
-            '2019-07-16T14:25:04+00:00'
-        );
+        $normalizer->normalize($dateTime, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+                   ->willReturn('2019-07-16T14:25:04+00:00');
         $family = new Family();
         $attributeAsLabel = new Attribute();
         $attributeAsLabel->setCode('name');
         $family->setAttributeAsLabel($attributeAsLabel);
-        $normalizer->normalize($family, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn(
-            [
-                'code' => 'clothing',
-                'labels' => [
-                    'en_US' => 'Clothing',
-                    'fr_FR' => 'Vêtements',
-                ],
-            ]
-        );
+        $normalizer->normalize($family, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+                   ->willReturn(
+                       [
+                           'code' => 'clothing',
+                           'labels' => [
+                               'en_US' => 'Clothing',
+                               'fr_FR' => 'Vêtements',
+                           ],
+                       ]
+                   );
         $publishedProduct->getFamily()->willReturn($family);
         $publishedProduct->isEnabled()->willReturn(true);
         $publishedProduct->getCategoryCodes()->willReturn(['men', 'summer']);
@@ -83,15 +83,18 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
         $getPublishedProductCompletenesses->fromPublishedProductId(42)->willReturn($completenessCollection);
-        $normalizer->normalize($completenessCollection, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
-                   ->willReturn(
-                       [
-                           'ecommerce' => [
-                               'en_US' => 80,
-                               'fr_FR' => 100,
-                           ],
-                       ]
-                   );
+        $normalizer->normalize(
+            $completenessCollection,
+            PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+            ['is_published_product' => true]
+        )->willReturn(
+            [
+                'ecommerce' => [
+                    'en_US' => 80,
+                    'fr_FR' => 100,
+                ],
+            ]
+        );
 
         $values = new WriteValueCollection(
             [
@@ -100,7 +103,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
         $publishedProduct->getValues()->willReturn($values);
-        $normalizer->normalize($values, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+        $normalizer->normalize($values, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, ['is_published_product' => true])->willReturn(
             [
                 'name-text' => [
                     '<all_channels>' => [

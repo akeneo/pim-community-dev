@@ -92,8 +92,7 @@ export const DateFormatSelector: React.FC<Props> = ({
         {...popover}
         aria-label={translate(
           'pimee_catalog_rule.form.edit.actions.concatenate.date_format'
-        )}
-      >
+        )}>
         <div className='AknDropdown-menuTitle'>
           {translate(
             'pimee_catalog_rule.form.edit.actions.concatenate.date_format'
@@ -108,8 +107,7 @@ export const DateFormatSelector: React.FC<Props> = ({
                   onChange(format);
                   popover.hide();
                 }}
-                selected={(value || defaultFormat) === format}
-              >
+                selected={(value || defaultFormat) === format}>
                 {format}&nbsp;{predefinedFormats[format]}
               </PopoverItem>
             );

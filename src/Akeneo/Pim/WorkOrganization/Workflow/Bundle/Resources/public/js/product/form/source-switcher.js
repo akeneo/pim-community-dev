@@ -4,7 +4,7 @@
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-define(['underscore', 'pim/form', 'pim/fetcher-registry', 'pimee/template/product/source-switcher'], function (
+define(['underscore', 'pim/form', 'pim/fetcher-registry', 'pimee/template/product/source-switcher'], function(
   _,
   BaseForm,
   FetcherRegistry,
@@ -22,7 +22,7 @@ define(['underscore', 'pim/form', 'pim/fetcher-registry', 'pimee/template/produc
      *
      * @returns {Object}
      */
-    render: function () {
+    render: function() {
       var context = {
         sources: [],
         currentSource: '',
@@ -41,7 +41,7 @@ define(['underscore', 'pim/form', 'pim/fetcher-registry', 'pimee/template/produc
      *
      * @param {Object} event
      */
-    changeSource: function (event) {
+    changeSource: function(event) {
       this.trigger('pim_enrich:form:source_switcher:source_change', event.currentTarget.dataset.source);
     },
   });

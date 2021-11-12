@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "您的 {{ attributeLabel }} 表为空。"
       no_rows_subtitle: 添加行以定义新属性
       no_rows_subtitle_on_readonly: 要编辑此属性，请前往属性设置页面或联系您的 PIM 管理员。
-      no_add_options_title: 添加行
-      no_add_options: 管理您的"{{ attributeLabel }}"选项
       no_add_options_unallowed: 联系您的 PIM 管理员来管理"{{ attributeLabel }}"选项
-      no_add_options_link: 此处
-      no_edit_permission: 没有编辑权限
       actions:
         delete_row: 删除此行
         clear_row: 清除此行

@@ -31,7 +31,7 @@ final class MysqlChecker
     public function status(): ServiceStatus
     {
         try {
-            $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data LIMIT 1")->fetchAll();
+            $this->connection->executeQuery("SELECT 'ok' FROM pim_catalog_product_unique_data LIMIT 1")->fetchAllAssociative();
 
             return ServiceStatus::ok();
         } catch (\Throwable $e) {

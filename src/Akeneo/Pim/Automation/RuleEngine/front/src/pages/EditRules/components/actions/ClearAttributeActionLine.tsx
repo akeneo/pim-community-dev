@@ -28,8 +28,12 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
     Attribute | null | undefined
   >(undefined);
 
-  const {fieldFormName, typeFormName, setFieldFormValue, getFieldFormValue} =
-    useControlledFormInputAction<string>(lineNumber);
+  const {
+    fieldFormName,
+    typeFormName,
+    setFieldFormValue,
+    getFieldFormValue,
+  } = useControlledFormInputAction<string>(lineNumber);
   watch(fieldFormName);
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
@@ -58,8 +62,7 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
         helper={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

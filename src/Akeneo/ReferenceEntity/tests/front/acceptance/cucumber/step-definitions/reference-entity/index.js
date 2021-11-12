@@ -8,7 +8,7 @@ const {
   tools: {answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
   const assert = require('assert');
 
@@ -21,8 +21,8 @@ module.exports = async function (cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const givenReferenceEntities = function (referenceEntities) {
-    const referenceEntityResponse = referenceEntities.hashes().map(function (referenceEntity) {
+  const givenReferenceEntities = function(referenceEntities) {
+    const referenceEntityResponse = referenceEntities.hashes().map(function(referenceEntity) {
       const referenceEntityBuilder = new ReferenceEntityBuilder();
 
       if (undefined !== referenceEntity.identifier) {
@@ -62,13 +62,13 @@ module.exports = async function (cucumber) {
     });
   };
 
-  const givenValidReferenceEntity = async function () {
+  const givenValidReferenceEntity = async function() {
     const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
 
     await listenRequest(this.page, requestContract);
   };
 
-  const givenValidBrandReferenceEntity = async function () {
+  const givenValidBrandReferenceEntity = async function() {
     const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/brand_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -78,7 +78,7 @@ module.exports = async function (cucumber) {
   Given('the following reference entities to show:', givenReferenceEntities);
   Given('a valid reference entity', givenValidReferenceEntity);
   Given('a valid brand reference entity', givenValidBrandReferenceEntity);
-  When('the user asks for the reference entity list', async function () {
+  When('the user asks for the reference entity list', async function() {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/reference-entity/list');
       const controller = new Controller();
@@ -92,7 +92,7 @@ module.exports = async function (cucumber) {
     assert.equal(isLoaded, true);
   });
 
-  Then('the user gets a selection of {int} items out of {int} items in total', async function (count, total) {
+  Then('the user gets a selection of {int} items out of {int} items in total', async function(count, total) {
     const grid = await getElement(this.page, 'Grid');
     const rows = await grid.getRowsAfterLoading();
     assert.equal(rows.length, count);
@@ -101,18 +101,18 @@ module.exports = async function (cucumber) {
     assert.equal(title.trim(), `${total} Reference Entit${total > 1 ? 'ies' : 'y'}`);
   });
 
-  Then('the user gets a reference entity {string}', async function (identifier) {
+  Then('the user gets a reference entity {string}', async function(identifier) {
     const grid = await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
   });
 
-  Then('there is no reference entity', async function () {
+  Then('there is no reference entity', async function() {
     const grid = await getElement(this.page, 'Grid');
     const rows = await grid.getRows();
     assert.equal(rows.length, 0);
   });
 
-  Then('the user asks for the next reference entities', async function () {
+  Then('the user asks for the next reference entities', async function() {
     this.page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });

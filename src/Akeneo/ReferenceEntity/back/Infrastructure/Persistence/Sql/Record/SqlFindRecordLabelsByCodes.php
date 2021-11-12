@@ -61,7 +61,7 @@ SQL;
             ]
         );
 
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
 
         return $this->extractLabelsFromResults($results, $referenceEntityIdentifier);
     }

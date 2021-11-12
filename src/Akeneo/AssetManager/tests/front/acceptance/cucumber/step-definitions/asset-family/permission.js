@@ -8,7 +8,7 @@ const {
   tools: {convertItemTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
   const assert = require('assert');
 
@@ -24,7 +24,7 @@ module.exports = async function (cucumber) {
   };
   const getElement = createElementDecorator(config);
 
-  When('an asset family', async function () {
+  When('an asset family', async function() {
     const permissionRequestContract = getRequestContract('AssetFamilyPermission/show.json');
     await listenRequest(this.page, permissionRequestContract);
 
@@ -34,7 +34,7 @@ module.exports = async function (cucumber) {
     await askForAssetFamily.apply(this, ['designer']);
   });
 
-  When('the user sets the following permissions for the asset family:', async function (permissions) {
+  When('the user sets the following permissions for the asset family:', async function(permissions) {
     const editView = await await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
 
@@ -46,7 +46,7 @@ module.exports = async function (cucumber) {
     await listenRequest(this.page, editRequestContract);
   });
 
-  When('the user ask for an asset family without any user groups', async function () {
+  When('the user ask for an asset family without any user groups', async function() {
     const showRequestContract = getRequestContract('AssetFamilyPermission/show_empty.json');
     await listenRequest(this.page, showRequestContract);
     const requestContract = getRequestContract('AssetFamily/AssetFamilyDetails/ok.json');
@@ -55,18 +55,18 @@ module.exports = async function (cucumber) {
     await askForAssetFamily.apply(this, ['designer']);
   });
 
-  Then(
-    'there should be a {string} permission right for the user group {string} on the asset family',
-    async function (rightLevel, groupName) {
-      const editView = await await getElement(this.page, 'Edit');
-      const permissionView = await editView.getPermission();
-      const actualRightLevel = await permissionView.getRightLevel(groupName);
+  Then('there should be a {string} permission right for the user group {string} on the asset family', async function(
+    rightLevel,
+    groupName
+  ) {
+    const editView = await await getElement(this.page, 'Edit');
+    const permissionView = await editView.getPermission();
+    const actualRightLevel = await permissionView.getRightLevel(groupName);
 
-      assert.strictEqual(actualRightLevel, rightLevel);
-    }
-  );
+    assert.strictEqual(actualRightLevel, rightLevel);
+  });
 
-  Then('the user should be warned that he needs to create user groups first', async function () {
+  Then('the user should be warned that he needs to create user groups first', async function() {
     const editView = await await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
     permissionView.isEmpty();

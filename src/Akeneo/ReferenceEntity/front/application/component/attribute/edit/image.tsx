@@ -81,7 +81,7 @@ const ImageView = ({
           <Select2
             id="pim_reference_entity.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
-            data={AllowedExtensionsOptions as any as {[choiceValue: string]: string}}
+            data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
             value={attribute.allowedExtensions.arrayValue()}
             multiple={true}
             readOnly={!rights.attribute.edit}
