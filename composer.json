@@ -53,6 +53,7 @@
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
             "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
+            "Akeneo\\Platform\\Job\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",

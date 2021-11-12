@@ -34,6 +34,7 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
             "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
+            "Akeneo\\Platform\\Job\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/tests/back"
