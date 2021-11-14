@@ -14,9 +14,16 @@ final class Version_6_0_20211108160902_fix_oauth_code_fk extends AbstractMigrati
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_AD5DC7C619EB6921');
-        $this->addSql('ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_AD5DC7C6A76ED395');
+        $table = $schema->getTable('pim_api_auth_code');
+
+        if ($table->hasForeignKey('FK_AD5DC7C619EB6921')) {
+            $this->addSql('ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_AD5DC7C619EB6921');
+        }
         $this->addSql('ALTER TABLE pim_api_auth_code ADD CONSTRAINT FK_AD5DC7C619EB6921 FOREIGN KEY (client_id) REFERENCES pim_api_client (id) ON DELETE CASCADE');
+
+        if ($table->hasForeignKey('FK_AD5DC7C6A76ED395')) {
+            $this->addSql('ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_AD5DC7C6A76ED395');
+        }
         $this->addSql('ALTER TABLE pim_api_auth_code ADD CONSTRAINT FK_AD5DC7C6A76ED395 FOREIGN KEY (user_id) REFERENCES oro_user (id) ON DELETE CASCADE');
     }
 
