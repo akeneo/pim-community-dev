@@ -40,15 +40,6 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
 
-akeneo_connectivity.app:
-    apps: Apps
-    delete_app:
-        title: Confirm deletion
-        description: Are you sure you want to delete the app? Not sure about the impacts?
-        link: Here is what will happen.
-        flash:
-            success: App successfully deleted.
-
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -110,6 +101,14 @@ akeneo_connectivity.connection:
                     save_permissions_error.title: 'Permissions on {{ entity }} could not be updated.'
                     save_permissions_error.description: Please check the App permission settings.
                     success: App settings successfully updated.
+            delete:
+                subtitle: Apps
+                title: Confirm deletion
+                description: Are you sure you want to delete the app? Not sure about the impacts?
+                link: Here is what will happen.
+                flash:
+                    success: App successfully deleted.
+                    error: Sorry, an error occured while deleting the app.
         apps:
             flash:
                 permissions_error.title: 'Permissions on {{ entity }} could not be saved.'

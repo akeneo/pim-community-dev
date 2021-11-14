@@ -1,59 +1,87 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {GreyButton, ImportantButton, Modal} from '../../common';
+import {Modal, AppIllustration, Button, getColor, getFontSize} from 'akeneo-design-system';
 import styled from '../../common/styled-with-theme';
-import {isOk} from '../../shared/fetch-result/result';
-import {Translate} from '../../shared/translate';
-import {connectionDeleted} from '../../settings/actions/connections-actions';
-// import {useDeleteConnection} from '../../settings/api-hooks/use-delete-connection';
-// import {useConnectionsDispatch} from '../../settings/connections-context';
+import {useTranslate} from '../../shared/translate';
+import {useDeleteApp} from '../hooks/use-delete-app';
+import {useRouter} from '../../shared/router/use-router';
+import {NotificationLevel, useNotify} from '../../shared/notify';
+
+const Subtitle = styled.h3`
+    color: ${getColor('brand', 100)};
+    font-size: ${getFontSize('default')};
+    text-transform: uppercase;
+    font-weight: normal;
+    margin: 0 0 6px 0;
+`;
+
+const Title = styled.h2`
+    color: ${getColor('grey', 140)};
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 28px;
+    margin: 0;
+`;
+
+const Helper = styled.div`
+    color: ${getColor('grey', 120)};
+    font-size: ${getFontSize('default')};
+    font-weight: normal;
+    line-height: 18px;
+    margin: 17px 0 0 0;
+`;
 
 export const ConnectedAppDeletePage = () => {
     const history = useHistory();
+    const generateUrl = useRouter();
+    const translate = useTranslate();
+    const notify = useNotify();
 
     const {connectionCode} = useParams<{connectionCode: string}>();
-    // const connection = useConnection('foo');
-    // const deleteConnection = useDeleteConnection(connectionCode);
-    // const dispatch = useConnectionsDispatch();
+    const deleteApp = useDeleteApp(connectionCode);
 
-    const handleClick = async () => {
-        // const result = await deleteConnection();
+    const handleClick = useCallback(async () => {
+        try {
+            await deleteApp();
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.connect.connected_apps.delete.flash.success')
+            );
+            history.push(generateUrl('akeneo_connectivity_connection_connect_connected_apps'));
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.connected_apps.delete.flash.error')
+            );
+        }
+    }, [deleteApp, notify, translate, history, generateUrl]);
 
-        // if (isOk(result)) {
-        //     dispatch(connectionDeleted(connectionCode));
-
-        //     history.push('/connect/connection-settings');
-        // }
-    };
-
-    const handleCancel = () => history.push(`/connect/connected-apps/${connectionCode}`);
-
-    const description = (
-        <>
-            <Translate id='akeneo_connectivity.app.delete_app.description' />
-            &nbsp;
-            <Link
-                href='https://help.akeneo.com/pim/articles/manage-your-apps.html#delete-an-app'
-                target='_blank'
-            >
-                <Translate id='akeneo_connectivity.app.delete_app.link' />
-            </Link>
-        </>
-    );
+    const handleCancel = useCallback(() => {
+        history.push(
+            generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
+                connectionCode: connectionCode,
+            })
+        );
+    }, [history, generateUrl, connectionCode]);
 
     return (
-        <Modal
-            subTitle={<Translate id='akeneo_connectivity.app.apps' />}
-            title={<Translate id='akeneo_connectivity.app.delete_app.title' />}
-            description={description}
-            onCancel={handleCancel}
-        >
-            <GreyButton onClick={handleCancel} classNames={['AknButtonList-item']}>
-                <Translate id='pim_common.cancel' />
-            </GreyButton>
-            <ImportantButton onClick={handleClick} classNames={['AknButtonList-item']}>
-                <Translate id='pim_common.delete' />
-            </ImportantButton>
+        <Modal onClose={handleCancel} illustration={<AppIllustration />} closeTitle={translate('pim_common.cancel')}>
+            <Subtitle>{translate('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')}</Subtitle>
+            <Title>{translate('akeneo_connectivity.connection.connect.connected_apps.delete.title')}</Title>
+            <Helper>
+                <p>{translate('akeneo_connectivity.connection.connect.connected_apps.delete.description')}</p>
+                <Link href={'https://help.akeneo.com/pim/articles/manage-your-apps.html#delete-an-app'}>
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.delete.link')}
+                </Link>
+            </Helper>
+            <Modal.BottomButtons>
+                <Button onClick={handleCancel} level='tertiary'>
+                    {translate('pim_common.cancel')}
+                </Button>
+                <Button onClick={handleClick} level='danger'>
+                    {translate('pim_common.delete')}
+                </Button>
+            </Modal.BottomButtons>
         </Modal>
     );
 };

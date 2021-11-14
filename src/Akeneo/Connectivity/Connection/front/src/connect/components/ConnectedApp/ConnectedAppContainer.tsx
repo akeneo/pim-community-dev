@@ -127,12 +127,15 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 buttons={[
                     <SecondaryActionsDropdownButton key={0}>
                         <DropdownLink
-                            onClick={() => history.push(`/connect/connected-apps/${connectedApp.connection_code}/delete`)}
+                            onClick={() => {
+                                history.push(`/connect/connected-apps/${connectedApp.connection_code}/delete`);
+                            }}
                         >
                             <Translate id='pim_common.delete' />
                         </DropdownLink>
                     </SecondaryActionsDropdownButton>,
-                    <SaveButton key={0} />]}
+                    <SaveButton key={0} />,
+                ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={generateMediaUrl(connectedApp.logo, 'thumbnail')}

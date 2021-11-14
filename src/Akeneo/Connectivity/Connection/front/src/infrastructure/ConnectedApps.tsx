@@ -6,7 +6,6 @@ import {ConnectedAppsListPage} from '../connect/pages/ConnectedAppsListPage';
 import {ConnectedAppPage} from '../connect/pages/ConnectedAppPage';
 import {ConnectedAppDeletePage} from '../connect/pages/ConnectedAppDeletePage';
 
-
 export const ConnectedApps = withDependencies(() => (
     <StrictMode>
         <AkeneoThemeProvider>
