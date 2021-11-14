@@ -34,7 +34,7 @@ class DeleteUserGroupIntegration extends TestCase
         $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
     }
 
-    public function test_it_deletes_an_user_role()
+    public function test_it_deletes_an_user_group()
     {
         $this->userGroupLoader->create([
             'name' => 'Foo',

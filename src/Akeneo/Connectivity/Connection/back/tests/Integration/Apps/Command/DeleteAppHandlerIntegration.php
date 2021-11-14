@@ -32,7 +32,7 @@ class DeleteAppHandlerIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_to_delete_an_app(): void
+    public function test_it_deletes_an_app(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',

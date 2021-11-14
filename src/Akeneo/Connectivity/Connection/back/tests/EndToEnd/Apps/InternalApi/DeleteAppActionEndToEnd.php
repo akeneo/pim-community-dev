@@ -19,7 +19,7 @@ class DeleteAppActionEndToEnd extends WebTestCase
     private ConnectedAppLoader $connectedAppLoader;
     private Connection $connection;
 
-    public function test_to_successfully_delete_the_app(): void
+    public function test_it_successfully_deletes_the_app(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -47,6 +47,10 @@ class DeleteAppActionEndToEnd extends WebTestCase
     public function test_it_throws_not_found_exception_with_feature_flag_disabled(): void
     {
         $this->featureFlagMarketplaceActivate->disable();
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'magento',
+        );
 
         $this->client->request(
             'DELETE',

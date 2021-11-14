@@ -46,9 +46,8 @@ class DeleteAppHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteAppHandler::class);
     }
 
-    public function it_delete_an_app(
+    public function it_deletes_an_app(
         GetAppDeletionQueryInterface $getAppDeletionQuery,
-        DeleteConnectedAppQueryInterface $deleteConnectedAppQuery,
         ConnectionRepository $connectionRepository,
         DeleteUserInterface $deleteUser,
         DeleteClientInterface $deleteClient,
