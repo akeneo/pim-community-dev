@@ -25,7 +25,7 @@ import {
 } from 'akeneo-design-system';
 import {Status} from '../components/Status';
 import {StopJobAction} from '../components/StopJobAction';
-import {JobExecutionProgress} from '../components/Progress';
+import {Progress} from '../components/Progress';
 import {ShowProfile} from '../components/ShowProfile';
 import {getDownloadLinks, JobExecution} from '../models/JobExecutionDetail';
 import {useJobExecution} from '../hooks/useJobExecution';
@@ -233,9 +233,7 @@ const JobExecutionDetail = () => {
         <PageHeader.Title>{jobExecution?.jobInstance.label ?? jobExecutionId}</PageHeader.Title>
         <PageHeader.Content>
           {jobExecution && <Status tracking={jobExecution.tracking} />}
-          {jobExecution?.tracking && (
-            <JobExecutionProgress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />
-          )}
+          {jobExecution?.tracking && <Progress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />}
         </PageHeader.Content>
       </PageHeader>
       <PageContent>{jobExecution && <SummaryTable jobExecution={jobExecution} />}</PageContent>

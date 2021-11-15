@@ -21,14 +21,14 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
   const history = useHistory();
   const handleRowClick = useCallback(
     (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
-      const url = `show/${jobExecutionId}`;
+      const url = `/show/${jobExecutionId}`;
       if (event.metaKey || event.ctrlKey) {
         const newTab = window.open(`${window.location.hash}${url}`, '_blank');
         newTab?.focus();
         return;
       }
 
-      history.push(`/${url}`);
+      history.push(url);
     },
     [history]
   );

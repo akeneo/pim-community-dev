@@ -86,7 +86,7 @@ const getStepExecutionTrackingProgressLabel = (
   }
 };
 
-const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
+const Progress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
   const translate = useTranslate();
 
   return (
@@ -105,4 +105,4 @@ const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined
   );
 };
 
-export {JobExecutionProgress};
+export {Progress};
