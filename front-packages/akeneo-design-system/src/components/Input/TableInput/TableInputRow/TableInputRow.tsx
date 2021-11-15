@@ -99,7 +99,6 @@ const TableInputTr = styled.tr<
         &:has(div) {
           background: red !important;
         }
-        /*box-shadow: 0 -1px 0px ${getColor('blue', 100)};*/
         border-bottom-color: ${getColor('blue', 100)};
         &:first-child {
           border-left: 1px solid ${getColor('blue', 100)};
@@ -172,17 +171,23 @@ const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
     const {isDragAndDroppable} = useContext(TableInputContext);
 
     const handleDragEnter = (event: DragEvent<HTMLTableRowElement>) => {
-      placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
+      if (isDragAndDroppable) {
+        placeholderDragEnter(parseInt(event.dataTransfer.getData('text')));
+      }
     };
 
     const handleDragStart = (event: DragEvent<HTMLTableRowElement>) => {
-      event.dataTransfer.setData('text', rowIndex.toString());
-      onDragStart?.(rowIndex);
+      if (isDragAndDroppable) {
+        event.dataTransfer.setData('text', rowIndex.toString());
+        onDragStart?.(rowIndex);
+      }
     };
 
     const handleDragEnd = () => {
-      placeholderDragEnd();
-      onDragEnd?.();
+      if (isDragAndDroppable) {
+        placeholderDragEnd();
+        onDragEnd?.();
+      }
     };
 
     return (
