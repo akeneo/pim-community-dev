@@ -100,6 +100,12 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
+            - '@database_connection'
+            - '%env(AKENEO_PIM_URL)%'
+
+    akeneo_connectivity.connection.public.controller.apps.key:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\JwtPublicKeyAction
 
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true
