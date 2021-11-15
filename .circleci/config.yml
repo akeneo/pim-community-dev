@@ -1830,6 +1830,9 @@ jobs:
                 command:
                     make -C deployments/ remove_unused_resources
 
+  #########################
+  # Deployment validation #
+  #########################
   zdd_compliancy_diff:
       parameters:
         PRODUCT_TYPE:
@@ -1876,6 +1879,34 @@ jobs:
                 name: Run the tool zdd_compliancy_checker
                 command:
                     TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
+
+  post_deployment_e2e_validation:
+      parameters:
+        PRODUCT_TYPE:
+          default: "srnt"
+          type: string
+        PFID:
+          default: "srnt-c3po"
+          type: string
+      machine:
+          image: ubuntu-2004:202010-01
+      resource_class: medium
+      steps:
+          - attach_workspace:
+                at: ~/
+          - checkout
+          - install_yq
+          - run:
+                name: Run demo deployment with e2e test
+                command: |
+                    CURRENT_TIME=$(date +%s)
+                    LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                    VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | head -n1 | cut -c11-)
+                    TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ test_deployment_e2e
+          - store_artifacts:
+                path: cypress/screenshots/
+          - store_artifacts:
+                path: cypress/videos/
 
 workflows:
   pull_request:
@@ -2015,6 +2046,51 @@ workflows:
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
+
+  on_demand_deployment_validation:
+    jobs:
+      - deployment_validation:
+          name: "Start test ?"
+          type: approval
+          filters:
+            branches:
+              only: 
+                - master
+      - checkout:
+          requires:
+            - "Start test ?"
+      - ready_to_test?:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test instance ?"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth"]
+          type: approval
+          filters:
+            branches:
+              only: 
+                - master
+      - build_srnt_dev:
+          name: "Build image"
+          requires:
+            - "checkout"
+      - post_deployment_e2e_validation:
+          name: "[srnt] Post deployment e2e validation"
+          requires:
+            - "[srnt] Test instance ?"
+            - "Build image"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              PFID: ["srnt-c3po"]
+      - post_deployment_e2e_validation:
+          name: "[grth] Post deployment e2e validation"
+          requires:
+            - "[grth] Test instance ?"
+            - "Build image"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["grth"]
+              PFID: ["grth-r2d2"]
 
   on_demand_release:
     jobs:

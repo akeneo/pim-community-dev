@@ -551,3 +551,25 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(DEPLOYMENT_DIR)/bin/test_helm_generated_k8s_files.sh
+
+.PHONY: test_deployment_e2e
+test_deployment_e2e: update-cypress-env #Doc Test srnt (c3po)/grth(r2d2) instances
+	cd $(DEPLOYMENT_DIR)/../ && docker-compose -f docker-compose-cypress.yml run --rm cypress -c baseUrl=`yq r cypress.json 'baseUrl'`,testFiles=deployment/*
+
+update-cypress-env: $(DEPLOYMENT_DIR)/../cypress.env.json update-cypress-env-$(TYPE)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PRODUCT_TYPE' $(TYPE)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_WEB_LOGIN' ${LOGIN}
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_WEB_PASSWORD' ${PASSWORD}
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_VERSION' $(VERSION)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'DEPLOYMENT_TEST' true
+
+$(DEPLOYMENT_DIR)/../cypress.env.json:
+	touch $(DEPLOYMENT_DIR)/../cypress.env.json
+
+update-cypress-env-srnt:
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'CHECK_IMAGE_LOADING' false
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.json 'baseUrl' https://c3po.demo.cloud.akeneo.com/
+
+update-cypress-env-grth:
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'CHECK_IMAGE_LOADING' true
+	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.json 'baseUrl' https://r2d2.demo.cloud.akeneo.com/
