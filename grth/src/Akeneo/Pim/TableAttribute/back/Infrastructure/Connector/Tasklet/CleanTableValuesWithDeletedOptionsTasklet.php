@@ -88,6 +88,9 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;

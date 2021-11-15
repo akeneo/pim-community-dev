@@ -82,7 +82,7 @@ class TableConfigurationSaver implements SaverInterface
                     $selectOptionCollection
                 );
                 $columnCode = ColumnCode::fromString($rawColumnDefinition['code']);
-                $writeSelectOptionCollection->update($columnCode, $rawColumnDefinition['options'] ?? []);
+                $writeSelectOptionCollection->update($attribute->getCode(), $columnCode, $rawColumnDefinition['options'] ?? []);
                 $this->optionCollectionRepository->save(
                     $attribute->getCode(),
                     $columnCode,

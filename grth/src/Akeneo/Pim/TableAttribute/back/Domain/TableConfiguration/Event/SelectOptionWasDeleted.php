@@ -18,13 +18,20 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOption
 
 final class SelectOptionWasDeleted implements Event
 {
+    private string $attributeCode;
     private ColumnCode $columnCode;
     private SelectOptionCode $optionCode;
 
-    public function __construct(ColumnCode $columnCode, SelectOptionCode $optionCode)
+    public function __construct(string $attributeCode, ColumnCode $columnCode, SelectOptionCode $optionCode)
     {
+        $this->attributeCode = $attributeCode;
         $this->columnCode = $columnCode;
         $this->optionCode = $optionCode;
+    }
+
+    public function attributeCode(): string
+    {
+        return $this->attributeCode;
     }
 
     public function columnCode(): ColumnCode

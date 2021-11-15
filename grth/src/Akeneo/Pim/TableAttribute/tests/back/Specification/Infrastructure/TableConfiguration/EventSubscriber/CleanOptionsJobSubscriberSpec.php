@@ -43,7 +43,7 @@ class CleanOptionsJobSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         TokenStorageInterface $tokenStorage
     ) {
-        $selectOptionWasDeleted = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
+        $selectOptionWasDeleted = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
         $this->anOptionWasDeleted($selectOptionWasDeleted);
 
         $tokenStorage->getToken()->shouldNotBeCalled();
@@ -74,12 +74,14 @@ class CleanOptionsJobSubscriberSpec extends ObjectBehavior
         AttributeInterface $attribute,
         JobInstance $jobInstance
     ) {
-        $selectOptionWasDeleted1 = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
-        $selectOptionWasDeleted2 = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('sugar'));
-        $selectOptionWasDeleted3 = new SelectOptionWasDeleted(ColumnCode::fromString('nutrition_score'), SelectOptionCode::fromString('B'));
+        $selectOptionWasDeleted1 = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
+        $selectOptionWasDeleted2 = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('sugar'));
+        $selectOptionWasDeleted3 = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('nutrition_score'), SelectOptionCode::fromString('B'));
+        $otherAttributeSelectOptionWasDeleted = new SelectOptionWasDeleted('other', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('egg'));
         $this->anOptionWasDeleted($selectOptionWasDeleted1);
         $this->anOptionWasDeleted($selectOptionWasDeleted2);
         $this->anOptionWasDeleted($selectOptionWasDeleted3);
+        $this->anOptionWasDeleted($otherAttributeSelectOptionWasDeleted);
 
         $tokenStorage->getToken()->shouldBeCalled()->willReturn($token);
         $token->getUser()->shouldBeCalled()->willReturn($user);
@@ -109,7 +111,7 @@ class CleanOptionsJobSubscriberSpec extends ObjectBehavior
         AttributeInterface $attribute,
         JobInstance $jobInstance
     ) {
-        $selectOptionWasDeleted = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
+        $selectOptionWasDeleted = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('salt'));
         $this->anOptionWasDeleted($selectOptionWasDeleted);
 
         $tokenStorage->getToken()->shouldBeCalled()->willReturn($token);

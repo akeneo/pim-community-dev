@@ -31,7 +31,7 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
     private TokenStorageInterface $tokenStorage;
     private CreateJobInstanceInterface $createJobInstance;
     private string $jobName;
-    /** @var array<int, SelectOptionWasDeleted> */
+    /** @var array<string, SelectOptionWasDeleted> */
     private array $deletedEvents = [];
 
     public function __construct(
@@ -58,17 +58,18 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
 
     public function anOptionWasDeleted(SelectOptionWasDeleted $selectOptionWasDeleted): void
     {
-        $this->deletedEvents[] = $selectOptionWasDeleted;
+        $this->deletedEvents[$selectOptionWasDeleted->attributeCode()][] = $selectOptionWasDeleted;
     }
 
     public function createCleanOptionsJobIfNeeded(GenericEvent $postSaveEvent): void
     {
-        if (!$postSaveEvent->getSubject() instanceof AttributeInterface || $this->deletedEvents === []) {
+        $subject = $postSaveEvent->getSubject();
+        if (!$subject instanceof AttributeInterface || !isset($this->deletedEvents[$subject->getCode()])) {
             return;
         }
 
         $removedOptionPerColumncode = [];
-        foreach ($this->deletedEvents as $event) {
+        foreach ($this->deletedEvents[$subject->getCode()] as $event) {
             $removedOptionPerColumncode[$event->columnCode()->asString()][] = $event->optionCode()->asString();
         }
 
@@ -80,6 +81,7 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()->getUser();
 
         $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
+        unset($this->deletedEvents[$subject->getCode()]);
     }
 
     private function getOrCreateJobInstance(): JobInstance

@@ -44,7 +44,7 @@ class WriteSelectOptionCollection
     /**
      * @param array<int, array<string, mixed>> $normalizedCollection
      */
-    public function update(ColumnCode $columnCode, array $normalizedCollection): void
+    public function update(string $attributeCode, ColumnCode $columnCode, array $normalizedCollection): void
     {
         foreach ($normalizedCollection as $normalizedOption) {
             $code = $normalizedOption['code'];
@@ -58,7 +58,11 @@ class WriteSelectOptionCollection
         foreach ($this->options as $code => $option) {
             if (!\array_key_exists($code, $indexedUpdatedCodes)) {
                 unset($this->options[$code]);
-                $this->events[] = new SelectOptionWasDeleted($columnCode, SelectOptionCode::fromString((string) $code));
+                $this->events[] = new SelectOptionWasDeleted(
+                    $attributeCode,
+                    $columnCode,
+                    SelectOptionCode::fromString((string) $code)
+                );
             }
         }
     }

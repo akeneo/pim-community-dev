@@ -579,4 +579,4 @@ services:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
-            - 1000
+            - '%pim_job_product_batch_size%'

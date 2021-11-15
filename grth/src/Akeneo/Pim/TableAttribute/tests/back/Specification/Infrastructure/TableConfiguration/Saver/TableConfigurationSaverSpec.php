@@ -181,8 +181,8 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ColumnCode::fromString('ingredients'),
             WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::fromNormalized($column1['options']))
         )->shouldBeCalled();
-        $deletedPepperEvent = new SelectOptionWasDeleted(ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('pepper'));
-        $eventDispatcher->dispatch($deletedPepperEvent)->shouldBeCalled()->willReturn($deletedPepperEvent);
+        $deletedPepperEvent = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('pepper'));
+        $eventDispatcher->dispatch($deletedPepperEvent)->shouldBeCalledOnce()->willReturn($deletedPepperEvent);
 
         $quantitySelectOption = SelectOptionCollection::fromNormalized($column2['options']);
         $optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('quantity'))->willReturn($quantitySelectOption);

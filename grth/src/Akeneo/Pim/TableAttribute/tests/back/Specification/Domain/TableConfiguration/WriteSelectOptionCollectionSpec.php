@@ -65,7 +65,7 @@ class WriteSelectOptionCollectionSpec extends ObjectBehavior
 
     function it_updates_the_collection_and_store_events()
     {
-        $this->update(ColumnCode::fromString('ingredient'), [
+        $this->update('nutrition', ColumnCode::fromString('ingredient'), [
             [
                 'code' => 'salt',
                 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel'],
@@ -90,7 +90,7 @@ class WriteSelectOptionCollectionSpec extends ObjectBehavior
             SelectOptionCode::fromString('sugar'),
         ]);
         $this->releaseEvents()->shouldBeLike([
-            new SelectOptionWasDeleted(ColumnCode::fromString('ingredient'), SelectOptionCode::fromString('pepper')),
+            new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredient'), SelectOptionCode::fromString('pepper')),
         ]);
         $this->releaseEvents()->shouldReturn([]);
     }
