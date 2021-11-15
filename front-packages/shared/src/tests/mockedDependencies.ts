@@ -26,6 +26,8 @@ const mockedDependencies = {
           return 'en_US';
         case 'uiLocale':
           return 'en_US';
+        case 'timezone':
+          return 'UTC';
         default:
           return data;
       }
