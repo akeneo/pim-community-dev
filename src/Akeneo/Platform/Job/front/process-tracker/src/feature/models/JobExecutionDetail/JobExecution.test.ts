@@ -1,10 +1,4 @@
-import {
-  getDownloadLinks,
-  JobExecutionArchives,
-  isJobFinished,
-  JobExecution,
-  StepExecutionStatus,
-} from '../../../../../../Resources/public/js/job/execution/models/job-execution';
+import {getDownloadLinks, JobExecutionArchives, isJobFinished, JobExecution, StepExecutionStatus} from './JobExecution';
 
 const jobExecution: JobExecution = {
   failures: [],
