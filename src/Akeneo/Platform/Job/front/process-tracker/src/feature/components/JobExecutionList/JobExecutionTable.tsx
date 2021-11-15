@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
-import {JobExecutionRow} from '../../models/JobExecutionTable';
+import {JobExecutionRow} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 import {JobExecutionFilterSort} from '../../models';
 
