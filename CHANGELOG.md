@@ -107,6 +107,7 @@
 - PIM-10115: Blacklist domains for asset media links
 - PIM-10110: Enrich Service check logging upon exception and slow service check.
 - PIM-10120: Remove obsolete asset reference data
+- PIM-10151: Fix category field in rule edit form
 
 ## Improvements
 
