@@ -15,6 +15,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class CreateConnection implements CreateConnectionInterface
 {
+    private const CONNECTION_TYPE_APP = 'app';
+
     private ConnectionRepository $repository;
     private SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery;
 
@@ -38,7 +40,10 @@ class CreateConnection implements CreateConnectionInterface
             $label,
             $flowType,
             $clientId,
-            $userId
+            $userId,
+            null,
+            false,
+            self::CONNECTION_TYPE_APP
         );
 
         $this->repository->create($connection);
