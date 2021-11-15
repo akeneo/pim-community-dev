@@ -31,8 +31,8 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
     private TokenStorageInterface $tokenStorage;
     private CreateJobInstanceInterface $createJobInstance;
     private string $jobName;
-    /** @var array<string, SelectOptionWasDeleted> */
-    private array $deletedEvents = [];
+    /** @var array<string, array<int, SelectOptionWasDeleted>> */
+    private array $deletedEventsByAttributeCode = [];
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -58,18 +58,20 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
 
     public function anOptionWasDeleted(SelectOptionWasDeleted $selectOptionWasDeleted): void
     {
-        $this->deletedEvents[$selectOptionWasDeleted->attributeCode()][] = $selectOptionWasDeleted;
+        $this->deletedEventsByAttributeCode[$selectOptionWasDeleted->attributeCode()][] = $selectOptionWasDeleted;
     }
 
     public function createCleanOptionsJobIfNeeded(GenericEvent $postSaveEvent): void
     {
         $subject = $postSaveEvent->getSubject();
-        if (!$subject instanceof AttributeInterface || !isset($this->deletedEvents[$subject->getCode()])) {
+        if (!$subject instanceof AttributeInterface
+            || !isset($this->deletedEventsByAttributeCode[$subject->getCode()])
+        ) {
             return;
         }
 
         $removedOptionPerColumncode = [];
-        foreach ($this->deletedEvents[$subject->getCode()] as $event) {
+        foreach ($this->deletedEventsByAttributeCode[$subject->getCode()] as $event) {
             $removedOptionPerColumncode[$event->columnCode()->asString()][] = $event->optionCode()->asString();
         }
 
@@ -81,7 +83,7 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()->getUser();
 
         $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
-        unset($this->deletedEvents[$subject->getCode()]);
+        unset($this->deletedEventsByAttributeCode[$subject->getCode()]);
     }
 
     private function getOrCreateJobInstance(): JobInstance
