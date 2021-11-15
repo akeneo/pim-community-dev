@@ -213,9 +213,10 @@ const SelectInput = ({
   const lastOptionRef = useRef<HTMLDivElement>(null);
   const selectedOptionRef = useRef<HTMLDivElement>(null);
 
-  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
-    {value: string} & React.HTMLAttributes<HTMLSpanElement>
-  > => isValidElement<{value: string}>(child));
+  const validChildren = React.Children.toArray(children).filter(
+    (child): child is ReactElement<{value: string} & React.HTMLAttributes<HTMLSpanElement>> =>
+      isValidElement<{value: string}>(child)
+  );
 
   validChildren.reduce<string[]>((optionCodes: string[], child) => {
     if (optionCodes.includes(child.props.value)) {

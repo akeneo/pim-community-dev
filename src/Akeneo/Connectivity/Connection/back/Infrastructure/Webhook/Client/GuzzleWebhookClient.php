@@ -88,6 +88,7 @@ class GuzzleWebhookClient implements WebhookClient
                 'concurrency' => $this->config['concurrency'] ?? null,
                 'options' => [
                     'timeout' => $this->config['timeout'] ?? null,
+                    'allow_redirects' => false,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */

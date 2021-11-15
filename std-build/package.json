@@ -18,6 +18,7 @@
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
     "vendor/akeneo/pim-community-dev/front-packages/measurement",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
@@ -28,6 +29,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
   ]
 }

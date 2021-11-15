@@ -53,4 +53,5 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
+    Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
 ];

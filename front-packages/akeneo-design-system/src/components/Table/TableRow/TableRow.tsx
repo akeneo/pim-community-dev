@@ -144,12 +144,8 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     }: TableRowProps,
     forwardedRef: Ref<HTMLTableRowElement>
   ) => {
-    const [
-      placeholderPosition,
-      placeholderDragEnter,
-      placeholderDragLeave,
-      placeholderDragEnd,
-    ] = usePlaceholderPosition(rowIndex);
+    const [placeholderPosition, placeholderDragEnter, placeholderDragLeave, placeholderDragEnd] =
+      usePlaceholderPosition(rowIndex);
 
     const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {

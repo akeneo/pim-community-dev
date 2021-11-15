@@ -6,7 +6,7 @@ find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back job-coupling-back
 
 ### Static tests
 static-back: check-pullup check-sf-services
@@ -32,6 +32,7 @@ lint-back:
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) job-lint-back
 
 .PHONY: lint-front
 lint-front:
@@ -58,6 +59,7 @@ unit-front:
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	$(MAKE) connectivity-connection-acceptance-back
+	$(MAKE) job-acceptance-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
 else
@@ -74,7 +76,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: pim-integration-back
-pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else

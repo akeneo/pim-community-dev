@@ -1,3 +1,4 @@
+export * from './useDateFormatter';
 export * from './useDebounce';
 export * from './useDependenciesContext';
 export * from './useDocumentVisibility';

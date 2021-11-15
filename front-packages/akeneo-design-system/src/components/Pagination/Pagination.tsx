@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {PAGINATION_SEPARATOR, PaginationItem} from './PaginationItem';
 
 type PaginationProps = {
@@ -19,6 +20,11 @@ type PaginationProps = {
   itemsPerPage?: number;
 
   /**
+   * When set, defines the sticky top position of the Pagination component.
+   */
+  sticky?: number;
+
+  /**
    * Handler called when a pagination item is clicked.
    */
   followPage: (page: number) => void;
@@ -26,7 +32,7 @@ type PaginationProps = {
 
 const MAX_PAGINATION_ITEMS_WITHOUT_SEPARATOR = 4;
 
-const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage = 25, followPage}) => {
+const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage = 25, sticky, followPage}) => {
   if (itemsPerPage <= 0) {
     throw new Error('Number of items per page cannot be lower or equal than 0');
   }
@@ -44,7 +50,7 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
   const pages = computePages(currentPage, numberOfPages);
 
   return (
-    <PaginationContainer>
+    <PaginationContainer sticky={sticky}>
       {pages.map((page: number | string, index: number) => {
         return (
           <PaginationItem
@@ -59,13 +65,22 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
   );
 };
 
-const PaginationContainer = styled.div`
+const PaginationContainer = styled.div<{sticky?: number} & AkeneoThemedProps>`
   height: 44px;
   margin: 10px 0 10px 0;
   align-items: center;
   display: flex;
   justify-content: center;
   gap: 10px;
+  background-color: ${getColor('white')};
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      z-index: 9;
+    `}
 `;
 
 function computePages(currentPage: number, numberOfPages: number) {
