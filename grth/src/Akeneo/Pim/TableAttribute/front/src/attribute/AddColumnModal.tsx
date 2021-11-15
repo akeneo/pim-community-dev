@@ -1,6 +1,6 @@
 import {AttributesIllustration, Button, Field, Helper, Modal, SelectInput, TextInput} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnCode, ColumnDefinition, DataType} from '../models';
+import {ColumnCode, ColumnDefinition, DataType, isColumnCodeNotAvailable} from '../models';
 import {LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import {FieldsList} from '../shared';
@@ -83,6 +83,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   const validateCode = (code: ColumnCode, silent: boolean): number => {
     const validations: string[] = [];
     if (code === '') validations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
+    if (isColumnCodeNotAvailable(code))
+      validations.push(translate('pim_table_attribute.validations.not_available_code'));
     if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code))
       validations.push(translate('pim_table_attribute.validations.invalid_column_code'));
     if (existingColumnCodes.includes(code))

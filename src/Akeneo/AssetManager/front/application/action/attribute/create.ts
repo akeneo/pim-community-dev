@@ -16,35 +16,33 @@ import {
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoassetmanager/application/action/attribute/edit';
 
-export const createAttribute =
-  () =>
-  async (dispatch: any, getState: () => EditState): Promise<void> => {
-    const assetFamily = getState().form.data;
-    const formData = getState().createAttribute.data;
-    const normalizedAttribute = {
-      ...formData,
-      asset_family_identifier: assetFamily.identifier,
-    } as MinimalNormalizedAttribute;
-    const attribute = denormalizeMinimalAttribute(normalizedAttribute);
+export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const assetFamily = getState().form.data;
+  const formData = getState().createAttribute.data;
+  const normalizedAttribute = {
+    ...formData,
+    asset_family_identifier: assetFamily.identifier,
+  } as MinimalNormalizedAttribute;
+  const attribute = denormalizeMinimalAttribute(normalizedAttribute);
 
-    try {
-      let errors = await attributeSaver.create(attribute);
-      if (errors) {
-        dispatch(attributeCreationErrorOccured(errors));
-        dispatch(notifyAttributeCreateValidationError());
-
-        return;
-      }
-    } catch (error) {
-      dispatch(notifyAttributeCreateFailed());
+  try {
+    let errors = await attributeSaver.create(attribute);
+    if (errors) {
+      dispatch(attributeCreationErrorOccured(errors));
+      dispatch(notifyAttributeCreateValidationError());
 
       return;
     }
-
-    dispatch(attributeCreationSucceeded());
-    dispatch(notifyAttributeWellCreated());
-    await dispatch(updateAttributeList());
-    dispatch(attributeEditionStartByCode(attribute.code));
+  } catch (error) {
+    dispatch(notifyAttributeCreateFailed());
 
     return;
-  };
+  }
+
+  dispatch(attributeCreationSucceeded());
+  dispatch(notifyAttributeWellCreated());
+  await dispatch(updateAttributeList());
+  dispatch(attributeEditionStartByCode(attribute.code));
+
+  return;
+};

@@ -19,22 +19,23 @@ import {RemoveCurrencyFromPriceCollectionValue} from './RemoveCurrencyFromPriceC
 
 type PriceCollectionData = {amount: number; currency: CurrencyCode}[];
 
-const parsePriceCollectionValue: (value: any) => PriceCollectionData =
-  value => {
-    const result: PriceCollectionData = [];
-    if (Array.isArray(value)) {
-      value.forEach(price => {
-        if (
-          Object.prototype.hasOwnProperty.call(price, 'amount') &&
-          Object.prototype.hasOwnProperty.call(price, 'currency')
-        ) {
-          result.push({amount: price.amount, currency: price.currency});
-        }
-      });
-    }
+const parsePriceCollectionValue: (
+  value: any
+) => PriceCollectionData = value => {
+  const result: PriceCollectionData = [];
+  if (Array.isArray(value)) {
+    value.forEach(price => {
+      if (
+        Object.prototype.hasOwnProperty.call(price, 'amount') &&
+        Object.prototype.hasOwnProperty.call(price, 'currency')
+      ) {
+        result.push({amount: price.amount, currency: price.currency});
+      }
+    });
+  }
 
-    return result;
-  };
+  return result;
+};
 
 const PriceCollectionValue: React.FC<InputValueProps> = ({
   id,

@@ -9,6 +9,7 @@ import {
   getTableValueWithId,
 } from '@akeneo-pim-ge/table_attribute/__tests__/factories';
 import {dragAndDrop} from '@akeneo-pim-ge/table_attribute/__tests__/shared/dragAndDrop';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -16,14 +17,15 @@ jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 describe('TableInputValue', () => {
   it('should render the component', async () => {
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={jest.fn()}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -41,14 +43,15 @@ describe('TableInputValue', () => {
   it('should callback changes', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -74,14 +77,15 @@ describe('TableInputValue', () => {
   it('should search', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={'r'}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={'r'}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -93,19 +97,20 @@ describe('TableInputValue', () => {
   it('should change inputValue class when a violated cell changed', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        onChange={handleChange}
-        violatedCells={[
-          {
-            id: 'uniqueidsugar',
-            columnCode: 'quantity',
-          },
-        ]}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          onChange={handleChange}
+          violatedCells={[
+            {
+              id: 'uniqueidsugar',
+              columnCode: 'quantity',
+            },
+          ]}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -121,14 +126,15 @@ describe('TableInputValue', () => {
   it('should delete row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -141,14 +147,15 @@ describe('TableInputValue', () => {
   it('should clear row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -165,14 +172,15 @@ describe('TableInputValue', () => {
   it('should move row to first position', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -189,14 +197,15 @@ describe('TableInputValue', () => {
   it('should move row to last position', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -213,14 +222,15 @@ describe('TableInputValue', () => {
   it('should reorder rows', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={handleChange}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={handleChange}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
@@ -235,14 +245,15 @@ describe('TableInputValue', () => {
 
   it('should not render anything if cell inputs are undefined', () => {
     renderWithProviders(
-      <TableInputValue
-        attribute={getComplexTableAttribute()}
-        valueData={getTableValueWithId()}
-        searchText={''}
-        onChange={jest.fn()}
-        cellInputsMapping={{}}
-        cellMatchersMapping={{}}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={jest.fn()}
+          cellInputsMapping={{}}
+          cellMatchersMapping={{}}
+        />
+      </TestAttributeContextProvider>
     );
     expect(screen.queryByText('Sugar')).not.toBeInTheDocument();
   });

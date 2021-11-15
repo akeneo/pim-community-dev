@@ -29,8 +29,11 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const {valueFormName, getValueFormValue, isFormFieldInError} =
-    useControlledFormInputCondition<string[]>(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -48,8 +51,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       field={condition.field}
       lineNumber={lineNumber}
       locales={locales}
-      scopes={scopes}
-    >
+      scopes={scopes}>
       <Controller
         as={InputText}
         className={

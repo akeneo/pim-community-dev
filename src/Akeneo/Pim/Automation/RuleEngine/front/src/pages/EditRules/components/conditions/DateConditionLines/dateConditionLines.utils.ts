@@ -142,40 +142,42 @@ const validateDateConditionLine = (
   return true;
 };
 
-const formatDateLocaleTimeConditions =
-  (pattern: string) => (conditions: any[]) => {
-    return conditions.map(condition => {
-      if (
-        condition &&
-        (condition.field === 'created' || condition.field === 'updated')
-      ) {
-        const dateValue = new Date(condition.value);
-        if (!isNaN(dateValue.getTime())) {
-          return {
-            ...condition,
-            value: moment(dateValue).format(pattern),
-          };
-        }
-        if (Array.isArray(condition.value)) {
-          return {
-            ...condition,
-            value: [
-              moment(new Date(condition.value[0])).format(pattern),
-              moment(new Date(condition.value[1])).format(pattern),
-            ],
-          };
-        }
+const formatDateLocaleTimeConditions = (pattern: string) => (
+  conditions: any[]
+) => {
+  return conditions.map(condition => {
+    if (
+      condition &&
+      (condition.field === 'created' || condition.field === 'updated')
+    ) {
+      const dateValue = new Date(condition.value);
+      if (!isNaN(dateValue.getTime())) {
         return {
           ...condition,
-          value: condition.value,
+          value: moment(dateValue).format(pattern),
         };
       }
-      return condition;
-    }, []);
-  };
+      if (Array.isArray(condition.value)) {
+        return {
+          ...condition,
+          value: [
+            moment(new Date(condition.value[0])).format(pattern),
+            moment(new Date(condition.value[1])).format(pattern),
+          ],
+        };
+      }
+      return {
+        ...condition,
+        value: condition.value,
+      };
+    }
+    return condition;
+  }, []);
+};
 
-const formatDateLocaleTimeConditionsFromBackend =
-  formatDateLocaleTimeConditions('YYYY-MM-DDTHH:mm');
+const formatDateLocaleTimeConditionsFromBackend = formatDateLocaleTimeConditions(
+  'YYYY-MM-DDTHH:mm'
+);
 const formatDateLocaleTimeConditionsToBackend = formatDateLocaleTimeConditions(
   'YYYY-MM-DD HH:mm:ss'
 );

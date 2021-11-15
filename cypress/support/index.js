@@ -16,3 +16,4 @@
 // Import commands.js using ES2015 syntax:
 import '@testing-library/cypress/add-commands'
 import '../../vendor/akeneo/pim-community-dev/cypress/support/commands.js'
+import './deployment-validation'

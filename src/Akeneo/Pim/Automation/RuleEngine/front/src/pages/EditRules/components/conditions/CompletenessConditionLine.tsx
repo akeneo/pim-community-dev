@@ -60,8 +60,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pim_common.completeness')}
-        >
+          title={translate('pim_common.completeness')}>
           {translate('pim_common.completeness')}
         </FieldColumn>
         <OperatorColumn>
@@ -95,8 +94,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
         <ScopeColumn
           className={
             isFormFieldInError('scope') ? 'select2-container-error' : ''
-          }
-        >
+          }>
           <Controller
             allowClear={false}
             as={ScopeSelector}
@@ -117,8 +115,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
         <LocaleColumn
           className={
             isFormFieldInError('locale') ? 'select2-container-error' : ''
-          }
-        >
+          }>
           <Controller
             as={LocaleSelector}
             data-testid={`edit-rules-input-${lineNumber}-locale`}

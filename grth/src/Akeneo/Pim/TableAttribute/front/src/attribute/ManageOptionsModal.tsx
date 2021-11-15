@@ -63,6 +63,7 @@ type ManageOptionsModalProps = {
   attribute: TableAttribute;
   columnDefinition: SelectColumnDefinition;
   onChange: (options: SelectOption[]) => void;
+  confirmLabel?: string;
 };
 
 export type SelectOptionWithId = SelectOption & {
@@ -80,6 +81,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   columnDefinition,
   onChange,
   limit = LIMIT_OPTIONS,
+  confirmLabel,
 }) => {
   const userContext = useUserContext();
   const router = useRouter();
@@ -432,7 +434,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           </div>
           <Modal.TopRightButtons>
             <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
-              {translate('pim_common.confirm')}
+              {confirmLabel ? confirmLabel : translate('pim_common.confirm')}
             </Button>
           </Modal.TopRightButtons>
         </OptionsTwoColumnsLayout>

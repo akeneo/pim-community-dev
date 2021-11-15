@@ -13,7 +13,7 @@ define([
   'oro/messenger',
   'pimcommunity/grid/view-selector/current',
   'teamwork-assistant/templates/grid/view-selector/current',
-], function (_, __, messenger, BaseCurrent, template) {
+], function(_, __, messenger, BaseCurrent, template) {
   return BaseCurrent.extend({
     template: _.template(template),
     notified: false,
@@ -21,7 +21,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    onDatagridStateChange: function () {
+    onDatagridStateChange: function() {
       // If view type switcher is on "project" and there is no project to display,
       // then we don't react to datagrid change
       if ('project' === this.getRoot().currentViewType && this.getRoot().hasNoProject) {
@@ -47,7 +47,7 @@ define([
      *
      * Override to omit "items per page" and "current page" filters
      */
-    areFiltersModified: function (initialViewFilters, datagridStateFilters) {
+    areFiltersModified: function(initialViewFilters, datagridStateFilters) {
       if ('project' !== this.datagridView.type) {
         return BaseCurrent.prototype.areFiltersModified.apply(this, arguments);
       }

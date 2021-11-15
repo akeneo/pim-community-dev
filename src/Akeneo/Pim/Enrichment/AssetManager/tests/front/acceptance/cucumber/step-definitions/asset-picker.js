@@ -1,4 +1,4 @@
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {Given, When} = cucumber;
   const {
     decorators: {createElementDecorator},
@@ -16,12 +16,12 @@ module.exports = async function (cucumber) {
   };
   const getElement = createElementDecorator(config);
 
-  Given('the user opens the asset picker', async function () {
+  Given('the user opens the asset picker', async function() {
     const assetCollection = await getElement(this.page, 'Designer asset collection');
     await assetCollection.openPicker();
   });
 
-  When('the user filters the assets', async function () {
+  When('the user filters the assets', async function() {
     const assetPicker = await getElement(this.page, 'Asset picker');
     const searchBar = await assetPicker.getSearchBar();
     await searchBar.search('s');
@@ -30,7 +30,7 @@ module.exports = async function (cucumber) {
     filterCollection.filter('colors', 'red');
   });
 
-  When('the user picks one asset', async function () {
+  When('the user picks one asset', async function() {
     const assetPicker = await getElement(this.page, 'Asset picker');
     const mosaic = await assetPicker.getMosaic();
     await mosaic.select('dyson');

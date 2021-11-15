@@ -28,26 +28,25 @@ type SimpleMultiReferenceEntitiesAttributeCondition = {
   locale?: string;
 };
 
-const createSimpleMultiReferenceEntitiesAttributeCondition: ConditionFactory =
-  async (fieldCode, router) => {
-    return createAttributeCondition(
-      fieldCode,
-      router,
-      TYPES,
-      Operator.IS_EMPTY
-    );
-  };
+const createSimpleMultiReferenceEntitiesAttributeCondition: ConditionFactory = async (
+  fieldCode,
+  router
+) => {
+  return createAttributeCondition(fieldCode, router, TYPES, Operator.IS_EMPTY);
+};
 
-const getSimpleMultiReferenceEntitiesAttributeConditionModule: ConditionModuleGuesser =
-  async (json, router) => {
-    return getAttributeConditionModule(
-      json,
-      router,
-      SimpleMultiReferenceEntitiesAttributeOperators,
-      TYPES,
-      SimpleMultiReferenceEntitiesAttributeConditionLine
-    );
-  };
+const getSimpleMultiReferenceEntitiesAttributeConditionModule: ConditionModuleGuesser = async (
+  json,
+  router
+) => {
+  return getAttributeConditionModule(
+    json,
+    router,
+    SimpleMultiReferenceEntitiesAttributeOperators,
+    TYPES,
+    SimpleMultiReferenceEntitiesAttributeConditionLine
+  );
+};
 
 export {
   SimpleMultiReferenceEntitiesAttributeOperators,

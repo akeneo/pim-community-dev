@@ -6,23 +6,21 @@ export type ClearQuantifiedAssociationsAction = {
   field: 'quantified_associations';
 };
 
-export const getClearQuantifiedAssociationsActionModule: ActionModuleGuesser =
-  async json => {
-    if (json.type !== 'clear') {
-      return Promise.resolve(null);
-    }
+export const getClearQuantifiedAssociationsActionModule: ActionModuleGuesser = async json => {
+  if (json.type !== 'clear') {
+    return Promise.resolve(null);
+  }
 
-    if (json.field !== 'quantified_associations') {
-      return Promise.resolve(null);
-    }
+  if (json.field !== 'quantified_associations') {
+    return Promise.resolve(null);
+  }
 
-    return Promise.resolve(ClearQuantifiedAssociationsActionLine);
+  return Promise.resolve(ClearQuantifiedAssociationsActionLine);
+};
+
+export const createClearQuantifiedAssociationsAction: () => ClearQuantifiedAssociationsAction = () => {
+  return {
+    type: 'clear',
+    field: 'quantified_associations',
   };
-
-export const createClearQuantifiedAssociationsAction: () => ClearQuantifiedAssociationsAction =
-  () => {
-    return {
-      type: 'clear',
-      field: 'quantified_associations',
-    };
-  };
+};

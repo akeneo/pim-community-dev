@@ -121,8 +121,10 @@ const transformFormData = (formData: FormData): Payload => {
             action.type === 'calculate' &&
             Array.isArray(action.full_operation_list)
           ) {
-            [action.source, ...action.operation_list] =
-              action.full_operation_list;
+            [
+              action.source,
+              ...action.operation_list
+            ] = action.full_operation_list;
             delete action.full_operation_list;
           }
 
@@ -243,12 +245,13 @@ const submitEditRuleForm = (
   };
 };
 
-const createLocalesLabels =
-  (ruleDefinition: RuleDefinition) =>
-  (labels: {[key: string]: string}, locale: Locale) => ({
-    ...labels,
-    [locale.code]: ruleDefinition.labels[locale.code],
-  });
+const createLocalesLabels = (ruleDefinition: RuleDefinition) => (
+  labels: {[key: string]: string},
+  locale: Locale
+) => ({
+  ...labels,
+  [locale.code]: ruleDefinition.labels[locale.code],
+});
 
 const createFormDefaultValues = (
   ruleDefinition: RuleDefinition,

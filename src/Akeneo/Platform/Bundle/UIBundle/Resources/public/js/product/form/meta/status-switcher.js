@@ -6,9 +6,9 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['pim/product-edit-form/meta/status-switcher'], function (StatusSwitcher) {
+define(['pim/product-edit-form/meta/status-switcher'], function(StatusSwitcher) {
   return StatusSwitcher.extend({
-    render: function () {
+    render: function() {
       if (!this.getRoot().getFormData().meta.is_owner) {
         return this.remove();
       }

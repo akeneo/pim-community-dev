@@ -41,7 +41,7 @@ export const useVisibleAttributeOptions = () => {
     const container = document.querySelector('div[data-attribute-option-role="list"]');
 
     const observer = new IntersectionObserver(
-      function (entries) {
+      function(entries) {
         entries.forEach(entry => {
           const codeElement = entry.target.querySelector('[data-attribute-option-role="item-code"]');
           if (!codeElement) {

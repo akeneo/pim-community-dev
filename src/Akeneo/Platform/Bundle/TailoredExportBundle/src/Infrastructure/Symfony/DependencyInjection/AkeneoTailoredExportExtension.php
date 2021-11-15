@@ -35,5 +35,39 @@ class AkeneoTailoredExportExtension extends Extension
         $loader->load('selection_appliers.yml');
         $loader->load('services.yml');
         $loader->load('validations.yml');
+
+        $this->configureAssetManagerRelatedServices($container);
+        $this->configureReferenceEntityRelatedServices($container);
+    }
+
+    /**
+     * Enable or disable services related to Asset Manager based
+     * on the presence of the Asset Manager bundle
+     */
+    private function configureAssetManagerRelatedServices(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['AkeneoAssetManagerBundle'])) {
+            $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/asset_manager'));
+            $loader->load('services.yml');
+            $loader->load('queries.yml');
+            $loader->load('validations.yml');
+            $loader->load('selection_appliers.yml');
+        }
+    }
+
+    /**
+     * Enable or disable services related to Asset Manager based
+     * on the presence of the Reference Entity bundle
+     */
+    private function configureReferenceEntityRelatedServices(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['AkeneoReferenceEntityBundle'])) {
+            $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/reference_entity'));
+            $loader->load('controllers.yml');
+            $loader->load('queries.yml');
+            $loader->load('selection_appliers.yml');
+        }
     }
 }

@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "{{ attributeLabel }} テーブルが空です。"
       no_rows_subtitle: 新しいプロパティを定義する行を追加
       no_rows_subtitle_on_readonly: この属性を編集できるようにするには、属性設定ページに移動するか、PIM管理者に連絡してください。
-      no_add_options_title: 行を追加
-      no_add_options: '"{{ attributeLabel }}" オプションを管理'
       no_add_options_unallowed: '"{{ attributeLabel }}" オプションを管理するには、PIM管理者に連絡してください'
-      no_add_options_link: こちら
-      no_edit_permission: 編集許可がありません
       actions:
         delete_row: この行を削除
         clear_row: この行をクリア

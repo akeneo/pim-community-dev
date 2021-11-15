@@ -164,17 +164,17 @@ pim_table_attribute:
             no_rows_title: "Your {{ attributeLabel }} table is empty."
             no_rows_subtitle: Add rows to define new properties
             no_rows_subtitle_on_readonly: To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.
-            no_add_options_title: To add rows
-            no_add_options: Manage your "{{ attributeLabel }}" options
+            no_results: There are no results
+            no_options: There are no options
             no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
-            no_add_options_link: here
-            no_edit_permission: No edit permission
             actions:
                 delete_row: Delete this row
                 clear_row: Clear this row
                 move_first: Move to first position
                 move_last: Move to last position
             order: Order
+            save_options_error: An error occured while saving the options
+            save_options_success: Options successfully updated
     properties:
         data_type:
             text: Text
@@ -183,6 +183,7 @@ pim_table_attribute:
             select: Select
     validations:
         column_code_must_be_filled: The code must be filled
+        not_available_code: This column code is not available
         column_data_type_must_be_filled: The data type must be filled
         invalid_column_code: The column code can only contain letters, numbers and underscores
         invalid_code: The code can only contain letters, numbers and underscores

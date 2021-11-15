@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "{{ attributeLabel }} 테이블이 비어 있습니다."
       no_rows_subtitle: 행을 추가하여 새 속성 정의
       no_rows_subtitle_on_readonly: 이 특성을 편집하려면 특성 설정 페이지로 이동하거나 PIM 관리자에게 문의하십시오.
-      no_add_options_title: 행 추가
-      no_add_options: '''{{ attributeLabel }}'' 옵션 관리'
       no_add_options_unallowed: '''{{ attributeLabel }}'' 옵션을 관리하려면 PIM 관리자에게 문의하십시오'
-      no_add_options_link: 여기
-      no_edit_permission: 편집 권한이 없습니다
       actions:
         delete_row: 이 행 삭제
         clear_row: 이 행 지우기

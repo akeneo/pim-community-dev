@@ -35,16 +35,18 @@ const createSimpleMultiOptionsAttributeCondition: ConditionFactory = async (
   return createAttributeCondition(fieldCode, router, TYPES, Operator.IS_EMPTY);
 };
 
-const getSimpleMultiOptionsAttributeConditionModule: ConditionModuleGuesser =
-  async (json, router) => {
-    return getAttributeConditionModule(
-      json,
-      router,
-      SimpleMultiOptionsAttributeOperators,
-      TYPES,
-      SimpleMultiOptionsAttributeConditionLine
-    );
-  };
+const getSimpleMultiOptionsAttributeConditionModule: ConditionModuleGuesser = async (
+  json,
+  router
+) => {
+  return getAttributeConditionModule(
+    json,
+    router,
+    SimpleMultiOptionsAttributeOperators,
+    TYPES,
+    SimpleMultiOptionsAttributeConditionLine
+  );
+};
 
 export {
   SimpleMultiOptionsAttributeOperators,

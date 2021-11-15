@@ -8,7 +8,7 @@ const {
   decorators: {createElementDecorator},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
   const assert = require('assert');
 
@@ -29,7 +29,7 @@ module.exports = async function (cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const loadAttributeTab = async function (page) {
+  const loadAttributeTab = async function(page) {
     await page.evaluate(async () => {
       const Controller = require('pim/controller/asset-family/edit');
       const controller = new Controller();
@@ -40,14 +40,14 @@ module.exports = async function (cucumber) {
     page.waitFor('.AknTitleContainer-title');
   };
 
-  const startCreate = async function (page) {
+  const startCreate = async function(page) {
     await loadAttributeTab(page);
 
     const header = await await getElement(page, 'Header');
     await header.clickOnCreateButton();
   };
 
-  When('the user creates a valid attribute', async function () {
+  When('the user creates a valid attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -57,7 +57,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  When('the user creates an attribute with an invalid code', async function () {
+  When('the user creates an attribute with an invalid code', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -67,7 +67,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid attribute', async function () {
+  Then('the user saves the valid attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_text_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -76,7 +76,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid asset attribute', async function () {
+  When('the user creates a valid asset attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -87,7 +87,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid asset attribute', async function () {
+  Then('the user saves the valid asset attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_asset_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -96,7 +96,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid asset collection attribute', async function () {
+  When('the user creates a valid asset collection attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -107,7 +107,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid asset collection attribute', async function () {
+  Then('the user saves the valid asset collection attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_asset_collection_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -116,7 +116,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid media-file attribute', async function () {
+  When('the user creates a valid media-file attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -127,7 +127,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid media-file attribute', async function () {
+  Then('the user saves the valid media-file attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_media_file_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -136,7 +136,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  Then('the user saves the attribute with an invalid code', async function () {
+  Then('the user saves the attribute with an invalid code', async function() {
     const requestContract = getRequestContract('Attribute/Create/invalid_code.json');
 
     await listenRequest(this.page, requestContract);
@@ -145,7 +145,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  Then('the user should not see any validation error', async function () {
+  Then('the user should not see any validation error', async function() {
     const modal = await await getElement(this.page, 'Modal');
 
     let error = null;
@@ -156,7 +156,7 @@ module.exports = async function (cucumber) {
     assert.strictEqual(error, '');
   });
 
-  Then('the user should see the validation error {string}', async function (expectedError) {
+  Then('the user should see the validation error {string}', async function(expectedError) {
     const modal = await await getElement(this.page, 'Modal');
 
     let error = null;
@@ -165,7 +165,7 @@ module.exports = async function (cucumber) {
     }
   });
 
-  When('the user creates a valid option attribute', async function () {
+  When('the user creates a valid option attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -176,7 +176,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid option attribute', async function () {
+  Then('the user saves the valid option attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_option_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -185,7 +185,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  When('the user creates a valid option collection attribute', async function () {
+  When('the user creates a valid option collection attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -196,7 +196,7 @@ module.exports = async function (cucumber) {
     await modal.switchField('pim_asset_manager.attribute.create.input.value_per_channel', true);
   });
 
-  Then('the user saves the valid option collection attribute', async function () {
+  Then('the user saves the valid option collection attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_option_collection_ok.json');
 
     await listenRequest(this.page, requestContract);
@@ -205,14 +205,14 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  Then('the user should not see the add attribute button', async function () {
+  Then('the user should not see the add attribute button', async function() {
     await answerChannelList.apply(this);
     await loadAttributeTab(this.page);
     const header = await await getElement(this.page, 'Header');
     await header.hasNoCreateButton();
   });
 
-  When('the user creates a valid number attribute', async function () {
+  When('the user creates a valid number attribute', async function() {
     await answerChannelList.apply(this);
     await startCreate(this.page);
 
@@ -222,7 +222,7 @@ module.exports = async function (cucumber) {
     await modal.select('.AknFieldContainer[data-code="type"]', 'number');
   });
 
-  Then('the user saves the valid number attribute', async function () {
+  Then('the user saves the valid number attribute', async function() {
     const requestContract = getRequestContract('Attribute/Create/attribute_number_ok.json');
 
     await listenRequest(this.page, requestContract);

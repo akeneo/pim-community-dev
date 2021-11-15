@@ -137,6 +137,7 @@ COPY tria/config config
 COPY tria/public public
 COPY tria/frontend frontend
 COPY tria/src src
+COPY tria/templates templates
 COPY grth grth
 COPY tria/upgrades upgrades
 COPY tria/front-packages front-packages
@@ -183,13 +184,16 @@ COPY tmp tmp
 # Build back
 WORKDIR /srv/pim/tmp/build-connector/back/
 
-RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
+ENV APP_ENV=prod
+
+RUN composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \
         --no-dev \
         --prefer-dist \
-        --optimize-autoloader
+        --optimize-autoloader && \
+     composer dump-env prod
 
 FROM node:14 AS builder-bigcommerceconnector-front
 
@@ -217,6 +221,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
 COPY --from=builder --chown=www-data:www-data /srv/pim/grth grth
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
+COPY --from=builder --chown=www-data:www-data /srv/pim/templates templates
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .

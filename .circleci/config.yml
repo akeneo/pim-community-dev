@@ -200,10 +200,12 @@ jobs:
               find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
               find front-packages/tailored-export -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
-              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash
+              find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
+              find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
+              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
       - run:
           name: Set front package directories owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages front-packages/
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/ front-packages/
       - restore_cache:
             name: Restore front package DSM cache
             key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
@@ -216,9 +218,15 @@ jobs:
       - restore_cache:
             name: Restore front package Tailored Export cache
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+      - restore_cache:
+            name: Restore micro frontend Process Tracker cache
+            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+      - restore_cache:
+            name: Restore micro-frontend Catalog Volume Monitoring cache
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
       - run:
           name: Set front packages directories owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/ front-packages/
       - run:
           name: Build front-packages
           command: make front-packages
@@ -258,6 +266,16 @@ jobs:
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
             paths:
                 - front-packages/tailored-export/
+      - save_cache:
+            name: Save micro frontend Process Tracker cache
+            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker/
+      - save_cache:
+            name: Save micro-frontend Catalog Volume Monitoring cache
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            paths:
+                - vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front/
       - persist_to_workspace:
           root: ~/
           paths:
@@ -1102,6 +1120,12 @@ jobs:
               name: Launch Tria in test mode
               command: make pim-test
           - run:
+              name: Lint Front
+              command: PIM_CONTEXT=test make lint-front
+          - run:
+              name: Unit Front
+              command: PIM_CONTEXT=test make unit-front
+          - run:
               name: Lint Back
               command: PIM_CONTEXT=test make lint-back
           - run:
@@ -1806,6 +1830,9 @@ jobs:
                 command:
                     make -C deployments/ remove_unused_resources
 
+  #########################
+  # Deployment validation #
+  #########################
   zdd_compliancy_diff:
       parameters:
         PRODUCT_TYPE:
@@ -1852,6 +1879,34 @@ jobs:
                 name: Run the tool zdd_compliancy_checker
                 command:
                     TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
+
+  post_deployment_e2e_validation:
+      parameters:
+        PRODUCT_TYPE:
+          default: "srnt"
+          type: string
+        PFID:
+          default: "srnt-c3po"
+          type: string
+      machine:
+          image: ubuntu-2004:202010-01
+      resource_class: medium
+      steps:
+          - attach_workspace:
+                at: ~/
+          - checkout
+          - install_yq
+          - run:
+                name: Run demo deployment with e2e test
+                command: |
+                    CURRENT_TIME=$(date +%s)
+                    LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                    VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | head -n1 | cut -c11-)
+                    TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ test_deployment_e2e
+          - store_artifacts:
+                path: cypress/screenshots/
+          - store_artifacts:
+                path: cypress/videos/
 
 workflows:
   pull_request:
@@ -1991,6 +2046,51 @@ workflows:
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
+
+  on_demand_deployment_validation:
+    jobs:
+      - deployment_validation:
+          name: "Start test ?"
+          type: approval
+          filters:
+            branches:
+              only: 
+                - master
+      - checkout:
+          requires:
+            - "Start test ?"
+      - ready_to_test?:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test instance ?"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt", "grth"]
+          type: approval
+          filters:
+            branches:
+              only: 
+                - master
+      - build_srnt_dev:
+          name: "Build image"
+          requires:
+            - "checkout"
+      - post_deployment_e2e_validation:
+          name: "[srnt] Post deployment e2e validation"
+          requires:
+            - "[srnt] Test instance ?"
+            - "Build image"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              PFID: ["srnt-c3po"]
+      - post_deployment_e2e_validation:
+          name: "[grth] Post deployment e2e validation"
+          requires:
+            - "[grth] Test instance ?"
+            - "Build image"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["grth"]
+              PFID: ["grth-r2d2"]
 
   on_demand_release:
     jobs:
@@ -2506,5 +2606,6 @@ commands:
                   echo ${CONNECTOR_BC_BRANCH}
                   git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
                   cd tmp/build-connector
+                  echo ${CONNECTOR_BC_BRANCH} > back/VERSION
                   pwd
                   echo `git rev-parse --short HEAD`

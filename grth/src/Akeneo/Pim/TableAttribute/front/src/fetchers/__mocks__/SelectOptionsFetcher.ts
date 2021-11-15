@@ -8,7 +8,7 @@ const ingredientsSelectOptions = [
   {code: 'sugar', labels: {en_US: 'Sugar'}},
 ] as SelectOption[];
 
-const nutritionScoreSelectOptions = [
+export const nutritionScoreSelectOptions = [
   {code: 'A', labels: {en_US: 'A'}},
   {code: 'B', labels: {en_US: 'B'}},
   {code: 'C', labels: {en_US: 'C'}},

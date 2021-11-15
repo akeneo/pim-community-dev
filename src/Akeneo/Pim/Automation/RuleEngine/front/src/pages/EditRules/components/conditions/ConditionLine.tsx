@@ -43,8 +43,9 @@ const ConditionLine: React.FC<Props> = ({
   const translate = useTranslate();
   const dialog = useDialogState();
   const router = useBackboneRouter();
-  const [Line, setLine] =
-    React.useState<React.FC<ConditionLineProps & {condition: Condition}>>();
+  const [Line, setLine] = React.useState<
+    React.FC<ConditionLineProps & {condition: Condition}>
+  >();
   React.useEffect(() => {
     getConditionModule(condition, router).then(module => setLine(() => module));
   }, []);
@@ -67,8 +68,7 @@ const ConditionLine: React.FC<Props> = ({
     <div
       className={`AknGrid-bodyRow${
         isFallback ? ' AknGrid-bodyRow--highlight' : ''
-      }`}
-    >
+      }`}>
       <Line
         condition={condition}
         lineNumber={lineNumber}

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pim/fetcher-registry'], function (
+define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pim/fetcher-registry'], function(
   $,
   _,
   Backbone,
@@ -9,18 +9,18 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pi
   FetcherRegistry
 ) {
   return BaseForm.extend({
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
-    addFieldExtension: function (event) {
+    addFieldExtension: function(event) {
       event.promises.push(
         FetcherRegistry.getFetcher('permission')
           .fetchAll()
           .then(
-            function (permissions) {
+            function(permissions) {
               var field = event.field;
 
               if (!this.isAttributeEditable(permissions, field.attribute)) {
@@ -43,7 +43,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pi
      *
      * @return {Boolean}
      */
-    isAttributeEditable: function (permissions, attribute) {
+    isAttributeEditable: function(permissions, attribute) {
       /* jshint sub:true */
       /* jscs:disable requireDotNotation */
       var attributeGroupPermission = _.findWhere(permissions.attribute_groups, {code: attribute.group});

@@ -5,7 +5,10 @@ import {locales, scopes, uiLocales} from '../../../../factories';
 
 describe('ClearCategoriesActionLine', () => {
   it('should display the clear categories action line', async () => {
-    const {findByText, findAllByText} = renderWithProviders(
+    const {
+      findByText,
+      findAllByText,
+    } = renderWithProviders(
       <ClearCategoriesActionLine
         currentCatalogLocale={'en_US'}
         lineNumber={1}

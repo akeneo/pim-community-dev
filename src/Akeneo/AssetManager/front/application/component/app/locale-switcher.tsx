@@ -40,7 +40,7 @@ const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: Dropdown
 
   return (
     <div
-      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      className="AknActionButton AknActionButton--withoutBorder"
       data-identifier={selectedElement.identifier}
       onClick={onClick}
       tabIndex={0}

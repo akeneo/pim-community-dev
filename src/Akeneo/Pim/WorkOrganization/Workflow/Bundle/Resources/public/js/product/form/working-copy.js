@@ -11,14 +11,14 @@ define([
   'pim/form',
   'pim/attribute-manager',
   'pimee/template/product/tab/attribute/modified-by-draft',
-], function ($, _, Backbone, BaseForm, AttributeManager, modifiedByDraftTemplate) {
+], function($, _, Backbone, BaseForm, AttributeManager, modifiedByDraftTemplate) {
   return BaseForm.extend({
     modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
 
     /**
      * @inheritdoc
      */
-    configure: function () {
+    configure: function() {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
@@ -30,7 +30,7 @@ define([
      *
      * @returns {Object|null}
      */
-    getWorkingCopy: function () {
+    getWorkingCopy: function() {
       var workingCopy = this.getFormData().meta.working_copy;
 
       return _.isEmpty(workingCopy) ? null : workingCopy;
@@ -43,7 +43,7 @@ define([
      *
      * @returns {Object}
      */
-    addFieldExtension: function (event) {
+    addFieldExtension: function(event) {
       var field = event.field;
       var isOwner = this.getFormData().meta.is_owner;
 
@@ -66,7 +66,7 @@ define([
      *
      * @returns {boolean}
      */
-    isValueChanged: function (field, locale, scope) {
+    isValueChanged: function(field, locale, scope) {
       if (null === this.getWorkingCopy()) {
         return false;
       }
@@ -98,7 +98,7 @@ define([
     /**
      * Trigger an event to open the working copy panel
      */
-    showWorkingCopy: function () {
+    showWorkingCopy: function() {
       this.getRoot().trigger('pim_enrich:form:draft:show_working_copy');
     },
 
@@ -107,7 +107,7 @@ define([
      *
      * @param event
      */
-    canBeCopied: function (event) {
+    canBeCopied: function(event) {
       var isValueChanged = this.isValueChanged(event.field, event.locale, event.scope);
       event.canBeCopied = event.canBeCopied || isValueChanged;
     },

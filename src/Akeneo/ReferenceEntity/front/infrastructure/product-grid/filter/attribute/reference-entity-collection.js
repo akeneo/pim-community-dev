@@ -11,7 +11,7 @@ define([
   'pim/initselect2',
   'pim/i18n',
   'jquery.select2',
-], function ($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, initSelect2, i18n) {
+], function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, initSelect2, i18n) {
   return TextFilter.extend({
     operatorChoices: [],
     choiceUrl: null,
@@ -27,7 +27,7 @@ define([
       operator: '.active .operator_choice',
     },
 
-    initialize: function (options) {
+    initialize: function(options) {
       _.extend(this.events, TextFilter.prototype.events);
 
       if (!_.isUndefined(options)) {
@@ -50,8 +50,10 @@ define([
       TextFilter.prototype.initialize.apply(this, arguments);
     },
 
-    _onSelectOperator: function (e) {
-      const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+    _onSelectOperator: function(e) {
+      const value = $(e.currentTarget)
+        .find('.operator_choice')
+        .attr('data-value');
       this._highlightDropdown(value, '.operator');
 
       if (_.contains(['empty', 'not empty'], value)) {
@@ -62,7 +64,7 @@ define([
       e.preventDefault();
     },
 
-    _getSelect2Config: function () {
+    _getSelect2Config: function() {
       var config = {
         multiple: true,
         width: '290px',
@@ -124,7 +126,7 @@ define([
       }
     },
 
-    _writeDOMValue: function (value) {
+    _writeDOMValue: function(value) {
       if (_.contains(['empty', 'not empty'], value.type)) {
         this._setInputValue(this.criteriaValueSelectors.value, []);
       } else {
@@ -136,7 +138,7 @@ define([
       return this;
     },
 
-    _readDOMValue: function () {
+    _readDOMValue: function() {
       var operator = this.emptyChoice ? this.$(this.criteriaValueSelectors.operator).data('value') : 'in';
 
       return {
@@ -150,7 +152,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    _renderCriteria: function () {
+    _renderCriteria: function() {
       TextFilter.prototype._renderCriteria.apply(this, arguments);
 
       this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
@@ -159,7 +161,7 @@ define([
       this._updateCriteriaHint();
     },
 
-    _onClickCriteriaSelector: function (e) {
+    _onClickCriteriaSelector: function(e) {
       e.stopPropagation();
       $('body').trigger('click');
       if (!this.popupCriteriaShowed) {
@@ -170,7 +172,7 @@ define([
       }
     },
 
-    _onReadCriteriaInputKey: function (e) {
+    _onReadCriteriaInputKey: function(e) {
       if (e.which == 13) {
         this.$(this.criteriaValueSelectors.value).select2('close');
         this._hideCriteria();
@@ -178,7 +180,7 @@ define([
       }
     },
 
-    _getResults: function (identifiers) {
+    _getResults: function(identifiers) {
       var results = [];
 
       const config = {
@@ -226,17 +228,17 @@ define([
       return results;
     },
 
-    _getInputValue: function (input) {
+    _getInputValue: function(input) {
       return this.$(input).select2('val');
     },
 
-    _setInputValue: function (input, value) {
+    _setInputValue: function(input, value) {
       this.$(input).select2('data', this._getResults(value));
 
       return this;
     },
 
-    _updateDOMValue: function () {
+    _updateDOMValue: function() {
       var currentValue = this.getValue();
       var data = this.$(this.criteriaValueSelectors.value).select2('data');
       if (0 === _.difference(currentValue.value, _.pluck(data, 'id')).length) {
@@ -246,7 +248,7 @@ define([
       return this._writeDOMValue(currentValue);
     },
 
-    _formatDisplayValue: function (value) {
+    _formatDisplayValue: function(value) {
       if (_.isEmpty(value.value)) {
         return value;
       }
@@ -256,7 +258,7 @@ define([
       };
     },
 
-    _getCriteriaHint: function () {
+    _getCriteriaHint: function() {
       var operator = this.$('.active .operator_choice').data('value');
       var type = this.getValue().type;
       if (_.contains(['empty', 'not empty'], operator)) {
@@ -275,7 +277,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    _enableInput: function () {
+    _enableInput: function() {
       this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
 
       TextFilter.prototype._enableInput.apply(this, arguments);
@@ -284,8 +286,10 @@ define([
     /**
      * {@inheritdoc}
      */
-    _disableInput: function () {
-      this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
+    _disableInput: function() {
+      this.$(this.criteriaValueSelectors.value)
+        .val('')
+        .select2('destroy');
 
       TextFilter.prototype._disableInput.apply(this, arguments);
     },

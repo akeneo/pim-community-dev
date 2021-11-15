@@ -63,74 +63,73 @@ export const addSelection = (query: Query, selection: Selection): Query => ({
 });
 
 let totalRequestCount = 0;
-export const useFetchResult =
-  (
-    createQuery: (
-      assetFamilyIdentifier: AssetFamilyIdentifier,
-      filters: Filter[],
-      searchValue: string,
-      excludedAssetCollection: AssetCode[],
-      channel: ChannelCode,
-      locale: LocaleCode,
-      page: number,
-      size: number
-    ) => Query
-  ) =>
-  (
-    isOpen: boolean,
-    dataProvider: AssetDataProvider,
-    assetFamilyIdentifier: AssetFamilyIdentifier | null,
+export const useFetchResult = (
+  createQuery: (
+    assetFamilyIdentifier: AssetFamilyIdentifier,
     filters: Filter[],
     searchValue: string,
     excludedAssetCollection: AssetCode[],
-    context: Context,
-    setSearchResult: (result: SearchResult<ListAsset>) => void
-  ) => {
-    const executeQuery = () => {
-      if (!isOpen || null === assetFamilyIdentifier) {
-        setSearchResult(emptySearchResult());
-        return;
-      }
+    channel: ChannelCode,
+    locale: LocaleCode,
+    page: number,
+    size: number
+  ) => Query
+) => (
+  isOpen: boolean,
+  dataProvider: AssetDataProvider,
+  assetFamilyIdentifier: AssetFamilyIdentifier | null,
+  filters: Filter[],
+  searchValue: string,
+  excludedAssetCollection: AssetCode[],
+  context: Context,
+  setSearchResult: (result: SearchResult<ListAsset>) => void
+) => {
+  const executeQuery = () => {
+    if (!isOpen || null === assetFamilyIdentifier) {
+      setSearchResult(emptySearchResult());
+      return;
+    }
 
-      const query = createQuery(
-        assetFamilyIdentifier,
-        filters,
-        searchValue,
-        excludedAssetCollection,
-        context.channel,
-        context.locale,
-        0,
-        FIRST_PAGE_SIZE
-      );
-      totalRequestCount++;
-
-      dataProvider.assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
-        const currentRequestCount = totalRequestCount;
-        setSearchResult(searchResult);
-        if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-          fetchMoreResult(currentRequestCount, dataProvider)(query, setSearchResult);
-        }
-      });
-    };
-
-    React.useEffect(executeQuery, [
+    const query = createQuery(
+      assetFamilyIdentifier,
       filters,
       searchValue,
-      context,
       excludedAssetCollection,
-      isOpen,
-      assetFamilyIdentifier,
-    ]);
+      context.channel,
+      context.locale,
+      0,
+      FIRST_PAGE_SIZE
+    );
+    totalRequestCount++;
 
-    return () => executeQuery();
-  };
-
-const fetchMoreResult =
-  (currentRequestCount: number, dataProvider: AssetDataProvider) =>
-  (query: Query, setSearchResult: (result: SearchResult<ListAsset>) => void) => {
-    dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
-      if (currentRequestCount === totalRequestCount) {
-        setSearchResult(searchResult);
+    dataProvider.assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
+      const currentRequestCount = totalRequestCount;
+      setSearchResult(searchResult);
+      if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
+        fetchMoreResult(currentRequestCount, dataProvider)(query, setSearchResult);
       }
     });
   };
+
+  React.useEffect(executeQuery, [
+    filters,
+    searchValue,
+    context,
+    excludedAssetCollection,
+    isOpen,
+    assetFamilyIdentifier,
+  ]);
+
+  return () => executeQuery();
+};
+
+const fetchMoreResult = (currentRequestCount: number, dataProvider: AssetDataProvider) => (
+  query: Query,
+  setSearchResult: (result: SearchResult<ListAsset>) => void
+) => {
+  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
+    if (currentRequestCount === totalRequestCount) {
+      setSearchResult(searchResult);
+    }
+  });
+};

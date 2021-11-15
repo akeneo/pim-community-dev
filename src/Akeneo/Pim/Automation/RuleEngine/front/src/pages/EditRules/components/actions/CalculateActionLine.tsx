@@ -68,8 +68,12 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
   const {setValue, watch, getValues} = useFormContext();
-  const {formName, typeFormName, getFormValue, isFormFieldInError} =
-    useControlledFormInputAction<string | null>(lineNumber);
+  const {
+    formName,
+    typeFormName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
   const currencies = useActiveCurrencies();
   watch(formName('source'));
   watch(formName('operation_list'));
@@ -147,8 +151,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
         'pimee_catalog_rule.form.edit.actions.calculate.helper'
       )}
       handleDelete={handleDelete}
-      lineNumber={lineNumber}
-    >
+      lineNumber={lineNumber}>
       <Controller
         name={typeFormName}
         as={<span hidden />}
@@ -202,8 +205,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                 isFormFieldInError('destination.field')
                   ? 'select2-container-error'
                   : ''
-              }
-            >
+              }>
               <AttributeSelector
                 data-testid={`edit-rules-action-${lineNumber}-destination-field`}
                 name={formName('destination.field')}
@@ -230,8 +232,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                       href={createAttributeLink(
                         router,
                         getFormValue('destination.field')
-                      )}
-                    >
+                      )}>
                       {translate(
                         'pimee_catalog_rule.exceptions.create_attribute_link'
                       )}
@@ -246,8 +247,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('destination.unit')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={MeasurementUnitSelector}
                   data-testid={`edit-rules-action-${lineNumber}-destination-unit`}
@@ -269,8 +269,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('destination.currency')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={CurrencySelector}
                   data-testid={`edit-rules-action-${lineNumber}-destination-currency`}
@@ -295,8 +294,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                 isFormFieldInError('round_precision')
                   ? 'select2-container-error'
                   : ''
-              }
-            >
+              }>
               <Controller
                 as={InputNumber}
                 data-testid={`edit-rules-action-${lineNumber}-round-precision`}
@@ -318,8 +316,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('destination.scope')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={ScopeSelector}
                   data-testid={`edit-rules-action-${lineNumber}-destination-scope`}
@@ -347,8 +344,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                   isFormFieldInError('destination.locale')
                     ? 'select2-container-error'
                     : ''
-                }
-              >
+                }>
                 <Controller
                   as={LocaleSelector}
                   data-testid={`edit-rules-action-${lineNumber}-destination-locale`}

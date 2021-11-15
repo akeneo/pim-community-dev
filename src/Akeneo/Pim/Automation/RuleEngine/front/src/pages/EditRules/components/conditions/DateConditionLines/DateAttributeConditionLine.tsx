@@ -64,8 +64,12 @@ const DateAttributeConditionLine: React.FC<DateAttributeConditionLineProps> = ({
     setDateAttribute
   );
 
-  const {onChangeOperator, onChangeValue, onDateTypeChange, onPeriodChange} =
-    useDateConditionHandlers(setDateType, setValueFormValue);
+  const {
+    onChangeOperator,
+    onChangeValue,
+    onDateTypeChange,
+    onPeriodChange,
+  } = useDateConditionHandlers(setDateType, setValueFormValue);
 
   if (!dateAttribute) {
     return null;

@@ -10,8 +10,9 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
   handleDelete,
 }) => {
   const translate = useTranslate();
-  const {fieldFormName, typeFormName} =
-    useControlledFormInputAction<boolean>(lineNumber);
+  const {fieldFormName, typeFormName} = useControlledFormInputAction<boolean>(
+    lineNumber
+  );
 
   return (
     <>
