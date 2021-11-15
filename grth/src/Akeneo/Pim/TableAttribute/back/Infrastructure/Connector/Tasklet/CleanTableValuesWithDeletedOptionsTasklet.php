@@ -36,19 +36,22 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
     private BulkSaverInterface $productSaver;
     private BulkSaverInterface $productModelSaver;
     private ?StepExecution $stepExecution = null;
+    private int $batchSize;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         GetAttributes $getAttributes,
         GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
         BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver
+        BulkSaverInterface $productModelSaver,
+        int $batchSize
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->getAttributes = $getAttributes;
         $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
         $this->productSaver = $productSaver;
         $this->productModelSaver = $productModelSaver;
+        $this->batchSize = $batchSize;
     }
 
     public function execute(): void
@@ -154,7 +157,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         $batch = [];
         foreach ($productOrModels as $productOrModel) {
             $batch[] = $productOrModel;
-            if (\count($batch) >= 1000) {
+            if (\count($batch) >= $this->batchSize) {
                 $saver->saveAll($batch, ['force_save' => true]);
                 $this->stepExecution->incrementProcessedItems(\count($batch));
                 $batch = [];
