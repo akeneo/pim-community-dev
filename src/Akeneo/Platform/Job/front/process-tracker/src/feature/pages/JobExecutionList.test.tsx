@@ -73,9 +73,15 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
   useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter): JobExecutionTable => {
-    const filteredRows = (1 === page ? firstPage : secondPage).filter(
-      row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
-    );
+    const filteredRows = (1 === page ? firstPage : secondPage)
+      .sort((a, b) => {
+        return 'DESC' === sort.direction
+          ? a[sort.column].localeCompare(b[sort.column])
+          : b[sort.column].localeCompare(a[sort.column]);
+      })
+      .filter(
+        row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
+      );
 
     return {
       rows: filteredRows,
@@ -90,7 +96,13 @@ jest.mock('../hooks/useJobExecutionTypes', () => ({
 }));
 
 jest.mock('../models/JobExecutionFilter', () => ({
-  getDefaultJobExecutionFilter: () => ({page: 1, size: 2, sort: {column: 'started_at', direction: 'DESC'}, status: [], type: []}),
+  getDefaultJobExecutionFilter: () => ({
+    page: 1,
+    size: 2,
+    sort: {column: 'started_at', direction: 'DESC'},
+    status: [],
+    type: [],
+  }),
 }));
 
 test('it renders a breadcrumb', () => {
@@ -124,6 +136,12 @@ test('it can filter on the job type', () => {
 
   expect(screen.getByText('Import job')).toBeInTheDocument();
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();
+});
+
+test('it can sort on the job name', () => {
+  renderWithProviders(<JobExecutionList />);
+
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
 });
 
 test('it can change page', () => {

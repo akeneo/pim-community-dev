@@ -26,8 +26,9 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
             key={columnHeader}
             isSortable
             onDirectionChange={direction => {
-              if ('none' === direction) return;
-              onSortChange({column: columnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
+              if ('none' !== direction) {
+                onSortChange({column: columnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
+              }
             }}
             sortDirection={currentSort.column === columnHeader ? sortDirection : 'none'}
           >
