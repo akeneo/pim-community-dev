@@ -162,6 +162,18 @@ describe('AddColumnModal', () => {
     expect(screen.getByText('pim_table_attribute.validations.duplicated_column_code')).toBeInTheDocument();
     expect(createButton.disabled).toEqual(true);
 
+    fireEvent.change(codeInput, {target: {value: 'product'}});
+    expect(screen.getByText('pim_table_attribute.validations.not_available_code')).toBeInTheDocument();
+    expect(createButton.disabled).toEqual(true);
+
+    fireEvent.change(codeInput, {target: {value: 'PRODUCT_MODel'}});
+    expect(screen.getByText('pim_table_attribute.validations.not_available_code')).toBeInTheDocument();
+    expect(createButton.disabled).toEqual(true);
+
+    fireEvent.change(codeInput, {target: {value: 'attribute'}});
+    expect(screen.getByText('pim_table_attribute.validations.not_available_code')).toBeInTheDocument();
+    expect(createButton.disabled).toEqual(true);
+
     fireEvent.change(codeInput, {target: {value: 'a_good_code'}});
     expect(createButton.disabled).toEqual(false);
   });
