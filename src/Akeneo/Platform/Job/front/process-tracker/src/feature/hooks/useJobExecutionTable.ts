@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
 import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const useJobExecutionTable = ({page, size, type, status, search}: JobExecutionFilter): JobExecutionTable | null => {
+const useJobExecutionTable = ({page, size, sort, type, status, search}: JobExecutionFilter): JobExecutionTable | null => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
@@ -13,6 +13,7 @@ const useJobExecutionTable = ({page, size, type, status, search}: JobExecutionFi
         body: JSON.stringify({
           page: page.toString(),
           size: size.toString(),
+          sort,
           status,
           type,
           search,
@@ -30,7 +31,7 @@ const useJobExecutionTable = ({page, size, type, status, search}: JobExecutionFi
     };
 
     searchJobExecution();
-  }, [isMounted, route, page, size, type, status, search]);
+  }, [isMounted, route, page, size, sort, type, status, search]);
 
   return jobExecutionTable;
 };

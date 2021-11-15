@@ -11,7 +11,13 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {JobExecutionSearchBar, JobExecutionTable} from '../components';
-import {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter, JobExecutionFilter, JobStatus} from '../models';
+import {
+  getDefaultJobExecutionFilter,
+  isDefaultJobExecutionFilter,
+  JobExecutionFilter,
+  JobExecutionFilterSort,
+  JobStatus,
+} from '../models';
 
 const JobExecutionList = () => {
   const activityHref = useRoute('pim_dashboard_index');
@@ -19,6 +25,14 @@ const JobExecutionList = () => {
   const [jobExecutionFilter, setJobExecutionFilter] = useState<JobExecutionFilter>(getDefaultJobExecutionFilter());
   const jobExecutionTable = useJobExecutionTable(jobExecutionFilter);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
+
+  const handlePageChange = (page: number) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
+  };
+
+  const handleSortChange = (sort: JobExecutionFilterSort) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, sort}));
+  };
 
   const handleStatusFilterChange = (status: JobStatus[]) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, status}));
@@ -31,10 +45,6 @@ const JobExecutionList = () => {
   const handleSearchChange = useCallback((search: string) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, search}));
   }, []);
-
-  const handlePageChange = (page: number) => {
-    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
-  };
 
   return (
     <>
@@ -80,6 +90,8 @@ const JobExecutionList = () => {
                 <JobExecutionTable
                   sticky={jobExecutionFilter.size < matchesCount ? 88 : 44}
                   jobExecutionRows={jobExecutionTable.rows}
+                  onSortChange={handleSortChange}
+                  currentSort={jobExecutionFilter.sort}
                 />
               </>
             )}
