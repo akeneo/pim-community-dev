@@ -226,7 +226,7 @@ jobs:
             key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
       - run:
           name: Set front packages directories owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/ front-packages/
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/ front-packages/
       - run:
           name: Build front-packages
           command: make front-packages
