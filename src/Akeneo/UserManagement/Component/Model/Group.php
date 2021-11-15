@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Group implements GroupInterface
 {
+    public const TYPE_DEFAULT = 'default';
+
     /** @var integer */
     protected $id;
 
@@ -22,6 +24,7 @@ class Group implements GroupInterface
     protected $roles;
 
     protected ?array $defaultPermissions = null;
+    protected string $type = self::TYPE_DEFAULT;
 
     /**
      * @param string $name [optional] Group name
@@ -193,5 +196,15 @@ class Group implements GroupInterface
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }
