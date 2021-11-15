@@ -7,7 +7,7 @@ beforeEach(() => {
     fetchMock.resetMocks();
 });
 
-test('it deletes the connected app', async (done) => {
+test('it deletes the connected app', async done => {
     const {result} = renderHook(() => useDeleteApp('connectionCodeA'));
     await result.current();
     expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_apps_rest_delete?connectionCode=connectionCodeA', {
@@ -17,7 +17,7 @@ test('it deletes the connected app', async (done) => {
     done();
 });
 
-test('it rejects when the connected app could not be deleted', async (done) => {
+test('it rejects when the connected app could not be deleted', async done => {
     mockFetchResponses({
         'akeneo_connectivity_connection_apps_rest_delete?connectionCode=connectionCodeA': {
             status: 500,

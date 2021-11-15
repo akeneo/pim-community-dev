@@ -26,19 +26,20 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('The delete app page renders and I can cancel', async (done) => {
+test('The delete app page renders and I can cancel', () => {
     renderWithProviders(<ConnectedAppDeletePage />);
 
     expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.title')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')).toBeInTheDocument();
+    expect(
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')
+    ).toBeInTheDocument();
 
     userEvent.click(screen.getByText('pim_common.cancel'));
 
     expect(historyMock.history.location.pathname).toBe('/akeneo_connectivity_connection_connect_connected_apps_edit');
-    done();
 });
 
-test('The delete app page renders and I can delete the app', async (done) => {
+test('The delete app page renders and I can delete the app', async done => {
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
             <ConnectedAppDeletePage />
@@ -46,21 +47,27 @@ test('The delete app page renders and I can delete the app', async (done) => {
     );
 
     expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.title')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')).toBeInTheDocument();
+    expect(
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')
+    ).toBeInTheDocument();
 
     userEvent.click(screen.getByText('pim_common.delete'));
 
     await waitFor(() => expect(useDeleteApp).toHaveBeenCalled());
-    await waitFor(() => expect(notify).toHaveBeenCalledWith(
-        NotificationLevel.SUCCESS,
-        'akeneo_connectivity.connection.connect.connected_apps.delete.flash.success'
-    ));
-    await waitFor(() => expect(historyMock.history.location.pathname).toBe('/akeneo_connectivity_connection_connect_connected_apps'));
+    await waitFor(() =>
+        expect(notify).toHaveBeenCalledWith(
+            NotificationLevel.SUCCESS,
+            'akeneo_connectivity.connection.connect.connected_apps.delete.flash.success'
+        )
+    );
+    await waitFor(() =>
+        expect(historyMock.history.location.pathname).toBe('/akeneo_connectivity_connection_connect_connected_apps')
+    );
     done();
 });
 
-test('The delete app page renders and a notification is shown when the deletion fails', async (done) => {
-    (useDeleteApp  as jest.Mock).mockImplementation(() => () => Promise.reject());
+test('The delete app page renders and a notification is shown when the deletion fails', async done => {
+    (useDeleteApp as jest.Mock).mockImplementation(() => () => Promise.reject());
 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
@@ -69,14 +76,18 @@ test('The delete app page renders and a notification is shown when the deletion 
     );
 
     expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.title')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')).toBeInTheDocument();
+    expect(
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.delete.subtitle')
+    ).toBeInTheDocument();
 
     userEvent.click(screen.getByText('pim_common.delete'));
 
     await waitFor(() => expect(useDeleteApp).toHaveBeenCalled());
-    await waitFor(() => expect(notify).toHaveBeenCalledWith(
-        NotificationLevel.ERROR,
-        'akeneo_connectivity.connection.connect.connected_apps.delete.flash.error'
-    ));
+    await waitFor(() =>
+        expect(notify).toHaveBeenCalledWith(
+            NotificationLevel.ERROR,
+            'akeneo_connectivity.connection.connect.connected_apps.delete.flash.error'
+        )
+    );
     done();
 });
