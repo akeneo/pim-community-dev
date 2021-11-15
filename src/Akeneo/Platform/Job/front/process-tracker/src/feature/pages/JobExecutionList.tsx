@@ -11,7 +11,13 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {JobExecutionTable, StatusFilter, TypeFilter} from '../components';
-import {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter, JobExecutionFilter, JobStatus} from '../models';
+import {
+  getDefaultJobExecutionFilter,
+  isDefaultJobExecutionFilter,
+  JobExecutionFilter,
+  JobExecutionFilterSort,
+  JobStatus,
+} from '../models';
 
 const JobExecutionList = () => {
   const activityHref = useRoute('pim_dashboard_index');
@@ -22,6 +28,10 @@ const JobExecutionList = () => {
 
   const handlePageChange = (page: number) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
+  };
+
+  const handleSortChange = (sort: JobExecutionFilterSort) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, sort}));
   };
 
   const handleStatusFilterChange = (status: JobStatus[]) => {
@@ -80,6 +90,8 @@ const JobExecutionList = () => {
                 <JobExecutionTable
                   sticky={jobExecutionFilter.size < matchesCount ? 88 : 44}
                   jobExecutionRows={jobExecutionTable.rows}
+                  onSortChange={handleSortChange}
+                  currentSort={jobExecutionFilter.sort}
                 />
               </>
             )}

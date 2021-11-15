@@ -72,7 +72,7 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 }));
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
-  useJobExecutionTable: ({page, size, type, status}: JobExecutionFilter): JobExecutionTable => {
+  useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter): JobExecutionTable => {
     const filteredRows = (1 === page ? firstPage : secondPage).filter(
       row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
     );

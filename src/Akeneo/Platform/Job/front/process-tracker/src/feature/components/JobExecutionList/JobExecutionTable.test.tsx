@@ -3,6 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionRow} from 'feature/models/JobExecutionTable';
+import {JobExecutionFilterSort} from 'feature/models';
 
 const rows: JobExecutionRow[] = [
   {
@@ -21,8 +22,13 @@ const rows: JobExecutionRow[] = [
   },
 ];
 
+const sort: JobExecutionFilterSort = {
+  column: 'started_at',
+  direction: 'ASC',
+};
+
 test('it renders a Job execution Table', () => {
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} />);
+  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} />);
 
   expect(screen.getByText('Nice name')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.widget.last_operations.job_type.export')).toBeInTheDocument();
