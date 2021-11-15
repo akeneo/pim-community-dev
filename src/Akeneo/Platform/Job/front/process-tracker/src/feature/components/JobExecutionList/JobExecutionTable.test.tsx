@@ -4,6 +4,7 @@ import {screen} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionRow} from 'feature/models/JobExecutionTable';
 import {JobExecutionFilterSort} from 'feature/models';
+import userEvent from '@testing-library/user-event';
 
 const rows: JobExecutionRow[] = [
   {
@@ -38,4 +39,14 @@ test('it renders a Job execution Table', () => {
 
   // One header and one row
   expect(screen.getAllByRole('row')).toHaveLength(2);
+});
+
+test('it can sort a Job execution Table', () => {
+  const handleSortChange = jest.fn();
+
+  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={handleSortChange} currentSort={sort} />);
+
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
+
+  expect(handleSortChange).toBeCalledWith({column: 'job_name', direction: 'ASC'});
 });
