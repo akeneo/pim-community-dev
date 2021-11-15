@@ -1,13 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
-import {JobExecutionTable, JobStatus} from '../models';
+import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const useJobExecutionTable = (
-  page: number,
-  size: number,
-  type: string[],
-  status: JobStatus[]
-): JobExecutionTable | null => {
+const useJobExecutionTable = ({page, size, type, status}: JobExecutionFilter): JobExecutionTable | null => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
