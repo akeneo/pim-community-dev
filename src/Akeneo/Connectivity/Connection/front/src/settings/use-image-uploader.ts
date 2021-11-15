@@ -60,8 +60,8 @@ export const useImageUploader = (handleOnUpload: (e: {loaded: number; total: num
             });
 
             return ok<UploadedImage>(result);
-        } catch (e) {
-            return err(e.responseJSON);
+        } catch (error: any) {
+            return err(error.responseJSON);
         }
     };
 };

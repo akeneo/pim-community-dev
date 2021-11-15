@@ -3,7 +3,7 @@ import {render, fireEvent} from '@testing-library/react';
 import NewOptionPlaceholder from 'akeneopimstructure/js/attribute-option/components/NewOptionPlaceholder';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme, Table} from 'akeneo-design-system';
 
 describe('NewOptionPlaceholder', () => {
   beforeAll(() => {
@@ -34,7 +34,11 @@ describe('NewOptionPlaceholder', () => {
     return render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <NewOptionPlaceholder {...props} />
+          <Table>
+            <Table.Body>
+              <NewOptionPlaceholder {...props} />
+            </Table.Body>
+          </Table>
         </ThemeProvider>
       </DependenciesProvider>
     );
