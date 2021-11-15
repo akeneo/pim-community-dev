@@ -174,7 +174,8 @@ jobs:
               find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
               find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
-              echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash
+              find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
+              echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash
       - run:
           name: Set front package directories owner to circleci
           command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
@@ -187,6 +188,9 @@ jobs:
       - restore_cache:
             name: Restore front package Shared cache
             key: front-packages-shared-{{ checksum "~/shared.hash" }}
+      - restore_cache:
+            name: Restore micro-frontend Catalog Volume Monitoring cache
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
       - run:
           name: Set font package directories owner to docker
           command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
@@ -224,6 +228,11 @@ jobs:
             key: front-packages-shared-{{ checksum "~/shared.hash" }}
             paths:
                 - << parameters.path_to_front_packages >>/shared/
+      - save_cache:
+            name: Save micro-frontend Catalog Volume Monitoring cache
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            paths:
+                - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
       - persist_to_workspace:
           root: ~/
           paths:
