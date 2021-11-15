@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
-import {Dummy} from './feature/Dummy';
+
+type Props = {
+  children?: ReactNode;
+};
 
 const Container = styled.div`
   display: flex;
@@ -26,15 +29,13 @@ const Page = styled.div`
   padding: 40px;
 `;
 
-const FakePIM = () => {
+const FakePIM = ({children}: Props) => {
   return (
     <Container>
       <Menu>
         <AkeneoIcon size={36} />
       </Menu>
-      <Page>
-        <Dummy />
-      </Page>
+      <Page>{children}</Page>
     </Container>
   );
 };
