@@ -8,6 +8,7 @@ type CompletenessFilterProps = {
   onChange: (newValue: CompletenessValue) => void;
 };
 
+// TODO RAC-1010 Use DSM Dropdown
 const CompletenessFilterButtonView = ({
   selectedElement,
   onClick,
@@ -19,7 +20,7 @@ const CompletenessFilterButtonView = ({
 
   return (
     <div
-      className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+      className="AknActionButton AknActionButton--withoutBorder"
       data-identifier={selectedElement.identifier}
       onClick={onClick}
       tabIndex={0}

@@ -74,6 +74,7 @@
   },
   "workspaces": [
     "front-packages/tailored-export",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
     "vendor/akeneo/pim-community-dev/front-packages/measurement",

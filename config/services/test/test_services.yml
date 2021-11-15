@@ -110,17 +110,6 @@ services:
         arguments:
             - '@akeneo_integration_tests.event_dispatcher.inner'
 
-    akeneo_integration_tests.helper.authenticator:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
-        arguments:
-            - '@pim_user.repository.user'
-            - '@pim_user.factory.user'
-            - '@pim_user.saver.user'
-            - '@pim_user.repository.group'
-            - '@pim_user.repository.role'
-            - '@security.token_storage'
-            - '@session'
-
     akeneo_rule_engine.event_subscriber.log_execution:
         class: '%akeneo_rule_engine.event_subscriber.log_execution.class%'
         arguments:
@@ -128,8 +117,3 @@ services:
             - 'info'
         tags:
             - { name: kernel.event_subscriber }
-
-    akeneo_integration_tests.helper.web_client:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
-        arguments:
-            - '@router'
