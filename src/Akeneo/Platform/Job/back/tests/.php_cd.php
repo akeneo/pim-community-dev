@@ -29,6 +29,7 @@ $rules = [
             'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Types',
+            'InvalidArgumentException',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Symfony\Component',

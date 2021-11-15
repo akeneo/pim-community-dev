@@ -68,7 +68,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'a_product_import',
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
-                null,
+                'peter',
                 'STARTED',
                 0,
                 2,
@@ -80,7 +80,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'a_product_import',
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
-                null,
+                'julia',
                 'COMPLETED',
                 4,
                 0,
@@ -182,6 +182,205 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_ordered_by_job_name_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'job_name';
+        $query->sortDirection = 'ASC';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'a_product_export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_ordered_by_type_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'type';
+        $query->sortDirection = 'ASC';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'a_product_export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_ordered_by_started_at_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'started_at';
+        $query->sortDirection = 'ASC';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                'peter',
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_ordered_by_username_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'username';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                'peter',
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_ordered_by_status_job_executions()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->sortColumn = 'status';
+        $query->sortDirection = 'ASC';
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'a_product_import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'a_product_import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_ordered_by_warning_count_job_executions()
     {
         $query = new SearchJobExecutionQuery();
@@ -194,7 +393,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'a_product_import',
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
-                null,
+                'julia',
                 'COMPLETED',
                 4,
                 0,
@@ -206,7 +405,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'a_product_import',
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
-                null,
+                'peter',
                 'STARTED',
                 0,
                 2,
@@ -268,12 +467,14 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
+            'user' => 'julia',
             'status' => BatchStatus::COMPLETED,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
+            'user' => 'peter',
             'status' => BatchStatus::STARTED,
         ]);
 
