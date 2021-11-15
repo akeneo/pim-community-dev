@@ -11,7 +11,6 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
-use InvalidArgumentException;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -136,7 +135,7 @@ SQL;
         $sortDirection = $query->sortDirection;
 
         if (!in_array($sortDirection, ['ASC', 'DESC'])) {
-            throw new InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
+            throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
         }
 
         switch ($query->sortColumn) {
@@ -159,7 +158,7 @@ SQL;
                 $orderByColumn = "warning_count $sortDirection";
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
+                throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
         }
 
         return sprintf('ORDER BY %s', $orderByColumn);
