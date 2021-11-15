@@ -56,7 +56,14 @@ class AuthorizeAction
 
         if($request->query->get('scope', '') === 'openid'){
             //if app.partner = akeneo
+            //Assume that the APP is already activated $appConfirmation->getAppId() must return smthg
             $appConfirmation = $this->appConfirmationQuery->execute($request->query->get('client_id', ''));
+
+            if(null === $appConfirmation)
+            {
+                return new Response('<h1 style="color:red">APP must be activated first, we need an access token for the APP before trying to connect to it.<br/> Go to you PIM/Connect/Apps/Yell-app/Connect.</h1>');
+            }
+
             $userConfirmation = AppConfirmation::create(
                 $appConfirmation->getAppId(),
                 $this->tokenStorage->getToken()->getUser()->getId(),
