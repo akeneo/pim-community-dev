@@ -12,3 +12,4 @@ parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Platform/Job
