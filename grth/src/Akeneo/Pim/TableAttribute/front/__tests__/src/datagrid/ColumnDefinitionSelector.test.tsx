@@ -3,15 +3,14 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, screen, fireEvent} from '@testing-library/react';
 import {ColumnDefinitionSelector} from '../../../src/datagrid';
 import {getComplexTableAttribute} from '../../factories';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 describe('ColumnDefinitionSelector', () => {
   it('should display current column', () => {
     renderWithProviders(
-      <ColumnDefinitionSelector
-        attribute={getComplexTableAttribute()}
-        value={getComplexTableAttribute().table_configuration[0]}
-        onChange={jest.fn()}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <ColumnDefinitionSelector value={getComplexTableAttribute().table_configuration[0]} onChange={jest.fn()} />
+      </TestAttributeContextProvider>
     );
 
     expect(screen.getByText('Ingredients')).toBeInTheDocument();
@@ -20,11 +19,9 @@ describe('ColumnDefinitionSelector', () => {
   it('should display all columns, then update it', () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <ColumnDefinitionSelector
-        attribute={getComplexTableAttribute()}
-        value={getComplexTableAttribute().table_configuration[0]}
-        onChange={handleChange}
-      />
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <ColumnDefinitionSelector value={getComplexTableAttribute().table_configuration[0]} onChange={handleChange} />
+      </TestAttributeContextProvider>
     );
 
     act(() => {

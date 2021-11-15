@@ -163,11 +163,7 @@ pim_table_attribute:
       no_rows_title: "Su tabla {{ attributeLabel }} está vacía."
       no_rows_subtitle: Añada filas para definir nuevas propiedades
       no_rows_subtitle_on_readonly: Para poder editar este atributo, vaya a la página de configuración de atributos o póngase en contacto con el administrador de PIM.
-      no_add_options_title: Añadir filas
-      no_add_options: Administre sus opciones de «{{ attributeLabel }}»
       no_add_options_unallowed: Póngase en contacto con el administrador de PIM para administrar las opciones de «{{ attributeLabel }}»
-      no_add_options_link: aquí
-      no_edit_permission: Sin permiso de edición
       actions:
         delete_row: Eliminar esta fila
         clear_row: Borrar esta fila

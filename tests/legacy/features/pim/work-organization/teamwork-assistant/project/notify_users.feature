@@ -257,58 +257,6 @@ Feature: Notify users after a project creation
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
-  @skip
-  Scenario: Successfully notify users when creating a project on decoration
-    And I am logged in as "Julia"
-    When I am on the products grid
-    And I open the category tree
-    And I filter by "category" with operator "" and value "Decoration"
-    And I click on the create project button
-    When I fill in the following information in the popin:
-      | project-label       | 2016 summer collection |
-      | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2118             |
-    And I press the "Save" button
-    Then I should be on the products page
-    And I go on the last executed job resume of "project_calculation"
-    And I wait for the "project_calculation" job to finish
-    And I am on the homepage
-    # Project creator must not be notified for project creation but only once the job is over.
-    And I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                                                     |
-      | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
-    And I am logged in as "admin"
-    # John has only read on categories and attribute groups. He can't edit, so he's not notified.
-    And I am on the homepage
-    And I should have 0 new notification
-    And I am logged in as "Claude"
-    # Claude can't see Decoration category.
-    And I am on the homepage
-    And I should have 0 new notification
-    And I am logged in as "Marc"
-    # Marc can't see Decoration category.
-    And I am on the homepage
-    And I should have 0 new notification
-    And I am logged in as "Teddy"
-    # Teddy can't see Decoration category.
-    And I am on the homepage
-    And I should have 0 new notification
-    And I am logged in as "Mary"
-    # Mary can edit Decoration category and edit Marketing attribute group.
-    And I am on the homepage
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-    And I am logged in as "Kathy"
-    # Kathy can edit Decoration category and edit Picture attribute group.
-    And I am on the homepage
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
-
   Scenario: Successfully not notify users if the project is 100% done at project creation
     Given the following product values:
       | product        | attribute   | value                                | locale | scope     |

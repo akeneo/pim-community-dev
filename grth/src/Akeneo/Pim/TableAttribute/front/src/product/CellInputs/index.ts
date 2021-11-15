@@ -7,8 +7,9 @@ export type CellInput = React.FC<{
   columnDefinition: ColumnDefinition;
   onChange: (value: any) => void;
   inError: boolean;
-  attribute: TableAttribute;
   highlighted: boolean;
+  attribute: TableAttribute;
+  setAttribute: (tableAttribute: TableAttribute) => void;
 }>;
 
 export type CellInputsMapping = {

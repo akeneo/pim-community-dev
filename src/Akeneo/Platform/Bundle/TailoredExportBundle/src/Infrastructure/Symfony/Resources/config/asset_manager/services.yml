@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler:
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindMediaFileInfoCollection'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator'
+    public: false

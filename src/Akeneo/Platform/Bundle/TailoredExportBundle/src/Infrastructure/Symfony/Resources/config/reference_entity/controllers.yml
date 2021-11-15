@@ -1,0 +1,7 @@
+services:
+    akeneo.tailored_export.controller.get_records_actions:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetRecordsAction'
+        public: true
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
+
