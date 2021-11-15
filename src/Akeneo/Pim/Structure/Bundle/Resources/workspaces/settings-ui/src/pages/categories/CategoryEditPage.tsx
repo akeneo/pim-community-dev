@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {MouseEvent, FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {
   Breadcrumb,
@@ -75,8 +75,15 @@ const CategoryEditPage: FC = () => {
 
   const uiLocale = userContext.get('uiLocale');
 
-  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
-  const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
+  const settingsIndexHref = router.generate('pim_settings_index');
+  const categoryTreeIndexHref = router.generate('pim_enrich_categorytree_index');
+  const handleBreadcrumbClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    router.redirect(href)
+  };
+
+  const followSettingsIndex = () => router.redirect(settingsIndexHref);
+  const followCategoriesIndex = () => router.redirect(categoryTreeIndexHref);
   const followCategoryTree = () => {
     if (!tree) {
       return;
