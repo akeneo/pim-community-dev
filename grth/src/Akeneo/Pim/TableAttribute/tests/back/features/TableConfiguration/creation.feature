@@ -32,6 +32,18 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having column code "wrong code"
     Then There is a violation with message: The column code can only contain letters, numbers and underscores
 
+  Scenario: Cannot create a table configuration with "product" code
+    When I create a table attribute with a configuration having column code "product"
+    Then There is a violation with message: This column code is not available
+
+  Scenario: Cannot create a table configuration with "product_model" code
+    When I create a table attribute with a configuration having column code "product_model"
+    Then There is a violation with message: This column code is not available
+
+  Scenario: Cannot create a table configuration with "attribute" code
+    When I create a table attribute with a configuration having column code "attribute"
+    Then There is a violation with message: This column code is not available
+
   Scenario: Cannot create a table configuration with blank column code
     When I create a table attribute with a configuration having column code ""
     Then There is a violation with message: The column code must be filled

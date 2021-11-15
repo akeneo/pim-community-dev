@@ -26,6 +26,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                       - Regex:
                           pattern: /^[a-zA-Z0-9_]+$/
                           message: pim_table_configuration.validation.table_configuration.invalid_code
+                      - Regex:
+                          pattern: /^(?!(product|product_model|attribute)$)/i
+                          message: pim_table_configuration.validation.table_configuration.not_available_code
                       - Length:
                           max: 100
                           maxMessage: pim_table_configuration.validation.table_configuration.too_long_code
