@@ -101,8 +101,18 @@ services:
     akeneo_assetmanager.infrastructure.loader.restricted_protocol_stream_loader:
         class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\RestrictedProtocolStreamLoader'
         arguments:
-            - '@akeneo_assetmanager.infrastructure.loader.stream_loader'
+            - '@akeneo_assetmanager.infrastructure.loader.reject_invalid_redirection_stream_loader'
             - '%allowed_media_link_protocols%'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
+
+    akeneo_assetmanager.infrastructure.loader.reject_invalid_redirection_stream_loader:
+        class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\RejectInvalidRedirectionStreamLoader'
+        arguments:
+            - '%allowed_media_link_protocols%'
+            - '@Akeneo\AssetManager\Infrastructure\Network\DnsLookup'
+            - '@Akeneo\AssetManager\Infrastructure\Network\IpMatcher'
+            - '%env(string:ALLOWED_NETWORK_ASSETS_WHITELIST)%'
         tags:
             - { name: liip_imagine.binary.loader, loader: stream_data_loader }
 
