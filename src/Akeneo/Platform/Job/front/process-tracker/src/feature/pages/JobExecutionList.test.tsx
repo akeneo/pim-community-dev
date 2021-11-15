@@ -90,7 +90,7 @@ jest.mock('../hooks/useJobExecutionTypes', () => ({
 }));
 
 jest.mock('../models/JobExecutionFilter', () => ({
-  getDefaultJobExecutionFilter: () => ({page: 1, size: 2, status: [], type: []}),
+  getDefaultJobExecutionFilter: () => ({page: 1, size: 2, sort: {column: 'started_at', direction: 'DESC'}, status: [], type: []}),
 }));
 
 test('it renders a breadcrumb', () => {
