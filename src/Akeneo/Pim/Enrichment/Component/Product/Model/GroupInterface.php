@@ -76,37 +76,4 @@ interface GroupInterface extends
      */
     public function setLabel($label);
 
-    /**
-     * Add a product to the collection (if not already existing)
-     *
-     * @param ProductInterface $product
-     *
-     * @return GroupInterface
-     */
-    public function addProduct(ProductInterface $product);
-
-    /**
-     * Remove a product from the collection
-     *
-     * @param ProductInterface $product
-     *
-     * @return GroupInterface
-     */
-    public function removeProduct(ProductInterface $product);
-
-    /**
-     * Get products collection
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getProducts();
-
-    /**
-     * Set a products collection
-     *
-     * @param array $products
-     *
-     * @return GroupInterface
-     */
-    public function setProducts(array $products);
 }

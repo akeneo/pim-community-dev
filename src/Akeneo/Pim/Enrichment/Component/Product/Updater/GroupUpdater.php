@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -12,6 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
 use Webmozart\Assert\Assert;
 
 /**
@@ -32,19 +34,18 @@ class GroupUpdater implements ObjectUpdaterInterface
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
 
-    /**
-     * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     */
+    private EntityManager $entityManager;
+
     public function __construct(
-        GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        GroupTypeRepositoryInterface        $groupTypeRepository,
+        AttributeRepositoryInterface        $attributeRepository,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        EntityManager $entityManager
     ) {
         $this->groupTypeRepository = $groupTypeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -160,23 +161,24 @@ class GroupUpdater implements ObjectUpdaterInterface
         ->addFilter('identifier', Operators::NOT_IN_LIST, $productIdentifiers);
         $products = $pqb->execute();
         foreach ($products as $product) {
-            $group->removeProduct($product);
+            /** @var Product $productEntity */
+            $productEntity = $this->entityManager->find(Product::class, $product->getId());
+            $productEntity->removeGroup($group);
+            $this->entityManager->flush($productEntity);
         }
 
         // Extract the products that are not already in the group to add them to it
-        $productIdentifiersToAdd = array_values(array_diff($productIdentifiers, $oldProductIdentifiers));
-
-        if (empty($productIdentifiersToAdd)) {
-            return;
-        }
+        $productIdentifiersToAdd = array_diff($productIdentifiers, $oldProductIdentifiers);
 
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiersToAdd);
-
         $products = $pqb->execute();
 
         foreach ($products as $product) {
-            $group->addProduct($product);
+            /** @var Product $productEntity */
+            $productEntity = $this->entityManager->find(Product::class, $product->getId());
+            $productEntity->addGroup($group);
+            $this->entityManager->flush($productEntity);
         }
     }
 }
