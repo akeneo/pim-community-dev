@@ -107,6 +107,7 @@
 - PIM-10110: Enrich Service check logging upon exception and slow service check.
 - PIM-10152: Fix Table attribute option modal not scrolling on label translations
 - PIM-10120: Remove obsolete asset reference data
+- PIM-10151: Fix category field in rule edit form
 
 ## Improvements
 
