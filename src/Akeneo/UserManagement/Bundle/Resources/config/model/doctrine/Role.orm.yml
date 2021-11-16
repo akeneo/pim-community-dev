@@ -19,7 +19,7 @@ Akeneo\UserManagement\Component\Model\Role:
             lenght: 30
         type:
             type: string
-            nullable: true
+            nullable: false
             length: 30
             options:
-                default: null
+                default: 'default'

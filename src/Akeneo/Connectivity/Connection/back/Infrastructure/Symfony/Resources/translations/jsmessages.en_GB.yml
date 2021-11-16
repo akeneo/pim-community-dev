@@ -36,9 +36,21 @@ akeneo_connectivity.connection:
       title: Want to connect your PIM with another application? 🤟
       sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
       link: Access the marketplace
+      extensions:
+        total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+      apps:
+        total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
     apps:
       wizard:
+        title: Connect
+        action:
+          confirm: Confirm
+          cancel: Cancel
+          previous: Previous
+          next: Next
+          allow_and_next: Allow and next
         progress:
+          authorizations: Authorizations
           permissions: Permissions
   connections: Connections
   secondary_actions:

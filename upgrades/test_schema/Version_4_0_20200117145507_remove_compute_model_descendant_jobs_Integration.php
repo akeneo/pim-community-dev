@@ -124,7 +124,7 @@ SQL;
     {
         $sql = "SELECT id FROM akeneo_batch_job_instance WHERE code = 'compute_product_models_descendants'";
 
-        $jobId = $this->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN, 0)[0] ?? null;
+        $jobId = $this->getConnection()->executeQuery($sql)->fetchFirstColumn()[0] ?? null;
 
         return $jobId === null ? null : (int) $jobId;
     }
@@ -143,12 +143,12 @@ SQL;
 
     private function numberOfJobExecutions(): int
     {
-        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution')->fetch()['count'];
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution')->fetchAssociative()['count'];
     }
 
     private function numberOfJobsInQueue(): int
     {
-        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetch()['count'];
+        return (int) $this->getConnection()->executeQuery('SELECT COUNT(*) AS count FROM akeneo_batch_job_execution_queue')->fetchAssociative()['count'];
     }
 
     private function getMigrationLabel(): string

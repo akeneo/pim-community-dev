@@ -15,6 +15,7 @@ pim_catalog_volume:
     count_products: Products
     average_max_attributes_per_family: Attributes per family
     count_channels: Channels
+    count_locales: Locales (enabled)
     count_scopable_attributes: Scopable attributes
     count_localizable_and_scopable_attributes: Localisable and scopable attributes
     count_localizable_attributes: Localisable attributes
@@ -25,6 +26,5 @@ pim_catalog_volume:
     count_category_trees: Category trees
     count_variant_products: Variant products
     count_product_models: Product models
-    warning: Wow! You hit a record with this axis! Do not hesitate to contact us if you need any help with this kind of volume.
   mean: 'Mean:'
   max: 'Max:'

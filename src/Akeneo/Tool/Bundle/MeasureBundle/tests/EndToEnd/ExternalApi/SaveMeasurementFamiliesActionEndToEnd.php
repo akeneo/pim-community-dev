@@ -14,8 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
 {
-    /** @var MeasurementFamilyRepositoryInterface */
-    private $measurementFamilyRepository;
+    private ?MeasurementFamilyRepositoryInterface $measurementFamilyRepository = null;
 
     public function setUp(): void
     {
@@ -480,9 +479,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
             )
         ];
 
-        $response = $this->request(array_map(function (MeasurementFamily $measurementFamily) {
-            return $measurementFamily->normalizeWithIndexedUnits();
-        }, $measurementFamilies));
+        $response = $this->request(array_map(static fn (MeasurementFamily $measurementFamily) => $measurementFamily->normalizeWithIndexedUnits(), $measurementFamilies));
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame([

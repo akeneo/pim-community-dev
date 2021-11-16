@@ -79,7 +79,8 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
   const portalRef = useRef<HTMLDivElement>(portalNode);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState<boolean>(false);
-  verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
+  const [overlayPosition, setOverlayPosition] = useState<number[]>([0, 0, 0]);
+  const overlayVerticalPosition = useVerticalPosition(overlayRef, verticalPosition);
   useWindowResize();
 
   useEffect(() => {
@@ -91,7 +92,11 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
     };
   }, []);
 
-  const [top, left, width] = getOverlayPosition(verticalPosition, parentRef, overlayRef);
+  React.useEffect(() => {
+    setOverlayPosition(getOverlayPosition(overlayVerticalPosition, parentRef, overlayRef));
+  }, [children, overlayVerticalPosition, parentRef, overlayRef]);
+
+  const [top, left, width] = overlayPosition;
 
   return createPortal(
     <>

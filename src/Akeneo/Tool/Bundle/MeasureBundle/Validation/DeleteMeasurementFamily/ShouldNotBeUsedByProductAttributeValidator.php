@@ -10,8 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ShouldNotBeUsedByProductAttributeValidator extends ConstraintValidator
 {
-    /** @var IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily */
-    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
+    private IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
 
     public function __construct(
         IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily

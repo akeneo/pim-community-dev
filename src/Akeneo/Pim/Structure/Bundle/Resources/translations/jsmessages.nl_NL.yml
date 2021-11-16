@@ -211,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Rich text editor ingeschakeld
     default_value: Standaardwaarde
+    code:
+      must_be_filled: De code moet worden ingevuld
+      invalid: De code is ongeldig
+      not_available: Deze code is niet beschikbaar
+      is_duplicate: Deze code is al in gebruik.
   module:
     add_attribute:
       no_available_attributes: Er zijn geen attributen meer om toe te voegen
@@ -226,10 +231,10 @@ pim_enrich.entity.attribute:
       confirm: Weet u zeker dat u attribuut wilt verwijderen?
       product_count: ']-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten'
       product_model_count: ']-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen'
-      used: momenteel zijn waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.
+      used: ']-Inf,1]heeft momenteel waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.Ø ]1, Inf[hebben momenteel waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.'
       helper:
         content: Als u uw attribuuttype wilt wijzigen, om het lokaliseerbaar of per kanaal instelbaar te maken, terwijl de toegang tot uw bestaande attribuutwaarden behouden blijft
-        link: we helpen je door de verschillende stappen heen.
+        link: Kijk in ons helpcenter voor meer informatie.
       type: Typ alstublieft "{{ attributeCode }}"
       confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
       confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?

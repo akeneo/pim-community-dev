@@ -49,7 +49,7 @@ SQL;
             $sql,
             ['codes' => $productModelCodes],
             ['codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 
     public function getOnlyAncestorsFromProductModelIds(array $productModelIds): array
@@ -67,6 +67,6 @@ SQL;
             $sql,
             ['ids' => $productModelIds],
             ['ids' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
     }
 }

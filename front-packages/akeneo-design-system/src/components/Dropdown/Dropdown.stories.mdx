@@ -130,14 +130,14 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       const [isOpenBottomLeft, openBottomLeft, closeBottomLeft] = useBooleanState(false);
       const [isOpenBottomRight, openBottomRight, closeBottomRight] = useBooleanState(false);
       return (
-        <SpaceContainer height={300}>
+        <SpaceContainer height={600}>
           <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openTopLeft}>
-                Dropdown <ArrowDownIcon />
+                Down Right  <ArrowDownIcon />
               </Button>
               {isOpenTopLeft && (
-                <Dropdown.Overlay onClose={closeTopLeft}>
+                <Dropdown.Overlay onClose={closeTopLeft} horizontalPosition='right'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -152,10 +152,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
             </Dropdown>
             <Dropdown>
               <Button onClick={openTopRight}>
-                Dropdown <ArrowDownIcon />
+                Down Left  <ArrowDownIcon />
               </Button>
               {isOpenTopRight && (
-                <Dropdown.Overlay onClose={closeTopRight}>
+                <Dropdown.Overlay onClose={closeTopRight} horizontalPosition='left'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -173,10 +173,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
           <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openBottomLeft}>
-                Dropdown <ArrowDownIcon />
+                Up Right  <ArrowDownIcon />
               </Button>
               {isOpenBottomLeft && (
-                <Dropdown.Overlay onClose={closeBottomLeft}>
+                <Dropdown.Overlay onClose={closeBottomLeft} verticalPosition='up' horizontalPosition='right'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -191,10 +191,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
             </Dropdown>
             <Dropdown>
               <Button onClick={openBottomRight}>
-                Dropdown <ArrowDownIcon />
+                Up Left  <ArrowDownIcon />
               </Button>
               {isOpenBottomRight && (
-                <Dropdown.Overlay onClose={closeBottomRight}>
+                <Dropdown.Overlay onClose={closeBottomRight} verticalPosition='up' horizontalPosition='left'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>

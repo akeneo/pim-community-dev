@@ -58,11 +58,15 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
             );
         }
 
+        $context = ['value_collections' => \array_map(
+            static fn (array $row) => $row['value_collection'],
+            $valuesAndProperties
+        )];
         $additionalDataPerProductModel = [];
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalDataPerProductModel = \array_merge(
+            $additionalDataPerProductModel = \array_replace_recursive(
                 $additionalDataPerProductModel,
-                $additionalDataProvider->fromProductModelCodes($productModelCodes)
+                $additionalDataProvider->fromProductModelCodes($productModelCodes, $context)
             );
         }
 
@@ -165,7 +169,7 @@ WITH
     LEFT JOIN product_model_family_labels ON product_model_family_labels.family_id = product_model.family_id
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
@@ -192,6 +196,7 @@ SQL;
                 'ancestor_category_codes' => json_decode($row['ancestor_category_codes'], true),
                 'parent_code' => $row['parent_code'],
                 'values' => $this->valueCollectionNormalizer->normalize($row['values'], ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX),
+                'value_collection' => $row['values'],
                 'parent_id' => $row['parent_id'] ? (int) $row['parent_id'] : null,
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];
@@ -254,7 +259,7 @@ FROM product_model_completeness_by_channel
 GROUP BY product_model_code
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
@@ -342,7 +347,7 @@ INNER JOIN family_variant_attributes_per_level ON family_variant_attributes_per_
 WHERE product_model.code IN (:productModelCodes)
 SQL;
 
-        $rows = $this->connection->fetchAll(
+        $rows = $this->connection->fetchAllAssociative(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]

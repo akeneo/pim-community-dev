@@ -27,7 +27,7 @@ SQL;
             $sql,
             ['job_execution_id' => $jobExecutionId],
             ['job_execution_id' => \PDO::PARAM_INT]
-        )->fetch();
+        )->fetchAssociative();
 
         if (false === $result) {
             return null;

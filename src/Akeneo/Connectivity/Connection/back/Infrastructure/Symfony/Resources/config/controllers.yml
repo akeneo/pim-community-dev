@@ -89,8 +89,9 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
             - '@security.token_storage'
 
     akeneo_connectivity.connection.public.controller.apps.token:

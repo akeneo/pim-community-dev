@@ -59,7 +59,7 @@ SQL;
         );
 
         $averageRanks = [];
-        while ($rawAverageRanks = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($rawAverageRanks = $stmt->fetchAssociative()) {
             $averageRanks[$rawAverageRanks['code']] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
         }
 

@@ -36,7 +36,7 @@ SELECT
     ) as count_product_values
 SQL;
 
-        $result = $this->dbConnection->executeQuery($query)->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->dbConnection->executeQuery($query)->fetchAssociative();
 
         return array_map(fn ($rawCount) => intval($rawCount), $result);
     }

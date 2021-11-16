@@ -1,4 +1,13 @@
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
+import React, {
+  ReactNode,
+  useState,
+  useRef,
+  isValidElement,
+  ReactElement,
+  KeyboardEvent,
+  useCallback,
+  SyntheticEvent,
+} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
@@ -6,6 +15,7 @@ import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {usePagination} from '../../../hooks/usePagination';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -33,16 +43,17 @@ const ActionContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  z-index: 2;
 `;
 
-const SelectedOptionContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+const SelectedOptionContainer = styled.div<{readOnly: boolean; clearable: boolean} & AkeneoThemedProps>`
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 ${({clearable}) => (clearable ? 68 : 38)}px 0 16px;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   box-sizing: border-box;
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
@@ -97,8 +108,12 @@ const OptionCollection = styled.div`
 `;
 
 const Option = styled.span<{value: string}>`
-  display: flex;
-  align-items: center;
+  display: block;
+  line-height: 34px;
+  min-height: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 type SelectInputProps = Override<
@@ -112,7 +127,7 @@ type SelectInputProps = Override<
     | {
         clearable?: false;
         readOnly?: boolean;
-        value: string;
+        value: string | null;
         onChange: (newValue: string) => void;
       }
     | {
@@ -156,6 +171,16 @@ type SelectInputProps = Override<
      * Force the vertical position of the overlay.
      */
     verticalPosition?: VerticalPosition;
+
+    /**
+     * Handler called when the next page is almost reached.
+     */
+    onNextPage?: () => void;
+
+    /**
+     * Handler called when the search value changed
+     */
+    onSearchChange?: (searchValue: string) => void;
   }
 >;
 
@@ -175,18 +200,23 @@ const SelectInput = ({
   openLabel,
   readOnly = false,
   verticalPosition,
+  onNextPage,
+  onSearchChange,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const firstOptionRef = useRef<HTMLDivElement>(null);
   const lastOptionRef = useRef<HTMLDivElement>(null);
+  const selectedOptionRef = useRef<HTMLDivElement>(null);
 
-  const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
-    {value: string} & React.HTMLAttributes<HTMLSpanElement>
-  > => isValidElement<{value: string}>(child));
+  const validChildren = React.Children.toArray(children).filter(
+    (child): child is ReactElement<{value: string} & React.HTMLAttributes<HTMLSpanElement>> =>
+      isValidElement<{value: string}>(child)
+  );
 
   validChildren.reduce<string[]>((optionCodes: string[], child) => {
     if (optionCodes.includes(child.props.value)) {
@@ -214,93 +244,110 @@ const SelectInput = ({
       return value === childrenValue;
     }) ?? value;
 
-  const handleEnter = () => {
-    if (filteredChildren.length > 0) {
-      const value = filteredChildren[0].props.value;
-
-      onChange?.(value);
-      handleBlur();
-    }
-  };
-
   const handleSearch = (value: string) => {
+    onSearchChange?.(value);
     setSearchValue(value);
+    openOverlay();
   };
-
-  const handleFocus = () => openOverlay();
 
   const handleOptionClick = (value: string) => () => {
     onChange?.(value);
-    handleBlur();
+    handleEscape();
   };
 
-  const handleClear = () => {
+  const handleClear = (e: SyntheticEvent) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     onChange?.(null);
+    e.preventDefault();
+    inputRef.current?.focus();
   };
 
-  const handleBlur = () => {
+  const handleEscape = () => {
     setSearchValue('');
     closeOverlay();
-    inputRef.current?.blur();
+    inputRef.current?.focus();
   };
 
-  useShortcut(Key.Enter, handleEnter, inputRef);
-  useShortcut(Key.Escape, handleBlur, inputRef);
+  useShortcut(Key.Escape, handleEscape, inputRef);
 
-  const handleInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
-    if (null !== event.currentTarget) {
-      if (event.key === Key.ArrowDown) {
-        firstOptionRef.current?.focus();
-        event.preventDefault();
-      } else if (event.key === Key.ArrowUp) {
-        lastOptionRef.current?.focus();
-        event.preventDefault();
+  const handleInputKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (null !== event.currentTarget) {
+        if (event.key === Key.Tab) {
+          setSearchValue('');
+          closeOverlay();
+        }
+        if (event.key === Key.ArrowDown) {
+          event.preventDefault();
+          if (!dropdownIsOpen) {
+            openOverlay();
+          } else {
+            (firstOptionRef.current || selectedOptionRef.current)?.focus();
+          }
+        } else if (event.key === Key.ArrowUp) {
+          event.preventDefault();
+          openOverlay();
+        } else if (event.key === Key.Enter) {
+          event.preventDefault();
+          if (!dropdownIsOpen) {
+            openOverlay();
+          }
+        }
       }
+    },
+    [value, dropdownIsOpen]
+  );
+
+  React.useEffect(() => {
+    if (dropdownIsOpen && searchValue === '') {
+      (selectedOptionRef.current || firstOptionRef.current)?.focus();
     }
-  }, []);
+  }, [dropdownIsOpen, selectedOptionRef.current]);
 
   const handleOptionKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget) {
-        if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
+        if (event.key === Key.Tab) {
+          setSearchValue('');
+          closeOverlay();
+        }
+        if (([Key.ArrowDown, Key.ArrowUp, Key.Enter, Key.Escape] as string[]).includes(event.key)) {
           if (event.key === Key.ArrowDown) {
             const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
-            if (null === nextSibling) {
-              inputRef.current?.focus();
-            } else {
-              nextSibling.focus();
-            }
+            nextSibling?.focus();
             event.preventDefault();
           }
           if (event.key === Key.ArrowUp) {
             const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
-            if (null === previousSibling) {
-              inputRef.current?.focus();
-            } else {
-              previousSibling.focus();
-            }
+            previousSibling?.focus();
             event.preventDefault();
           }
           if (event.key === Key.Enter) {
             const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
             onChange?.(value);
-            handleBlur();
+            handleEscape();
+          }
+          if (event.key === Key.Escape) {
+            handleEscape();
           }
         } else {
           inputRef.current?.focus();
         }
       }
     },
-    [onChange]
+    [onChange, value]
   );
+
+  usePagination(containerRef, lastOptionRef, onNextPage, dropdownIsOpen);
 
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
         {null !== value && '' === searchValue && (
-          <SelectedOptionContainer readOnly={readOnly}>{currentValueElement}</SelectedOptionContainer>
+          <SelectedOptionContainer readOnly={readOnly} clearable={clearable}>
+            {currentValueElement}
+          </SelectedOptionContainer>
         )}
         <TextInput
           id={id}
@@ -310,7 +357,10 @@ const SelectInput = ({
           invalid={invalid}
           placeholder={null === value ? placeholder : ''}
           onChange={handleSearch}
-          onFocus={handleFocus}
+          onClick={e => {
+            openOverlay();
+            e.preventDefault();
+          }}
           aria-labelledby={ariaLabelledby}
           onKeyDown={handleInputKeyDown}
         />
@@ -333,21 +383,21 @@ const SelectInput = ({
               size="small"
               icon={<ArrowDownIcon />}
               title={openLabel}
-              onClick={handleFocus}
-              onFocus={handleBlur}
-              tabIndex={0}
+              onClick={openOverlay}
+              onFocus={handleEscape}
+              tabIndex={-1}
             />
           </ActionContainer>
         )}
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
-        <Overlay parentRef={inputRef} verticalPosition={verticalPosition} onClose={handleBlur}>
-          <OptionCollection>
+        <Overlay parentRef={inputRef} verticalPosition={verticalPosition} onClose={handleEscape}>
+          <OptionCollection ref={containerRef}>
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (
               filteredChildren.map((child, index) => {
-                const value = child.props.value;
+                const childValue = child.props.value;
                 let ref = undefined;
                 switch (index) {
                   case 0:
@@ -357,12 +407,15 @@ const SelectInput = ({
                     ref = lastOptionRef;
                     break;
                 }
+                if (value === childValue) {
+                  ref = selectedOptionRef;
+                }
 
                 return (
                   <OptionContainer
-                    data-testid={value}
-                    key={value}
-                    onClick={handleOptionClick(value)}
+                    data-testid={childValue}
+                    key={childValue}
+                    onClick={handleOptionClick(childValue)}
                     onKeyDown={handleOptionKeyDown}
                     tabIndex={0}
                     ref={ref}

@@ -159,6 +159,7 @@ pim_common:
   before: Before
   by: by
   cancel: Cancel
+  characters_left: ']-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left'
   clear_value: Clear value
   close: Close
   code: Code
@@ -200,6 +201,7 @@ pim_common:
   permissions: Permissions
   previous: Previous
   properties: Properties
+  quality_score: Quality score
   remove: Remove
   required_label: (required)
   result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+    IN: In list
+    "NOT IN": Not in list
   read_more: Read more
   channel: Channel
   locale: Locale
@@ -239,8 +243,10 @@ pim_common:
   parent: Parent
   groups: Groups
   products: Products
+  product_models: Product models
   more: More
 error:
+  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
@@ -269,7 +275,7 @@ pim_enrich.entity.fallback:
       discard_changes_title: Are you sure?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+    index: "]-Inf, 1]{{ count }} job|]1, Inf[{{ count }} jobs"
   module:
     create:
       upload: Drop your {{ type }} file here, or click to browse disk
@@ -373,6 +379,26 @@ pim_settings:
   settings_menu: Settings menu
   catalog_settings: Catalog settings
   product_settings: Product settings
+  count:
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
 pim_system:
+  system_menu: System menu
   system_navigation: System navigation
   users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'

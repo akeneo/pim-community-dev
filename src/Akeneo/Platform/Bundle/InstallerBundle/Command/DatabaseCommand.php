@@ -7,7 +7,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -31,6 +31,7 @@ use Symfony\Component\Process\Process;
 class DatabaseCommand extends Command
 {
     protected static $defaultName = 'pim:installer:db';
+    protected static $defaultDescription = 'Prepare database and load fixtures';
 
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
@@ -65,8 +66,6 @@ class DatabaseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pim:installer:db')
-            ->setDescription('Prepare database and load fixtures')
             ->addOption(
                 'fixtures',
                 null,
@@ -119,7 +118,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Prepare database schema</info>');
 
@@ -170,6 +169,8 @@ class DatabaseCommand extends Command
             $this->createNotMappedTables($output);
         }
 
+        $this->setLatestKnownMigration($input);
+
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, null, [
@@ -191,9 +192,7 @@ class DatabaseCommand extends Command
         // TODO: Should be in an event subscriber
         $this->launchCommands();
 
-        $this->setLatestKnownMigration($input);
-
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**
@@ -230,7 +229,7 @@ class DatabaseCommand extends Command
         $this->connection->exec($configTableSql);
 
         $output->writeln('<info>Create messenger table</info>');
-        $messengerTableSql = "CREATE TABLE messenger_messages (
+        $messengerTableSql = "CREATE TABLE IF NOT EXISTS messenger_messages (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
                 `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,

@@ -39,7 +39,7 @@ SQL;
                 'channelCode' => $channelCode,
                 'localeCode' => $localeCode,
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         return false === $ratio ? null : (int) $ratio;
     }

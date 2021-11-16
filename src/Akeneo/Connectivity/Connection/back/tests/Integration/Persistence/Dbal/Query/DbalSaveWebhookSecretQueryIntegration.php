@@ -39,7 +39,7 @@ class DbalSaveWebhookSecretQueryIntegration extends TestCase
                 'SELECT webhook_secret FROM akeneo_connectivity_connection WHERE code = :code',
                 ['code' => $magentoConnection->code()]
             )
-            ->fetch();
+            ->fetchAssociative();
         Assert::assertArrayHasKey('webhook_secret', $fetchedSecret);
         Assert::assertCount(1, $fetchedSecret);
         Assert::assertEquals('secret_1234', $fetchedSecret['webhook_secret']);

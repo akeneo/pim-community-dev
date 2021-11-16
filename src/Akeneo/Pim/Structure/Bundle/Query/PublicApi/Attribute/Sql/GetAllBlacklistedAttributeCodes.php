@@ -25,6 +25,6 @@ SQL;
 
         return $this->connection
             ->executeQuery($sql)
-            ->fetchAll(\PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
     }
 }

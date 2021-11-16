@@ -62,9 +62,16 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $platform = $this->connection->getDatabasePlatform();
         $rows = $this->createValueCollectionInBatchFromRows($rows);
 
+        $context = ['value_collections' => \array_map(
+            static fn (array $row) => $row['values'],
+            $rows
+        )];
         $additionalData = [];
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $additionalData = \array_merge($additionalData, $additionalDataProvider->fromProductIdentifiers($productIdentifiers));
+            $additionalData = \array_replace_recursive(
+                $additionalData,
+                $additionalDataProvider->fromProductIdentifiers($productIdentifiers, $context)
+            );
         }
 
         foreach ($rows as $row) {
@@ -281,7 +288,7 @@ SQL;
 
         return $this
             ->connection
-            ->fetchAll($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
+            ->fetchAllAssociative($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
     }
 
     private function calculateAttributeCodeAncestors(array $rows): array

@@ -56,6 +56,9 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     $convertedItem[$key] = $label;
                 }
                 break;
+            case 'table_configuration':
+                $convertedItem[$property] = \json_encode($data);
+                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

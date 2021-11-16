@@ -50,7 +50,7 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
         Assert::assertFalse($connection->auditable());
     }
 
-    public function test_it_does_not_find_a_connection_from_its_code()
+    public function test_it_does_not_find_a_connection_when_the_code_does_exists()
     {
         $connection = $this->selectConnectionWithCredentialsByCodeQuery->execute('magento');
 

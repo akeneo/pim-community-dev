@@ -64,7 +64,7 @@ SQL;
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
@@ -111,7 +111,7 @@ SQL;
                 'start_time' => Types::DATETIME_IMMUTABLE,
                 'end_time' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {

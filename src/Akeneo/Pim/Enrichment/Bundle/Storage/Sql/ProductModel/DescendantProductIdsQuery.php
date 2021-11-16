@@ -36,7 +36,7 @@ SQL;
             $sql,
             ['productModelIds' => $productModelIds],
             ['productModelIds' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function ($rowData) {
             return (int) $rowData['id'];

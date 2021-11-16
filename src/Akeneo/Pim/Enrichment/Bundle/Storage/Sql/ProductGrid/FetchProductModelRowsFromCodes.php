@@ -105,7 +105,7 @@ SQL;
             $sql,
             ['codes' => $codes],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $row) {
@@ -141,7 +141,7 @@ SQL;
             $sql,
             ['codes' => $codes],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $label = $valueCollections[$row['code']]['value_collection']->getByCodes(
@@ -215,7 +215,7 @@ SQL;
                 'channel' => \PDO::PARAM_STR,
                 'locale' => \PDO::PARAM_STR,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $result[$row['code']]['children_completeness'] = [
@@ -251,7 +251,7 @@ SQL;
             $sql,
             ['codes' => $codes, 'locale_code' => $localeCode],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $result[$row['code']]['family_label'] = $row['family_label'];
@@ -281,7 +281,7 @@ SQL;
             $sql,
             ['codes' => $codes],
             ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         $productModels = [];

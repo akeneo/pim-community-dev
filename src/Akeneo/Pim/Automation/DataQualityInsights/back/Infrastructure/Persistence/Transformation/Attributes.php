@@ -43,7 +43,7 @@ class Attributes
                 "SELECT JSON_OBJECTAGG(CONCAT('a_', id), code) FROM pim_catalog_attribute WHERE id IN (:ids);",
                 ['ids' => $attributesIds],
                 ['ids' => Connection::PARAM_INT_ARRAY]
-            )->fetchColumn();
+            )->fetchOne();
 
             return !$attributesCodes ? [] : json_decode($attributesCodes, true);
         });
@@ -65,7 +65,7 @@ class Attributes
                 'SELECT JSON_OBJECTAGG(code, id) FROM pim_catalog_attribute WHERE code IN (:codes);',
                 ['codes' => $attributesCodes],
                 ['codes' => Connection::PARAM_STR_ARRAY]
-            )->fetchColumn();
+            )->fetchOne();
 
             return !$attributesIds ? [] : json_decode($attributesIds, true);
         });

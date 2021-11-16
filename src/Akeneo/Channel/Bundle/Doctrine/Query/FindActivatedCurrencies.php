@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\Doctrine\Query;
 
-use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -78,7 +78,7 @@ GROUP BY ch.code;
 SQL;
         $statement = $this->entityManager->getConnection()->executeQuery($sql);
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAllAssociative();
         $currenciesIndexedByChannel = [];
         foreach ($results as $result) {
             $currenciesIndexedByChannel[$result['channel_code']] = json_decode($result['activated_currencies'], false);

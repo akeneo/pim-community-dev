@@ -51,12 +51,10 @@ class CreateMeasurementFamilyHandler
         return array_map(
             function (array $unit) {
                 $operations = array_map(
-                    function (array $operation) {
-                        return Operation::create(
-                            $operation['operator'],
-                            $operation['value']
-                        );
-                    },
+                    static fn (array $operation) => Operation::create(
+                        $operation['operator'],
+                        $operation['value']
+                    ),
                     $unit['convert_from_standard']
                 );
 

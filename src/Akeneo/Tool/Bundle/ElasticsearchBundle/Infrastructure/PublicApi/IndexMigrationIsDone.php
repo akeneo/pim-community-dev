@@ -3,12 +3,8 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\PublicApi;
@@ -43,7 +39,7 @@ class IndexMigrationIsDone implements IndexMigrationIsDoneInterface
             'hash' => $hash,
         ]);
 
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
         return '1' === $result['index_migration_is_done'];

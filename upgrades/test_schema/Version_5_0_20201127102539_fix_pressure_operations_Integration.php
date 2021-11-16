@@ -61,7 +61,7 @@ FROM `akeneo_measurement` m
 WHERE m.code = 'Pressure';
 SQL;
 
-        return json_decode($this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn(), true);
+        return json_decode($this->connection->executeQuery($selectPressureUnitsSql)->fetchOne(), true);
     }
 
     private function updatePressureUnits(array $units): void

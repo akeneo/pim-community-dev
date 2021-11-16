@@ -41,7 +41,7 @@ LEFT JOIN oro_access_group access_group ON user_access_group.group_id = access_g
 WHERE connection.webhook_url IS NOT NULL AND connection.webhook_enabled = 1
 ORDER BY code
 SQL;
-        $result = $this->dbalConnection->executeQuery($sql)->fetchAll(FetchMode::ASSOCIATIVE);
+        $result = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         /*
          * Filter rows to keep only one row per webhook, while priorizing the non-default user groups.

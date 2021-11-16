@@ -185,7 +185,7 @@ define([
       _.each(
         this.copyFields,
         function (copyField) {
-          if (copyField.selected && copyField.field && copyField.field.isEditable()) {
+          if (copyField.field && copyField.field.isEditable() && (copyField.selected || copyField.field.selected)) {
             var formValues = this.getFormModel().get('values');
             var oldValue = AttributeManager.getValue(
               formValues[copyField.field.attribute.code],

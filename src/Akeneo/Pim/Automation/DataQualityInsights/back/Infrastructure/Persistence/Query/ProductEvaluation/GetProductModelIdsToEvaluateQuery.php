@@ -33,7 +33,7 @@ SQL;
         $stmt = $this->db->executeQuery($sql, ['status' => CriterionEvaluationStatus::PENDING], ['status' => \PDO::PARAM_STR]);
 
         $productIds = [];
-        while ($productId = $stmt->fetchColumn()) {
+        while ($productId = $stmt->fetchOne()) {
             $productIds[] = intval($productId);
 
             if (count($productIds) >= $bulkSize) {

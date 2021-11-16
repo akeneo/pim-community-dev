@@ -66,7 +66,7 @@ SQL;
             'label' => $role->getLabel(),
         ]);
 
-        $raw = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $raw = $stmt->fetchAssociative();
 
         Assert::assertNotFalse($raw);
 

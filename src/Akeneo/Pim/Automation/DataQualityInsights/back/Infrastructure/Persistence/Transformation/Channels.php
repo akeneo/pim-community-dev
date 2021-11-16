@@ -50,7 +50,7 @@ class Channels
     {
         $channels = $this->dbConnection->executeQuery(
             'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_channel;'
-        )->fetchColumn();
+        )->fetchOne();
 
         if ($channels) {
             $this->channelCodesByIds = json_decode($channels, true);

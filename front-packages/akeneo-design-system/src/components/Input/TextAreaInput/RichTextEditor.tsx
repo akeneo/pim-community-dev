@@ -46,9 +46,11 @@ const RichTextEditor = ({value, readOnly = false, onChange, ...rest}: RichTextEd
           options: ['bold', 'italic'],
         },
       }}
-      onEditorStateChange={handleChange}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      onEditorStateChange={handleChange as any}
       {...rest}
-      editorState={editorState}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      editorState={editorState as any}
     />
   );
 };

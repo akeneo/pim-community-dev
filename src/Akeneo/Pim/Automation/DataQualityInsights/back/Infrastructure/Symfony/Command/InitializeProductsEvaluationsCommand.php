@@ -19,12 +19,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class InitializeProductsEvaluationsCommand extends Command
 {
+    protected static $defaultName = 'pim:data-quality-insights:initialize-products-evaluations';
+    protected static $defaultDescription = 'Initialize the evaluations of all the products and product models.';
+
     private const BATCH_SIZE = 100;
 
     private Connection $dbConnection;
-
     private CriteriaEvaluationRegistry $productCriteriaRegistry;
-
     private CriteriaEvaluationRegistry $productModelCriteriaRegistry;
 
     public function __construct(
@@ -41,13 +42,10 @@ final class InitializeProductsEvaluationsCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pim:data-quality-insights:initialize-products-evaluations')
-            ->setDescription('Initialize the evaluations of all the products and product models.')
-            ->setHidden(true);
+        $this->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Products evaluations initialization.');
@@ -61,14 +59,14 @@ final class InitializeProductsEvaluationsCommand extends Command
 
             if ($confirm !== true) {
                 $io->text('Operation aborted. Nothing has been done.');
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
         $this->initializeProducts($io);
         $this->initializeProductModels($io);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function initializeProducts(SymfonyStyle $io): void
@@ -79,7 +77,7 @@ final class InitializeProductsEvaluationsCommand extends Command
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product;
 SQL
-        )->fetchColumn());
+        )->fetchOne());
 
         if ($productCount === 0) {
             $io->text('There are no products to initialize.');
@@ -121,7 +119,7 @@ SQL;
             <<<SQL
 SELECT COUNT(*) FROM pim_catalog_product_model;
 SQL
-        )->fetchColumn());
+        )->fetchOne());
 
         if ($productModelCount === 0) {
             $io->text('There are no product models to initialize.');
@@ -177,7 +175,7 @@ SQL;
             $query,
             ['lastId' => $productId, 'limit' => self::BATCH_SIZE],
             ['lastId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
     }
 
     private function getProductModelIdsFrom(int $productModelId): array
@@ -190,6 +188,6 @@ SQL;
             $query,
             ['lastId' => $productModelId, 'limit' => self::BATCH_SIZE],
             ['lastId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
     }
 }

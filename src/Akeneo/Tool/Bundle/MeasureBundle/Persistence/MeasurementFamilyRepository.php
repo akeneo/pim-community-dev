@@ -148,14 +148,12 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $standardUnit = Type::getType(Types::STRING)->convertToPhpValue($standardUnit, $platform);
         //TODO check Type:JSON
-        $units = array_map(function (array $normalizedUnit) {
-            return $this->hydrateUnit(
-                $normalizedUnit['code'],
-                $normalizedUnit['labels'],
-                $normalizedUnit['convert_from_standard'],
-                $normalizedUnit['symbol']
-            );
-        }, json_decode($normalizedUnits, true));
+        $units = array_map(fn (array $normalizedUnit) => $this->hydrateUnit(
+            $normalizedUnit['code'],
+            $normalizedUnit['labels'],
+            $normalizedUnit['convert_from_standard'],
+            $normalizedUnit['symbol']
+        ), json_decode($normalizedUnits, true));
 
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
@@ -202,7 +200,7 @@ SQL;
     FROM akeneo_measurement;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAllAssociative();
 
         $measurementFamiliesIndexByCodes = [];
         foreach ($results as $result) {
@@ -233,7 +231,7 @@ SQL;
             $sql,
             ['measurement_family_code' => $measurementFamilyCode->normalize()]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw new MeasurementFamilyNotFoundException();

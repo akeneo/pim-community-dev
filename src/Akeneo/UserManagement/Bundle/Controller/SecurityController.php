@@ -3,12 +3,12 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
-class SecurityController extends AbstractController
+class SecurityController
 {
     private AuthenticationUtils $authenticationUtils;
     private CsrfTokenManagerInterface $csrfTokenManager;
@@ -31,9 +31,9 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Template("PimUserBundle:Security:login.html.twig")
+     * @Template("@PimUser/Security/login.html.twig")
      */
-    public function login()
+    public function login(): array
     {
         // get the login error if there is one
         $error = $this->authenticationUtils->getLastAuthenticationError();
@@ -65,8 +65,8 @@ class SecurityController extends AbstractController
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 
-    public function logoutRedirect()
+    public function logoutRedirect(): RedirectResponse
     {
-        return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
+        return new RedirectResponse($this->logoutUrlGenerator->getLogoutUrl());
     }
 }

@@ -67,6 +67,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken:
         arguments:
-            - '@fos_oauth_server.server'
             - '@fos_oauth_server.storage.default'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'

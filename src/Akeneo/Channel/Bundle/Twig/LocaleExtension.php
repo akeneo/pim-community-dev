@@ -18,12 +18,8 @@ use Twig\TwigFunction;
  */
 class LocaleExtension extends AbstractExtension
 {
-    /** @var UserContext */
-    protected $userContext;
+    protected UserContext $userContext;
 
-    /**
-     * @param UserContext $userContext
-     */
     public function __construct(UserContext $userContext)
     {
         $this->userContext = $userContext;
@@ -97,23 +93,15 @@ class LocaleExtension extends AbstractExtension
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($translateIn);
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($code, $language);
+        return Intl\Currencies::getSymbol($code, $language);
     }
 
-    /**
-     * Returns the currency label
-     *
-     * @param string $code
-     * @param string $translateIn
-     *
-     * @return string
-     */
-    public function currencyLabel($code, $translateIn = null)
+    public function currencyLabel(string $code, ?string $translateIn = null): string
     {
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($translateIn);
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencyName($code, $language);
+        return Intl\Currencies::getName($code, $language);
     }
 
     /**

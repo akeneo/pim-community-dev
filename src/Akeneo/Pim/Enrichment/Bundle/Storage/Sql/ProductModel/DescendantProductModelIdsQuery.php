@@ -31,7 +31,7 @@ SQL;
         $resultRows = $this->connection->executeQuery(
             $sql,
             ['parentId' => $parentProductModelId]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return array_map(function ($rowData) {
             return (int) $rowData['id'];

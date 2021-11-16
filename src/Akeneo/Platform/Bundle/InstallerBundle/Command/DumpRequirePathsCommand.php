@@ -46,7 +46,7 @@ class DumpRequirePathsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Generating require.js main config');
         $webRoot = realpath($this->rootDir . '/../public');
@@ -58,6 +58,8 @@ class DumpRequirePathsCommand extends Command
         if (false === file_put_contents($mainConfigFilePath, $mainConfigContent)) {
             throw new \RuntimeException('Unable to write file ' . $mainConfigFilePath);
         }
+
+        return Command::SUCCESS;
     }
 
     /**

@@ -20,10 +20,11 @@ use Symfony\Component\Security\Core\User\User;
  */
 final class RecomputeProductsScores extends Command
 {
+    protected static $defaultName = 'pim:data-quality-insights:recompute-product-scores';
+    protected static $defaultDescription = 'Launch the job that will re-compute all the products scores';
+
     private FeatureFlag $featureFlag;
-
     private JobLauncherInterface $queueJobLauncher;
-
     private JobInstanceRepository $jobInstanceRepository;
 
     public function __construct(
@@ -40,17 +41,14 @@ final class RecomputeProductsScores extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pim:data-quality-insights:recompute-product-scores')
-            ->setDescription('Launch the job that will re-compute all the products scores')
-            ->setHidden(true);
+        $this->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
-            return 0;
+            return Command::SUCCESS;
         }
 
         $jobInstance = $this->getJobInstance();
@@ -59,7 +57,7 @@ final class RecomputeProductsScores extends Command
 
         $output->writeln('The job that re-compute products scores has been launched.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function getJobInstance(): JobInstance

@@ -80,7 +80,7 @@ class TranslationsExtension extends \Twig\Extension\AbstractExtension
      */
     protected function getLocale()
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return 'en';
         }

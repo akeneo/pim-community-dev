@@ -88,7 +88,7 @@ SQL;
 SELECT 1 FROM pim_one_time_task WHERE code = :code
 SQL;
 
-        return !boolval($this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchColumn());
+        return !boolval($this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne());
     }
 
     private function getNextStepExecutionIdBulk(int $lastId, int $bulkSize): ?array
@@ -115,7 +115,7 @@ SQL;
                 'lastId' => \PDO::PARAM_INT,
                 'bulkSize' => \PDO::PARAM_INT,
             ]
-        )->fetch(\PDO::FETCH_ASSOC);
+        )->fetchAssociative();
 
         return isset($bulkResult['first_id']) && isset($bulkResult['last_id']) ? $bulkResult : null;
     }
@@ -146,7 +146,7 @@ SQL;
             ]
         );
 
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetchAssociative()) {
             $this->dbConnection->executeQuery(
                 $updateStepExecutionQuery,
                 [

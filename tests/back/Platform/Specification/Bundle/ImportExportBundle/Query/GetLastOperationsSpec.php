@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -30,12 +31,12 @@ class GetLastOperationsSpec extends ObjectBehavior
         UserInterface $user,
         QueryBuilder $qb,
         ExpressionBuilder $expr,
-        Statement $statement
+        Result $result
     ) {
         $lastOperations = ['an_operation', 'another_one'];
         $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
         $connection->createQueryBuilder()->willReturn($qb);
-        $user->getUsername()->shouldBeCalled()->willReturn('julia');
+        $user->getUserIdentifier()->shouldBeCalled()->willReturn('julia');
 
         $qb->select(Argument::cetera())->willReturn($qb);
         $qb->from(Argument::cetera())->willReturn($qb);
@@ -53,8 +54,8 @@ class GetLastOperationsSpec extends ObjectBehavior
         $expr->notIn(Argument::cetera())->willReturn('notIn');
 
 
-        $qb->execute()->willReturn($statement);
-        $statement->fetchAll()->willReturn($lastOperations);
+        $qb->execute()->willReturn($result);
+        $result->fetchAllAssociative()->willReturn($lastOperations);
 
         $this->execute($user)->shouldReturn($lastOperations);
     }
@@ -68,7 +69,7 @@ class GetLastOperationsSpec extends ObjectBehavior
     ) {
         $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
         $connection->createQueryBuilder()->willReturn($qb);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
 
         $qb->select(Argument::cetera())->willReturn($qb);
         $qb->from(Argument::cetera())->willReturn($qb);

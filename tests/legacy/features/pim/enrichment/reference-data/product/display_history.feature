@@ -24,7 +24,7 @@ Feature: Display the product history
       | version | property   | value  | date |
       | 2       | Heel color | ua-red | now  |
     When I visit the "Attributes" column tab
-    And I change the "Heel color" to "Green"
+    And I change the "Heel color" to "Green (HTML/CSS Color)"
     And I save the product
     And I visit the "History" column tab
     Then I should see history:

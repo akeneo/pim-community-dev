@@ -15,11 +15,8 @@ use Doctrine\DBAL\Query\QueryBuilder;
  */
 class GetLastOperations implements GetLastOperationsInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var NotVisibleJobsRegistry */
-    private $notVisibleJobs;
+    private Connection $connection;
+    private NotVisibleJobsRegistry $notVisibleJobs;
 
     public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobs)
     {
@@ -34,7 +31,7 @@ class GetLastOperations implements GetLastOperationsInterface
     {
         $statement = $this->getQueryBuilder($user)->execute();
 
-        return $statement->fetchAll();
+        return $statement->fetchAllAssociative();
     }
 
     /**
@@ -76,7 +73,7 @@ class GetLastOperations implements GetLastOperationsInterface
         if (null !== $user) {
             $qb->where($qb->expr()->eq('execution.user', ':user'));
 
-            $parameters['user'] = $user->getUsername();
+            $parameters['user'] = $user->getUserIdentifier();
             $types['user'] = \PDO::PARAM_STR;
         }
         if (!empty($this->notVisibleJobs->getCodes())) {

@@ -14,12 +14,13 @@ interface GetAdditionalPropertiesForProductProjectionInterface
     /**
      * Returns an associative array of additional properties for the indexation of several products.
      *
-     * @param array $productIdentifiers
+     * @param string[] $productIdentifiers
+     * @param array<string, mixed> $context
      * @return array
      *      [
      *          'product_1' => ['key_1_to_index' => 'value_1_to_index', 'key_2_to_index' => 'value_2_to_index'],
      *          'product_2' => ['key_1_to_index' => 'value_3_to_index']
      *      ]
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array;
+    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array;
 }

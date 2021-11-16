@@ -40,6 +40,6 @@ final class SqlGetUserCount implements GetUserCountInterface
             SELECT count(username) FROM user_with_only_role
         SQL;
 
-        return (int) $this->connection->executeQuery($sql, ['role' => $role])->fetchColumn();
+        return (int) $this->connection->executeQuery($sql, ['role' => $role])->fetchOne();
     }
 }

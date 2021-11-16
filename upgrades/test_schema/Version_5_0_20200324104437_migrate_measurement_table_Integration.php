@@ -65,7 +65,7 @@ final class Version_5_0_20200324104437_migrate_measurement_table_Integration ext
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
         $stmt = $connection->executeQuery('SELECT COUNT(*) FROM akeneo_measurement;');
-        $actualNumberOfMeasurements = $stmt->fetch(\PDO::FETCH_COLUMN);
+        $actualNumberOfMeasurements = $stmt->fetchOne();
         Assert::assertEquals($expectedNumberOfMeasurements, $actualNumberOfMeasurements);
     }
 
@@ -80,7 +80,7 @@ FROM (
 SQL;
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $operationValues = json_decode($connection->fetchAll($operationValuesSql)[0]['concatenated_operations']);
+        $operationValues = json_decode($connection->fetchAllAssociative($operationValuesSql)[0]['concatenated_operations']);
 
         foreach ($operationValues as $operationValue) {
             foreach($operationValue as $value) {

@@ -26,14 +26,10 @@ class ShouldNotContainDuplicatedUnitsValidator extends ConstraintValidator
 
     private function unitCodes(array $units): array
     {
-        $unitCodes = array_map(
-            function (array $unit) {
-                return $unit['code'];
-            },
+        return array_map(
+            static fn (array $unit) => $unit['code'],
             $units
         );
-
-        return $unitCodes;
     }
 
     private function hasDuplicates(array $unitCodes): bool

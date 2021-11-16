@@ -14,7 +14,7 @@ akeneo_connectivity_connection_connect_apps_v1_token:
 akeneo_connectivity_connection_connect_apps_v1_key:
   path: '/connect/apps/v1/jwt/key'
   controller: akeneo_connectivity.connection.public.controller.apps.key
-  methods: [ GET ]
+  methods: [ POST ]
 
 # Internal API
 

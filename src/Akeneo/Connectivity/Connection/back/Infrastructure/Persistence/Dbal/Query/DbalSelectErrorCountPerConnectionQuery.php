@@ -58,7 +58,7 @@ SQL;
                 'from_datetime' => Types::DATETIME_IMMUTABLE,
                 'up_to_datetime' => Types::DATETIME_IMMUTABLE,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $errorCounts = [];
         foreach ($dataRows as $dataRow) {

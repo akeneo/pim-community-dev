@@ -53,7 +53,7 @@ SQL;
             $query,
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $attributes = [];
 

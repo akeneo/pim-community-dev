@@ -26,6 +26,5 @@ pim_catalog_volume:
     count_category_trees: 类别树
     count_variant_products: 变型产品
     count_product_models: 产品模型
-    warning: 哇！您用该轴创下纪录！如果您在此规模下需要任何帮助，请随时与我们联系。
   mean: '平均值：'
   max: '最大值：'

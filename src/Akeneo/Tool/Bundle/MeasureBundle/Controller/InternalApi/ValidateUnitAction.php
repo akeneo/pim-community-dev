@@ -21,11 +21,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ValidateUnitAction
 {
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
-    private $violationNormalizer;
+    private NormalizerInterface $violationNormalizer;
 
     public function __construct(
         ValidatorInterface $validator,

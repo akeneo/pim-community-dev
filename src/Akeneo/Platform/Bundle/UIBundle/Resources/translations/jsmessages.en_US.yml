@@ -170,6 +170,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
     clear_value: Clear value
     close: Close
     code: Code
@@ -221,6 +222,7 @@ pim_common:
         search: Search...
         no_match: No matches found
         load_more: Loading more results...
+    selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
     status: Status
     to: to
     type: Type
@@ -241,6 +243,8 @@ pim_common:
         DOES NOT CONTAIN: Does not contain
         STARTS WITH: Starts with
         ENDS WITH: Ends with
+        IN: In list
+        "NOT IN": Not in list
     read_more: Read more
     channel: Channel
     locale: Locale

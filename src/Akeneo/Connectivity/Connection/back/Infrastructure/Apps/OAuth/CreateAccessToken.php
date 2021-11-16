@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
-use OAuth2\IOAuth2;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
-use OAuth2\OAuth2;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -17,18 +15,18 @@ use OAuth2\OAuth2;
  */
 class CreateAccessToken implements CreateAccessTokenInterface
 {
-    private IOAuth2 $auth2;
     private IOAuth2GrantCode $storage;
     private ClientProviderInterface $clientProvider;
+    private RandomCodeGeneratorInterface $randomCodeGenerator;
 
     public function __construct(
-        IOAuth2 $auth2,
         IOAuth2GrantCode $storage,
-        ClientProviderInterface $clientProvider
+        ClientProviderInterface $clientProvider,
+        RandomCodeGeneratorInterface $randomCodeGenerator
     ) {
-        $this->auth2 = $auth2;
         $this->storage = $storage;
         $this->clientProvider = $clientProvider;
+        $this->randomCodeGenerator = $randomCodeGenerator;
     }
 
     /**
@@ -46,13 +44,17 @@ class CreateAccessToken implements CreateAccessTokenInterface
         if (null === $authCode) {
             throw new \InvalidArgumentException('Unknown authorization code.');
         }
-        $this->auth2->setVariable(OAuth2::CONFIG_ACCESS_LIFETIME, null);
 
-        return $this->auth2->createAccessToken(
-            $client,
-            $authCode->getData(),
-            null,
-            3600*4
-        );
+        $token = $this->randomCodeGenerator->generate();
+
+        /* @phpstan-ignore-next-line */
+        $this->storage->createAccessToken($token, $client, $authCode->getData(), null);
+
+        $this->storage->markAuthCodeAsUsed($code);
+
+        return [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+        ];
     }
 }

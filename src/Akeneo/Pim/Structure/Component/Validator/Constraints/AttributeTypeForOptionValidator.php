@@ -66,7 +66,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
                     '%attribute_types%' => implode('", "', $authorizedTypes),
                 ]
             )
-            ->atPath($constraint->propertyPath)
+            ->atPath($constraint->propertyPath ?? '')
             ->addViolation();
     }
 }

@@ -159,6 +159,7 @@ pim_common:
   before: Przed
   by: autorstwa
   cancel: Anuluj
+  characters_left: ']-Inf, 1]Pozostałe znaki: {{ count }}|]1, Inf[Pozostałe znaki: {{ count }}'
   clear_value: Wyczyść wartość
   close: Zamknij
   code: Kod
@@ -200,6 +201,7 @@ pim_common:
   permissions: Uprawnienia
   previous: Poprzedni
   properties: Ustawienia
+  quality_score: Wynik jakości
   remove: Usuń
   required_label: (wymagane)
   result_count: "{0}0 wyników|{1}1 wynik|]1, Inf[{{ itemsCount }} wyników"
@@ -229,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Nie zawiera
     STARTS WITH: Rozpoczyna się od
     ENDS WITH: Kończy się na
+    IN: Na liście
+    "NOT IN": Brak na liście
   read_more: Dowiedz się więcej
   channel: Kanał
   locale: Wersja językowa
@@ -272,7 +276,7 @@ pim_enrich.entity.fallback:
       discard_changes_title: Jesteś pewien?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} operacja|]1, Inf[{{ count }} operacji"
+    index: "]-Inf, 1]Liczba zadań: {{ count }}|]1, Inf[Liczba zadań: {{ count }}"
   module:
     create:
       upload: Upuść twój plik {{ type }} tutaj, lub kliknij aby przeglądać dysk

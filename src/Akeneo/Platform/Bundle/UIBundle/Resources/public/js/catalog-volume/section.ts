@@ -19,7 +19,6 @@ interface SectionData {
 
 interface SectionConfig {
   align: string;
-  warningText: string;
   templates: Templates;
   axes: Array<string>;
 }
@@ -40,7 +39,6 @@ interface Axis {
 class SectionView extends BaseView {
   readonly config: SectionConfig = {
     align: 'left',
-    warningText: __('pim_catalog_volume.axis.warning'),
     templates: {
       averageMax: 'pim/template/catalog-volume/average-max',
       count: 'pim/template/catalog-volume/number',
@@ -145,7 +143,6 @@ class SectionView extends BaseView {
         value: axis.value,
         hasWarning: axis.hasWarning,
         title: __(`pim_catalog_volume.axis.${name}`),
-        warningText: this.config.warningText,
         meanLabel: __('pim_catalog_volume.mean'),
         maxLabel: __('pim_catalog_volume.max'),
         userLocale: userContext.get('uiLocale').split('_')[0],

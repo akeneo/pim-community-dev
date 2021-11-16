@@ -68,8 +68,7 @@ class JobExecutionManager
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
-        $stmt->execute();
-        $row = $stmt->fetch();
+        $row = $stmt->executeQuery()->fetchAssociative();
 
         return isset($row['exit_code']) ? new ExitStatus($row['exit_code']) : null;
     }
