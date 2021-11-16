@@ -134,6 +134,7 @@ services:
     channel.updater.translatable:
         class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
+    # @todo @merge master/6.0: accept master arguments order
     pim_catalog.remover.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover'
         arguments:
@@ -143,6 +144,7 @@ services:
             - '@translator'
             - '@Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob'
             - '%pim_catalog.entity.channel.class%'
+            - '@Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob'
 
     pim_enrich.normalizer.channel:
         class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
