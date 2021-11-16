@@ -53,8 +53,10 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateRecordContext implements Context
@@ -103,6 +105,10 @@ class CreateOrUpdateRecordContext implements Context
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -114,7 +120,9 @@ class CreateOrUpdateRecordContext implements Context
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
-        InMemoryGetAttributeIdentifier $getAttributeIdentifier
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -127,6 +135,19 @@ class CreateOrUpdateRecordContext implements Context
         $this->findFileData = $findFileData;
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -215,6 +236,34 @@ class CreateOrUpdateRecordContext implements Context
         );
 
         Assert::assertEquals($expectedRecord, $kartellRecord);
+    }
+
+    /**
+     * @When the connector collects this record from the ERP to synchronize it with the PIM without permission
+     */
+    public function theConnectorCollectsThisRecordFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_creation.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for creating record
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForCreatingRecord()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_creation.json'
+        );
     }
 
     /**
@@ -465,6 +514,39 @@ class CreateOrUpdateRecordContext implements Context
     }
 
     /**
+     * @When the connector collects these records from the ERP to synchronize them with the PIM without permission
+     */
+    public function theConnectorCollectsTheseRecordsFromTheErpToSynchronizeThemWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_records_synchronization.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for creating records
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForCreatingRecords()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_records_synchronization.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
+            'Expected warning not found in the logs.'
+        );
+    }
+
+    /**
      * @Then the records existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
      */
     public function theRecordsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
@@ -638,6 +720,39 @@ class CreateOrUpdateRecordContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->uploadImageResponse,
             self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+        );
+    }
+
+    /**
+     * @When /^the connector collects a media file for the Kartell record from the DAM to synchronize it with the PIM without permission$/
+     */
+    public function theConnectorCollectsAMediaFileForTheKartellRecordFromTheDAMToSynchronizeItWithThePIMWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->uploadImageResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_image_upload.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for uploading a media file$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForUploadingAMediaFile()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->uploadImageResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_image_upload.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 

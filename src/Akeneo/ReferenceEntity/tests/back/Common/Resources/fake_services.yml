@@ -235,15 +235,6 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    # Third party services
-    oro_security.security_facade:
-        class: Akeneo\ReferenceEntity\Common\Fake\SecurityFacadeStub
-        arguments:
-            - '@security.authorization_checker'
-            - '@oro_security.acl.annotation_provider'
-            - '@oro_security.acl.object_identity_factory'
-            - '@logger'
-
     fos_oauth_server.security.authentication.listener:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
 

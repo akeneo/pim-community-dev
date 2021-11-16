@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
 use Akeneo\AssetManager\Common\Fake\NamingConventionLauncherSpy;
-use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -22,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConventi
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 

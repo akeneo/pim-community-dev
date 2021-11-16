@@ -31,8 +31,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateReferenceEntityContext implements Context
@@ -72,6 +74,10 @@ class CreateOrUpdateReferenceEntityContext implements Context
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -81,7 +87,9 @@ class CreateOrUpdateReferenceEntityContext implements Context
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
-        InMemoryGetAttributeIdentifier $getAttributeIdentifier
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -92,6 +100,19 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->findFileData = $findFileData;
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -298,6 +319,39 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @When the connector collects these reference entities from the ERP to synchronize them with the PIM without permission
+     */
+    public function theConnectorCollectsTheseReferenceEntitiesFromTheErpToSynchronizeThemWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entities_synchronization.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting these reference entities from the ERP to synchronize them with the PIM
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissions()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entities_synchronization.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 
