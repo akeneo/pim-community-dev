@@ -9,3 +9,8 @@ Feature: Connection to e-commerce platforms and marketplaces
     When the connector collects a media file for the Kartell record from the DAM to synchronize it with the PIM
     Then the Kartell record is correctly synchronized with the uploaded media file
 
+  @integration-back
+  Scenario: Notify an error when enriching a record with a media file
+    Given the Kartell record of the Brand reference entity without any media file
+    When the connector collects a media file for the Kartell record from the DAM to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for uploading a media file

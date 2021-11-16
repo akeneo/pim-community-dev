@@ -62,3 +62,6 @@ export type ColumnDefinition =
   | SelectColumnDefinition;
 
 export type TableConfiguration = ColumnDefinition[];
+
+export const isColumnCodeNotAvailable: (columnCode: ColumnCode) => boolean = columnCode =>
+  ['product', 'product_model', 'attribute'].includes(columnCode.toLowerCase());

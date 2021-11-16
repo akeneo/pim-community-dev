@@ -34,7 +34,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributeOptionContext implements Context
@@ -74,18 +77,37 @@ class GetConnectorAttributeOptionContext implements Context
     /** @var null|Response **/
     private $nonExistentAttributeOptionResponse;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorAttributeOption $findConnectorAttributeOption,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorAttributeOption = $findConnectorAttributeOption;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -126,6 +148,39 @@ class GetConnectorAttributeOptionContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->optionResponse,
             self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @When /^the connector requests the French option of the Nationality attribute for the Brand reference entity without permission$/
+     */
+    public function theConnectorRequestsTheFrenchOptionOfTheNationalityAttributeForTheBrandReferenceEntityWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_french_nationality_option_for_brand_reference_entity.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for getting the French option$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForGettingTheFrenchOption()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_french_nationality_option_for_brand_reference_entity.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 

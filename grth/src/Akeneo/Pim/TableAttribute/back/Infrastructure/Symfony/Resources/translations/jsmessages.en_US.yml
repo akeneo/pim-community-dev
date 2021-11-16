@@ -183,6 +183,7 @@ pim_table_attribute:
             select: Select
     validations:
         column_code_must_be_filled: The code must be filled
+        not_available_code: This column code is not available
         column_data_type_must_be_filled: The data type must be filled
         invalid_column_code: The column code can only contain letters, numbers and underscores
         invalid_code: The code can only contain letters, numbers and underscores

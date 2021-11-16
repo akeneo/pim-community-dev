@@ -26,3 +26,9 @@ Feature: Connection to MDM or ERP systems
     Given some reference entities
     When the connector collects a reference entity whose data does not comply with the business rules
     Then the PIM notifies the connector about an error indicating that the reference entity has data that does not comply with the business rules
+
+  @integration-back
+  Scenario: Notify an error when collecting a reference entity without permission
+    Given the Brand reference entity existing in the ERP but not in the PIM
+    When the connector collects these reference entities from the ERP to synchronize them with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting these reference entities from the ERP to synchronize them with the PIM

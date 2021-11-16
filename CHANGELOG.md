@@ -1,4 +1,3 @@
-
 ## Bug fixes
 
 - PIM-9955: Handle duplicated code asset in the import batch.
@@ -106,7 +105,9 @@
 - PIM-10048: fix memory leak in search product models by family variant query
 - PIM-10115: Blacklist domains for asset media links
 - PIM-10110: Enrich Service check logging upon exception and slow service check.
+- PIM-10152: Fix Table attribute option modal not scrolling on label translations
 - PIM-10120: Remove obsolete asset reference data
+- PIM-10151: Fix category field in rule edit form
 
 ## Improvements
 

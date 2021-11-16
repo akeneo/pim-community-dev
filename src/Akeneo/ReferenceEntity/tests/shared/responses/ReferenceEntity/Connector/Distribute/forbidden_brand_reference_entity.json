@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_rest_connector_get",
+    "query": {
+      "code": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "_links": {
+        "image_download": {
+          "href": "http://localhost/api/rest/v1/reference-entities-media-files/5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
+        }
+      },
+      "code": "brand",
+      "labels": {
+        "fr_FR": "Marque"
+      },
+      "image": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
+    }
+  }
+}

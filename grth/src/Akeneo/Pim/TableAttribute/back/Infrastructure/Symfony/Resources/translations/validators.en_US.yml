@@ -9,6 +9,7 @@ pim_table_configuration:
             column_code_must_be_filled: The column code must be filled
             option_code_must_be_filled: The option code must be filled
             invalid_code: The column code can only contain letters, numbers and underscores
+            not_available_code: This column code is not available
             invalid_option_code: The option code can only contain letters, numbers and underscores
             too_long_code: "The column code is too long: it must be 100 characters or less"
             too_long_label: "The column label is too long: it must be 250 characters or less"

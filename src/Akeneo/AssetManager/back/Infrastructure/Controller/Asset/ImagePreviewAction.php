@@ -73,7 +73,12 @@ class ImagePreviewAction
         string $attributeIdentifier,
         string $type
     ): Response {
-        $data = urldecode($request->get('data'));
+        $data = $request->get('data');
+        if (null === $data) {
+            return new JsonResponse('Data is required', Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = urldecode($data);
         $regenerate = $request->isMethod('POST');
 
         try {

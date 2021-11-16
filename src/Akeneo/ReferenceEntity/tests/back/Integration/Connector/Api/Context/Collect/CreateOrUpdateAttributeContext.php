@@ -40,8 +40,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeContext implements Context
@@ -72,13 +74,19 @@ class CreateOrUpdateAttributeContext implements Context
     /** @var InMemoryFindConnectorAttributeByIdentifierAndCode */
     private $findConnectorAttribute;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute
+        InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
@@ -86,6 +94,19 @@ class CreateOrUpdateAttributeContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->activatedLocales = $activatedLocales;
         $this->findConnectorAttribute = $findConnectorAttribute;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -602,6 +623,38 @@ class CreateOrUpdateAttributeContext implements Context
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
             self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects this attribute from the ERP to synchronize it with the PIM without permission$/
+     */
+    public function theConnectorCollectsTheMainColorAttributeOfTheColorReferenceEntityFromTheERPToSynchronizeItWithThePIMWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_country_reference_entity_attribute_creation.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for the Country attribute to be added$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForTheCountryAttributeToBeAdded()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_country_reference_entity_attribute_creation.json'
+        );
+
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 }

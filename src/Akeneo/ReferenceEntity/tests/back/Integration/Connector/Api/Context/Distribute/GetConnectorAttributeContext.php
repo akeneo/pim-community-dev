@@ -33,7 +33,10 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributeContext implements Context
@@ -58,18 +61,37 @@ class GetConnectorAttributeContext implements Context
     /** @var null|Response */
     private $attributeForReferenceEntity;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorReferenceEntityAttributes,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorAttribute = $findConnectorReferenceEntityAttributes;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_record_list', true);
     }
 
     /**
@@ -110,6 +132,38 @@ class GetConnectorAttributeContext implements Context
     public function theBrandReferenceEntityWithSomeAttributes()
     {
         $this->createBrandReferenceEntity();
+    }
+
+    /**
+     * @When /^the connector requests the Description attribute of the Brand reference entity without permission$/
+     */
+    public function theConnectorRequestsTheDescriptionAttributeOfTheBrandReferenceEntityWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_reference_entity_list', false);
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->attributeForReferenceEntity = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entity_description_attribute.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about missing permissions for distributing the Description reference attribute$/
+     */
+    public function thePIMNotifiesTheConnectorAboutMissingPermissionsForDistributingTheDescriptionReferenceAttribute()
+    {
+        /**
+         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->attributeForReferenceEntity,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_brand_reference_entity_description_attribute.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_list"'),
+            'Expected warning not found in the logs.'
+        );
     }
 
     private function createBrandReferenceEntity()

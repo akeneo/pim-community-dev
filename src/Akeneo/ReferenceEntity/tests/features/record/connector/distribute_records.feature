@@ -89,3 +89,15 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand reference entity with some records
     When the connector requests records that were updated since a date that does not have the right format
     Then the PIM notifies the connector about an error indicating that the date format is not the expected one
+
+  @integration-back
+  Scenario: Notify about an error when distributing a single record of a reference entity
+    Given the Kartell record for the Brand reference entity
+    When the connector requests the Kartell record for the Brand reference entity without permission
+    Then the PIM notifies the connector about missing permissions for distributing a record
+
+  @integration-back
+  Scenario: Get all the records of a given reference entity
+    Given 7 records for the Brand reference entity
+    When the connector requests all records of the Brand reference entity without permission
+    Then the PIM notifies the connector about missing permissions for distributing records

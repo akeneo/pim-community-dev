@@ -30,6 +30,11 @@ const TableContainer = styled.div`
   overflow: auto;
 `;
 
+const ScrollableFieldList = styled(FieldsList)`
+  height: calc(100vh - 270px);
+  overflow: auto;
+`;
+
 const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   width: 1200px;
   height: calc(100vh - 150px);
@@ -311,7 +316,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
         <SectionTitle.Title>{translate('pim_common.label_translations')}</SectionTitle.Title>
       </SectionTitle>
       {typeof selectedOptionIndex !== 'undefined' && currentOption && (
-        <FieldsList>
+        <ScrollableFieldList>
           {!activatedLocales && <LoaderIcon />}
           {activatedLocales &&
             activatedLocales
@@ -326,7 +331,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                   />
                 </Field>
               ))}
-        </FieldsList>
+        </ScrollableFieldList>
       )}
     </>
   );
