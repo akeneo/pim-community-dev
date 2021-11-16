@@ -31,6 +31,17 @@ final class DefaultSqlGetRequiredAttributesMasks implements GetRequiredAttribute
     public function fromFamilyCodes(array $familyCodes): array
     {
         $sql = <<<SQL
+WITH
+channel_locale AS (
+    SELECT
+        channel.id AS channel_id,
+        channel.code AS channel_code,
+        locale.id AS locale_id,
+        locale.code AS locale_code
+    FROM pim_catalog_channel channel
+        JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
+        JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
+)
 SELECT
     family.code AS family_code,
     channel_code,
@@ -45,19 +56,10 @@ SELECT
         )
     ) AS mask
 FROM pim_catalog_family family
-JOIN pim_catalog_attribute_requirement pcar ON family.id = pcar.family_id
-JOIN (
-    SELECT
-        channel.id AS channel_id,
-        channel.code AS channel_code,
-        locale.id AS locale_id,
-        locale.code AS locale_code
-    FROM pim_catalog_channel channel
-    JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
-    JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
-) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
-JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
-LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
+    JOIN pim_catalog_attribute_requirement pcar ON family.id = pcar.family_id
+    JOIN channel_locale ON channel_locale.channel_id = pcar.channel_id
+    JOIN pim_catalog_attribute attribute ON pcar.attribute_id = attribute.id
+    LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
 WHERE
     pcar.required is true
     AND (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
