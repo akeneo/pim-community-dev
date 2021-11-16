@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsCodesQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -17,9 +17,9 @@ use Akeneo\Test\Integration\TestCase;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAllConnectedAppsCodesQueryIntegration extends TestCase
+class GetAllConnectedAppsPublicIdsQueryIntegration extends TestCase
 {
-    private GetAllConnectedAppsCodesQuery $query;
+    private GetAllConnectedAppsPublicIdsQuery $query;
 
     protected function getConfiguration(): Configuration
     {
@@ -31,7 +31,7 @@ class GetAllConnectedAppsCodesQueryIntegration extends TestCase
         parent::setUp();
 
         $this->repository = $this->get(DbalConnectedAppRepository::class);
-        $this->query = $this->get(GetAllConnectedAppsCodesQuery::class);
+        $this->query = $this->get(GetAllConnectedAppsPublicIdsQuery::class);
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
         $this->createUserGroup = $this->get('akeneo_connectivity.connection.service.user.create_user_group');

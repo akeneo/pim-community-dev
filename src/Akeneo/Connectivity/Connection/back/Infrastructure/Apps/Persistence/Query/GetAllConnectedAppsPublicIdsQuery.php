@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAllConnectedAppsCodesInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsInterface;
 use Doctrine\DBAL\Connection;
 
-class GetAllConnectedAppsCodesQuery implements GetAllConnectedAppsCodesInterface
+class GetAllConnectedAppsPublicIdsQuery implements GetAllConnectedAppsPublicIdsInterface
 {
     private Connection $connection;
 
@@ -16,6 +16,9 @@ class GetAllConnectedAppsCodesQuery implements GetAllConnectedAppsCodesInterface
         $this->connection = $connection;
     }
 
+    /**
+     * @return string[]
+     */
     public function execute(): array
     {
         $query = <<<SQL

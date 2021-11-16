@@ -32,8 +32,7 @@ class App
         'url',
         'categories',
         'activate_url',
-        'callback_url',
-        'connected'
+        'callback_url'
     ];
 
     private function __construct()
