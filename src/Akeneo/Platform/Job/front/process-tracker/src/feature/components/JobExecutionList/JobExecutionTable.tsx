@@ -14,26 +14,29 @@ type JobExecutionTableProps = {
 const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}: JobExecutionTableProps) => {
   const translate = useTranslate();
   const dateFormatter = useDateFormatter();
-  const columnHeaders = ['job_name', 'type', 'started_at', 'username', 'status', 'warning_count'];
+  const sortableColumnHeaders = ['job_name', 'type', 'started_at', 'username', 'status'];
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
 
   return (
     <Table>
       <Table.Header sticky={sticky}>
-        {columnHeaders.map(columnHeader => (
+        {sortableColumnHeaders.map(sortableColumnHeader => (
           <Table.HeaderCell
-            key={columnHeader}
+            key={sortableColumnHeader}
             isSortable={true}
             onDirectionChange={direction => {
               if ('none' !== direction) {
-                onSortChange({column: columnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
+                onSortChange({column: sortableColumnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
               }
             }}
-            sortDirection={currentSort.column === columnHeader ? sortDirection : 'none'}
+            sortDirection={currentSort.column === sortableColumnHeader ? sortDirection : 'none'}
           >
-            {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.${columnHeader}`)}
+            {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.${sortableColumnHeader}`)}
           </Table.HeaderCell>
         ))}
+        <Table.HeaderCell>
+          {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.warning_count`)}
+        </Table.HeaderCell>
       </Table.Header>
       <Table.Body>
         {jobExecutionRows.map(jobExecutionRow => (
