@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -94,7 +94,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /** @var MissingRequiredAttributesNormalizerInterface */
     private $missingRequiredAttributesNormalizer;
 
-    /** @var MissingRequiredAttributesCalculator */
+    /** @var MissingRequiredAttributesCalculatorInterface */
     private $missingRequiredAttributesCalculator;
 
     /**
@@ -121,7 +121,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator = null
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
