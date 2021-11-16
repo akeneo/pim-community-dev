@@ -11,6 +11,7 @@ use Akeneo\Pim\Permission\Component\Updater\GrantedProductModelUpdater;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 
 class GrantedProductModelUpdaterSpec extends ObjectBehavior
@@ -18,13 +19,18 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
     function let(
         ObjectUpdaterInterface $productModelUpdater,
         AuthorizationCheckerInterface $authorizationChecker,
-        FilterInterface $productModelFilter
+        FilterInterface $productModelFilter,
+        FilterInterface $productModelFieldFilter,
+        FilterInterface $productModelAssociationFilter
     ) {
         $this->beConstructedWith(
             $productModelUpdater,
             $authorizationChecker,
             $productModelFilter,
-            ['categories']
+            $productModelFieldFilter,
+            $productModelAssociationFilter,
+            ['categories'],
+            ['associations', 'quantified_associations']
         );
     }
 
@@ -83,6 +89,7 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         $productModel->getId()->willReturn(1);
         $productModel->getCode()->willReturn('product_model');
 
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFilter->filter($productModel, [
@@ -97,7 +104,60 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(ResourceAccessDeniedException::class)->during('update', [$productModel, $data]);
     }
 
-    function it_does_not_try_to_filter_fields_if_user_has_edit_permission(
+    public function it_filters_fields_on_a_draft(
+        $productModelUpdater,
+        $authorizationChecker,
+        $productModelFieldFilter,
+        $productModelAssociationFilter,
+        ProductModelInterface $productModel
+    ) {
+        $data = [
+            'values' =>  ['a_text' => [['data' => 'data', 'locale' => null, 'scope' => null]]],
+            'associations' => ['X_SELL' => ['products' => ['product_a', 'product_b']]]
+        ];
+        $productModel->getId()->willReturn(1);
+
+        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
+        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $productModelFieldFilter->filter($productModel, ['values' => $data['values']])->willReturn([]);
+        $productModelAssociationFilter
+            ->filter($productModel, ['associations' => ['X_SELL' => ['products' => ['product_a', 'product_b']]]])
+            ->willReturn([]);
+
+        $productModelUpdater->update($productModel, $data, [])->shouldBeCalled();
+        $this->update($productModel, $data, []);
+    }
+
+    function it_throws_an_exception_if_user_tries_to_update_fields_on_a_draft(
+        $productModelUpdater,
+        $authorizationChecker,
+        $productModelFieldFilter,
+        $productModelAssociationFilter,
+        ProductModelInterface $productModel
+    ) {
+        $data = [
+            'categories' => ['cameras'],
+            'associations' => ['X_SELL' => ['products' => ['product_a', 'product_b']]]
+        ];
+        $productModel->getId()->willReturn(1);
+
+        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
+        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $productModelFieldFilter
+            ->filter($productModel, ['categories' => ['cameras']])
+            ->willReturn(['categories' => ['cameras']]);
+        $productModelAssociationFilter
+            ->filter($productModel, ['associations' => ['X_SELL' => ['products' => ['product_a', 'product_b']]]])
+            ->willReturn([]);
+
+        $productModelUpdater->update($productModel, $data, [])->shouldNotBeCalled();
+
+        $this->shouldThrow(InvalidArgumentException::class)->during('update', [$productModel, $data, []]);
+    }
+
+    function it_does_not_try_to_filter_fields_if_user_has_edit_and_own_permissions(
         $productModelUpdater,
         $authorizationChecker,
         $productModelFilter,
@@ -112,6 +172,7 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         ];
         $productModel->getId()->willReturn(1);
 
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFilter->filter($productModel, $data)->shouldNotBeCalled();

@@ -37,7 +37,10 @@ services:
             - '@pim_catalog.updater.product_model_with_values_permission'
             - '@security.authorization_checker'
             - '@pim_catalog.comparator.filter.product_model'
+            - '@pim_catalog.comparator.filter.product_model_field'
+            - '@pim_catalog.comparator.filter.product_association'
             - ['categories']
+            - ['associations', 'quantified_associations']
 
     pimee_catalog.security.updater.granted_product:
         class: 'Akeneo\Pim\Permission\Component\Updater\GrantedProductUpdater'
