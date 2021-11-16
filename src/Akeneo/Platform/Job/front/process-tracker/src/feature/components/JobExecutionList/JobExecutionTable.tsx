@@ -11,16 +11,17 @@ type JobExecutionTableProps = {
   currentSort: JobExecutionFilterSort;
 };
 
+const SORTABLE_COLUMN_HEADERS = ['job_name', 'type', 'started_at', 'username', 'status'];
+
 const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}: JobExecutionTableProps) => {
   const translate = useTranslate();
   const dateFormatter = useDateFormatter();
-  const sortableColumnHeaders = ['job_name', 'type', 'started_at', 'username', 'status'];
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
 
   return (
     <Table>
       <Table.Header sticky={sticky}>
-        {sortableColumnHeaders.map(sortableColumnHeader => (
+        {SORTABLE_COLUMN_HEADERS.map(sortableColumnHeader => (
           <Table.HeaderCell
             key={sortableColumnHeader}
             isSortable={true}
