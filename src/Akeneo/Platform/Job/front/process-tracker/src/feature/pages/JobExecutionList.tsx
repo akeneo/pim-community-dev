@@ -30,7 +30,7 @@ const JobExecutionList = () => {
 
   const handleSearchChange = useCallback((search: string) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, search}));
-  }, [setJobExecutionFilter]);
+  }, []);
 
   const handlePageChange = (page: number) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));

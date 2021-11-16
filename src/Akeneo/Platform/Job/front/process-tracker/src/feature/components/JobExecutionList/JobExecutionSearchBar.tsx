@@ -16,7 +16,7 @@ const JobExecutionSearchBar = ({
   jobExecutionFilter,
   onStatusFilterChange,
   onTypeFilterChange,
-  onSearchChange
+  onSearchChange,
 }: JobExecutionSearchBarProps) => {
   const translate = useTranslate();
   const [userSearch, setUserSearch] = useState<string>(jobExecutionFilter.search);
