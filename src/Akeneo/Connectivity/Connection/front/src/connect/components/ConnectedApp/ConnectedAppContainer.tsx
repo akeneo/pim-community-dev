@@ -4,13 +4,14 @@ import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
 import {useMediaUrlGenerator} from '../../../settings/use-media-url-generator';
-import {ApplyButton, PageContent, PageHeader} from '../../../common';
+import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../../common';
 import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
+import {useHistory} from 'react-router';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -20,6 +21,7 @@ const settingsTabName = '#connected-app-tab-settings';
 const permissionsTabName = '#connected-app-tab-permissions';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
+    const history = useHistory();
     const translate = useTranslate();
     const generateUrl = useRouter();
     const notify = useNotify();
@@ -122,7 +124,18 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<SaveButton key={0} />]}
+                buttons={[
+                    <SecondaryActionsDropdownButton key={0}>
+                        <DropdownLink
+                            onClick={() => {
+                                history.push(`/connect/connected-apps/${connectedApp.connection_code}/delete`);
+                            }}
+                        >
+                            <Translate id='pim_common.delete' />
+                        </DropdownLink>
+                    </SecondaryActionsDropdownButton>,
+                    <SaveButton key={0} />,
+                ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={generateMediaUrl(connectedApp.logo, 'thumbnail')}

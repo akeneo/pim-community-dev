@@ -32,7 +32,7 @@ const PermissionFormRegistry = {
         _config = config;
     },
     all: async (): Promise<PermissionFormProvider<any>[]> => {
-        const providers = _config.providers;
+        const providers = _config.providers || /* istanbul ignore next */ {};
 
         const modules = Object.keys(providers)
             .sort((a, b) => {
