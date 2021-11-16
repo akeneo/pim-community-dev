@@ -57,6 +57,9 @@ class GroupUpdater implements ObjectUpdaterInterface
             case 'name':
                 $group->setName($data);
                 break;
+            case 'type':
+                $group->setType($data);
+                break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
         }

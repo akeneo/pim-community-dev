@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateUserGroup implements CreateUserGroupInterface
 {
+    private const APP_USER_GROUP_TYPE = 'app';
     private SimpleFactoryInterface $userGroupFactory;
     private ObjectUpdaterInterface $userGroupUpdater;
     private SaverInterface $userGroupSaver;
@@ -38,7 +39,7 @@ class CreateUserGroup implements CreateUserGroupInterface
     {
         /** @var GroupInterface $group */
         $group = $this->userGroupFactory->create();
-        $this->userGroupUpdater->update($group, ['name' => $groupName]);
+        $this->userGroupUpdater->update($group, ['name' => $groupName, 'type' => self::APP_USER_GROUP_TYPE]);
 
         $errors = $this->validator->validate($group);
         if (0 < count($errors)) {

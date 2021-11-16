@@ -6,7 +6,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Updater\GroupUpdater;
 use PhpSpec\ObjectBehavior;
 
@@ -25,11 +24,13 @@ class GroupUpdaterSpec extends ObjectBehavior
     function it_updates_the_group_properties(GroupInterface $group)
     {
         $group->setName('name')->shouldBeCalled();
+        $group->setType('anything')->shouldBeCalled();
 
         $this->update(
             $group,
             [
                 'name' => 'name',
+                'type' => 'anything',
             ]
         );
     }
@@ -39,7 +40,7 @@ class GroupUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidObjectException::class)->during(
             'update',
             [
-                new Role(),
+                new \stdClass(),
                 [
                     'name' => 'name',
                 ],
