@@ -39,6 +39,7 @@ final class IndexAction
         $searchJobExecutionQuery->sortDirection = $sort['direction'] ?? 'DESC';
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
+        $searchJobExecutionQuery->search = $request->get('search', '');
 
         $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 

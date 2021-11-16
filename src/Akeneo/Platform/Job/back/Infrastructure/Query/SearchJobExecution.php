@@ -110,6 +110,7 @@ SQL;
         $sqlWhereParts = [];
         $type = $query->type;
         $status = $query->status;
+        $search = $query->search;
 
         if (!empty($type)) {
             $sqlWhereParts[] = 'ji.type IN (:type)';
@@ -119,6 +120,13 @@ SQL;
             $sqlWhereParts[] = 'je.status IN (:status)';
         }
 
+        if (!empty($search)) {
+            $searchParts = explode(' ', $search);
+            foreach ($searchParts as $index => $searchPart) {
+                $sqlWhereParts[] = sprintf('ji.label LIKE :search_part_%s', $index);
+            }
+        }
+
         return empty($sqlWhereParts) ? '' : 'WHERE ' . implode(' AND ', $sqlWhereParts);
     }
 
@@ -126,10 +134,18 @@ SQL;
     {
         $statusLabels = BatchStatus::getAllLabels();
 
-        return [
+        $queryParams = [
             'type' => $query->type,
             'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
         ];
+
+        $searchParts = explode(' ', $query->search);
+        foreach ($searchParts as $index => $searchPart) {
+            $searchPartName = sprintf('search_part_%s', $index);
+            $queryParams[$searchPartName] = sprintf('%%%s%%', $searchPart);
+        }
+
+        return $queryParams;
     }
 
     private function buildQueryParamsTypes(): array

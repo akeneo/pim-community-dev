@@ -15,4 +15,5 @@ class SearchJobExecutionQuery
     public string $sortDirection = 'DESC';
     public array $type = [];
     public array $status = [];
+    public string $search = '';
 }
