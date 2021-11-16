@@ -19,6 +19,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SearchJobExecution implements SearchJobExecutionInterface
 {
+    const SEARCH_PART_PARAM_SUFFIX = 'search_part';
+
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -112,7 +114,7 @@ SQL;
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
             foreach ($searchParts as $index => $searchPart) {
-                $sqlWhereParts[] = sprintf('ji.label LIKE :search_part_%s', $index);
+                $sqlWhereParts[] = sprintf('ji.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
 
@@ -130,7 +132,7 @@ SQL;
 
         $searchParts = explode(' ', $query->search);
         foreach ($searchParts as $index => $searchPart) {
-            $searchPartName = sprintf('search_part_%s', $index);
+            $searchPartName = sprintf('%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             $queryParams[$searchPartName] = sprintf('%%%s%%', $searchPart);
         }
 
