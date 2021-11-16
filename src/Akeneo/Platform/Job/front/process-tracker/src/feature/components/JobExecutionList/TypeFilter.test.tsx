@@ -4,7 +4,7 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {TypeFilter} from './TypeFilter';
 
-jest.mock('../hooks/useJobExecutionTypes', () => ({
+jest.mock('../../hooks/useJobExecutionTypes', () => ({
   useJobExecutionTypes: (): string[] => ['import', 'export', 'mass_edit'],
 }));
 

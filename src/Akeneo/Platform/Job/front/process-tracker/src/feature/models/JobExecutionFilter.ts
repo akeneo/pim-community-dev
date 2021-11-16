@@ -7,6 +7,7 @@ type JobExecutionFilter = {
   size: number;
   type: string[];
   status: JobStatus[];
+  search: string;
 };
 
 const getDefaultJobExecutionFilter = () => ({
@@ -14,10 +15,11 @@ const getDefaultJobExecutionFilter = () => ({
   size: ITEMS_PER_PAGE,
   type: [],
   status: [],
+  search: '',
 });
 
-const isDefaultJobExecutionFilter = ({page, size, type, status}: JobExecutionFilter): boolean =>
-  1 === page && ITEMS_PER_PAGE === size && 0 === status.length && 0 === type.length;
+const isDefaultJobExecutionFilter = ({page, size, type, status, search}: JobExecutionFilter): boolean =>
+  1 === page && ITEMS_PER_PAGE === size && 0 === status.length && 0 === type.length && search === '';
 
 export type {JobExecutionFilter};
 export {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter};
