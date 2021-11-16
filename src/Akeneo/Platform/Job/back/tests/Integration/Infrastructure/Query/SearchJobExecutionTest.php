@@ -32,7 +32,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $expectedJobExecutions = [
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
-                'a_product_import',
+                'A product import',
                 'import',
                 null,
                 null,
@@ -44,7 +44,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
-                'a_product_export',
+                'A product export',
                 'export',
                 null,
                 null,
@@ -65,7 +65,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $expectedJobExecutions = [
             new JobExecutionRow(
                 $this->jobExecutionIds[1],
-                'a_product_import',
+                'A product import',
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
@@ -77,7 +77,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
-                'a_product_import',
+                'A product import',
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
@@ -104,7 +104,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $expectedJobExecutions = [
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
-                'a_product_export',
+                'A product export',
                 'export',
                 null,
                 null,
@@ -131,7 +131,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $expectedJobExecutions = [
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
-                'a_product_import',
+                'A product import',
                 'import',
                 null,
                 null,
@@ -143,7 +143,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
-                'a_product_export',
+                'A product export',
                 'export',
                 null,
                 null,
@@ -152,6 +152,57 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 0,
                 3,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_filtered_job_executions_on_search(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->search = 'Import product';
+        $query->size = 10;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'A product import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'A product import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
+                null,
+                'STARTED',
+                0,
+                2,
+                1,
+                3
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'A product import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                null,
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3
             ),
         ];
 
@@ -402,26 +453,37 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->getQuery()->search($query);
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_job_execution_count_filtered_by_search()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->search = 'Import product';
+
+        $this->assertEquals(3, $this->getQuery()->count($query));
+    }
+
     private function loadFixtures()
     {
         $aProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
             'code' => 'a_product_import',
             'job_name' => 'a_product_import',
-            'label' => 'a_product_import',
+            'label' => 'A product import',
             'type' => 'import',
         ]);
 
         $anotherProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
             'code' => 'another_product_import',
             'job_name' => 'another_product_import',
-            'label' => 'another_product_import',
+            'label' => 'Another product import',
             'type' => 'import',
         ]);
 
         $aProductExportJobInstanceId = $this->fixturesLoader->createJobInstance([
             'code' => 'a_product_export',
             'job_name' => 'a_product_export',
-            'label' => 'a_product_export',
+            'label' => 'A product export',
             'type' => 'export',
         ]);
 

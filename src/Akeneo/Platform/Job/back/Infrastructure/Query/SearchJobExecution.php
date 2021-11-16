@@ -19,6 +19,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SearchJobExecution implements SearchJobExecutionInterface
 {
+    const SEARCH_PART_PARAM_SUFFIX = 'search_part';
+
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -110,6 +112,7 @@ SQL;
         $sqlWhereParts = [];
         $type = $query->type;
         $status = $query->status;
+        $search = $query->search;
 
         if (!empty($type)) {
             $sqlWhereParts[] = 'ji.type IN (:type)';
@@ -119,6 +122,13 @@ SQL;
             $sqlWhereParts[] = 'je.status IN (:status)';
         }
 
+        if (!empty($search)) {
+            $searchParts = explode(' ', $search);
+            foreach ($searchParts as $index => $searchPart) {
+                $sqlWhereParts[] = sprintf('ji.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
+            }
+        }
+
         return empty($sqlWhereParts) ? '' : 'WHERE ' . implode(' AND ', $sqlWhereParts);
     }
 
@@ -126,10 +136,18 @@ SQL;
     {
         $statusLabels = BatchStatus::getAllLabels();
 
-        return [
+        $queryParams = [
             'type' => $query->type,
             'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
         ];
+
+        $searchParts = explode(' ', $query->search);
+        foreach ($searchParts as $index => $searchPart) {
+            $searchPartName = sprintf('%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
+            $queryParams[$searchPartName] = sprintf('%%%s%%', $searchPart);
+        }
+
+        return $queryParams;
     }
 
     private function buildQueryParamsTypes(): array
