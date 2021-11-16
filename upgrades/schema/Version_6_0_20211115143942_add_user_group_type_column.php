@@ -16,7 +16,10 @@ final class Version_6_0_20211115143942_add_user_group_type_column extends Abstra
 {
     public function up(Schema $schema) : void
     {
-        $this->addSql('ALTER TABLE oro_access_group ADD type VARCHAR(30) NOT NULL DEFAULT "default"');
+        $table = $schema->getTable('oro_access_group');
+        if (!$table->hasColumn('type')) {
+            $this->addSql('ALTER TABLE oro_access_group ADD type VARCHAR(30) NOT NULL DEFAULT "default"');
+        }
     }
 
     public function down(Schema $schema) : void
