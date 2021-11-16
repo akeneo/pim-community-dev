@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql;
+namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasksForAttributeType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;

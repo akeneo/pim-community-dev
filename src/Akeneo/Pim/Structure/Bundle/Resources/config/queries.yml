@@ -43,11 +43,11 @@ services:
         tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.structure.query.sql_get_required_attributes_masks:
-        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetRequiredAttributesMasks'
+        class: 'Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetRequiredAttributesMasksAggregator'
         arguments:
             - !tagged akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type
 
-    Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\DefaultSqlGetRequiredAttributesMasks:
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\DefaultSqlGetRequiredAttributesMasks:
         arguments:
             - '@database_connection'
             -
@@ -71,7 +71,7 @@ services:
         tags:
             - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
 
-    Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\PriceCollectionSqlGetRequiredAttributesMasks:
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\PriceCollectionSqlGetRequiredAttributesMasks:
         arguments:
             - '@database_connection'
         tags:

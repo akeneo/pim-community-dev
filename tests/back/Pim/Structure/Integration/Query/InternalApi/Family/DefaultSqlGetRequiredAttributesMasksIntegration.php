@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Family\Sql;
+namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi\Family;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\DefaultSqlGetRequiredAttributesMasks;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
+use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\DefaultSqlGetRequiredAttributesMasks;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Webmozart\Assert\Assert;
 
@@ -102,7 +101,7 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
 
     public function test_the_generated_mask_is_ok_for_a_family_without_requirement()
     {
-        $result = $this->getRequiredAttributesMasks()->fromFamilyCodes(['familyB', 'familyC']);
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyB', 'familyC']);
         Assert::count($result['familyB']->masks(), 3);
         foreach ($result['familyB']->masks() as $maskPerChannelAndLocale) {
             $this->assertEqualsCanonicalizing(['sku-<all_channels>-<all_locales>'], $maskPerChannelAndLocale->mask());
@@ -111,18 +110,5 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
         foreach ($result['familyC']->masks() as $maskPerChannelAndLocale) {
             $this->assertEqualsCanonicalizing(['sku-<all_channels>-<all_locales>'], $maskPerChannelAndLocale->mask());
         }
-    }
-
-    public function test_it_throws_an_exception_for_non_existing_families()
-    {
-        $this->expectException(NonExistingFamiliesException::class);
-        $this->expectExceptionMessage("The following family codes do not exist: familyZ, familyY");
-
-        $this->getRequiredAttributesMasks()->fromFamilyCodes(['familyA', 'familyZ', 'familyY']);
-    }
-
-    private function getRequiredAttributesMasks(): GetRequiredAttributesMasks
-    {
-        return $this->get('akeneo.pim.structure.query.sql_get_required_attributes_masks');
     }
 }

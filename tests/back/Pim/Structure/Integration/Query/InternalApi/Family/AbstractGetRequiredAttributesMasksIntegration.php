@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Family\Sql;
+namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
