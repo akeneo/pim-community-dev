@@ -56,8 +56,10 @@ test('it can sort a Job execution Table', () => {
   userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
 
   expect(handleSortChange).toBeCalledWith({column: 'job_name', direction: 'ASC'});
+});
 
 test('it redirects to a job execution details on row click', () => {
+  const handleSortChange = jest.fn();
   renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={handleSortChange} currentSort={sort} />);
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('Nice name'));
@@ -65,6 +67,7 @@ test('it redirects to a job execution details on row click', () => {
 });
 
 test('it redirects to a job execution details on row cmd click', () => {
+  const handleSortChange = jest.fn();
   const redirectMock = jest.fn();
   jest.spyOn(window, 'open').mockImplementation(url => redirectMock(url));
 

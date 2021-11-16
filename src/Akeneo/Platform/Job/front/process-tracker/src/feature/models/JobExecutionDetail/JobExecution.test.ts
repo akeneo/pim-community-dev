@@ -1,4 +1,5 @@
-import {getDownloadLinks, JobExecutionArchives, isJobFinished, JobExecution, StepExecutionStatus} from './JobExecution';
+import {JobStatus} from '../JobStatus';
+import {getDownloadLinks, JobExecutionArchives, isJobFinished, JobExecution} from './JobExecution';
 
 const jobExecution: JobExecution = {
   failures: [],
@@ -32,7 +33,7 @@ const jobExecution: JobExecution = {
   },
 };
 
-const getJobWithStatus = (status: StepExecutionStatus): JobExecution => ({
+const getJobWithStatus = (status: JobStatus): JobExecution => ({
   ...jobExecution,
   tracking: {...jobExecution.tracking, status},
 });

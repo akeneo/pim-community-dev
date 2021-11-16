@@ -6,19 +6,20 @@ import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-des
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 import {useAnalytics} from '../../hooks';
 
-const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom', freeTrialEnabled: boolean}>`
+const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom'; freeTrialEnabled: boolean}>`
   ${({align}) =>
-    align === 'bottom' && css`
+    align === 'bottom' &&
+    css`
       position: absolute;
       bottom: 0;
-    `
-  }
+    `}
 
   ${({disabled, freeTrialEnabled}) =>
-    disabled && freeTrialEnabled && css`
+    disabled &&
+    freeTrialEnabled &&
+    css`
       cursor: pointer;
-    `
-  }
+    `}
 `;
 
 type NavigationEntry = {

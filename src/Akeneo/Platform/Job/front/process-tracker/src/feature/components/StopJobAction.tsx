@@ -9,7 +9,7 @@ type StopJobActionProps = {
   onStop: () => void;
 } & ButtonProps;
 
-const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: StopJobActionProps) => {
+const StopJobAction = ({id, jobLabel, isStoppable, onStop, ...rest}: StopJobActionProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id});

@@ -45,7 +45,6 @@ abstract class ReactController extends BaseController {
       return;
     }
 
-
     unmoundReactElementRef();
   }
 }

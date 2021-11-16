@@ -1,7 +1,14 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {screen} from '@testing-library/react';
 import {Progress} from './Progress';
+
+const mockTranslate = jest.fn((key: string, parameters: any, count: number) => {
+  return key;
+});
+
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
+  useTranslate: () => mockTranslate,
+}));
 
 test('it shows the progress of a job', () => {
   renderWithProviders(
@@ -44,6 +51,17 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
+          status: 'STARTED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 10,
+          processedItems: 30,
+          totalItems: 60,
+        },
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
           status: 'STARTING',
           isTrackable: true,
           hasWarning: false,
@@ -70,9 +88,9 @@ test('it shows the progress of a job', () => {
           isTrackable: true,
           hasWarning: true,
           hasError: false,
-          duration: 14,
+          duration: 10,
           processedItems: 30,
-          totalItems: 135,
+          totalItems: 300,
         },
         {
           jobName: 'csv_product_export',
@@ -89,7 +107,9 @@ test('it shows the progress of a job', () => {
     />
   );
 
-  expect(screen.getByText('pim_import_export.tracking.not_started')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.tracking.in_progress')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.tracking.estimating')).toBeInTheDocument();
+  expect(mockTranslate).toHaveBeenCalledWith('duration.hours', {count: '23'}, 23);
+  expect(mockTranslate).toHaveBeenCalledWith('duration.minutes', {count: '59'}, 59);
+  expect(mockTranslate).toHaveBeenCalledWith('pim_import_export.tracking.in_progress', {duration: ' '});
+  expect(mockTranslate).toHaveBeenCalledWith('batch_jobs.csv_product_export.export.label');
+  expect(mockTranslate).toHaveBeenCalledWith('pim_import_export.tracking.untrackable');
 });

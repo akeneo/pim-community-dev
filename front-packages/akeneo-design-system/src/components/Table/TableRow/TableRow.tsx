@@ -1,4 +1,13 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent, MouseEvent} from 'react';
+import React, {
+  ReactNode,
+  Ref,
+  SyntheticEvent,
+  HTMLAttributes,
+  forwardRef,
+  useContext,
+  DragEvent,
+  MouseEvent,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
