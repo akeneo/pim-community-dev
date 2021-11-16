@@ -23,6 +23,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdate
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
 class TableConfigurationUpdaterSpec extends ObjectBehavior
@@ -123,7 +124,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_updates_a_column_definition()
+    function it_updates_column_definitions(TableConfigurationRepository $tableConfigurationRepository)
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(
@@ -138,13 +139,18 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                     'code' => 'is_allergenic',
                     'labels' => ['fr_FR' => 'Allergène'],
                 ],
-            )
+            ),
+            NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
         ]);
+
+        $tableConfigurationRepository->getNextIdentifier(ColumnCode::fromString('quantity'))->shouldBeCalledOnce()
+            ->willReturn(ColumnId::fromString('quantity_11decf11-1111-111c-1e1c-111d111ca11b'));
 
         $newTableConfiguration = $this->update($tableConfiguration, [
             ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE],
             ['code' => 'is_allergenic', 'data_type' => BooleanColumn::DATATYPE, 'labels' => ['en_US' => 'Allergenic']],
             ['code' => 'description', 'data_type' => TextColumn::DATATYPE],
+            ['code' => 'quantity', 'data_type' => TextColumn::DATATYPE, 'validations' => ['max_length' => 50]]
         ]);
 
         $newTableConfiguration->shouldNotBe($tableConfiguration);
@@ -170,6 +176,13 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'labels' => (object)[],
                 'validations' => (object)[],
             ],
+            [
+                'id' => 'quantity_11decf11-1111-111c-1e1c-111d111ca11b',
+                'code' => 'quantity',
+                'data_type' => TextColumn::DATATYPE,
+                'labels' => (object)[],
+                'validations' => ['max_length' => 50],
+            ]
         ]);
     }
 }

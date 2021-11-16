@@ -40,7 +40,8 @@ class TableConfigurationUpdater
             Assert::stringNotEmpty($column['code']);
             $columnCode = ColumnCode::fromString($column['code']);
             $matchingColumn = $tableConfiguration->getColumnByCode($columnCode);
-            $newRawTableConfiguration[$index]['id'] = null === $matchingColumn ?
+            $newRawTableConfiguration[$index]['id'] =
+                (null === $matchingColumn || $matchingColumn->dataType()->asString() !== $column['data_type']) ?
                 $this->tableConfigurationRepository->getNextIdentifier($columnCode)->asString() :
                 $matchingColumn->id()->asString();
         }
