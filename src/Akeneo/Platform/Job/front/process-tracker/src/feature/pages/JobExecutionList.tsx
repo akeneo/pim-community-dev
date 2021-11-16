@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {AttributesIllustration, Breadcrumb, Pagination, Search} from 'akeneo-design-system';
+import React, {useCallback, useState} from 'react';
+import {AttributesIllustration, Breadcrumb, Pagination} from 'akeneo-design-system';
 import {
   useTranslate,
   useRoute,
@@ -10,7 +10,7 @@ import {
   NoDataTitle,
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
-import {JobExecutionTable, StatusFilter, TypeFilter} from '../components';
+import {JobExecutionSearchBar, JobExecutionTable} from '../components';
 import {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter, JobExecutionFilter, JobStatus} from '../models';
 
 const JobExecutionList = () => {
@@ -20,10 +20,6 @@ const JobExecutionList = () => {
   const jobExecutionTable = useJobExecutionTable(jobExecutionFilter);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
-  const handlePageChange = (page: number) => {
-    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
-  };
-
   const handleStatusFilterChange = (status: JobStatus[]) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, status}));
   };
@@ -32,8 +28,13 @@ const JobExecutionList = () => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, type}));
   };
 
-  /* istanbul ignore next TODO RAC-938 */
-  const handleSearchChange = () => {};
+  const handleSearchChange = useCallback((search: string) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, search}));
+  }, [setJobExecutionFilter]);
+
+  const handlePageChange = (page: number) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
+  };
 
   return (
     <>
@@ -61,13 +62,12 @@ const JobExecutionList = () => {
       <PageContent>
         {jobExecutionTable && (
           <>
-            <Search sticky={0} placeholder="TODO RAC-938" searchValue="" onSearchChange={handleSearchChange}>
-              <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={handleTypeFilterChange} />
-              <StatusFilter
-                statusFilterValue={jobExecutionFilter.status}
-                onStatusFilterChange={handleStatusFilterChange}
-              />
-            </Search>
+            <JobExecutionSearchBar
+              jobExecutionFilter={jobExecutionFilter}
+              onStatusFilterChange={handleStatusFilterChange}
+              onTypeFilterChange={handleTypeFilterChange}
+              onSearchChange={handleSearchChange}
+            />
             {0 < matchesCount && (
               <>
                 <Pagination

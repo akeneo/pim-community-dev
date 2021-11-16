@@ -1,7 +1,7 @@
 import React from 'react';
 import {Checkbox, Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 import {useTranslate, Translate} from '@akeneo-pim-community/shared';
-import {useJobExecutionTypes} from '../hooks/useJobExecutionTypes';
+import {useJobExecutionTypes} from '../../hooks/useJobExecutionTypes';
 
 const getStatusFilterValueLabel = (translate: Translate, typeFilterValue: string[]): string => {
   switch (typeFilterValue.length) {
