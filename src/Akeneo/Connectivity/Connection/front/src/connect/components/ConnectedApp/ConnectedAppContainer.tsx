@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useState} from 'react';
-import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -163,6 +163,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         permissions={permissions}
                     />
                 )}
+                <br/>
+                <Button href="https://b002-2a01-cb05-8463-b00-f6a6-5e8e-6285-2db0.eu.ngrok.io/authenticate?pim_url=http://172.17.0.1:8080" target="_blank" level="warning">Access the APP</Button>
             </PageContent>
         </>
     );

@@ -121,6 +121,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
+                <Button href="https://b002-2a01-cb05-8463-b00-f6a6-5e8e-6285-2db0.eu.ngrok.io/authenticate?pim_url=http://172.17.0.1:8080" target="_blank" level="warning">Access the APP</Button>
                 <Button ghost level='tertiary' href={connectedAppUrl}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
