@@ -1,11 +1,11 @@
 import React from 'react';
 import {fireEvent, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {Locale} from '@akeneo-pim-community/shared';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 
 jest.mock('akeneoassetmanager/application/component/app/select2');

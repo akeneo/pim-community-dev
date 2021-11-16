@@ -12,7 +12,7 @@ import {
   SectionTitle,
   useBooleanState,
 } from 'akeneo-design-system';
-import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataTitle, useTranslate, LocaleCode} from '@akeneo-pim-community/shared';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,
@@ -54,7 +54,6 @@ import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel'
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {
   AttributeGroupCode,
   AttributeGroupCollection,

@@ -1,3 +1,4 @@
+import {ChannelCode, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier from 'akeneoassetmanager/domain/model/asset/identifier';
@@ -6,9 +7,6 @@ import {AssetFamily, createEmptyAssetFamily} from 'akeneoassetmanager/domain/mod
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import {getLabel} from 'pimui/js/i18n';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {MediaPreview, MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getValuesForChannelAndLocale} from 'akeneoassetmanager/domain/model/asset/value';

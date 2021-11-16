@@ -2,24 +2,31 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
-import {useSecurity, useTranslate, DeleteModal, PimView} from '@akeneo-pim-community/shared';
+import {
+  useSecurity,
+  useTranslate,
+  DeleteModal,
+  PimView,
+  LocaleSelector,
+  LocaleCode,
+  Locale,
+  getLabel,
+  Channel,
+  ChannelCode,
+} from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
-import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
-import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
-import Channel from 'akeneoassetmanager/domain/model/channel';
+import {ChannelSwitcher} from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
@@ -51,8 +58,8 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
-    onLocaleChanged: (locale: Locale) => void;
-    onChannelChanged: (channel: Channel) => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
+    onChannelChanged: (channelCode: ChannelCode) => void;
     onDelete: (asset: EditionAsset) => void;
     backToAssetFamilyList: () => void;
     onSaveAndExecuteNamingConvention: (asset: EditionAsset) => void;
@@ -192,25 +199,19 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                       {editState}
                     </div>
                   </div>
-                  <div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-context AknButtonList">
-                        <ChannelSwitcher
-                          channelCode={context.channel}
-                          channels={structure.channels}
-                          locale={context.locale}
-                          className="AknDropdown--right"
-                          onChannelChange={events.onChannelChanged}
-                        />
-                        <LocaleSwitcher
-                          localeCode={context.locale}
-                          locales={structure.locales}
-                          className="AknDropdown--right"
-                          onLocaleChange={events.onLocaleChanged}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <ButtonContainer>
+                    <ChannelSwitcher
+                      channelCode={context.channel}
+                      channels={structure.channels}
+                      locale={context.locale}
+                      onChannelChange={events.onChannelChanged}
+                    />
+                    <LocaleSelector
+                      value={context.locale}
+                      values={structure.locales}
+                      onChange={events.onLocaleChanged}
+                    />
+                  </ButtonContainer>
                   <MetaContainer>
                     {completeness.hasRequiredAttribute() && (
                       <>
@@ -293,11 +294,11 @@ export default connect(
         onSaveEditForm: () => {
           dispatch(saveAsset());
         },
-        onLocaleChanged: (locale: Locale) => {
-          dispatch(localeChanged(locale.code));
+        onLocaleChanged: (localeCode: LocaleCode) => {
+          dispatch(localeChanged(localeCode));
         },
-        onChannelChanged: (channel: Channel) => {
-          dispatch(channelChanged(channel.code));
+        onChannelChanged: (channelCode: ChannelCode) => {
+          dispatch(channelChanged(channelCode));
         },
         onDelete: (asset: EditionAsset) => {
           dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));

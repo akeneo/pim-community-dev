@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Channel from 'akeneoassetmanager/domain/model/channel';
+import React from 'react';
+import {Channel} from '@akeneo-pim-community/shared';
 
 export type ChannelFetcher = {
   fetchAll: () => Promise<Channel[]>;

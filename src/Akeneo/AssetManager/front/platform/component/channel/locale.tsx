@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import {LocaleCode, Locale} from '@akeneo-pim-community/shared';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 const LocaleLabelView = styled(Label)`
   margin-left: 10px;

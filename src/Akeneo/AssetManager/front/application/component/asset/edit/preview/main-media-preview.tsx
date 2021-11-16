@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {Section, useTranslate} from '@akeneo-pim-community/shared';
+import {Section, useTranslate, LocaleCode, ChannelCode} from '@akeneo-pim-community/shared';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';

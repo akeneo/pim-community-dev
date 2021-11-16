@@ -1,8 +1,8 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {Locale} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {LocaleDropdown} from './LocaleDropdown';
 
 const locales: Locale[] = [

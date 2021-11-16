@@ -1,5 +1,4 @@
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 
 export type Context = {
   locale: LocaleCode;

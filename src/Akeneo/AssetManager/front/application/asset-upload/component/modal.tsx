@@ -2,7 +2,7 @@ import React, {useReducer, useCallback, useMemo, useEffect, ChangeEvent} from 'r
 import {Reducer} from 'redux';
 import styled from 'styled-components';
 import {Button, Modal} from 'akeneo-design-system';
-import {useTranslate, useUploader} from '@akeneo-pim-community/shared';
+import {useTranslate, useUploader, Locale, LocaleCode} from '@akeneo-pim-community/shared';
 import {LineList} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
@@ -22,7 +22,6 @@ import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import limitFileUpload from 'akeneoassetmanager/application/asset-upload/utils/upload-limit';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';

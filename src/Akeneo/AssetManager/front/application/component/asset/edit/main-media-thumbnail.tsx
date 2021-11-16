@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {ChannelCode, LocaleCode, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import EditionAsset, {
   getEditionAssetLabel,
   getEditionAssetMainMediaThumbnail,
 } from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
