@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useAutoFocus, useDebounce, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TypeFilter} from './TypeFilter';

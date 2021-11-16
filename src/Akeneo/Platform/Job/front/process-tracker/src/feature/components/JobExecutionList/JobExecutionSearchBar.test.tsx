@@ -2,10 +2,8 @@ import React from 'react';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {JobExecutionSearchBar} from './JobExecutionSearchBar';
-import {getDefaultJobExecutionFilter, JobStatus} from '../../models';
+import {getDefaultJobExecutionFilter} from '../../models';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-
-const emptyDataProvider = {channelFetcher: {fetchAll: () => new Promise(jest.fn())}};
 
 test('It displays a search input with an initialized value', () => {
   renderWithProviders(
