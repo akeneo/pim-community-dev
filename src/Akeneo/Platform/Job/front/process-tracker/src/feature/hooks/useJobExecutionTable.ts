@@ -13,8 +13,7 @@ const useJobExecutionTable = ({page, size, sort, type, status}: JobExecutionFilt
         body: JSON.stringify({
           page: page.toString(),
           size: size.toString(),
-          sort_column: sort.column,
-          sort_direction: sort.direction,
+          sort,
           status,
           type,
         }),
