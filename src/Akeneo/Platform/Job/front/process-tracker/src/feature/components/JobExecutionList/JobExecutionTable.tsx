@@ -15,7 +15,7 @@ type JobExecutionTableProps = {
 const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}: JobExecutionTableProps) => {
   const translate = useTranslate();
   const dateFormatter = useDateFormatter();
-  const columnHeaders = ['job_name', 'type', 'started_at', 'username', 'status', 'warnings'];
+  const columnHeaders = ['job_name', 'type', 'started_at', 'username', 'status', 'warning_count'];
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
 
   return (

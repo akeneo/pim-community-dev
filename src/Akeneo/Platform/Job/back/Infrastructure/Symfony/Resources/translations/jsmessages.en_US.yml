@@ -11,7 +11,7 @@ akeneo_job_process_tracker:
         started_at: Started at
         username: Username
         status: Status
-        warnings: Warnings
+        warning_count: Warnings
   type:
     label: Type
     all: All
