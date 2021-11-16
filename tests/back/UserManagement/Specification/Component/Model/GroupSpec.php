@@ -59,4 +59,15 @@ class GroupSpec extends ObjectBehavior
             'foo' => true,
         ]);
     }
+
+    public function it_has_a_default_type(): void
+    {
+        $this->getType()->shouldReturn('default');
+    }
+
+    public function it_changes_the_default_type(): void
+    {
+        $this->setType('anything_else');
+        $this->getType()->shouldReturn('anything_else');
+    }
 }
