@@ -29,32 +29,42 @@ class SearchJobExecution implements SearchJobExecutionInterface
     public function search(SearchJobExecutionQuery $query): array
     {
         $sql = <<<SQL
+    WITH job_executions AS (
+        SELECT
+            je.id,
+            je.job_instance_id,
+            ji.label,
+            ji.type,
+            je.start_time,
+            je.user,
+            je.status
+        FROM akeneo_batch_job_execution je
+        JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
+        %s
+        %s
+        LIMIT :offset, :limit
+    )
+
     SELECT
-        je.id,
-        ji.label,
-        ji.type,
-        je.start_time,
-        je.user,
-        je.status,
-        SUM(IFNULL(se.warning_count, 0)) as warning_count,
-        COUNT(se.job_execution_id) AS current_step_number,
-        JSON_MERGE(JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')), JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))) as errors
-    FROM akeneo_batch_job_execution je
-    JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
-    LEFT JOIN akeneo_batch_step_execution se on je.id = se.job_execution_id
+           je.*,
+           SUM(IFNULL(se.warning_count, 0)) AS warning_count,
+           COUNT(se.job_execution_id) AS current_step_number,
+           JSON_MERGE(
+                JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')),
+                JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))
+          ) as errors
+    FROM job_executions je
+    LEFT JOIN akeneo_batch_step_execution se ON je.id = se.job_execution_id
+    GROUP BY je.id
     %s
-    GROUP BY je.id, ji.label, ji.type, je.start_time, je.user, je.status
-    %s
-    LIMIT :offset, :limit;
 SQL;
+
         $whereSqlPart = $this->buildSqlWherePart($query);
         $orderBySqlPart = $this->buildSqlOrderByPart($query);
 
-        $sql = sprintf($sql, $whereSqlPart, $orderBySqlPart);
+        $sql = sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('ji', 'je', $orderBySqlPart));
         $queryParams = $this->buildQueryParams($query);
         $queryParamsTypes = $this->buildQueryParamsTypes();
-
-        $sql = sprintf($sql, $whereSqlPart);
 
         $page = $query->page;
         $size = $query->size;
@@ -153,9 +163,6 @@ SQL;
                 break;
             case 'status':
                 $orderByColumn = "je.status $sortDirection";
-                break;
-            case 'warning_count':
-                $orderByColumn = "warning_count $sortDirection";
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
