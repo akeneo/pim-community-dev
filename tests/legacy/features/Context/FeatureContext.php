@@ -179,7 +179,7 @@ class FeatureContext extends MinkContext
         }
 
         // Make sure the AJAX calls are fired up before checking the condition
-        $this->getSession()->wait(100, false);
+        $this->getSession()->wait(100);
 
         $this->getSession()->wait($timeout, $condition);
 
