@@ -29,14 +29,14 @@ class Version_6_0_20211115143942_add_user_group_type_column_Integration extends 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertEquals(true, $this->typeColumnExists());
 
-        $allConnectionTypes = $this->getAllConnectionTypes();
+        $allUserGroupTypes = $this->getAllUserGroupTypes();
 
         Assert::assertEquals([
             'IT support' => 'default',
             'Manager' => 'default',
             'Redactor' => 'default',
             'All' => 'default',
-        ], $allConnectionTypes);
+        ], $allUserGroupTypes);
     }
 
     private function dropTypeIfExists(): void
@@ -66,7 +66,7 @@ class Version_6_0_20211115143942_add_user_group_type_column_Integration extends 
         return isset($columns['type']);
     }
 
-    private function getAllConnectionTypes(): array
+    private function getAllUserGroupTypes(): array
     {
         $query = <<<SQL
 SELECT name, type
