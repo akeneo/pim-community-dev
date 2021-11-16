@@ -599,7 +599,7 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                DEPLOYMENTS_INSTANCES_DIR=saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+                DEPLOYMENTS_INSTANCES_DIR=/root/project/deployments/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
 
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
