@@ -15,3 +15,8 @@ Feature: Connection to e-commerce platforms and marketplaces
     When the connector requests to download a non existent media file
     Then the PIM notifies the connector that the media file does not exist
 
+  @integration-back
+  Scenario: Notify an error when downloading a media file of an asset family asset without permission
+    Given the Kartell asset of the Brand asset family with a media file in an attribute value
+    When the connector requests to download the media file of this attribute value without permission
+    Then the PIM notifies the connector about missing permissions for downloading the media file of this attribute value

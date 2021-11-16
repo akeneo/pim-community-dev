@@ -27,12 +27,16 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFilt
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -55,6 +59,12 @@ class GetConnectorAssetsAction
 
     private SearchFiltersValidator $searchFiltersValidator;
 
+    private SecurityFacade $securityFacade;
+
+    private TokenStorageInterface $tokenStorage;
+
+    private LoggerInterface $apiAclLogger;
+
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         SearchConnectorAsset $searchConnectorAsset,
@@ -62,7 +72,10 @@ class GetConnectorAssetsAction
         AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
         int $limit,
         ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator
+        SearchFiltersValidator $searchFiltersValidator,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->searchConnectorAsset = $searchConnectorAsset;
@@ -71,6 +84,9 @@ class GetConnectorAssetsAction
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
         $this->validator = $validator;
         $this->searchFiltersValidator = $searchFiltersValidator;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -79,6 +95,8 @@ class GetConnectorAssetsAction
      */
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $searchFilters = $this->getSearchFiltersFromRequest($request);
         $searchFiltersErrors = empty($searchFilters) ? [] : $this->searchFiltersValidator->validate($searchFilters);
 
@@ -207,5 +225,35 @@ class GetConnectorAssetsAction
         }
 
         return $formattedFilters;
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_asset_list';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            /**
+             * TODO CXP-922: throw instead of logging
+             */
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

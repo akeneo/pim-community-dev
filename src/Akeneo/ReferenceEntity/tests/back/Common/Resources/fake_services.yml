@@ -235,6 +235,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
+    # Third party services
     fos_oauth_server.security.authentication.listener:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
 

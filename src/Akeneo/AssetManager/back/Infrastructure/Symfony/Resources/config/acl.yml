@@ -82,3 +82,28 @@ akeneo_assetmanager_option_delete:
     type: action
     label: akeneo_assetmanager.acl.option.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
+
+pim_api_asset_family_edit:
+    type: action
+    label: pim_api.acl.asset_family.create
+    group_name: pim_api.acl_group.asset
+
+pim_api_asset_family_list:
+    type: action
+    label: pim_api.acl.asset_family.list
+    group_name: pim_api.acl_group.asset
+
+pim_api_asset_edit:
+    type: action
+    label: pim_api.acl.asset.create
+    group_name: pim_api.acl_group.asset
+
+pim_api_asset_list:
+    type: action
+    label: pim_api.acl.asset.list
+    group_name: pim_api.acl_group.asset
+
+pim_api_asset_remove:
+    type: action
+    label: pim_api.acl.asset.remove
+    group_name: pim_api.acl_group.asset

@@ -46,6 +46,8 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -78,6 +80,10 @@ class GetConnectorAssetContext implements Context
 
     private ?Response $imageNotFoundResponse = null;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -85,7 +91,9 @@ class GetConnectorAssetContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider
+        InMemoryFilesystemProviderStub $filesystemProvider,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -94,6 +102,20 @@ class GetConnectorAssetContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->mediaFileRepository = $mediaFileRepository;
         $this->filesystemProvider = $filesystemProvider;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 
     /**
@@ -172,6 +194,39 @@ class GetConnectorAssetContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->existentAsset,
             self::REQUEST_CONTRACT_DIR . sprintf("successful_%s_asset.json", strtolower($referenceCode))
+        );
+    }
+
+    /**
+     * @When the connector requests the Kartell asset for the Brand asset family without permission
+     */
+    public function theConnectorRequestsTheKartellAssetForTheBrandAssetFamilyWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_list', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->existentAsset = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . "forbidden_kartell_asset.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for requesting the Kartell asset for the Brand asset family
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheKartellAssetForTheBrandAssetFamily()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->existentAsset,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_asset.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 
@@ -318,6 +373,43 @@ class GetConnectorAssetContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->imageNotFoundResponse,
             self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+        );
+    }
+
+    /**
+     * @When the connector requests to download the media file of this attribute value without permission
+     */
+    public function theConnectorRequestsToDownloadTheMediaFileOfThisAttributeValueWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_list', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        ob_start();
+        $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
+        );
+
+        $this->downloadedMediaFile = ob_get_clean();
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for downloading the media file of this attribute value
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForDownloadingTheMediaFileOfThisAttributeValue()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertStreamedResponseFromFile(
+            $this->mediaFileDownloadResponse,
+            $this->downloadedMediaFile,
+            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 

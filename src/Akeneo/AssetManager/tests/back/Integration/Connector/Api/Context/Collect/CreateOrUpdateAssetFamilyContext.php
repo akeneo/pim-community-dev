@@ -55,8 +55,10 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAssetFamilyContext implements Context
@@ -86,6 +88,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
 
     private AttributeRepositoryInterface $attributeRepository;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -95,7 +101,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -106,6 +114,20 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 
     /**
@@ -469,6 +491,39 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_naming_convention_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @When the connector collects the properties of the Brand asset family from the ERP to synchronize it with the PIM without permission
+     */
+    public function theConnectorCollectsThePropertiesOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_frontview_asset_family_creation.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting the properties of the Brand asset family from the ERP to synchronize it with the PIM
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThePropertiesOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePim()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_frontview_asset_family_creation.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 

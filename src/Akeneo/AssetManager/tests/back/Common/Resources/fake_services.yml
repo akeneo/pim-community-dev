@@ -300,6 +300,7 @@ services:
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_family_identifier_launcher:
         class: Akeneo\AssetManager\Common\Fake\ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy
 
+    # Third party services
     fos_oauth_server.security.authentication.listener:
         class: Akeneo\AssetManager\Common\Fake\Connector\NullListener
 

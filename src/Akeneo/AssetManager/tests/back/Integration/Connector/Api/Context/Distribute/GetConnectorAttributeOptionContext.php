@@ -38,7 +38,10 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformati
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributeOptionContext implements Context
@@ -70,18 +73,26 @@ class GetConnectorAttributeOptionContext implements Context
     /** @var null|Response **/
     private ?Response $nonExistentAttributeOptionResponse = null;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorAttributeOption $findConnectorAttributeOption,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorAttributeOption = $findConnectorAttributeOption;
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -335,6 +346,37 @@ class GetConnectorAttributeOptionContext implements Context
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand_2'),
             AttributeCode::fromString('sales_area'),
             $connectorAttribute
+        );
+    }
+
+    /**
+     * @When the connector requests the French option of the Nationality attribute for the Brand asset family without permission
+     */
+    public function theConnectorRequestsTheFrenchOptionOfTheNationalityAttributeForTheBrandAssetFamilyWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->optionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."forbidden_french_nationality_option_for_brand_asset_family.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for requesting the French option of the Nationality attribute for the Brand asset family
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForRequestingTheFrenchOptionOfTheNationalityAttributeForTheBrandAssetFamily()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_french_nationality_option_for_brand_asset_family.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_list"'),
+            'Expected warning not found in the logs.'
         );
     }
 }
