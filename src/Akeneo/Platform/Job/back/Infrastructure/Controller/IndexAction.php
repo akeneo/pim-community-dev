@@ -36,6 +36,7 @@ final class IndexAction
         $searchJobExecutionQuery->size = (int) $request->get('size', 25);
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
+        $searchJobExecutionQuery->search = $request->get('search', '');
 
         $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 

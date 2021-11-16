@@ -13,4 +13,5 @@ class SearchJobExecutionQuery
     public int $size = 25;
     public array $type = [];
     public array $status = [];
+    public string $search = '';
 }
