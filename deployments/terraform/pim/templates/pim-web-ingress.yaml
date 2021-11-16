@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pim-external-{{ .Values.global.extraLabels.instanceName }}
@@ -24,6 +24,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: pim-web
-          servicePort: pim-web-http
+          service:
+            name: pim-web
+            port:
+              name: pim-web-http
