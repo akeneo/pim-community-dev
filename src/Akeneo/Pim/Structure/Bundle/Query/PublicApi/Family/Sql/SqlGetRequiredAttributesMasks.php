@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasksForAttributeType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -21,6 +22,7 @@ final class SqlGetRequiredAttributesMasks implements GetRequiredAttributesMasks
 
     public function __construct(iterable $getAttributeMasksPerAttributeTypes)
     {
+        Assert::allIsInstanceOf($getAttributeMasksPerAttributeTypes, GetRequiredAttributesMasksForAttributeType::class);
         $this->getAttributeMasksPerAttributeTypes = $getAttributeMasksPerAttributeTypes;
     }
 
