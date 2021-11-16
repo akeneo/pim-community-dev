@@ -166,6 +166,7 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - PIM-9877: Optimize DQI dashboard data consolidation
 - PIM-10004: Optimize counting job execution warnings
 - PIM-10142: Block HTTP redirection in Webhook URLs
+- PIM-10144: Don't display Guzzle version in user agent
 
 ## Classes
 
