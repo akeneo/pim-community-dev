@@ -49,13 +49,13 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
 
   return (
     <DropdownContainer>
-      <SwitcherButton label={translate('pim_enrich.entity.locale.plural_label')} onClick={open}>
+      <SwitcherButton label={translate('pim_common.locale')} onClick={open}>
         <HighlightLocaleWithFlag code={selectedLocale.code} languageLabel={selectedLocale.label} />
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
-            <Dropdown.Title>{translate('pim_enrich.entity.attribute.module.edit.select_locale')}</Dropdown.Title>
+            <Dropdown.Title>{translate('pim_common.locale')}</Dropdown.Title>
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {values.map(locale => (
