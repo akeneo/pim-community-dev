@@ -15,6 +15,7 @@ datagrid:
                 where:
                     and:
                         - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
+                        - g.type = '%pim_user.entity.group.class%::TYPE_DEFAULT'
         columns:
             name:
                 label: pim_common.name
