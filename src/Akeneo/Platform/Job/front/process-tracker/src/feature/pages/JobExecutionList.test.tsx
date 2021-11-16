@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import {JobExecutionList} from './JobExecutionList';
 import {JobExecutionFilter, JobExecutionRow, JobExecutionTable} from '../models';
 
-const firstPage: JobExecutionRow[] = [
+const rows: JobExecutionRow[] = [
   {
     job_execution_id: 1,
     started_at: '2020-01-01T00:00:00+00:00',
@@ -48,9 +48,6 @@ const firstPage: JobExecutionRow[] = [
     job_name: 'Another import job',
     status: 'STOPPING',
   },
-];
-
-const secondPage: JobExecutionRow[] = [
   {
     job_execution_id: 4,
     started_at: '2020-01-01T00:00:00+00:00',
@@ -73,15 +70,16 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
   useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter): JobExecutionTable => {
-    const filteredRows = (1 === page ? firstPage : secondPage)
+    const filteredRows = rows
+      .filter(
+        row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
+      )
       .sort((a, b) => {
-        return 'DESC' === sort.direction
+        return 'ASC' === sort.direction
           ? a[sort.column].localeCompare(b[sort.column])
           : b[sort.column].localeCompare(a[sort.column]);
       })
-      .filter(
-        row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
-      );
+      .slice((page - 1) * size, (page - 1) * size + size);
 
     return {
       rows: filteredRows,
@@ -98,8 +96,8 @@ jest.mock('../hooks/useJobExecutionTypes', () => ({
 jest.mock('../models/JobExecutionFilter', () => ({
   getDefaultJobExecutionFilter: () => ({
     page: 1,
-    size: 2,
-    sort: {column: 'started_at', direction: 'DESC'},
+    size: 3,
+    sort: {column: 'job_name', direction: 'ASC'},
     status: [],
     type: [],
   }),
@@ -141,7 +139,11 @@ test('it can filter on the job type', () => {
 test('it can sort on the job name', () => {
   renderWithProviders(<JobExecutionList />);
 
+  expect(screen.getByText('Another import job')).toBeInTheDocument();
+
   userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
+
+  expect(screen.queryByText('Another import job')).not.toBeInTheDocument();
 });
 
 test('it can change page', () => {
