@@ -1,9 +1,8 @@
 import React from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
-import {JobExecutionRow} from '../../models';
+import {JobExecutionRow, JobExecutionFilterSort} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
-import {JobExecutionFilterSort} from '../../models';
 
 type JobExecutionTableProps = {
   sticky?: number;
@@ -24,7 +23,7 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
         {columnHeaders.map(columnHeader => (
           <Table.HeaderCell
             key={columnHeader}
-            isSortable
+            isSortable={true}
             onDirectionChange={direction => {
               if ('none' !== direction) {
                 onSortChange({column: columnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
