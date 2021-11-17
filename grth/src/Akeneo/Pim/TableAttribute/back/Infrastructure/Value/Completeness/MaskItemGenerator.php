@@ -18,6 +18,9 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
         if ([] === $value) {
@@ -26,20 +29,19 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
 
         $counts = [];
         foreach ($value as $row) {
-            foreach (\array_keys($row) as $columnCode) {
-                $counts[$columnCode] = 1 + ($counts[$columnCode] ?? 0);
+            foreach (\array_keys($row) as $columnId) {
+                $counts[$columnId] = 1 + ($counts[$columnId] ?? 0);
             }
         }
 
-        $filledColumnCodes = \array_keys(\array_filter(
+        $filledColumnIds = \array_keys(\array_filter(
             $counts,
             static fn (int $count): bool => $count === \count($value)
         ));
-
-        \sort($filledColumnCodes);
+        \sort($filledColumnIds);
 
         $result = [];
-        foreach ($this->getFilledColumnsCombinations($filledColumnCodes) as $combination) {
+        foreach ($this->getFilledColumnsCombinations($filledColumnIds) as $combination) {
             $result[] = \sprintf(
                 '%s-%s-%s-%s',
                 $attributeCode,
@@ -52,16 +54,23 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
         return $result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supportedAttributeTypes(): array
     {
         return [AttributeTypes::TABLE];
     }
 
-    private function getFilledColumnsCombinations($filledColumns): array
+    /**
+     * @param string[] $columnIds
+     * @return array<int, string[]>
+     */
+    private function getFilledColumnsCombinations(array $columnIds): array
     {
         $combinations = [[]];
 
-        foreach ($filledColumns as $filledColumn) {
+        foreach ($columnIds as $filledColumn) {
             foreach ($combinations as $combination) {
                 $combinations[] = \array_merge($combination, [$filledColumn]);
             }

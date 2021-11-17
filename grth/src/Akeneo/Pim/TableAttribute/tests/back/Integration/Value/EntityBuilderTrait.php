@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Value;
+namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
 use PHPUnit\Framework\Assert;
 
