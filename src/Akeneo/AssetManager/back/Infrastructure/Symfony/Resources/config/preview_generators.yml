@@ -109,10 +109,7 @@ services:
     akeneo_assetmanager.infrastructure.loader.reject_invalid_redirection_stream_loader:
         class: 'Akeneo\AssetManager\Infrastructure\Filesystem\Loader\RejectInvalidRedirectionStreamLoader'
         arguments:
-            - '%allowed_media_link_protocols%'
-            - '@Akeneo\AssetManager\Infrastructure\Network\DnsLookup'
-            - '@Akeneo\AssetManager\Infrastructure\Network\IpMatcher'
-            - '%env(string:ALLOWED_NETWORK_ASSETS_WHITELIST)%'
+            - '@Akeneo\AssetManager\Infrastructure\Network\UrlChecker'
         tags:
             - { name: liip_imagine.binary.loader, loader: stream_data_loader }
 
