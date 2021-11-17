@@ -157,7 +157,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
         \Exception $previousException = null
     ): void {
         $itemPosition = 0;
-        if ($this->stepExecution !== null) {
+        if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }
