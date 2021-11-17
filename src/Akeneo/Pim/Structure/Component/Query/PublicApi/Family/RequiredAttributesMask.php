@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 
+use Webmozart\Assert\Assert;
+
 /**
  * This mask is done to gather all the masks for a given family
  * e.g:
@@ -21,16 +23,20 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
  */
 class RequiredAttributesMask
 {
-    /** @var string */
-    private $familyCode;
+    private string $familyCode;
 
-    /** @var RequiredAttributesMaskForChannelAndLocale[] */
-    private $masks;
+    /** @var array<string, RequiredAttributesMaskForChannelAndLocale> */
+    private array $masks;
 
     public function __construct(string $familyCode, array $masksPerChannelAndLocale)
     {
         $this->familyCode = $familyCode;
-        $this->masks = $masksPerChannelAndLocale;
+        Assert::allIsInstanceOf($masksPerChannelAndLocale, RequiredAttributesMaskForChannelAndLocale::class);
+        $this->masks = [];
+        foreach ($masksPerChannelAndLocale as $mask) {
+            $key = \sprintf('%s-%s', $mask->localeCode(), $mask->channelCode());
+            $this->masks[$key] = $mask;
+        }
     }
 
     /**
@@ -38,7 +44,7 @@ class RequiredAttributesMask
      */
     public function masks(): array
     {
-        return $this->masks;
+        return \array_values($this->masks);
     }
 
     public function requiredAttributesMaskForChannelAndLocale(string $channelCode, string $localeCode): RequiredAttributesMaskForChannelAndLocale
@@ -54,22 +60,18 @@ class RequiredAttributesMask
         );
     }
 
-    public function merge(RequiredAttributesMask $otherRequiredAttributeMask): RequiredAttributesMask
+    public function merge(RequiredAttributesMask $otherRequiredAttributesMask): RequiredAttributesMask
     {
-        $mergedMasks = [];
-        foreach ($this->masks() as $formerMask) {
-            $key = \sprintf('%s-%s', $formerMask->localeCode(), $formerMask->channelCode());
-            $mergedMasks[$key] = $formerMask;
-        }
+        $mergedMasks = $this->masks;
 
-        foreach ($otherRequiredAttributeMask->masks() as $newMask) {
+        foreach ($otherRequiredAttributesMask->masks() as $newMask) {
             $key = \sprintf('%s-%s', $newMask->localeCode(), $newMask->channelCode());
-            $formerMask = $mergedMasks[$key] ?? null;
-            if (null !== $formerMask) {
+
+            if (isset($mergedMasks[$key])) {
                 $mergedMasks[$key] = new RequiredAttributesMaskForChannelAndLocale(
                     $newMask->channelCode(),
                     $newMask->localeCode(),
-                    \array_values(\array_unique(\array_merge($formerMask->mask(), $newMask->mask())))
+                    \array_values(\array_unique(\array_merge($mergedMasks[$key]->mask(), $newMask->mask())))
                 );
             } else {
                 $mergedMasks[$key] = $newMask;
