@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Family;
+namespace Akeneo\Test\Pim\TableAttribute\Integration\Family;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Infrastructure\Family\Sql\TableSqlGetRequiredAttributesMasks;
