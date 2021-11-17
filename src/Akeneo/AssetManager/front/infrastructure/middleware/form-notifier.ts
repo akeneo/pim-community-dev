@@ -1,10 +1,8 @@
-import __ from 'akeneoassetmanager/tools/translator';
+import {Notify, Translate} from '@akeneo-pim-community/shared';
 
-const messenger = require('oro/messenger');
-
-export default () => () => (next: any) => (action: any) => {
+export default (notify: Notify, translate: Translate) => () => (next: any) => (action: any) => {
   if ('NOTIFY' === action.type) {
-    messenger.notify(action.level, __(action.message, action.parameters));
+    notify(action.level, translate(action.message, action.parameters));
 
     return;
   }
