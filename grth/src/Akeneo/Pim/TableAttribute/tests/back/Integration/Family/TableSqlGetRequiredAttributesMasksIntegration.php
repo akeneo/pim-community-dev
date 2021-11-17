@@ -33,8 +33,8 @@ final class TableSqlGetRequiredAttributesMasksIntegration extends TestCase
             'code' => 'tablet',
             'locales' => ['en_US', 'fr_FR'],
             'labels' => ['en_US' => 'tablet', 'fr_FR' => 'Tablette'],
-            'currencies' => ['USD']]
-        );
+            'currencies' => ['USD'],
+        ]);
 
         $this->createAttribute([
             'code' => 'nutrition',
