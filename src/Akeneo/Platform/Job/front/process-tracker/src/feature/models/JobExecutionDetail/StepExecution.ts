@@ -1,4 +1,5 @@
-import {Warning, Failure} from '../models';
+import {Failure} from './Failure';
+import {Warning} from './Warning';
 
 type StepExecution = {
   job: string;

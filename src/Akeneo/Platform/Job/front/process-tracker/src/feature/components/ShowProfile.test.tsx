@@ -1,8 +1,8 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {ShowProfile} from '../../../../../Resources/public/js/job/execution/ShowProfile';
-import {JobInstance} from '../../../../../Resources/public/js/job/execution/model/job-execution';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {ShowProfile} from './ShowProfile';
+import {JobInstance} from '../models/JobExecutionDetail';
 
 const importJobInstance: JobInstance = {
   code: 'csv_attribute_import',

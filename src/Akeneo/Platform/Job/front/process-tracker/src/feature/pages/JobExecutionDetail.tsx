@@ -23,13 +23,13 @@ import {
   MoreIcon,
   useBooleanState,
 } from 'akeneo-design-system';
-import {Status} from './Status';
-import {StopJobAction} from './StopJobAction';
-import {JobExecutionProgress} from './Progress';
-import {ShowProfile} from './ShowProfile';
-import {getDownloadLinks, JobExecution} from './models/job-execution';
-import {useJobExecution} from './hooks/useJobExecution';
-import {SummaryTable} from './summary/SummaryTable';
+import {Status} from '../components/Status';
+import {StopJobAction} from '../components/StopJobAction';
+import {Progress} from '../components/Progress';
+import {ShowProfile} from '../components/ShowProfile';
+import {getDownloadLinks, JobExecution} from '../models/JobExecutionDetail';
+import {useJobExecution} from '../hooks/useJobExecution';
+import {SummaryTable} from '../components/summary/SummaryTable';
 
 const Container = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const canDownloadArchive = ({isGranted}: Security, jobExecution: JobExecution | 
   return true;
 };
 
-const ExecutionDetail = () => {
+const JobExecutionDetail = () => {
   const translate = useTranslate();
   const security = useSecurity();
   const router = useRouter();
@@ -233,9 +233,7 @@ const ExecutionDetail = () => {
         <PageHeader.Title>{jobExecution?.jobInstance.label ?? jobExecutionId}</PageHeader.Title>
         <PageHeader.Content>
           {jobExecution && <Status tracking={jobExecution.tracking} />}
-          {jobExecution?.tracking && (
-            <JobExecutionProgress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />
-          )}
+          {jobExecution?.tracking && <Progress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />}
         </PageHeader.Content>
       </PageHeader>
       <PageContent>{jobExecution && <SummaryTable jobExecution={jobExecution} />}</PageContent>
@@ -243,4 +241,4 @@ const ExecutionDetail = () => {
   );
 };
 
-export {ExecutionDetail};
+export {JobExecutionDetail};

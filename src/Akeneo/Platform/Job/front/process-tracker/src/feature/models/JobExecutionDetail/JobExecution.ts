@@ -1,14 +1,6 @@
-import {Failure, StepExecution} from '../models';
-
-type StepExecutionStatus =
-  | 'COMPLETED'
-  | 'STARTING'
-  | 'STARTED'
-  | 'STOPPING'
-  | 'STOPPED'
-  | 'FAILED'
-  | 'ABANDONED'
-  | 'UNKNOWN';
+import {StepExecution} from './StepExecution';
+import {Failure} from './Failure';
+import {JobStatus} from '../JobStatus';
 
 type StepExecutionTracking = {
   hasError: boolean;
@@ -16,13 +8,11 @@ type StepExecutionTracking = {
   isTrackable: boolean;
   jobName: string;
   stepName: string;
-  status: StepExecutionStatus;
+  status: JobStatus;
   duration: number;
   processedItems: number;
   totalItems: number;
 };
-
-type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 
 type JobExecutionTracking = {
   error: boolean;
@@ -104,11 +94,4 @@ const isJobFinished = (jobExecution: JobExecution | null): boolean =>
   null !== jobExecution && !['STARTING', 'STARTED', 'STOPPING'].includes(jobExecution.tracking.status);
 
 export {getDownloadLinks, isJobFinished};
-export type {
-  JobExecution,
-  JobExecutionArchives,
-  JobExecutionTracking,
-  JobInstance,
-  StepExecutionStatus,
-  StepExecutionTracking,
-};
+export type {JobExecution, JobExecutionArchives, JobExecutionTracking, JobInstance, StepExecutionTracking};

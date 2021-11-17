@@ -1,9 +1,9 @@
 import React from 'react';
-import {formatSecondsIntl} from 'pimui/js/intl-duration';
 import styled from 'styled-components';
 import {Level, ProgressBar} from 'akeneo-design-system';
-import {StepExecutionTracking} from './models/job-execution';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {StepExecutionTracking} from '../models/JobExecutionDetail';
+import {Translate, useTranslate} from '@akeneo-pim-community/shared';
+import {formatSecondsIntl} from '../tools/intl-duration';
 
 const Container = styled.div`
   display: grid;
@@ -42,9 +42,7 @@ const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 
   return (step.processedItems * 100) / step.totalItems;
 };
 
-const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
-  const translate = useTranslate();
-
+const getStepExecutionTrackingTitle = (translate: Translate, step: StepExecutionTracking): string => {
   let key = `batch_jobs.${step.jobName}.${step.stepName}.label`;
   if (translate(key) === key) {
     key = `batch_jobs.default_steps.${step.stepName}`;
@@ -53,9 +51,11 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
   return translate(key);
 };
 
-const getStepExecutionTrackingProgressLabel = (jobStatus: string | undefined, step: StepExecutionTracking): string => {
-  const translate = useTranslate();
-
+const getStepExecutionTrackingProgressLabel = (
+  translate: Translate,
+  jobStatus: string | undefined,
+  step: StepExecutionTracking
+): string => {
   switch (step.status) {
     case 'STARTING':
       return translate('pim_import_export.tracking.not_started');
@@ -86,14 +86,16 @@ const getStepExecutionTrackingProgressLabel = (jobStatus: string | undefined, st
   }
 };
 
-const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
+const Progress = ({jobStatus, steps}: {jobStatus: string | undefined; steps: StepExecutionTracking[]}) => {
+  const translate = useTranslate();
+
   return (
     <Container>
       {steps.map((step: StepExecutionTracking, index: number) => (
         <ProgressBar
           key={index}
-          title={getStepExecutionTrackingTitle(step)}
-          progressLabel={getStepExecutionTrackingProgressLabel(jobStatus, step)}
+          title={getStepExecutionTrackingTitle(translate, step)}
+          progressLabel={getStepExecutionTrackingProgressLabel(translate, jobStatus, step)}
           level={guessStepExecutionTrackingLevel(step)}
           percent={getStepExecutionTrackingPercent(step)}
           size="large"
@@ -103,4 +105,4 @@ const JobExecutionProgress = ({jobStatus, steps}: {jobStatus: string | undefined
   );
 };
 
-export {JobExecutionProgress};
+export {Progress};

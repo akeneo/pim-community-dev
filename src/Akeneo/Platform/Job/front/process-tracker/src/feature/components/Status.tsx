@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {default as JobExecutionStatusBadge} from 'pimimportexport/js/JobExecutionStatus';
-import {JobExecutionTracking} from './models';
+import {JobExecutionTracking} from '../models/JobExecutionDetail';
+import {JobExecutionStatus} from './JobExecutionStatus';
 
 const Container = styled.div`
   margin-top: 8px;
@@ -17,7 +17,7 @@ const Status = ({tracking}: {tracking: JobExecutionTracking}) => {
   return (
     <Container>
       {translate('pim_common.status')}
-      <JobExecutionStatusBadge
+      <JobExecutionStatus
         data-testid="job-status"
         status={tracking.status}
         currentStep={tracking.currentStep}

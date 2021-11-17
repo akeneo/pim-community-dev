@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
-import {isJobFinished, JobExecution} from '../models';
+import {isJobFinished, JobExecution} from '../models/JobExecutionDetail';
 
 type Error = {
   statusMessage: string;
@@ -41,7 +41,7 @@ const useJobExecution = (jobExecutionId: string) => {
     if (isMounted()) {
       setJobExecution(jobExecution);
     }
-  }, [route, isFetching]);
+  }, [route, isFetching, isMounted]);
 
   useEffect(() => {
     if (!willRefresh) return;
@@ -51,7 +51,7 @@ const useJobExecution = (jobExecutionId: string) => {
     return () => {
       clearInterval(interval);
     };
-  }, [willRefresh, isFetching]);
+  }, [willRefresh, isFetching, fetchJobExecution]);
 
   return [jobExecution, error, fetchJobExecution, willRefresh] as const;
 };
