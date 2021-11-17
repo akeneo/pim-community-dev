@@ -67,6 +67,7 @@ JSON;
                     "fr_FR" => "Ingrédients",
                 ],
                 'validations' => [],
+                'is_required_for_completeness' => true,
                 'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar', 'fr_FR' => 'Sucre']]],
             ],
             [
@@ -75,7 +76,8 @@ JSON;
                 'labels' => [],
                 'validations' => [
                     'max_length' => 100,
-                ]
+                ],
+                'is_required_for_completeness' => false,
             ]
         ], $decoded['table_configuration']);
     }

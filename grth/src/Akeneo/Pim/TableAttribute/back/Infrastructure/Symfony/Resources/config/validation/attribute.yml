@@ -86,6 +86,13 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           allowMissingFields: true
                           allowExtraFields: true # handled in ValidationShouldMatchColumnType
                       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMin: ~
+                is_required_for_completeness:
+                  - Optional:
+                      - Type:
+                          type: bool
+                          message: The required value is a boolean
+                      - NotNull:
+                          message: The required for completeness option requires a value
                 options:
                   - Optional:
                       - Type:

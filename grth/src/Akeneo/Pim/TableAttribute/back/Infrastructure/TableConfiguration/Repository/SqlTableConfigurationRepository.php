@@ -21,6 +21,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -79,12 +81,12 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $this->connection->executeQuery(
                 <<<SQL
-                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations)
+                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness)
                 SELECT * FROM (
-                    SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations
+                    SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations, :is_required_for_completeness as is_required_for_completeness
                     FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
                 ) AS newvalues
-                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations
+                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations, is_required_for_completeness = newvalues.is_required_for_completeness
                 SQL,
                 [
                     'column_id' => $columnDefinition['id'],
@@ -94,6 +96,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                     'column_order' => $columnOrder,
                     'labels' => \json_encode($columnDefinition['labels']),
                     'validations' => \json_encode($columnDefinition['validations']),
+                    'is_required_for_completeness' => $columnDefinition['is_required_for_completeness'] ? 1 : 0,
                 ]
             );
         }
@@ -109,7 +112,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 data_type,
                 column_order,
                 table_column.labels,
-                validations
+                validations,
+                is_required_for_completeness
             FROM pim_catalog_table_column table_column
                 INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
             WHERE attribute.code = :attributeCode
@@ -124,6 +128,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             throw TableConfigurationNotFoundException::forAttributeCode($attributeCode);
         }
 
+        $platform = $this->connection->getDatabasePlatform();
+
         return TableConfiguration::fromColumnDefinitions(
             array_map(
                 fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
@@ -133,6 +139,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                         'data_type' => $row['data_type'],
                         'labels' => \json_decode($row['labels'], true),
                         'validations' => \json_decode($row['validations'], true),
+                        'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
                     ]
                 ),
                 $results
