@@ -33,11 +33,9 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
     public function fromFamilyCodes(array $familyCodes): array
     {
         $result = [];
-        $foundFamilyCodes = [];
         foreach ($this->getAttributeMasksPerAttributeTypes as $getAttributeMasksPerAttributeType) {
             $masksPerAttributeTypeCollection = $getAttributeMasksPerAttributeType->fromFamilyCodes($familyCodes);
             foreach ($masksPerAttributeTypeCollection as $familyCode => $requiredAttributeMask) {
-                array_push($foundFamilyCodes, $familyCode);
                 if (!isset($result[$familyCode])) {
                     $result[$familyCode] = $requiredAttributeMask;
                 } else {
@@ -46,8 +44,8 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
             }
         }
 
-        $nonExistingFamilyCodes = array_diff($familyCodes, $foundFamilyCodes);
-        if (count($nonExistingFamilyCodes) > 0) {
+        $nonExistingFamilyCodes = array_diff($familyCodes, \array_keys($result));
+        if (\count($nonExistingFamilyCodes) > 0) {
             throw new NonExistingFamiliesException($nonExistingFamilyCodes);
         }
 
