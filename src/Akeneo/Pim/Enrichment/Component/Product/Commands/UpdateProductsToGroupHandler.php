@@ -26,7 +26,7 @@ class UpdateProductsToGroupHandler
         $this->productSaver = $productSaver;
     }
 
-    public function handle(UpdateProductsToGroupCommand $updateProductsToGroupCommand)
+    public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
         $uptodateProductIds = $updateProductsToGroupCommand->getUptodateProductIds();
         $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->getGroupId());

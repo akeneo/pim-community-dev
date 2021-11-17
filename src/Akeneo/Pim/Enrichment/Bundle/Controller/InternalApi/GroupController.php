@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Commands\UpdateProductsToGroupCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Commands\UpdateProductsToGroupHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -195,7 +195,7 @@ class GroupController
         $this->saver->save($group);
 
         if (array_key_exists('products', $data)) {
-            $this->updateProductsToGroupHandler->handle(new UpdateProductsToGroupCommand($group->getId(), $data['products']));
+            $this->updateProductsToGroupHandler->handle(new GroupProductsCommand($group->getId(), $data['products']));
         }
 
         return new JsonResponse($this->normalizer->normalize(
