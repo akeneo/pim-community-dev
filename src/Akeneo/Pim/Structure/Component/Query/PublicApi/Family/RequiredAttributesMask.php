@@ -53,4 +53,29 @@ class RequiredAttributesMask
             sprintf("The completeness family mask for family %s, channel %s and locale %s does not exist", $this->familyCode, $channelCode, $localeCode)
         );
     }
+
+    public function merge(RequiredAttributesMask $otherRequiredAttributeMask): RequiredAttributesMask
+    {
+        $mergedMasks = [];
+        foreach ($this->masks() as $formerMask) {
+            $key = \sprintf('%s-%s', $formerMask->localeCode(), $formerMask->channelCode());
+            $mergedMasks[$key] = $formerMask;
+        }
+
+        foreach ($otherRequiredAttributeMask->masks() as $newMask) {
+            $key = \sprintf('%s-%s', $newMask->localeCode(), $newMask->channelCode());
+            $formerMask = $mergedMasks[$key] ?? null;
+            if (null !== $formerMask) {
+                $mergedMasks[$key] = new RequiredAttributesMaskForChannelAndLocale(
+                    $newMask->channelCode(),
+                    $newMask->localeCode(),
+                    \array_values(\array_unique(\array_merge($formerMask->mask(), $newMask->mask())))
+                );
+            } else {
+                $mergedMasks[$key] = $newMask;
+            }
+        }
+
+        return new RequiredAttributesMask($this->familyCode, \array_values($mergedMasks));
+    }
 }
