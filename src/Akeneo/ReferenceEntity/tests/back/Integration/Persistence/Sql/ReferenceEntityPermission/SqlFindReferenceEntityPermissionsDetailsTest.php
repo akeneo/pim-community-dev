@@ -56,7 +56,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
             [
                 ['user_group_identifier' => 10, 'user_group_name' => 'Catalog Manager', 'right_level' => 'edit'],
                 ['user_group_identifier' => 11, 'user_group_name' => 'IT support', 'right_level' => 'view'],
-                ['user_group_identifier' => 12, 'user_group_name' => 'New user group', 'right_level' => 'view'],
+                ['user_group_identifier' => 13, 'user_group_name' => 'New user group', 'right_level' => 'view'],
             ],
             $permissions
         );
@@ -71,7 +71,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
         $permissions = $this->query->find(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
             [
-                ['user_group_identifier' => 12, 'user_group_name' => 'New user group', 'right_level' => 'edit'],
+                ['user_group_identifier' => 13, 'user_group_name' => 'New user group', 'right_level' => 'edit'],
             ],
             $permissions
         );
@@ -102,10 +102,11 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
                 )
             );
         $insertFakeGroups = <<<SQL
- INSERT INTO oro_access_group (id, name)
+ INSERT INTO oro_access_group (id, name, type)
  VALUES
-    (10, 'Catalog Manager'),
-    (11, 'IT support');
+    (10, 'Catalog Manager', 'default'),
+    (11, 'IT support', 'default'),
+    (12, 'NO NOT SHOW', 'another_type');
 SQL;
         $this->get('database_connection')->executeUpdate($insertFakeGroups);
 
@@ -144,7 +145,7 @@ SQL;
         $insertNewUserGroup = <<<SQL
  INSERT INTO oro_access_group (id, name)
  VALUES
-    (12, 'New user group');
+    (13, 'New user group');
 SQL;
         $this->get('database_connection')->executeUpdate($insertNewUserGroup);
     }
