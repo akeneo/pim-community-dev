@@ -46,7 +46,14 @@ It can be used with or without an Illustration and adapts its content accordingl
                   ? undefined
                   : React.createElement(Illustrations[args.illustration])
               }
-            />
+            >
+              <Modal.TopLeftButtons>
+                <Button>Top left button</Button>
+              </Modal.TopLeftButtons>
+              <Modal.TopRightButtons>
+                <Button>Top right button</Button>
+              </Modal.TopRightButtons>
+            </Modal>
           )}
           <Button onClick={open}>Open Modal</Button>
         </>
