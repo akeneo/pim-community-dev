@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Channel\Integration\Channel\Normalizer\Standard;
+namespace AkeneoTest\Channel\Integration\Channel\Normalization\Standard;
 
 use Akeneo\Test\Integration\TestCase;
 

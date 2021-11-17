@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Family;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Manager;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
 use Akeneo\Test\Integration\Configuration;

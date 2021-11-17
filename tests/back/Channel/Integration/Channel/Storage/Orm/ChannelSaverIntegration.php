@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Channel\Integration\Channel\Storage\Orm;
+namespace AkeneoTest\Channel\Integration\Channel\Storage\Orm;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;

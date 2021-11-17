@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Attribute\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

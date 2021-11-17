@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
+namespace Akeneo\Test\Tool\Integration\Batch\Command;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

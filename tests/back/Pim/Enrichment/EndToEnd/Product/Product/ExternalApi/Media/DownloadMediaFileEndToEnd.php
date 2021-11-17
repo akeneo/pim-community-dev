@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\MediaFile;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media\AbstractMediaFileTestCase;

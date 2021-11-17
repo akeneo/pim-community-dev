@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\EventListener;
+namespace AkeneoTest\Pim\Enrichment\Integration\EventSubscriber;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;

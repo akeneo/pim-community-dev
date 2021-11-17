@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Attribute\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

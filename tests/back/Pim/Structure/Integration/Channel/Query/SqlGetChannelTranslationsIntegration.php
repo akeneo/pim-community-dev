@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Channel;
+namespace AkeneoTest\Pim\Structure\Integration\Channel\Query;
 
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\Sql\SqlGetChannelTranslations;
 use Akeneo\Test\Integration\Configuration;

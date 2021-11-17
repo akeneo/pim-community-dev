@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Date;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Attribute\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

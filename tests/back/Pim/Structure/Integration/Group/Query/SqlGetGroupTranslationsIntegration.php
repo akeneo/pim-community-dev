@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Group;
+namespace AkeneoTest\Pim\Structure\Integration\Group\Query;
 
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Group\Sql\SqlGetGroupTranslations;
 use Akeneo\Test\Integration\Configuration;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Bundle\Doctrine\ORM\Repository\InternalApi;
+namespace AkeneoTest\Pim\Structure\Integration\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;

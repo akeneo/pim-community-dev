@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Channel\Integration\Channel\Query\Sql;
+namespace AkeneoTest\Channel\Integration\Channel\Query\Sql;
 
 use Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob;
 use Akeneo\Test\Integration\TestCase;

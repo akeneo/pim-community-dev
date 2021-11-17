@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Attribute\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;

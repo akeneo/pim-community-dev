@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Attribute\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Bundle\Doctrine\ORM\Repository\ExternalApi;
+namespace AkeneoTest\Pim\Structure\Integration\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\FamilyRepository;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

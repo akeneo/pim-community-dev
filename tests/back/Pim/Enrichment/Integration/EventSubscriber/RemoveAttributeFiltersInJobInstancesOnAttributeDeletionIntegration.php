@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Channel\Integration\Channel\EventListener;
+namespace AkeneoTest\Pim\Enrichment\Integration\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;

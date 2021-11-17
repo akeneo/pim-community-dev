@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Category;
+namespace AkeneoTest\Pim\Structure\Integration\Category\Query;
 
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlGetCategoryTranslations;
 use Akeneo\Test\Integration\Configuration;

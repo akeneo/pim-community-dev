@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\MediaFile;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media\AbstractMediaFileTestCase;

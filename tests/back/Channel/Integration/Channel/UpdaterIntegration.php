@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Channel\Integration\Channel;
+namespace AkeneoTest\Channel\Integration\Channel;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;

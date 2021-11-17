@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
-class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
+class BlacklistedAttributeCodeIntegration extends AbstractAttributeTestCase
 {
     public function test_i_can_update_an_attribute_that_is_not_blacklisted()
     {

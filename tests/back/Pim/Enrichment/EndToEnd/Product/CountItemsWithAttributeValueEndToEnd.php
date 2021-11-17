@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Attribute\InternalApi;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

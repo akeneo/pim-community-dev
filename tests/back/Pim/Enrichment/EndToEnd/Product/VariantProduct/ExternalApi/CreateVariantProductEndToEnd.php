@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
