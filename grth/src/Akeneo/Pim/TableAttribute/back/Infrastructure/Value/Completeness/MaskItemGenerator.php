@@ -20,35 +20,27 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
-        if (count($value) === 0) {
+        if ([] === $value) {
             return [];
         }
 
         $counts = [];
-        $max = 0;
         foreach ($value as $row) {
-            foreach (array_keys($row) as $columnCode) {
-                if (!isset($counts[$columnCode])) {
-                    $counts[$columnCode] = 1;
-                } else {
-                    $counts[$columnCode]++;
-                }
-            }
-            $max = \max($max, $counts[$columnCode]);
-        }
-
-        $filledColumns = [];
-        foreach ($counts as $colunmCode => $count) {
-            if ($count === $max) {
-                $filledColumns[] = $colunmCode;
+            foreach (\array_keys($row) as $columnCode) {
+                $counts[$columnCode] = 1 + ($counts[$columnCode] ?? 0);
             }
         }
 
-        sort($filledColumns);
+        $filledColumnCodes = \array_keys(\array_filter(
+            $counts,
+            static fn (int $count): bool => $count === \count($value)
+        ));
+
+        \sort($filledColumnCodes);
 
         $result = [];
-        foreach ($this->getFilledColumnsCombinations($filledColumns) as $combination) {
-            $result[] = sprintf(
+        foreach ($this->getFilledColumnsCombinations($filledColumnCodes) as $combination) {
+            $result[] = \sprintf(
                 '%s-%s-%s-%s',
                 $attributeCode,
                 join('-', $combination),
@@ -65,13 +57,13 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
         return [AttributeTypes::TABLE];
     }
 
-    private function getFilledColumnsCombinations($filledColumns)
+    private function getFilledColumnsCombinations($filledColumns): array
     {
         $combinations = [[]];
 
         foreach ($filledColumns as $filledColumn) {
             foreach ($combinations as $combination) {
-                array_push($combinations, array_merge($combination, [$filledColumn]));
+                $combinations[] = \array_merge($combination, [$filledColumn]);
             }
         }
         unset($combinations[0]);
