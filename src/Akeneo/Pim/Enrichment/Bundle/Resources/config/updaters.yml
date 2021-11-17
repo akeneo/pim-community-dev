@@ -121,8 +121,6 @@ services:
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@doctrine.orm.entity_manager'
 
     pim_enrichment.updater.translatable:
         class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'

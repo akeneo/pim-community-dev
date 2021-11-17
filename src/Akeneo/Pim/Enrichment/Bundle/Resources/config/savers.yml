@@ -36,15 +36,11 @@ services:
         class: '%pim_catalog.saver.group.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.product'
             - '@pim_versioning.context.version'
             - '@pim_catalog.saver.group_options_resolver'
             - '@event_dispatcher'
-            - '@pim_catalog.query.product_query_builder_factory'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pim_catalog.entity.product.class%'
-            - '@akeneo.pim.enrichment.group.query.get_group_product_identifiers'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.saver.association_type:
         class: '%pim_catalog.saver.base.class%'

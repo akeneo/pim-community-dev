@@ -1,0 +1,6 @@
+services:
+  Akeneo\Pim\Enrichment\Component\Product\Commands\UpdateProductsToGroupHandler:
+    arguments:
+      - '@akeneo.pim.enrichment.group.query.get_group_product_identifiers'
+      - '@doctrine.orm.entity_manager'
+      - '@pim_catalog.saver.product'

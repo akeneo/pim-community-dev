@@ -186,11 +186,11 @@ class Group implements GroupInterface
         return $this;
     }
 
-   /**
-     * Return the identifier-based validation group for validation of properties
-     *
-     * @return string[]
-     */
+    /**
+      * Return the identifier-based validation group for validation of properties
+      *
+      * @return string[]
+      */
     public function getGroupSequence()
     {
         return ['Group', strtolower($this->getType()->getCode())];

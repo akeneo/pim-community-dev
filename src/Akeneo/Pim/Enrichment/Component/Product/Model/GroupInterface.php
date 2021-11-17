@@ -75,5 +75,4 @@ interface GroupInterface extends
      * @return GroupInterface
      */
     public function setLabel($label);
-
 }
