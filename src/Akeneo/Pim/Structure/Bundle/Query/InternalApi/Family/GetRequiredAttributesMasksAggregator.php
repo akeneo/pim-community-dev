@@ -41,11 +41,7 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
                 if (!isset($result[$familyCode])) {
                     $result[$familyCode] = $requiredAttributeMask;
                 } else {
-                    $result[$familyCode] = $this->mergeRequiredAttributeMask(
-                        $familyCode,
-                        $result[$familyCode],
-                        $requiredAttributeMask
-                    );
+                    $result[$familyCode] = $result[$familyCode]->merge($requiredAttributeMask);
                 }
             }
         }
@@ -56,33 +52,5 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
         }
 
         return $result;
-    }
-
-    private function mergeRequiredAttributeMask(
-        string $familyCode,
-        RequiredAttributesMask $formerMask,
-        RequiredAttributesMask $newMask
-    ): RequiredAttributesMask {
-        $indexedFormerMasks = [];
-        foreach ($formerMask->masks() as $formerMask) {
-            $key = \sprintf('%s-%s', $formerMask->localeCode(), $formerMask->channelCode());
-            $indexedFormerMasks[$key] = $formerMask;
-        }
-
-        $mergedMasks = [];
-        foreach ($newMask->masks() as $newMask) {
-            $key = \sprintf('%s-%s', $newMask->localeCode(), $newMask->channelCode());
-            if (\array_key_exists($key, $indexedFormerMasks)) {
-                $mergedMasks[] = new RequiredAttributesMaskForChannelAndLocale(
-                    $newMask->channelCode(),
-                    $newMask->localeCode(),
-                    \array_unique(\array_merge($indexedFormerMasks[$key]->mask(), $newMask->mask()))
-                );
-            } else {
-                $mergedMasks[] = $newMask;
-            }
-        }
-
-        return new RequiredAttributesMask($familyCode, $mergedMasks);
     }
 }
