@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsCommand;
-use Akeneo\Pim\Enrichment\Component\Product\Commands\UpdateProductsToGroupHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -72,7 +72,7 @@ class GroupController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
-    protected UpdateProductsToGroupHandler $updateProductsToGroupHandler;
+    protected GroupProductsHandler $groupProductsHandler;
 
 
     public function __construct(
@@ -87,7 +87,7 @@ class GroupController
         RemoverInterface $remover,
         GroupFactory $groupFactory,
         NormalizerInterface $constraintViolationNormalizer,
-        UpdateProductsToGroupHandler $updateProductsToGroupHandler
+        GroupProductsHandler $groupProductsHandler
     ) {
         $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
@@ -100,7 +100,7 @@ class GroupController
         $this->remover = $remover;
         $this->groupFactory = $groupFactory;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->updateProductsToGroupHandler = $updateProductsToGroupHandler;
+        $this->groupProductsHandler = $groupProductsHandler;
     }
 
     /**
@@ -195,7 +195,7 @@ class GroupController
         $this->saver->save($group);
 
         if (array_key_exists('products', $data)) {
-            $this->updateProductsToGroupHandler->handle(new GroupProductsCommand($group->getId(), $data['products']));
+            $this->groupProductsHandler->handle(new GroupProductsCommand($group->getId(), $data['products']));
         }
 
         return new JsonResponse($this->normalizer->normalize(

@@ -231,8 +231,7 @@ services:
             - '@pim_catalog.remover.group'
             - '@pim_catalog.factory.group'
             - '@pim_enrich.normalizer.violation'
-            - '@akeneo.pim.enrichment.group.query.get_group_product_identifiers'
-            - '@doctrine.orm.entity_manager'
+            - '@?'
 
     pim_enrich.controller.rest.sequential_edit:
         public: true
