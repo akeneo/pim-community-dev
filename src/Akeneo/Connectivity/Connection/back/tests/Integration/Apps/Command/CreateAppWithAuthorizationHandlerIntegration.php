@@ -182,6 +182,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         Assert::assertNotNull($foundConnection, 'No persisted connection found');
         Assert::assertEquals(FlowType::OTHER, $foundConnection->flowType());
         Assert::assertEquals($appName, $foundConnection->label());
+        Assert::assertEquals('app', $foundConnection->type());
 
         /** @var Client $foundClient */
         $foundClient = $this->clientManager->findClientBy(['id' => $foundConnection->clientId()->id()]);
