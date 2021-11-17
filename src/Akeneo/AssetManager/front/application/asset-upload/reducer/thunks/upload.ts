@@ -93,4 +93,4 @@ const retryFileUpload = (
   uploadAndDispatch(uploader, line, file, dispatch);
 };
 
-export {getCurrentQueuedFiles, retryFileUpload, onFileDrop}
+export {getCurrentQueuedFiles, retryFileUpload, onFileDrop};

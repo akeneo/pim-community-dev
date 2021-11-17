@@ -98,7 +98,10 @@ const UploadModal = ({
 
   const handleLineChange = useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
 
-  const handleLineUploadRetry = useCallback((line: Line) => retryFileUpload(notify, translate, uploader, line, dispatch), [notify, translate, dispatch]);
+  const handleLineUploadRetry = useCallback(
+    (line: Line) => retryFileUpload(notify, translate, uploader, line, dispatch),
+    [notify, translate, dispatch]
+  );
 
   const handleLineRemove = useCallback((line: Line) => dispatch(removeLineAction(line)), [dispatch]);
 
