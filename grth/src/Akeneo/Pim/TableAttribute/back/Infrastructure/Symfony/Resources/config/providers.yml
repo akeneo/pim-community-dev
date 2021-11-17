@@ -17,5 +17,9 @@ services:
               xlsx_product_table_values_export: pim-job-instance-xlsx-product-table-values-export
               csv_table_attribute_options_import: pim-job-instance-csv-base-import
               xlsx_table_attribute_options_import: pim-job-instance-xlsx-base-import
+              csv_product_table_values_import: pim-job-instance-csv-base-import
+              xlsx_product_table_values_import: pim-job-instance-xlsx-base-import
+              csv_product_model_table_values_import: pim-job-instance-csv-base-import
+              xlsx_product_model_table_values_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }

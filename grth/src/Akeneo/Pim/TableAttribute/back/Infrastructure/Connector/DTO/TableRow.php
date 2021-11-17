@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\DTO;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
-use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Domain\Value\Row;
 
 final class TableRow
