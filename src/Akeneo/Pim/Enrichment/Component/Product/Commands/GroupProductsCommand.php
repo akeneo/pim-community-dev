@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Commands;
 class GroupProductsCommand
 {
     private string $groupId;
-    private array $uptodateProductIds;
+    private array $productIds;
 
     /**
      * @return string
@@ -23,14 +23,14 @@ class GroupProductsCommand
     /**
      * @return array
      */
-    public function getUptodateProductIds(): array
+    public function productIds(): array
     {
-        return $this->uptodateProductIds;
+        return $this->productIds;
     }
 
     public function __construct(string $groupId, array $uptodateProductIds)
     {
         $this->groupId = $groupId;
-        $this->uptodateProductIds = $uptodateProductIds;
+        $this->productIds = $uptodateProductIds;
     }
 }

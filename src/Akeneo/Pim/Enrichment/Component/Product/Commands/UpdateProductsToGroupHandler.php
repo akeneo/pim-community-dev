@@ -28,7 +28,7 @@ class UpdateProductsToGroupHandler
 
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
-        $uptodateProductIds = $updateProductsToGroupCommand->getUptodateProductIds();
+        $uptodateProductIds = $updateProductsToGroupCommand->productIds();
         $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->getGroupId());
 
         $newProductIds = array_diff($uptodateProductIds, $oldProductIds);
