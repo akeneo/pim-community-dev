@@ -7,6 +7,7 @@ namespace Akeneo\Platform\Job\Infrastructure\Query;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -22,14 +23,18 @@ class SearchJobExecution implements SearchJobExecutionInterface
     const SEARCH_PART_PARAM_SUFFIX = 'search_part';
 
     private Connection $connection;
+    private NotVisibleJobsRegistry $notVisibleJobsRegistry;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobsRegistry)
     {
         $this->connection = $connection;
+        $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
     public function search(SearchJobExecutionQuery $query): array
     {
+        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
+
         $sql = <<<SQL
     WITH job_executions AS (
         SELECT
@@ -42,19 +47,20 @@ class SearchJobExecution implements SearchJobExecutionInterface
             je.status
         FROM akeneo_batch_job_execution je
         JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
+        WHERE ji.code NOT IN (:not_visible_jobs_codes)
         %s
         %s
         LIMIT :offset, :limit
     )
 
     SELECT
-           je.*,
-           SUM(IFNULL(se.warning_count, 0)) AS warning_count,
-           COUNT(se.job_execution_id) AS current_step_number,
-           JSON_MERGE(
-                JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')),
-                JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))
-          ) as errors
+       je.*,
+       SUM(IFNULL(se.warning_count, 0)) AS warning_count,
+       COUNT(se.job_execution_id) AS current_step_number,
+       JSON_MERGE(
+            JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')),
+            JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))
+      ) as errors
     FROM job_executions je
     LEFT JOIN akeneo_batch_step_execution se ON je.id = se.job_execution_id
     GROUP BY je.id
@@ -74,10 +80,12 @@ SQL;
         $rawJobExecutions = $this->connection->executeQuery(
             $sql,
             array_merge($queryParams, [
+                'not_visible_jobs_codes' => $notVisibleJobsCodes,
                 'offset' => ($page - 1) * $size,
                 'limit' => $size,
             ]),
             array_merge($queryParamsTypes, [
+                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ]),
@@ -129,7 +137,7 @@ SQL;
             }
         }
 
-        return empty($sqlWhereParts) ? '' : 'WHERE ' . implode(' AND ', $sqlWhereParts);
+        return empty($sqlWhereParts) ? '' : 'AND ' . implode(' AND ', $sqlWhereParts);
     }
 
     private function buildQueryParams(SearchJobExecutionQuery $query): array

@@ -18,7 +18,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
     {
         parent::setUp();
         $this->jobExecutionIds = [];
-        $this->loadFixtures();
     }
 
     /**
@@ -26,6 +25,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_paginated_job_executions(): void
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
 
@@ -97,6 +98,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_filtered_job_executions(): void
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->type = ['export'];
         $query->size = 10;
@@ -124,6 +127,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_filtered_job_executions_on_status(): void
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->status = ['STARTING'];
         $query->size = 10;
@@ -163,6 +168,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_filtered_job_executions_on_search(): void
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->search = 'Import product';
         $query->size = 10;
@@ -214,6 +221,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_job_execution_count_related_to_query()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
 
         $this->assertEquals(4, $this->getQuery()->count($query));
@@ -224,6 +233,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_job_execution_count_filtered_by_type()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->type = ['export'];
 
@@ -235,6 +246,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_ordered_by_job_name_job_executions()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
         $query->sortColumn = 'job_name';
@@ -275,6 +288,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_ordered_by_type_job_executions()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
         $query->sortColumn = 'type';
@@ -315,6 +330,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_ordered_by_started_at_job_executions()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
         $query->sortColumn = 'started_at';
@@ -355,6 +372,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_ordered_by_username_job_executions()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
         $query->sortColumn = 'username';
@@ -394,6 +413,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_ordered_by_status_job_executions()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
         $query->sortColumn = 'status';
@@ -432,6 +453,29 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_does_not_returns_not_visible_job_executions()
+    {
+        $aNonVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'prepare_evaluation',
+            'job_name' => 'a_non_visible_job',
+            'label' => 'A non visible job',
+            'type' => 'data_quality_insights',
+        ]);
+
+        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $aNonVisibleJobInstanceId,
+            'start_time' => '2020-01-01T01:00:00+01:00',
+            'user' => 'julia',
+            'status' => BatchStatus::COMPLETED,
+        ]);
+
+        $query = new SearchJobExecutionQuery();
+        $this->assertEquals([], $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_invalid_argument_exception_when_sort_column_is_not_supported()
     {
         $query = new SearchJobExecutionQuery();
@@ -458,6 +502,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_returns_job_execution_count_filtered_by_search()
     {
+        $this->loadFixtures();
+
         $query = new SearchJobExecutionQuery();
         $query->search = 'Import product';
 

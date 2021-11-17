@@ -14,3 +14,4 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
         arguments:
             - '@database_connection'
+            - '@Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry'
