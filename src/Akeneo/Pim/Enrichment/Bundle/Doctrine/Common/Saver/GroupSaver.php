@@ -45,7 +45,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                       $objectManager
-     * @param BulkSaverInterface                  $productSaver
      * @param VersionContext                      $versionContext
      * @param SavingOptionsResolverInterface      $optionsResolver
      * @param EventDispatcherInterface            $eventDispatcher
@@ -62,7 +61,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $productClassName
     ) {
         $this->objectManager = $objectManager;
-        $this->productSaver = $productSaver;
         $this->versionContext = $versionContext;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
