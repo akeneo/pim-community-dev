@@ -29,8 +29,6 @@ class GroupUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $productQueryBuilderFactory;
 
 
     public function __construct(
