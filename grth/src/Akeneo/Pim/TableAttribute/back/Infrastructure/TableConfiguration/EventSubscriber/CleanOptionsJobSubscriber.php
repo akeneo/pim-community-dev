@@ -51,12 +51,12 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SelectOptionWasDeleted::class => 'anOptionWasDeleted',
+            SelectOptionWasDeleted::class => 'aSelectOptionWasDeleted',
             StorageEvents::POST_SAVE => 'createCleanOptionsJobIfNeeded',
         ];
     }
 
-    public function anOptionWasDeleted(SelectOptionWasDeleted $selectOptionWasDeleted): void
+    public function aSelectOptionWasDeleted(SelectOptionWasDeleted $selectOptionWasDeleted): void
     {
         $this->deletedEventsByAttributeCode[$selectOptionWasDeleted->attributeCode()][] = $selectOptionWasDeleted;
     }

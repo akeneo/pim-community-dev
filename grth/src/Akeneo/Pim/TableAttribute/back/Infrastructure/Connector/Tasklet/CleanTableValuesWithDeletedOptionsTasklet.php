@@ -30,6 +30,9 @@ use Webmozart\Assert\Assert;
 
 final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterface
 {
+    private const ALL_CHANNELS = '<all_channels>';
+    private const ALL_LOCALES = '<all_locales>';
+
     private ProductQueryBuilderFactoryInterface $pqbFactory;
     private GetAttributes $getAttributes;
     private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
@@ -70,7 +73,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {
             foreach ($removedOptionsByColumnCode as $columnCode => $removedOptions) {
                 foreach ($channelsAndLocales as $channel => $locales) {
-                    if ('---NULL---' === $channel) {
+                    if (self::ALL_CHANNELS === $channel) {
                         $channel = null;
                     }
                     foreach ($locales as $locale) {
@@ -79,7 +82,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
                             $attributeCode,
                             $columnCode,
                             $removedOptions,
-                            $locale,
+                            $locale === self::ALL_LOCALES ? null : $locale,
                             $channel
                         );
                     }
@@ -180,14 +183,14 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
             if ($attribute->isScopable() && $attribute->isLocalizable()) {
                 return $channelsAndLocales;
             } elseif ($attribute->isScopable()) {
-                return \array_fill_keys(\array_keys($channelsAndLocales), [null]);
+                return \array_fill_keys(\array_keys($channelsAndLocales), [self::ALL_LOCALES]);
             } elseif ($attribute->isLocalizable()) {
-                return ['---NULL---' => \array_values(\array_unique(\array_merge(\array_values($channelsAndLocales))))];
+                return [self::ALL_CHANNELS => \array_values(\array_unique(\array_merge(\array_values($channelsAndLocales))))];
             }
         }
 
         return [
-            '---NULL---' => [null],
+            self::ALL_CHANNELS => [self::ALL_LOCALES],
         ];
     }
 }
