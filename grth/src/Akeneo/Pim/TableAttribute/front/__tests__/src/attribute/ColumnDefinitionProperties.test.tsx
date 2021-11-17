@@ -56,6 +56,11 @@ describe('ColumnDefinitionProperties', () => {
     const minInput = screen.getByLabelText('pim_table_attribute.validations.min') as HTMLInputElement;
     fireEvent.change(minInput, {target: {value: '10'}});
 
+    const requiredForCompletenessInput = screen.getByLabelText(
+      'pim_table_attribute.form.attribute.required_for_completeness'
+    ) as HTMLInputElement;
+    fireEvent.click(requiredForCompletenessInput);
+
     expect(handleChange).toBeCalledWith({
       ...getNumberColumnDefinitionWithId(),
       code: 'somethingelse',
@@ -63,6 +68,7 @@ describe('ColumnDefinitionProperties', () => {
       validations: {
         min: 10,
       },
+      required_for_completeness: false,
     });
   });
 

@@ -156,6 +156,7 @@ pim_table_attribute:
             please_try_again: Please try again
             first_column_type_helper: The first column of a Table is always a Select column type.
             discard_changes: You will lose changes to the select options if you leave the page.
+            required_for_completeness: Required for completeness
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"

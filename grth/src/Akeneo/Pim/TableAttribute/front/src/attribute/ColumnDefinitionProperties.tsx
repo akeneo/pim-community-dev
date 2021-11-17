@@ -44,8 +44,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   };
 
   const handleRequiredForCompleteness = (checked: boolean) => {
-    onChange({...selectedColumn, validations: {...selectedColumn.validations, required_for_completeness: checked }});
-  }
+    onChange({...selectedColumn, required_for_completeness: checked});
+  };
 
   const specificProperties = () => {
     const TypeSpecificProperties = columnDefinitionPropertiesMapping[selectedColumn.data_type]?.default;
@@ -103,12 +103,14 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </Field>
         {specificProperties()}
       </FieldsList>
-      <SectionTitle title={'Required for completeness'}>
-        <SectionTitle.Title>Required for completeness</SectionTitle.Title>
+      <SectionTitle title={translate(`pim_table_attribute.form.attribute.required_for_completeness`)}>
+        <SectionTitle.Title>
+          {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
+        </SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
-        <Checkbox checked={!!selectedColumn.validations.required_for_completeness} onChange={handleRequiredForCompleteness}>
-          Required for completeness
+        <Checkbox checked={!!selectedColumn.required_for_completeness} onChange={handleRequiredForCompleteness}>
+          {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
         </Checkbox>
       </FieldsList>
       <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
