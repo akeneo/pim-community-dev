@@ -82,7 +82,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
         $completeness = ['complete' => 0, 'required' => 0];
-        if ($normalizedRequiredValueKeys !== []) {
+        if ([] !== $normalizedRequiredValueKeys) {
             $existingValueKeys = array_keys($valueCollection);
             $completeness['complete'] = count(
                 array_intersect($normalizedRequiredValueKeys, $existingValueKeys)

@@ -104,7 +104,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
         }
 
         $createAndEditRecordCommand = new CreateAndEditRecordCommand($createRecordCommand, $editRecordCommand);
-        if ($this->stepExecution !== null) {
+        if (null !== $this->stepExecution) {
             $executionContext = $this->stepExecution->getExecutionContext();
             $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
             $processedItemsBatch[$item['code']] = $createAndEditRecordCommand;
@@ -174,7 +174,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
     protected function skipItemWithMessage(array $item, string $message, \Exception $previousException = null): void
     {
         $itemPosition = 0;
-        if ($this->stepExecution !== null) {
+        if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }

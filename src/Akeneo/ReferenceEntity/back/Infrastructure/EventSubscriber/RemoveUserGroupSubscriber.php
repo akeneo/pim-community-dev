@@ -51,7 +51,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
 
         $referenceEntityIdentifiers = $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
-        if ($referenceEntityIdentifiers !== []) {
+        if ([] !== $referenceEntityIdentifiers) {
             throw new ResourceDeletionDeniedException(
                 sprintf(
                     'You cannot delete this group, it is the only user group with "edit" permission on reference entity "%s".',
