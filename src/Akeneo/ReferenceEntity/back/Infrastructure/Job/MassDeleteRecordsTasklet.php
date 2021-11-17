@@ -125,7 +125,7 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
             return;
         }
 
-        if ($recordCodesToDelete !== []) {
+        if ([] !== $recordCodesToDelete) {
             $this->deleteRecords($referenceEntityIdentifier, $recordCodesToDelete);
         }
 
