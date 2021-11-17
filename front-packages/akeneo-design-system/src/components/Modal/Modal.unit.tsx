@@ -12,14 +12,18 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Modal content')).toBeInTheDocument();
 });
 
-test('it renders its exposed subcomponent `BottomButtons` properly', () => {
+test('it renders its exposed subcomponent `BottomButtons`, `TopLeftButtons` and `TopRightButtons` properly', () => {
   render(
     <Modal closeTitle="Close" onClose={jest.fn()}>
-      <Modal.BottomButtons>Buttons</Modal.BottomButtons>
+      <Modal.BottomButtons>Bottom Button</Modal.BottomButtons>
+      <Modal.TopLeftButtons>TopLeft Button</Modal.TopLeftButtons>
+      <Modal.TopRightButtons>TopRight Button</Modal.TopRightButtons>
     </Modal>
   );
 
-  expect(screen.getByText('Buttons')).toBeInTheDocument();
+  expect(screen.getByText('Bottom Button')).toBeInTheDocument();
+  expect(screen.getByText('TopLeft Button')).toBeInTheDocument();
+  expect(screen.getByText('TopRight Button')).toBeInTheDocument();
 });
 
 test('it calls the onClose handler when clicking on the close button', () => {
