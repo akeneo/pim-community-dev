@@ -9,7 +9,6 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 
 jest.mock('akeneoassetmanager/application/component/app/select2');
-jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 jest.mock('akeneoassetmanager/application/asset-upload/saver/asset', () => ({
   create: jest.fn().mockImplementation(() => Promise.resolve(null)),
 }));
