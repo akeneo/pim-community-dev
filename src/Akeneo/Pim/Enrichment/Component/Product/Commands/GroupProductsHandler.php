@@ -28,11 +28,11 @@ class GroupProductsHandler
 
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
-        $uptodateProductIds = $updateProductsToGroupCommand->productIds();
+        $currentProductIds = $updateProductsToGroupCommand->productIds();
         $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->getGroupId());
 
-        $newProductIds = array_diff($uptodateProductIds, $oldProductIds);
-        $removedProductIds = array_diff($oldProductIds, $uptodateProductIds);
+        $newProductIds = array_diff($currentProductIds, $oldProductIds);
+        $removedProductIds = array_diff($oldProductIds, $currentProductIds);
 
         $productsToUpdate = [];
         $group = $this->entityManager->find(Group::class, $updateProductsToGroupCommand->getGroupId());
