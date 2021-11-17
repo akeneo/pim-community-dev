@@ -201,7 +201,7 @@ pim_common:
   properties: Ominaisuudet
   remove: Poista
   required_label: (vaadittu)
-  result_count: "{0}0 tulosta{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
+  result_count: "{0}0 tulosta|{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
   save: Tallenna
   search: Etsi
   select2:
