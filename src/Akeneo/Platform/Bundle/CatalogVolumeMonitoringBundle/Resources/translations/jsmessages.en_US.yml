@@ -26,5 +26,7 @@ pim_catalog_volume:
         count_category_trees: Category trees
         count_variant_products: Variant products
         count_product_models: Product models
-    mean: 'Mean:'
+        count_product_and_product_model_values: Product values
+        average_max_product_and_product_model_values: Product values by products
+    mean: 'Average:'
     max: 'Max:'
