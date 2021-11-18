@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
@@ -33,9 +32,6 @@ class AuthorizeAction
     private AppAuthorizationSessionInterface $appAuthorizationSession;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
@@ -44,7 +40,7 @@ class AuthorizeAction
         FeatureFlag $featureFlag,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         TokenStorageInterface $tokenStorage
     ) {
         $this->handler = $handler;

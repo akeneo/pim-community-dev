@@ -153,15 +153,15 @@ EOD;
 
     private function overrideUserAccessTokenToAppOne(array $token, string $clientId): array
     {
-        $query = 'select paac.user_id, paac.client_id from pim_api_auth_code as paac left join pim_api_client as pac on (pac.id=paac.client_id) where pac.marketplace_public_app_id =:client_id AND scope <> :scope';
+        $query = 'select pac.id as client_id, acc.user_id as user_id from pim_api_client as pac left join akeneo_connectivity_connection as acc on (pac.id=acc.client_id) where pac.marketplace_public_app_id =:client_id';
         $result = $this->connection->fetchAssoc($query, [
             'client_id' => $clientId,
-            'scope' => 'openid'
         ]);
+
         $userId = $result['user_id']; //Fake user created for this connection / connected app
         $clientId = $result['client_id']; //Id of the client in pim_api_client
 
-        $query = 'select paat.token from akeneo_pim.pim_api_access_token as paat where paat.client =:client_id AND paat.user =:user_id ORDER BY expires_at DESC LIMIT 1';
+        $query = 'select paat.token from akeneo_pim.pim_api_access_token as paat where paat.client =:client_id AND paat.user =:user_id ORDER BY paat.id DESC LIMIT 1';
         $result = $this->connection->fetchAssoc($query, [
             'user_id' => $userId,
             'client_id' => $clientId,
