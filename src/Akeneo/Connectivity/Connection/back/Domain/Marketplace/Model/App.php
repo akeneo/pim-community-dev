@@ -32,7 +32,7 @@ class App
         'url',
         'categories',
         'activate_url',
-        'callback_url'
+        'callback_url',
     ];
 
     private function __construct()
@@ -103,6 +103,16 @@ class App
 
         /* @phpstan-ignore-next-line */
         return self::fromWebMarketplaceValues($values);
+    }
+
+    /**
+     * @param bool $isConnected
+     * @return App
+     */
+    public function withConnectedStatus(bool $isConnected): self
+    {
+        $this->connected = $isConnected;
+        return $this;
     }
 
     /**

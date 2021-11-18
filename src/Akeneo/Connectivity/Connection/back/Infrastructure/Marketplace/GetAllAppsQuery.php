@@ -45,8 +45,10 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
             $offset += $result['limit'];
 
             foreach ($result['items'] as $item) {
-                $item['connected'] = in_array($item['id'], $connectedAppsIds, true);
-                $apps[] = App::fromWebMarketplaceValues($item);
+                $isConnected = in_array($item['id'], $connectedAppsIds, true);
+                $app = App::fromWebMarketplaceValues($item);
+                $app = $app->withConnectedStatus($isConnected);
+                $apps[] = $app;
             }
         } while (count($result['items']) > 0 && count($apps) < $result['total'] && $requests < self::MAX_REQUESTS);
 
