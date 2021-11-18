@@ -1,10 +1,7 @@
-import React, {FC, useCallback, useMemo} from 'react';
+import React, {FC, useMemo} from 'react';
 import styled from 'styled-components';
-import {PimView} from '../PimView';
-import {useRouter, useTranslate} from '../../hooks';
-import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
+import {IconProps} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
-import {useAnalytics} from '../../hooks';
 
 type NavigationEntry = {
   code: string;
@@ -24,21 +21,21 @@ type Props = {
   freeTrialEnabled?: boolean;
 };
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
-  const translate = useTranslate();
-  const router = useRouter();
-  const theme = useTheme();
-  const analytics = useAnalytics();
+  // const translate = useTranslate();
+  // const router = useRouter();
+  // const theme = useTheme();
+  // const analytics = useAnalytics();
 
-  const handleFollowEntry = (event: any, entry: NavigationEntry) => {
-    event.stopPropagation();
-    event.preventDefault();
+  // const handleFollowEntry = (event: any, entry: NavigationEntry) => {
+  //   event.stopPropagation();
+  //   event.preventDefault();
 
-    analytics.track('navigation:entry:clicked', {
-      code: entry.code,
-    });
+  //   analytics.track('navigation:entry:clicked', {
+  //     code: entry.code,
+  //   });
 
-    router.redirect(router.generate(entry.route));
-  };
+  //   router.redirect(router.generate(entry.route));
+  // };
 
   const activeNavigationEntry = useMemo((): NavigationEntry | undefined => {
     return entries.find((entry: NavigationEntry) => entry.code === activeEntryCode);
@@ -54,32 +51,32 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     });
   }, [activeNavigationEntry, activeSubEntryCode]);
 
-  const getMainNavigationItemStyles = useCallback(
-    (entry: NavigationEntry) => {
-      let styles: React.CSSProperties = {};
-      if (entry.align === 'bottom') {
-        styles = {
-          ...styles,
-          position: 'absolute',
-          bottom: '0',
-        };
-      }
+  // const getMainNavigationItemStyles = useCallback(
+  //   (entry: NavigationEntry) => {
+  //     let styles: React.CSSProperties = {};
+  //     if (entry.align === 'bottom') {
+  //       styles = {
+  //         ...styles,
+  //         position: 'absolute',
+  //         bottom: '0',
+  //       };
+  //     }
 
-      if (entry.disabled && freeTrialEnabled) {
-        styles = {
-          ...styles,
-          cursor: 'pointer',
-        };
-      }
+  //     if (entry.disabled && freeTrialEnabled) {
+  //       styles = {
+  //         ...styles,
+  //         cursor: 'pointer',
+  //       };
+  //     }
 
-      return styles;
-    },
-    [freeTrialEnabled]
-  );
+  //     return styles;
+  //   },
+  //   [freeTrialEnabled]
+  // );
 
   return (
     <NavContainer aria-label="Main navigation">
-      <MainNavContainer>
+      {/* <MainNavContainer>
         <LogoContainer>
           <PimView viewName="pim-menu-logo" />
         </LogoContainer>
@@ -112,7 +109,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
         <HelpContainer>
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
-      </MainNavContainer>
+      </MainNavContainer> */}
       {activeNavigationEntry &&
         (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
         activeSubNavigation &&
@@ -131,59 +128,59 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   );
 };
 
-const StyledTag = styled(Tag)`
-  padding: 0;
-  height: 24px;
-  width: 24px;
-`;
+// const StyledTag = styled(Tag)`
+//   padding: 0;
+//   height: 24px;
+//   width: 24px;
+// `;
 
-const StyledLockIcon = styled(LockIcon)`
-  margin: 3px;
-`;
+// const StyledLockIcon = styled(LockIcon)`
+//   margin: 3px;
+// `;
 
-const LockIconContainer = styled.div`
-  position: absolute;
-  top: 0;
-  right: 12px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+// const LockIconContainer = styled.div`
+//   position: absolute;
+//   top: 0;
+//   right: 12px;
+//   width: 24px;
+//   height: 24px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
 const NavContainer = styled.nav`
   display: flex;
   height: 100%;
 `;
 
-const MainNavContainer = styled.div`
-  display: flex;
-  width: 80px;
-  flex-direction: column;
-  justify-content: start;
-  height: 100%;
-  border-right: 1px solid ${({theme}) => theme.color.grey80};
-  z-index: 803;
-  background: white;
-`;
+// const MainNavContainer = styled.div`
+//   display: flex;
+//   width: 80px;
+//   flex-direction: column;
+//   justify-content: start;
+//   height: 100%;
+//   border-right: 1px solid ${({theme}) => theme.color.grey80};
+//   z-index: 803;
+//   background: white;
+// `;
 
-const LogoContainer = styled.div`
-  height: 80px;
-  min-height: 80px;
-  position: relative;
-`;
+// const LogoContainer = styled.div`
+//   height: 80px;
+//   min-height: 80px;
+//   position: relative;
+// `;
 
-const MenuContainer = styled.div`
-  position: relative;
-  height: 100%;
-`;
-const HelpContainer = styled.div`
-  height: 80px;
-  min-height: 80px;
-  position: relative;
-  margin-top: auto;
-`;
+// const MenuContainer = styled.div`
+//   position: relative;
+//   height: 100%;
+// `;
+// const HelpContainer = styled.div`
+//   height: 80px;
+//   min-height: 80px;
+//   position: relative;
+//   margin-top: auto;
+// `;
 
 export type {NavigationEntry, SubNavigation};
 export {PimNavigation};

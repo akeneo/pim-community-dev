@@ -1,18 +1,6 @@
 config:
     config:
-        pim/controller-registry:
-            controllers:
-                akeneo_measurements_settings_index:
-                    module: pim/controller/measurements/settings
-                    aclResourceId: akeneo_measurements_manage_settings
-
-                akeneo_measurements_settings_any:
-                    module: pim/controller/measurements/settings
-                    aclResourceId: akeneo_measurements_manage_settings
         akeneomeasure/bridge/dependencies:
             operations_max: 5
             units_max: 50
             families_max: 300
-
-    paths:
-        pim/controller/measurements/settings: akeneomeasure/bridge/controller/settings.tsx
