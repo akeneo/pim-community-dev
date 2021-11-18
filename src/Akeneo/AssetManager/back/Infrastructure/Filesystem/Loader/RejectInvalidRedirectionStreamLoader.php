@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\Loader;
 
 use Akeneo\AssetManager\Infrastructure\Network\UrlChecker;
-use GuzzleHttp;
+use GuzzleHttp\Client;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Psr\Http\Message\RequestInterface;
@@ -32,7 +32,8 @@ final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
 
     public function find($path)
     {
-        $client = new GuzzleHttp\Client([
+        $client = new Client([
+            'headers' => ['User-Agent' => null],
             'allow_redirects' => [
                 'max' => 10,
                 'strict'          => true,
@@ -48,14 +49,17 @@ final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
         return $response->getBody()->getContents();
     }
 
-    public function checkRedirectIsValid(RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool
-    {
+    public function checkRedirectIsValid(
+        RequestInterface $request,
+        ResponseInterface $response,
+        UriInterface $uri
+    ): bool {
         if (!$this->urlChecker->isProtocolAllowed($uri->getScheme())) {
             throw new NotLoadableException('The provided link redirects to an invalid URL scheme.');
         }
 
         if (!$this->urlChecker->isDomainAllowed($uri->getHost())) {
-            throw new NotLoadableException('The provided link redirects to a unallowed domain.');
+            throw new NotLoadableException('The provided link redirects to an unallowed domain.');
         }
 
         return true;
