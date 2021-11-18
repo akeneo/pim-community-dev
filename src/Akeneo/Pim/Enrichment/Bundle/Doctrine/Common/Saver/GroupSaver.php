@@ -48,7 +48,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      * @param VersionContext                      $versionContext
      * @param SavingOptionsResolverInterface      $optionsResolver
      * @param EventDispatcherInterface            $eventDispatcher
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param BulkObjectDetacherInterface         $detacher
      * @param string                              $productClassName
      */
