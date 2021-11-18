@@ -44,7 +44,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   };
 
   const handleRequiredForCompleteness = (checked: boolean) => {
-    onChange({...selectedColumn, required_for_completeness: checked});
+    onChange({...selectedColumn, is_required_for_completeness: checked});
   };
 
   const specificProperties = () => {
@@ -109,7 +109,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
-        <Checkbox checked={!!selectedColumn.required_for_completeness} onChange={handleRequiredForCompleteness}>
+        <Checkbox checked={!!selectedColumn.is_required_for_completeness} onChange={handleRequiredForCompleteness}>
           {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
         </Checkbox>
       </FieldsList>

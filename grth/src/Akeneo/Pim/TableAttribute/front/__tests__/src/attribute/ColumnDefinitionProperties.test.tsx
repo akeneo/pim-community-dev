@@ -68,7 +68,7 @@ describe('ColumnDefinitionProperties', () => {
       validations: {
         min: 10,
       },
-      required_for_completeness: false,
+      is_required_for_completeness: false,
     });
   });
 

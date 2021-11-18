@@ -11,7 +11,7 @@ export const getSelectColumnDefinition: () => SelectColumnDefinition = () => {
     validations: {},
     data_type: 'select',
     labels: {},
-    required_for_completeness: false,
+    is_required_for_completeness: false,
   };
 };
 
@@ -22,7 +22,7 @@ export const getTextColumnDefinitionWithId: () => ColumnDefinitionWithId = () =>
     data_type: 'text',
     labels: {},
     id: 'uniqueidpart',
-    required_for_completeness: true,
+    is_required_for_completeness: true,
   } as ColumnDefinitionWithId;
 };
 
@@ -33,7 +33,7 @@ export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     data_type: 'number',
     labels: {},
     id: 'uniqueidquantity',
-    required_for_completeness: true,
+    is_required_for_completeness: true,
   } as ColumnDefinitionWithId;
 };
 
