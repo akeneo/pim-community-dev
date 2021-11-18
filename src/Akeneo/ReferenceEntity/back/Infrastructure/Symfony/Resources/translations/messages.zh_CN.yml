@@ -53,3 +53,6 @@ pim_mass_edit:
       error: 记录删除失败。
 akeneo_reference_entity: 参考实体单个链接
 akeneo_reference_entity_collection: 参考实体多个链接
+pim_api:
+  acl_group:
+    reference_entity: 参考实体

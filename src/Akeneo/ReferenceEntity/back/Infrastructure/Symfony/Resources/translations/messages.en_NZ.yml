@@ -31,3 +31,6 @@ pim_analytics:
     average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per reference entity
 akeneo_reference_entity: Reference entity single link
 akeneo_reference_entity_collection: Reference entity multiple links
+pim_api:
+  acl_group:
+    reference_entity: Reference entities

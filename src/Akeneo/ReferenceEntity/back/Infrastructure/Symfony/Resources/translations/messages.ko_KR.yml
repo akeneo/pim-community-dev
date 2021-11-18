@@ -53,3 +53,6 @@ pim_mass_edit:
       error: 레코드 삭제에 실패했습니다.
 akeneo_reference_entity: 참조 엔터티 단일 링크
 akeneo_reference_entity_collection: 참조 엔터티 다중 링크
+pim_api:
+  acl_group:
+    reference_entity: 참조 엔터티
