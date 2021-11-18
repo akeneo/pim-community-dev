@@ -116,7 +116,7 @@ SQL;
         $userGroup->setDefaultPermissions($defaultPermissions);
 
         /** @var EntityManagerInterface $em */
-        $em = $this->get('doctrine')->getEntityManager();
+        $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($userGroup);
         $em->flush();
 
