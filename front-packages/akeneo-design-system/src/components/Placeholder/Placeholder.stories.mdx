@@ -1,0 +1,37 @@
+import {useState} from 'react';
+import styled from 'styled-components';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {Placeholder} from './Placeholder.tsx';
+import {UsersIllustration} from '../../illustrations';
+
+<Meta
+  title="Components/Placeholder"
+  component={Placeholder}
+  args={{children: 'Placeholder children text', title: 'Placeholder title'}}
+/>
+
+# Placeholder
+
+## Usage
+
+Placeholders are used to have a good visual representation of the items to display. Placeholders can be used in a grid or in a collection.
+_Example: Assets manager or Connections._
+
+Placeholders should be displayed in a grid, therefore, a `PlaceholderGrid` component is also available with a convenient `size` prop. Possible values for the `size` prop are: `normal` or `big`.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Placeholder {...args} illustration={<UsersIllustration/>}/>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+
+<ArgsTable story="Standard" />
