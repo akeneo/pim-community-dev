@@ -370,18 +370,6 @@ services:
     # processors
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
 
-    pim_table_attribute.processor.product_table_values:
-        class:
-            Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor
-        arguments:
-            - 'product'
-
-    pim_table_attribute.processor.product_model_table_values:
-        class:
-            Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor
-        arguments:
-            - 'product_model'
-
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
