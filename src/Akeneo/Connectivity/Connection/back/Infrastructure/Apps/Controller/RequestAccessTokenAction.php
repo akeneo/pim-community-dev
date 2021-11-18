@@ -12,6 +12,7 @@ use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,7 +76,9 @@ class RequestAccessTokenAction
 
         $jwtToken = null;
         if (is_array($result)){
-            if($result['scope'] === 'openid')
+            $scopes = explode(' ', $result['scope']);
+
+            if(in_array('openid', $scopes))
             {
                 $query = 'select email, first_name, last_name from akeneo_pim.oro_user where id = :id limit 1';
                 $user = $this->connection->fetchAssoc($query, [
@@ -124,16 +127,32 @@ EOD;
                 );
 
                 $now = new \DateTimeImmutable();
-                $jwtToken = $jwtConfig->builder()
+                $jwtTokenBuilder = $jwtConfig->builder()
                     ->issuedBy($this->pimUrl)
-                    ->identifiedBy('?') //TODO what to put in it ?
+                    ->identifiedBy((Uuid::uuid4())->toString()) //uniq identifier, must change with each id_token issued
+                    ->relatedTo(md5($this->pimUrl . $email) )//smthg that uniquely identify a user (deterministic)
+                    ->permittedFor($request->get('client_id', '')) //client_id
                     ->issuedAt($now)
                     ->canOnlyBeUsedAfter($now->modify('+1 second'))
-                    ->expiresAt($now->modify('+1 hour'))
-                    ->withClaim('email', $email)
-                    ->withClaim('firstname', $firstname)
-                    ->withClaim('lastname', $lastname)
-                    ->getToken($jwtConfig->signer(), $jwtConfig->signingKey());
+                    ->expiresAt($now->modify('+1 hour'));
+
+                if(in_array('profile', $scopes))
+                {
+                    $jwtTokenBuilder
+                        ->withClaim('firstname', $firstname)
+                        ->withClaim('lastname', $lastname);
+                }
+
+                if(in_array('email', $scopes))
+                {
+                    $jwtTokenBuilder->withClaim('email', $email);
+                }
+
+                $jwtToken = $jwtTokenBuilder->getToken(
+                    $jwtConfig->signer(),
+                    $jwtConfig->signingKey()
+                );
+
             }
         }
 

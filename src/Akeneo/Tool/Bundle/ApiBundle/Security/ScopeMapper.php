@@ -39,6 +39,8 @@ final class ScopeMapper implements ScopeMapperInterface
 
     private const SCOPE_ACL_MAP = [
         'openid' => [],
+        'profile' => [],
+        'email' => [],
         self::SCOPE_READ_CATALOG_STRUCTURE => [
             'pim_api_attribute_list',
             'pim_api_attribute_group_list',

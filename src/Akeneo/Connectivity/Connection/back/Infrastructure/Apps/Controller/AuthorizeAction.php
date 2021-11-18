@@ -61,7 +61,11 @@ class AuthorizeAction
         $clientId = $request->query->get('client_id', '');
         $scope = $request->query->get('scope', '');
 
-        if($scope === 'openid'){
+
+        $scopes = explode(' ', $scope);
+
+        if(in_array('openid', $scopes))
+        {
             //if app.partner = akeneo
             //Assume that the APP is already activated $appConfirmation->getAppId() must return smthg
             $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
