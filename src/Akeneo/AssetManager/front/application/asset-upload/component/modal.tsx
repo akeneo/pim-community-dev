@@ -2,7 +2,7 @@ import React, {useReducer, useCallback, useMemo, useEffect, ChangeEvent} from 'r
 import {Reducer} from 'redux';
 import styled from 'styled-components';
 import {Button, Modal} from 'akeneo-design-system';
-import {useTranslate, useUploader, Locale, LocaleCode} from '@akeneo-pim-community/shared';
+import {useNotify, useTranslate, useUploader, Locale, LocaleCode} from '@akeneo-pim-community/shared';
 import {LineList} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
@@ -54,6 +54,7 @@ const UploadModal = ({
   onAssetCreated,
 }: UploadModalProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
   const [uploader] = useUploader('akeneo_asset_manager_file_upload');
   const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
@@ -88,7 +89,7 @@ const UploadModal = ({
       event.stopPropagation();
 
       let files = event.target.files ? Object.values(event.target.files) : [];
-      files = limitFileUpload(files, state.lines.length);
+      files = limitFileUpload(notify, translate, files, state.lines.length);
 
       onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     },
@@ -97,7 +98,10 @@ const UploadModal = ({
 
   const handleLineChange = useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
 
-  const handleLineUploadRetry = useCallback((line: Line) => retryFileUpload(uploader, line, dispatch), [dispatch]);
+  const handleLineUploadRetry = useCallback(
+    (line: Line) => retryFileUpload(notify, translate, uploader, line, dispatch),
+    [notify, translate, dispatch]
+  );
 
   const handleLineRemove = useCallback((line: Line) => dispatch(removeLineAction(line)), [dispatch]);
 
