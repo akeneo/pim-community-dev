@@ -182,7 +182,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
-            - '@pim_table_attribute.processor.product_table_values'
+            - '@pim_table_attribute.processor.normalization.product_table_values'
             - '@pim_table_attribute.writer.table_values.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -194,7 +194,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
-            - '@pim_table_attribute.processor.product_table_values'
+            - '@pim_table_attribute.processor.normalization.product_table_values'
             - '@pim_table_attribute.writer.table_values.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -206,7 +206,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product_model.table_values'
-            - '@pim_table_attribute.processor.product_model_table_values'
+            - '@pim_table_attribute.processor.normalization.product_model_table_values'
             - '@pim_table_attribute.writer.table_values.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -218,7 +218,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product_model.table_values'
-            - '@pim_table_attribute.processor.product_model_table_values'
+            - '@pim_table_attribute.processor.normalization.product_model_table_values'
             - '@pim_table_attribute.writer.table_values.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -254,7 +254,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.file.csv.product.table_values'
-            - '@pim_table_attribute.processor.product_table_values'
+            - '@pim_table_attribute.processor.denormalization.product_table_values'
             - '@pim_table_attribute.writer.product_table_values.file.database'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -266,7 +266,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.file.xlsx.product.table_values'
-            - '@pim_table_attribute.processor.product_table_values'
+            - '@pim_table_attribute.processor.denormalization.product_table_values'
             - '@pim_table_attribute.writer.product_table_values.file.database'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -278,7 +278,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.file.csv.product_model.table_values'
-            - '@pim_table_attribute.processor.product_model_table_values'
+            - '@pim_table_attribute.processor.denormalization.product_model_table_values'
             - '@pim_table_attribute.writer.product_model_table_values.file.database'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -290,7 +290,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.file.xlsx.product_model.table_values'
-            - '@pim_table_attribute.processor.product_model_table_values'
+            - '@pim_table_attribute.processor.denormalization.product_model_table_values'
             - '@pim_table_attribute.writer.product_model_table_values.file.database'
             - 1000
             - '@akeneo_batch.job.job_stopper'
@@ -376,17 +376,27 @@ services:
             - '@validator'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions'
 
-    pim_table_attribute.processor.product_table_values:
+    pim_table_attribute.processor.denormalization.product_table_values:
         class: 'Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\TableValuesProcessor'
         arguments:
             - '@pim_catalog.repository.product'
             - '@akeneo.pim.structure.query.get_attributes'
 
-    pim_table_attribute.processor.product_model_table_values:
+    pim_table_attribute.processor.denormalization.product_model_table_values:
         class: 'Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\TableValuesProcessor'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@akeneo.pim.structure.query.get_attributes'
+
+    pim_table_attribute.processor.normalization.product_table_values:
+        class: 'Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
+        arguments:
+            - 'product'
+
+    pim_table_attribute.processor.normalization.product_model_table_values:
+        class: 'Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\TableValuesProcessor'
+        arguments:
+            - 'product_model'
 
     # writers
     pim_table_attribute.writer.select_option.file.csv:
