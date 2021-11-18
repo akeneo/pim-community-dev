@@ -40,7 +40,7 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json extends Abstract
     {
         $this->disableMigrationWarning();
 
-        $this->cleanupJobExceutionEmptyRawParameters();
+        $this->cleanupJobExecutionEmptyRawParameters();
 
         foreach ($this->columnsToMigrate as $column) {
             if ($this->columnNeedsToBeMigrated($column)) {
@@ -90,7 +90,7 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json extends Abstract
         $this->addSql('SELECT 1');
     }
 
-    protected function cleanupJobExceutionEmptyRawParameters(): void
+    protected function cleanupJobExecutionEmptyRawParameters(): void
     {
         $updateJobExcecution = <<< SQL
 UPDATE akeneo_batch_job_execution
