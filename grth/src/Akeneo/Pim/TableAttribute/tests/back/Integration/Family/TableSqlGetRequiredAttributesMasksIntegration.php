@@ -135,6 +135,69 @@ final class TableSqlGetRequiredAttributesMasksIntegration extends TestCase
         Assert::assertArrayNotHasKey('familyC', $result);
     }
 
+    public function test_it_returns_the_required_attributes_masks_when_several_columns_are_required_by_the_user(): void
+    {
+        $this->createAttribute([
+            'code' => 'lsnwr', // localizable_scopable_nutrition_with_required
+            'type' => AttributeTypes::TABLE,
+            'group' => 'other',
+            'localizable' => true,
+            'scopable' => true,
+            'table_configuration' => [
+                [
+                    'code' => 'ingredient',
+                    'data_type' => 'select',
+                    'labels' => [],
+                    'options' => [
+                        ['code' => 'salt'],
+                        ['code' => 'egg'],
+                        ['code' => 'butter'],
+                    ],
+                ],
+                [
+                    'code' => 'quantity',
+                    'data_type' => 'number',
+                    'labels' => [],
+                    'is_required_for_completeness' => true,
+                ],
+                [
+                    'code' => 'is_allergenic',
+                    'data_type' => 'number',
+                    'labels' => [],
+                    'is_required_for_completeness' => false,
+                ],
+                [
+                    'code' => 'comment',
+                    'data_type' => 'number',
+                    'labels' => [],
+                    'is_required_for_completeness' => true,
+                ],
+            ],
+        ]);
+
+        $this->createFamily([
+            'code' => 'familyD',
+            'attribute_codes' => ['sku', 'nutrition', 'lsnwr'],
+            'attribute_requirements' => [
+                'ecommerce' => ['sku', 'nutrition', 'lsnwr'],
+            ],
+        ]);
+
+        $result = $this->tableSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyD']);
+        $familyAMask = $result['familyD'];
+        Assert::assertCount(1, $familyAMask->masks());
+
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+
+        $commentId = $this->getColumnId('lsnwr', 'comment');
+        $ingredientId = $this->getColumnId('lsnwr', 'ingredient');
+        $quantityId = $this->getColumnId('lsnwr', 'quantity');
+        $this->assertEqualsCanonicalizing([
+            \sprintf('nutrition-%s-<all_channels>-<all_locales>', $this->getColumnId('nutrition', 'ingredient')),
+            \sprintf('lsnwr-%s-ecommerce-en_US', $commentId . '-' . $ingredientId . '-' . $quantityId),
+        ], $ecommerceEnUsMask->mask());
+    }
+
     private function createAttribute(array $values): void
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();

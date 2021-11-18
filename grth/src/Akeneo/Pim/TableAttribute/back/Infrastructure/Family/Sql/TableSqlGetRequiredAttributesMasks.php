@@ -63,10 +63,7 @@ required_table_column AS (
         GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-') AS concatenated_column_ids
     FROM required_table_attribute_in_family
         JOIN pim_catalog_table_column table_column ON table_column.attribute_id = required_table_attribute_in_family.attribute_id
-    WHERE (
-        JSON_CONTAINS(table_column.validations, 'true', '$.required_for_completeness')
-        OR table_column.column_order = 0
-    )
+    WHERE table_column.is_required_for_completeness = '1' OR table_column.column_order = 0
     GROUP BY required_table_attribute_in_family.attribute_id, required_table_attribute_in_family.channel_id
 )
 SELECT

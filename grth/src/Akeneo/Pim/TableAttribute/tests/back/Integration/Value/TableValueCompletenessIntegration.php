@@ -123,6 +123,101 @@ final class TableValueCompletenessIntegration extends TestCase
         Assert::assertEquals(100, $completenessForProduct->getCompletenessForChannelAndLocale('tablet', 'fr_FR')->ratio());
     }
 
+    public function test_it_computes_the_completeness_when_several_columns_is_required(): void
+    {
+        $this->createAttribute([
+            'code' => 'lsnwr', // localizable_scopable_nutrition_with_required
+            'type' => AttributeTypes::TABLE,
+            'group' => 'other',
+            'localizable' => true,
+            'scopable' => true,
+            'table_configuration' => [
+                [
+                    'code' => 'ingredient',
+                    'data_type' => 'select',
+                    'labels' => [],
+                    'options' => [
+                        ['code' => 'salt'],
+                        ['code' => 'egg'],
+                        ['code' => 'butter'],
+                    ],
+                ],
+                [
+                    'code' => 'quantity',
+                    'data_type' => 'number',
+                    'labels' => [],
+                    'is_required_for_completeness' => true,
+                ],
+                [
+                    'code' => 'is_allergenic',
+                    'data_type' => 'boolean',
+                    'labels' => [],
+                    'is_required_for_completeness' => false,
+                ],
+                [
+                    'code' => 'comment',
+                    'data_type' => 'text',
+                    'labels' => [],
+                    'is_required_for_completeness' => true,
+                ],
+            ],
+        ]);
+
+        $this->createFamily([
+            'code' => 'familyA',
+            'attributes' => ['sku', 'lsnwr'],
+            'attribute_requirements' => [
+                'ecommerce' => ['sku', 'lsnwr'],
+                'mobile' => ['sku', 'lsnwr'],
+            ],
+        ]);
+
+        $this->createProduct('test1', [
+            'categories' => ['master'],
+            'family' => 'familyA',
+            'values' => [
+                'lsnwr' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => [
+                            ['ingredient' => 'salt', 'quantity' => 4, 'comment' => 'test'],
+                            ['ingredient' => 'egg', 'quantity' => 2, 'comment' => 'test'],
+                        ],
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => [
+                            ['ingredient' => 'salt', 'quantity' => 4, 'comment' => 'test'],
+                            ['ingredient' => 'egg', 'quantity' => 2, 'is_allergenic' => true],
+                        ],
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' => 'mobile',
+                        'data' => [
+                            ['ingredient' => 'salt', 'quantity' => 4, 'comment' => 'test'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $completenesses = $this->get('pim_catalog.completeness.calculator')->fromProductIdentifiers(['test1']);
+        $completenessForProduct = $completenesses['test1'] ?? null;
+        Assert::assertInstanceOf(ProductCompletenessWithMissingAttributeCodesCollection::class, $completenessForProduct);
+
+        Assert::assertEquals(2, $completenessForProduct->getCompletenessForChannelAndLocale('ecommerce', 'en_US')->requiredCount());
+        Assert::assertEquals(100, $completenessForProduct->getCompletenessForChannelAndLocale('ecommerce', 'en_US')->ratio());
+
+        Assert::assertEquals(2, $completenessForProduct->getCompletenessForChannelAndLocale('mobile', 'en_US')->requiredCount());
+        Assert::assertEquals(50, $completenessForProduct->getCompletenessForChannelAndLocale('mobile', 'en_US')->ratio());
+
+        Assert::assertEquals(2, $completenessForProduct->getCompletenessForChannelAndLocale('mobile', 'fr_FR')->requiredCount());
+        Assert::assertEquals(100, $completenessForProduct->getCompletenessForChannelAndLocale('mobile', 'fr_FR')->ratio());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
