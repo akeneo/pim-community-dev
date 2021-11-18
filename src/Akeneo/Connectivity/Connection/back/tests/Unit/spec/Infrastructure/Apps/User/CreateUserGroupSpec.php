@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\User;
 
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUserGroup;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\Group;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,7 +34,6 @@ class CreateUserGroupSpec extends ObjectBehavior
 
     public function it_creates_a_user_group(
         SimpleFactoryInterface $userGroupFactory,
-        ObjectUpdaterInterface $userGroupUpdater,
         SaverInterface $userGroupSaver,
         ValidatorInterface $validator
     ): void {
@@ -52,7 +49,6 @@ class CreateUserGroupSpec extends ObjectBehavior
 
     public function it_does_not_create_an_invalid_group(
         SimpleFactoryInterface $userGroupFactory,
-        ObjectUpdaterInterface $userGroupUpdater,
         SaverInterface $userGroupSaver,
         ValidatorInterface $validator
     ): void {
