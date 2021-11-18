@@ -68,12 +68,17 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
 }));
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 jest.mock('../hooks/useJobExecutionTable', () => ({
   useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter): JobExecutionTable => {
-    const filteredRows = rows
-      .filter(
-        row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
-      )
+    const filteredRows = rows.filter(
+      row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
+    );
+
+    const paginatedRows = filteredRows
       .sort((a, b) => {
         return 'ASC' === sort.direction
           ? a[sort.column].localeCompare(b[sort.column])
@@ -82,9 +87,9 @@ jest.mock('../hooks/useJobExecutionTable', () => ({
       .slice((page - 1) * size, (page - 1) * size + size);
 
     return {
-      rows: filteredRows,
-      matches_count: 4,
-      total_count: 4,
+      rows: paginatedRows,
+      matches_count: filteredRows.length,
+      total_count: rows.length,
     };
   },
 }));
@@ -94,6 +99,7 @@ jest.mock('../hooks/useJobExecutionTypes', () => ({
 }));
 
 jest.mock('../models/JobExecutionFilter', () => ({
+  ...jest.requireActual('../models/JobExecutionFilter'),
   getDefaultJobExecutionFilter: () => ({
     page: 1,
     size: 3,
