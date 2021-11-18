@@ -181,3 +181,10 @@ services:
     # Network
     Akeneo\AssetManager\Infrastructure\Network\DnsLookup: ~
     Akeneo\AssetManager\Infrastructure\Network\IpMatcher: ~
+
+    Akeneo\AssetManager\Infrastructure\Network\UrlChecker:
+        arguments:
+            - '%allowed_media_link_protocols%'
+            - '@Akeneo\AssetManager\Infrastructure\Network\DnsLookup'
+            - '@Akeneo\AssetManager\Infrastructure\Network\IpMatcher'
+            - '%env(string:ALLOWED_NETWORK_ASSETS_WHITELIST)%'

@@ -109,6 +109,7 @@
 - PIM-10120: Remove obsolete asset reference data
 - PIM-10049: Fix thumbnail generation crashing with due to imagick segmentation fault
 - PIM-10151: Fix category field in rule edit form
+- PIM-10143: Add a check for valid media links with redirects
 - PIM-10159: Fix table configuration update when a column is deleted and recreated with a different data type
 
 ## Improvements

@@ -56,6 +56,10 @@ $rules = [
         'Imagine\Exception',
         'League\Flysystem\FilesystemReader',
         'League\Flysystem\FilesystemException',
+        'GuzzleHttp',
+        'Psr\Http\Message\RequestInterface',
+        'Psr\Http\Message\ResponseInterface',
+        'Psr\Http\Message\UriInterface',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
