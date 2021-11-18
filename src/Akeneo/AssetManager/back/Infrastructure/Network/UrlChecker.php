@@ -33,7 +33,7 @@ class UrlChecker
     private IpMatcher $ipMatcher;
 
     public function __construct(
-        $allowedProtocols,
+        array $allowedProtocols,
         DnsLookupInterface $dnsLookup,
         IpMatcher $ipMatcher,
         string $networkWhitelist = ''
