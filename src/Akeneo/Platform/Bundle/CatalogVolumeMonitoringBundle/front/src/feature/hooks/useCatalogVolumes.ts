@@ -1,12 +1,33 @@
 import {useState} from 'react';
-import { CatalogVolume } from "../model/catalog-volume";
+import {Volume, AverageMaxValue, CounterValue} from "../model/catalog-volume";
 
-type CatalogVolumes = {
-  [figure: string]: CatalogVolume;
+type CatalogVolumes = Volume[]; // fixme rename?
+
+const volumesKeyFigures: {[volumeName: string]: string[]} = {
+  'product': [
+    'count_products',
+    'count_product_and_product_model_values',
+    'average_max_product_and_product_model_values',
+  ],
+  'catalog': [
+    'count_channels',
+    'count_locales'
+  ],
+  'product_structure': [],
+  'variant_modeling': [],
+  'reference_entities': [],
+  'assets': [],
+};
+
+// fixme maybe no need type?
+type RawCatalogVolume = {
+    value: AverageMaxValue | CounterValue;
+    has_warning?: boolean; // @deprecated
+    type: string;
 };
 
 const useCatalogVolumes = () => {
-  const [catalogVolumes, setCatalogVolumes] = useState<CatalogVolumes>({
+  const rawCatalogVolumes: {[volumeName: string]: RawCatalogVolume} = {
     count_attributes: {value: 77, has_warning: false, type: 'count'},
     count_categories: {value: 168, has_warning: false, type: 'count'},
     count_category_trees: {value: 4, has_warning: false, type: 'count'},
@@ -35,7 +56,26 @@ const useCatalogVolumes = () => {
       has_warning: false,
       type: 'average_max',
     },
-  });
+  };
+
+  // fixme: to improve and simplify
+  let axesCatalogVolumes: Volume[] = [];
+  for (const [volumeName, keyFigures] of Object.entries(volumesKeyFigures)) {
+    // fixme: don't add empty axes
+    axesCatalogVolumes.push({
+      name: volumeName,
+      keyFigures: keyFigures.map(volumeName => {
+        const rawVolume = rawCatalogVolumes[volumeName]
+        return {
+          name: volumeName,
+          type: rawVolume.type,
+          value: rawVolume.value,
+        };
+      }),
+    });
+  }
+
+  const [catalogVolumes, setCatalogVolumes] = useState<CatalogVolumes>(axesCatalogVolumes);
 
   return [catalogVolumes, setCatalogVolumes] as const;
 };

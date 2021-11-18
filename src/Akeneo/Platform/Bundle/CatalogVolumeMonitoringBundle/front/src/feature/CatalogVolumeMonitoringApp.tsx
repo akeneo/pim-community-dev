@@ -3,15 +3,8 @@ import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from 
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
 import {useCatalogVolumes} from './hooks/useCatalogVolumes';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
-import {IconsMappingContext} from './context/IconsMappingContext';
-import {Axe, IconsMapping} from './model/catalog-volume';
 
-type Props = {
-  axes: Axe[];
-  iconsMapping: IconsMapping;
-};
-
-const CatalogVolumeMonitoringApp: FC<Props> = ({axes, iconsMapping}) => {
+const CatalogVolumeMonitoringApp: FC = () => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
   const [catalogVolumes] = useCatalogVolumes();
@@ -34,27 +27,18 @@ const CatalogVolumeMonitoringApp: FC<Props> = ({axes, iconsMapping}) => {
         <PageHeader.Title>{translate('pim_menu.item.catalog_volume')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <IconsMappingContext.Provider value={iconsMapping}>
-          {axes.map(axe => (
-            <>
-              {axe.volumes.filter(volumeName => catalogVolumes.hasOwnProperty(volumeName)).length > 0 && (
-                <Section>
-                  <SectionTitle>
-                    <SectionTitle.Title>{axe.name}</SectionTitle.Title>
-                  </SectionTitle>
-                  <KeyFigureGrid>
-                    {axe.volumes.map(volumeName => {
-                      if (!catalogVolumes.hasOwnProperty(volumeName)) {
-                        return;
-                      }
-                      return <CatalogVolumeKeyFigure name={volumeName} volume={catalogVolumes[volumeName]}/>;
-                    })}
-                  </KeyFigureGrid>
-                </Section>
-              )}
-            </>
+          {catalogVolumes.map(volume => (
+              <Section key={volume.name}>
+                <SectionTitle>
+                  <SectionTitle.Title>{volume.name}</SectionTitle.Title>
+                </SectionTitle>
+                <KeyFigureGrid>
+                  {volume.keyFigures.map(keyFigure => {
+                    return <CatalogVolumeKeyFigure keyFigure={keyFigure} key={keyFigure.name} />;
+                  })}
+                </KeyFigureGrid>
+              </Section>
           ))}
-          </IconsMappingContext.Provider>
       </PageContent>
     </>
   );

@@ -1,26 +1,19 @@
-import { ReactElement } from "react";
-import { IconProps } from "akeneo-design-system";
+type CounterValue = number;
 
-type VolumeCounter = number;
-
-type VolumeAverageMaxValue = {
+type AverageMaxValue = {
   average: number;
   max: number;
 };
 
-type CatalogVolume = {
-    value: VolumeAverageMaxValue | VolumeCounter;
-    has_warning?: boolean; // @deprecated
-    type: string;
+type KeyFigure = {
+  name: string;
+  type: string;
+  value: AverageMaxValue | CounterValue;
 };
 
-type Axe = {
+type Volume = {
   name: string;
-  volumes: string[];
+  keyFigures: KeyFigure[];
 }
 
-type IconsMapping = {
-  [volumeName: string]: any;
-};
-
-export type {CatalogVolume, Axe, IconsMapping};
+export type {KeyFigure, Volume, AverageMaxValue, CounterValue};

@@ -1,27 +1,26 @@
 import React, {FC} from 'react';
-import {KeyFigure} from 'akeneo-design-system';
+import {KeyFigure as DsmKeyFigure} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {CatalogVolume} from './model/catalog-volume';
+import {KeyFigure} from './model/catalog-volume';
 import {useCatalogVolumeIcon} from './hooks/useCatalogVolumeIcon';
 
 type Props = {
-  name: string;
-  volume: CatalogVolume;
+  keyFigure: KeyFigure;
 };
 
-const CatalogVolumeKeyFigure: FC<Props> = ({name, volume}) => {
+const CatalogVolumeKeyFigure: FC<Props> = ({keyFigure}) => {
   const translate = useTranslate();
-  const icon = useCatalogVolumeIcon(name);
+  const icon = useCatalogVolumeIcon(keyFigure.name);
 
   return (
-    <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${name}`)}>
-      {volume.type === 'average_max' ? (
+    <DsmKeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${keyFigure.name}`)}>
+      {keyFigure.type === 'average_max' ? (
         <>
-          {typeof volume.value === 'object'&& volume.value.average !== undefined && <KeyFigure.Figure label={translate('pim_catalog_volume.mean')}>{volume.value.average}</KeyFigure.Figure>}
-          {typeof volume.value === 'object'&& volume.value.max !== undefined && <KeyFigure.Figure label={translate('pim_catalog_volume.max')}>{volume.value.max}</KeyFigure.Figure>}
+          {typeof keyFigure.value === 'object'&& keyFigure.value.average !== undefined && <DsmKeyFigure.Figure label={translate('pim_catalog_volume.mean')}>{keyFigure.value.average}</DsmKeyFigure.Figure>}
+          {typeof keyFigure.value === 'object'&& keyFigure.value.max !== undefined && <DsmKeyFigure.Figure label={translate('pim_catalog_volume.max')}>{keyFigure.value.max}</DsmKeyFigure.Figure>}
         </>
-      ) : <KeyFigure.Figure>{volume.value}</KeyFigure.Figure>}
-    </KeyFigure>
+      ) : <DsmKeyFigure.Figure>{keyFigure.value}</DsmKeyFigure.Figure>}
+    </DsmKeyFigure>
   );
 }
 
