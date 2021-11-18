@@ -117,9 +117,9 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         ];
         $productModel->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFieldFilter->filter($productModel, ['values' => $data['values']])->willReturn([]);
         $productModelAssociationFilter
             ->filter($productModel, ['associations' => ['X_SELL' => ['products' => ['product_a', 'product_b']]]])
@@ -142,9 +142,9 @@ class GrantedProductModelUpdaterSpec extends ObjectBehavior
         ];
         $productModel->getId()->willReturn(1);
 
-        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
         $productModelFieldFilter
             ->filter($productModel, ['categories' => ['cameras']])
             ->willReturn(['categories' => ['cameras']]);
