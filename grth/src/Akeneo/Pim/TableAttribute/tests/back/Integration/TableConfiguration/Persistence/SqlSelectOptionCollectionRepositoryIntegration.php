@@ -199,8 +199,8 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     private function createColumn(int $attributeId, string $code, string $dataType, int $order): string
     {
         $insertColumnQuery = <<<SQL
-        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order)
-        VALUES (:id, :attribute_id, :code, :data_type, :column_order)
+        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, is_required_for_completeness)
+        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :is_required_for_completeness)
         SQL;
 
         $this->connection->executeQuery($insertColumnQuery, [
@@ -209,6 +209,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
             'code' => $code,
             'data_type' => $dataType,
             'column_order' => $order,
+            'is_required_for_completeness' => $order === 0 ? '1' : '0',
         ]);
 
         return $attributeId . $code;

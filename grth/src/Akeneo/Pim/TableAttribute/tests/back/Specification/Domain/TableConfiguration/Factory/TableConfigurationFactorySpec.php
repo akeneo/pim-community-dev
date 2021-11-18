@@ -85,6 +85,30 @@ class TableConfigurationFactorySpec extends ObjectBehavior
         $isAllergenicColumn->isRequiredForCompleteness()->asBoolean()->shouldBe(true);
     }
 
+    function it_always_set_the_first_column_as_required_for_completeness()
+    {
+        $tableConfiguration = $this->createFromNormalized([
+            [
+                'id' => ColumnIdGenerator::ingredient(),
+                'data_type' => 'select',
+                'code' => 'ingredient',
+                'labels' => [],
+                'is_required_for_completeness' => false,
+            ],
+            [
+                'id' => ColumnIdGenerator::quantity(),
+                'data_type' => 'number',
+                'code' => 'quantity',
+                'labels' => [],
+            ],
+        ]);
+        $tableConfiguration->shouldHaveType(TableConfiguration::class);
+
+        $ingredientColumn = $tableConfiguration->getColumn(ColumnId::fromString(ColumnIdGenerator::ingredient()));
+        $ingredientColumn->shouldHaveType(SelectColumn::class);
+        $ingredientColumn->isRequiredForCompleteness()->asBoolean()->shouldBe(true);
+    }
+
     function it_throws_an_exception_when_data_type_is_not_provided()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('createFromNormalized', [

@@ -32,18 +32,19 @@ class TableConfigurationFactory
         $this->columnDefinitionMapping = $columnDefinitionMapping;
     }
 
-    public function createFromNormalized($normalized): TableConfiguration
+    /**
+     * @param array<int, array<string, mixed>> $normalized
+     */
+    public function createFromNormalized(array $normalized): TableConfiguration
     {
         Assert::notEmpty($normalized);
         $normalized[\array_key_first($normalized)]['is_required_for_completeness'] = true;
 
         return TableConfiguration::fromColumnDefinitions(
-            \array_map(
-                fn (array $row): ColumnDefinition => $this->createColumnDefinitionFromNormalized(
-                    $row
-                ),
+            \array_values(\array_map(
+                fn (array $row): ColumnDefinition => $this->createColumnDefinitionFromNormalized($row),
                 $normalized
-            )
+            ))
         );
     }
 
