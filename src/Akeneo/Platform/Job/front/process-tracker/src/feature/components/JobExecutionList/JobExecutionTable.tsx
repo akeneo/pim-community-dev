@@ -1,6 +1,6 @@
 import React, {useCallback, MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
-import {useDateFormatter, useTranslate} from '@akeneo-pim-community/shared';
+import {Security, useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 import {useHistory} from 'react-router-dom';
@@ -14,8 +14,17 @@ type JobExecutionTableProps = {
 
 const SORTABLE_COLUMN_HEADERS = ['job_name', 'type', 'started_at', 'username', 'status'];
 
+const canShowJobExecutionDetail = ({isGranted}: Security, jobExecutionRow: JobExecutionRow) => {
+  if (['import', 'export'].includes(jobExecutionRow.type)) {
+    return isGranted(`pim_importexport_${jobExecutionRow.type}_execution_show`);
+  }
+
+  return true;
+};
+
 const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}: JobExecutionTableProps) => {
   const translate = useTranslate();
+  const security = useSecurity();
   const dateFormatter = useDateFormatter();
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
   const history = useHistory();
@@ -56,7 +65,14 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
       </Table.Header>
       <Table.Body>
         {jobExecutionRows.map(jobExecutionRow => (
-          <Table.Row key={jobExecutionRow.job_execution_id} onClick={handleRowClick(jobExecutionRow.job_execution_id)}>
+          <Table.Row
+            key={jobExecutionRow.job_execution_id}
+            onClick={
+              canShowJobExecutionDetail(security, jobExecutionRow)
+                ? handleRowClick(jobExecutionRow.job_execution_id)
+                : undefined
+            }
+          >
             <Table.Cell rowTitle={true}>{jobExecutionRow.job_name}</Table.Cell>
             <Table.Cell>
               {translate(`pim_import_export.widget.last_operations.job_type.${jobExecutionRow.type}`)}
