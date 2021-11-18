@@ -4,34 +4,43 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
 import {Placeholder} from './Placeholder.tsx';
 import {UsersIllustration} from '../../illustrations';
+import * as Illustrations from '../../illustrations';
 
 <Meta
   title="Components/Placeholder"
   component={Placeholder}
-  args={{children: 'Placeholder children text', title: 'Placeholder title'}}
+  argTypes={{
+      illustration: {control: {type: 'select'}, options: Object.keys(Illustrations)},
+      title: {control: {type: 'text'}},
+      children: {control: {type: 'text'}}
+    }}
+    args={{
+      illustration: 'UsersIllustration',
+      title: 'Placeholder title',
+      children: 'Placeholder children text'
+    }}
 />
 
 # Placeholder
 
 ## Usage
 
-Placeholders are used to have a good visual representation of the items to display. Placeholders can be used in a grid or in a collection.
-_Example: Assets manager or Connections._
+Placeholder is used when there is no data to display.
+_Example: when the search doesn't return any result._
 
-Placeholders should be displayed in a grid, therefore, a `PlaceholderGrid` component is also available with a convenient `size` prop. Possible values for the `size` prop are: `normal` or `big`.
+Placeholder requires a title and an illustration and can contain anything in its children.
 
 ## Playground
 
 <Canvas>
   <Story name="Standard">
     {args => {
+      const IllustrationComponent = React.createElement(Illustrations[args.illustration]);
       return (
-        <Placeholder {...args} illustration={<UsersIllustration/>}/>
+        <Placeholder {...args} illustration={IllustrationComponent}/>
       );
     }}
   </Story>
 </Canvas>
-
-
 
 <ArgsTable story="Standard" />
