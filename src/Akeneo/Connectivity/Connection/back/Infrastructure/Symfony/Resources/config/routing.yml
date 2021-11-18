@@ -14,7 +14,7 @@ akeneo_connectivity_connection_connect_apps_v1_token:
 akeneo_connectivity_connection_connect_apps_v1_key:
   path: '/connect/apps/v1/jwt/key'
   controller: akeneo_connectivity.connection.public.controller.apps.key
-  methods: [ POST ]
+  methods: [ GET ]
 
 # Internal API
 
@@ -129,4 +129,9 @@ akeneo_connectivity_connection_connect_connected_apps:
 akeneo_connectivity_connection_connect_connected_apps_edit:
     path: '/connect/connected-apps/{connectionCode}'
     requirements:
-        connectionCode: '[a-zA-Z0-9_-]+'
+      connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_delete:
+    path: '/connect/connected-apps/{connectionCode}/delete'
+    requirements:
+      connectionCode: '[a-zA-Z0-9_-]+'
