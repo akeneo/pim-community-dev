@@ -24,7 +24,6 @@ class TableValuesProcessor implements ItemProcessorInterface
      */
     public function process($tableRow): array
     {
-        /** @var TableRow */
         Assert::isInstanceOf($tableRow, TableRow::class);
 
         $attribute = \implode('-', \array_filter([
