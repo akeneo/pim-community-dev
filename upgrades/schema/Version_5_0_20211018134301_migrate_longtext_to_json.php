@@ -40,6 +40,8 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json extends Abstract
     {
         $this->disableMigrationWarning();
 
+        $this->cleanupJobExceutionEmptyRawParameters();
+
         foreach ($this->columnsToMigrate as $column) {
             if ($this->columnNeedsToBeMigrated($column)) {
                 $this->migrateColumnToJson($column);
@@ -86,5 +88,15 @@ final class Version_5_0_20211018134301_migrate_longtext_to_json extends Abstract
     private function disableMigrationWarning(): void
     {
         $this->addSql('SELECT 1');
+    }
+
+    protected function cleanupJobExceutionEmptyRawParameters(): void
+    {
+        $updateJobExcecution = <<< SQL
+UPDATE akeneo_batch_job_execution
+SET raw_parameters =  JSON_OBJECT()
+WHERE raw_parameters = '';
+SQL;
+        $this->connection->executeQuery($updateJobExcecution);
     }
 }
