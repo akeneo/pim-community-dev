@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
@@ -11,11 +11,12 @@ import {
   SystemIcon,
   UploadIcon,
 } from 'akeneo-design-system';
-import {MeasurementApp} from '@akeneo-pim-community/measurement';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {Legacy} from './feature/Legacy';
 import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {ProcessTrackerApp} from '@akeneo-pim-community/process-tracker';
+
+const ProcessTrackerApp = React.lazy(() => import('./feature/ProcessTracker'));
+const MeasurementApp = React.lazy(() => import('./feature/Measurement'));
 
 const Container = styled.div`
   display: flex;
@@ -75,19 +76,21 @@ const App = () => {
         </MainNavigationItem>
       </Menu>
       <Page>
-        <Router>
-          <Switch>
-            <Route path="/configuration/measurement">
-              <MeasurementApp />
-            </Route>
-            <Route path="/job">
-              <ProcessTrackerApp />
-            </Route>
-            <Route path="*">
-              <Legacy />
-            </Route>
-          </Switch>
-        </Router>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Router>
+            <Switch>
+              <Route path="/configuration/measurement">
+                <MeasurementApp />
+              </Route>
+              <Route path="/job">
+                <ProcessTrackerApp />
+              </Route>
+              <Route path="*">
+                <Legacy />
+              </Route>
+            </Switch>
+          </Router>
+        </Suspense>
       </Page>
     </Container>
   );

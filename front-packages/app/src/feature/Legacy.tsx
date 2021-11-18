@@ -4,13 +4,42 @@ import {useRef} from 'react';
 
 const loadScript = async (scriptUrl: string): Promise<void> => {
   return new Promise(resolve => {
-    const vendorScript = document.createElement('script');
-    vendorScript.onload = function () {
+    const script = document.createElement('script');
+    script.onload = function () {
       resolve();
     };
-    vendorScript.src = scriptUrl;
+    script.src = scriptUrl;
 
-    document.head.appendChild(vendorScript);
+    document.head.appendChild(script);
+  });
+};
+const loadStyle = async (styleUrl: string): Promise<void> => {
+  return new Promise(resolve => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+
+    link.onload = function () {
+      resolve();
+    };
+    link.href = styleUrl;
+
+    document.head.appendChild(link);
+  });
+};
+
+let legacyForm: null | any = null;
+const loadLegacy = async (element: HTMLDivElement) => {
+  loadStyle('./dist/pim.css');
+  await Promise.all([loadScript('./dist/vendor.min.js'), loadScript('./dist/main.min.js')]);
+
+  if (null === legacyForm) {
+    legacyForm = (window as any).pimLegacy.build('pim-app');
+  }
+
+  legacyForm.then((legacyView: any) => {
+    legacyView.setElement(element);
+    legacyView.render();
   });
 };
 
@@ -19,15 +48,7 @@ const Legacy = () => {
 
   useEffect(() => {
     if (null === ref.current) return;
-    (async () => {
-      await Promise.all([loadScript('./dist/vendor.min.js'), loadScript('./dist/main.min.js')]);
-      console.log('mount');
-
-      (window as any).pimLegacy.build('pim-app').then((form: any) => {
-        form.setElement(ref.current);
-        form.render();
-      });
-    })();
+    loadLegacy(ref.current);
   }, []);
 
   return <div className="app" ref={ref}></div>;

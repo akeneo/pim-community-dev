@@ -17,7 +17,7 @@
     "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
     "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
     "test:unit:watch": "react-scripts test --maxWorkers=3",
-    "app:build": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts build",
+    "app:build": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts build && gzipper compress ./build/static",
     "translation:build": "cp $npm_package_config_application_path/public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp $npm_package_config_application_path/public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build",
@@ -56,6 +56,7 @@
     "@types/react-dom": "^16.9.12",
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.1",
+    "gzipper": "^6.0.0",
     "prettier": "^2.1.1"
   },
   "proxy": "http://localhost:8080",
