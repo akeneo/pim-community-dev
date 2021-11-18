@@ -21,10 +21,10 @@ Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
 duration:
-  days: "{0}0 päivää{1}1 päivä|]1, Inf[{{ count }} päivää"
-  hours: "{0}0 tuntia{1}1 tunti|]1, Inf[{{ count }} tuntia"
-  minutes: "{0}0 minuuttia{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
-  seconds: "{0}0 sekuntia{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
+  days: "{0}0 päivää|{1}1 päivä|]1, Inf[{{ count }} päivää"
+  hours: "{0}0 tuntia|{1}1 tunti|]1, Inf[{{ count }} tuntia"
+  minutes: "{0}0 minuuttia|{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
+  seconds: "{0}0 sekuntia|{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
 #PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
