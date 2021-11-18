@@ -3,5 +3,5 @@ services:
         public: true
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'

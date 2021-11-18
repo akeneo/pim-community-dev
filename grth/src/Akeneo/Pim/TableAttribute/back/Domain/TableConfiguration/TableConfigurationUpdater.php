@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Webmozart\Assert\Assert;
@@ -21,14 +21,14 @@ use Webmozart\Assert\Assert;
 class TableConfigurationUpdater
 {
     private TableConfigurationRepository $tableConfigurationRepository;
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
-        ColumnFactory $columnFactory
+        TableConfigurationFactory $tableConfigurationFactory
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
     }
 
     /**
@@ -46,11 +46,6 @@ class TableConfigurationUpdater
                 $matchingColumn->id()->asString();
         }
 
-        return TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized($row),
-                $newRawTableConfiguration
-            )
-        );
+        return $this->tableConfigurationFactory->createFromNormalized($newRawTableConfiguration);
     }
 }

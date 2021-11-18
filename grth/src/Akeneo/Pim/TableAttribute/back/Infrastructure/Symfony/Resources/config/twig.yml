@@ -1,7 +1,7 @@
 services:
   Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\Renderer\ProductValueRenderer\TableProductValueRenderer:
     arguments:
-      - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+      - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
       - '@translator'
     tags:
       - { name: pim_pdf_generator.product_value_renderer }

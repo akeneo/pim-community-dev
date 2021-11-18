@@ -69,14 +69,28 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredients', 'labels' => []]),
-                    TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => []]),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredients', 'labels' => [], 'is_required_for_completeness' => true]),
+                    TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [], 'is_required_for_completeness' => false]),
                 ]
             )
         );
         $attribute->setRawTableConfiguration([
-            ['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
-            ['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+            [
+                'id' => ColumnIdGenerator::ingredient(),
+                'code' => 'ingredients',
+                'data_type' => 'select',
+                'labels' => (object) [],
+                'validations' => (object) [],
+                'is_required_for_completeness' => true,
+            ],
+            [
+                'id' => ColumnIdGenerator::quantity(),
+                'code' => 'quantity',
+                'data_type' => 'text',
+                'labels' => (object) [],
+                'validations' => (object) [],
+                'is_required_for_completeness' => false,
+            ],
         ])->shouldBeCalled();
 
         $this->postLoad($event);

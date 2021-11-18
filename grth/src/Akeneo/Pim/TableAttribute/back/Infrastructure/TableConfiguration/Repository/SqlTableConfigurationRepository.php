@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -31,12 +30,12 @@ use Ramsey\Uuid\Uuid;
 final class SqlTableConfigurationRepository implements TableConfigurationRepository
 {
     private Connection $connection;
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
 
-    public function __construct(Connection $connection, ColumnFactory $columnFactory)
+    public function __construct(Connection $connection, TableConfigurationFactory $tableConfigurationFactory)
     {
         $this->connection = $connection;
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
     }
 
     public function getNextIdentifier(ColumnCode $columnCode): ColumnId
@@ -130,18 +129,16 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
         $platform = $this->connection->getDatabasePlatform();
 
-        return TableConfiguration::fromColumnDefinitions(
+        return $this->tableConfigurationFactory->createFromNormalized(
             array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
-                    [
-                        'id' => $row['id'],
-                        'code' => $row['code'],
-                        'data_type' => $row['data_type'],
-                        'labels' => \json_decode($row['labels'], true),
-                        'validations' => \json_decode($row['validations'], true),
-                        'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
-                    ]
-                ),
+                fn (array $row): array => [
+                    'id' => $row['id'],
+                    'code' => $row['code'],
+                    'data_type' => $row['data_type'],
+                    'labels' => \json_decode($row['labels'], true),
+                    'validations' => \json_decode($row['validations'], true),
+                    'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
+                ],
                 $results
             )
         );
