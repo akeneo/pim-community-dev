@@ -8,6 +8,7 @@ import {
   IconButton,
   Link,
   pimTheme,
+  Placeholder,
   SectionTitle,
   Table,
   useBooleanState,
@@ -31,6 +32,11 @@ const EmptyTableCell = styled(Table.Cell)`
 
 const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
+`;
+
+const CenteredHelper = styled.div`
+  text-align: center;
+  padding: 0 20px;
 `;
 
 type TableStructureAppProps = {
@@ -156,19 +162,17 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             </Table.Body>
           </Table>
           {tableConfiguration.length === 1 && (
-            <CenteredHelper illustration={<AddingValueIllustration />}>
-              <CenteredHelper.Title>
-                {translate('pim_table_attribute.form.attribute.unique_title')}
-              </CenteredHelper.Title>
-              {translate('pim_table_attribute.form.attribute.unique_subtitle')}
-            </CenteredHelper>
+            <Placeholder
+              illustration={<AddingValueIllustration />}
+              title={translate('pim_table_attribute.form.attribute.unique_title')}
+            />
           )}
         </>
       ) : (
-        <CenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.empty_title')}</CenteredHelper.Title>
-          {translate('pim_table_attribute.form.attribute.empty_subtitle')}
-        </CenteredHelper>
+        <Placeholder
+          illustration={<AddingValueIllustration />}
+          title={translate('pim_table_attribute.form.attribute.empty_title')}
+        />
       )}
       <Table isDragAndDroppable={true} onReorder={handleReorder}>
         <Table.Body>
