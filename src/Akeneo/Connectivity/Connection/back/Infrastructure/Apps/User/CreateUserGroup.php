@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\User;
 
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;

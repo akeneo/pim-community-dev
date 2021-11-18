@@ -14,7 +14,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.user.create_user'
-            - '@akeneo_connectivity.connection.service.user.create_user_group'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
@@ -70,6 +70,13 @@ services:
             - '@fos_oauth_server.storage.default'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@validator'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\DeleteConnectedAppQuery:
         arguments:
