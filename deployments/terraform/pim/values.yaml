@@ -136,8 +136,8 @@ pim:
   api:
     ratelimit:
       enabled: true
-      average: 200
-      burst: 50
+      average: 100
+      burst: 25
     replicas: 2
     fpm:
       resources:
