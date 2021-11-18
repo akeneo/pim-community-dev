@@ -73,7 +73,7 @@ image:
     tag: master
   httpd:
     repository: httpd
-    tag: 2.4.33
+    tag: 2.4.51
     pullPolicy: IfNotPresent
 
 pim:
