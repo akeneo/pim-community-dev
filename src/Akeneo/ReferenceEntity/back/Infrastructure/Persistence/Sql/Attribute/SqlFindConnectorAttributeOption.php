@@ -23,22 +23,14 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private Connection $sqlConnection;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
-        AttributeHydratorRegistry $attributeHydratorRegistry,
         InactiveLabelFilter $inactiveLabelFilter
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
         $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
@@ -88,9 +80,7 @@ SQL;
             return null;
         }
 
-        $matchingOption = current(array_filter($options, function ($option) use ($optionCode) {
-            return $option['code'] === $optionCode;
-        }));
+        $matchingOption = current(array_filter($options, static fn ($option) => $option['code'] === $optionCode));
 
         if (!$matchingOption) {
             return null;
@@ -99,11 +89,9 @@ SQL;
         $labels = $matchingOption['labels'];
         $labels = $this->inactiveLabelFilter->filter($labels);
 
-        $connectorOption = new ConnectorAttributeOption(
+        return new ConnectorAttributeOption(
             OptionCode::fromString($matchingOption['code']),
             LabelCollection::fromArray($labels)
         );
-
-        return $connectorOption;
     }
 }

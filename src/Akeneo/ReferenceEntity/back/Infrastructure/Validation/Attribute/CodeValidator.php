@@ -15,6 +15,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -38,16 +43,16 @@ class CodeValidator extends ConstraintValidator
         $violations = $validator->validate(
             $code,
             [
-                new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Constraints\Regex(
+                new NotBlank(),
+                new Type(['type' => 'string']),
+                new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
+                new Regex(
                     [
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => Code::MESSAGE_WRONG_PATTERN,
                     ]
                 ),
-                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
+                new Callback(function ($value, ExecutionContextInterface $context, $payload) {
                     if (in_array(strtolower($value), AttributeCode::RESERVED_CODES)) {
                         $context->buildViolation(Code::MESSAGE_RESERVED_CODE)
                             ->setParameter(

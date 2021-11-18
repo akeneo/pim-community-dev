@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages;
@@ -32,19 +33,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class GetConnectorRecordAction
 {
-    /** @var FindConnectorRecordByReferenceEntityAndCodeInterface */
-    private $findConnectorRecord;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var AddHalDownloadLinkToRecordImages */
-    private $addHalLinksToImageValues;
-
+    private FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -78,13 +71,13 @@ class GetConnectorRecordAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $record = $this->findConnectorRecord->find($referenceEntityIdentifier, $recordCode);
 
-        if (null === $record) {
+        if (!$record instanceof ConnectorRecord) {
             throw new NotFoundHttpException(sprintf('Record "%s" does not exist for the reference entity "%s".', $recordCode, $referenceEntityIdentifier));
         }
 

@@ -16,16 +16,9 @@ class AggregatedAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
+    private int $limit;
 
-    /** @var int */
-    private $limit;
-
-    /**
-     * @param Connection $connection
-     * @param int        $limit
-     */
     public function __construct(Connection $connection, int $limit)
     {
         $this->connection = $connection;
@@ -49,8 +42,6 @@ SQL;
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 
-        $volume = new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
-
-        return $volume;
+        return new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
     }
 }

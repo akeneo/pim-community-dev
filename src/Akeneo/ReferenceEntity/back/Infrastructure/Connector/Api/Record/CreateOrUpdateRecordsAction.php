@@ -45,43 +45,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordsAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var RecordExistsInterface */
-    private $recordExists;
-
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
-
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
-
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var ValidatorInterface */
-    private $recordDataValidator;
-
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
-
-    /** @var RecordValidator */
-    private $recordStructureValidator;
-
-    /** @var RecordListValidator */
-    private $recordListValidator;
-
-    /** @var int */
-    private $maximumRecordsPerRequest;
-
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private RecordExistsInterface $recordExists;
+    private EditRecordCommandFactory $editRecordCommandFactory;
+    private EditRecordHandler $editRecordHandler;
+    private CreateRecordHandler $createRecordHandler;
+    private ValidatorInterface $recordDataValidator;
+    private ViolationNormalizer $violationNormalizer;
+    private RecordValidator $recordStructureValidator;
+    private RecordListValidator $recordListValidator;
+    private int $maximumRecordsPerRequest;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -90,7 +65,6 @@ class CreateOrUpdateRecordsAction
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
-        Router $router,
         ValidatorInterface $recordDataValidator,
         ViolationNormalizer $violationNormalizer,
         RecordValidator $recordStructureValidator,
@@ -105,7 +79,6 @@ class CreateOrUpdateRecordsAction
         $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->createRecordHandler = $createRecordHandler;
-        $this->router = $router;
         $this->recordDataValidator = $recordDataValidator;
         $this->violationNormalizer = $violationNormalizer;
         $this->recordStructureValidator = $recordStructureValidator;
@@ -200,7 +173,7 @@ class CreateOrUpdateRecordsAction
         $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $createRecordCommand = null;
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createRecordCommand = new CreateRecordCommand(
                 $referenceEntityIdentifier->normalize(),
                 $normalizedRecord['code'],
@@ -220,7 +193,7 @@ class CreateOrUpdateRecordsAction
             throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createRecordHandler)($createRecordCommand);
         }
 

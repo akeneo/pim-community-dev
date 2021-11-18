@@ -39,34 +39,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateReferenceEntityAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
-
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var ReferenceEntityValidator */
-    private $jsonSchemaValidator;
-
-    /** @var FindFileDataByFileKeyInterface */
-    private $findFileData;
-
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
-
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private ValidatorInterface $validator;
+    private CreateReferenceEntityHandler $createReferenceEntityHandler;
+    private EditReferenceEntityHandler $editReferenceEntityHandler;
+    private Router $router;
+    private ReferenceEntityValidator $jsonSchemaValidator;
+    private FindFileDataByFileKeyInterface $findFileData;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -117,7 +99,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $createReferenceEntityCommand = null;
         $shouldBeCreated = !$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createReferenceEntityCommand = new CreateReferenceEntityCommand(
                 $normalizedReferenceEntity['code'],
                 $normalizedReferenceEntity['labels'] ?? []
@@ -137,7 +119,7 @@ class CreateOrUpdateReferenceEntityAction
 
         if (array_key_exists('image', $normalizedReferenceEntity)) {
             $editReferenceEntityCommand->image = null !== $normalizedReferenceEntity['image'] ? $this->getImageData($normalizedReferenceEntity['image']) : null;
-        } elseif (false === $shouldBeCreated) {
+        } elseif (!$shouldBeCreated) {
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
             $editReferenceEntityCommand->image = $referenceEntity->getImage()->normalize();
         }
@@ -147,7 +129,7 @@ class CreateOrUpdateReferenceEntityAction
             throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createReferenceEntityHandler)($createReferenceEntityCommand);
         }
 
@@ -159,7 +141,7 @@ class CreateOrUpdateReferenceEntityAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        $responseStatusCode = true === $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $responseStatusCode = $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
         return Response::create('', $responseStatusCode, $headers);
     }

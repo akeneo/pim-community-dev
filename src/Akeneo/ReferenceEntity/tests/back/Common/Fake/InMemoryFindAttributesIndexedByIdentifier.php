@@ -33,7 +33,7 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     }
 
     /**
-     * @return AttributeDetails[]
+     * @return AbstractAttribute[]
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {

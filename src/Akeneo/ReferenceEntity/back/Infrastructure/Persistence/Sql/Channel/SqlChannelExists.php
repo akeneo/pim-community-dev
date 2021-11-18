@@ -24,8 +24,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlChannelExists implements ChannelExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

@@ -23,11 +23,10 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
 {
     public function let(
         Connection $connection,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator
     ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($connection, $findValueKeysByAttributeType, $valueHydrator);
+        $this->beConstructedWith($connection, $valueHydrator);
     }
 
     public function it_is_initializable()
@@ -36,17 +35,12 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
     }
 
     public function it_hydrates_a_record_details(
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator,
         TextAttribute $labelAttribute,
         ImageAttribute $imageAttribute,
         Value $labelfrFR,
         Value $labelenUS
     ) {
-        $findValueKeysByAttributeType->find(
-            ReferenceEntityIdentifier::fromString('game'),
-            ['record', 'record_collection']
-        )->willReturn([]);
 
         $valueKeys = ValueKeyCollection::fromValueKeys([
             ValueKey::createFromNormalized('label_game_fingerprint_en_US'),
@@ -144,16 +138,10 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
     }
 
     public function it_does_not_keep_unexpected_values(
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator,
         TextAttribute $descriptionAttribute,
         Value $descriptionfrFR
     ) {
-        $findValueKeysByAttributeType->find(
-            ReferenceEntityIdentifier::fromString('game'),
-            ['record', 'record_collection']
-        )->willReturn([]);
-
         $valueKeys = ValueKeyCollection::fromValueKeys([
             ValueKey::createFromNormalized('description_game_fingerprint-fr_FR'),
             ValueKey::createFromNormalized('description_game_fingerprint-en_US'),

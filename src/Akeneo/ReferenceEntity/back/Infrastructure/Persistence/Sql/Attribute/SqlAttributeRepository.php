@@ -35,14 +35,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAttributeRepository implements AttributeRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private Connection $sqlConnection;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         Connection $sqlConnection,
@@ -184,8 +179,6 @@ SQL;
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     *
      * @return AbstractAttribute[]
      * @throws DBALException
      */
@@ -240,7 +233,7 @@ SQL;
         );
         $count = $statement->fetchColumn();
 
-        return intval($count);
+        return (int) $count;
     }
 
     private function getAdditionalProperties(array $normalizedAttribute): array

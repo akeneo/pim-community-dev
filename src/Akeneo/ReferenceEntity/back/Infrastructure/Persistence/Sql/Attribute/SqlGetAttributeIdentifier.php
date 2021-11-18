@@ -22,8 +22,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

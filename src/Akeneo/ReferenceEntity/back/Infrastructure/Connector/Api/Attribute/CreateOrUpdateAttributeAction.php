@@ -11,7 +11,6 @@ use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHand
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
@@ -34,54 +33,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    /** @var CreateAttributeCommandFactoryRegistry */
-    private $createAttributeCommandFactoryRegistry;
-
-    /** @var FindAttributeNextOrderInterface */
-    private $attributeNextOrder;
-
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
-
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
-
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
-
-    /** @var EditAttributeCommandFactory */
-    private $editAttributeCommandFactory;
-
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var AttributeCreationValidator */
-    private $jsonSchemaCreateValidator;
-
-    /** @var AttributeEditionValidator */
-    private $jsonSchemaEditValidator;
-
-    /** @var ValidateAttributePropertiesImmutability */
-    private $validateAttributePropertiesImmutability;
-
+    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
+    private AttributeExistsInterface $attributeExists;
+    private CreateAttributeHandler $createAttributeHandler;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
+    private EditAttributeCommandFactory $editAttributeCommandFactory;
+    private EditAttributeHandler $editAttributeHandler;
+    private Router $router;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private ValidatorInterface $validator;
+    private AttributeCreationValidator $jsonSchemaCreateValidator;
+    private AttributeEditionValidator $jsonSchemaEditValidator;
+    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
         CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
-        FindAttributeNextOrderInterface $attributeNextOrder,
         AttributeExistsInterface $attributeExists,
         CreateAttributeHandler $createAttributeHandler,
         Router $router,
@@ -98,7 +67,6 @@ class CreateOrUpdateAttributeAction
         LoggerInterface $apiAclLogger
     ) {
         $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
-        $this->attributeNextOrder = $attributeNextOrder;
         $this->attributeExists = $attributeExists;
         $this->createAttributeHandler = $createAttributeHandler;
         $this->router = $router;
@@ -126,7 +94,7 @@ class CreateOrUpdateAttributeAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 

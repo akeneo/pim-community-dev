@@ -35,22 +35,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class GetConnectorReferenceEntitiesAction
 {
-    /** @var Limit */
-    private $limit;
-
-    /** @var FindConnectorReferenceEntityItemsInterface */
-    private $findConnectorReferenceEntityItems;
-
-    /** @var PaginatorInterface */
-    private $halPaginator;
-
-    /** @var AddHalDownloadLinkToReferenceEntityImage */
-    private $addHalDownloadLinkToImage;
-
+    private Limit $limit;
+    private FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems;
+    private PaginatorInterface $halPaginator;
+    private AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

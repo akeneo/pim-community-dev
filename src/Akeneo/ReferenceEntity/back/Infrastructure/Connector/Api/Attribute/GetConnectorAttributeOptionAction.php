@@ -14,6 +14,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -26,16 +27,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeOptionAction
 {
-    /** @var FindConnectorAttributeOptionInterface */
-    private $findConnectorAttributeOptionQuery;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
+    private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -68,7 +63,7 @@ class GetConnectorAttributeOptionAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
@@ -81,7 +76,7 @@ class GetConnectorAttributeOptionAction
 
         $attributeOption = $this->findConnectorAttributeOptionQuery->find($referenceEntityIdentifier, $attributeCode, $optionCode);
 
-        if (null === $attributeOption) {
+        if (!$attributeOption instanceof ConnectorAttributeOption) {
             throw new NotFoundHttpException(sprintf('Attribute option "%s" does not exist for the attribute "%s".', $optionCode, $attributeCode));
         }
 

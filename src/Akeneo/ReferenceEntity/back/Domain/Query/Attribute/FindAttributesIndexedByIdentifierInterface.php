@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
@@ -24,7 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface FindAttributesIndexedByIdentifierInterface
 {
     /**
-     * @return AttributeDetails[]
+     * @return AbstractAttribute[]
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

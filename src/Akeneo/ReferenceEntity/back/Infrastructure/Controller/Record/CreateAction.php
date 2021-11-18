@@ -36,26 +36,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
-
-    /** @var RecordIndexerInterface */
-    private $recordIndexer;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
-
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private CreateRecordHandler $createRecordHandler;
+    private RecordIndexerInterface $recordIndexer;
+    private NormalizerInterface $normalizer;
+    private ValidatorInterface $validator;
+    private SecurityFacade $securityFacade;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         CreateRecordHandler $createRecordHandler,
@@ -130,13 +117,11 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateRecordCommand(
+        return new CreateRecordCommand(
             $normalizedCommand['reference_entity_identifier'] ?? null,
             $normalizedCommand['code'] ?? null,
             $normalizedCommand['labels'] ?? []
         );
-
-        return $command;
     }
 
     /**

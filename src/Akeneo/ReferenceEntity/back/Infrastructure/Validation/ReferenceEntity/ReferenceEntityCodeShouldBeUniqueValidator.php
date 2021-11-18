@@ -28,8 +28,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
 
     public function __construct(ReferenceEntityExistsInterface $recordExists)
     {

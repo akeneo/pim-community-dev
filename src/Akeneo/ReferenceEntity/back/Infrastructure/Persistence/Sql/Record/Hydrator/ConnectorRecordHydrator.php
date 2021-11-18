@@ -28,11 +28,8 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorRecordHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
-
-    /** @var ConnectorValueTransformerRegistry */
-    private $valueTransformerRegistry;
+    private AbstractPlatform $platform;
+    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
 
     public function __construct(
         Connection $connection,
@@ -60,9 +57,8 @@ class ConnectorRecordHydrator
         }
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
-        $connectorRecord = new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
 
-        return $connectorRecord;
+        return new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array

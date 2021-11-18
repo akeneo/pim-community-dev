@@ -17,8 +17,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindSearchableRecords implements FindSearchableRecordsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -37,14 +36,14 @@ SQL;
         $statement = $this->connection->executeQuery($sqlQuery, ['record_identifier' => (string) $recordIdentifier]);
         $result = $statement->fetchAssociative();
 
-        return !$result ? null : $this->hydrateRecordToIndex(
+        return $result ? $this->hydrateRecordToIndex(
             $result['identifier'],
             $result['reference_entity_identifier'],
             $result['code'],
             $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
-        );
+        ) : null;
     }
 
     public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
@@ -103,7 +102,7 @@ SQL;
             return [];
         }
 
-        $labels = array_reduce(
+        return array_reduce(
             $values,
             function (array $labels, array $value) use ($attributeAsLabelIdentifier) {
                 if ($value['attribute'] === $attributeAsLabelIdentifier) {
@@ -114,7 +113,5 @@ SQL;
             },
             []
         );
-
-        return $labels;
     }
 }

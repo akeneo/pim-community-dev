@@ -25,26 +25,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditAttributeCommandFactoryInterface */
-    private $editAttributeCommandFactory;
-
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
-
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ValidatorInterface  */
-    private $validator;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private EditAttributeCommandFactoryInterface $editAttributeCommandFactory;
+    private EditAttributeHandler $editAttributeHandler;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
+    private TokenStorageInterface $tokenStorage;
+    private NormalizerInterface $normalizer;
+    private ValidatorInterface $validator;
+    private SecurityFacade $securityFacade;
 
     public function __construct(
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
@@ -118,8 +105,7 @@ class EditAction
     private function getEditCommand(Request $request): AbstractEditAttributeCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-        $command = $this->editAttributeCommandFactory->create($normalizedCommand);
 
-        return $command;
+        return $this->editAttributeCommandFactory->create($normalizedCommand);
     }
 }

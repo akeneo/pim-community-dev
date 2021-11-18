@@ -26,11 +26,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
 {
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
-
-    /** @var int */
-    private $recordsLimit;
+    private RecordRepositoryInterface $recordRepository;
+    private int $recordsLimit;
 
     public function __construct(
         RecordRepositoryInterface $recordRepository,

@@ -151,14 +151,12 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOption
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
             - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
             - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
@@ -314,7 +312,6 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item:

@@ -15,6 +15,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -37,10 +41,10 @@ class IdentifierValidator extends ConstraintValidator
         $violations = $validator->validate(
             $identifier,
             [
-                new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Constraints\Regex(
+                new NotBlank(),
+                new Type(['type' => 'string']),
+                new Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
+                new Regex(
                     [
                         'pattern' => '/^[a-zA-Z0-9_-]+$/',
                         'message' => Identifier::MESSAGE_WRONG_PATTERN,

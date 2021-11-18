@@ -27,22 +27,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeOptionsAction
 {
-    /** @var FindConnectorAttributeOptionsInterface */
-    private $findConnectorAttributeOptionsQuery;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
-
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
-
+    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private AttributeExistsInterface $attributeExists;
+    private AttributeSupportsOptions $attributeSupportsOptions;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -79,7 +69,7 @@ class GetConnectorAttributeOptionsAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
@@ -91,7 +81,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
@@ -101,7 +91,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 

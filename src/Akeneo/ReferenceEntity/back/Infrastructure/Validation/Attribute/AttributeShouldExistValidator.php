@@ -29,8 +29,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeShouldExistValidator extends ConstraintValidator
 {
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
     public function __construct(AttributeExistsInterface $attributeExists)
     {

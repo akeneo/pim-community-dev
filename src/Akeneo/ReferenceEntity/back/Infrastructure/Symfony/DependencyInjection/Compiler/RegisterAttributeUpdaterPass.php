@@ -47,14 +47,13 @@ class RegisterAttributeUpdaterPass implements CompilerPassInterface
         $sortedUpdatersByPriority = [];
         foreach ($attributeUpdaters as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $priority = $tag['priority'] ?? static::DEFAULT_PRIORITY;
                 $sortedUpdatersByPriority[$priority][] = new Reference($serviceId);
             }
         }
 
         krsort($sortedUpdatersByPriority);
-        $sortedUpdatersByPriority = call_user_func_array('array_merge', $sortedUpdatersByPriority);
 
-        return $sortedUpdatersByPriority;
+        return call_user_func_array('array_merge', $sortedUpdatersByPriority);
     }
 }

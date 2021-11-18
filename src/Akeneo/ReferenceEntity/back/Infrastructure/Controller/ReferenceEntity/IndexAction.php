@@ -25,8 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class IndexAction
 {
-    /** @var FindReferenceEntityItemsInterface */
-    private $findReferenceEntitiesQuery;
+    private FindReferenceEntityItemsInterface $findReferenceEntitiesQuery;
 
     public function __construct(FindReferenceEntityItemsInterface $findReferenceEntitiesQuery)
     {
@@ -35,8 +34,6 @@ class IndexAction
 
     /**
      * Get all reference entities
-     *
-     * @return JsonResponse
      */
     public function __invoke(): JsonResponse
     {
@@ -56,8 +53,6 @@ class IndexAction
      */
     private function normalizeReferenceEntityItems(array $referenceEntityItems): array
     {
-        return array_map(function (ReferenceEntityItem $item) {
-            return $item->normalize();
-        }, $referenceEntityItems);
+        return array_map(static fn (ReferenceEntityItem $item) => $item->normalize(), $referenceEntityItems);
     }
 }

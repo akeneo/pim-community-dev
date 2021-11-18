@@ -29,17 +29,10 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRecordByReferenceEntityAndCodeInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var ConnectorRecordHydrator */
-    private $recordHydrator;
+    private Connection $connection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private ConnectorRecordHydrator $recordHydrator;
 
     public function __construct(
         Connection $connection,

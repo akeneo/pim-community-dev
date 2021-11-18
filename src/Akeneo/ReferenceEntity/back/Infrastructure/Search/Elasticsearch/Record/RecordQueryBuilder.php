@@ -152,9 +152,7 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
                             $attributeFilter['value']
                         );
 
-                        $value = array_values(array_map(function (RecordIdentifier $recordIdentifier) {
-                            return (string) $recordIdentifier;
-                        }, $recordIdentifiers));
+                        $value = array_values(array_map(static fn (RecordIdentifier $recordIdentifier) => (string) $recordIdentifier, $recordIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
@@ -191,12 +189,9 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
     {
         $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);
-        $wildcardTerms = array_map(function (string $term) {
-            return sprintf('*%s*', QueryString::escapeValue($term));
-        }, $terms);
-        $query = implode(' AND ', $wildcardTerms);
+        $wildcardTerms = array_map(static fn (string $term) => sprintf('*%s*', QueryString::escapeValue($term)), $terms);
 
-        return $query;
+        return implode(' AND ', $wildcardTerms);
     }
 
     private function getRequiredValueKeys(
@@ -213,8 +208,8 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
 
     private function getCompleteFilterQuery(RecordQuery $recordQuery, $referenceEntityCode, $completeFilter, $query)
     {
-        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $recordQuery->getChannel();
-        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$recordQuery->getLocale()];
+        $channel = $completeFilter['context']['channel'] ?? $recordQuery->getChannel();
+        $locales = $completeFilter['context']['locales'] ?? [$recordQuery->getLocale()];
 
         $requiredValueKeys = $this->getRequiredValueKeys(
             $referenceEntityCode,
@@ -222,32 +217,28 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
             LocaleIdentifierCollection::fromNormalized($locales)
         );
         if (true === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'exists' => [
-                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                    ],
-                ];
-            }, $requiredValueKeys->normalize());
+            $clauses = array_map(static fn (string $requiredValueKey) => [
+                'exists' => [
+                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['filter'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['filter'],
                 $clauses
             );
         }
         if (false === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'bool' => [
-                        'must_not' => [
-                            [
-                                'exists' => [
-                                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                                ],
+            $clauses = array_map(static fn (string $requiredValueKey) => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'exists' => [
+                                'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
                             ],
                         ],
                     ],
-                ];
-            }, $requiredValueKeys->normalize());
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
             $query['query']['constant_score']['filter']['bool']['should'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['should'] ?? [],

@@ -26,11 +26,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessAttributesThanLimitValidator extends ConstraintValidator
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var int */
-    private $attributesLimit;
+    private AttributeRepositoryInterface $attributeRepository;
+    private int $attributesLimit;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

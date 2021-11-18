@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform;
 class Record
 {
     private string $code;
+    /** @var array<string, string> */
     private array $labels;
 
     public function __construct(string $code, array $labels)

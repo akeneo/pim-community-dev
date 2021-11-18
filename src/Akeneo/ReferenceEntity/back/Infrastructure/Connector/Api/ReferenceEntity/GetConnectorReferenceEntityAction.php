@@ -3,8 +3,8 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
@@ -16,30 +16,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorReferenceEntityAction
 {
-    /** @var FindConnectorReferenceEntityByReferenceEntityIdentifierInterface */
-    private $findConnectorReferenceEntity;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var AddHalDownloadLinkToReferenceEntityImage */
-    private $addHalLinksToReferenceEntityImage;
-
+    private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity;
+    private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
         FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
-        ReferenceEntityExistsInterface $referenceEntityExists,
         AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues,
         SecurityFacade $securityFacade,
         TokenStorageInterface $tokenStorage,
         LoggerInterface $apiAclLogger
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
         $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
         $this->addHalLinksToReferenceEntityImage = $addHalLinksToImageValues;
         $this->securityFacade = $securityFacade;
@@ -63,7 +52,7 @@ class GetConnectorReferenceEntityAction
 
         $referenceEntity = $this->findConnectorReferenceEntity->find($code);
 
-        if (null === $referenceEntity) {
+        if (!$referenceEntity instanceof ConnectorReferenceEntity) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $code));
         }
 

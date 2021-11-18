@@ -33,14 +33,9 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
-
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
+    private Connection $sqlConnection;
+    private FindAttributesDetailsInterface $findAttributesDetails;
+    private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
         Connection $sqlConnection,
@@ -102,12 +97,10 @@ SQL;
         $result = $statement->fetchAssociative();
         $statement->closeCursor();
 
-        return !$result ? [] : $result;
+        return $result ? $result : [];
     }
 
     /**
-     * @return ReferenceEntityDetails
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function hydrateReferenceEntityDetails(
