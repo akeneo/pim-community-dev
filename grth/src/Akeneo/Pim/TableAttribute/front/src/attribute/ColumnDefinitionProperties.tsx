@@ -15,6 +15,7 @@ type ColumnDefinitionPropertiesProps = {
   savedColumnIds: string[];
   isDuplicateColumnCode: (code: ColumnCode) => boolean;
   columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
+  isFirstColumn: boolean;
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
@@ -26,6 +27,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   savedColumnIds,
   isDuplicateColumnCode,
   columnDefinitionPropertiesMapping,
+  isFirstColumn,
 }) => {
   const translate = useTranslate();
 
@@ -109,7 +111,11 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
-        <Checkbox checked={!!selectedColumn.is_required_for_completeness} onChange={handleRequiredForCompleteness}>
+        <Checkbox
+          checked={isFirstColumn || !!selectedColumn.is_required_for_completeness}
+          onChange={handleRequiredForCompleteness}
+          readOnly={isFirstColumn}
+        >
           {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
         </Checkbox>
       </FieldsList>
