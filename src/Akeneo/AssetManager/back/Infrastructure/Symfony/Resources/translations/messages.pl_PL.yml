@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Zasoby zostały pomyślnie wyedytowane z ostrzeżeniami
   success: Wyedytowano zasoby
   error: Edycja zasobów nie powiodła się
+pim_api:
+  acl_group:
+    asset: Zasoby
