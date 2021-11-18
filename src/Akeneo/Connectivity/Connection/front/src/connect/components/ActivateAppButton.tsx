@@ -4,7 +4,7 @@ import {useTranslate} from '../../shared/translate';
 import {Button} from 'akeneo-design-system';
 import {useRouter} from '../../shared/router/use-router';
 
-export const ActivateAppButton: FC<{id: string; connected: boolean}> = ({id, connected}) => {
+export const ActivateAppButton: FC<{id: string; isConnected: boolean}> = ({id, isConnected}) => {
     const translate = useTranslate();
     const security = useSecurity();
     const generateUrl = useRouter();
@@ -14,7 +14,7 @@ export const ActivateAppButton: FC<{id: string; connected: boolean}> = ({id, con
         id: id,
     })}`;
 
-    if (connected) {
+    if (isConnected) {
         return (
             <Button level='primary' disabled>
                 {translate('akeneo_connectivity.connection.connect.marketplace.card.connected')}

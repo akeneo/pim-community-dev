@@ -11,7 +11,7 @@ beforeEach(() => {
 });
 
 test('button renders for connected app', () => {
-    renderWithProviders(<ActivateAppButton id='appId' connected={true} />);
+    renderWithProviders(<ActivateAppButton id='appId' isConnected={true} />);
 
     const button = screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.connected');
 
@@ -20,7 +20,7 @@ test('button renders for connected app', () => {
 });
 
 test('button renders for non connected app', () => {
-    renderWithProviders(<ActivateAppButton id='appId' connected={false} />);
+    renderWithProviders(<ActivateAppButton id='appId' isConnected={false} />);
 
     const button = screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.connect');
 

@@ -18,16 +18,16 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
     private const MAX_REQUESTS = 10;
 
     private WebMarketplaceApiInterface $webMarketplaceApi;
-    private GetAllConnectedAppsPublicIdsInterface $allConnectedAppsPublicIdsQuery;
+    private GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery;
     private int $pagination;
 
     public function __construct(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        GetAllConnectedAppsPublicIdsInterface $allConnectedAppsPublicIdsQuery,
+        GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
         int $pagination
     ) {
         $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->allConnectedAppsPublicIdsQuery = $allConnectedAppsPublicIdsQuery;
+        $this->getAllConnectedAppsPublicIdsQuery = $getAllConnectedAppsPublicIdsQuery;
         $this->pagination = $pagination;
     }
 
@@ -37,7 +37,7 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
         $requests = 0;
         $offset = 0;
 
-        $connectedAppsIds = $this->allConnectedAppsPublicIdsQuery->execute();
+        $connectedAppsIds = $this->getAllConnectedAppsPublicIdsQuery->execute();
 
         do {
             $result = $this->webMarketplaceApi->getApps($offset, $this->pagination);

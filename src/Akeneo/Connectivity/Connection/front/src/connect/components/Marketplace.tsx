@@ -46,7 +46,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
         <MarketplaceCard
             key={app.id}
             item={app}
-            additionalActions={[<ActivateAppButton key={1} id={app.id} connected={app.connected} />]}
+            additionalActions={[<ActivateAppButton key={1} id={app.id} isConnected={app.connected} />]}
         />
     ));
     const handleScrollTop = () => {

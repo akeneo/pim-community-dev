@@ -17,13 +17,11 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAllAppsQuerySpec extends ObjectBehavior
 {
-    private const PAGINATION = 2;
-
     private $items;
 
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        GetAllConnectedAppsPublicIdsInterface $allConnectedAppsPublicIdsQuery
+        GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery
     ) {
         $this->items = [
             [
@@ -92,9 +90,9 @@ class GetAllAppsQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $allConnectedAppsPublicIdsQuery->execute()->willReturn([]);
+        $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([]);
 
-        $this->beConstructedWith($webMarketplaceApi, $allConnectedAppsPublicIdsQuery, self::PAGINATION);
+        $this->beConstructedWith($webMarketplaceApi, $getAllConnectedAppsPublicIdsQuery, 2);
     }
 
     public function it_is_instantiable(): void
@@ -109,9 +107,9 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         }, $this->items)));
     }
 
-    public function it_set_connected_to_true_on_connected_apps(GetAllConnectedAppsPublicIdsInterface $allConnectedAppsPublicIdsQuery)
+    public function it_set_connected_to_true_on_connected_apps(GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery)
     {
-        $allConnectedAppsPublicIdsQuery->execute()->willReturn([
+        $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([
             $this->items[0]['id'],
             $this->items[2]['id'],
         ]);
@@ -125,4 +123,3 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         }, $this->items)));
     }
 }
-

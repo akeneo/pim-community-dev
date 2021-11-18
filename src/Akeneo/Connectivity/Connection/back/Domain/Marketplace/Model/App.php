@@ -222,9 +222,4 @@ class App
     {
         return $this->categories;
     }
-
-    public function isConnected(): bool
-    {
-        return $this->connected;
-    }
 }
