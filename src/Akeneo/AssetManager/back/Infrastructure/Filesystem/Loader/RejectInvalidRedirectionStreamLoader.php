@@ -21,6 +21,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
+/**
+ * A redirect URL can target an unauthorized protocol (ftp, etc).
+ * Therefore, it's mandatory to check redirection at runtime when getting the content of a media link.
+ *
+ * The original implementation of this loader in the library uses `file_get_contents` to fetch content.
+ * The issue with this method is that there is no extension point to check the validity of an URL redirection,
+ * hence the replacement of the library implementation by this one, with Guzzle.
+ */
 final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
 {
     private UrlChecker $urlChecker;
