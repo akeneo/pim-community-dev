@@ -231,7 +231,7 @@ services:
             - '@pim_catalog.remover.group'
             - '@pim_catalog.factory.group'
             - '@pim_enrich.normalizer.violation'
-            - '@?'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler'
 
     pim_enrich.controller.rest.sequential_edit:
         public: true
