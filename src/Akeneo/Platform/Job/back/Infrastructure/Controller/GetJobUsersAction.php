@@ -28,7 +28,9 @@ class GetJobUsersAction
             return new RedirectResponse('/');
         }
 
-        $jobUsers = $this->findJobUsers->visible();
+        $page = (int) $request->get('page', 1);
+
+        $jobUsers = $this->findJobUsers->visible($page);
 
         return new JsonResponse($jobUsers);
     }

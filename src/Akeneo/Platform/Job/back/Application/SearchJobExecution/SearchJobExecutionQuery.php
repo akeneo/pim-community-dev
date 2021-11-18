@@ -13,6 +13,7 @@ class SearchJobExecutionQuery
     public int $size = 25;
     public string $sortColumn = 'started_at';
     public string $sortDirection = 'DESC';
+    public array $users = [];
     public array $type = [];
     public array $status = [];
     public string $search = '';

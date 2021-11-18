@@ -11,23 +11,38 @@ class FindJobUsersTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fixturesLoader->loadProductImportExportFixtures();
-
 
         $jobInstances = [
-            'find_job_user_test' => $this->fixturesLoader->createJobInstance([
-                'code' => 'find_job_user_test',
-                'job_name' => 'find_job_user_test',
-                'label' => 'find_job_user_test',
+            'a_product_import' => $this->fixturesLoader->createJobInstance([
+                'code' => 'a_product_import',
+                'job_name' => 'a_product_import',
+                'label' => 'a_product_import',
                 'type' => 'import',
             ]),
-        ];
-        $jobExecutions = [
-            'a_job_execution' => $this->fixturesLoader->createJobExecution([
-                'user' => 'julia',
-                'job_instance_id' => $jobInstances['find_job_user_test']
+            'prepare_evaluation' => $this->fixturesLoader->createJobInstance([
+                'code' => 'prepare_evaluation',
+                'job_name' => 'prepare_evaluation',
+                'label' => 'prepare_evaluation',
+                'type' => 'data_quality_insights',
             ]),
         ];
+
+        $this->fixturesLoader->createJobExecution([
+            'user' => 'julia',
+            'job_instance_id' => $jobInstances['a_product_import']
+        ]);
+        $this->fixturesLoader->createJobExecution([
+            'user' => 'julia',
+            'job_instance_id' => $jobInstances['a_product_import']
+        ]);
+        $this->fixturesLoader->createJobExecution([
+            'user' => 'admin',
+            'job_instance_id' => $jobInstances['a_product_import']
+        ]);
+        $this->fixturesLoader->createJobExecution([
+            'user' => 'not_visible',
+            'job_instance_id' => $jobInstances['prepare_evaluation']
+        ]);
     }
 
     public function test_it_find_job_users(): void
@@ -35,10 +50,10 @@ class FindJobUsersTest extends IntegrationTestCase
         $findJobUsersQuery = $this->get('Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface');
 
         $expectedJobUsers = [
-            'admin',
             'julia',
+            'admin'
         ];
 
-        $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->visible());
+        $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->visible(1));
     }
 }

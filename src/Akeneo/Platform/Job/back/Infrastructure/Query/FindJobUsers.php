@@ -13,6 +13,8 @@ use Doctrine\DBAL\Connection;
  */
 class FindJobUsers implements FindJobUsersInterface
 {
+    const USER_PER_PAGE = 10;
+
     private Connection $connection;
     private NotVisibleJobsRegistry $notVisibleJobsRegistry;
 
@@ -22,7 +24,7 @@ class FindJobUsers implements FindJobUsersInterface
         $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
-    public function visible(): array
+    public function visible(int $page): array
     {
         $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
 
@@ -30,16 +32,22 @@ class FindJobUsers implements FindJobUsersInterface
 SELECT DISTINCT je.user
 FROM akeneo_batch_job_execution je
 JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-WHERE ji.code NOT IN (:not_visible_jobs_codes);
+WHERE ji.code NOT IN (:not_visible_jobs_codes)
+ORDER BY je.user
+LIMIT :offset, :limit
 SQL;
 
         $jobUsers = $this->connection->executeQuery(
             $sql,
             [
                 'not_visible_jobs_codes' => $notVisibleJobsCodes,
+                'offset' => ($page - 1) * self::USER_PER_PAGE,
+                'limit' => self::USER_PER_PAGE,
             ],
             [
                 'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
+                'offset' => \PDO::PARAM_INT,
+                'limit' => \PDO::PARAM_INT,
             ],
         )->fetchFirstColumn();
 
