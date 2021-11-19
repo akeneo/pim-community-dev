@@ -122,8 +122,10 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
         return (int)$this->connection->lastInsertId();
     }
 
-    private function selectJobExecutions(): array {
+    private function selectJobExecutions(): array
+    {
         $result = $this->connection->executeQuery('SELECT id, is_stoppable FROM akeneo_batch_job_execution')->fetchAllAssociative();
+
         return array_column($result, 'is_stoppable', 'id');
     }
 }
