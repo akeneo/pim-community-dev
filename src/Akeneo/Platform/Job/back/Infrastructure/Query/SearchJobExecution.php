@@ -96,10 +96,13 @@ SQL;
 
     public function count(SearchJobExecutionQuery $query): int
     {
+        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
+
         $sql = <<<SQL
     SELECT count(*)
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
+    WHERE ji.code NOT IN (:not_visible_jobs_codes)
     %s
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
@@ -110,8 +113,12 @@ SQL;
 
         return (int) $this->connection->executeQuery(
             $sql,
-            $queryParams,
-            $queryParamsTypes
+            array_merge($queryParams, [
+                'not_visible_jobs_codes' => $notVisibleJobsCodes,
+            ]),
+            array_merge($queryParamsTypes, [
+                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
+            ]),
         )->fetchOne();
     }
 

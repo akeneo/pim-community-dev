@@ -231,6 +231,43 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_does_not_counts_not_visible_job_executions()
+    {
+        $aVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'a_product_import',
+            'job_name' => 'a_product_import',
+            'label' => 'A product import',
+            'type' => 'import',
+        ]);
+
+        $aNonVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+            'code' => 'prepare_evaluation',
+            'job_name' => 'a_non_visible_job',
+            'label' => 'A non visible job',
+            'type' => 'data_quality_insights',
+        ]);
+
+        $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $aVisibleJobInstanceId,
+            'start_time' => '2020-01-01T01:00:00+01:00',
+            'user' => 'julia',
+            'status' => BatchStatus::COMPLETED,
+        ]);
+
+        $this->fixturesLoader->createJobExecution([
+            'job_instance_id' => $aNonVisibleJobInstanceId,
+            'start_time' => '2020-01-01T01:00:00+01:00',
+            'user' => 'julia',
+            'status' => BatchStatus::COMPLETED,
+        ]);
+
+        $query = new SearchJobExecutionQuery();
+        $this->assertEquals(2, $this->getQuery()->count($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_job_execution_count_filtered_by_type()
     {
         $this->loadFixtures();
