@@ -42,7 +42,7 @@ class InMemorySelectOptionCollectionRepository implements SelectOptionCollection
     ): void {
         $formerOptions = $this->options[\strtolower($attributeCode)][\strtolower($columnCode->asString())] ?? SelectOptionCollection::empty();
         $this->options[\strtolower($attributeCode)][\strtolower($columnCode->asString())] = SelectOptionCollection::fromNormalized(
-            \array_merge($formerOptions->normalize(), $selectOptionCollection->normalize())
+            [...$formerOptions->normalize(), ...$selectOptionCollection->normalize()]
         );
     }
 }

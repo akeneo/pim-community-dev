@@ -65,7 +65,7 @@ class ColumnFilter implements ColumnTypeFilter
                 $filterClause = $this->getChannelAndLocaleFilters($attributeCode, $locale, $channel);
                 $filterClause['nested']['query']['bool']['filter'][] = [
                     'exists' => [
-                        'field' =>\sprintf('%s.row', $attributePath),
+                        'field' => \sprintf('%s.row', $attributePath),
                     ],
                 ];
                 if (null !== $rowCode && !$isFirstColumn) {
@@ -100,7 +100,7 @@ class ColumnFilter implements ColumnTypeFilter
                     // We just have to check that the table is not empty.
                     $clause['nested']['query']['bool']['filter'][] = [
                         'exists' => [
-                            'field' =>\sprintf('%s.row', $attributePath),
+                            'field' => \sprintf('%s.row', $attributePath),
                         ],
                     ];
                     $searchQueryBuilder->addMustNot($clause);

@@ -37,7 +37,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             $normalized['table_configuration'] = $object->getRawTableConfiguration();
 
             if (null !== $normalized['table_configuration']) {
-                foreach ($normalized['table_configuration'] as $index => $columnDefinition) {
+                foreach (\array_keys($normalized['table_configuration']) as $index) {
                     unset($normalized['table_configuration'][$index]['id']);
                 }
             }

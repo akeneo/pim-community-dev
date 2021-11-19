@@ -38,7 +38,7 @@ final class TableAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        $data = $fromValue ? $fromValue->getData() : null;
+        $data = $fromValue !== null ? $fromValue->getData() : null;
         if ($data instanceof Table) {
             $data = $data->normalize();
         }

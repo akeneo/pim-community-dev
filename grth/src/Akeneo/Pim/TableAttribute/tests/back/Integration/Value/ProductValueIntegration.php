@@ -201,8 +201,8 @@ final class ProductValueIntegration extends TestCase
 
         $indexedProduct = $res['_source'];
         Assert::assertArrayNotHasKey('nutrition-table', $indexedProduct['values']);
-        Assert::arrayHasKey('table_values', $indexedProduct);
-        Assert::arrayHasKey('nutrition', $indexedProduct['table_values']);
+        Assert::assertArrayHasKey('table_values', $indexedProduct);
+        Assert::assertArrayHasKey('nutrition', $indexedProduct['table_values']);
 
         $expectedTableValues = [
             [
@@ -224,7 +224,7 @@ final class ProductValueIntegration extends TestCase
 
     private function createAttribute(array $data): void
     {
-        $data['group'] = $data['group'] ?? 'other';
+        $data['group'] ??= 'other';
 
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);

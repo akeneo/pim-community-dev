@@ -147,33 +147,33 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
         $this->connection = $this->get('database_connection');
         $this->selectOptionCollectionRepository = $this->get(SelectOptionCollectionRepository::class);
 
-        $this->nutritionAttributeId = $this->createAttribute('nutrition');
-        $this->nutritionCopyAttributeId = $this->createAttribute('nutrition_copy');
+        $nutritionAttributeId = $this->createAttribute('nutrition');
+        $nutritionCopyAttributeId = $this->createAttribute('nutrition_copy');
 
-        $this->nutritionIngredientColumnId = $this->createColumn(
-            $this->nutritionAttributeId,
+        $nutritionIngredientColumnId = $this->createColumn(
+            $nutritionAttributeId,
             'ingredients',
             'select',
             0
         );
         $this->createColumn(
-            $this->nutritionAttributeId,
+            $nutritionAttributeId,
             'quantity',
             'select',
             1
         );
-        $this->nutritionCopyIngredientColumnId = $this->createColumn(
-            $this->nutritionCopyAttributeId,
+        $nutritionCopyIngredientColumnId = $this->createColumn(
+            $nutritionCopyAttributeId,
             'ingredients',
             'select',
             0
         );
 
-        $this->createOption($this->nutritionIngredientColumnId, 'salt', ['en_US' => 'Salt', 'fr_FR' => 'Sel']);
-        $this->createOption($this->nutritionIngredientColumnId, 'pepper', ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']);
-        $this->createOption($this->nutritionIngredientColumnId, 'garlic', ['en_US' => 'Garlic', 'fr_FR' => 'Ail']);
-        $this->createOption($this->nutritionCopyIngredientColumnId, 'salt', ['en_US' => 'Salt']);
-        $this->createOption($this->nutritionCopyIngredientColumnId, 'pepper', ['en_US' => 'Pepper']);
+        $this->createOption($nutritionIngredientColumnId, 'salt', ['en_US' => 'Salt', 'fr_FR' => 'Sel']);
+        $this->createOption($nutritionIngredientColumnId, 'pepper', ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']);
+        $this->createOption($nutritionIngredientColumnId, 'garlic', ['en_US' => 'Garlic', 'fr_FR' => 'Ail']);
+        $this->createOption($nutritionCopyIngredientColumnId, 'salt', ['en_US' => 'Salt']);
+        $this->createOption($nutritionCopyIngredientColumnId, 'pepper', ['en_US' => 'Pepper']);
     }
 
     private function createAttribute(string $code): int

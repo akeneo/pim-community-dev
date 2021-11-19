@@ -15,7 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -34,16 +35,16 @@ class LabelCollectionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
-        if (!is_array($labels)) {
+        if (!\is_array($labels)) {
             return;
         }
 
         $validator = $this->context->getValidator()->inContext($this->context);
 
-        foreach ($labels as $localeCode => $label) {
+        foreach (\array_keys($labels) as $localeCode) {
             $validator->validate($localeCode, [
-                new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'string']),
+                new NotBlank(),
+                new Type(['type' => 'string']),
             ]);
             $this->validateActivatedLocale($localeCode);
         }

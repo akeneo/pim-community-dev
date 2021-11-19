@@ -36,7 +36,7 @@ final class FirstColumnCodeCannotBeChangedValidator extends ConstraintValidator
         Assert::isInstanceOf($attribute, AttributeInterface::class);
 
         $newRawTableConfiguration = $attribute->getRawTableConfiguration();
-        if (!\is_array($newRawTableConfiguration) || 0 === count($newRawTableConfiguration)) {
+        if (!\is_array($newRawTableConfiguration) || [] === $newRawTableConfiguration) {
             return;
         }
 

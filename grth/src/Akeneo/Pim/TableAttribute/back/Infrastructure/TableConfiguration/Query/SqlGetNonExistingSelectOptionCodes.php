@@ -30,7 +30,7 @@ class SqlGetNonExistingSelectOptionCodes implements GetNonExistingSelectOptionCo
 
     public function forOptionCodes(string $attributeCode, ColumnCode $columnCode, array $selectOptionCodes): array
     {
-        if (count($selectOptionCodes) === 0) {
+        if ($selectOptionCodes === []) {
             return [];
         }
 
@@ -54,7 +54,7 @@ SQL;
             'attributeCode' => $attributeCode,
             'selectOptionCodes' => array_unique($selectStringOptionCodes),
         ], [
-            ':selectOptionCodes' => Connection::PARAM_STR_ARRAY
+            ':selectOptionCodes' => Connection::PARAM_STR_ARRAY,
         ])->fetchFirstColumn();
 
         return \array_udiff(

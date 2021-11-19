@@ -47,7 +47,7 @@ class SqlGetSelectOptionDetails implements GetSelectOptionDetails
         $searchAfter = '';
         while (null !== $searchAfter) {
             $rows = $this->connection->executeQuery($sql, ['searchAfter' => $searchAfter])->fetchAllAssociative();
-            if (0 === \count($rows)) {
+            if ([] === $rows) {
                 $searchAfter = null;
             }
             foreach ($rows as $row) {

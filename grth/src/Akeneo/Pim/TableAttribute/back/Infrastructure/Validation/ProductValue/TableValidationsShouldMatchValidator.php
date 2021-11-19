@@ -25,7 +25,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Constraints;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
@@ -68,7 +69,7 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
                 }
                 $constraints = $this->buildConstraints($tableConfiguration, $column->code());
 
-                if (0 < count($constraints)) {
+                if ([] !== $constraints) {
                     $validator
                         ->atPath(sprintf('[%d].%s', $rowIndex, $column->code()->asString()))
                         ->validate($cell->normalize(), $constraints);
@@ -111,7 +112,7 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
         }
 
         return [
-            new Constraints\Length(
+            new Length(
                 [
                     'max' => $maxLengthValue,
                     'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
@@ -130,14 +131,14 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
 
         foreach ($validations as $validation) {
             if ($validation instanceof MinValidation) {
-                $constraints[] = new Constraints\Range(
+                $constraints[] = new Range(
                     [
                         'min' => $validation->getValue(),
                         'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
                     ]
                 );
             } elseif ($validation instanceof MaxValidation) {
-                $constraints[] = new Constraints\Range(
+                $constraints[] = new Range(
                     [
                         'max' => min(PHP_INT_MAX, $validation->getValue()),
                         'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,

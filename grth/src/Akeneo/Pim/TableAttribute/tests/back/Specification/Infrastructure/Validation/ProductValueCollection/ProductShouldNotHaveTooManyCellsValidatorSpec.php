@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValueCollection;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\BooleanValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;

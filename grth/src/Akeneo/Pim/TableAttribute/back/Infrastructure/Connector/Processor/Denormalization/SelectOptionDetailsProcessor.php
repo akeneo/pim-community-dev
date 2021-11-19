@@ -103,7 +103,7 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
         ConstraintViolationListInterface $violations
     ): void {
         $itemPosition = 0;
-        if ($this->stepExecution) {
+        if ($this->stepExecution !== null) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }
@@ -121,7 +121,7 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
         };
 
         $itemPosition = 0;
-        if ($this->stepExecution) {
+        if ($this->stepExecution !== null) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }

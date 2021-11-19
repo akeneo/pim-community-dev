@@ -47,7 +47,7 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
         SelectOptionCollection $selectOptionCollection
     ): void {
         $newOptionCodes = $selectOptionCollection->getOptionCodes();
-        if (count($newOptionCodes) === 0) {
+        if ($newOptionCodes === []) {
             $this->connection->executeQuery(
                 <<<SQL
                 DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
@@ -125,12 +125,10 @@ SQL;
             'columnCode' => $columnCode->asString(),
         ])->fetchAllAssociative();
 
-        $options = array_map(function ($rawOption) {
-            return [
-                'code' => $rawOption['code'],
-                'labels' => \json_decode($rawOption['labels'], true),
-            ];
-        }, $result);
+        $options = \array_map(static fn ($rawOption) => [
+            'code' => $rawOption['code'],
+            'labels' => \json_decode($rawOption['labels'], true),
+        ], $result);
 
         return SelectOptionCollection::fromNormalized($options);
     }
@@ -140,7 +138,7 @@ SQL;
         ColumnCode $columnCode,
         SelectOptionCollection $selectOptionCollection
     ): void {
-        if (0 === \count($selectOptionCollection->getOptionCodes())) {
+        if ([] === $selectOptionCollection->getOptionCodes()) {
             return;
         }
 

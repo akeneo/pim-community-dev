@@ -60,7 +60,7 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
         return TableConfiguration::fromColumnDefinitions(
             array_map(
                 function (array $row): ColumnDefinition {
-                    $row['id'] = $row['id'] ?? ColumnIdGenerator::generateAsString($row['code']);
+                    $row['id'] ??= ColumnIdGenerator::generateAsString($row['code']);
                     return $this->columnFactory->createFromNormalized(
                         [
                             'id' => $row['id'],
