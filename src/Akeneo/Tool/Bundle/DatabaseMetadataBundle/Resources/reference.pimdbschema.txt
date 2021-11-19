@@ -212,6 +212,7 @@ akeneo_batch_job_execution | exit_description | YES | longtext |
 akeneo_batch_job_execution | failure_exceptions | YES | longtext |
 akeneo_batch_job_execution | log_file | YES | varchar(255) |
 akeneo_batch_job_execution | raw_parameters | NO | json |
+akeneo_batch_job_execution | is_stoppable | YES | tinyint(1) |
 akeneo_batch_job_instance | id | NO | int | PRI
 akeneo_batch_job_instance | code | NO | varchar(100) | UNI
 akeneo_batch_job_instance | label | YES | varchar(255) |
