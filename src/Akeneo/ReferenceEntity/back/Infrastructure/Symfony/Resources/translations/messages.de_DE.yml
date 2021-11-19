@@ -54,5 +54,12 @@ pim_mass_edit:
 akeneo_reference_entity: Referenzentität Einzelverlinkung
 akeneo_reference_entity_collection: Referenzentität Mehrfachverlinkungen
 pim_api:
+  acl:
+    reference_entity:
+      create: Referenzen erstellen und aktualisieren
+      list: Referenzen auflisten
+    record:
+      create: Referenzen erstellen und aktualisieren
+      list: Referenzen auflisten
   acl_group:
     reference_entity: Referenz Entitäten
