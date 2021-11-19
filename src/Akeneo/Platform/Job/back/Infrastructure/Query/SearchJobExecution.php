@@ -39,7 +39,8 @@ class SearchJobExecution implements SearchJobExecutionInterface
             ji.type,
             je.start_time,
             je.user,
-            je.status
+            je.status,
+            je.is_stoppable
         FROM akeneo_batch_job_execution je
         JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
         %s
@@ -212,7 +213,8 @@ SQL;
                 (int) $rawJobExecution['warning_count'],
                 $errorCount,
                 (int) $rawJobExecution['current_step_number'] ?? 0,
-                3 #TODO RAC-1009
+                3, #TODO RAC-1009,
+                (bool) $rawJobExecution['is_stoppable']
             );
         }, $rawJobExecutions);
     }

@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -32,6 +33,7 @@ final class RunUniqueProcessJob
     private JobRepositoryInterface $jobRepository;
     private JobExecutionMessageFactory $jobExecutionMessageFactory;
     private LoggerInterface $logger;
+    private JobRegistry $jobRegistry;
     private string $projectDir;
 
     public function __construct(
@@ -40,6 +42,7 @@ final class RunUniqueProcessJob
         JobRepositoryInterface $jobRepository,
         JobExecutionMessageFactory $jobExecutionMessageFactory,
         LoggerInterface $logger,
+        JobRegistry $jobRegistry,
         string $projectDir
     ) {
         $this->entityManager = $entityManager;
@@ -47,6 +50,7 @@ final class RunUniqueProcessJob
         $this->jobRepository = $jobRepository;
         $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->logger = $logger;
+        $this->jobRegistry = $jobRegistry;
         $this->projectDir = $projectDir;
     }
 
@@ -158,6 +162,8 @@ final class RunUniqueProcessJob
 
     private function createJobExecution(JobInstance $jobInstance, \Closure $buildJobParameters): JobExecution
     {
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+
         $lastJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
         $jobParameters = $buildJobParameters($lastJobExecution);
 
@@ -165,7 +171,7 @@ final class RunUniqueProcessJob
             $jobParameters = [];
         }
 
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, new JobParameters($jobParameters));
+        $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, new JobParameters($jobParameters));
 
         $jobExecution->setUser(UserInterface::SYSTEM_USER_NAME);
         $this->jobRepository->updateJobExecution($jobExecution);

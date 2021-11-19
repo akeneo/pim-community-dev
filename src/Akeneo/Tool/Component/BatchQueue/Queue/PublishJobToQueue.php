@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
@@ -126,9 +127,10 @@ class PublishJobToQueue
             $options['no-log'] = true;
         }
 
-        $jobParameters = $this->createJobParameters($jobInstance, $config);
-        $this->validateJobParameters($jobInstance, $jobParameters, $jobInstanceCode);
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $jobParameters = $this->createJobParameters($job, $jobInstance, $config);
+        $this->validateJobParameters($job, $jobInstance, $jobParameters, $jobInstanceCode);
+        $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
 
         $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
 
@@ -149,9 +151,8 @@ class PublishJobToQueue
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
     }
 
-    private function createJobParameters(JobInstance $jobInstance, array $config): JobParameters
+    private function createJobParameters(JobInterface $job, JobInstance $jobInstance, array $config): JobParameters
     {
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $rawParameters = $jobInstance->getRawParameters();
 
         $rawParameters = array_merge($rawParameters, $config);
@@ -159,12 +160,11 @@ class PublishJobToQueue
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
-    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    private function validateJobParameters(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $this->entityManager->merge($jobInstance);
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
         if (count($errors) > 0) {
