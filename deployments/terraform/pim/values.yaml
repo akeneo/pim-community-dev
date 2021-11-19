@@ -325,7 +325,6 @@ memcached:
   replicaCount: 1
   resources:
     limits:
-      cpu: "1"
       memory: "96Mi"
     requests:
       cpu: "30m"
@@ -361,7 +360,6 @@ elasticsearch:
     heapSize: "512m"
     resources:
       limits:
-        cpu: "1"
         memory: "1024Mi"
       requests:
         cpu: "25m"
@@ -374,7 +372,6 @@ elasticsearch:
     heapSize: "384m"
     resources:
       limits:
-        cpu: "1"
         memory: "768Mi"
       requests:
         cpu: "25m"
@@ -389,8 +386,7 @@ elasticsearch:
     heapSize: "1G"
     resources:
       limits:
-        cpu: "1"
-        memory: "1536Mi"
+        memory: "1740Mi"
       requests:
         cpu: "25m"
         memory: "1024Mi"
