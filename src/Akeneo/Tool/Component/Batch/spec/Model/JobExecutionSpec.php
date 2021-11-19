@@ -28,6 +28,7 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getRawParameters()->shouldHaveCount(0);
         $this->getJobParameters()->shouldBeNull();
         $this->getHealthCheckTime()->shouldBeNull();
+        $this->isStoppable()->shouldReturn(false);
     }
 
     function it_is_cloneable(
