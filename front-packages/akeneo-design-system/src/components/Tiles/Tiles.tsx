@@ -1,8 +1,8 @@
-import React, {Ref, ReactNode, isValidElement, FC} from 'react';
+import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {Override} from '../../';
+import {Key, Override} from '../../';
 
 type Size = 'small' | 'big';
 
@@ -102,8 +102,15 @@ type TileProps = Override<
 >;
 
 const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+    if (null !== event.currentTarget && event.key === Key.Enter) {
+      onClick?.();
+      event.preventDefault();
+    }
+  }, []);
+
   return (
-    <TileContainer selected={selected} size={size} onClick={onClick} {...rest}>
+    <TileContainer selected={selected} size={size} onClick={onClick} onKeyDown={handleKeyDown} tabIndex={'0'} {...rest}>
       <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
       <LabelContainer>{children}</LabelContainer>
     </TileContainer>

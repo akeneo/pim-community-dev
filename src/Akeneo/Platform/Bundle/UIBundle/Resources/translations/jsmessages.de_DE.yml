@@ -211,6 +211,7 @@ pim_common:
     search: Suche...
     no_match: Keine Treffer gefunden
     load_more: Weitere Ergebnisse werden geladen...
+  selected: "{0}Keine ausgewählt|{1}Eins ausgewählt|]1, Inf [{{ itemsCount }} ausgewählt"
   status: Status
   to: An
   type: Typ

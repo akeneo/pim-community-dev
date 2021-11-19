@@ -12,6 +12,7 @@ export * from './IconCard/IconCard';
 export * from './Image/Image';
 export * from './Information/Information';
 export * from './Input';
+export * from './KeyFigure/KeyFigure';
 export * from './Link/Link';
 export * from './List/List';
 export * from './Locale/Locale';
