@@ -8,22 +8,44 @@ pim_table_configuration:
       missing_option_field: Das {{ field }} ist erforderlich
       column_code_must_be_filled: Der Spaltencode muss ausgefüllt werden
       option_code_must_be_filled: Der Optionscode muss ausgefüllt werden
+      invalid_code: Der Spaltencode darf nur Buchstaben, Zahlen und Unterstriche enthalten
+      not_available_code: Dieser Spaltencode ist nicht verfügbar
+      invalid_option_code: Der Optionscode darf nur Buchstaben, Zahlen und Unterstriche enthalten
       too_long_code: "Der Spaltencode ist zu lang: Er darf maximal 100 Zeichen lang sein"
+      too_long_label: "Die Spaltenbezeichnung ist zu lang: Es muss 250 oder weniger Zeichen haben"
       too_long_option_code: "Der Optionscode ist zu lang: Er darf maximal 100 Zeichen lang sein"
       too_long_option_label: "Die Optionsbezeichnung ist zu lang: Er darf 255 oder weniger Zeichen haben"
       duplicated_column_code: '[0,1]Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" wird bereits verwendet|]1,Inf[Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" werden bereits verwendet'
       column_type_must_be_a_string: Der Spaltendatentyp muss ein String sein
       unknown_data_type: "Der Spaltendatentyp ist unbekannt. Bitte wählen Sie eine der folgenden: Nummer, Text, Auswählen, Boolean"
       column_label_must_be_a_string: Die Spaltenbezeichnung muss ein String sein
+      option_label_must_be_a_string: Die Optionsbezeichnung muss ein String sein
       label_locale_does_not_exist_or_is_not_activated: Das "{{ locale_code }}" Gebietsschema existiert nicht oder ist nicht aktiviert
+      invalid_labels_format: Die Spaltenbezeichnungen müssen ein Schlüssel/Werteobjekt sein
+      invalid_option_labels_format: Die Optionsbezeichnungen müssen ein Schlüssel/Werteobjekt sein
       must_not_be_filled: Der Typ %type% erlaubt keine table_configuration
       first_column_should_be_select: 'Der erste Spaltentyp sollte immer "select", aktueller Typ: "{{ data_type }} " sein'
+      first_column_code_cannot_be_changed: Der Code Ihrer ersten Spalte kann nicht geändert werden.
+      unknown_field: 'Stellen Sie sicher, dass Sie nur erwartete Felder, aktuelles Feld: {{ field }}'
       attribute_does_not_exist: Das Attribut "{{ attribute }}" existiert nicht
       not_table_attribute: Das Attribut "{{ attribute }}" ist kein Tabellenattribut
+      column_does_not_exist: Die Spalte "{{ column }}" existiert nicht für das Attribut "{{ attribute }}"
+      not_select_column: Die "{{ column }}" Spalte des Attributs "{{ attribute }}" ist kein "select"
+      max_should_be_greater_than_min: Der Maximalwert sollte größer als der Minimalwert sein.
+      options_cannot_be_set: Optionen können nicht für einen "{{ data_type }}" Spaltentyp gesetzt werden
+      no_validations_allowed: 'Keine Validierungen für eine "{{ columnType }}" Spalte verwenden, aktueller Spaltentyp: "{{ given }}"'
+      invalid_validation_key: 'Die "{{ given }}" Validierungen funktionieren nicht in einer "{{ columnType }}" Spalte, erlaubt: "{{ expected }}"'
       too_many_table_attributes: Sie haben die maximale Anzahl an Tabellenattributen innerhalb Ihrer PIM erreicht ({{ limit }})
     product_value:
+      non_existing_columns: '[0,1]Die Spalte "{{ non_existing_columns }}" existiert nicht|]1,Inf[Die "{{ non_existing_columns }}" Spalten existieren nicht'
+      unexpected_data_type: 'Die Spalte "{{ columnCode }}" erwartet eine {{ expected }}, {{ given }} gegeben'
       first_column_required: 'Die Spalte "{{ columnCode }}" ist obligatorisch'
+      unknown_option: 'Stellen Sie sicher, dass Sie nur existierende Optionscodes verwenden, den aktuellen Wert: "{{ optionCode }}"'
       integer_required: 'Dieser Wert sollte eine Ganzzahl sein: {{ invalid_value }}'
       min_validation: Dieser Wert sollte {{ limit }} oder mehr betragen.
       max_validation: Dieser Wert sollte kleiner oder gleich {{ limit }} sein.
       value_integer_required: 'Der benötigte Wert ist eine Ganzzahl'
+      max_length_validation: Dieser Wert sollte {{ limit }} oder weniger Zeichen enthalten.
+      too_many_rows: Sie haben die maximale Anzahl von Zeilen in Ihrer Tabelle erreicht ({{ limit }}).
+    product_value_collection:
+      too_many_cells: Sie haben die maximale Anzahl an Tabellenzellen in Ihrem Produkt erreicht ({{ count }} Zellen, nur {{ limit }} erlaubt).
