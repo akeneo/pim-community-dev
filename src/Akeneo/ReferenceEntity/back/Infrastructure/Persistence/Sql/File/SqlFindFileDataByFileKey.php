@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File;
 use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlFindFileDataByFileKey implements FindFileDataByFileKeyInterface
 {

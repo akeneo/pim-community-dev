@@ -54,7 +54,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $this->platform);
         $recordIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Types::getType(Types::STRING)
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
         $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
