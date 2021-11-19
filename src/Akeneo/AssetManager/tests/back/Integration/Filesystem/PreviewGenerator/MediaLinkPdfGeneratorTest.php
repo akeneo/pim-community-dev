@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
@@ -18,7 +19,6 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
     protected const IMAGE_FILENAME = '2016/04/Fred-site-web.pdf';
 
     private PreviewGeneratorInterface $mediaLinkPdfGenerator;
-
     private MediaLinkAttribute $mediaLinkAttribute;
 
     public function setUp(): void
@@ -109,12 +109,32 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_gets_a_default_preview_for_a_document_with_unsupported_mime_type()
+    {
+        $data = $this->generateImage(10, 1);
+
+        $previewImage = $this->mediaLinkPdfGenerator->generate(
+            $data,
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE,
+        );
+
+        $this->assertStringContainsString(
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', MediaLinkPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            $previewImage,
+        );
+    }
+
+
     private function loadFixtures(): void
     {
         $fixtures = $this->fixturesLoader
             ->assetFamily('designer')
             ->withAttributes([
-                 'notice'
+                'notice'
             ])
             ->load();
         $this->mediaLinkAttribute = $fixtures['attributes']['notice'];
@@ -122,13 +142,13 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
         $this->fixturesLoader
             ->asset('designer', 'starck')
             ->withValues([
-                 'notice' => [
-                     [
-                         'channel' => null,
-                         'locale' => null,
-                         'data' => self::IMAGE_FILENAME,
-                     ]
-                 ]
+                'notice' => [
+                    [
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => self::IMAGE_FILENAME,
+                    ]
+                ]
             ])
             ->load();
     }

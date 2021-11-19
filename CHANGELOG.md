@@ -111,6 +111,7 @@
 - PIM-10151: Fix category field in rule edit form
 - PIM-10143: Add a check for valid media links with redirects
 - PIM-10159: Fix table configuration update when a column is deleted and recreated with a different data type
+- PIM-10166: Prevent Asset Manager thumbnail generation on unsupported mime types
 
 ## Improvements
 

@@ -16,10 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -36,13 +32,17 @@ class MediaLinkImageGenerator extends AbstractPreviewGenerator
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
+        return $attribute instanceof MediaLinkAttribute
             && MediaType::IMAGE === $attribute->getMediaType()->normalize()
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     protected function generateUrl(string $data, AbstractAttribute $attribute): string
     {
+        if (!$attribute instanceof MediaLinkAttribute) {
+            throw new \InvalidArgumentException('The attribute must be a MediaLinkAttribute');
+        }
+
         return sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize());
     }
 

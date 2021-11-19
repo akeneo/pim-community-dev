@@ -31,11 +31,16 @@ class MediaLinkVimeoGenerator extends AbstractPreviewGenerator
         PreviewGeneratorRegistry::PREVIEW_TYPE         => 'am_url_image_preview',
     ];
 
+    public function supportsMimeType(string $mimeType): bool
+    {
+        return true;
+    }
+
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && MediaType::VIMEO === $attribute->getMediaType()->normalize()
-               && array_key_exists($type, self::SUPPORTED_TYPES);
+        return $attribute instanceof MediaLinkAttribute
+            && MediaType::VIMEO === $attribute->getMediaType()->normalize()
+            && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     protected function getPreviewType(string $type): string

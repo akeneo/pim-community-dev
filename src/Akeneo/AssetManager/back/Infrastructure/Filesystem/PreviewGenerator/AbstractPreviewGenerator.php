@@ -22,30 +22,36 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     private const PREVIEW_SIZE_LIMIT = 60_000_000;
 
     protected DefaultImageProviderInterface $defaultImageProvider;
-
     protected DataManager $dataManager;
-
     protected CacheManager $cacheManager;
-
     protected FilterManager $filterManager;
-
     protected LoggerInterface $logger;
+
+    /** @var string[] */
+    protected array $supportedMimeTypes;
 
     public function __construct(
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
         DefaultImageProviderInterface $defaultImageProvider,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ?array $supportedMimeTypes = []
     ) {
         $this->dataManager = $dataManager;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
         $this->defaultImageProvider = $defaultImageProvider;
         $this->logger = $logger;
+        $this->supportedMimeTypes = $supportedMimeTypes;
     }
 
     abstract public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
+
+    public function supportsMimeType(string $mimeType): bool
+    {
+        return \in_array(\strtolower($mimeType), $this->supportedMimeTypes);
+    }
 
     /**
      * {@inheritDoc}
@@ -85,14 +91,22 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 }
 
                 if (self::PREVIEW_SIZE_LIMIT < strlen($content)) {
-                    throw new \LogicException('The file is too large to generate a preview');
+                    throw new CouldNotGeneratePreviewException('The file is too large to generate a preview');
+                }
+
+                $mimeType = $binary->getMimeType();
+
+                if (!$this->supportsMimeType($mimeType)) {
+                    throw new CouldNotGeneratePreviewException(
+                        sprintf('The mime type "%s" is not supported for the preview type "%s"', $mimeType, $previewType)
+                    );
                 }
 
                 $file = $this->filterManager->applyFilter($binary, $previewType);
                 $this->cacheManager->store(
                     $file,
                     $filename,
-                    $previewType
+                    $previewType,
                 );
             }
         } catch (RuntimeException $exception) {
@@ -119,7 +133,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                         'type'    => get_class($exception),
                         'message' => $exception->getMessage(),
                     ],
-                ]
+                ],
             );
 
             return $this->getDefaultImageUrl($type);
@@ -128,7 +142,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         return $this->cacheManager->resolve($filename, $previewType);
     }
 
-    public function remove(string $data, AbstractAttribute $attribute, string $type)
+    public function remove(string $data, AbstractAttribute $attribute, string $type): void
     {
         if (empty($data)) {
             return;

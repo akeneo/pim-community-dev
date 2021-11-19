@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This class is used for running integration tests testing the Preview Generators.
@@ -30,13 +31,14 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
     protected const DOCUMENT_FILENAME = '2016/04/1_4_user_guide.pdf';
 
     protected FixturesLoader $fixturesLoader;
-
+    protected FileStorer $fileStorer;
     private CacheManager $cacheManager;
 
     public function setUp(): void
     {
         static::bootKernel(['debug' => false]);
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
+        $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
         $this->resetDB();
     }
 
@@ -54,5 +56,23 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
     protected function resetDB(): void
     {
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
+    }
+
+    protected function generateImage(int $size, int $quality): string
+    {
+        $imageFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my_image.jpg';
+        $image = imagecreate($size, $size);
+        self::assertTrue(imagejpeg($image, $imageFilename, $quality));
+        $fileInfo = $this->fileStorer->store(new \SplFileInfo($imageFilename), Storage::FILE_STORAGE_ALIAS);
+
+        return base64_encode($fileInfo->getKey());
+    }
+
+    protected function uploadPdfFile(): string
+    {
+        $path = __DIR__ . '/../../../back/Infrastructure/Symfony/Resources/fixtures/files/user_guides/1_4_user_guide.pdf';
+        $fileInfo = $this->fileStorer->store(new \SplFileInfo($path), Storage::FILE_STORAGE_ALIAS);
+
+        return base64_encode($fileInfo->getKey());
     }
 }

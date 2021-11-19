@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
@@ -16,7 +17,6 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
 final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
     private PreviewGeneratorInterface $binaryPdfGenerator;
-
     private MediaFileAttribute $mediaFileAttribute;
 
     public function setUp(): void
@@ -85,13 +85,32 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_default_preview_for_an_unknown_document_media_link()
+    public function it_gets_a_default_preview_for_an_unknown_document_media_link()
     {
         $previewImage = $this->binaryPdfGenerator->generate('test', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString(
             sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
-            $previewImage
+            $previewImage,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_a_default_preview_for_a_document_with_unsupported_mime_type()
+    {
+        $data = $this->generateImage(10, 1);
+
+        $previewImage = $this->binaryPdfGenerator->generate(
+            $data,
+            $this->mediaFileAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE,
+        );
+
+        $this->assertStringContainsString(
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            $previewImage,
         );
     }
 
@@ -106,20 +125,20 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->fixturesLoader
             ->asset('designer', 'starck')
             ->withValues([
-                 'main_document' => [
-                     [
-                         'channel' => null,
-                         'locale' => null,
-                         'data' => [
-                             'filePath' => self::DOCUMENT_FILENAME,
-                             'originalFilename' => self::DOCUMENT_FILENAME,
-                             'size' => 12,
-                             'mimeType' => 'application/pdf',
-                             'extension' => '.pdf',
-                             'updatedAt' => '2019-11-22T15:16:21+0000',
-                         ],
-                     ]
-                 ]
+                'main_document' => [
+                    [
+                        'channel' => null,
+                        'locale' => null,
+                        'data' => [
+                            'filePath' => self::DOCUMENT_FILENAME,
+                            'originalFilename' => self::DOCUMENT_FILENAME,
+                            'size' => 12,
+                            'mimeType' => 'application/pdf',
+                            'extension' => '.pdf',
+                            'updatedAt' => '2019-11-22T15:16:21+0000',
+                        ],
+                    ],
+                ],
             ])
             ->load();
     }
