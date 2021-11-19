@@ -68,7 +68,7 @@ class DoctrineJobRepositoryIntegration extends TestCase
         $this->assertEquals(['foo' => 'bar'], $lastJobExecution->getRawParameters());
         $this->assertEquals(['foo' => 'bar'], $lastJobExecution->getJobParameters()->all());
     }
-    
+
     protected function getDoctrineJobRepository(): DoctrineJobRepository
     {
         return $this->get('akeneo_batch.job_repository');
