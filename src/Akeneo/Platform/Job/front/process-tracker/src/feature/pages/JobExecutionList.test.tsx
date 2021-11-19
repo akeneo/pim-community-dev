@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {JobExecutionList} from './JobExecutionList';
-import {JobExecutionFilter, JobExecutionRow, JobExecutionTable} from '../models';
+import {JobExecutionFilter, JobExecutionRow} from '../models';
 
 const rows: JobExecutionRow[] = [
   {
@@ -19,6 +19,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 4,
     job_name: 'Export job',
     status: 'STARTED',
+    is_stoppable: true,
   },
   {
     job_execution_id: 2,
@@ -33,6 +34,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 8,
     job_name: 'Import job',
     status: 'COMPLETED',
+    is_stoppable: true,
   },
   {
     job_execution_id: 3,
@@ -47,6 +49,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 8,
     job_name: 'Another import job',
     status: 'STOPPING',
+    is_stoppable: true,
   },
   {
     job_execution_id: 4,
@@ -61,6 +64,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 5,
     job_name: 'Mass edit',
     status: 'ABANDONED',
+    is_stoppable: false,
   },
 ];
 
@@ -73,7 +77,7 @@ beforeEach(() => {
 });
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
-  useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter): JobExecutionTable => {
+  useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter) => {
     const filteredRows = rows.filter(
       row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
     );
@@ -86,11 +90,13 @@ jest.mock('../hooks/useJobExecutionTable', () => ({
       })
       .slice((page - 1) * size, (page - 1) * size + size);
 
-    return {
+    const jobExecutionTable = {
       rows: paginatedRows,
       matches_count: filteredRows.length,
       total_count: rows.length,
     };
+
+    return [jobExecutionTable, () => jobExecutionTable];
   },
 }));
 

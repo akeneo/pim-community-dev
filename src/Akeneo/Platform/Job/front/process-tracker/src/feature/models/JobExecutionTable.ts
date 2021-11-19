@@ -13,6 +13,7 @@ type JobExecutionRow = {
     current_step: number;
     total_step: number;
   };
+  is_stoppable: boolean;
 };
 
 type JobExecutionTable = {
@@ -21,4 +22,10 @@ type JobExecutionTable = {
   total_count: number;
 };
 
+const stoppableStatus = ['STARTING', 'STARTED'];
+const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean => {
+  return jobExecutionRow.is_stoppable && stoppableStatus.includes(jobExecutionRow.status);
+};
+
+export {jobCanBeStopped};
 export type {JobExecutionTable, JobExecutionRow};

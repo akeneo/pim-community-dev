@@ -1,20 +1,22 @@
 import React, {useCallback, MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
-import {Security, useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {JobExecutionRow, JobExecutionFilterSort} from '../../models';
+import {useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 import {useHistory} from 'react-router-dom';
+import {StopJobAction} from '../StopJobAction';
 
 type JobExecutionTableProps = {
   sticky?: number;
   jobExecutionRows: JobExecutionRow[];
   onSortChange: (sort: JobExecutionFilterSort) => void;
+  onTableRefresh: () => void;
   currentSort: JobExecutionFilterSort;
 };
 
 const SORTABLE_COLUMN_HEADERS = ['job_name', 'type', 'started_at', 'username', 'status'];
 
-const canShowJobExecutionDetail = ({isGranted}: Security, jobExecutionRow: JobExecutionRow) => {
+const canShowJobExecutionDetail = (isGranted: (acl: string) => boolean, jobExecutionRow: JobExecutionRow) => {
   if (['import', 'export'].includes(jobExecutionRow.type)) {
     return isGranted(`pim_importexport_${jobExecutionRow.type}_execution_show`);
   }
@@ -22,12 +24,20 @@ const canShowJobExecutionDetail = ({isGranted}: Security, jobExecutionRow: JobEx
   return true;
 };
 
-const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}: JobExecutionTableProps) => {
+const JobExecutionTable = ({
+  sticky,
+  jobExecutionRows,
+  onSortChange,
+  currentSort,
+  onTableRefresh,
+}: JobExecutionTableProps) => {
   const translate = useTranslate();
-  const security = useSecurity();
+  const {isGranted} = useSecurity();
   const dateFormatter = useDateFormatter();
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
   const history = useHistory();
+  const canStopJob = isGranted('pim_importexport_stop_job');
+
   const handleRowClick = useCallback(
     (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
       const url = `/show/${jobExecutionId}`;
@@ -62,14 +72,15 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
         <Table.HeaderCell>
           {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.warning_count`)}
         </Table.HeaderCell>
+        <Table.HeaderCell />
       </Table.Header>
       <Table.Body>
         {jobExecutionRows.map(jobExecutionRow => (
           <Table.Row
             key={jobExecutionRow.job_execution_id}
             onClick={
-              canShowJobExecutionDetail(security, jobExecutionRow)
-                ? handleRowClick(jobExecutionRow.job_execution_id)
+              canShowJobExecutionDetail(isGranted, jobExecutionRow)
+                ? event => handleRowClick(jobExecutionRow.job_execution_id)(event)
                 : undefined
             }
           >
@@ -99,6 +110,16 @@ const JobExecutionTable = ({sticky, jobExecutionRows, onSortChange, currentSort}
               />
             </Table.Cell>
             <Table.Cell>{jobExecutionRow.warning_count > 0 ? jobExecutionRow.warning_count : '-'}</Table.Cell>
+            <Table.ActionCell>
+              <StopJobAction
+                id={jobExecutionRow.job_execution_id.toString()}
+                jobLabel={jobExecutionRow.job_name}
+                isStoppable={canStopJob && jobCanBeStopped(jobExecutionRow)}
+                onStop={onTableRefresh}
+                ghost={true}
+                size="small"
+              />
+            </Table.ActionCell>
           </Table.Row>
         ))}
       </Table.Body>
