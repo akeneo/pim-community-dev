@@ -42,15 +42,21 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
     {
         $this->dropColumnIfExists();
 
-        $jobInstanceId = $this->createJobInstance('an_export');
-        $jobExecutionId = $this->createJobExecution($jobInstanceId);
+        $nonStoppableJobInstanceId = $this->createJobInstance('xlsx_family_import');
+        $nonStoppableJobExecutionId = $this->createJobExecution($nonStoppableJobInstanceId);
+
+        $stoppableJobInstanceId = $this->createJobInstance('csv_user_group_export');
+        $stoppableJobExecutionId = $this->createJobExecution($stoppableJobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertEquals(true, $this->columnExists());
 
         $jobExecutions = $this->selectJobExecutions();
 
-        Assert::assertEquals([$jobExecutionId => null], $jobExecutions);
+        Assert::assertEquals([
+            $nonStoppableJobExecutionId => '0',
+            $stoppableJobExecutionId => '1'
+        ], $jobExecutions);
     }
 
     public function test_migration_is_idempotent(): void
