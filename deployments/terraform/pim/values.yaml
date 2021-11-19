@@ -345,6 +345,10 @@ onboarder:
     queueName: null
     maxReplicas: 10
   serviceAccount: null
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "90Mi"
 
 # Free Trial
 free_trial:
