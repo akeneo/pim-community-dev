@@ -39,9 +39,10 @@ class DoctrineJobRepositoryIntegration extends TestCase
 
     public function testCreateNonStoppableJobExecution()
     {
-        $jobInstanceCode = 'csv_family_import';
+        $jobInstanceCode = 'clean_removed_attribute_job';
         $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
         $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
+
         $jobParameters =  new JobParameters([]);
         $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
