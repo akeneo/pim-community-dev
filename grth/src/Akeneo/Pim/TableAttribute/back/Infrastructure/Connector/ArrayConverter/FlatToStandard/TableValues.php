@@ -19,8 +19,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -101,9 +99,9 @@ final class TableValues implements ArrayConverterInterface
 
             $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
             if ($column instanceof BooleanColumn) {
-                if ($value === '1') {
+                if (\trim((string) $value) === '1') {
                     $rowValues[$columnCode] = true;
-                } elseif ($value === '0') {
+                } elseif (\trim((string) $value) === '0') {
                     $rowValues[$columnCode] = false;
                 }
             } elseif (null === $column) {
