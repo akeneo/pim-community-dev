@@ -31,6 +31,8 @@ final class IndexAction
             return new RedirectResponse('/');
         }
 
+        //TODO RAC-1064 Handle show process tracker acl
+
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
         $searchJobExecutionQuery->page = (int) $request->get('page', 1);
         $searchJobExecutionQuery->size = (int) $request->get('size', 25);

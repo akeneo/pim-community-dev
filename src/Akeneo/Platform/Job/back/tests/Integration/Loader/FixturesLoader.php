@@ -108,6 +108,7 @@ SQL;
         $defaultData = [
             'status' => 1,
             'raw_parameters' => [],
+            'is_stoppable' => true
         ];
 
         $this->dbalConnection->insert(
@@ -115,6 +116,7 @@ SQL;
             array_merge($defaultData, $data),
             [
                 'raw_parameters' => Types::JSON,
+                'is_stoppable' => Types::BOOLEAN,
             ]
         );
 

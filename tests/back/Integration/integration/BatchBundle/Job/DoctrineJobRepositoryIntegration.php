@@ -18,10 +18,13 @@ class DoctrineJobRepositoryIntegration extends TestCase
     {
         $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
 
-        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier('csv_product_quick_export');
+        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
 
         $jobParameters =  new JobParameters(['foo' => 'bar']);
-        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($jobInstance, $jobParameters);
+
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
         $jobExecutionId = $jobExecution->getId();
         $stmt = $connection->prepare('SELECT status, exit_code, raw_parameters from akeneo_batch_job_execution where id = :id');
@@ -42,10 +45,12 @@ class DoctrineJobRepositoryIntegration extends TestCase
 
     public function testGetLastJobExecutionWithJobParameters()
     {
-        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier('csv_product_quick_export');
+        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
 
         $jobParameters =  new JobParameters(['foo' => 'bar']);
-        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($jobInstance, $jobParameters);
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
         $this->getDoctrineJobRepository()->getJobManager()->clear();
 
         $lastJobExecution = $this->getDoctrineJobRepository()->getLastJobExecution($jobInstance, BatchStatus::STARTING);

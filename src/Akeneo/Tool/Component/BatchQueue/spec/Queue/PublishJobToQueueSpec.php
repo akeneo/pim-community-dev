@@ -92,7 +92,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $entityManager->clear(get_class($jobInstance->getWrappedObject()))->shouldBeCalled();
 
         $jobExecution->getId()->willReturn(42);
-        $jobRepository->createJobExecution($jobInstance, $jobParameters)->shouldBeCalled()->willReturn($jobExecution);
+        $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecutionMessage = UiJobExecutionMessage::createJobExecutionMessage(42, []);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 42, ['env' => 'prod'])
