@@ -83,6 +83,13 @@ const TopRightButtons = styled(BottomButtons)`
   margin: 0;
 `;
 
+const TopLeftButtons = styled(BottomButtons)`
+  position: fixed;
+  top: 40px;
+  left: 82px;
+  margin: 0;
+`;
+
 type ModalProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
@@ -114,6 +121,7 @@ type ModalProps = Override<
 const Modal: React.FC<ModalProps> & {
   BottomButtons: typeof BottomButtons;
   TopRightButtons: typeof TopRightButtons;
+  TopLeftButtons: typeof TopLeftButtons;
   SectionTitle: typeof SectionTitle;
   Title: typeof Title;
 } = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
@@ -157,6 +165,7 @@ const Modal: React.FC<ModalProps> & {
 
 Modal.BottomButtons = BottomButtons;
 Modal.TopRightButtons = TopRightButtons;
+Modal.TopLeftButtons = TopLeftButtons;
 Modal.Title = Title;
 Modal.SectionTitle = SectionTitle;
 

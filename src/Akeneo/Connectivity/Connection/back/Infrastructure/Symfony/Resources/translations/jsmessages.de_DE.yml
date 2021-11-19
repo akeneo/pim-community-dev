@@ -139,6 +139,9 @@ akeneo_connectivity.connection:
         invalid: Verbindungsfluss-Typ kann nur 'data_source', 'data_destination' oder 'other' sein.
       image:
         must_exist: Das Bild wurde nicht gefunden. Bitte versuchen Sie es erneut.
+      type:
+        required: Verbindungstyp ist erforderlich.
+        too_long: Verbindungstyp ist zu lang. Er sollte maximal 30 Zeichen lang sein.
   flow_type:
     data_source: Datenquelle | Datenquellen
     data_destination: Datenziel | Datenziele

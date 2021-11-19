@@ -50,9 +50,8 @@ const createLocaleFromCode = (code: LocaleCode): Locale => {
   };
 };
 
-const localeExists = (locales: Locale[], currentLocale: LocaleCode) => {
-  return locales.some(({code}: Locale) => code === currentLocale);
-};
+const localeExists = (locales: Locale[], currentLocale: LocaleCode) =>
+  locales.some(({code}: Locale) => code === currentLocale);
 
 export {createLocaleFromCode, denormalizeLocale, localeExists, isLocales, isLocale};
 export type {Locale, LocaleCode, LocaleLabel, LocaleRegion, LocaleLanguage, LocaleReference};

@@ -32,16 +32,17 @@ class PathGenerator implements PathGeneratorInterface
     public function generate(\SplFileInfo $file)
     {
         $originalFileName = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file->getFilename();
+        $originalExtension = ($file instanceof UploadedFile) ? $file->getClientOriginalExtension() : $file->getExtension();
         $uuid = $this->generateUuid($originalFileName);
         $sanitized = preg_replace('#[^A-Za-z0-9\.]#', '_', $originalFileName);
 
         if (strlen($sanitized) > 100) {
-            $sanitized = sprintf('%s.%s', substr($sanitized, 0, 95), $file->getExtension());
+            $sanitized = sprintf('%s.%s', substr($sanitized, 0, 95), $originalExtension);
         }
 
         $fileName = $uuid . '_' . $sanitized;
         $path = sprintf('%s/%s/%s/%s/', $uuid[0], $uuid[1], $uuid[2], $uuid[3]);
-        $pathName = $path.$fileName;
+        $pathName = $path . $fileName;
 
         return [
             'uuid'      => $uuid,
