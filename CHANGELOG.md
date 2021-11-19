@@ -139,6 +139,7 @@
 - PIM-10139: Fix missing translation key in Italian locale with "change family" mass action
 - PIM-10145: Fix reset password page
 - PIM-10160: Fix AM thumbnail generation when filename is longer than 100 characters
+- PIM-10167: Fix import file - datetime in price attribute break the import
 
 ## New features
 

@@ -3,6 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
@@ -58,6 +60,10 @@ class ColumnsMerger
                 if (AttributeTypes::BACKEND_TYPE_METRIC === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
                 } elseif (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                    if ($fieldValue instanceof \DateTimeInterface) {
+                        throw new BusinessArrayConversionException("Can not convert cell {$fieldName} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$fieldName]);
+                    }
+
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;
@@ -151,15 +157,15 @@ class ColumnsMerger
     /**
      * Collect price data exploded in different columns
      *
-     * @param array  $collectedPrices
-     * @param array  $attributeInfos
+     * @param array $collectedPrices
+     * @param array $attributeInfos
      * @param string $fieldValue
-     *
      * @return array collected metrics
      */
-    protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
+    protected function collectPriceData(array $collectedPrices, array $attributeInfos, string $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
+
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
             if (trim($fieldValue) === '') {
