@@ -382,6 +382,7 @@ mysql:
         memory: 3072Mi
       requests:
         memory: 3072Mi
+        cpu: "200m"
     readinessProbe:
       initialDelaySeconds: 30
       periodSeconds: 30
@@ -403,8 +404,8 @@ memcached:
     limits:
       memory: "96Mi"
     requests:
-      cpu: "30m"
-      memory: "64Mi"
+      cpu: "5m"
+      memory: "20Mi"
   memcached:
     maxItemMemory: 64
   pdbMinAvailable: 0
@@ -464,8 +465,8 @@ elasticsearch:
       limits:
         memory: "1740Mi"
       requests:
-        cpu: "25m"
-        memory: "1024Mi"
+        cpu: "50m"
+        memory: "1536Mi"
     updateStrategy:
       type: RollingUpdate
     hooks:
