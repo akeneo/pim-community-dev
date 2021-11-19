@@ -939,7 +939,6 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
-
           - when:
                 condition:
                     not:
@@ -952,8 +951,9 @@ jobs:
                                   -H 'Accept: application/vnd.github.v3.raw' \
                                   --output /dev/null --silent --head --fail \
                                   -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
-                                  sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
-                                  echo "No Onboarder branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
+                                  ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
+                                  echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
+                                  sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: |

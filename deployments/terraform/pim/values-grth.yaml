@@ -9,42 +9,82 @@ pim:
       enabled: true
       pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
       schedule: "0 1 * * 0"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "80Mi"
     batch-purge:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "192Mi"
     update-connectivity-audit-data:
       enabled: true
       pimCommand: "akeneo:connectivity-audit:update-data"
       schedule: "1 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-error"
       schedule: "10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     purge-connectivity-audit-error-count:
       enabled: true
       pimCommand: "akeneo:connectivity-audit:purge-error-count"
       schedule: "40 12 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
       schedule: "0 3 * * *"
+      resources:
+        requests:
+          cpu: "300m"
+          memory: "256Mi"
     volume-aggregate:
       enabled: true
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
+      resources:
+        requests:
+          cpu: "20m"
+          memory: "80Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
       pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:prepare-evaluations"
       schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "120m"
+          memory: "50Mi"
     data-quality-insights-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "200Mi"
     purge-events-api-logs:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
@@ -59,7 +99,15 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
       schedule: "*/15 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     migrate-job-execution-warning-count:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
       schedule: "*/30 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"

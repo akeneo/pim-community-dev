@@ -102,8 +102,8 @@ pim:
         limits:
           memory: "2048Mi"
         requests:
-          memory: "512Mi"
-          cpu: "200m"
+          memory: "300Mi"
+          cpu: "20m"
     webhook-consumer-process:
       enabled: true
       pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
@@ -113,8 +113,8 @@ pim:
         limits:
           memory: "512Mi"
         requests:
-          memory: "256Mi"
-          cpu: "200m"
+          memory: "100Mi"
+          cpu: "2m"
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
   web:
@@ -124,15 +124,15 @@ pim:
         limits:
           memory: "1024Mi"
         requests:
-          cpu: "200m"
-          memory: "256Mi"
+          cpu: "30m"
+          memory: "512Mi"
     httpd:
       resources:
         limits:
           memory: "128Mi"
         requests:
-          cpu: "200m"
-          memory: "128Mi"
+          cpu: "2m"
+          memory: "40Mi"
   api:
     ratelimit:
       enabled: true
@@ -144,15 +144,15 @@ pim:
         limits:
           memory: "1024Mi"
         requests:
-          cpu: "200m"
+          cpu: "100m"
           memory: "256Mi"
     httpd:
       resources:
         limits:
           memory: "128Mi"
         requests:
-          cpu: "200m"
-          memory: "128Mi"
+          cpu: "5m"
+          memory: "30Mi"
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
@@ -173,62 +173,122 @@ pim:
       enabled: true
       pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
       schedule: "0 1 * * 0"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "80Mi"
     batch-purge:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "192Mi"
     update-connectivity-audit-data:
       enabled: true
       pimCommand: "akeneo:connectivity-audit:update-data"
       schedule: "1 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-error"
       schedule: "10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     purge-connectivity-audit-error-count:
       enabled: true
       pimCommand: "akeneo:connectivity-audit:purge-error-count"
       schedule: "40 12 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
       schedule: "0 5,11,17,23 * * *"
+      resources:
+        requests:
+          cpu: "800m"
+          memory: "400Mi"
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
       schedule: "0 3 * * *"
+      resources:
+        requests:
+          cpu: "300m"
+          memory: "256Mi"
     volume-aggregate:
       enabled: true
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
+      resources:
+        requests:
+          cpu: "20m"
+          memory: "80Mi"
     project-recalculate:
       enabled: true
       pimCommand: "pimee:project:recalculate"
       schedule: "20 0 * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
     project-notify-before-due-date:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"
       schedule: "0 2 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records"
       schedule: "0 23 * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
     sso-log-rotate:
       enabled: true
       pimCommand: "pimee:sso:rotate-log 30"
       schedule: "5 22 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
       pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:prepare-evaluations"
       schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "120m"
+          memory: "50Mi"
     data-quality-insights-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "200Mi"
     purge-events-api-logs:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
@@ -243,14 +303,26 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
       schedule: "*/15 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
       schedule: "*/30 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
     migrate-job-execution-warning-count:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
       schedule: "*/30 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
 
 # Onboarder
 onboarder:
@@ -273,6 +345,10 @@ onboarder:
     queueName: null
     maxReplicas: 10
   serviceAccount: null
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "90Mi"
 
 # Free Trial
 free_trial:
@@ -306,6 +382,7 @@ mysql:
         memory: 3072Mi
       requests:
         memory: 3072Mi
+        cpu: "200m"
     readinessProbe:
       initialDelaySeconds: 30
       periodSeconds: 30
@@ -325,11 +402,10 @@ memcached:
   replicaCount: 1
   resources:
     limits:
-      cpu: "1"
       memory: "96Mi"
     requests:
-      cpu: "30m"
-      memory: "64Mi"
+      cpu: "5m"
+      memory: "20Mi"
   memcached:
     maxItemMemory: 64
   pdbMinAvailable: 0
@@ -361,7 +437,6 @@ elasticsearch:
     heapSize: "512m"
     resources:
       limits:
-        cpu: "1"
         memory: "1024Mi"
       requests:
         cpu: "25m"
@@ -374,7 +449,6 @@ elasticsearch:
     heapSize: "384m"
     resources:
       limits:
-        cpu: "1"
         memory: "768Mi"
       requests:
         cpu: "25m"
@@ -389,11 +463,10 @@ elasticsearch:
     heapSize: "1G"
     resources:
       limits:
-        cpu: "1"
-        memory: "1536Mi"
+        memory: "1740Mi"
       requests:
-        cpu: "25m"
-        memory: "1024Mi"
+        cpu: "50m"
+        memory: "1536Mi"
     updateStrategy:
       type: RollingUpdate
     hooks:

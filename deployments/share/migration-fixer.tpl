@@ -20,7 +20,7 @@ spec:
         env:
           - { name: APP_DATABASE_HOST, value: "pim-mysql" }
           - { name: APP_DATABASE_PASSWORD, value: "9vbtChLWrLsRhnKkjozHEqqL" }
-          - { name: APP_DATABASE_USER, value: "akeneo_pim" }          
+          - { name: APP_DATABASE_USER, value: "akeneo_pim" }
         volumeMounts:
           - name: flex-hd
             mountPath: /data

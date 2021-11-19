@@ -39,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console --quiet akeneo:synchronization:message:consumer --ttl=-1"']
           resources:
-{{ toYaml .Values.pim.resources | indent 12 }}
+{{ toYaml .Values.onboarder.resources | indent 12 }}
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
