@@ -54,6 +54,6 @@ class FindJobUsersTest extends IntegrationTestCase
             'admin'
         ];
 
-        $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->visible(1));
+        $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->search(1));
     }
 }

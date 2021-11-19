@@ -3,6 +3,8 @@ services:
         class: 'Akeneo\Platform\Job\Infrastructure\Controller\IndexAction'
         public: true
         arguments:
+            - '@security.helper'
+            - '@oro_security.security_facade'
             - '@Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler'
             - '@oro_security.security_facade'
 

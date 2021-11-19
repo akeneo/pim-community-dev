@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
@@ -30,7 +32,7 @@ class GetJobUsersAction
 
         $page = (int) $request->get('page', 1);
 
-        $jobUsers = $this->findJobUsers->visible($page);
+        $jobUsers = $this->findJobUsers->search($page);
 
         return new JsonResponse($jobUsers);
     }

@@ -23,7 +23,7 @@ class GetJobUsersActionTest extends ControllerIntegrationTestCase
         $this->fixturesLoader->loadProductImportExportFixtures();
     }
 
-    public function test_it_returns_job_types(): void
+    public function test_it_returns_job_users(): void
     {
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
 

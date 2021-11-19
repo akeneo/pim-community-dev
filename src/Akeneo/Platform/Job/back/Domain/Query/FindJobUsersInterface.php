@@ -12,5 +12,5 @@ interface FindJobUsersInterface
     /**
      * @return string[]
      */
-    public function visible(int $page): array;
+    public function search(int $page): array;
 }

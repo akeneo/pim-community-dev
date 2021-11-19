@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
@@ -24,7 +26,7 @@ class FindJobUsers implements FindJobUsersInterface
         $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
-    public function visible(int $page): array
+    public function search(int $page): array
     {
         $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
 
