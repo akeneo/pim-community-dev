@@ -148,7 +148,7 @@ jobs:
                 date +%F >> ~/php-docker-image.hash
       - restore_cache:
             name: Restore PHP docker image cache
-            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
       - run:
           name: Build the latest Docker images
           command: |
@@ -157,7 +157,7 @@ jobs:
               ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
       - save_cache:
             name: Save PHP docker image cache
-            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
             paths:
                 - php-pim-image.tar
       - run:
