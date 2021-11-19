@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Button, getColor, getFontSize, useSelection, Modal, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, ChannelCode} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
@@ -9,8 +9,6 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';

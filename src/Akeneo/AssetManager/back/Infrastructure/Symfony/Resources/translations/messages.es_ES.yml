@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Activos editados con éxito con advertencias
   success: Activos editados con éxito
   error: Edición de activos fallida
+pim_api:
+  acl_group:
+    asset: Recursos

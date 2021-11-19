@@ -27,14 +27,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class BulkRecordItemHydrator
 {
-    /** @var RecordItemHydratorInterface */
-    private $recordItemHydrator;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
-
-    /** @var FindRecordLabelsByIdentifiersInterface */
-    private $findRecordLabelsByIdentifiers;
+    private RecordItemHydratorInterface $recordItemHydrator;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
+    private FindRecordLabelsByIdentifiersInterface $findRecordLabelsByIdentifiers;
 
     public function __construct(
         RecordItemHydratorInterface $recordItemHydrator,
@@ -81,8 +76,6 @@ class BulkRecordItemHydrator
             }
         }
 
-        $labelsIndexedByRecordIdentifier = $this->findRecordLabelsByIdentifiers->find($recordIdentifiers);
-
-        return $labelsIndexedByRecordIdentifier;
+        return $this->findRecordLabelsByIdentifiers->find($recordIdentifiers);
     }
 }

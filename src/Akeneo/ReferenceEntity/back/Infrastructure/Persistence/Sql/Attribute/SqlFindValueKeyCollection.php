@@ -21,11 +21,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var array */
-    private $cachedResult = [];
+    private Connection $sqlConnection;
+    /** @var array<string, ValueKeyCollection> */
+    private array $cachedResult = [];
 
     public function __construct(Connection $sqlConnection)
     {
@@ -42,10 +40,6 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     *
-     * @return ValueKeyCollection
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection

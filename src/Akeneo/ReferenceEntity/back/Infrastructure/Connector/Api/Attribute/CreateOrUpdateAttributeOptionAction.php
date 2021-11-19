@@ -33,40 +33,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
 {
-    /** @var Router */
-    private $router;
-
-    /** @var AttributeOptionValidator */
-    private $jsonSchemaValidator;
-
-    /** @var ValidatorInterface */
-    private $businessRulesValidator;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
-
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
-
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var EditAttributeOptionHandler */
-    private $editAttributeOptionHandler;
-
-    /** @var AppendAttributeOptionHandler */
-    private $appendAttributeOptionHandler;
-
+    private Router $router;
+    private AttributeOptionValidator $jsonSchemaValidator;
+    private ValidatorInterface $businessRulesValidator;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private AttributeExistsInterface $attributeExists;
+    private AttributeSupportsOptions $attributeSupportsOptions;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
+    private AttributeRepositoryInterface $attributeRepository;
+    private EditAttributeOptionHandler $editAttributeOptionHandler;
+    private AppendAttributeOptionHandler $appendAttributeOptionHandler;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -133,13 +111,13 @@ class CreateOrUpdateAttributeOptionAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
@@ -149,7 +127,7 @@ class CreateOrUpdateAttributeOptionAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
@@ -230,9 +208,7 @@ class CreateOrUpdateAttributeOptionAction
         $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        $optionExists = $attribute->hasAttributeOption($optionCode);
-
-        return $optionExists;
+        return $attribute->hasAttributeOption($optionCode);
     }
 
     private function denyAccessUnlessAclIsGranted(): void

@@ -33,17 +33,10 @@ use Doctrine\DBAL\Types\Type;
  */
 class RecordItemHydrator implements RecordItemHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
-
-    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
-    private $findRequiredValueKeyCollectionForChannelAndLocales;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private AbstractPlatform $platform;
+    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
@@ -89,7 +82,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
         $completeness = ['complete' => 0, 'required' => 0];
-        if (count($normalizedRequiredValueKeys) > 0) {
+        if ([] !== $normalizedRequiredValueKeys) {
             $existingValueKeys = array_keys($valueCollection);
             $completeness['complete'] = count(
                 array_intersect($normalizedRequiredValueKeys, $existingValueKeys)
@@ -138,9 +131,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
 
         $value = current(array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
-            }
+            static fn (array $value) => $value['attribute'] === $attributeAsImage
         ));
 
         if (false === $value) {
@@ -160,7 +151,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
 
         foreach ($valueCollection as $valueKey => $normalizedValue) {
             $attributeIdentifier = $normalizedValue['attribute'];
-            if (!key_exists($attributeIdentifier, $indexedAttributes)) {
+            if (!array_key_exists($attributeIdentifier, $indexedAttributes)) {
                 continue;
             }
 

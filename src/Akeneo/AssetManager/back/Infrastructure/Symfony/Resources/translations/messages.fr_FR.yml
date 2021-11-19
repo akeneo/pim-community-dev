@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Les ressources ont bien été éditées, mais avec des avertissements
   success: Ressources éditées avec succès
   error: L'édition des ressources a échoué
+pim_api:
+  acl_group:
+    asset: Ressources

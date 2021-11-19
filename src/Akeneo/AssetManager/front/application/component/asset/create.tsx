@@ -1,8 +1,14 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {AssetsIllustration, Checkbox, Button, Modal, useAutoFocus} from 'akeneo-design-system';
-import {useTranslate, getErrorsForPath, Section, TextField, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  useTranslate,
+  getErrorsForPath,
+  Section,
+  TextField,
+  ValidationError,
+  LocaleCode,
+} from '@akeneo-pim-community/shared';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';

@@ -47,10 +47,9 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements
     private FileExporterPathGeneratorInterface $fileExporterPath;
     private FileInfoRepositoryInterface $fileInfoRepository;
     private FilesystemProvider $filesystemProvider;
-
     private ?FlatItemBuffer $flatRowBuffer = null;
     /** @var AbstractAttribute[] */
-    private array $attributesIndexedByIdentifier;
+    private array $attributesIndexedByIdentifier = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,

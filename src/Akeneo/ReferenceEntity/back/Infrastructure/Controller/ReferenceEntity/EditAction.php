@@ -33,20 +33,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
-
-    /** @var Serializer */
-    private $serializer;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private EditReferenceEntityHandler $editReferenceEntityHandler;
+    private Serializer $serializer;
+    private ValidatorInterface $validator;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         EditReferenceEntityHandler $editReferenceEntityHandler,
@@ -108,8 +99,7 @@ class EditAction
             $referenceEntityIdentifier,
             $this->tokenStorage->getToken()->getUser()->getUsername()
         );
-        $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
-        return $isAllowedToEdit; // && add Check of ACLs
+        return ($this->canEditReferenceEntityQueryHandler)($query); // && add Check of ACLs
     }
 }

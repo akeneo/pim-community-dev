@@ -25,11 +25,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeOptionShouldNotExistValidator extends ConstraintValidator
 {
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         GetAttributeIdentifierInterface $getAttributeIdentifier,

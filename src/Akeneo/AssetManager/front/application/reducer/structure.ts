@@ -1,7 +1,6 @@
 import {combineReducers} from 'redux';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {arrayUnique} from 'akeneo-design-system';
+import {Channel, ChannelCode, Locale, LocaleCode} from '@akeneo-pim-community/shared';
 
 export interface StructureState {
   locales: Locale[];

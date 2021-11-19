@@ -8,8 +8,6 @@ jest.mock('pimui/js/security-context', () => ({
   isGranted: () => true,
 }));
 
-jest.mock('akeneoassetmanager/tools/notify', jest.fn());
-
 const imageAttribute = {
   identifier: 'image_attribute_identifier',
   type: MEDIA_FILE_ATTRIBUTE_TYPE,

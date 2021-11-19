@@ -77,3 +77,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Assetit muokattu varoituksin
   success: Assetit muokattu onnistuneesti
   error: Asettien muokkaus epäonnistui
+pim_api:
+  acl_group:
+    asset: Assetit

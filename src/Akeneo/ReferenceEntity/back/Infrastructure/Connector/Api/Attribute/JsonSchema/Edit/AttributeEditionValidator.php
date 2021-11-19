@@ -10,14 +10,11 @@ use Webmozart\Assert\Assert;
 
 final class AttributeEditionValidator
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private AttributeRepositoryInterface $attributeRepository;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
     /** @var AttributeValidatorInterface[] */
-    private $attributeValidator;
+    private iterable $attributeValidator;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -47,6 +44,6 @@ final class AttributeEditionValidator
             }
         }
 
-        throw new \LogicException(sprintf('No json schema validator found.'));
+        throw new \LogicException('No json schema validator found.');
     }
 }

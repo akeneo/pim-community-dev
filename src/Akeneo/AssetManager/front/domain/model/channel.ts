@@ -1,18 +1,6 @@
+import {Channel, getLabel} from '@akeneo-pim-community/shared';
 import Locale, {LocaleCode, denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
 import {isString, isArray, isLabels} from 'akeneoassetmanager/domain/model/utils';
-import {getLabel} from 'pimui/js/i18n';
-
-type Labels = {
-  [localeCode: string]: string;
-};
-
-export type ChannelCode = string;
-
-type Channel = {
-  code: ChannelCode;
-  labels: Labels;
-  locales: Locale[];
-};
 
 export const getChannelLabel = (channel: Channel, locale: LocaleCode) => {
   return getLabel(channel.labels, locale, channel.code);

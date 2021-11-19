@@ -17,8 +17,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SqlReferenceEntityPermissionRepository implements ReferenceEntityPermissionRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

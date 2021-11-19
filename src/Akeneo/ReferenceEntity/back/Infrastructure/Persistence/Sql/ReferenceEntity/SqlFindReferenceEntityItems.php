@@ -30,12 +30,8 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;

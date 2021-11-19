@@ -53,3 +53,6 @@ pim_mass_edit:
       error: ' Échec de la suppression de l''enregistrement'
 akeneo_reference_entity: Lien simple vers une entité référentielle
 akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
+pim_api:
+  acl_group:
+    reference_entity: Entités référentielles

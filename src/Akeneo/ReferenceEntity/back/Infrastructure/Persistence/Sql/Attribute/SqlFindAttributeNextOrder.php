@@ -20,12 +20,8 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
@@ -44,6 +40,6 @@ SQL;
         $result = $statement->fetchColumn();
         $statement->closeCursor();
 
-        return null === $result ? AttributeOrder::fromInteger(0) : AttributeOrder::fromInteger((intval($result) + 1));
+        return null === $result ? AttributeOrder::fromInteger(0) : AttributeOrder::fromInteger(((int) $result + 1));
     }
 }

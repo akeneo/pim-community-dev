@@ -1,9 +1,6 @@
 import React from 'react';
 import {SelectInput} from 'akeneo-design-system';
-import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {getLabel} from 'pimui/js/i18n';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, getLabel, ChannelCode, Channel} from '@akeneo-pim-community/shared';
 
 type ChannelDropdownProps = {
   title?: string;

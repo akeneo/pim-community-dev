@@ -1,6 +1,7 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {isArray} from 'akeneoassetmanager/domain/model/utils';
-import Channel, {denormalizeChannel} from 'akeneoassetmanager/domain/model/channel';
+import {denormalizeChannel} from 'akeneoassetmanager/domain/model/channel';
+import {Channel} from '@akeneo-pim-community/shared';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 /**

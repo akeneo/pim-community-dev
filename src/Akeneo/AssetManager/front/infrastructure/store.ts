@@ -5,27 +5,35 @@ import formNotifier from 'akeneoassetmanager/infrastructure/middleware/form-noti
 import gridMiddleware from 'akeneoassetmanager/infrastructure/middleware/grid';
 import userContextMiddleware from 'akeneoassetmanager/infrastructure/middleware/user-context';
 import {composeWithDevTools} from 'redux-devtools-extension';
-const router = require('pim/router');
+import {Notify, Router, Translate, UserContext} from '@akeneo-pim-community/shared';
 
-export default (debug: boolean = true) => (reducer: any): Store<any> => {
+type Dependencies = {
+  router: Router;
+  datagridState: any;
+  translate: Translate;
+  notify: Notify;
+  userContext: UserContext;
+};
+
+export default (debug: boolean = true, dependencies: Dependencies) => (reducer: any): Store<any> => {
   return createStore(
     combineReducers(reducer),
     true === debug
       ? composeWithDevTools(
           applyMiddleware(
             thunkMiddleware,
-            routerMiddleware(router),
-            formNotifier(),
+            routerMiddleware(dependencies.router, dependencies.datagridState),
+            formNotifier(dependencies.notify, dependencies.translate),
             gridMiddleware(),
-            userContextMiddleware()
+            userContextMiddleware(dependencies.userContext)
           )
         )
       : applyMiddleware(
           thunkMiddleware,
-          routerMiddleware(router),
-          formNotifier(),
+          routerMiddleware(dependencies.router, dependencies.datagridState),
+          formNotifier(dependencies.notify, dependencies.translate),
           gridMiddleware(),
-          userContextMiddleware()
+          userContextMiddleware(dependencies.userContext)
         )
   ) as any;
 };

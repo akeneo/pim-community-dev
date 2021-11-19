@@ -1,12 +1,11 @@
 import React, {useRef} from 'react';
 import {Field, SelectInput, useAutoFocus} from 'akeneo-design-system';
-import {useTranslate, getErrorsForPath, TextField, ValidationError} from '@akeneo-pim-community/shared';
+import {useTranslate, getErrorsForPath, TextField, ValidationError, getLabel} from '@akeneo-pim-community/shared';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getLabel} from 'pimui/js/i18n';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 

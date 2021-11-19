@@ -18,11 +18,8 @@ import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
-import notify from 'akeneoassetmanager/tools/notify';
 
 const flushPromises = () => new Promise(setImmediate);
-
-jest.mock('akeneoassetmanager/tools/notify', () => jest.fn());
 
 const expectQueueInMemoryToBeEmpty = () => expect(Object.values(getCurrentQueuedFiles()).length).toBe(0);
 const expectQueueInMemoryToContain = (file: File) =>
@@ -167,6 +164,9 @@ describe('onFileDrop', () => {
 
 describe('retryFileUpload', () => {
   test('I can retry a failed upload and keep it in memory if failing again', async () => {
+    const notify = jest.fn();
+    const translate = jest.fn();
+
     uploadFile.mockImplementation(uploadFileFailureImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
@@ -177,13 +177,16 @@ describe('retryFileUpload', () => {
 
     storeInQueueInMemory(line.id, file);
 
-    retryFileUpload(uploader, line, dispatch);
+    retryFileUpload(notify, translate, uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToContain(file);
   });
 
   test('I can retry a failed upload and succeed', async () => {
+    const notify = jest.fn();
+    const translate = jest.fn();
+
     uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
@@ -194,7 +197,7 @@ describe('retryFileUpload', () => {
 
     storeInQueueInMemory(line.id, file);
 
-    retryFileUpload(uploader, line, dispatch);
+    retryFileUpload(notify, translate, uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToBeEmpty();
@@ -207,6 +210,9 @@ describe('retryFileUpload', () => {
   });
 
   test('I can retry on an unknown line and nothing will happen', async () => {
+    const notify = jest.fn();
+    const translate = jest.fn();
+
     uploadFile.mockImplementation(uploadFileSuccessImpl);
     const assetFamily = createFakeAssetFamily(false, false);
     const channels: Channel[] = [];
@@ -215,7 +221,7 @@ describe('retryFileUpload', () => {
     const dispatch = jest.fn();
     const line = createLineFromFilename(file.name, assetFamily, channels, locales);
 
-    retryFileUpload(uploader, line, dispatch);
+    retryFileUpload(notify, translate, uploader, line, dispatch);
     await flushPromises();
 
     expectQueueInMemoryToBeEmpty();

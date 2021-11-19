@@ -17,7 +17,6 @@ class RecordCursor implements CursorInterface
     private RecordQueryBuilderInterface $queryBuilder;
     private Client $recordClient;
     private RecordQuery $recordQuery;
-
     private int $count;
     private ?array $items = null;
     private ?string $searchAfterCode = null;
@@ -113,8 +112,8 @@ class RecordCursor implements CursorInterface
 
         $this->count = $matches['hits']['total']['value'];
 
-        if (isset($matches['hits']['hits']) && count($matches['hits']['hits']) > 0) {
-            $hitsCount = count($matches['hits']['hits']);
+        if (isset($matches['hits']['hits']) && (is_countable($matches['hits']['hits']) ? count($matches['hits']['hits']) : 0) > 0) {
+            $hitsCount = is_countable($matches['hits']['hits']) ? count($matches['hits']['hits']) : 0;
             $lastHit = $matches['hits']['hits'][$hitsCount - 1];
             $this->searchAfterCode = $lastHit['sort'][0];
         }
@@ -124,9 +123,7 @@ class RecordCursor implements CursorInterface
 
     private function getCodes(array $matches): array
     {
-        return array_map(function (array $hit) {
-            return $hit['_source']['code'];
-        }, $matches['hits']['hits']);
+        return array_map(static fn (array $hit) => $hit['_source']['code'], $matches['hits']['hits']);
     }
 
     private function nextPage()

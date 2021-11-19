@@ -20,7 +20,6 @@ class SearchRecordsParameters
 
     /** @var string[] | null */
     private ?array $excludeCodes = null;
-
     private ?string $search = null;
     private int $limit = 25;
     private int $page = 1;

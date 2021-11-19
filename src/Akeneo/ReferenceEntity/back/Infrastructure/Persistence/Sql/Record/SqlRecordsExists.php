@@ -22,8 +22,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlRecordsExists
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -53,8 +52,7 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
-        $results = $statement->fetchFirstColumn();
 
-        return $results;
+        return $statement->fetchFirstColumn();
     }
 }

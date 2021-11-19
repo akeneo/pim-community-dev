@@ -1,13 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {CardGrid, getColor, getFontSize, ProductsIllustration, SectionTitle} from 'akeneo-design-system';
+import {
+  CardGrid,
+  Dropdown,
+  getColor,
+  getFontSize,
+  ProductsIllustration,
+  SectionTitle,
+  SwitcherButton,
+  useBooleanState,
+} from 'akeneo-design-system';
 import {Section, useTranslate} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
 import {ProductCard} from 'akeneoassetmanager/application/component/asset/edit/linked-products/ProductCard';
-import {AttributeButton} from 'akeneoassetmanager/application/component/asset/edit/linked-products/attribute-button';
-import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
@@ -52,23 +59,12 @@ const LinkedProducts = ({
   events,
 }: StateProps & DispatchProps) => {
   const translate = useTranslate();
+  const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
 
-  const handleSelectedAttributeChange = React.useCallback(
-    (selectedElement: DropdownElement) => {
-      events.onLinkedAttributeChange(selectedElement.identifier);
-    },
-    [events.onLinkedAttributeChange]
-  );
-
-  const attributesAsDropdownElements = React.useMemo(
-    () =>
-      attributes.map(attribute => ({
-        identifier: attribute.code,
-        label: getLabelInCollection(attribute.labels, context.locale, true, attribute.code),
-        original: attribute,
-      })),
-    [attributes, context.locale]
-  );
+  const handleAttributeChange = (attributeCode: string) => () => {
+    closeDropdown();
+    events.onLinkedAttributeChange(attributeCode);
+  };
 
   if (!isLoaded) {
     return (
@@ -91,14 +87,32 @@ const LinkedProducts = ({
         {null !== selectedAttribute && (
           <>
             <SectionTitle.Separator />
-            <Dropdown
-              elements={attributesAsDropdownElements}
-              selectedElement={selectedAttribute.code}
-              label={translate('pim_asset_manager.asset.product.attribute')}
-              onSelectionChange={handleSelectedAttributeChange}
-              ButtonView={AttributeButton}
-              isOpenLeft={true}
-            />
+            <Dropdown>
+              <SwitcherButton
+                label={translate('pim_asset_manager.asset.product.dropdown.attribute')}
+                onClick={openDropdown}
+              >
+                {getLabelInCollection(selectedAttribute.labels, context.locale, true, selectedAttribute.code)}
+              </SwitcherButton>
+              {isDropdownOpen && (
+                <Dropdown.Overlay onClose={closeDropdown}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>{translate('pim_asset_manager.asset.product.attribute')}</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    {attributes.map((attribute: NormalizedAttribute) => (
+                      <Dropdown.Item
+                        key={attribute.code}
+                        isActive={selectedAttribute.code === attribute.code}
+                        onClick={handleAttributeChange(attribute.code)}
+                      >
+                        {getLabelInCollection(attribute.labels, context.locale, true, attribute.code)}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
           </>
         )}
       </SectionTitle>

@@ -2,14 +2,6 @@ import notify from 'akeneoassetmanager/application/event/notify';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-export const notifyAssetWellCreated = () => {
-  return notify('success', 'pim_asset_manager.asset.notification.create.success');
-};
-
-export const notifyAssetCreateFailed = () => {
-  return notify('error', 'pim_asset_manager.asset.notification.create.fail');
-};
-
 export const notifyAssetWellSaved = () => {
   return notify('success', 'pim_asset_manager.asset.notification.save.success');
 };

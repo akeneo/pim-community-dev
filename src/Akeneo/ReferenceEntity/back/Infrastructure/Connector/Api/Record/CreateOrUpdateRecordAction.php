@@ -45,34 +45,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var RecordExistsInterface */
-    private $recordExists;
-
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
-
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
-
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var RecordValidator */
-    private $recordStructureValidator;
-
-    /** @var ValidatorInterface */
-    private $recordDataValidator;
-
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private RecordExistsInterface $recordExists;
+    private EditRecordCommandFactory $editRecordCommandFactory;
+    private EditRecordHandler $editRecordHandler;
+    private CreateRecordHandler $createRecordHandler;
+    private Router $router;
+    private RecordValidator $recordStructureValidator;
+    private ValidatorInterface $recordDataValidator;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(

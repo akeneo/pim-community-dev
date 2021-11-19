@@ -11,20 +11,16 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @see       Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass
+ * @see       \Symfony\Component\Serializer\DependencyInjection\SerializerPass
  */
 class RegisterSerializerPass implements CompilerPassInterface
 {
-    /** @var string  */
-    protected $serializerServiceId;
+    protected string $serializerServiceId;
 
     /** @staticvar integer The default priority for services */
-    const DEFAULT_PRIORITY = 100;
+    public const DEFAULT_PRIORITY = 100;
 
-    /**
-     * @param string $serializerServiceId
-     */
-    public function __construct($serializerServiceId)
+    public function __construct(string $serializerServiceId)
     {
         $this->serializerServiceId = $serializerServiceId;
     }
@@ -32,7 +28,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition($this->serializerServiceId)) {
             throw new \LogicException(
@@ -54,12 +50,9 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * Returns an array of service references for a specified tag name
      *
-     * @param string           $tagName
-     * @param ContainerBuilder $container
-     *
      * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    protected function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 
@@ -72,7 +65,7 @@ class RegisterSerializerPass implements CompilerPassInterface
         $sortedServices = [];
         foreach ($services as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = isset($tag['priority']) ? $tag['priority'] : self::DEFAULT_PRIORITY;
+                $priority = $tag['priority'] ?? self::DEFAULT_PRIORITY;
                 $sortedServices[$priority][] = new Reference($serviceId);
             }
         }

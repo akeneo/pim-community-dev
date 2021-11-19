@@ -12,6 +12,8 @@ table_attribute_template:
         salt: Salz
     per_100g:
       label: 'Pro 100g'
+    per_serving:
+      label: 'Pro Portion (x g)'
   nutrition-unitedstates:
     nutrition_facts:
       label: Nährwertangaben
@@ -36,6 +38,7 @@ table_attribute_template:
       options:
         energy: Energie
         fat: Fett
+        of_which_saturates: davon gesättigte Fettsäuren
         carbohydrate: Kohlenhydrate
         of_which_sugars: davon Zucker
         fibre: Ballaststoffe
@@ -89,6 +92,13 @@ table_attribute_template:
     value:
       label: Wert
   packaging-metric:
+    parcel:
+      label: Paketdienst
+      options:
+        parcel1: Paketdienst 1
+        parcel2: Paketdienst 2
+        parcel3: Paketdienst 3
+        parcel4: Paketdienst 4
     width:
       label: Breite (%)
     length:
@@ -96,6 +106,13 @@ table_attribute_template:
     height:
       label: Höhe (cm)
   packaging-imperial:
+    parcel:
+      label: Paketdienst
+      options:
+        parcel1: Paketdienst 1
+        parcel2: Paketdienst 2
+        parcel3: Paketdienst 3
+        parcel4: Paketdienst 4
     width:
       label: Breite (Zoll)
     length:
@@ -144,12 +161,17 @@ pim_table_attribute:
       no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
       no_rows_subtitle: Füge Zeilen hinzu, um neue Eigenschaften zu definieren
       no_rows_subtitle_on_readonly: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
+      no_results: Es gibt keine Ergebnisse
+      no_options: Es gibt keine Optionen
       no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten
       actions:
         delete_row: Diese Zeile löschen
+        clear_row: Diese Zeile leeren
         move_first: An erste Position verschieben
         move_last: An letzte Position verschieben
       order: Sortierung
+      save_options_error: Beim Speichern der Optionen ist ein Fehler aufgetreten
+      save_options_success: Optionen erfolgreich aktualisiert
   properties:
     data_type:
       text: Text
@@ -158,6 +180,7 @@ pim_table_attribute:
       select: Auswählen
   validations:
     column_code_must_be_filled: Der Code muss ausgefüllt werden
+    not_available_code: Dieser Spaltencode ist nicht verfügbar
     column_data_type_must_be_filled: Der Datentyp muss ausgefüllt werden
     invalid_column_code: Der Spaltencode darf nur Buchstaben, Zahlen und Unterstriche enthalten
     invalid_code: Der Code darf nur Buchstaben, Zahlen und Unterstriche enthalten
@@ -186,9 +209,11 @@ pim_table_attribute:
     packaging-metric: Verpackungsabmessungen (Metrisches System)
     packaging-imperial: Verpackungsabmessungen (Imperiales System)
   product_edit_form:
+    add_rows: Zeilen hinzufügen
     search: Suche
   datagrid:
     placeholder: Vorschau nicht verfügbar, öffnen Sie die Produktseite, um auf die Tabellenattributwerte zuzugreifen
+    any: Jeder
     select_your_column: Spalte auswählen
     select_your_row: Wählen Sie Ihre Zeile
     select_your_operator: Operator auswählen
@@ -203,3 +228,5 @@ pim_enrich:
 batch_jobs:
   csv_table_attribute_options_export.label: Tabellen-Attribut-Auswahloptionen Export in CSV
   xlsx_table_attribute_options_export.label: Tabellen-Attribut-Auswahloptionen Export in XLSX
+  csv_table_attribute_options_import.label: Tabellenattribut-Auswahloptionen importieren in CSV
+  xlsx_table_attribute_options_import.label: Tabellen-Attribut-Auswahloptionen importieren in XLSX

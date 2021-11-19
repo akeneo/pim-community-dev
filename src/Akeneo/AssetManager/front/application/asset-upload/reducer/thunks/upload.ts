@@ -1,29 +1,28 @@
+import {FileInfo} from 'akeneo-design-system';
+import {NotificationLevel, Notify, Translate, ValidationError} from '@akeneo-pim-community/shared';
 import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/line-factory';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {getThumbnailFromFile, uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';
 import {
   fileThumbnailGenerationDoneAction,
+  fileUploadFailureAction,
   fileUploadProgressAction,
+  fileUploadStartAction,
   fileUploadSuccessAction,
   linesAddedAction,
-  fileUploadFailureAction,
-  fileUploadStartAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
-import notify from 'akeneoassetmanager/tools/notify';
 import createQueue from 'p-limit';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
-import {ValidationError} from '@akeneo-pim-community/shared';
-import {FileInfo} from 'akeneo-design-system';
 
 const CONCURRENCY = 5;
 const queue = createQueue(CONCURRENCY);
 
 const queuedFiles: {[key: string]: File} = {};
 
-export const getCurrentQueuedFiles = () => queuedFiles;
+const getCurrentQueuedFiles = () => queuedFiles;
 
 const uploadAndDispatch = (
   uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
@@ -49,7 +48,7 @@ const uploadAndDispatch = (
     });
 };
 
-export const onFileDrop = (
+const onFileDrop = (
   uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
   files: File[],
   assetFamily: AssetFamily,
@@ -77,7 +76,9 @@ export const onFileDrop = (
   dispatch(linesAddedAction(lines));
 };
 
-export const retryFileUpload = (
+const retryFileUpload = (
+  notify: Notify,
+  translate: Translate,
   uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>,
   line: Line,
   dispatch: (action: any) => void
@@ -85,9 +86,11 @@ export const retryFileUpload = (
   const file = queuedFiles[line.id];
 
   if (!file) {
-    notify('error', 'pim_asset_manager.asset.upload.cannot_retry');
+    notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.upload.cannot_retry'));
     return;
   }
 
   uploadAndDispatch(uploader, line, file, dispatch);
 };
+
+export {getCurrentQueuedFiles, retryFileUpload, onFileDrop};

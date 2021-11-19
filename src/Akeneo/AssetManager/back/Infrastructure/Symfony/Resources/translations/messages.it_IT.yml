@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Asset modificati con successo con avvisi
   success: Asset modificati con successo
   error: Modifica asset non riuscita
+pim_api:
+  acl_group:
+    asset: Asset

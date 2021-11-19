@@ -19,8 +19,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SqlFindFileDataByFileKey implements FindFileDataByFileKeyInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

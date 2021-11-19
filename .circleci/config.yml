@@ -939,6 +939,21 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+
+          - when:
+                condition:
+                    not:
+                        equal: [master, << pipeline.git.branch >>]
+                steps:
+                    - run:
+                          name: Update composer.json if same branch exists in PIM Onboarder for EE
+                          command: |
+                              curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                                  -H 'Accept: application/vnd.github.v3.raw' \
+                                  --output /dev/null --silent --head --fail \
+                                  -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
+                                  sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
+                                  echo "No Onboarder branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: |
@@ -2054,7 +2069,7 @@ workflows:
           type: approval
           filters:
             branches:
-              only: 
+              only:
                 - master
       - checkout:
           requires:
@@ -2067,7 +2082,7 @@ workflows:
           type: approval
           filters:
             branches:
-              only: 
+              only:
                 - master
       - build_srnt_dev:
           name: "Build image"
@@ -2443,7 +2458,7 @@ workflows:
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt"]
-                        CLUSTER_VERSION: ["1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]
+                        CLUSTER_VERSION: ["1.19.0", "1.20.0", "1.21.0", "1.22.0"]
                 requires:
                     - checkout
           - build_srnt_prod:

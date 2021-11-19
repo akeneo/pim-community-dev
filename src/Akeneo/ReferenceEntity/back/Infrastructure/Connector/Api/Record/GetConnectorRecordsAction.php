@@ -45,31 +45,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorRecordsAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var Limit */
-    private $limit;
-
-    /** @var SearchConnectorRecord */
-    private $searchConnectorRecord;
-
-    /** @var PaginatorInterface */
-    private $halPaginator;
-
-    /** @var AddHalDownloadLinkToRecordImages */
-    private $addHalLinksToImageValues;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SearchFiltersValidator */
-    private $searchFiltersValidator;
-
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private Limit $limit;
+    private SearchConnectorRecord $searchConnectorRecord;
+    private PaginatorInterface $halPaginator;
+    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
+    private ValidatorInterface $validator;
+    private SearchFiltersValidator $searchFiltersValidator;
     private SecurityFacade $securityFacade;
-
     private TokenStorageInterface $tokenStorage;
-
     private LoggerInterface $apiAclLogger;
 
     public function __construct(
@@ -105,7 +89,7 @@ class GetConnectorRecordsAction
         $this->denyAccessUnlessAclIsGranted();
 
         $searchFilters = $this->getSearchFiltersFromRequest($request);
-        $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
+        $searchFiltersErrors = empty($searchFilters) ? [] : $this->searchFiltersValidator->validate($searchFilters);
 
         if (!empty($searchFiltersErrors)) {
             return new JsonResponse([
@@ -138,14 +122,12 @@ class GetConnectorRecordsAction
             throw new ViolationHttpException($violations, 'Invalid query parameters');
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $result = ($this->searchConnectorRecord)($recordQuery);
-        $records = array_map(function (ConnectorRecord $record) {
-            return $record->normalize();
-        }, $result->records());
+        $records = array_map(static fn (ConnectorRecord $record) => $record->normalize(), $result->records());
 
         $records = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $records);
         $paginatedRecords = $this->paginateRecords($records, $request, $referenceEntityIdentifier, $result->lastSortValue());

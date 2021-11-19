@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: 애셋이 경고와 함께 편집되었습니다.
   success: 애셋이 편집되었습니다.
   error: 애셋 편집에 실패했습니다.
+pim_api:
+  acl_group:
+    asset: 애셋

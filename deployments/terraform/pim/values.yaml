@@ -73,7 +73,7 @@ image:
     tag: master
   httpd:
     repository: httpd
-    tag: 2.4.33
+    tag: 2.4.51
     pullPolicy: IfNotPresent
 
 pim:
@@ -136,8 +136,8 @@ pim:
   api:
     ratelimit:
       enabled: true
-      average: 200
-      burst: 50
+      average: 100
+      burst: 25
     replicas: 2
     fpm:
       resources:

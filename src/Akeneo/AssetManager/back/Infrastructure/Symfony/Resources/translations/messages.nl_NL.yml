@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: De assets zijn bewerkt met waarschuwingen
   success: De assets zijn bewerkt
   error: Het bewerken van de assets is mislukt
+pim_api:
+  acl_group:
+    asset: Assets

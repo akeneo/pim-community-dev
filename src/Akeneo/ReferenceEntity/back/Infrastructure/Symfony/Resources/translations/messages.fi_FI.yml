@@ -53,3 +53,6 @@ pim_mass_edit:
       error: Tietueiden poisto epäonnistui
 akeneo_reference_entity: Viitetiedot yksinkertainen valinta
 akeneo_reference_entity_collection: Viitetiedot monivalinta
+pim_api:
+  acl_group:
+    reference_entity: Viitetiedot

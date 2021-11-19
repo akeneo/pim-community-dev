@@ -1,17 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import $ from 'jquery';
+import {LocaleCode, getLabel, ChannelCode} from '@akeneo-pim-community/shared';
 import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-import {getLabel} from 'pimui/js/i18n';
 
 const routing = require('routing');
 import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const renderRow = (

@@ -14,8 +14,7 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllRecordIdentifiers implements SelectRecordIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
