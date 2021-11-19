@@ -102,8 +102,8 @@ pim:
         limits:
           memory: "2048Mi"
         requests:
-          memory: "512Mi"
-          cpu: "200m"
+          memory: "300Mi"
+          cpu: "20m"
     webhook-consumer-process:
       enabled: true
       pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
@@ -113,8 +113,8 @@ pim:
         limits:
           memory: "512Mi"
         requests:
-          memory: "256Mi"
-          cpu: "200m"
+          memory: "100Mi"
+          cpu: "2m"
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
   web:
@@ -124,15 +124,15 @@ pim:
         limits:
           memory: "1024Mi"
         requests:
-          cpu: "200m"
-          memory: "256Mi"
+          cpu: "30m"
+          memory: "512Mi"
     httpd:
       resources:
         limits:
           memory: "128Mi"
         requests:
-          cpu: "200m"
-          memory: "128Mi"
+          cpu: "2m"
+          memory: "40Mi"
   api:
     ratelimit:
       enabled: true
@@ -144,15 +144,15 @@ pim:
         limits:
           memory: "1024Mi"
         requests:
-          cpu: "200m"
+          cpu: "100m"
           memory: "256Mi"
     httpd:
       resources:
         limits:
           memory: "128Mi"
         requests:
-          cpu: "200m"
-          memory: "128Mi"
+          cpu: "5m"
+          memory: "30Mi"
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
