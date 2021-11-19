@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -42,13 +43,13 @@ class ConnectorReferenceEntityHydrator
 
     public function hydrate(array $row): ConnectorReferenceEntity
     {
-        $labels = Type::getType(Type::JSON_ARRAY)
+        $labels = Type::getType(Types::JSON)
             ->convertToPHPValue($row['labels'], $this->platform);
-        $identifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $imageKey = Type::getType(Type::STRING)
+        $imageKey = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_file_key'], $this->platform);
-        $imageFilename = Type::getType(Type::STRING)
+        $imageFilename = Type::getType(Types::STRING)
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
 
         $image = Image::createEmpty();

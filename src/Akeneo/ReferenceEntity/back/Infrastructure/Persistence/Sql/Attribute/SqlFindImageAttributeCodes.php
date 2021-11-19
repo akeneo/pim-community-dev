@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterfa
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -58,7 +59,7 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         return array_map(static fn ($row) => AttributeCode::fromString(
-            Type::getType(Type::STRING)->convertToPHPValue(
+            Type::getType(Types::STRING)->convertToPHPValue(
                 $row['code'],
                 $platform
             )

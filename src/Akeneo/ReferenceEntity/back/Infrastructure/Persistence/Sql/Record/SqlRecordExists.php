@@ -73,6 +73,6 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

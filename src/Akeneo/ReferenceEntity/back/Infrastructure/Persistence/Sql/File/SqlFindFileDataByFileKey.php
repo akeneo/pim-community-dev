@@ -44,11 +44,11 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
 
         return [
-            'filePath'         => Type::getType(Type::STRING)->convertToPhpValue($result['file_key'], $platform),
-            'originalFilename' => Type::getType(Type::STRING)->convertToPhpValue($result['original_filename'], $platform),
-            'size'             => Type::getType(Type::INTEGER)->convertToPhpValue($result['size'], $platform),
-            'mimeType'         => Type::getType(Type::STRING)->convertToPhpValue($result['mime_type'], $platform),
-            'extension'        => Type::getType(Type::STRING)->convertToPhpValue($result['extension'], $platform),
+            'filePath'         => Type::getType(Types::STRING)->convertToPhpValue($result['file_key'], $platform),
+            'originalFilename' => Type::getType(Types::STRING)->convertToPhpValue($result['original_filename'], $platform),
+            'size'             => Type::getType(Types::INTEGER)->convertToPhpValue($result['size'], $platform),
+            'mimeType'         => Type::getType(Types::STRING)->convertToPhpValue($result['mime_type'], $platform),
+            'extension'        => Type::getType(Types::STRING)->convertToPhpValue($result['extension'], $platform),
         ];
     }
 }

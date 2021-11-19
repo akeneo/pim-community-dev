@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transf
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -41,9 +42,9 @@ class ConnectorRecordHydrator
 
     public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorRecord
     {
-        $valueCollection = Type::getType(Type::JSON_ARRAY)
+        $valueCollection = Type::getType(Types::JSON)
             ->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
         $filteredRawValues = [];

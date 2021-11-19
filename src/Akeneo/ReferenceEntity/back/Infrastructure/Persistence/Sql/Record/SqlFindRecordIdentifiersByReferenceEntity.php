@@ -28,7 +28,7 @@ class SqlFindRecordIdentifiersByReferenceEntity implements FindRecordIdentifiers
         );
 
         $platform = $this->connection->getDatabasePlatform();
-        while (false !== $identifier = $statement->fetchColumn()) {
+        while (false !== $identifier = $statement->fetchOne()) {
             $stringIdentifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
 
             yield RecordIdentifier::fromString($stringIdentifier);

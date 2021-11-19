@@ -74,7 +74,7 @@ SQL;
             ]
         );
 
-        $row = $statement->fetch(\PDO::FETCH_COLUMN);
+        $row = $statement->fetchOne();
         if (empty($row)) {
             throw new \LogicException(
                 sprintf(

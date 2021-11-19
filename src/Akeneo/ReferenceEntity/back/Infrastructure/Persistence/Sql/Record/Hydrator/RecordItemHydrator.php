@@ -26,6 +26,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\ValuesDecoder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -52,17 +53,17 @@ class RecordItemHydrator implements RecordItemHydratorInterface
 
     public function hydrate(array $row, RecordQuery $query, $context = []): RecordItem
     {
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $this->platform);
+        $referenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $this->platform);
 
         $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $attributeAsImage = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $image = $this->getImage($valueCollection, $attributeAsImage);
 
         $recordItem = new RecordItem();

@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -50,9 +51,9 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
@@ -71,9 +72,9 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withReferenceEntityIdentifierAndOrder(
@@ -94,8 +95,8 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

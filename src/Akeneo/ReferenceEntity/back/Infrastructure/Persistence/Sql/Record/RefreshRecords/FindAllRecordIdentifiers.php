@@ -28,7 +28,7 @@ SELECT identifier FROM akeneo_reference_entity_record;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
 
-        while (false !== $result = $statement->fetch(\PDO::FETCH_COLUMN)) {
+        while (false !== $result = $statement->fetchOne()) {
             yield RecordIdentifier::fromString($result);
         }
     }
