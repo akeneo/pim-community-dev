@@ -57,6 +57,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.4-gd \
         php7.4-apcu \
         php7.4-exif && \
+    apt-get install --yes --quiet libpcre2-8-0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.4 /usr/local/sbin/php-fpm && \
