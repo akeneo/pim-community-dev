@@ -114,7 +114,7 @@ pim_enrich.entity.association_type:
         message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
-  hint: <a href=«{{link}}» target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
+  hint: <a href="{{link}}" target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
 pim_enrich.entity.group_type:
   label: tipo de grupo
   flash:

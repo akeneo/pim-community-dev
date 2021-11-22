@@ -265,6 +265,18 @@ config:
           module: pim/controller/entity-with-family-variant
           config:
             entity: product-model
+        pim_enrich_product_edit_categories:
+          module: pim/controller/entity-categories-with-family-variant
+          config:
+            entity: product
+            redirectRouteName: pim_enrich_product_edit
+            redirectTabName: pim-product-edit-form-categories
+        pim_enrich_product_model_edit_categories:
+          module: pim/controller/entity-categories-with-family-variant
+          config:
+            entity: product-model
+            redirectRouteName: pim_enrich_product_model_edit
+            redirectTabName: pim-product-edit-form-categories
         pim_enrich_group_edit:
           module: pim/controller/group
           aclResourceId: pim_enrich_group_edit
@@ -508,6 +520,7 @@ config:
     pim/controller/product:                pimui/js/controller/product
     pim/controller/product/index:          pimui/js/controller/product/index
     pim/controller/entity-with-family-variant: pimui/js/controller/entity-with-family-variant
+    pim/controller/entity-categories-with-family-variant: pimui/js/controller/entity-categories-with-family-variant
     pim/controller/family:                 pimui/js/controller/family
     pim/controller/catalog-volume:         pimui/js/controller/catalog-volume
     pim/controller/channel/edit:           pimui/js/controller/channel/edit

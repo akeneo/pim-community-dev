@@ -1,5 +1,13 @@
 # 5.0.x
 
+# 5.0.57 (2021-11-08)
+
+## Bug fixes
+
+- PIM-10075: Impossible to classify products in a new tab/window from a right click on the product grid
+
+# 5.0.56 (2021-11-05)
+
 ## Bug fixes
 
 - PIM-10141: [Backport] PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
@@ -13,6 +21,7 @@
 - PIM-10131: [Backport] PIM-9740: Prevent to delete a channel used in a product export job
 - PIM-10133: [Backport EXB-1046]: Prevent to delete a channel used in shared catalog export job
 - PIM-10134: Prevent to delete a channel used in a published product export job
+- PIM-10132: Update shared catalog export profile when the channel's category is changed
 
 # 5.0.54 (2021-10-29)
 
