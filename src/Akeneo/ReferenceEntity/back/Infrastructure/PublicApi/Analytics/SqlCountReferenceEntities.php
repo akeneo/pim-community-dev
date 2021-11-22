@@ -12,8 +12,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlCountReferenceEntities
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -27,8 +26,7 @@ class SqlCountReferenceEntities
             FROM akeneo_reference_entity_reference_entity;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
-        $volume = new CountVolume((int) $result['count']);
 
-        return $volume;
+        return new CountVolume((int) $result['count']);
     }
 }

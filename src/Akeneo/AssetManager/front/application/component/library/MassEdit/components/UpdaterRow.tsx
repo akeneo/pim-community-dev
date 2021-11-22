@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, getFontSize, IconButton, SelectInput, List, useId} from 'akeneo-design-system';
-import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  getErrorsForPath,
+  useTranslate,
+  ValidationError,
+  getLabel,
+  LocaleCode,
+  Channel,
+  ChannelCode,
+} from '@akeneo-pim-community/shared';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
 import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {getLabel} from 'pimui/js/i18n';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {getLocaleFromChannel, getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
 import {LocaleDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/LocaleDropdown';
 import {ChannelDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/ChannelDropdown';

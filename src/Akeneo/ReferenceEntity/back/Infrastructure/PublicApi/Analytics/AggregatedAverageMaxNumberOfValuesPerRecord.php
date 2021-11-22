@@ -6,7 +6,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -16,16 +16,9 @@ class AggregatedAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
+    private int $limit;
 
-    /** @var int */
-    private $limit;
-
-    /**
-     * @param Connection $connection
-     * @param int        $limit
-     */
     public function __construct(Connection $connection, int $limit)
     {
         $this->connection = $connection;
@@ -42,15 +35,12 @@ SELECT JSON_EXTRACT(volume, '$.value.max') AS max, JSON_EXTRACT(volume, '$.value
 FROM pim_aggregated_volume WHERE volume_name = :volumeName;
 SQL;
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('volumeName', self::VOLUME_NAME, Type::STRING);
-        $stmt->execute();
-        $sqlResult = $stmt->fetch();
+        $stmt->bindValue('volumeName', self::VOLUME_NAME, Types::STRING);
+        $sqlResult = $stmt->executeQuery()->fetchAssociative();
 
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 
-        $volume = new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
-
-        return $volume;
+        return new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
     }
 }

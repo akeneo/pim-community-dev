@@ -26,6 +26,8 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Record
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +35,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -41,38 +45,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordsAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var RecordExistsInterface */
-    private $recordExists;
-
-    /** @var EditRecordCommandFactory */
-    private $editRecordCommandFactory;
-
-    /** @var EditRecordHandler */
-    private $editRecordHandler;
-
-    /** @var CreateRecordHandler */
-    private $createRecordHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var ValidatorInterface */
-    private $recordDataValidator;
-
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
-
-    /** @var RecordValidator */
-    private $recordStructureValidator;
-
-    /** @var RecordListValidator */
-    private $recordListValidator;
-
-    /** @var int */
-    private $maximumRecordsPerRequest;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private RecordExistsInterface $recordExists;
+    private EditRecordCommandFactory $editRecordCommandFactory;
+    private EditRecordHandler $editRecordHandler;
+    private CreateRecordHandler $createRecordHandler;
+    private ValidatorInterface $recordDataValidator;
+    private ViolationNormalizer $violationNormalizer;
+    private RecordValidator $recordStructureValidator;
+    private RecordListValidator $recordListValidator;
+    private int $maximumRecordsPerRequest;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private LoggerInterface $apiAclLogger;
 
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
@@ -80,28 +65,34 @@ class CreateOrUpdateRecordsAction
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
-        Router $router,
         ValidatorInterface $recordDataValidator,
         ViolationNormalizer $violationNormalizer,
         RecordValidator $recordStructureValidator,
         RecordListValidator $recordListValidator,
-        int $maximumRecordsPerRequest
+        int $maximumRecordsPerRequest,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
         $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->createRecordHandler = $createRecordHandler;
-        $this->router = $router;
         $this->recordDataValidator = $recordDataValidator;
         $this->violationNormalizer = $violationNormalizer;
         $this->recordStructureValidator = $recordStructureValidator;
         $this->recordListValidator = $recordListValidator;
         $this->maximumRecordsPerRequest = $maximumRecordsPerRequest;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $exception) {
@@ -182,7 +173,7 @@ class CreateOrUpdateRecordsAction
         $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $createRecordCommand = null;
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createRecordCommand = new CreateRecordCommand(
                 $referenceEntityIdentifier->normalize(),
                 $normalizedRecord['code'],
@@ -202,7 +193,7 @@ class CreateOrUpdateRecordsAction
             throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createRecordHandler)($createRecordCommand);
         }
 
@@ -212,5 +203,32 @@ class CreateOrUpdateRecordsAction
             'code' => (string) $recordCode,
             'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
         ];
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_reference_entity_record_edit';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

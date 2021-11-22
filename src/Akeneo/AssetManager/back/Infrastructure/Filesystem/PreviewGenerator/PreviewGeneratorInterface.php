@@ -23,6 +23,8 @@ interface PreviewGeneratorInterface
 {
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
 
+    public function supportsMimeType(string $mimeType): bool;
+
     /**
      * @param string $data The filename of the external image we want to generate (ex : akeneo.jpg)
      * @param AbstractAttribute $attribute The attribute which need to have a preview

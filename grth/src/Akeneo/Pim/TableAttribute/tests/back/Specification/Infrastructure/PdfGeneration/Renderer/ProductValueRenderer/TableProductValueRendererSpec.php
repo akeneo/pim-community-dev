@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\Renderer\ProductValueRenderer;
 
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;

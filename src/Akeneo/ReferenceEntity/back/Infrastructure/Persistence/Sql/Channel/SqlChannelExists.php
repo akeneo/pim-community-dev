@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -24,8 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlChannelExists implements ChannelExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -47,6 +47,6 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

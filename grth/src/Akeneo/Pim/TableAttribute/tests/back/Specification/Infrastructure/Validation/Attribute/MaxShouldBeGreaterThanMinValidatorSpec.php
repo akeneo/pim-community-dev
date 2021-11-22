@@ -6,7 +6,6 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGre
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMinValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

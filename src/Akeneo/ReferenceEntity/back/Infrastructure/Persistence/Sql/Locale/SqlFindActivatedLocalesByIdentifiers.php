@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -24,8 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -65,8 +65,6 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $results = $statement->fetchAllAssociative();
 
-        return array_map(function ($result) use ($platform) {
-            return Type::getType(Type::STRING)->convertToPhpValue($result['code'], $platform);
-        }, $results);
+        return array_map(static fn ($result) => Type::getType(Types::STRING)->convertToPhpValue($result['code'], $platform), $results);
     }
 }

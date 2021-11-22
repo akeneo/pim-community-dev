@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Value;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Domain\Value\Row;

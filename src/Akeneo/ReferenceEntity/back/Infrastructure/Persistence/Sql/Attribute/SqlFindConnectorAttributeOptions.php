@@ -17,28 +17,19 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private Connection $sqlConnection;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
-        AttributeHydratorRegistry $attributeHydratorRegistry,
         InactiveLabelFilter $inactiveLabelFilter
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
         $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
@@ -63,7 +54,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             return [];

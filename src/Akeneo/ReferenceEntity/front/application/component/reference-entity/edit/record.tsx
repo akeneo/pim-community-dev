@@ -223,6 +223,7 @@ const Records = ({
           rights={rights}
           isItemSelected={isItemSelected}
           onSelectionChange={onSelectionChange}
+          attributes={attributes}
         />
       ) : (
         <div className="AknGridContainer-noData">

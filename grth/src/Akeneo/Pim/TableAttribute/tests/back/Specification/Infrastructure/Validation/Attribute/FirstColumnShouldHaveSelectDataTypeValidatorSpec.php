@@ -17,7 +17,6 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnSho
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataTypeValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;

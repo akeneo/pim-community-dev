@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Import;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Test\Integration\Configuration;

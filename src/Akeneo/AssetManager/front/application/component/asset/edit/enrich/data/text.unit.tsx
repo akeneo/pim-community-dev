@@ -1,6 +1,5 @@
 import React from 'react';
 import {screen, fireEvent} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {TEXT_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {view as TextView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';

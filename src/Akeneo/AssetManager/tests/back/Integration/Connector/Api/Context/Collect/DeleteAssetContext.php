@@ -51,9 +51,10 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteAssetContext implements Context
@@ -86,6 +87,10 @@ class DeleteAssetContext implements Context
 
     private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -97,7 +102,9 @@ class DeleteAssetContext implements Context
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        InMemoryAttributeRepository $attributeRepository
+        InMemoryAttributeRepository $attributeRepository,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -110,6 +117,8 @@ class DeleteAssetContext implements Context
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -254,5 +263,36 @@ class DeleteAssetContext implements Context
         );
 
         $this->assetRepository->create($asset);
+    }
+
+    /**
+     * @When the connector deletes this asset without permission
+     */
+    public function theConnectorDeletesThisAssetWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_iphone_asset_delete.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for deleting this asset
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForDeletingThisAsset()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_iphone_asset_delete.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_remove"'),
+            'Expected warning not found in the logs.'
+        );
     }
 }

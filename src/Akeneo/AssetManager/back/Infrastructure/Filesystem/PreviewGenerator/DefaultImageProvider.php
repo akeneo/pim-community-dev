@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 /*
@@ -29,9 +31,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     ];
 
     protected FilterManager $filterManager;
-
     protected CacheManager $cacheManager;
-
     protected ?array $defaultImages = null;
 
     /**
@@ -54,7 +54,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getImageUrl($fileKey, $filter)
+    public function getImageUrl(string $fileKey, string $filter): string
     {
         $filter = isset(self::SUPPORTED_TYPES[$filter]) ? self::SUPPORTED_TYPES[$filter] : $filter;
 
@@ -72,13 +72,9 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     /**
      * Return a Binary instance that embed the image corresponding to the specified file type
      *
-     * @param string $fileType
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return Binary
      */
-    public function getImageBinary($fileType)
+    public function getImageBinary(string $fileType): Binary
     {
         if (isset($this->defaultImages[$fileType])) {
             $image = $this->defaultImages[$fileType];
@@ -91,10 +87,8 @@ class DefaultImageProvider implements DefaultImageProviderInterface
 
     /**
      * Ensure $defaultImages parameter validity
-     *
-     * @param OptionsResolver $resolver
      */
-    private function configureDefaultImagesOptions(OptionsResolver $resolver)
+    private function configureDefaultImagesOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['path', 'mime_type', 'extension']);
     }

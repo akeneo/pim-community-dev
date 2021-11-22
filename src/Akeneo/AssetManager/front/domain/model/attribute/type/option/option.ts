@@ -1,10 +1,10 @@
+import {getLabel} from '@akeneo-pim-community/shared';
 import LabelCollection, {
   denormalizeLabelCollection,
   emptyLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import OptionCode, {denormalizeOptionCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 import LocaleReference, {localeReferenceIsEmpty} from 'akeneoassetmanager/domain/model/locale-reference';
-import {getLabel} from 'pimui/js/i18n';
 
 export type Option = {
   code: OptionCode;

@@ -32,7 +32,7 @@ class LoadRawTableConfiguration implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            Events::postLoad
+            Events::postLoad,
         ];
     }
 

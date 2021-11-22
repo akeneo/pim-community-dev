@@ -9,9 +9,7 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\BinaryImageGe
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -20,15 +18,11 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
     private PreviewGeneratorInterface $binaryImageGenerator;
-
     private MediaFileAttribute $mediaFileAttribute;
-
-    private FileStorer $fileStorer;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
         $this->binaryImageGenerator = $this->get('akeneo_assetmanager.infrastructure.generator.binary_image_generator');
         $this->loadFixtures();
     }
@@ -68,7 +62,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_preview_for_a_media_file_attribute()
+    public function it_gets_a_preview_for_a_media_file_attribute()
     {
         $data = $this->generateImage(10, 1);
         $this->binaryImageGenerator->supports('google-logo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -84,7 +78,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_preview_for_a_media_file_attribute_from_the_cache()
+    public function it_gets_a_preview_for_a_media_file_attribute_from_the_cache()
     {
         $data = $this->generateImage(10, 1);
         $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -104,7 +98,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_preview_for_a_media_file_attribute_from_the_cache_removed()
+    public function it_gets_a_preview_for_a_media_file_attribute_from_the_cache_removed()
     {
         $data = $this->generateImage(10, 1);
 
@@ -130,7 +124,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_get_a_default_preview_for_an_unknown_image_media_link()
+    public function it_gets_a_default_preview_for_an_unknown_image_media_link()
     {
         $this->binaryImageGenerator->supports('test', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate(base64_encode('test'), $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -156,9 +150,25 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_throw_an_error_when_the_file_size_is_too_big()
+    public function it_throws_an_error_when_the_file_size_is_too_big()
     {
         $data = $this->generateImage(15000, 100);
+
+        $this->expectException(CouldNotGeneratePreviewException::class);
+
+        $this->binaryImageGenerator->generate(
+            $data,
+            $this->mediaFileAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_when_resolution_is_too_big()
+    {
+        $data = $this->generateImage(16000, 1);
 
         $this->expectException(CouldNotGeneratePreviewException::class);
 
@@ -172,16 +182,19 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_throw_an_error_when_resolution_is_too_big()
+    public function it_returns_default_image_when_mime_type_is_not_supported()
     {
-        $data = $this->generateImage(16000, 1);
+        $data = $this->uploadPdfFile();
 
-        $this->expectException(CouldNotGeneratePreviewException::class);
-
-        $this->binaryImageGenerator->generate(
+        $previewImage = $this->binaryImageGenerator->generate(
             $data,
             $this->mediaFileAttribute,
-            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE,
+        );
+
+        $this->assertStringContainsString(
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            $previewImage,
         );
     }
 
@@ -214,15 +227,5 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
                 ]
             ])
             ->load();
-    }
-
-    private function generateImage(int $size, int $quality): string
-    {
-        $imageFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my_image.jpg';
-        $image = imagecreate($size, $size);
-        self::assertTrue(imagejpeg($image, $imageFilename, $quality));
-        $fileInfo = $this->fileStorer->store(new \SplFileInfo($imageFilename), Storage::FILE_STORAGE_ALIAS);
-
-        return base64_encode($fileInfo->getKey());
     }
 }

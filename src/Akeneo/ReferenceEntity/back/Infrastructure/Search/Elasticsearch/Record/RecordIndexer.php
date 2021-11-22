@@ -18,14 +18,9 @@ class RecordIndexer implements RecordIndexerInterface
 {
     private const KEY_AS_ID = 'identifier';
 
-    /** @var Client */
-    private $recordClient;
-
-    /** @var RecordNormalizerInterface */
-    private $normalizer;
-
-    /** @var int */
-    private $batchSize;
+    private Client $recordClient;
+    private RecordNormalizerInterface $normalizer;
+    private int $batchSize;
 
     public function __construct(
         Client $recordClient,

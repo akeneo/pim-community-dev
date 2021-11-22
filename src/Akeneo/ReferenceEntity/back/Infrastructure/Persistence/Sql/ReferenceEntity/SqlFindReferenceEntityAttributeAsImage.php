@@ -20,8 +20,7 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindReferenceEntityAttributeAsImage implements FindReferenceEntityAttributeAsImageInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -39,8 +38,8 @@ SQL;
             'identifier' => (string) $referenceEntityIdentifier,
         ]);
 
-        $attributeAsImage = $statement->fetchColumn();
-        $statement->closeCursor();
+        $attributeAsImage = $statement->fetchOne();
+        $statement->free();
 
         return false === $attributeAsImage ?
             AttributeAsImageReference::noReference() :

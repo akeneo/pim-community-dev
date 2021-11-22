@@ -1,6 +1,6 @@
-const DatagridState = require('pim/datagrid/state');
+import {Router} from '@akeneo-pim-community/shared';
 
-export default (router: any) => () => (next: any) => (action: any) => {
+export default (router: Router, datagridState: any) => () => (next: any) => (action: any) => {
   if ('REDIRECT_TO_ROUTE' === action.type) {
     router.redirectToRoute(action.route, action.params);
 
@@ -9,7 +9,7 @@ export default (router: any) => () => (next: any) => (action: any) => {
   if ('REDIRECT_TO_PRODUCT_GRID' === action.type) {
     const filters = `f[${action.selectedAttribute}][value][]=${action.assetCode}&f[${action.selectedAttribute}][type]=in`;
 
-    DatagridState.set('product-grid', {
+    datagridState.set('product-grid', {
       filters: filters,
     });
 

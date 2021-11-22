@@ -9,6 +9,7 @@ use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -16,8 +17,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindUserGroupsForSecurityIdentifier implements FindUserGroupsForSecurityIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -45,9 +45,8 @@ SQL;
             $query,
             ['security_identifier' => $securityIdentifier->stringValue()]
         );
-        $results = $statement->fetchAllAssociative();
 
-        return $results;
+        return $statement->fetchAllAssociative();
     }
 
     private function hydrateUserGroupIdentifiers($results): array
@@ -57,15 +56,14 @@ SQL;
         }
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $userGroupIdentifiers = array_map(function ($normalizedUserGroupIdentifier) use ($platform) {
-            $identifier = Type::getType(Type::INTEGER)->convertToPhpValue(
+
+        return array_map(function ($normalizedUserGroupIdentifier) use ($platform) {
+            $identifier = Type::getType(Types::INTEGER)->convertToPhpValue(
                 $normalizedUserGroupIdentifier['group_id'],
                 $platform
             );
 
             return UserGroupIdentifier::fromInteger($identifier);
         }, $results);
-
-        return $userGroupIdentifiers;
     }
 }

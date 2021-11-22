@@ -24,10 +24,10 @@ function downloadArtifacts() {
     if [[ ${TYPE} = "srnt" ]]; then
         echo "Get srnt target release"
         # Get the target release
-        TARGET_RELEASE=$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-dev  | grep -oE 'v?[0-9]{14}$' | sort -dr | head -n1)
+        TARGET_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}\$" --sort-by="~tags" --format="value(tags)" | head -n1)
     else
         echo "Get grth target release"
-        TARGET_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="growth-" --sort-by="~tags" --format="value(tags)" | head -n1)
+        TARGET_RELEASE=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}\$" --sort-by="~tags" --format="value(tags)" | head -n1)
         RELEASE_BUCKET="growth-edition"
     fi
 

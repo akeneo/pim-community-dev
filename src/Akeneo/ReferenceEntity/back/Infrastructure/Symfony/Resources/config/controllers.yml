@@ -66,7 +66,6 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute\CreateAction
         arguments:
             - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
             - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
@@ -159,6 +158,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages
@@ -191,13 +193,18 @@ services:
             - '%reference_entity_connector_records_limit_per_page%'
             - '@validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.search_filters_validator'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntityAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entities.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntitiesAction
@@ -206,6 +213,9 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
             - '%reference_entity_connector_reference_entities_limit_per_page%'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\CreateOrUpdateReferenceEntityAction
@@ -218,6 +228,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordAction
@@ -230,6 +243,9 @@ services:
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
             - '@validator'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.records.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordsAction
@@ -239,12 +255,14 @@ services:
             - '@akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory'
             - '@akeneo_referenceentity.application.record.edit_record_handler'
             - '@akeneo_referenceentity.application.record.create_record_handler'
-            - '@router'
             - '@validator'
             - '@pim_api.normalizer.exception.violation'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_list_validator'
             - '%reference_entity_connector_maximum_records_to_process_per_request%'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction
@@ -252,18 +270,23 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction
         arguments:
             - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
             - '@router'
@@ -275,6 +298,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.create.attribute_creation_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.edit.attribute_edition_validator'
             - '@akeneo_referenceentity.infrastructure.connector.validate_attribute_properties_immutability'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction
@@ -289,18 +315,27 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@akeneo_referenceentity.application.attribute.edit_attribute_option_handler'
             - '@akeneo_referenceentity.application.attribute.append_attribute_option_handler'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.media_file_download:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile\DownloadMediaFileAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_options.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionsAction
@@ -309,9 +344,15 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_referenceentity.domain.persistence.query.attribute_supports_options'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.infrastructure.connector.action.media_file_upload:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile\UploadMediaFileAction
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@router'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'

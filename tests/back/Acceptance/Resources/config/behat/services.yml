@@ -17,3 +17,11 @@ services:
         class: AkeneoEnterprise\Test\Acceptance\Authorization\DummyPermissiveAuthorizationChecker
         decorates: pimee_security.cached_authorization_checker
         decoration_inner_name: security.base_authorization_checker
+
+    oro_security.security_facade:
+        class: AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'

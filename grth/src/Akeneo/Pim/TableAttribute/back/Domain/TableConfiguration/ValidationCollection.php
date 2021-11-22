@@ -64,7 +64,7 @@ final class ValidationCollection implements \IteratorAggregate
      */
     public function normalize()
     {
-        return 0 === count($this->validations) ? (object) [] : array_map(
+        return [] === $this->validations ? (object) [] : array_map(
             fn (TableValidation $validation) => $validation->getValue(),
             $this->validations
         );

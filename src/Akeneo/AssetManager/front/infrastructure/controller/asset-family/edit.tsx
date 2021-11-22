@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
-import __ from 'akeneoassetmanager/tools/translator';
+import translate from 'akeneoassetmanager/tools/translator';
 import createStore from 'akeneoassetmanager/infrastructure/store';
 import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
@@ -42,6 +42,8 @@ const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
 const Routing = require('routing');
+const datagridState = require('pim/datagrid/state');
+const {notify} = require('oro/messenger');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   if (Key.Escape === event.code) {
@@ -61,7 +63,7 @@ class AssetFamilyEditController extends BaseController {
     assetFamilyFetcher
       .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
       .then(async (assetFamilyResult: AssetFamilyResult) => {
-        this.store = createStore(true)(assetFamilyReducer);
+        this.store = createStore(true, {router, datagridState, translate, notify, userContext})(assetFamilyReducer);
 
         permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
           this.store.dispatch(permissionEditionReceived(permissions));
@@ -137,7 +139,7 @@ class AssetFamilyEditController extends BaseController {
       const state = this.store.getState();
       const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
 
-      return __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
+      return translate('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -148,7 +150,7 @@ class AssetFamilyEditController extends BaseController {
   canLeave() {
     const state = this.store.getState();
     const assetFamilyLabel = getAssetFamilyLabel(state.form.data, state.user.catalogLocale);
-    const message = __('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
+    const message = translate('pim_asset_manager.asset_family.edit.discard_changes', {assetFamilyLabel});
 
     return this.isDirty() ? confirm(message) : true;
   }

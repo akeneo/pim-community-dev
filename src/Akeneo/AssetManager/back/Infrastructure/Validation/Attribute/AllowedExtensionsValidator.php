@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -44,7 +42,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->isNotArrayOfValidExtensions($allowedExtensions)) {
+        if (!$this->isArrayOfValidExtensions($allowedExtensions)) {
             return;
         }
 
@@ -75,7 +73,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
         return $notValid;
     }
 
-    private function isNotArrayOfValidExtensions(array $allowedExtensions): bool
+    private function isArrayOfValidExtensions(array $allowedExtensions): bool
     {
         $assertDoesNotContainExtensionSeparator = new Assert\Callback(function (string $allowedExtension, ExecutionContextInterface $context, $payload) {
             if ($this->hasExtensionSeparator($allowedExtension)) {
@@ -101,8 +99,8 @@ class AllowedExtensionsValidator extends ConstraintValidator
             }
         });
 
-        $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
+        $isValid = true;
+        $validator = $this->context->getValidator();
         foreach ($allowedExtensions as $allowedExtension) {
             $violations = $validator->validate($allowedExtension, [
                 new Assert\Type('string'),
@@ -110,14 +108,14 @@ class AllowedExtensionsValidator extends ConstraintValidator
                 $assertExtensionOnlyContainsLowercaseLettersOrNumbers,
                 $assertExtensionLengthLowerThanMax
             ]);
+
+            if ($violations->count() > 0) {
+                $this->addViolations($violations);
+                $isValid = false;
+            }
         }
 
-        $notValid = $violations->count() > 0;
-        if ($notValid) {
-            $this->addViolations($violations);
-        }
-
-        return $notValid;
+        return $isValid;
     }
 
     private function hasExtensionSeparator(string $allowedExtension): bool

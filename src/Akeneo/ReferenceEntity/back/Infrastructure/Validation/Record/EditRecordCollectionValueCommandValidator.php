@@ -27,8 +27,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 {
-    /** @var FindExistingRecordCodesInterface */
-    private $existingRecordCodes;
+    private FindExistingRecordCodesInterface $existingRecordCodes;
 
     public function __construct(FindExistingRecordCodesInterface $existingRecordCodes)
     {
@@ -72,9 +71,9 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
     {
         $recordCodes = array_filter(
             $command->recordCodes,
-            fn (?string $code): bool => null !== $code && '' !== $code
+            static fn (?string $code): bool => null !== $code && '' !== $code
         );
-        if (0 === count($recordCodes)) {
+        if ([] === $recordCodes) {
             return;
         }
 

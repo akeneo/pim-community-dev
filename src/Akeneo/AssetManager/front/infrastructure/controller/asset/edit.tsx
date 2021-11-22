@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
-import __ from 'akeneoassetmanager/tools/translator';
+import translate from 'akeneoassetmanager/tools/translator';
 import AssetView from 'akeneoassetmanager/application/component/asset/edit';
 import createStore from 'akeneoassetmanager/infrastructure/store';
 import assetReducer from 'akeneoassetmanager/application/reducer/asset/edit';
@@ -33,6 +33,9 @@ const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
+const router = require('pim/router');
+const datagridState = require('pim/datagrid/state');
+const {notify} = require('oro/messenger');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   if (Key.Escape === event.code) {
@@ -57,7 +60,7 @@ class AssetEditController extends BaseController {
         denormalizeAssetCode(route.params.assetCode)
       )
       .then(async (assetResult: AssetResult) => {
-        this.store = createStore(true)(assetReducer);
+        this.store = createStore(true, {router, datagridState, translate, notify, userContext})(assetReducer);
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(assetEditionReceived(assetResult.asset));
         this.store.dispatch(assetFamilyPermissionChanged(assetResult.permission));
@@ -104,7 +107,7 @@ class AssetEditController extends BaseController {
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
+      return translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -113,7 +116,7 @@ class AssetEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
+    const message = translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'});
 
     return this.isDirty() ? confirm(message) : true;
   }

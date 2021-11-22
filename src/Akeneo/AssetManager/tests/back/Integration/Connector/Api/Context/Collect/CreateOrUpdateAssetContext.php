@@ -72,8 +72,10 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAssetContext implements Context
@@ -117,6 +119,10 @@ class CreateOrUpdateAssetContext implements Context
 
     private ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy;
 
+    private SecurityFacadeStub $securityFacade;
+
+    private TestLogger $apiAclLogger;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -130,7 +136,9 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
-        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy
+        ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy,
+        SecurityFacadeStub $securityFacade,
+        TestLogger $apiAclLogger
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -145,6 +153,20 @@ class CreateOrUpdateAssetContext implements Context
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
         $this->computeTransformationLauncherSpy = $computeTransformationLauncherSpy;
+        $this->securityFacade = $securityFacade;
+        $this->apiAclLogger = $apiAclLogger;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_list', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_remove', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_edit', true);
+        $this->securityFacade->setIsGranted('pim_api_asset_family_list', true);
     }
 
     /**
@@ -758,6 +780,39 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
+    /**
+     * @When /^the connector collects a media file for the Kartell asset from the DAM to synchronize it with the PIM without permission$/
+     */
+    public function theConnectorCollectsAMediaFileForTheKartellAssetFromTheDAMToSynchronizeItWithThePIMWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->uploadImageResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . "forbidden_image_upload.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting a media file for the Kartell asset from the DAM to synchronize it with the PIM
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingAMediaFileForTheKartellAssetFromTheDamToSynchronizeItWithThePim()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->uploadImageResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_image_upload.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            'Expected warning not found in the logs.'
+        );
+    }
+
     private function loadFrontViewAssetFamily(bool $withTransformation = false, NamingConventionInterface $namingConvention = null): void
     {
         $assetFamily = AssetFamily::create(
@@ -1153,6 +1208,70 @@ class CreateOrUpdateAssetContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'not_found_entity_asset_family_wrong_case.json'
+        );
+    }
+
+    /**
+     * @When the connector collects these assets from the ERP to synchronize them with the PIM without permission
+     */
+    public function theConnectorCollectsTheseAssetsFromTheErpToSynchronizeThemWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
+
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . "forbidden_frontview_assets_synchronization.json"
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting these assets from the ERP to synchronize them with the PIM
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingTheseAssetsFromTheErpToSynchronizeThemWithThePim()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_frontview_assets_synchronization.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            'Expected warning not found in the logs.'
+        );
+    }
+
+    /**
+     * @When the connector collects this asset from the ERP to synchronize it with the PIM without permission
+     */
+    public function theConnectorCollectsThisAssetFromTheErpToSynchronizeItWithThePimWithoutPermission()
+    {
+        $this->securityFacade->setIsGranted('pim_api_asset_edit', false);
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_house_asset_creation.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about missing permissions for collecting this asset from the ERP to synchronize it with the PIM
+     */
+    public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAssetFromTheErpToSynchronizeItWithThePim()
+    {
+        /**
+         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
+         */
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'forbidden_house_asset_creation.json'
+        );
+        Assert::assertTrue(
+            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
+            'Expected warning not found in the logs.'
         );
     }
 }

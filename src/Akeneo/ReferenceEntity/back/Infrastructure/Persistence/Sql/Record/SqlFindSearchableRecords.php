@@ -10,6 +10,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindSearchableRecordsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -17,8 +18,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindSearchableRecords implements FindSearchableRecordsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -37,14 +37,14 @@ SQL;
         $statement = $this->connection->executeQuery($sqlQuery, ['record_identifier' => (string) $recordIdentifier]);
         $result = $statement->fetchAssociative();
 
-        return !$result ? null : $this->hydrateRecordToIndex(
+        return $result ? $this->hydrateRecordToIndex(
             $result['identifier'],
             $result['reference_entity_identifier'],
             $result['code'],
             $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
-        );
+        ) : null;
     }
 
     public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
@@ -79,12 +79,12 @@ SQL;
     ): SearchableRecordItem {
         $platform = $this->connection->getDatabasePlatform();
 
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($referenceEntityIdentifier, $platform);
-        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
-        $updatedAt = Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($code, $platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($attributeAsLabel, $platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
 
         $recordItem = new SearchableRecordItem();
         $recordItem->identifier = $identifier;
@@ -103,7 +103,7 @@ SQL;
             return [];
         }
 
-        $labels = array_reduce(
+        return array_reduce(
             $values,
             function (array $labels, array $value) use ($attributeAsLabelIdentifier) {
                 if ($value['attribute'] === $attributeAsLabelIdentifier) {
@@ -114,7 +114,5 @@ SQL;
             },
             []
         );
-
-        return $labels;
     }
 }

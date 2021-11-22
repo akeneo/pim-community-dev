@@ -34,7 +34,7 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
         }
 
         $columnType = $value['data_type'] ?? null;
-        if (!\in_array($columnType, \array_keys(self::VALIDATION_MAPPING), true)) {
+        if (!\array_key_exists($columnType, self::VALIDATION_MAPPING)) {
             return;
         }
 

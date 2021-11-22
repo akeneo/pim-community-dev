@@ -31,14 +31,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    /** @var FindRecordDetailsInterface */
-    private $findRecordDetailsQuery;
-
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private FindRecordDetailsInterface $findRecordDetailsQuery;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         FindRecordDetailsInterface $findRecordDetailsQuery,
@@ -92,7 +87,7 @@ class GetAction
     ): RecordDetails {
         $result = $this->findRecordDetailsQuery->find($referenceEntityIdentifier, $recordCode);
 
-        if (null === $result) {
+        if (!$result instanceof RecordDetails) {
             throw new NotFoundHttpException();
         }
 

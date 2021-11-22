@@ -36,33 +36,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
-
-    /** @var FindAttributeNextOrderInterface */
-    private $attributeNextOrder;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var CreateAttributeCommandFactoryRegistryInterface */
-    private $attributeCommandFactoryRegistry;
-
-    /** @var CanEditReferenceEntityQueryHandler */
-    private $canEditReferenceEntityQueryHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private CreateAttributeHandler $createAttributeHandler;
+    private SecurityFacade $securityFacade;
+    private NormalizerInterface $normalizer;
+    private ValidatorInterface $validator;
+    private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry;
+    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         CreateAttributeHandler $createAttributeHandler,
-        FindAttributeNextOrderInterface $attributeNextOrder,
         CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
         TokenStorageInterface $tokenStorage,
@@ -71,7 +54,6 @@ class CreateAction
         SecurityFacade $securityFacade
     ) {
         $this->createAttributeHandler = $createAttributeHandler;
-        $this->attributeNextOrder = $attributeNextOrder;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
@@ -125,9 +107,7 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
-
-        return $command;
+        return $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
     }
 
     private function isAttributeTypeProvided($request)

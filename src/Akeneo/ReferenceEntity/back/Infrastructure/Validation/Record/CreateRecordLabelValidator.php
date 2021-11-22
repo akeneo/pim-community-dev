@@ -34,14 +34,9 @@ use Webmozart\Assert\Assert;
  */
 final class CreateRecordLabelValidator extends ConstraintValidator
 {
-    /** @var FindReferenceEntityAttributeAsLabelInterface */
-    private $findAttributeAsLabel;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $sqlFindAttributesIndexedByIdentifier;
-
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $editValueCommandFactoryRegistry;
+    private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel;
+    private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
         FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel,
@@ -71,13 +66,11 @@ final class CreateRecordLabelValidator extends ConstraintValidator
     }
 
     /**
-     * @param CreateRecordCommand $command
      * @return AbstractEditValueCommand[]
      */
     private function getEditLabelCommands(CreateRecordCommand $command): array
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        /** @var AttributeAsLabelReference $attributeAsLabelReference */
         $attributeAsLabelReference = $this->findAttributeAsLabel->find($referenceEntityIdentifier);
         if ($attributeAsLabelReference->isEmpty()) {
             return [];
@@ -88,7 +81,7 @@ final class CreateRecordLabelValidator extends ConstraintValidator
 
         $editValueCommands = [];
         foreach ($command->labels as $locale => $label) {
-            if (null === $label) {
+            if (empty($label)) {
                 continue;
             }
 
@@ -99,6 +92,7 @@ final class CreateRecordLabelValidator extends ConstraintValidator
                 'locale' => $locale,
                 'data' => $label,
             ];
+
             $editValueCommands[] = $this->editValueCommandFactoryRegistry
                 ->getFactory($attribute, $normalizedValue)
                 ->create($attribute, $normalizedValue);

@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecord
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -25,8 +26,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -49,19 +49,17 @@ class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
             WHERE reference_entity_identifier = :reference_entity_identifier
         ) as has_records
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
+
+        return $this->sqlConnection->executeQuery($query, [
             'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
-
-        return $statement;
     }
 
     private function doesReferenceEntityHaveRecords(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $hasRecords = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
 
-        return $hasRecords;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
     }
 }

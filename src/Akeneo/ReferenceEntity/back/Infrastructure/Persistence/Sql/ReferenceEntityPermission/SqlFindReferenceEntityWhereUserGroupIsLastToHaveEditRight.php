@@ -25,8 +25,7 @@ use PDO;
  */
 class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

@@ -16,8 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RefreshRecordsSubscriber implements EventSubscriberInterface
 {
-    /** @var CommandLauncher  */
-    private $commandLauncher;
+    private CommandLauncher $commandLauncher;
 
     public function __construct(CommandLauncher $commandLauncher)
     {

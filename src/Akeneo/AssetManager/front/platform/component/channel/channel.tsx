@@ -1,9 +1,7 @@
-import * as React from 'react';
-import {getLabel} from 'pimui/js/i18n';
+import React from 'react';
 import styled from 'styled-components';
+import {Channel, ChannelCode, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 
 const ChannelLabelView = styled(Label)`
   margin-left: 10px;

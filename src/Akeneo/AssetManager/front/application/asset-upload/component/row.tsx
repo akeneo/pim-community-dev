@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, Locale, LocaleCode} from '@akeneo-pim-community/shared';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
@@ -9,7 +9,6 @@ import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {
   formatLocaleOption,
   getOptionsFromChannels,

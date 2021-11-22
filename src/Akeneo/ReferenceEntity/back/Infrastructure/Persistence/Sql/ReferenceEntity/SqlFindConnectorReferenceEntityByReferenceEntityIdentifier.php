@@ -26,11 +26,8 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var ConnectorReferenceEntityHydrator */
-    private $referenceEntityHydrator;
+    private Connection $connection;
+    private ConnectorReferenceEntityHydrator $referenceEntityHydrator;
 
     public function __construct(
         Connection $connection,
@@ -60,7 +57,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (empty($result)) {
             return null;

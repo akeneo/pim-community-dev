@@ -52,7 +52,7 @@ final class LabelCollection
      */
     public function normalize()
     {
-        return 0 === count($this->labels) ? (object) [] : $this->labels;
+        return [] === $this->labels ? (object) [] : $this->labels;
     }
 
     /**

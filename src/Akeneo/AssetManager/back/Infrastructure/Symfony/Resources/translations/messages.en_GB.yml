@@ -84,3 +84,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: Assets successfully edited with warnings
   success: Assets successfully edited
   error: Asset edition failed
+pim_api:
+  acl_group:
+    asset: Assets

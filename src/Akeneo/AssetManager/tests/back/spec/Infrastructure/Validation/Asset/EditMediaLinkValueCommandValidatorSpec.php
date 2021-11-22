@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -25,8 +27,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Infrastructure\Network\DnsLookup;
-use Akeneo\AssetManager\Infrastructure\Network\IpMatcher;
+use Akeneo\AssetManager\Infrastructure\Network\UrlChecker;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommand as Constraint;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommandValidator;
 use PhpSpec\ObjectBehavior;
@@ -36,9 +37,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
 {
-    public function let(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
+    public function let(ExecutionContextInterface $context, UrlChecker $urlChecker)
     {
-        $this->beConstructedWith(['http', 'https'], $dnsLookup, $ipMatcher, '192.168.1.42');
+        $this->beConstructedWith($urlChecker);
         $this->initialize($context);
     }
 
@@ -47,10 +48,10 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(EditMediaLinkValueCommandValidator::class);
     }
 
-    function it_allows_a_whitelisted_domain(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
+    function it_allows_a_whitelisted_domain(ExecutionContextInterface $context, UrlChecker $urlChecker)
     {
-        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('192.168.1.42');
-        $ipMatcher->match('192.168.1.42', ['192.168.1.42'])->shouldBeCalled()->willReturn(true);
+        $urlChecker->isProtocolAllowed('https')->shouldBeCalled()->willReturn(true);
+        $urlChecker->isDomainAllowed('example.com')->shouldBeCalled()->willReturn(true);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -59,12 +60,11 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
 
     function it_denies_localhost_when_not_whitelisted(
         ExecutionContextInterface $context,
-        DnsLookup $dnsLookup,
-        IpMatcher $ipMatcher,
+        UrlChecker $urlChecker,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $dnsLookup->ip('127.0.0.1')->shouldBeCalled()->willReturn('127.0.0.1');
-        $ipMatcher->match('127.0.0.1', ['192.168.1.42'])->shouldBeCalled()->willReturn(false);
+        $urlChecker->isProtocolAllowed('https')->shouldBeCalled()->willReturn(true);
+        $urlChecker->isDomainAllowed('127.0.0.1')->shouldBeCalled()->willReturn(false);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
         $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://127.0.0.1/an_image.png');
         $context->buildViolation(Constraint::DOMAIN_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
@@ -73,29 +73,20 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
         $this->validate($command, new Constraint());
     }
 
-    function it_denies_an_ip_in_private_range(
+    function it_denies_url_with_unallowed_protocol(
         ExecutionContextInterface $context,
-        DnsLookup $dnsLookup,
-        IpMatcher $ipMatcher,
+        UrlChecker $urlChecker,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('192.168.15.5');
-        $ipMatcher->match('192.168.15.5', ['192.168.1.42'])->shouldBeCalled()->willReturn(false);
+        $urlChecker->getAllowedProtocols()->shouldBeCalled()->willReturn(['https', 'http']);
+        $urlChecker->isProtocolAllowed('xxx')->shouldBeCalled()->willReturn(false);
+        $urlChecker->isDomainAllowed('example.com')->shouldBeCalled()->willReturn(true);
         $mediaLinkAttribute = $this->mediaLinkAttribute();
-        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
-        $context->buildViolation(Constraint::DOMAIN_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
+        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'xxx://example.com/an_image.png');
+        $context->buildViolation(Constraint::PROTOCOL_NOT_ALLOWED)->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%allowed_protocols%', 'https, http')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('name')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
-        $this->validate($command, new Constraint());
-    }
-
-    function it_allows_an_ip_neither_in_whitelist_nor_private_range(ExecutionContextInterface $context, DnsLookup $dnsLookup, IpMatcher $ipMatcher)
-    {
-        $dnsLookup->ip('example.com')->shouldBeCalled()->willReturn('8.8.8.8');
-        $ipMatcher->match('8.8.8.8', ['192.168.1.42'])->shouldBeCalled()->willReturn(true);
-        $mediaLinkAttribute = $this->mediaLinkAttribute();
-        $command = new EditMediaLinkValueCommand($mediaLinkAttribute, null, null, 'https://example.com/an_image.png');
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
         $this->validate($command, new Constraint());
     }
 
@@ -113,7 +104,7 @@ class EditMediaLinkValueCommandValidatorSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             Prefix::createEmpty(),
             Suffix::createEmpty(),
-            MediaType::fromString('image')
+            MediaType::fromString('image'),
         );
     }
 }

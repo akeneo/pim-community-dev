@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transf
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,11 +29,8 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorRecordHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
-
-    /** @var ConnectorValueTransformerRegistry */
-    private $valueTransformerRegistry;
+    private AbstractPlatform $platform;
+    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
 
     public function __construct(
         Connection $connection,
@@ -44,9 +42,9 @@ class ConnectorRecordHydrator
 
     public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorRecord
     {
-        $valueCollection = Type::getType(Type::JSON_ARRAY)
+        $valueCollection = Type::getType(Types::JSON)
             ->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
         $filteredRawValues = [];
@@ -60,9 +58,8 @@ class ConnectorRecordHydrator
         }
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
-        $connectorRecord = new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
 
-        return $connectorRecord;
+        return new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array

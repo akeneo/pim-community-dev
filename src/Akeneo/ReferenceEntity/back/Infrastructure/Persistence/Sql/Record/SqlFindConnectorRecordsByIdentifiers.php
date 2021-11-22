@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -29,17 +30,10 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
-
-    /** @var ConnectorRecordHydrator */
-    private $recordHydrator;
+    private Connection $sqlConnection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
+    private ConnectorRecordHydrator $recordHydrator;
 
     public function __construct(
         Connection $connection,
@@ -121,7 +115,7 @@ SQL;
         if (!isset($result['reference_entity_identifier'])) {
             throw new \LogicException('The record should have a reference entity identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedReferenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );

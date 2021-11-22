@@ -2,7 +2,7 @@ import React, {useReducer, useCallback, useMemo, useEffect, ChangeEvent} from 'r
 import {Reducer} from 'redux';
 import styled from 'styled-components';
 import {Button, Modal} from 'akeneo-design-system';
-import {useTranslate, useUploader} from '@akeneo-pim-community/shared';
+import {useNotify, useTranslate, useUploader, Locale, LocaleCode} from '@akeneo-pim-community/shared';
 import {LineList} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {
@@ -22,7 +22,6 @@ import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-
 import {onCreateAllAsset} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/on-create-all-assets';
 import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import limitFileUpload from 'akeneoassetmanager/application/asset-upload/utils/upload-limit';
-import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -55,6 +54,7 @@ const UploadModal = ({
   onAssetCreated,
 }: UploadModalProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
   const [uploader] = useUploader('akeneo_asset_manager_file_upload');
   const [state, dispatch] = useReducer<Reducer<State>>(reducer, {lines: []});
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily) as NormalizedAttribute;
@@ -89,7 +89,7 @@ const UploadModal = ({
       event.stopPropagation();
 
       let files = event.target.files ? Object.values(event.target.files) : [];
-      files = limitFileUpload(files, state.lines.length);
+      files = limitFileUpload(notify, translate, files, state.lines.length);
 
       onFileDrop(uploader, files, assetFamily, channels, locales, dispatch);
     },
@@ -98,7 +98,10 @@ const UploadModal = ({
 
   const handleLineChange = useCallback((line: Line) => dispatch(editLineAction(line)), [dispatch]);
 
-  const handleLineUploadRetry = useCallback((line: Line) => retryFileUpload(uploader, line, dispatch), [dispatch]);
+  const handleLineUploadRetry = useCallback(
+    (line: Line) => retryFileUpload(notify, translate, uploader, line, dispatch),
+    [notify, translate, dispatch]
+  );
 
   const handleLineRemove = useCallback((line: Line) => dispatch(removeLineAction(line)), [dispatch]);
 

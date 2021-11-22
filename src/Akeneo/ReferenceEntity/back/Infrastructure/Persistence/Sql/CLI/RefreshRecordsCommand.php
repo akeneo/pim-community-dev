@@ -28,15 +28,9 @@ class RefreshRecordsCommand extends Command
     public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
     private const BULK_SIZE = 100;
 
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var FindAllRecordIdentifiers */
-    private $findAllRecordIdentifiers;
-
-    /** @var RefreshRecord */
-    private $refreshRecord;
-
+    private Connection $sqlConnection;
+    private FindAllRecordIdentifiers $findAllRecordIdentifiers;
+    private RefreshRecord $refreshRecord;
     private LoggerInterface $logger;
 
     public function __construct(
@@ -66,20 +60,19 @@ class RefreshRecordsCommand extends Command
         $verbose = $input->getOption('verbose') ?: false;
 
         $totalRecords = $this->getTotalRecords();
+        $progressBar = new ProgressBar($output, $totalRecords);
         if ($verbose) {
-            $progressBar = new ProgressBar($output, $totalRecords);
             $progressBar->start();
         }
+
         $startedTime = new \DateTimeImmutable('now');
 
         $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
         $i = 0;
         foreach ($recordIdentifiers as $recordIdentifier) {
             $this->refreshRecord->refresh($recordIdentifier);
-            if ($i % self::BULK_SIZE === 0) {
-                if ($verbose) {
-                    $progressBar->advance(self::BULK_SIZE);
-                }
+            if ($i % self::BULK_SIZE === 0 && $verbose) {
+                $progressBar->advance(self::BULK_SIZE);
             }
             $i++;
         }

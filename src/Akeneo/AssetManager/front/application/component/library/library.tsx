@@ -1,5 +1,7 @@
 import React, {isValidElement, ReactNode, useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
+import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
+import {useNotify, NotificationLevel, useTranslate, getLabel} from '@akeneo-pim-community/shared';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {Context} from 'akeneoassetmanager/domain/model/context';
@@ -12,7 +14,6 @@ import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/AssetFamilySelector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {getLabel} from 'pimui/js/i18n';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -31,9 +32,7 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
-import {useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
 import {MassDelete} from 'akeneoassetmanager/application/component/library/MassDelete/MassDelete';
 import {useSelectionQuery} from 'akeneoassetmanager/application/component/library/hooks/useSelectionQuery';
 import {useRoutes} from 'akeneoassetmanager/application/component/library/hooks/useRoutes';

@@ -7,8 +7,8 @@ import {
   ValidationError,
   useTranslate,
   sanitize,
+  LocaleCode,
 } from '@akeneo-pim-community/shared';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 

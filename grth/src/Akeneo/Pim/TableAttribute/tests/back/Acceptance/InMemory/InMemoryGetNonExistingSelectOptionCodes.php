@@ -31,9 +31,7 @@ class InMemoryGetNonExistingSelectOptionCodes implements GetNonExistingSelectOpt
         return \array_udiff(
             $selectOptionCodes,
             $this->collectionRepository->getByColumn($attributeCode, $columnCode)->getOptionCodes(),
-            function (SelectOptionCode $a, SelectOptionCode $b): int {
-                return \strcasecmp($a->asString(), $b->asString());
-            }
+            fn (SelectOptionCode $a, SelectOptionCode $b): int => \strcasecmp($a->asString(), $b->asString())
         );
     }
 }

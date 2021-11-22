@@ -17,6 +17,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,39 +27,25 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
 {
-    /** @var Router */
-    private $router;
-
-    /** @var AttributeOptionValidator */
-    private $jsonSchemaValidator;
-
-    /** @var ValidatorInterface */
-    private $businessRulesValidator;
-
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
-
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
-
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var EditAttributeOptionHandler */
-    private $editAttributeOptionHandler;
-
-    /** @var AppendAttributeOptionHandler */
-    private $appendAttributeOptionHandler;
+    private Router $router;
+    private AttributeOptionValidator $jsonSchemaValidator;
+    private ValidatorInterface $businessRulesValidator;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private AttributeExistsInterface $attributeExists;
+    private AttributeSupportsOptions $attributeSupportsOptions;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
+    private AttributeRepositoryInterface $attributeRepository;
+    private EditAttributeOptionHandler $editAttributeOptionHandler;
+    private AppendAttributeOptionHandler $appendAttributeOptionHandler;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private LoggerInterface $apiAclLogger;
 
     public function __construct(
         Router $router,
@@ -69,7 +57,10 @@ class CreateOrUpdateAttributeOptionAction
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         AttributeRepositoryInterface $attributeRepository,
         EditAttributeOptionHandler $editAttributeOptionHandler,
-        AppendAttributeOptionHandler $appendAttributeOptionHandler
+        AppendAttributeOptionHandler $appendAttributeOptionHandler,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->router = $router;
         $this->jsonSchemaValidator = $jsonSchemaValidator;
@@ -81,10 +72,15 @@ class CreateOrUpdateAttributeOptionAction
         $this->attributeRepository = $attributeRepository;
         $this->editAttributeOptionHandler = $editAttributeOptionHandler;
         $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $attributeCode = AttributeCode::fromString($attributeCode);
@@ -115,13 +111,13 @@ class CreateOrUpdateAttributeOptionAction
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntityExists) {
+        if (!$referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
@@ -131,7 +127,7 @@ class CreateOrUpdateAttributeOptionAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
@@ -212,8 +208,33 @@ class CreateOrUpdateAttributeOptionAction
         $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        $optionExists = $attribute->hasAttributeOption($optionCode);
+        return $attribute->hasAttributeOption($optionCode);
+    }
 
-        return $optionExists;
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_reference_entity_edit';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

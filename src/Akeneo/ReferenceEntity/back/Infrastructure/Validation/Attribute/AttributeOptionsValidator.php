@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeOptionsValidator extends ConstraintValidator
 {
-    /** @var int */
-    private $optionsLimit;
+    private int $optionsLimit;
 
     public function __construct(int $optionsLimit)
     {
@@ -109,9 +108,7 @@ class AttributeOptionsValidator extends ConstraintValidator
 
     private function checkDuplicates(array $attributeOptions): void
     {
-        $optionCodes = array_map(function (array $attributeOption) {
-            return strtolower($attributeOption['code']);
-        }, $attributeOptions);
+        $optionCodes = array_map(static fn (array $attributeOption) => strtolower($attributeOption['code']), $attributeOptions);
 
         $frequencies = array_count_values($optionCodes);
         foreach ($frequencies as $optionCode => $frequency) {

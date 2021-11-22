@@ -26,8 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ChannelShouldExistValidator extends ConstraintValidator
 {
-    /** @var ChannelExistsInterface */
-    private $channelExists;
+    private ChannelExistsInterface $channelExists;
 
     public function __construct(ChannelExistsInterface $channelExists)
     {
@@ -42,7 +41,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkChannelReferenceType($channelReference);
 
-        if (!$channelReference->isEmpty() && false === $this->channelExists->exists($channelReference->getIdentifier())) {
+        if (!$channelReference->isEmpty() && !$this->channelExists->exists($channelReference->getIdentifier())) {
             $this->context->buildViolation(ChannelShouldExist::ERROR_MESSAGE)
                 ->setParameter('channel_identifier', $channelReference->normalize())
                 ->atPath('channel')

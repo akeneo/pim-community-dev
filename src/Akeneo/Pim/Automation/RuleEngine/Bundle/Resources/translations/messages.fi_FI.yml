@@ -70,8 +70,8 @@ pimee_catalog_rule:
     now: nyt
     relative_date:
       minute: ']-Inf, -1[%absolute_count% minuuttia sitten{-1}1 minuutti sitten{1}1 minuutissa]1, +Inf[ %absolute_count% minuutissa'
-      hour: ']-Inf, -1[%absolute_count% tuntia sitten{-1}1 tunti sitten{1}1 tunnissa]1, +Inf[ %absolute_count% tunnissa'
-      day: ']-Inf, -1[%absolute_count% päivää sitten{-1}1 päivä sitten{1}1 päivässä]1, +Inf[ %absolute_count% päivässä'
+      hour: ']-Inf, -1[%absolute_count% tuntia sitten|{-1}1 tunti sitten{1}1 tunnissa|]1, +Inf[ %absolute_count% tunnissa'
+      day: ']-Inf, -1[%absolute_count% päivää sitten|{-1}1 päivä sitten|{1}1 päivässä|]1, +Inf[ %absolute_count% päivässä'
       week: ']-Inf, -1[%absolute_count% viikkoa sitten{-1}1 viikko sitten{1}1 viikossa]1, +Inf[ %absolute_count% viikossa'
       month: ']-Inf, -1[%absolute_count% kuukautta sitten{-1}1 kuukausi sitten{1}1 kuukaudessa]1, +Inf[ %absolute_count% kuukaudessa'
       year: ']-Inf, -1[%absolute_count% vuotta sitten{-1}1 vuosi sitten{1}1 vuodessa]1, +Inf[ %absolute_count% vuodessa'

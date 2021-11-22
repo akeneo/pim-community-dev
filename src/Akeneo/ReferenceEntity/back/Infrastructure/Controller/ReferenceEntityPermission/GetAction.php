@@ -17,8 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    /** @var FindReferenceEntityPermissionsDetailsInterface */
-    private $findReferenceEntityPermissionsDetails;
+    private FindReferenceEntityPermissionsDetailsInterface $findReferenceEntityPermissionsDetails;
 
     public function __construct(FindReferenceEntityPermissionsDetailsInterface $findReferenceEntityPermissionsDetails)
     {
@@ -48,8 +47,6 @@ class GetAction
      */
     private function normalizePermissionDetails(array $referenceEntityPermissionDetails): array
     {
-        return array_map(function (PermissionDetails $permissionDetails) {
-            return $permissionDetails->normalize();
-        }, $referenceEntityPermissionDetails);
+        return array_map(static fn (PermissionDetails $permissionDetails) => $permissionDetails->normalize(), $referenceEntityPermissionDetails);
     }
 }

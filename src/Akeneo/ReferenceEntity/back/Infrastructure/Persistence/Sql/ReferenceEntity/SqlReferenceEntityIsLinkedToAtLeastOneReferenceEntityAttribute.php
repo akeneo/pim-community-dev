@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -24,8 +25,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -58,8 +58,7 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $isLinked = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_linked'], $platform);
 
-        return $isLinked;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_linked'], $platform);
     }
 }

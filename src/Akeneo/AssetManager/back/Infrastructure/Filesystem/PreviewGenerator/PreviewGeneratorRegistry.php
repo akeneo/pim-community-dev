@@ -33,6 +33,11 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
         $this->previewGenerators[] = $previewGenerator;
     }
 
+    public function supportsMimeType(string $mimeType): bool
+    {
+        return true;
+    }
+
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         foreach ($this->previewGenerators as $previewGenerator) {

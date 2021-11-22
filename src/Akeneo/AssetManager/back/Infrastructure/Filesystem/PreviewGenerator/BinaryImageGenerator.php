@@ -27,7 +27,7 @@ class BinaryImageGenerator extends AbstractPreviewGenerator
     public const SUPPORTED_TYPES = [
         PreviewGeneratorRegistry::THUMBNAIL_TYPE        => 'am_binary_image_thumbnail',
         PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_image_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
+        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview',
     ];
 
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool

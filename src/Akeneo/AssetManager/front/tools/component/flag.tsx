@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Locale from 'akeneoassetmanager/domain/model/locale';
+import React from 'react';
+import {Locale} from '@akeneo-pim-community/shared';
 
 const Flag = ({
   locale,

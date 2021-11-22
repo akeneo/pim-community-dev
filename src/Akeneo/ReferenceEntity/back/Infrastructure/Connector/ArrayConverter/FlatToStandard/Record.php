@@ -169,7 +169,7 @@ final class Record implements ArrayConverterInterface
             ];
         } else {
             $attributeDetails = $this->getAttributeDetails($tokens[0], $referenceEntityIdentifier);
-            if (null === $attributeDetails) {
+            if (!$attributeDetails instanceof AttributeDetails) {
                 // If attribute does not belong to ref entity and the value is empty, we skip it.
                 // This behavior allows to have records with different reference entities in the same import.
                 if ('' === $data) {
@@ -248,10 +248,8 @@ final class Record implements ArrayConverterInterface
                 // The validation will trigger an error
                 $convertedValue['locale'] = $tokens[1];
             }
-        } else {
-            if ($dataIsEmpty && ($attributeDetails->valuePerChannel || $attributeDetails->valuePerLocale)) {
-                return null;
-            }
+        } elseif ($dataIsEmpty && ($attributeDetails->valuePerChannel || $attributeDetails->valuePerLocale)) {
+            return null;
         }
 
         return $convertedValue;

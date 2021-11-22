@@ -1,12 +1,12 @@
-const userContext = require('pim/user-context');
+import {UserContext} from '@akeneo-pim-community/shared';
 
-export default () => () => (next: any) => (action: any) => {
+export default (userContext: UserContext) => () => (next: any) => (action: any) => {
   if ('LOCALE_CHANGED' === action.type && action.target === 'catalog') {
-    userContext.set('catalogLocale', action.locale);
+    userContext.set('catalogLocale', action.locale, {});
   }
 
   if ('CHANNEL_CHANGED' === action.type) {
-    userContext.set('catalogScope', action.channel);
+    userContext.set('catalogScope', action.channel, {});
   }
 
   return next(action);

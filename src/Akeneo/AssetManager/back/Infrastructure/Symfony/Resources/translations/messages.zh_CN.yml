@@ -86,3 +86,6 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   warning: 成功编辑资产，但显示警告
   success: 资产已成功编辑
   error: 资产编辑失败
+pim_api:
+  acl_group:
+    asset: 资产

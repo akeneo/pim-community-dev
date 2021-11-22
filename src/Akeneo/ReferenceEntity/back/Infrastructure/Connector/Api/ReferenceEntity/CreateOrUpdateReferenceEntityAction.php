@@ -24,6 +24,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,33 +33,23 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateReferenceEntityAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
-
-    /** @var EditReferenceEntityHandler */
-    private $editReferenceEntityHandler;
-
-    /** @var Router */
-    private $router;
-
-    /** @var ReferenceEntityValidator */
-    private $jsonSchemaValidator;
-
-    /** @var FindFileDataByFileKeyInterface */
-    private $findFileData;
-
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
+    private ReferenceEntityExistsInterface $referenceEntityExists;
+    private ValidatorInterface $validator;
+    private CreateReferenceEntityHandler $createReferenceEntityHandler;
+    private EditReferenceEntityHandler $editReferenceEntityHandler;
+    private Router $router;
+    private ReferenceEntityValidator $jsonSchemaValidator;
+    private FindFileDataByFileKeyInterface $findFileData;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private LoggerInterface $apiAclLogger;
 
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
@@ -67,7 +59,10 @@ class CreateOrUpdateReferenceEntityAction
         Router $router,
         ReferenceEntityValidator $jsonSchemaValidator,
         FindFileDataByFileKeyInterface $findFileData,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $apiAclLogger
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->validator = $validator;
@@ -77,10 +72,14 @@ class CreateOrUpdateReferenceEntityAction
         $this->jsonSchemaValidator = $jsonSchemaValidator;
         $this->findFileData = $findFileData;
         $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $exception) {
@@ -100,7 +99,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $createReferenceEntityCommand = null;
         $shouldBeCreated = !$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createReferenceEntityCommand = new CreateReferenceEntityCommand(
                 $normalizedReferenceEntity['code'],
                 $normalizedReferenceEntity['labels'] ?? []
@@ -120,7 +119,7 @@ class CreateOrUpdateReferenceEntityAction
 
         if (array_key_exists('image', $normalizedReferenceEntity)) {
             $editReferenceEntityCommand->image = null !== $normalizedReferenceEntity['image'] ? $this->getImageData($normalizedReferenceEntity['image']) : null;
-        } elseif (false === $shouldBeCreated) {
+        } elseif (!$shouldBeCreated) {
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
             $editReferenceEntityCommand->image = $referenceEntity->getImage()->normalize();
         }
@@ -130,7 +129,7 @@ class CreateOrUpdateReferenceEntityAction
             throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createReferenceEntityHandler)($createReferenceEntityCommand);
         }
 
@@ -142,7 +141,7 @@ class CreateOrUpdateReferenceEntityAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        $responseStatusCode = true === $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $responseStatusCode = $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
         return Response::create('', $responseStatusCode, $headers);
     }
@@ -188,5 +187,32 @@ class CreateOrUpdateReferenceEntityAction
             'filePath' => $imageData['filePath'],
             'originalFilename' => $imageData['originalFilename'],
         ];
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        $acl = 'pim_api_reference_entity_edit';
+
+        if (!$this->securityFacade->isGranted($acl)) {
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new \LogicException('An user must be authenticated if ACLs are required');
+            }
+
+            $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                throw new \LogicException(sprintf(
+                    'An instance of "%s" is expected if ACLs are required',
+                    UserInterface::class
+                ));
+            }
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUsername(),
+                implode(',', $user->getRoles()),
+                $acl
+            ));
+        }
     }
 }

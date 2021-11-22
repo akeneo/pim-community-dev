@@ -16,11 +16,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File;
 use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlFileExists implements FileExistsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -39,6 +39,6 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

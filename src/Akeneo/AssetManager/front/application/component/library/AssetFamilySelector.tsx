@@ -1,12 +1,10 @@
 import React from 'react';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {useTranslate, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
-import {getLabel} from 'pimui/js/i18n';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;

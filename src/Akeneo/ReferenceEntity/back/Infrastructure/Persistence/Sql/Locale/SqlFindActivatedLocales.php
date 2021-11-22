@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,16 +25,11 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindActivatedLocales implements FindActivatedLocalesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AbstractPlatform */
-    private $platform;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->platform = $sqlConnection->getDatabasePlatform();
     }
 
     /**
@@ -50,14 +46,11 @@ GROUP BY l.code
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAllAssociative();
+        $platform = $this->sqlConnection->getDatabasePlatform();
 
-        return array_map(function (array $row) {
-            $localesCode = Type::getType(Type::STRING)->convertToPHPValue(
-                $row['locales_codes'],
-                $this->platform
-            );
-
-            return $localesCode;
-        }, $results ?? []);
+        return array_map(static fn (array $row) => Type::getType(Types::STRING)->convertToPHPValue(
+            $row['locales_codes'],
+            $platform
+        ), $results ?? []);
     }
 }

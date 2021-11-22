@@ -8,7 +8,7 @@ use Webmozart\Assert\Assert;
 final class AttributeCreationValidator
 {
     /** @var AttributeValidatorInterface[] */
-    private $attributeValidator;
+    private iterable $attributeValidator;
 
     public function __construct(iterable $attributeValidators)
     {

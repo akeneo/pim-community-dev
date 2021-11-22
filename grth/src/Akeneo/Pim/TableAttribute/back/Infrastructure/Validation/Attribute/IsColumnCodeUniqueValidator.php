@@ -30,11 +30,11 @@ class IsColumnCodeUniqueValidator extends ConstraintValidator
         $lowercaseCodes = \array_map('strtolower', $codes);
         $lowercaseDuplicateCodes = \array_diff_key($lowercaseCodes, \array_unique($lowercaseCodes));
         $duplicateCodes = \array_intersect_key($codes, $lowercaseDuplicateCodes);
-        if (count($duplicateCodes) > 0) {
+        if ($duplicateCodes !== []) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.duplicated_column_code',
                 [
-                    '%duplicateCodes%' => \join(', ', $duplicateCodes),
+                    '%duplicateCodes%' => \implode(', ', $duplicateCodes),
                     '%count%' => \count($duplicateCodes),
                 ],
             )->addViolation();

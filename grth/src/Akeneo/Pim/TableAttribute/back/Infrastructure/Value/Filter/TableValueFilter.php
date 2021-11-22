@@ -138,7 +138,7 @@ final class TableValueFilter extends AbstractAttributeFilter
                     'terms' => [
                         self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
                     ],
-                ]
+                ],
             ];
 
             $this->searchQueryBuilder->addFilter([

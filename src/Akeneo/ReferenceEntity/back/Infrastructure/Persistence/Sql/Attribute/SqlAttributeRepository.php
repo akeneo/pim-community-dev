@@ -25,6 +25,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\Att
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -35,14 +36,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAttributeRepository implements AttributeRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private Connection $sqlConnection;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         Connection $sqlConnection,
@@ -99,9 +95,9 @@ SQL;
                 'additional_properties'       => json_encode($additionalProperties),
             ],
             [
-                'is_required'       => Type::getType(Type::BOOLEAN),
-                'value_per_channel' => Type::getType(Type::BOOLEAN),
-                'value_per_locale'  => Type::getType(Type::BOOLEAN),
+                'is_required'       => Type::getType(Types::BOOLEAN),
+                'value_per_channel' => Type::getType(Types::BOOLEAN),
+                'value_per_locale'  => Type::getType(Types::BOOLEAN),
             ]
         );
 
@@ -135,9 +131,9 @@ SQL;
                 'additional_properties'       => $additionalProperties,
             ],
             [
-                'is_required'           => Type::getType(Type::BOOLEAN),
-                'labels'                => Type::getType(Type::JSON_ARRAY),
-                'additional_properties' => Type::getType(Type::JSON_ARRAY),
+                'is_required'           => Type::getType(Types::BOOLEAN),
+                'labels'                => Type::getType(Types::JSON),
+                'additional_properties' => Type::getType(Types::JSON),
             ]
         );
         if ($affectedRows > 1) {
@@ -174,7 +170,7 @@ SQL;
                 'identifier' => $identifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw AttributeNotFoundException::withIdentifier($identifier);
@@ -184,8 +180,6 @@ SQL;
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     *
      * @return AbstractAttribute[]
      * @throws DBALException
      */
@@ -238,9 +232,9 @@ SQL;
             $fetch,
             ['reference_entity_identifier' => $referenceEntityIdentifier,]
         );
-        $count = $statement->fetchColumn();
+        $count = $statement->fetchOne();
 
-        return intval($count);
+        return (int) $count;
     }
 
     private function getAdditionalProperties(array $normalizedAttribute): array
@@ -310,7 +304,7 @@ SQL;
             WHERE identifier = :identifier
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $attributeIdentifier]);
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
         if (false === $result) {
             throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }

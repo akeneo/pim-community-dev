@@ -16,14 +16,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttributeByIdentifierAndCodeInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private Connection $sqlConnection;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
@@ -66,7 +61,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             return null;

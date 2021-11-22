@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
 use Akeneo\Test\Acceptance\Catalog\Context\ProductValidation as BaseProductValidation;
-use Akeneo\Test\Common\EntityWithValue\Builder;
+use Akeneo\Test\Common\EntityWithValue\Builder\Product;
 use Behat\Behat\Context\Context;
 
 final class ProductValidation implements Context
 {
     private BaseProductValidation $decoratedProductValidation;
-    private Builder\Product $productBuilder;
+    private Product $productBuilder;
 
     public function __construct(
         BaseProductValidation $decoratedProductValidation,
-        Builder\Product $productBuilder
+        Product $productBuilder
     ) {
         $this->decoratedProductValidation = $decoratedProductValidation;
         $this->productBuilder = $productBuilder;

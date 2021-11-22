@@ -2,9 +2,17 @@ import React, {RefObject, createRef} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
-import {Section, TextField, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {getLabel} from 'pimui/js/i18n';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {
+  LocaleCode,
+  LocaleSelector,
+  Section,
+  TextField,
+  useSecurity,
+  useTranslate,
+  ValidationError,
+  Locale,
+  getLabel,
+} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
   optionEditionCancel,
@@ -18,9 +26,7 @@ import {
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {saveOptions} from 'akeneoassetmanager/application/action/attribute/edit';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -44,6 +50,15 @@ const HeaderCell = styled.th`
   z-index: 8;
   padding-bottom: 20px;
   background: ${getColor('white')};
+`;
+
+const LabelTranslations = styled.div`
+  flex: 1;
+  padding-left: 20px;
+  border-left: 1px solid ${getColor('brand', 100)};
+  position: sticky;
+  top: 0;
+  overflow: auto;
 `;
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
@@ -78,7 +93,7 @@ type DispatchProps = {
     onOptionEditionLabelUpdated: (label: string, locale: string, id: any) => void;
     onOptionEditionSubmission: (id: any) => void;
     onOptionEditionDelete: (id: any) => void;
-    onLocaleChanged: (locale: Locale) => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 };
 
@@ -344,7 +359,7 @@ const ManageOptionsView = ({
           <SectionTitle sticky={0}>
             <SectionTitle.Title>{getLabel(attribute.labels, locale, attribute.code)}</SectionTitle.Title>
             <SectionTitle.Spacer />
-            <LocaleSwitcher localeCode={locale} locales={structure.locales} onLocaleChange={events.onLocaleChanged} />
+            <LocaleSelector value={locale} values={structure.locales} onChange={events.onLocaleChanged} />
           </SectionTitle>
           <table className="AknOptionEditor-table">
             <thead>
@@ -392,9 +407,9 @@ const ManageOptionsView = ({
             </tbody>
           </table>
         </OptionContainer>
-        <div className="AknOptionEditor-helper">
+        <LabelTranslations>
           <Section>
-            <SectionTitle>
+            <SectionTitle sticky={0}>
               <SectionTitle.Title>{translate('pim_asset_manager.attribute.options.helper.title')}</SectionTitle.Title>
             </SectionTitle>
             {sortedLocales
@@ -409,7 +424,7 @@ const ManageOptionsView = ({
                 />
               ))}
           </Section>
-        </div>
+        </LabelTranslations>
       </Content>
     </Modal>
   ) : null;
@@ -448,8 +463,8 @@ export default connect(
         onOptionEditionLabelUpdated: (label: string, locale: string, id: any) => {
           dispatch(optionEditionLabelUpdated(label, locale, id));
         },
-        onLocaleChanged: (locale: Locale) => {
-          dispatch(catalogLocaleChanged(locale.code));
+        onLocaleChanged: (localeCode: LocaleCode) => {
+          dispatch(catalogLocaleChanged(localeCode));
         },
         onOptionEditionSubmission: () => {
           dispatch(saveOptions());

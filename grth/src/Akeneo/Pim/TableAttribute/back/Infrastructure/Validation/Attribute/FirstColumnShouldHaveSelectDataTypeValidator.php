@@ -26,7 +26,7 @@ final class FirstColumnShouldHaveSelectDataTypeValidator extends ConstraintValid
     public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, FirstColumnShouldHaveSelectDataType::class);
-        if (!is_array($value) || 0 === count($value)) {
+        if (!is_array($value) || [] === $value) {
             return;
         }
 

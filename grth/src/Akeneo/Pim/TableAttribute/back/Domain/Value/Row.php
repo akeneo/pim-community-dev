@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Webmozart\Assert\Assert;
 

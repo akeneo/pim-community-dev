@@ -70,9 +70,8 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $sql = 'SELECT COUNT(*) FROM akeneo_reference_entity_record';
         $statement = $this->sqlConnection->executeQuery($sql);
-        $count = (int) $statement->fetchColumn();
 
-        return $count;
+        return (int) $statement->fetchOne();
     }
 
     public function create(Record $record): void
@@ -98,7 +97,7 @@ SQL;
                 'updated_at' => $record->getUpdatedAt(),
             ],
             [
-                'value_collection' => Type::JSON_ARRAY,
+                'value_collection' => Types::JSON,
                 'created_at' => Types::DATETIME_IMMUTABLE,
                 'updated_at' => Types::DATETIME_IMMUTABLE,
             ]
@@ -139,7 +138,7 @@ SQL;
                 'updated_at' => $record->getUpdatedAt(),
             ],
             [
-                'value_collection' => Type::JSON_ARRAY,
+                'value_collection' => Types::JSON,
                 'updated_at' => Types::DATETIME_IMMUTABLE
             ]
         );
@@ -176,7 +175,7 @@ SQL;
                 'reference_entity_identifier' => (string) $referenceEntityIdentifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
@@ -308,9 +307,9 @@ SQL;
             $fetch,
             ['reference_entity_identifier' => $referenceEntityIdentifier,]
         );
-        $count = $statement->fetchColumn();
+        $count = $statement->fetchOne();
 
-        return intval($count);
+        return (int) $count;
     }
 
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
@@ -318,7 +317,7 @@ SQL;
         if (!isset($result['reference_entity_identifier'])) {
             throw new \LogicException('The record should have a reference entity identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedReferenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
@@ -371,9 +370,7 @@ SQL;
             );
 
             if (is_array($value['data'])) {
-                $value['data'] = array_map(function ($code) use ($indexedIdentifiers) {
-                    return (string) $indexedIdentifiers[$code];
-                }, $value['data']);
+                $value['data'] = array_map(static fn ($code) => (string) $indexedIdentifiers[$code], $value['data']);
             } else {
                 $value['data'] = (string) $indexedIdentifiers[$value['data']];
             }

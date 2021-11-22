@@ -68,7 +68,7 @@ final class TableAttributeNormalizer implements NormalizerInterface, CacheableSu
 
     public function supportsNormalization($data, string $format = null): bool
     {
-        return $data instanceof AttributeInterface && in_array($format, ['external_api']);
+        return $data instanceof AttributeInterface && $format === 'external_api';
     }
 
     public function hasCacheableSupportsMethod(): bool

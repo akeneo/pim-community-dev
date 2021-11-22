@@ -1,17 +1,22 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Search, useAutoFocus} from 'akeneo-design-system';
-import {useDebounce, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  LocaleSelector,
+  useDebounce,
+  useTranslate,
+  localeExists,
+  LocaleCode,
+  Channel,
+  ChannelCode,
+} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
-import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
-import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
+import {ChannelSwitcher} from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 import {
   CompletenessFilter,
   CompletenessValue,
 } from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
+import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 
 type SearchProps = {
   dataProvider: any;
@@ -48,6 +53,7 @@ const SearchBar = ({
 }: SearchProps) => {
   const translate = useTranslate();
   const channels = useChannels(dataProvider.channelFetcher);
+  const locales = getLocales(channels, context.channel);
   setLocaleIfNotExists(onContextChange, channels, context.channel, context.locale);
   const [userSearch, setUserSearch] = useState<string>(searchValue);
   const debouncedUserSearch = useDebounce(userSearch, 250);
@@ -73,21 +79,21 @@ const SearchBar = ({
       {onCompletenessChange !== undefined && completenessValue !== undefined && (
         <CompletenessFilter value={completenessValue} onChange={onCompletenessChange} />
       )}
-      <ChannelSwitcher
-        channelCode={context.channel}
-        channels={channels}
-        locale={context.locale}
-        onChannelChange={({code}: Channel) => {
-          onContextChange({...context, channel: code});
-        }}
-      />
-      <LocaleSwitcher
-        localeCode={context.locale}
-        locales={getLocales(channels, context.channel)}
-        onLocaleChange={({code}: Locale) => {
-          onContextChange({...context, locale: code});
-        }}
-      />
+      {0 < channels.length && (
+        <ChannelSwitcher
+          channelCode={context.channel}
+          channels={channels}
+          locale={context.locale}
+          onChannelChange={(channel: ChannelCode) => onContextChange({...context, channel})}
+        />
+      )}
+      {0 < locales.length && (
+        <LocaleSelector
+          value={context.locale}
+          values={getLocales(channels, context.channel)}
+          onChange={locale => onContextChange({...context, locale})}
+        />
+      )}
     </Search>
   );
 };

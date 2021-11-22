@@ -32,17 +32,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    /** @var CreateReferenceEntityHandler */
-    private $createReferenceEntityHandler;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private CreateReferenceEntityHandler $createReferenceEntityHandler;
+    private NormalizerInterface $normalizer;
+    private ValidatorInterface $validator;
+    private SecurityFacade $securityFacade;
 
     public function __construct(
         CreateReferenceEntityHandler $createReferenceEntityHandler,
@@ -81,11 +74,9 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateReferenceEntityCommand(
+        return new CreateReferenceEntityCommand(
             $normalizedCommand['code'],
             $normalizedCommand['labels']
         );
-
-        return $command;
     }
 }

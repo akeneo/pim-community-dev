@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -28,12 +29,8 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAttributeExists implements AttributeExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
@@ -54,10 +51,9 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        $statement->free();
 
-        return $isExisting;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
@@ -76,10 +72,9 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        $statement->free();
 
-        return $isExisting;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 
     public function withReferenceEntityIdentifierAndOrder(
@@ -100,9 +95,8 @@ SQL;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+        $statement->free();
 
-        return $isExisting;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

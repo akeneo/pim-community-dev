@@ -15,14 +15,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributesByReferenceEntityIdentifier implements FindConnectorAttributesByReferenceEntityIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    /** @var InactiveLabelFilter */
-    private $inactiveLabelFilter;
+    private Connection $sqlConnection;
+    private AttributeHydratorRegistry $attributeHydratorRegistry;
+    private InactiveLabelFilter $inactiveLabelFilter;
 
     public function __construct(
         Connection $sqlConnection,
@@ -68,7 +63,7 @@ SQL;
         );
         $result = $statement->fetchAllAssociative();
 
-        return !$result ? [] : $result;
+        return $result ?: [];
     }
 
     /**

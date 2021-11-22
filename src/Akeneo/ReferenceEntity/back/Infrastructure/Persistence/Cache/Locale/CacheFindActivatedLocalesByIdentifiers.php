@@ -23,16 +23,14 @@ use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiers
  */
 class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocalesByIdentifiers;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
 
     /** @var LocaleIdentifier[] */
-    private $localesCache;
+    private array $localesCache = [];
 
     public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers)
     {
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
-        $this->localesCache = [];
     }
 
     public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
@@ -45,9 +43,7 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
         }
 
         $localesInCache = array_intersect_key($this->localesCache, $requestedLocales);
-        $activatedLocales = array_values(array_filter($localesInCache, function ($localeIdentifier) {
-            return null !== $localeIdentifier;
-        }));
+        $activatedLocales = array_values(array_filter($localesInCache, static fn ($localeIdentifier) => null !== $localeIdentifier));
 
         return new LocaleIdentifierCollection($activatedLocales);
     }

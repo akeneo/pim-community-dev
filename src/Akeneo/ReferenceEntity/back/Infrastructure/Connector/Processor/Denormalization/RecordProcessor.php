@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\Denormalizat
 use Akeneo\ReferenceEntity\Application\Record\CreateAndEditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
@@ -45,6 +46,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
     private FindImageAttributeCodesInterface $findImageAttributeCodes;
     private FileStorerInterface $fileStorer;
     private ?StepExecution $stepExecution = null;
+    /** @var array<string, AttributeCode> */
     private array $indexedImageAttributeCodes = [];
 
     public function __construct(
@@ -102,7 +104,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
         }
 
         $createAndEditRecordCommand = new CreateAndEditRecordCommand($createRecordCommand, $editRecordCommand);
-        if ($this->stepExecution) {
+        if (null !== $this->stepExecution) {
             $executionContext = $this->stepExecution->getExecutionContext();
             $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
             $processedItemsBatch[$item['code']] = $createAndEditRecordCommand;
@@ -155,7 +157,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
         \Exception $previousException = null
     ): void {
         $itemPosition = 0;
-        if ($this->stepExecution) {
+        if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }
@@ -172,7 +174,7 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
     protected function skipItemWithMessage(array $item, string $message, \Exception $previousException = null): void
     {
         $itemPosition = 0;
-        if ($this->stepExecution) {
+        if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }

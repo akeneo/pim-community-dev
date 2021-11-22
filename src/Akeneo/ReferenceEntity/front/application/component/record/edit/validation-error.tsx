@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
@@ -27,10 +27,7 @@ export const getErrorsView = (errors: ValidationError[], value: Value) => {
 
   return (
     <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-      <span className="AknFieldContainer-validationError">
-        <i className="icon-warning-sign" />
-        {errorMessages}
-      </span>
+      <span className="AknFieldContainer-validationError">{errorMessages}</span>
     </div>
   );
 };

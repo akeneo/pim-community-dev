@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import {useTranslate, getLabel} from '@akeneo-pim-community/shared';
 import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -6,8 +7,6 @@ import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
-import {getLabel} from 'pimui/js/i18n';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;

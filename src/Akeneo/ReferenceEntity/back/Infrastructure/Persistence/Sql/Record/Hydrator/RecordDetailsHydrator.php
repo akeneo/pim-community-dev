@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -33,22 +32,14 @@ use Doctrine\DBAL\Types\Types;
  */
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
-
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private AbstractPlatform $platform;
+    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
         $this->valueHydrator = $valueHydrator;
     }
 
@@ -58,14 +49,14 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): RecordDetails {
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordIdentifier = Type::getType(Type::STRING)
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsImage = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $this->platform);
+        $recordIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
             ->convertToPHPValue($row['created_at'], $this->platform);
@@ -83,7 +74,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
-        $recordDetails = new RecordDetails(
+        return new RecordDetails(
             RecordIdentifier::fromString($recordIdentifier),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             RecordCode::fromString($recordCode),
@@ -94,8 +85,6 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             $allValues,
             true
         );
-
-        return $recordDetails;
     }
 
     private function createEmptyValues(array $emptyValues, array $valueCollection): array
@@ -133,9 +122,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     {
         $imageValue = array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
-            }
+            static fn (array $value) => $value['attribute'] === $attributeAsImage
         );
 
         $result = Image::createEmpty();

@@ -25,7 +25,7 @@ final class ProductShouldNotHaveTooManyCellsValidator extends ConstraintValidato
     {
         Assert::isInstanceOf($constraint, ProductShouldNotHaveTooManyCells::class);
         if (!$writeValueCollection instanceof WriteValueCollection) {
-            return ;
+            return;
         }
 
         $cellsCount = 0;

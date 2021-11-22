@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Record from 'akeneoreferenceentity/domain/model/record/record';
 import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/value';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validation-error';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import Flag from 'akeneoreferenceentity/tools/component/flag';

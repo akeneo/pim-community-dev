@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -27,8 +28,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlRecordExists implements RecordExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -73,8 +73,7 @@ SQL;
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

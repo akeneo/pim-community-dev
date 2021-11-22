@@ -53,7 +53,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
                         $options = $options->normalize();
                     }
                     $options = \array_slice($options, 0, self::MAX_OPTIONS);
-                    foreach ($options as $optionIndex => $option) {
+                    foreach (\array_keys($options) as $optionIndex) {
                         unset($options[$optionIndex]['labels']);
                     }
                     $configuration[$index]['options'] = $options;

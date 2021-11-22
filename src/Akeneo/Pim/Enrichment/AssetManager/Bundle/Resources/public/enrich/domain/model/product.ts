@@ -1,7 +1,7 @@
+import {ChannelCode} from '@akeneo-pim-community/shared';
 import {AttributeCode, Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Labels} from 'akeneoassetmanager/platform/model/label';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 

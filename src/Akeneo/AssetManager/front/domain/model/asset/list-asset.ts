@@ -1,14 +1,12 @@
+import {ChannelCode, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier from 'akeneoassetmanager/domain/model/asset/identifier';
 import ListValue, {ListValueCollection, getListValue} from 'akeneoassetmanager/domain/model/asset/list-value';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {MediaPreview, MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData, MediaData} from 'akeneoassetmanager/domain/model/asset/data';
-import {getLabel} from 'pimui/js/i18n';
 import {assetCodesAreEqual} from 'akeneoassetmanager/domain/model/asset-family/code';
 import {isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 

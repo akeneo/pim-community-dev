@@ -117,7 +117,6 @@ CSV;
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->attributeRepository = $this->get('pim_catalog.repository.attribute');
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [

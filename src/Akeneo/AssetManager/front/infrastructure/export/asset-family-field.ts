@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as i18n from 'pimui/js/i18n';
+import {getLabel} from '@akeneo-pim-community/shared';
 import {BackendAssetFamily} from 'akeneoassetmanager/infrastructure/model/asset-family';
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const UserContext = require('pim/user-context');
@@ -58,7 +58,7 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: BackendAssetFamily) {
     return {
       id: item.identifier,
-      text: i18n.getLabel(<{[locale: string]: string}>item.labels, UserContext.get('catalogLocale'), item.identifier),
+      text: getLabel(<{[locale: string]: string}>item.labels, UserContext.get('catalogLocale'), item.identifier),
     };
   }
 

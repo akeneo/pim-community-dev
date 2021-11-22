@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,7 +20,7 @@ final class ValidationFactory
     /**
      * @var array<string, array<string, string>>
      */
-    private static $mapping = [
+    private static array $mapping = [
         'number' => [
             MinValidation::KEY => MinValidation::class,
             MaxValidation::KEY => MaxValidation::class,

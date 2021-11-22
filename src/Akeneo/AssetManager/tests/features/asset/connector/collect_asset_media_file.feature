@@ -9,3 +9,8 @@ Feature: Connection to e-commerce platforms and marketplaces
     When the connector collects a media file for the Kartell asset from the DAM to synchronize it with the PIM
     Then the Kartell asset is correctly synchronized with the uploaded media file
 
+  @integration-back
+  Scenario: Notify an error when trying to enrich a asset with a media file without permission
+    Given the Kartell asset of the Brand asset family without any media file
+    When the connector collects a media file for the Kartell asset from the DAM to synchronize it with the PIM without permission
+    Then the PIM notifies the connector about missing permissions for collecting a media file for the Kartell asset from the DAM to synchronize it with the PIM

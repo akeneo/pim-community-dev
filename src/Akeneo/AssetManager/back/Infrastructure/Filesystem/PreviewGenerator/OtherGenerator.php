@@ -39,12 +39,15 @@ class OtherGenerator implements PreviewGeneratorInterface
         $this->defaultImageProvider = $defaultImageProvider;
     }
 
+    public function supportsMimeType(string $mimeType): bool
+    {
+        return true;
+    }
+
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
-        return (
-                MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-                || MediaFileAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-            )
+        return ($attribute instanceof MediaLinkAttribute
+            || $attribute instanceof MediaFileAttribute)
             && MediaType::OTHER === $attribute->getMediaType()->normalize()
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }

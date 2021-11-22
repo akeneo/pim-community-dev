@@ -22,7 +22,7 @@ class InstallAssetsSubscriber implements EventSubscriberInterface
     {
         return [
             InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
-            InstallerEvents::POST_ASSETS_DUMP => ['installAssets']
+            InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
         ];
     }
 

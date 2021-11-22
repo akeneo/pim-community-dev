@@ -358,12 +358,12 @@ pimee_catalog_rule:
         date_past: Päivämäärä menneisyydessä
         date_future: Päivämäärä tulevaisuudessa
         date_present: Nyt
-      day: "]-Inf, 1] Päivä ]1, +Inf[ Päivää"
-      week: "]-Inf, 1] Viikko]1, +Inf[ Viikkoa"
-      month: "]-Inf, 1] Kuukausi]1, +Inf[ Kuukautta"
-      year: "]-Inf, 1] Vuosi ]1, +Inf[ Vuotta"
-      hour: "]-Inf, 1] Tunti]1, +Inf[ Tuntia"
-      minute: "]-Inf, 1] Minuutti]1, +Inf[ Minuuttia"
+      day: "]-Inf, 1] Päivä|]1, +Inf[ Päivää"
+      week: "]-Inf, 1] Viikko|]1, +Inf[ Viikkoa"
+      month: "]-Inf, 1] Kuukausi|]1, +Inf[ Kuukautta"
+      year: "]-Inf, 1] Vuosi|]1, +Inf[ Vuotta"
+      hour: "]-Inf, 1] Tunti|]1, +Inf[ Tuntia"
+      minute: "]-Inf, 1] Minuutti|]1, +Inf[ Minuuttia"
   exceptions:
     loading: Säännön määrittelyn lataamisessa tapahtui virhe.
     required: Tämä kenttä on pakollinen.

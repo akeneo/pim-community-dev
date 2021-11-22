@@ -1,10 +1,9 @@
+import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 

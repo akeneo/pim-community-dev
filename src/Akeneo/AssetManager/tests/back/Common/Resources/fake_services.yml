@@ -301,14 +301,6 @@ services:
         class: Akeneo\AssetManager\Common\Fake\ComputeTransformationsFromAssetFamilyIdentifierLauncherSpy
 
     # Third party services
-    oro_security.security_facade:
-        class: Akeneo\AssetManager\Common\Fake\SecurityFacadeStub
-        arguments:
-            - '@security.authorization_checker'
-            - '@oro_security.acl.annotation_provider'
-            - '@oro_security.acl.object_identity_factory'
-            - '@logger'
-
     fos_oauth_server.security.authentication.listener:
         class: Akeneo\AssetManager\Common\Fake\Connector\NullListener
 

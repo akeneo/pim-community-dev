@@ -15,6 +15,9 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -35,9 +38,9 @@ class OrderValidator extends ConstraintValidator
         $violations = $validator->validate(
             $order,
             [
-                new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'integer']),
-                new Constraints\GreaterThanOrEqual(0)
+                new NotBlank(),
+                new Type(['type' => 'integer']),
+                new GreaterThanOrEqual(0)
             ]
         );
 

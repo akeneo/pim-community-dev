@@ -44,7 +44,7 @@ final class SelectOptionDetails implements ArrayConverterInterface
             'code' => $item['code'],
         ];
 
-        if (\count($labels) > 0) {
+        if ($labels !== []) {
             $converted['labels'] = $labels;
         }
 

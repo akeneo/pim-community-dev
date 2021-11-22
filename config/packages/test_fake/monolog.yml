@@ -1,0 +1,4 @@
+services:
+  monolog.logger.pim_api_acl.test:
+    decorates: monolog.logger.pim_api_acl
+    class: Psr\Log\Test\TestLogger

@@ -26,7 +26,7 @@ final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
                 $attributeCode,
                 $channelCode,
                 $localeCode
-            )
+            ),
         ];
     }
 

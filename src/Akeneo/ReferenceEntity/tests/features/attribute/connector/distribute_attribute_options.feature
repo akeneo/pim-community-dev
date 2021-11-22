@@ -60,3 +60,19 @@ Feature: Connection to e-commerce platforms and marketplaces
     And the Nationality single option attribute that is part of the structure of the Brand reference entity but has no options yet
     When the connector requests a non-existent option for a given attribute for a given reference entity
     Then the PIM notifies the connector about an error indicating that the option is non existent for the Nationality attribute and the Brand reference entity
+
+  @integration-back
+  Scenario: Notify an error when getting an option of a single option attribute for a given reference entity
+    Given the Brand reference entity
+    And the Nationality single option attribute that is part of the structure of the Brand reference entity
+    And the French option that is one of the options of the Nationality attribute
+    When the connector requests the French option of the Nationality attribute for the Brand reference entity without permission
+    Then the PIM notifies the connector about missing permissions for getting the French option
+
+  @integration-back
+  Scenario: Notify an error when listing all the options of a given single option attribute for a given reference entity
+    Given the Brand reference entity
+    And the Nationality single option attribute that is part of the structure of the Brand reference entity
+    And the 4 options of the Nationality single option attribute
+    When the connector requests all the options of the Nationality attribute for the Brand reference entity without permission
+    Then the PIM notifies the connector about missing permissions for listing the options

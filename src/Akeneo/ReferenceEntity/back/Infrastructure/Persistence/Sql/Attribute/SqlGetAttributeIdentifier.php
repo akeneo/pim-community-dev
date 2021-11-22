@@ -19,11 +19,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -44,7 +44,7 @@ SQL;
             'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!isset($result['identifier'])) {
             throw new \LogicException(
@@ -56,7 +56,7 @@ SQL;
             );
         }
 
-        $identifier = Type::getType(Type::TEXT)->convertToPhpValue($result['identifier'], $platform);
+        $identifier = Type::getType(Types::TEXT)->convertToPhpValue($result['identifier'], $platform);
 
         return AttributeIdentifier::fromString($identifier);
     }

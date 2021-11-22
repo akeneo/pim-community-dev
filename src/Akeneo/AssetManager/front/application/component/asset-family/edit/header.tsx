@@ -1,15 +1,12 @@
 import React, {useRef, ReactNode} from 'react';
 import {connect} from 'react-redux';
 import {useAutoFocus} from 'akeneo-design-system';
-import {PimView} from '@akeneo-pim-community/shared';
+import {Channel, ChannelCode, Locale, LocaleCode, LocaleSelector, PimView} from '@akeneo-pim-community/shared';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import {File} from 'akeneoassetmanager/domain/model/file';
-import Locale from 'akeneoassetmanager/domain/model/locale';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
-import Channel from 'akeneoassetmanager/domain/model/channel';
-import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
+import {ChannelSwitcher} from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 
@@ -24,8 +21,8 @@ interface OwnProps {
   isLoading?: boolean;
   displayActions?: boolean; // @todo : It will be mandatory (more convenience for the spike)
   breadcrumb: ReactNode;
-  onLocaleChanged?: (locale: Locale) => void;
-  onChannelChanged?: (channel: Channel) => void;
+  onLocaleChanged?: (localeCode: LocaleCode) => void;
+  onChannelChanged?: (channelCode: ChannelCode) => void;
 }
 
 interface StateProps extends OwnProps {
@@ -41,8 +38,8 @@ interface StateProps extends OwnProps {
 
 interface DispatchProps {
   events?: {
-    onLocaleChanged: (locale: Locale) => void;
-    onChannelChanged: (channel: Channel) => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
+    onChannelChanged: (channelCode: ChannelCode) => void;
   };
 }
 
@@ -97,22 +94,16 @@ const HeaderView = ({
           <div>
             <div className="AknTitleContainer-line">
               <div className="AknTitleContainer-context AknButtonList">
-                {withChannelSwitcher && structure && events ? (
+                {withChannelSwitcher && structure && events && 0 < structure.channels.length ? (
                   <ChannelSwitcher
                     channelCode={context.channel}
                     channels={structure.channels}
                     locale={context.locale}
                     onChannelChange={events.onChannelChanged}
-                    className="AknDropdown--right"
                   />
                 ) : null}
-                {withLocaleSwitcher && structure && events ? (
-                  <LocaleSwitcher
-                    localeCode={context.locale}
-                    locales={structure.locales}
-                    onLocaleChange={events.onLocaleChanged}
-                    className="AknDropdown--right"
-                  />
+                {withLocaleSwitcher && structure && events && 0 < structure.locales.length ? (
+                  <LocaleSelector value={context.locale} values={structure.locales} onChange={events.onLocaleChanged} />
                 ) : null}
               </div>
             </div>
@@ -144,14 +135,14 @@ export default connect(
       events: {
         onLocaleChanged:
           undefined === ownProps.onLocaleChanged
-            ? (locale: Locale) => {
-                dispatch(catalogLocaleChanged(locale.code));
+            ? (localeCode: LocaleCode) => {
+                dispatch(catalogLocaleChanged(localeCode));
               }
             : ownProps.onLocaleChanged,
         onChannelChanged:
           undefined === ownProps.onChannelChanged
-            ? (channel: Channel) => {
-                dispatch(catalogChannelChanged(channel.code));
+            ? (channelCode: ChannelCode) => {
+                dispatch(catalogChannelChanged(channelCode));
               }
             : ownProps.onChannelChanged,
       },

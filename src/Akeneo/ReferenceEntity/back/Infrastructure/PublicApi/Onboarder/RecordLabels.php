@@ -9,17 +9,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
  */
 final class RecordLabels
 {
-    /** @var string */
-    private $identifier;
-
-    /** @var array  */
-    private $labels;
-
-    /** @var string */
-    private $code;
-
-    /** @var string */
-    private $referenceEntityIdentifier;
+    private string $identifier;
+    /** @var array<string, string> */
+    private array $labels;
+    private string $code;
+    private string $referenceEntityIdentifier;
 
     public function __construct(string $identifier, array $labels, string $code, string $referenceEntityIdentifier)
     {

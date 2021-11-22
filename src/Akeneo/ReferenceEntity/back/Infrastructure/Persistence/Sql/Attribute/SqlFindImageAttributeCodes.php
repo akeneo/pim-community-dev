@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterfa
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -27,19 +28,11 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindImageAttributeCodes implements FindImageAttributeCodesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AbstractPlatform */
-    private $platform;
-
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->platform = $sqlConnection->getDatabasePlatform();
     }
 
     /**
@@ -63,13 +56,13 @@ SQL;
         );
 
         $result = $statement->fetchAllAssociative();
+        $platform = $this->sqlConnection->getDatabasePlatform();
 
-        return array_map(function ($row) {
-            $stringAttributeCode = Type::getType(Type::STRING)->convertToPHPValue(
+        return array_map(static fn ($row) => AttributeCode::fromString(
+            Type::getType(Types::STRING)->convertToPHPValue(
                 $row['code'],
-                $this->platform
-            );
-            return AttributeCode::fromString($stringAttributeCode);
-        }, $result ?? []);
+                $platform
+            )
+        ), $result ?? []);
     }
 }

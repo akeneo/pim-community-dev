@@ -16,8 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Asset;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Akeneo\AssetManager\Infrastructure\Network\DnsLookupInterface;
-use Akeneo\AssetManager\Infrastructure\Network\IpMatcher;
+use Akeneo\AssetManager\Infrastructure\Network\UrlChecker;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommand as EditMediaLinkValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,38 +25,17 @@ use Webmozart\Assert\Assert;
 
 final class EditMediaLinkValueCommandValidator extends ConstraintValidator
 {
-    const MEDIA_TYPE_WITH_URL = [
+    private const MEDIA_TYPE_WITH_URL = [
         MediaType::IMAGE,
         MediaType::PDF,
         MediaType::OTHER,
     ];
 
-    private const DOMAIN_BLACKLIST = [
-        'localhost',
-        'elasticsearch',
-        'memcached',
-        'object-storage',
-        'mysql',
-    ];
+    private UrlChecker $urlChecker;
 
-    /** @var string[] */
-    private array $allowedProtocols;
-    private DnsLookupInterface $dnsLookup;
-    private IpMatcher $ipMatcher;
-    /** @var string[] */
-    private array $networkWhitelist;
-
-    public function __construct(
-        array $allowedProtocols,
-        DnsLookupInterface $dnsLookup,
-        IpMatcher $ipMatcher,
-        string $networkWhitelist = ''
-    ) {
-        Assert::allString($allowedProtocols);
-        $this->allowedProtocols = $allowedProtocols;
-        $this->dnsLookup = $dnsLookup;
-        $this->ipMatcher = $ipMatcher;
-        $this->networkWhitelist = empty($networkWhitelist) ? [] : \explode(',', $networkWhitelist);
+    public function __construct(UrlChecker $urlChecker)
+    {
+        $this->urlChecker = $urlChecker;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -104,7 +82,7 @@ final class EditMediaLinkValueCommandValidator extends ConstraintValidator
 
         if ($this->mediaLinkDoesNotContainAnAllowedProtocol($fullPath)) {
             $this->context->buildViolation(EditMediaLinkValueCommandConstraint::PROTOCOL_NOT_ALLOWED)
-                ->setParameter('%allowed_protocols%', \implode(', ', $this->allowedProtocols))
+                ->setParameter('%allowed_protocols%', \implode(', ', $this->urlChecker->getAllowedProtocols()))
                 ->atPath((string) $command->attribute->getCode())
                 ->addViolation();
         }
@@ -123,52 +101,17 @@ final class EditMediaLinkValueCommandValidator extends ConstraintValidator
             return false; // Relative urls are authorized.
         }
 
-        return !\in_array(\strtolower($urlParts[0]), $this->allowedProtocols);
+        return !$this->urlChecker->isProtocolAllowed($urlParts[0]);
     }
 
     private function mediaLinkContainsBadDomain(string $url): bool
     {
-        if (empty($url)) {
-            return false;
-        }
-
         $host = \parse_url($url, \PHP_URL_HOST);
+
         if (empty($host) || !\is_string($host)) {
             return false;
         }
 
-        $host = \strtolower($host);
-        if (\in_array($host, self::DOMAIN_BLACKLIST)) {
-            return true;
-        }
-
-        $ip = $this->dnsLookup->ip($host);
-        if (null === $ip) {
-            return false;
-        }
-
-        if ($this->isInWhitelist($ip)) {
-            return false;
-        }
-
-        if ($this->isInPrivateRange($ip)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isInWhitelist(string $ip): bool
-    {
-        if (empty($this->networkWhitelist)) {
-            return false;
-        }
-
-        return $this->ipMatcher->match($ip, $this->networkWhitelist);
-    }
-
-    private function isInPrivateRange(string $ip): bool
-    {
-        return !\filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE);
+        return !$this->urlChecker->isDomainAllowed($host);
     }
 }
