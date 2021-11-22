@@ -10,7 +10,7 @@ final class InMemoryFindFamilyLabel implements FindFamilyLabelInterface
 {
     private array $familyLabels = [];
 
-    public function addFamilyLabel(string $familyCode, string $locale, string $label)
+    public function addFamilyLabel(string $familyCode, string $locale, string $label): void
     {
         $this->familyLabels[$familyCode][$locale] = $label;
     }

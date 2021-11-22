@@ -31,6 +31,9 @@ class ValueCollectionHydrator
         $this->valueHydrator = $valueHydrator;
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     public function hydrate(
         $productOrProductModel,
         ColumnCollection $columnConfiguration

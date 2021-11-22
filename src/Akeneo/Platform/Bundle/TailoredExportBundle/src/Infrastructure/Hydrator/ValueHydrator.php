@@ -40,6 +40,9 @@ class ValueHydrator
         $this->associationTypeValueHydrator = $associationTypeValueHydrator;
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     public function hydrate(
         $productOrProductModel,
         SourceInterface $source

@@ -30,7 +30,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($channel, Constraint $constraint)
+    public function validate($channel, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, ChannelShouldExist::class);
         if (!is_string($channel)) {

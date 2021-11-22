@@ -8,7 +8,7 @@ class InMemoryFindGroupLabels implements FindGroupLabelsInterface
 {
     private array $groupLabels;
 
-    public function addGroupLabel(string $groupCode, string $locale, string $optionTranslation)
+    public function addGroupLabel(string $groupCode, string $locale, string $optionTranslation): void
     {
         $this->groupLabels[$groupCode][$locale] = $optionTranslation;
     }

@@ -16,6 +16,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Column;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, Column>
+ */
 class ColumnCollection implements \IteratorAggregate
 {
     /** @var Column[] */

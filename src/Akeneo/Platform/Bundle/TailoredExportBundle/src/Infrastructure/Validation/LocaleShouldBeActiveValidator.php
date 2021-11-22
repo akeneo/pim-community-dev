@@ -33,7 +33,7 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($localeCode, Constraint $constraint)
+    public function validate($localeCode, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
         if (!is_string($localeCode)) {

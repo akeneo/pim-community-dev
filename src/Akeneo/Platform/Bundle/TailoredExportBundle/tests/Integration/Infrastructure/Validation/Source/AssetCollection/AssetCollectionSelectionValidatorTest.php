@@ -325,7 +325,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function loadData()
+    private function loadData(): void
     {
         $this->createAssetFamilyWithMediaFileAsMainMedia('asset_family_with_media_file_as_main_media', false, false);
         $this->createAttribute('my_media_file_asset_collection', 'asset_family_with_media_file_as_main_media');
@@ -343,7 +343,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
         $this->createAttribute('my_localizable_media_link_asset_collection', 'asset_family_with_localizable_media_link_as_main_media');
     }
 
-    private function createAttribute(string $attributeCode, string $assetFamilyCode)
+    private function createAttribute(string $attributeCode, string $assetFamilyCode): void
     {
         $attributeAssetMultipleLink = $this->get('pim_catalog.factory.attribute')
             ->createAttribute(AssetCollectionType::ASSET_COLLECTION);

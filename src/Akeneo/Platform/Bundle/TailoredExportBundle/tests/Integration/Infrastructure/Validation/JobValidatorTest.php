@@ -20,7 +20,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 
 class JobValidatorTest extends AbstractValidationTest
 {
-    public function test_it_validates_a_valid_job()
+    public function test_it_validates_a_valid_job(): void
     {
         $job = $this->get('akeneo_batch.job.job_registry')->get('xlsx_tailored_product_export');
         $parameters = $this->get('akeneo_batch.job_parameters_factory')->create($job, $this->getValidJobParameters());
@@ -32,7 +32,7 @@ class JobValidatorTest extends AbstractValidationTest
         $this->assertCount(0, $parametersViolations);
     }
 
-    public function test_it_invalidates_an_invalid_job()
+    public function test_it_invalidates_an_invalid_job(): void
     {
         $job = $this->get('akeneo_batch.job.job_registry')->get('xlsx_tailored_product_export');
         $parameters = $this->get('akeneo_batch.job_parameters_factory')->create($job, $this->getInvalidJobParameters());

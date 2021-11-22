@@ -37,7 +37,7 @@ final class ColumnsValidatorTest extends AbstractValidationTest
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value
-    ) {
+    ): void {
         $violations = $this->getValidator()->validate($value, new Columns());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);

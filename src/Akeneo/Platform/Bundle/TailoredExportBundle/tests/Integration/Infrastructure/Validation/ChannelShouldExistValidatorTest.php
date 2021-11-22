@@ -18,14 +18,14 @@ use Akeneo\Test\Integration\Configuration;
 
 class ChannelShouldExistValidatorTest extends AbstractValidationTest
 {
-    public function test_it_validate_that_channel_exist()
+    public function test_it_validate_that_channel_exist(): void
     {
         $violations = $this->getValidator()->validate('ecommerce', new ChannelShouldExist());
 
         $this->assertNoViolation($violations);
     }
 
-    public function test_it_builds_violations_when_channel_does_not_exist()
+    public function test_it_builds_violations_when_channel_does_not_exist(): void
     {
         $violations = $this->getValidator()->validate('unknown_channel', new ChannelShouldExist());
 

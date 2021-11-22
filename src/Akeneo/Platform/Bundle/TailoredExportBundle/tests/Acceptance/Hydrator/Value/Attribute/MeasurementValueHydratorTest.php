@@ -22,7 +22,7 @@ class MeasurementValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_measurement_value_from_product_value()
+    public function it_hydrates_a_measurement_value_from_product_value(): void
     {
         $expectedValue = new MeasurementValue('10.4', 'GRAM');
 

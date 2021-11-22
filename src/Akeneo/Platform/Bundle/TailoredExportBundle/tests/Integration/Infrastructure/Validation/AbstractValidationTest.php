@@ -48,7 +48,7 @@ abstract class AbstractValidationTest extends IntegrationTestCase
         );
     }
 
-    protected function assertNoViolation(ConstraintViolationListInterface $violationList)
+    protected function assertNoViolation(ConstraintViolationListInterface $violationList): void
     {
         $this->assertCount(0, $violationList, 'Violation list should be empty');
     }

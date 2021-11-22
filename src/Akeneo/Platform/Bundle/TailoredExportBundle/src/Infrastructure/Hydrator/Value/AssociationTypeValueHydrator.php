@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -24,6 +25,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 final class AssociationTypeValueHydrator
 {
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     public function hydrate(
         $productOrProductModel,
         string $associationTypeCode,
@@ -47,6 +51,9 @@ final class AssociationTypeValueHydrator
         );
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     private function getAssociatedProductIdentifiers($productOrProductModel, string $associationTypeCode): array
     {
         $this->checkProductOrProductModelEntity($productOrProductModel);
@@ -60,6 +67,9 @@ final class AssociationTypeValueHydrator
         );
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     private function getAssociatedProductModelCodes($productOrProductModel, string $associationTypeCode): array
     {
         $this->checkProductOrProductModelEntity($productOrProductModel);
@@ -73,6 +83,9 @@ final class AssociationTypeValueHydrator
         );
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     private function getAssociatedGroupCodes($productOrProductModel, string $associationTypeCode): array
     {
         $this->checkProductOrProductModelEntity($productOrProductModel);
@@ -86,6 +99,9 @@ final class AssociationTypeValueHydrator
         );
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     private function getAssociationForTypeCode($productOrProductModel, string $typeCode): ?AssociationInterface
     {
         $this->checkProductOrProductModelEntity($productOrProductModel);
@@ -141,6 +157,9 @@ final class AssociationTypeValueHydrator
         );
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     private function checkProductOrProductModelEntity($productOrProductModel): void
     {
         if (

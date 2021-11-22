@@ -26,7 +26,7 @@ abstract class AbstractAttributeValueHydratorTest extends KernelTestCase
         static::bootKernel(['debug' => false]);
     }
 
-    protected function assertHydratedValueEquals(SourceValueInterface $expectedValue, ?ValueInterface $value)
+    protected function assertHydratedValueEquals(SourceValueInterface $expectedValue, ?ValueInterface $value): void
     {
         $product = new Product();
         $product->setIdentifier('product_identifier');

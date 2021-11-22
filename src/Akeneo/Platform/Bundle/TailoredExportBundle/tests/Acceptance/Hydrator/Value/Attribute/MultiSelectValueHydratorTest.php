@@ -21,7 +21,7 @@ class MultiSelectValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_multi_select_value_from_product_value()
+    public function it_hydrates_a_multi_select_value_from_product_value(): void
     {
         $expectedValue = new MultiSelectValue(['blue', 'green', 'red']);
         $productValue = OptionsValue::value('multi_select_attribute_code', ['blue', 'green', 'red']);

@@ -18,14 +18,14 @@ use Akeneo\Test\Integration\Configuration;
 
 class LocaleShouldBeActiveValidatorTest extends AbstractValidationTest
 {
-    public function test_it_validate_that_locale_is_active()
+    public function test_it_validate_that_locale_is_active(): void
     {
         $violations = $this->getValidator()->validate('en_US', new LocaleShouldBeActive());
 
         $this->assertNoViolation($violations);
     }
 
-    public function test_it_builds_violations_when_locale_is_not_active()
+    public function test_it_builds_violations_when_locale_is_not_active(): void
     {
         $violations = $this->getValidator()->validate('fr_FR', new LocaleShouldBeActive());
 

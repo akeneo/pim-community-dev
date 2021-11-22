@@ -39,7 +39,7 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value) {
             return;
@@ -126,7 +126,7 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
         }
     }
 
-    private function validateLocalizableAttribute(AttributeAsMainMedia $attributeAsMainMedia, string $assetFamilyCode, ?string $channelCode, ?string $localeCode)
+    private function validateLocalizableAttribute(AttributeAsMainMedia $attributeAsMainMedia, string $assetFamilyCode, ?string $channelCode, ?string $localeCode): void
     {
         if (null === $localeCode) {
             $this->context->buildViolation(

@@ -22,7 +22,7 @@ class ReferenceEntityCollectionValueHydratorTest extends AbstractAttributeValueH
     /**
      * @test
      */
-    public function it_hydrates_a_reference_entity_collection_value_from_product_value()
+    public function it_hydrates_a_reference_entity_collection_value_from_product_value(): void
     {
         $expectedValue = new ReferenceEntityCollectionValue(['alessi', 'starck']);
 

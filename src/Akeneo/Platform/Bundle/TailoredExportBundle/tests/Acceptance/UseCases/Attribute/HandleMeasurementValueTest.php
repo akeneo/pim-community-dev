@@ -115,7 +115,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
         ];
     }
 
-    private function loadOptions()
+    private function loadOptions(): void
     {
         /** @var InMemoryFindUnitLabel $unitLabels */
         $unitLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface');
