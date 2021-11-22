@@ -262,7 +262,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         ]);
 
         $query = new SearchJobExecutionQuery();
-        $this->assertEquals(2, $this->getQuery()->count($query));
+        $this->assertEquals(1, $this->getQuery()->count($query));
     }
 
     /**
