@@ -174,4 +174,5 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch_queue.factory.job_execution_message'
             - '@logger'
+            - '@akeneo_batch.job.job_registry'
             - '%kernel.project_dir%'

@@ -43,8 +43,10 @@ class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
      */
     public function it_deletes_orphan_job_execution_files()
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('edit_common_attributes');
-        $jobExecution = $this->jobExecutionRepository->createJobExecution($jobInstance, new JobParameters([]));
+        $jobInstanceCode = 'edit_common_attributes';
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
+        $jobExecution = $this->jobExecutionRepository->createJobExecution($job, $jobInstance, new JobParameters([]));
 
         $jobExecutionFilePath = $this->filepathFromJobExecution($jobExecution);
         $orphanFile1 = \sprintf('type/job_name_1/%d/logs/logs.log', $jobExecution->getId() + 1);

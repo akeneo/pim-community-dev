@@ -76,6 +76,7 @@ class JobExecution
 
     /** @var array */
     private $rawParameters;
+    private ?bool $isStoppable = null;
 
     /**
      * Constructor
@@ -628,5 +629,15 @@ class JobExecution
     public function getRawParameters(): array
     {
         return $this->rawParameters;
+    }
+
+    public function setIsStoppable(?bool $isStoppable): void
+    {
+        $this->isStoppable = $isStoppable;
+    }
+
+    public function isStoppable(): bool
+    {
+        return $this->isStoppable === true;
     }
 }

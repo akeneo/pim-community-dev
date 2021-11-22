@@ -3,15 +3,17 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
 use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 
 /**
@@ -32,29 +34,16 @@ class DoctrineJobRepository implements JobRepositoryInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    /* @var EntityManager */
-    protected $jobManager = null;
+    protected ?EntityManagerInterface $jobManager = null;
+    protected string $jobExecutionClass;
+    protected int $batchSize;
 
-    /* @var string */
-    protected $jobExecutionClass;
-
-    /* @var int */
-    protected $batchSize;
-
-    /**
-     * Provides the doctrine entity manager
-     *
-     * @param EntityManager $entityManager
-     * @param string        $jobExecutionClass
-     * @param string        $jobInstanceClass
-     * @param string        $jobInstanceRepoClass
-     */
     public function __construct(
         EntityManager $entityManager,
-        $jobExecutionClass,
-        $jobInstanceClass,
-        $jobInstanceRepoClass,
-        $batchSize = 100
+        string $jobExecutionClass,
+        string $jobInstanceClass,
+        string $jobInstanceRepoClass,
+        int $batchSize = 100
     ) {
         $currentConn = $entityManager->getConnection();
 
@@ -96,12 +85,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $this->batchSize = $batchSize;
     }
 
-    /**
-     * Get the specific Job entityManager
-     *
-     * @return EntityManager
-     */
-    public function getJobManager()
+    public function getJobManager(): EntityManagerInterface
     {
         return $this->jobManager;
     }
@@ -109,18 +93,22 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
-    {
+    public function createJobExecution(
+        JobInterface $job,
+        JobInstance $jobInstance,
+        JobParameters $jobParameters
+    ): JobExecution {
         if (null !== $jobInstance->getId()) {
             $jobInstance = $this->jobManager->merge($jobInstance);
         } else {
             $this->jobManager->persist($jobInstance);
         }
 
-        /** @var JobExecution */
+        /** @var JobExecution $jobExecution */
         $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
         $jobExecution->setJobParameters($jobParameters);
+        $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
 
         $this->updateJobExecution($jobExecution);
 
@@ -130,7 +118,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function updateJobExecution(JobExecution $jobExecution)
+    public function updateJobExecution(JobExecution $jobExecution): void
     {
         $this->jobManager->persist($jobExecution);
         $this->jobManager->flush($jobExecution);
@@ -139,7 +127,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function updateStepExecution(StepExecution $stepExecution)
+    public function updateStepExecution(StepExecution $stepExecution): void
     {
         $this->jobManager->persist($stepExecution);
         $this->jobManager->flush($stepExecution);
@@ -148,7 +136,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastJobExecution(JobInstance $jobInstance, $status)
+    public function getLastJobExecution(JobInstance $jobInstance, $status): ?JobExecution
     {
         return $this->jobManager->createQueryBuilder()
             ->select('j')
@@ -165,39 +153,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated not used anymore. Will be removed in 4.0
      */
-    public function findPurgeables($days)
-    {
-        $qb = $this->jobManager->createQueryBuilder()
-            ->select('je')
-            ->from($this->jobExecutionClass, 'je');
-
-        $date = new \DateTime();
-        $date->modify(sprintf('- %d days', $days));
-
-        $qb->where(
-            $qb->expr()->lt('je.endTime', ':date')
-        )->setParameter('date', $date->format(self::DATETIME_FORMAT));
-
-        $subQb = $this->jobManager->createQueryBuilder()
-            ->select('MAX(je_max.id)')
-            ->from($this->jobExecutionClass, 'je_max')
-            ->where('je_max.status = :status')
-            ->groupBy('je_max.jobInstance');
-
-        $qb->andWhere(
-            $qb->expr()->notIn('je.id', $subQb->getDQL())
-        )->setParameter('status', BatchStatus::COMPLETED);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(array $jobsExecutions)
+    public function remove(array $jobsExecutions): void
     {
         foreach ($jobsExecutions as $i => $jobsExecution) {
             $this->jobManager->remove($jobsExecution);

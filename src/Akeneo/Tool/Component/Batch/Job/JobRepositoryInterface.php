@@ -19,59 +19,15 @@ use Akeneo\Tool\Component\Batch\Model\Warning;
  */
 interface JobRepositoryInterface
 {
-    /**
-     * Create a JobExecution object
-     *
-     * @param JobInstance   $job
-     * @param JobParameters $jobParameters
-     *
-     * @return JobExecution
-     */
-    public function createJobExecution(JobInstance $job, JobParameters $jobParameters);
+    public function createJobExecution(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters): JobExecution;
+    public function updateJobExecution(JobExecution $jobExecution): void;
+    public function updateStepExecution(StepExecution $stepExecution): void;
+    public function getLastJobExecution(JobInstance $jobInstance, int $status): ?JobExecution;
 
     /**
-     * Update a JobExecution
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @return JobExecution
+     * @param JobExecution[] $jobsExecutions
      */
-    public function updateJobExecution(JobExecution $jobExecution);
-
-    /**
-     * Update a StepExecution
-     *
-     * @param StepExecution $stepExecution
-     *
-     * @return StepExecution
-     */
-    public function updateStepExecution(StepExecution $stepExecution);
-
-    /**
-     * Get the last job execution
-     *
-     * @param JobInstance $jobInstance
-     * @param int         $status
-     *
-     * @return JobExecution|null
-     */
-    public function getLastJobExecution(JobInstance $jobInstance, $status);
-
-    /**
-     * Get purgeables jobs executions
-     *
-     * @param integer $days
-     *
-     * @return array
-     */
-    public function findPurgeables($days);
-
-    /**
-     * Remove jobs executions
-     *
-     * @param array $jobsExecutions
-     */
-    public function remove(array $jobsExecutions);
+    public function remove(array $jobsExecutions): void;
 
     public function addWarning(Warning $warning): void;
 }

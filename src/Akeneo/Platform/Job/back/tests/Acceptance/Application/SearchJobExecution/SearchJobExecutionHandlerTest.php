@@ -47,7 +47,8 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 3,
                 0,
                 1,
-                2
+                2,
+                false
             ),
             new JobExecutionRow(
                 2,
@@ -59,7 +60,8 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 4,
                 1,
                 1,
-                2
+                2,
+                true
             ),
         ];
 

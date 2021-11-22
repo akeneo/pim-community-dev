@@ -16,38 +16,50 @@ class DoctrineJobRepositoryIntegration extends TestCase
 {
     public function testCreateJobExecutionWithJobParameters()
     {
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-
-        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier('csv_product_quick_export');
-
+        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
         $jobParameters =  new JobParameters(['foo' => 'bar']);
-        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($jobInstance, $jobParameters);
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
-        $jobExecutionId = $jobExecution->getId();
-        $stmt = $connection->prepare('SELECT status, exit_code, raw_parameters from akeneo_batch_job_execution where id = :id');
-        $stmt->bindParam('id', $jobExecutionId);
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $this->selectJobExecution($jobExecution->getId());
 
         $expectedResult = [
             'status' => '2',
             'exit_code' => 'UNKNOWN',
             'raw_parameters' => '{"foo": "bar"}',
+            'is_stoppable' => '1',
         ];
 
         $this->assertEquals($expectedResult['status'], $result['status']);
         $this->assertEquals($expectedResult['exit_code'], $result['exit_code']);
         $this->assertJsonStringEqualsJsonString($expectedResult['raw_parameters'], $result['raw_parameters']);
+        $this->assertEquals($expectedResult['is_stoppable'], $result['is_stoppable']);
+    }
+
+    public function testCreateNonStoppableJobExecution()
+    {
+        $jobInstanceCode = 'clean_removed_attribute_job';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
+
+        $jobParameters =  new JobParameters([]);
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
+
+        $result = $this->selectJobExecution($jobExecution->getId());
+
+        $this->assertEquals('0', $result['is_stoppable']);
     }
 
     public function testGetLastJobExecutionWithJobParameters()
     {
-        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier('csv_product_quick_export');
-
+        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
         $jobParameters =  new JobParameters(['foo' => 'bar']);
-        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($jobInstance, $jobParameters);
-        $this->getDoctrineJobRepository()->getJobManager()->clear();
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
+        $this->getDoctrineJobRepository()->getJobManager()->clear();
         $lastJobExecution = $this->getDoctrineJobRepository()->getLastJobExecution($jobInstance, BatchStatus::STARTING);
 
         $this->assertEquals($jobExecution->getId(), $lastJobExecution->getId());
@@ -58,17 +70,11 @@ class DoctrineJobRepositoryIntegration extends TestCase
         $this->assertEquals(['foo' => 'bar'], $lastJobExecution->getJobParameters()->all());
     }
 
-    /**
-     * @return DoctrineJobRepository
-     */
     protected function getDoctrineJobRepository(): DoctrineJobRepository
     {
         return $this->get('akeneo_batch.job_repository');
     }
 
-    /**
-     * @return JobInstanceRepository
-     */
     protected function getJobInstanceRepository(): JobInstanceRepository
     {
         return $this->get('akeneo_batch.job.job_instance_repository');
@@ -80,5 +86,14 @@ class DoctrineJobRepositoryIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalSqlCatalog();
+    }
+
+    private function selectJobExecution(int $id): array {
+        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
+        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution where id = :id');
+        $stmt->bindParam('id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+
     }
 }
