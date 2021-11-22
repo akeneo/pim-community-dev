@@ -21,7 +21,6 @@ import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo
 import {AddColumnModal, DataTypesMapping} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
-import {CenteredHelper} from '../shared';
 import {LocaleRepository} from '../repositories';
 import {ColumnDefinitionPropertiesMapping} from './ColumDefinitionProperties';
 import {LIMIT_OPTIONS} from './ManageOptionsModal';

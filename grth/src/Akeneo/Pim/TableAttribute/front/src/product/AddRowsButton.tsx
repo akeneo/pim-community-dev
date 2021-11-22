@@ -12,7 +12,6 @@ import {
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOptionCode} from '../models';
 import styled from 'styled-components';
-import {CenteredHelper} from '../shared';
 import {useAttributeContext} from '../contexts';
 import {useFetchOptions} from './useFetchOptions';
 import {useManageOptions} from './useManageOptions';

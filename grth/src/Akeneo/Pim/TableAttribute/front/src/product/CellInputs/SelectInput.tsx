@@ -3,7 +3,7 @@ import {AddingValueIllustration, Button, Dropdown, Placeholder, TableInput} from
 import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
+import {LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
 import {useManageOptions} from '../useManageOptions';
