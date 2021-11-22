@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import __ from 'akeneoreferenceentity/tools/translator';
 
