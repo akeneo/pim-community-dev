@@ -12,7 +12,7 @@ import {
   SectionTitle,
   useBooleanState,
 } from 'akeneo-design-system';
-import {NoDataSection, NoDataTitle, useTranslate, LocaleCode} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataTitle, useTranslate, LocaleCode, Channel} from '@akeneo-pim-community/shared';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,
@@ -48,10 +48,8 @@ import {ValidationError} from 'akeneoassetmanager/platform/model/validation-erro
 import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import ListAsset, {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {
@@ -60,6 +58,26 @@ import {
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
+import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+
+type AssetFamilyIdentifier = string;
+type DataProvider = {
+  assetFamilyFetcher: AssetFamilyFetcher;
+  channelFetcher: {fetchAll: () => Promise<Channel[]>};
+  assetFetcher: {
+    fetchByCode: (
+      assetFamilyIdentifier: AssetFamilyIdentifier,
+      assetCodeCollection: AssetCode[],
+      context: Context
+    ) => Promise<ListAsset[]>;
+    search: (query: Query) => Promise<SearchResult<ListAsset>>;
+  };
+  assetAttributeFetcher: {
+    fetchAll: (assetFamilyIdentifier: string) => Promise<NormalizedAttribute[]>;
+  };
+};
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -86,6 +104,7 @@ type DisplayValuesProps = {
   rulesNumberByAttribute: RulesNumberByAttribute;
   errors: ValidationError[];
   onChange: (value: Value) => void;
+  dataProvider: DataProvider;
 };
 
 const IncompleteIndicator = styled.div`
@@ -104,11 +123,6 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-const dataProvider = {
-  assetFamilyFetcher,
-  channelFetcher: {fetchAll: fetchAllChannels},
-};
-
 const getAttributeGroupLabel = (
   attributeGroups: AttributeGroupCollection,
   code: AttributeGroupCode,
@@ -125,6 +139,7 @@ const DisplayValues = ({
   errors,
   productIdentifier,
   productLabels,
+  dataProvider,
 }: DisplayValuesProps) => {
   const translate = useTranslate();
 
@@ -175,6 +190,7 @@ const DisplayValues = ({
                     onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)))
                   }
                   productLabels={productLabels}
+                  dataProvider={dataProvider}
                 />
                 <SecondaryActions
                   onRemoveAllAssets={() => onChange(updateValueData(value, emptyCollection(value.data)))}
@@ -246,7 +262,11 @@ const List = ({
   productIdentifier,
   productLabels,
   onChange,
-}: ListStateProps & ListDispatchProps) => {
+  dataProvider,
+}: ListStateProps &
+  ListDispatchProps & {
+    dataProvider: DataProvider;
+  }) => {
   const translate = useTranslate();
 
   return (
@@ -263,6 +283,7 @@ const List = ({
             errors={errors}
             productIdentifier={productIdentifier}
             productLabels={productLabels}
+            dataProvider={dataProvider}
           />
         ) : (
           <>

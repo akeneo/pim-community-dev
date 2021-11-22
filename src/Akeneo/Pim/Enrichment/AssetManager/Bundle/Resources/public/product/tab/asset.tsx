@@ -17,10 +17,10 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ThemeProvider} from 'styled-components';
 import {
-  updateChannels,
   updateFamily,
   updateRuleRelations,
   updateAttributeGroups,
+  updateChannels,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import thunkMiddleware from 'redux-thunk';
@@ -28,9 +28,34 @@ import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/p
 import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneoassetmanager/platform/model/validation-error';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
+import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {Context} from 'akeneoassetmanager/domain/model/context';
 
+const fetcherRegistry = require('pim/fetcher-registry');
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
+
+const dataProvider = {
+  assetFamilyFetcher,
+  channelFetcher: {fetchAll: fetchChannels(fetcherRegistry.getFetcher('channel'))},
+  assetFetcher: {
+    fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
+      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
+    },
+    search: (query: Query) => {
+      return assetFetcher.search(query);
+    },
+  },
+  assetAttributeFetcher: {
+    fetchAll: attributeFetcher.fetchAllNormalized,
+  },
+};
 
 const updateValueMiddleware = (formView: AssetTabForm) => {
   return () => (next: any) => (action: any) => {
@@ -89,7 +114,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
 
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
-    this.store.dispatch(updateChannels() as any);
+    this.store.dispatch(updateChannels(fetchChannels(fetcherRegistry.getFetcher('channel'))) as any);
 
     this.store.dispatch(updateAttributeGroups() as any);
 
@@ -112,7 +137,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       <Provider store={this.store}>
         <DependenciesProvider>
           <ThemeProvider theme={pimTheme}>
-            <List />
+            <List dataProvider={dataProvider} />
           </ThemeProvider>
         </DependenciesProvider>
       </Provider>,

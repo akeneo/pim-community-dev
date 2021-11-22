@@ -10,10 +10,10 @@ import {
   selectFamily,
   selectRuleRelations,
   selectAttributeGroupList,
-  updateChannels,
   updateFamily,
   updateRuleRelations,
   updateAttributeGroups,
+  updateChannels,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {channelFetcher, fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {
@@ -345,11 +345,10 @@ test('It should be able to dispatch an action to update the channels', async () 
     },
   ];
   const dispatch = jest.fn();
-  fetchChannels.mockImplementation(channelFetcher => () => channels);
+  fetchChannels.mockImplementation(() => channels);
 
-  await updateChannels()(dispatch);
+  await updateChannels(fetchChannels)(dispatch);
   expect(fetchChannels).toBeCalled();
-  expect(channelFetcher).toBeCalled();
   expect(dispatch).toBeCalledWith({type: 'CHANNEL_LIST_UPDATED', channels});
 });
 
