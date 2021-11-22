@@ -190,6 +190,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => TextColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => ['max_length' => 50],
+                'is_required_for_completeness' => false,
             ]
         ]);
     }
