@@ -1,11 +1,11 @@
-import {transformVolumesToKeyFigures} from './catalogVolumeWrapper';
+import {transformVolumesToAxis} from './catalogVolumeWrapper';
 
 const getCatalogVolume = async (route: any) => {
   const response = await fetch(route);
 
   const catalogVolume = await response.json();
 
-  return transformVolumesToKeyFigures(catalogVolume);
+  return transformVolumesToAxis(catalogVolume);
 };
 
 export {getCatalogVolume};

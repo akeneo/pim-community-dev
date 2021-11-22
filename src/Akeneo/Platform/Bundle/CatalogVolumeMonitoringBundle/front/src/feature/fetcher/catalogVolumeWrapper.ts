@@ -9,7 +9,7 @@ const volumesKeyFigures: {[volumeName: string]: string[]} = {
   assets: [],
 };
 
-const transformVolumesToKeyFigures = (rawCatalogVolumes: any) => {
+const transformVolumesToAxis = (rawCatalogVolumes: any): Axis[] => {
   let axesCatalogVolumes: Axis[] = [];
   for (const [axisName, catalogVolumes] of Object.entries(volumesKeyFigures)) {
     // fixme: don't add empty axes
@@ -29,4 +29,4 @@ const transformVolumesToKeyFigures = (rawCatalogVolumes: any) => {
   return axesCatalogVolumes;
 };
 
-export {transformVolumesToKeyFigures};
+export {transformVolumesToAxis};

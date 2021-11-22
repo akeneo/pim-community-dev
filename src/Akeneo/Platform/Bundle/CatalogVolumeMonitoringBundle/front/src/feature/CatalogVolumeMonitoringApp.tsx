@@ -1,18 +1,17 @@
 import React from 'react';
 import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
-import {useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
+import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
-import {Axis} from './model/catalog-volume';
 
 interface Props {
-  getCatalogVolumeInterface: any;
+  getCatalogVolume: GetCatalogVolumeInterface;
 }
 
-const CatalogVolumeMonitoringApp = ({getCatalogVolumeInterface}: Props) => {
+const CatalogVolumeMonitoringApp = ({getCatalogVolume}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
-  const [catalogVolumes] = useCatalogVolumeByAxis(getCatalogVolumeInterface());
+  const [axes] = useCatalogVolumeByAxis(getCatalogVolume);
 
   return (
     <>
@@ -32,7 +31,7 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumeInterface}: Props) => {
         <PageHeader.Title>{translate('pim_menu.item.catalog_volume')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {catalogVolumes.map(axis => (
+        {axes.map(axis => (
           <Section key={axis.name}>
             <SectionTitle>
               <SectionTitle.Title>{axis.name}</SectionTitle.Title>

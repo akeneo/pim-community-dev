@@ -7,15 +7,14 @@ import {routes} from './routes.json';
 import translations from './translations.json';
 import {CatalogVolumeMonitoringApp} from './feature';
 import {FakePIM} from './FakePIM';
-//import {getMockCatalogVolume} from './feature/fetcher/getMockCatalogVolume';
-import {getCatalogVolume} from './feature/fetcher/getCatalogVolume';
+import {getMockCatalogVolume} from './feature/fetcher/getMockCatalogVolume';
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
         <FakePIM>
-          <CatalogVolumeMonitoringApp getCatalogVolumeInterface={getCatalogVolume()} />
+          <CatalogVolumeMonitoringApp getCatalogVolume={getMockCatalogVolume} />
         </FakePIM>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>

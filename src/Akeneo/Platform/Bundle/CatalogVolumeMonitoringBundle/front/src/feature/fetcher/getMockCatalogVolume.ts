@@ -1,4 +1,4 @@
-import {transformVolumesToKeyFigures} from './catalogVolumeWrapper';
+import {transformVolumesToAxis} from './catalogVolumeWrapper';
 
 const volumes = {
   count_attributes: {value: 77, has_warning: false, type: 'count'},
@@ -32,7 +32,7 @@ const volumes = {
 };
 
 const getMockCatalogVolume = () => {
-  return transformVolumesToKeyFigures(volumes);
+  return transformVolumesToAxis(volumes);
 };
 
 export {getMockCatalogVolume};
