@@ -48,12 +48,12 @@
                 "constraint": {
                     "targets": "class",
                     "defaultOption": null,
+                    "requiredOptions": [],
+                    "payload": null,
                     "groups": [
                         "Default",
                         "SetAssetFamilyPermissionsCommand"
-                    ],
-                    "requiredOptions": [],
-                    "payload": null
+                    ]
                 },
                 "cause": null,
                 "code": null
