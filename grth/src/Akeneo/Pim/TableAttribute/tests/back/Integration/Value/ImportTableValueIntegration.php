@@ -20,7 +20,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use PHPUnit\Framework\Assert;
 
 final class ImportTableValueIntegration extends TestCase
@@ -64,19 +65,19 @@ CSV;
     public function itImportsTableAttributeValuesFromAnXlsxFile(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             [
-                ['sku', 'nutrition'],
-                [
+                WriterEntityFactory::createRowFromArray(['sku', 'nutrition']),
+                WriterEntityFactory::createRowFromArray([
                     'test1',
                     '[{"ingredient":"salt","quantity":10}]',
-                ],
-                [
+                ]),
+                WriterEntityFactory::createRowFromArray([
                     'test2',
                     '',
-                ],
+                ]),
             ]
         );
         $writer->close();

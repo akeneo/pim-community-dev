@@ -18,6 +18,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
@@ -59,8 +60,9 @@ CSV;
         $expectedNutritionVlaue = '[{"ingredient":"salt","is_allergenic":false},{"ingredient":"egg","quantity":2},{"ingredient":"butter","quantity":25,"is_allergenic":true}]';
 
         Assert::assertCount(1, $lines);
+        /** @var Row $row */
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row);
+            $row = \array_combine($header, $row->toArray());
             Assert::assertSame($expectedNutritionVlaue, $row['nutrition']);
         }
     }
@@ -115,7 +117,7 @@ CSV;
                             ['code' => 'salt'],
                             ['code' => 'egg'],
                             ['code' => 'butter'],
-                        ]
+                        ],
                     ],
                     [
                         'code' => 'quantity',
@@ -163,7 +165,7 @@ CSV;
                             'locale' => null,
                             'scope' => null,
                             'data' => $nutritionValue,
-                        ]
+                        ],
                     ],
                 ],
             ]

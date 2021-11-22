@@ -18,6 +18,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
@@ -64,8 +65,9 @@ final class ExportTableAttributeIntegration extends TestCase
         );
 
         Assert::assertCount(2, $formatted);
+        /** @var Row $row */
         foreach ($formatted as $row) {
-            $row = \array_combine($header, $row);
+            $row = \array_combine($header, $row->toArray());
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
@@ -120,8 +122,9 @@ final class ExportTableAttributeIntegration extends TestCase
         );
 
         Assert::assertCount(2, $lines);
+        /** @var Row $row */
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row);
+            $row = \array_combine($header, $row->toArray());
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
@@ -188,7 +191,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'decimals_allowed' => true,
                     ],
                 ],
-            ]
+            ],
         ]);
         $violations = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));

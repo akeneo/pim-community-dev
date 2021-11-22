@@ -20,6 +20,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
@@ -58,7 +59,11 @@ CSV;
         $reader = ReaderFactory::createFromType('xlsx');
         $reader->open($tmpfile);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
-        $rows = \array_values(iterator_to_array($sheet->getRowIterator()));
+        $rows = [];
+        /** @var Row $row */
+        foreach ($sheet->getRowIterator() as $row) {
+            $rows[] = $row->toArray();
+        }
         $reader->close();
         if (\is_file($tmpfile)) {
             \unlink($tmpfile);
