@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
@@ -17,7 +17,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        GetGroupProductIdentifiers $getGroupProductIdentifiers
+        FindProductIdentifiersInterface $getGroupProductIdentifiers
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -38,7 +38,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $versionManager,
         $versionNormalizer,
-        GetGroupProductIdentifiers $getGroupProductIdentifiers,
+        FindProductIdentifiersInterface $getGroupProductIdentifiers,
         GroupInterface $tshirt,
         Version $oldestLog,
         Version $newestLog

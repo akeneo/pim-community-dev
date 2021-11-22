@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -25,14 +25,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class GroupSaverSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
-        VersionContext $versionContext,
-        EventDispatcherInterface $eventDispatcher,
+        ObjectManager                       $objectManager,
+        SavingOptionsResolverInterface      $optionsResolver,
+        VersionContext                      $versionContext,
+        EventDispatcherInterface            $eventDispatcher,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkObjectDetacherInterface $detacher,
-        GetGroupProductIdentifiers $getGroupProductIdentifiers,
-        EntityManager $entityManager
+        BulkObjectDetacherInterface         $detacher,
+        FindProductIdentifiersInterface     $getGroupProductIdentifiers,
+        EntityManager                       $entityManager
     ) {
         $this->beConstructedWith(
             $objectManager,

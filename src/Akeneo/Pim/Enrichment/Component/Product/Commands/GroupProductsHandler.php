@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Commands;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -15,11 +15,11 @@ use Doctrine\ORM\EntityManager;
  */
 class GroupProductsHandler
 {
-    private GetGroupProductIdentifiers $getGroupProductIdentifiers;
+    private FindProductIdentifiersInterface $getGroupProductIdentifiers;
     private EntityManager $entityManager;
     protected BulkSaverInterface $productSaver;
 
-    public function __construct(GetGroupProductIdentifiers $getGroupProductIdentifiers, EntityManager $entityManager, BulkSaverInterface $productSaver)
+    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, EntityManager $entityManager, BulkSaverInterface $productSaver)
     {
         $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
         $this->entityManager = $entityManager;
