@@ -1,6 +1,6 @@
 import React from 'react';
 import {Tile, Tiles} from './Tiles';
-import {render, screen} from '../../storybook/test-util';
+import {render, screen, fireEvent} from '../../storybook/test-util';
 import {AssetCollectionIcon} from '../../icons';
 
 test('it renders tile correctly', () => {
@@ -38,4 +38,21 @@ test('Tiles supports forwardRef', () => {
 test('Tiles supports ...rest props', () => {
   render(<Tiles data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('it triggers onclick when pressing enter with focus', () => {
+  const handleClick = jest.fn();
+
+  render(
+    <Tiles size={'big'}>
+      <Tile icon={<AssetCollectionIcon />} onClick={handleClick}>
+        A label
+      </Tile>
+    </Tiles>
+  );
+
+  expect(screen.getByText('A label')).toBeInTheDocument();
+  const input = screen.getByText('A label') as HTMLInputElement;
+  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  expect(handleClick).toBeCalled();
 });

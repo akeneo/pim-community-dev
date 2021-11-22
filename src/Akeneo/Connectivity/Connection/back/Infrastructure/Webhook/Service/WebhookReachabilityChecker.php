@@ -28,6 +28,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
     /** @var string */
     const CONNECTION_FAILED = 'Failed to connect to server';
+    private const PROHIBITED_REDIRECTION = 'Server response contains a redirection. This is not allowed.';
 
     private ClientInterface $client;
 
@@ -64,7 +65,16 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         ];
 
         try {
-            $response = $this->client->send(new Request(self::POST, $url, $headers));
+            $response = $this->client->send(new Request(self::POST, $url, $headers), [
+                'allow_redirects' => false,
+            ]);
+
+            if ($this->isRedirectResponse($response->getStatusCode())) {
+                return new UrlReachabilityStatus(
+                    false,
+                    sprintf("%s %s", $response->getStatusCode(), self::PROHIBITED_REDIRECTION)
+                );
+            }
 
             return new UrlReachabilityStatus(
                 true,
@@ -87,5 +97,10 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
                 );
             }
         }
+    }
+
+    private function isRedirectResponse(int $statusCode): bool
+    {
+        return $statusCode >= 300 && $statusCode < 400;
     }
 }
