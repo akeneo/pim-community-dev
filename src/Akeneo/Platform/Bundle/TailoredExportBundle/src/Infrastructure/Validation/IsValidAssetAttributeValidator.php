@@ -18,7 +18,6 @@ use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMedi
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)

@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Columns;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAttribute;
 use Akeneo\Test\Integration\Configuration;
-use Symfony\Component\Validator\Constraint;
 
 final class ColumnsValidatorTest extends AbstractValidationTest
 {

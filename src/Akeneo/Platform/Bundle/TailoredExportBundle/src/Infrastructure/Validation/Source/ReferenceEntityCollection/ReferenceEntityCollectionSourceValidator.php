@@ -19,7 +19,6 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabel
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Composite;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 

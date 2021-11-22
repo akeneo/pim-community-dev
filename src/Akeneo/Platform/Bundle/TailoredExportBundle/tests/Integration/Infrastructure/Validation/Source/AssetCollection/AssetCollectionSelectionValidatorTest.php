@@ -27,7 +27,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;

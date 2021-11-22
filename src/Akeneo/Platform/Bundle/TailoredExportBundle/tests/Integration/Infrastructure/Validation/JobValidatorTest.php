@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Platform\TailoredExport\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Symfony\Component\Validator\ConstraintViolation;
 
 class JobValidatorTest extends AbstractValidationTest
 {
