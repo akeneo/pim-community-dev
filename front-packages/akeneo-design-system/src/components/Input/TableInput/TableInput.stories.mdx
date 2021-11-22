@@ -1,7 +1,11 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {TableInput} from './TableInput.tsx';
 import {Dropdown} from '../../Dropdown/Dropdown.tsx';
-import {useFakeTableInput} from '../../../storybook/hooks/useFakeTableInput'
+import {useFakeTableInput} from '../../../storybook/hooks/useFakeTableInput';
+import {Image} from '../../Image/Image';
+import {Badge} from '../../Badge/Badge';
+import {IconButton} from '../../IconButton/IconButton';
+import {LinkIcon} from '../../../icons';
 
 <Meta
   title="Components/Inputs/Table input"
@@ -21,7 +25,7 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const {getValue, setValue, searchValue, setSearchValue} = useFakeTableInput(6);
+      const {getValue, setValue, searchValue, setSearchValue, match} = useFakeTableInput(6);
       return <TableInput {...args}>
         <TableInput.Header>
           <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
@@ -29,6 +33,7 @@ Table input allows the user to input content in a table.
           <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Origin</TableInput.HeaderCell>
         </TableInput.Header>
         <TableInput.Body>
           {['Sugar', 'Salt', 'Pepper', 'Eggs', 'Flour', 'Yeast'].map((row, index) => <TableInput.Row key={row}>
@@ -44,14 +49,54 @@ Table input allows the user to input content in a table.
                 onSearchChange={setSearchValue}
                 searchTitle={'Search'}
               >
-                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '1')}>A</Dropdown.Item>
-                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '2')}>B</Dropdown.Item>
-                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '3')}>C</Dropdown.Item>
+                {match('A') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '1')}>A</Dropdown.Item>}
+                {match('B') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '2')}>B</Dropdown.Item>}
+                {match('C') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '3')}>C</Dropdown.Item>}
               </TableInput.Select>
             </TableInput.Cell>
             <TableInput.Cell><TableInput.Text value={getValue(index, 'part')} onChange={(value) => setValue(index, 'part', value)}/></TableInput.Cell>
             <TableInput.Cell><TableInput.Number value={getValue(index, 'quantity')} onChange={(value) => setValue(index, 'quantity', value)}/></TableInput.Cell>
             <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={getValue(index, 'is_allergenic')} onChange={(value) => setValue(index, 'is_allergenic', value)}/></TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Select
+                clearLabel="Remove"
+                openDropdownLabel="Open"
+                value={{'french': 'French (France)', 'german': 'German (Germany)', 'english': 'English (United States)'}[getValue(index, 'origin')]}
+                onClear={() => setValue(index, 'origin', null)}
+                searchPlaceholder={'Search on Origin'}
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                searchTitle={'Search'}
+              >
+                {match('French (France)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'french')}>
+                  <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="France">
+                    French (France)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+                {match('German (Germany)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'german')}>
+                  <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="Germany">
+                    German (Germany)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+                {match('English (United States)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'english')}>
+                  <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="English">
+                    English (United States)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+              </TableInput.Select>
+            </TableInput.Cell>
           </TableInput.Row>
         )}
         </TableInput.Body>
