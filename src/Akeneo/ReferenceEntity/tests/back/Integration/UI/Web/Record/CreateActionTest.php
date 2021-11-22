@@ -260,7 +260,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'invalid-code',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_reference_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null,"groups": ["Default","CreateRecordCommand"]},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_reference_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null,"groups":["Default","CreateRecordCommand"]},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',

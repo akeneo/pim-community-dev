@@ -65,9 +65,8 @@ final class ExportTableAttributeIntegration extends TestCase
         );
 
         Assert::assertCount(2, $formatted);
-        /** @var Row $row */
         foreach ($formatted as $row) {
-            $row = \array_combine($header, $row->toArray());
+            $row = \array_combine($header, $row);
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
@@ -88,6 +87,7 @@ final class ExportTableAttributeIntegration extends TestCase
         $reader = ReaderFactory::createFromType('xlsx');
         $reader->open($tmpfile);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        /** @var Row[] $lines */
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
         if (\is_file($tmpfile)) {
@@ -122,9 +122,8 @@ final class ExportTableAttributeIntegration extends TestCase
         );
 
         Assert::assertCount(2, $lines);
-        /** @var Row $row */
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row->toArray());
+            $row = \array_combine($header->toArray(), $row->toArray());
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {

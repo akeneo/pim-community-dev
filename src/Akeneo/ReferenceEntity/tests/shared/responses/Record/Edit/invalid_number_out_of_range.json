@@ -240,12 +240,12 @@
           "constraint": {
             "targets": "class",
             "defaultOption": null,
+            "requiredOptions": [],
+            "payload": null,
             "groups": [
               "Default",
               "EditRecordCommand"
-            ],
-            "requiredOptions": [],
-            "payload": null
+            ]
           },
           "cause": null,
           "code": "76454e69-502c-46c5-9643-f447d837c4d5"

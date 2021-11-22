@@ -50,6 +50,7 @@ CSV;
         $reader = ReaderFactory::createFromType('xlsx');
         $reader->open($tmpfile);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        /** @var Row[] $lines */
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
         if (\is_file($tmpfile)) {
@@ -60,9 +61,8 @@ CSV;
         $expectedNutritionVlaue = '[{"ingredient":"salt","is_allergenic":false},{"ingredient":"egg","quantity":2},{"ingredient":"butter","quantity":25,"is_allergenic":true}]';
 
         Assert::assertCount(1, $lines);
-        /** @var Row $row */
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row->toArray());
+            $row = \array_combine($header->toArray(), $row->toArray());
             Assert::assertSame($expectedNutritionVlaue, $row['nutrition']);
         }
     }

@@ -138,7 +138,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An reference entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An reference entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null,"groups":["other_constraints"]},"cause":null,"code":null}]'
         );
     }
 

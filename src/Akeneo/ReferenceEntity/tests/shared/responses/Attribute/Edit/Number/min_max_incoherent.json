@@ -45,11 +45,11 @@
         "constraint": {
           "targets": "class",
           "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null,
           "groups": [
             "primary_constraints"
-          ],
-          "requiredOptions": [],
-          "payload": null
+          ]
         },
         "cause": null,
         "code": null
