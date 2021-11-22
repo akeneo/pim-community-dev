@@ -456,9 +456,11 @@
         const boundedHeight = Math.min(outerHeight, maxHeight);
         const isScrollable = outerHeight > maxHeight;
         const listIsLongerThanPage = boundedHeight + parentOffset + gap > bodyHeight;
+        const parentOffsetBottom = $parent.offset().top + $parent.height();
+        const listIsOverlappingTop = parentOffsetBottom - outerHeight < 0;
 
-        if (false === isScrollable && listIsLongerThanPage) {
-          $parent.toggleClass('top', listIsLongerThanPage);
+        if (false === isScrollable && listIsLongerThanPage && false === listIsOverlappingTop) {
+          $parent.toggleClass('top', true);
         }
 
         if (outerWidth + $parent.offset().left + gap > $('body').width()) {
