@@ -161,15 +161,15 @@ class ColumnsMerger
     /**
      * Collect price data exploded in different columns
      *
-     * @param array $collectedPrices
-     * @param array $attributeInfos
-     * @param mixed $fieldValue
+     * @param array  $collectedPrices
+     * @param array  $attributeInfos
+     * @param string $fieldValue
+     *
      * @return array collected metrics
      */
     protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
-
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
             if (trim($fieldValue) === '') {
