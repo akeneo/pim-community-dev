@@ -26,9 +26,7 @@ type PlaceholderProps = Override<
   }
 >;
 
-const Placeholder: React.FC<PlaceholderProps> = props => {
-  const {illustration, title, children, ...rest} = props;
-
+const Placeholder: React.FC<PlaceholderProps> = ({illustration, title, children, ...rest}) => {
   return (
     <CenteredHelperContainer {...rest}>
       {React.cloneElement(illustration, {size: 120})}
