@@ -1,0 +1,5 @@
+{
+  "extends": "../cypress.json",
+  "baseUrl": "https://c3po.demo.cloud.akeneo.com/",
+  "env":{}
+}

@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  cypress:
+    build:
+      context: .
+    environment:
+      CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
+      CYPRESS_requestTimeout: '${CYPRESS_requestTimeout:-5000}'
+      CYPRESS_responseTimeout: '${CYPRESS_responseTimeout:-40000}'
+    working_dir: /srv/cypress
+    volumes:
+      - ./:/srv/cypress

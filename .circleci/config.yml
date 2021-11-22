@@ -1919,9 +1919,9 @@ jobs:
                     VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | head -n1 | cut -c11-)
                     TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ test_deployment_e2e
           - store_artifacts:
-                path: cypress/screenshots/
+                path: deployments/test/e2e/cypress/screenshots/
           - store_artifacts:
-                path: cypress/videos/
+                path: deployments/test/e2e/cypress/videos/
 
 workflows:
   pull_request:
@@ -2074,25 +2074,10 @@ workflows:
       - checkout:
           requires:
             - "Start test ?"
-      - ready_to_test?:
-          name: "[<< matrix.PRODUCT_TYPE >>] Test instance ?"
-          matrix:
-            parameters:
-              PRODUCT_TYPE: ["srnt", "grth"]
-          type: approval
-          filters:
-            branches:
-              only:
-                - master
-      - build_srnt_dev:
-          name: "Build image"
-          requires:
-            - "checkout"
       - post_deployment_e2e_validation:
           name: "[srnt] Post deployment e2e validation"
           requires:
-            - "[srnt] Test instance ?"
-            - "Build image"
+            - "checkout"
           matrix:
             parameters:
               PRODUCT_TYPE: ["srnt"]
@@ -2100,8 +2085,7 @@ workflows:
       - post_deployment_e2e_validation:
           name: "[grth] Post deployment e2e validation"
           requires:
-            - "[grth] Test instance ?"
-            - "Build image"
+            - "checkout"
           matrix:
             parameters:
               PRODUCT_TYPE: ["grth"]
