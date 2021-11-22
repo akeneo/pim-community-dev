@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatT
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
@@ -60,8 +59,13 @@ class ColumnsMerger
                 if (AttributeTypes::BACKEND_TYPE_METRIC === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
                 } elseif (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                    // For XLSX import, the value could be already converted to a DateTime object (cf PIM-10167)
                     if ($fieldValue instanceof \DateTimeInterface) {
-                        throw new BusinessArrayConversionException("Can not convert cell {$fieldName} with date format to attribute of type text", "pim_import_export.notification.export.warnings.xlsx_cell_date_to_text_conversion_error", [$fieldName]);
+                        throw new BusinessArrayConversionException(
+                            "Can not convert cell {$fieldName} with date format to attribute of type date",
+                            "pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error",
+                            ['{cellName}' => $fieldName, '{attributeType}' => 'price']
+                        );
                     }
 
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
@@ -159,10 +163,10 @@ class ColumnsMerger
      *
      * @param array $collectedPrices
      * @param array $attributeInfos
-     * @param string $fieldValue
+     * @param mixed $fieldValue
      * @return array collected metrics
      */
-    protected function collectPriceData(array $collectedPrices, array $attributeInfos, string $fieldValue)
+    protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
 
