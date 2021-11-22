@@ -143,7 +143,7 @@
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
-        "phpspec/phpspec": "^7.0.0",
+        "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.14.0",
         "phpstan/phpstan": "^0.12.97",
         "phpstan/phpstan-symfony": "^0.12.44",
