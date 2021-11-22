@@ -1,46 +1,39 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
 import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const useJobExecutionTable = ({
-  page,
-  size,
-  sort,
-  type,
-  status,
-  search,
-}: JobExecutionFilter): JobExecutionTable | null => {
+const useJobExecutionTable = ({page, size, sort, type, status, search}: JobExecutionFilter) => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
 
-  useEffect(() => {
-    const searchJobExecution = async () => {
-      const response = await fetch(route, {
-        body: JSON.stringify({
-          page: page.toString(),
-          size: size.toString(),
-          sort,
-          status,
-          type,
-          search,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        method: 'POST',
-      });
+  const searchJobExecution = useCallback(async () => {
+    const response = await fetch(route, {
+      body: JSON.stringify({
+        page: page.toString(),
+        size: size.toString(),
+        sort,
+        status,
+        type,
+        search,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      method: 'POST',
+    });
 
-      if (isMounted()) {
-        setJobExecutionTable(await response.json());
-      }
-    };
-
-    searchJobExecution();
+    if (isMounted()) {
+      setJobExecutionTable(await response.json());
+    }
   }, [isMounted, route, page, size, sort, type, status, search]);
 
-  return jobExecutionTable;
+  useEffect(() => {
+    searchJobExecution();
+  }, [searchJobExecution]);
+
+  return [jobExecutionTable, searchJobExecution] as const;
 };
 
 export {useJobExecutionTable};

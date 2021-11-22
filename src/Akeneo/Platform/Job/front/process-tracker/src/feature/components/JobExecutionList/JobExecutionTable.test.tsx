@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {screen} from '@testing-library/react';
+import {screen, within} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionRow} from 'feature/models/JobExecutionTable';
 import {JobExecutionFilterSort} from 'feature/models';
@@ -20,6 +20,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 4,
     job_name: 'An export',
     status: 'STARTED',
+    is_stoppable: true,
   },
   {
     job_execution_id: 2,
@@ -34,6 +35,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 0,
     job_name: 'An import',
     status: 'COMPLETED',
+    is_stoppable: true,
   },
   {
     job_execution_id: 3,
@@ -48,6 +50,7 @@ const rows: JobExecutionRow[] = [
     warning_count: 1,
     job_name: 'A quick export',
     status: 'STARTING',
+    is_stoppable: false,
   },
 ];
 
@@ -56,9 +59,10 @@ const sort: JobExecutionFilterSort = {
   direction: 'ASC',
 };
 
+let mockedGrantedAcl = ['pim_importexport_export_execution_show', 'pim_importexport_stop_job'];
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
   useSecurity: () => ({
-    isGranted: (acl: string) => ['pim_importexport_export_execution_show'].includes(acl),
+    isGranted: (acl: string) => mockedGrantedAcl.includes(acl),
   }),
 }));
 
@@ -71,10 +75,13 @@ jest.mock('react-router-dom', () => ({
 
 beforeEach(() => {
   mockRedirect.mockClear();
+  mockedGrantedAcl = ['pim_importexport_export_execution_show', 'pim_importexport_stop_job'];
 });
 
 test('it renders a Job execution Table', () => {
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
 
   expect(screen.getByText('An export')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.widget.last_operations.job_type.export')).toBeInTheDocument();
@@ -89,7 +96,14 @@ test('it renders a Job execution Table', () => {
 test('it can sort a Job execution Table', () => {
   const handleSortChange = jest.fn();
 
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={handleSortChange} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable
+      jobExecutionRows={rows}
+      onSortChange={handleSortChange}
+      currentSort={sort}
+      onTableRefresh={jest.fn()}
+    />
+  );
 
   userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
 
@@ -97,7 +111,9 @@ test('it can sort a Job execution Table', () => {
 });
 
 test('it redirects to a job execution details on row click when user can show detail execution', () => {
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
 
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An export'));
@@ -105,7 +121,9 @@ test('it redirects to a job execution details on row click when user can show de
 });
 
 test('it redirects to a job execution details on row click when there is no ACL on the job type', () => {
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
 
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('A quick export'));
@@ -113,7 +131,9 @@ test('it redirects to a job execution details on row click when there is no ACL 
 });
 
 test('it does nothing on row click when user cannot show detail execution', () => {
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
 
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An import'));
@@ -125,8 +145,59 @@ test('it redirects to a job execution details on row cmd click', () => {
   const redirectMock = jest.fn();
   jest.spyOn(window, 'open').mockImplementation(url => redirectMock(url));
 
-  renderWithProviders(<JobExecutionTable jobExecutionRows={rows} onSortChange={handleSortChange} currentSort={sort} />);
+  renderWithProviders(
+    <JobExecutionTable
+      jobExecutionRows={rows}
+      onSortChange={handleSortChange}
+      currentSort={sort}
+      onTableRefresh={jest.fn()}
+    />
+  );
   expect(redirectMock).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An export'), {metaKey: true});
   expect(redirectMock).toHaveBeenCalledWith('/show/1');
+});
+
+test('it can stop a job execution when job execution is stoppable and user have right', async () => {
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    json: async () => {},
+  }));
+
+  const handleTableRefresh = jest.fn();
+  mockedGrantedAcl = ['pim_importexport_stop_job'];
+
+  renderWithProviders(
+    <JobExecutionTable
+      jobExecutionRows={rows}
+      onSortChange={jest.fn()}
+      currentSort={sort}
+      onTableRefresh={handleTableRefresh}
+    />
+  );
+  userEvent.click(within(screen.getAllByRole('row')[1]).getByText('pim_datagrid.action.stop.title'));
+  await userEvent.click(screen.getByText('pim_datagrid.action.stop.confirmation.ok'));
+  expect(handleTableRefresh).toBeCalled();
+});
+
+test('it cannot stop a job execution when user does not have right', () => {
+  mockedGrantedAcl = [];
+
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
+  expect(within(screen.getAllByRole('row')[1]).queryByText('pim_datagrid.action.stop.title')).not.toBeInTheDocument();
+});
+
+test('it cannot stop a job execution when job is not stoppable', () => {
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
+  expect(within(screen.getAllByRole('row')[3]).queryByText('pim_datagrid.action.stop.title')).not.toBeInTheDocument();
+});
+
+test('it cannot stop a job execution when job status is not stoppable', () => {
+  renderWithProviders(
+    <JobExecutionTable jobExecutionRows={rows} onSortChange={jest.fn()} currentSort={sort} onTableRefresh={jest.fn()} />
+  );
+  expect(within(screen.getAllByRole('row')[2]).queryByText('pim_datagrid.action.stop.title')).not.toBeInTheDocument();
 });

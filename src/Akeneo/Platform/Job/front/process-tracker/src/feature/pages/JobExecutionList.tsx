@@ -29,7 +29,7 @@ const JobExecutionList = () => {
     getDefaultJobExecutionFilter(),
     FILTER_LOCAL_STORAGE_KEY
   );
-  const jobExecutionTable = useJobExecutionTable(jobExecutionFilter);
+  const [jobExecutionTable, refreshJobExecutionTable] = useJobExecutionTable(jobExecutionFilter);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
   const handlePageChange = (page: number) => {
@@ -100,6 +100,7 @@ const JobExecutionList = () => {
                   sticky={jobExecutionFilter.size < matchesCount ? 88 : 44}
                   jobExecutionRows={jobExecutionTable.rows}
                   onSortChange={handleSortChange}
+                  onTableRefresh={refreshJobExecutionTable}
                   currentSort={jobExecutionFilter.sort}
                 />
               </>
