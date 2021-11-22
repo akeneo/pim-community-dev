@@ -5,15 +5,15 @@ type AverageMaxValue = {
   max: number;
 };
 
-type KeyFigure = {
+type CatalogVolume = {
   name: string;
   type: string;
   value: AverageMaxValue | CounterValue;
 };
 
-type Volume = {
+type Axis = {
   name: string;
-  keyFigures: KeyFigure[];
-}
+  catalogVolumes: CatalogVolume[];
+};
 
-export type {KeyFigure, Volume, AverageMaxValue, CounterValue};
+export type {CatalogVolume, Axis, AverageMaxValue, CounterValue};

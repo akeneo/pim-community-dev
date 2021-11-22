@@ -1,13 +1,18 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
-import {useCatalogVolumes} from './hooks/useCatalogVolumes';
+import {useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
+import {Axis} from './model/catalog-volume';
 
-const CatalogVolumeMonitoringApp: FC = () => {
+interface Props {
+  getCatalogVolumeInterface: any;
+}
+
+const CatalogVolumeMonitoringApp = ({getCatalogVolumeInterface}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
-  const [catalogVolumes] = useCatalogVolumes();
+  const [catalogVolumes] = useCatalogVolumeByAxis(getCatalogVolumeInterface());
 
   return (
     <>
@@ -27,18 +32,18 @@ const CatalogVolumeMonitoringApp: FC = () => {
         <PageHeader.Title>{translate('pim_menu.item.catalog_volume')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-          {catalogVolumes.map(volume => (
-              <Section key={volume.name}>
-                <SectionTitle>
-                  <SectionTitle.Title>{volume.name}</SectionTitle.Title>
-                </SectionTitle>
-                <KeyFigureGrid>
-                  {volume.keyFigures.map(keyFigure => {
-                    return <CatalogVolumeKeyFigure keyFigure={keyFigure} key={keyFigure.name} />;
-                  })}
-                </KeyFigureGrid>
-              </Section>
-          ))}
+        {catalogVolumes.map(axis => (
+          <Section key={axis.name}>
+            <SectionTitle>
+              <SectionTitle.Title>{axis.name}</SectionTitle.Title>
+            </SectionTitle>
+            <KeyFigureGrid>
+              {axis.catalogVolumes.map(catalogVolume => {
+                return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
+              })}
+            </KeyFigureGrid>
+          </Section>
+        ))}
       </PageContent>
     </>
   );

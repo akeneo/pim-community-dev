@@ -8,12 +8,14 @@ import {
   FolderIcon,
   FoldersIcon,
   LocaleIcon,
-  ProductIcon, ProductModelIcon,
+  ProductIcon,
+  ProductModelIcon,
   ShopIcon,
-  TagIcon
-} from "akeneo-design-system";
+  TagIcon,
+} from 'akeneo-design-system';
 
-const iconsMapping: {[volumeName: string]: any} = { // fixme icon name type?
+const iconsMapping: {[volumeName: string]: any} = {
+  // fixme icon name type?
   count_attributes: TagIcon,
   count_categories: FolderIcon,
   count_category_trees: FoldersIcon,
