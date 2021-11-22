@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
+use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
+
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -241,7 +243,7 @@ final class ScopeMapper implements ScopeMapperInterface
     /**
      * @param string[] $scopeList
      */
-    public function getMessages(array $scopeList): array
+    public function getMessage(string $scopeList): array
     {
         $scopeList = $this->formalizeScopes($scopeList);
 
@@ -284,4 +286,10 @@ final class ScopeMapper implements ScopeMapperInterface
 
         return self::SCOPE_ENTITY_MAP[$scopeName];
     }
+
+    public function getLowerHierarchyScopes(string $scope): array
+    {
+        return [];
+    }
+
 }

@@ -36,7 +36,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
         arguments:
-            - '@pim_api.security.scope_mapper'
+            - '@Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry'
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
         public: true

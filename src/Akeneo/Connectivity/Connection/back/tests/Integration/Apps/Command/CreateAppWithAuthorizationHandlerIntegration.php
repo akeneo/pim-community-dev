@@ -16,7 +16,8 @@ use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
+use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\Group;
@@ -43,7 +44,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     private DbalConnectedAppRepository $appRepository;
     private ConnectionRepository $connectionRepository;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
-    private ScopeMapper $scopeMapper;
+    private ScopeMapperRegistry $scopeMapperRegistry;
 
     protected function getConfiguration(): Configuration
     {
@@ -63,7 +64,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $this->appRepository = $this->get(DbalConnectedAppRepository::class);
         $this->connectionRepository = $this->get('akeneo_connectivity.connection.persistence.repository.connection');
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
-        $this->scopeMapper = $this->get('pim_api.security.scope_mapper');
+        $this->scopeMapperRegistry = $this->get(ScopeMapperRegistry::class);
 
         $this->loadAppsFixtures();
 
@@ -212,7 +213,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     private function assertPermissionsGrantedFromScopes(array $permissions, array $scopes)
     {
         foreach ($scopes as $scope) {
-            $acls = $this->scopeMapper->getAcls($scope);
+            $acls = $this->scopeMapperRegistry->getAcls($scope);
             foreach ($acls as $acl) {
                 Assert::assertTrue($permissions["action:$acl"], "Missing ACL for $acl on scope $scope");
             }

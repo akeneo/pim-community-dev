@@ -23,8 +23,9 @@ services:
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
 
-    pim_api.security.scope_mapper:
-        class: Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper
+    Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry:
+        arguments:
+            - !tagged_iterator { tag: 'pim_api.security.scope_mapper', index_by: 'entity' }
 
     fos_oauth_server.server:
         class: '%fos_oauth_server.server.class%'
