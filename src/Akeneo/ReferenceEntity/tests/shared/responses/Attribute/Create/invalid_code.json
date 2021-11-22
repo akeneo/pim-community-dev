@@ -45,6 +45,10 @@
         "invalidValue": "not so nice attribute",
         "constraint": {
           "defaultOption": null,
+          "groups": [
+            "Default",
+            "CreateTextAttributeCommand"
+          ],
           "requiredOptions": [],
           "targets": "property",
           "payload": null

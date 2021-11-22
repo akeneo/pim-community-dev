@@ -48,6 +48,10 @@
                 "constraint": {
                     "targets": "class",
                     "defaultOption": null,
+                    "groups": [
+                        "Default",
+                        "SetAssetFamilyPermissionsCommand"
+                    ],
                     "requiredOptions": [],
                     "payload": null
                 },

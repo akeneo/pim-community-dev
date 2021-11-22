@@ -240,6 +240,10 @@
           "constraint": {
             "targets": "class",
             "defaultOption": null,
+            "groups": [
+              "Default",
+              "EditRecordCommand"
+            ],
             "requiredOptions": [],
             "payload": null
           },

@@ -315,9 +315,11 @@
         "constraint":{
           "targets":"class",
           "defaultOption":null,
-          "requiredOptions":[
-
+          "groups": [
+            "Default",
+            "EditRecordCommand"
           ],
+          "requiredOptions":[],
           "payload":null
         },
         "cause":null,

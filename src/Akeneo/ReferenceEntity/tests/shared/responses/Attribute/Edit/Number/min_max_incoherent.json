@@ -45,6 +45,9 @@
         "constraint": {
           "targets": "class",
           "defaultOption": null,
+          "groups": [
+            "primary_constraints"
+          ],
           "requiredOptions": [],
           "payload": null
         },

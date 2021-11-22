@@ -147,7 +147,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedResponse = '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.records.should_have_no_record","parameters":{"%reference_entity_identifier%":"brand"},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedResponse = '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.records.should_have_no_record","parameters":{"%reference_entity_identifier%":"brand"},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"groups":["other_constraints"],"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
     }

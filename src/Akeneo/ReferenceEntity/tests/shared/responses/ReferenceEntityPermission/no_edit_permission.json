@@ -48,6 +48,10 @@
                 "constraint": {
                     "targets": "class",
                     "defaultOption": null,
+                    "groups": [
+                        "Default",
+                        "SetReferenceEntityPermissionsCommand"
+                    ],
                     "requiredOptions": [],
                     "payload": null
                 },
