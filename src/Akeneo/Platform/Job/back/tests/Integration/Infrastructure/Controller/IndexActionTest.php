@@ -20,7 +20,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
-        $this->fixturesLoader->loadProductImportExportFixtures();
+        $this->fixturesLoader->loadFixtures();
     }
 
     public function test_it_returns_job_total_count(): void

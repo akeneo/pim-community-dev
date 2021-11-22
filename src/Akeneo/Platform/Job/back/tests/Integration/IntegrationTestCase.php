@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration;
 
+use Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper;
 use Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class IntegrationTestCase extends WebTestCase
 {
+    protected FixturesJobHelper $fixturesJobHelper;
     protected FixturesLoader $fixturesLoader;
-    private Connection $dbalConnection;
 
     protected function setUp(): void
     {
         parent::setUp();
         static::bootKernel(['debug' => false]);
 
-        $this->dbalConnection = $this->get('database_connection');
+        $this->fixturesJobHelper = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper');
         $this->fixturesLoader = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader');
         $this->fixturesLoader->resetFixtures();
 

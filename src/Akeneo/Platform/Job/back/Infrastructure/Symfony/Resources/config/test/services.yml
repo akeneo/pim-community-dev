@@ -2,3 +2,8 @@ services:
     Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper'
+
+    Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper:
+        arguments:
+            - '@database_connection'

@@ -11,7 +11,7 @@ class FindJobTypesTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fixturesLoader->loadProductImportExportFixtures();
+        $this->fixturesLoader->loadFixtures();
     }
 
     public function test_it_find_job_types(): void
