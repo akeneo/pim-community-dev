@@ -22,6 +22,7 @@ import CompletenessFilter, {
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {clearImageLoadingQueue} from 'akeneoreferenceentity/tools/image-loader';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 const HorizontalScrollContainer = styled.div`
   overflow-x: auto;
@@ -50,6 +51,7 @@ interface TableState {
   filterViews: FilterViews;
   recordCount: number;
   referenceEntity: ReferenceEntity;
+  attributes: NormalizedAttribute[] | null;
   rights: {
     record: {
       create: boolean;
@@ -115,6 +117,7 @@ const Table = ({
   onNeedMoreResults,
   onCompletenessFilterUpdated,
   referenceEntity,
+  attributes,
 }: TableProps) => {
   const [columns, setColumns] = useState<Column[]>([]);
   const [needResize, setNeedResize] = useState<boolean>(false);
@@ -125,6 +128,13 @@ const Table = ({
   const detailTableRef = useRef<HTMLTableElement>(null);
   const commonTableRef = useRef<HTMLTableElement>(null);
   const actionTableRef = useRef<HTMLTableElement>(null);
+
+  const attributeAsLabel = attributes?.find(
+    ({identifier}) => identifier === referenceEntity.getAttributeAsLabel().normalize()
+  );
+  const attributeAsImage = attributes?.find(
+    ({identifier}) => identifier === referenceEntity.getAttributeAsImage().normalize()
+  );
 
   const handleScroll = () => {
     const verticalScrollContainer = verticalScrollContainerRef.current;
@@ -254,8 +264,16 @@ const Table = ({
               <thead className="AknGrid-header">
                 <tr className="AknGrid-bodyRow">
                   <CheckboxHeaderCell></CheckboxHeaderCell>
-                  <th className="AknGrid-headerCell">{translate('pim_reference_entity.record.grid.column.image')}</th>
-                  <th className="AknGrid-headerCell">{translate('pim_reference_entity.record.grid.column.label')}</th>
+                  <th className="AknGrid-headerCell">
+                    {attributeAsImage
+                      ? getLabel(attributeAsImage.labels, locale, attributeAsImage.code)
+                      : translate('pim_reference_entity.record.grid.column.image')}
+                  </th>
+                  <th className="AknGrid-headerCell">
+                    {attributeAsLabel
+                      ? getLabel(attributeAsLabel.labels, locale, attributeAsLabel.code)
+                      : translate('pim_reference_entity.record.grid.column.label')}
+                  </th>
                   <th className="AknGrid-headerCell">{translate('pim_reference_entity.record.grid.column.code')}</th>
                   <th className="AknGrid-headerCell">
                     {translate('pim_reference_entity.record.grid.column.complete')}

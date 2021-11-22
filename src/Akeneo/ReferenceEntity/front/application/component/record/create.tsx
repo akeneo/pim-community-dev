@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Checkbox, Key} from 'akeneo-design-system';
+import {getLabel} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
@@ -16,6 +17,7 @@ import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 interface StateProps {
   context: {
@@ -29,6 +31,7 @@ interface StateProps {
   };
   errors: ValidationError[];
   referenceEntity: ReferenceEntity;
+  attributes: NormalizedAttribute[] | null;
 }
 
 interface DispatchProps {
@@ -72,6 +75,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
   };
 
   render(): JSX.Element | JSX.Element[] | null {
+    const attributeAsLabel = this.props.attributes?.find(
+      ({identifier}) => identifier === this.props.referenceEntity.getAttributeAsLabel().normalize()
+    );
+
     return (
       <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
         <div className="modal-body  creation">
@@ -96,7 +103,9 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                         className="AknFieldContainer-label"
                         htmlFor="pim_reference_entity.record.create.input.label"
                       >
-                        {__('pim_reference_entity.record.create.input.label')}
+                        {attributeAsLabel
+                          ? getLabel(attributeAsLabel.labels, this.props.context.locale, attributeAsLabel.code)
+                          : __('pim_reference_entity.record.create.input.label')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -188,6 +197,7 @@ export default connect(
         locale: state.user.catalogLocale,
       },
       referenceEntity: denormalizeReferenceEntity(state.form.data),
+      attributes: state.attributes.attributes,
     };
   },
   (dispatch: any): DispatchProps => {
