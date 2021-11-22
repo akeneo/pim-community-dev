@@ -56,7 +56,6 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateRecordContext implements Context
@@ -107,8 +106,6 @@ class CreateOrUpdateRecordContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -121,8 +118,7 @@ class CreateOrUpdateRecordContext implements Context
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -136,7 +132,6 @@ class CreateOrUpdateRecordContext implements Context
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -257,9 +252,6 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutMissingPermissionsForCreatingRecord()
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_kartell_record_creation.json'
@@ -532,17 +524,9 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutMissingPermissionsForCreatingRecords()
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_brand_records_synchronization.json'
-        );
-
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 
@@ -742,17 +726,9 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutMissingPermissionsForUploadingAMediaFile()
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->uploadImageResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_image_upload.json'
-        );
-
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 

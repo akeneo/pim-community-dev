@@ -43,7 +43,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeContext implements Context
@@ -76,8 +75,6 @@ class CreateOrUpdateAttributeContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
@@ -85,8 +82,7 @@ class CreateOrUpdateAttributeContext implements Context
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
@@ -95,7 +91,6 @@ class CreateOrUpdateAttributeContext implements Context
         $this->activatedLocales = $activatedLocales;
         $this->findConnectorAttribute = $findConnectorAttribute;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -644,17 +639,9 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutMissingPermissionsForTheCountryAttributeToBeAdded()
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_country_reference_entity_attribute_creation.json'
-        );
-
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 }

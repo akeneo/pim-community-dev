@@ -90,20 +90,10 @@
        ]
     },
     "response": {
-        "status": 200,
-        "body": [
-            {
-                "code": "kartell",
-                "status_code": 204
-            },
-            {
-                "code": "lexon",
-                "status_code": 204
-            },
-            {
-                "code": "fatboy",
-                "status_code": 201
-            }
-        ]
+        "status": 403,
+        "body": {
+            "code": 403,
+            "message": "Access forbidden. You are not allowed to create or update reference entity records."
+        }
     }
 }

@@ -7,11 +7,10 @@
         }
     },
     "response": {
-        "status": 200,
-        "body": "This represents the binary of an image",
-        "headers": {
-            "Content-Type": "image/jpeg",
-            "Content-Disposition": "attachment; filename=\"kartell.jpg\""
+        "status": 403,
+        "body": {
+            "code": 403,
+            "message": "Access forbidden. You are not allowed to list reference entity records."
         }
     }
 }

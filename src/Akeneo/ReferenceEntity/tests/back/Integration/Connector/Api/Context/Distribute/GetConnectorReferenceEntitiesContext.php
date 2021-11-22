@@ -25,7 +25,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
@@ -52,22 +51,18 @@ class GetConnectorReferenceEntitiesContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorReferenceEntityItems $findConnectorReferenceEntity,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -154,16 +149,9 @@ class GetConnectorReferenceEntitiesContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForDistributingReferenceEntities()
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->response,
             self::REQUEST_CONTRACT_DIR . 'forbidden_list_reference_entities.json'
-        );
-        Assert::true(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_list"'),
-            'Expected warning not found in the logs.'
         );
     }
 

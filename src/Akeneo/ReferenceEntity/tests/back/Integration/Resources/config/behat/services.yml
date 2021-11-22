@@ -13,7 +13,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_records_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorRecordsContext
@@ -30,7 +29,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.date'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.not_found_reference_entity_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\NotFoundReferenceEntityContext
@@ -46,7 +44,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
         tags:
         - { name: fob.context_service }
 
@@ -58,7 +55,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
         tags:
         - { name: fob.context_service }
 
@@ -77,7 +73,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attributes_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext
@@ -88,7 +83,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeContext
@@ -99,7 +93,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_option_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionContext
@@ -110,7 +103,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateReferenceEntityContext
@@ -125,7 +117,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
@@ -136,7 +127,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeContext
@@ -148,7 +138,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_option_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeOptionContext
@@ -159,4 +148,3 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
