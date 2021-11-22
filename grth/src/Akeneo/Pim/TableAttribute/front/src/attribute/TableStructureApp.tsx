@@ -244,7 +244,6 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
       savedColumnIds={savedColumnIds}
       isDuplicateColumnCode={isDuplicateColumnCode}
       columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-      isFirstColumn={firstColumnDefinition.id === selectedColumnId}
     />
   ) : (
     <div />

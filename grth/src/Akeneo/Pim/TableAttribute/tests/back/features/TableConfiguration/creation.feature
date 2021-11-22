@@ -191,4 +191,4 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with a null "is required for completeness" value
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "is_required_for_completeness": null}'
-    Then There is a violation with message: The required for completeness option requires a value
+    Then There is a violation with message: The "is_required_for_completeness" option requires a value

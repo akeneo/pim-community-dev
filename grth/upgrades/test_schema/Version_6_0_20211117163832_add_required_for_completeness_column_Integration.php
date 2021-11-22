@@ -47,6 +47,12 @@ final class Version_6_0_20211117163832_add_required_for_completeness_column_Inte
         Assert::assertEquals(0, $row['is_required_for_completeness']);
     }
 
+    public function test_it_does_nothing_if_column_already_exists(): void
+    {
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        Assert::assertTrue($this->updatedColumnExists());
+    }
+
     private function updatedColumnExists(): bool
     {
         $columns = $this->getConnection()->getSchemaManager()->listTableColumns('pim_catalog_table_column');

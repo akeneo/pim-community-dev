@@ -15,7 +15,6 @@ type ColumnDefinitionPropertiesProps = {
   savedColumnIds: string[];
   isDuplicateColumnCode: (code: ColumnCode) => boolean;
   columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
-  isFirstColumn: boolean;
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
@@ -27,7 +26,6 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   savedColumnIds,
   isDuplicateColumnCode,
   columnDefinitionPropertiesMapping,
-  isFirstColumn,
 }) => {
   const translate = useTranslate();
 
@@ -70,6 +68,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       })
     );
   }
+  const isFirstColumn = attribute.table_configuration[0].code === selectedColumn.code;
 
   return (
     <div>

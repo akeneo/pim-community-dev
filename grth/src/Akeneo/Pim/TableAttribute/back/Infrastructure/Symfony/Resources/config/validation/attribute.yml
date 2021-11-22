@@ -92,7 +92,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           type: bool
                           message: The required value is a boolean
                       - NotNull:
-                          message: The required for completeness option requires a value
+                          message: The "is_required_for_completeness" option requires a value
                 options:
                   - Optional:
                       - Type:

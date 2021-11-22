@@ -24,7 +24,6 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={false}
       />
     );
 
@@ -32,9 +31,11 @@ describe('ColumnDefinitionProperties', () => {
     expect(screen.getByText(/pim_table_attribute.form.attribute.data_type/)).toBeInTheDocument();
     expect(screen.getByText(/pim_table_attribute.form.attribute.labels/)).toBeInTheDocument();
 
-    expect(screen.getByLabelText('pim_table_attribute.form.attribute.required_for_completeness')).not.toHaveAttribute(
-      'readonly'
-    );
+    const requiredForCompletenessInput = screen.getByLabelText(
+      'pim_table_attribute.form.attribute.required_for_completeness'
+    ) as HTMLInputElement;
+    expect(requiredForCompletenessInput).toBeInTheDocument();
+    expect(requiredForCompletenessInput).toHaveAttribute('readonly');
   });
 
   it('should callback changes', () => {
@@ -49,7 +50,6 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={false}
       />
     );
 
@@ -89,7 +89,6 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={false}
       />
     );
 
@@ -107,7 +106,6 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={false}
       />
     );
 
@@ -125,14 +123,13 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={false}
       />
     );
 
     expect(screen.getByText('pim_table_attribute.validations.duplicated_column_code')).toBeInTheDocument();
   });
 
-  it('should display is required for completeness checkbox as readonly for first column', () => {
+  it('should display is required for completeness as an active checkbox', () => {
     renderWithProviders(
       <ColumnDefinitionProperties
         selectedColumn={getNumberColumnDefinitionWithId()}
@@ -143,7 +140,6 @@ describe('ColumnDefinitionProperties', () => {
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
         columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        isFirstColumn={true}
       />
     );
 
@@ -151,6 +147,6 @@ describe('ColumnDefinitionProperties', () => {
       'pim_table_attribute.form.attribute.required_for_completeness'
     ) as HTMLInputElement;
     expect(requiredForCompletenessInput).toBeInTheDocument();
-    expect(requiredForCompletenessInput).toHaveAttribute('readonly');
+    expect(requiredForCompletenessInput).not.toHaveAttribute('readonly');
   });
 });
