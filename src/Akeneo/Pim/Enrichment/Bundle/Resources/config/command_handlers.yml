@@ -4,4 +4,4 @@ services:
       - '@akeneo.pim.enrichment.product.query.find_product_identifiers'
       - '@pim_catalog.repository.group'
       - '@pim_catalog.saver.product'
-      - '@pim_api.repository.product'
+      - '@pim_catalog.repository.product'
