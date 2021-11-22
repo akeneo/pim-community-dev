@@ -3,11 +3,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Commands;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\ORM\EntityManager;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -16,14 +15,17 @@ use Doctrine\ORM\EntityManager;
 class GroupProductsHandler
 {
     private FindProductIdentifiersInterface $getGroupProductIdentifiers;
-    private EntityManager $entityManager;
-    protected BulkSaverInterface $productSaver;
+    private GroupRepositoryInterface $groupRepository;
+    private BulkSaverInterface $productSaver;
+    private ProductRepositoryInterface $productRepository;
 
-    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, EntityManager $entityManager, BulkSaverInterface $productSaver)
+
+    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository)
     {
         $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
-        $this->entityManager = $entityManager;
+        $this->groupRepository = $groupRepository;
         $this->productSaver = $productSaver;
+        $this->productRepository = $productRepository;
     }
 
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
@@ -35,15 +37,15 @@ class GroupProductsHandler
         $removedProductIds = array_diff($oldProductIds, $currentProductIds);
 
         $productsToUpdate = [];
-        $group = $this->entityManager->find(Group::class, $updateProductsToGroupCommand->getGroupId());
+        $group = $this->groupRepository->find($updateProductsToGroupCommand->getGroupId());
 
         foreach ($newProductIds as $newProductId) {
-            $dbProduct = $this->entityManager->find(Product::class, $newProductId);
+            $dbProduct = $this->productRepository->find($newProductId);
             $dbProduct->addGroup($group);
             $productsToUpdate[] = $dbProduct;
         }
         foreach ($removedProductIds as $removedProductId) {
-            $dbProduct = $this->entityManager->find(Product::class, $removedProductId);
+            $dbProduct = $this->productRepository->find($removedProductId);
             $dbProduct->removeGroup($group);
             $productsToUpdate[] = $dbProduct;
         }

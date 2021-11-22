@@ -260,8 +260,6 @@ $rules = [
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
-
-        'Doctrine\ORM\EntityManager',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

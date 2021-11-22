@@ -2,5 +2,6 @@ services:
   Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler:
     arguments:
       - '@akeneo.pim.enrichment.product.query.find_product_identifiers'
-      - '@doctrine.orm.entity_manager'
+      - '@pim_catalog.repository.group'
       - '@pim_catalog.saver.product'
+      - '@pim_api.repository.product'
