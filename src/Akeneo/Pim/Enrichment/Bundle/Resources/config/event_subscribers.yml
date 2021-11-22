@@ -107,6 +107,11 @@ services:
             -
                 - 'csv_product_export'
                 - 'xlsx_product_export'
+                - 'csv_product_model_export'
+                - 'xlsx_product_model_export'
+                - 'csv_published_product_export'
+                - 'xlsx_published_product_export'
+                - 'akeneo_shared_catalog'
         tags:
             - { name: kernel.event_subscriber }
 

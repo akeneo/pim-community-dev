@@ -8,6 +8,7 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
 ) {
   return NavigateAction.extend({
     tabRedirects: {},
+    links: {},
 
     /**
      * {@inheritdoc}
@@ -22,6 +23,10 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
     getLink() {
       const productType = this.model.get('document_type');
       const id = this.model.get('technical_id');
+
+      if (typeof this.links[productType] !== 'undefined') {
+        return Router.generate(this.links[productType], {id});
+      }
 
       return Router.generate('pim_enrich_' + productType + '_edit', {id});
     },
