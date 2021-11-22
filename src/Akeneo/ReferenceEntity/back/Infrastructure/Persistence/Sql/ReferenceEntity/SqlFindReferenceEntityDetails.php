@@ -26,6 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -95,7 +96,7 @@ SQL;
         ]);
 
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $result ? $result : [];
     }
@@ -116,9 +117,9 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
 
-        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $recordCount = Type::getType(Type::INTEGER)->convertToPHPValue($recordCount, $platform);
+        $labels = Type::getType(Types::JSON)->convertToPHPValue($normalizedLabels, $platform);
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+        $recordCount = Type::getType(Types::INTEGER)->convertToPHPValue($recordCount, $platform);
 
         $entityImage = Image::createEmpty();
         if (null !== $fileKey && null !== $originalFilename) {

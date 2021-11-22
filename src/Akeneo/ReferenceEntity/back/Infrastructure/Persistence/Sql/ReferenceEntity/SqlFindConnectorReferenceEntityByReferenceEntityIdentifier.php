@@ -57,7 +57,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (empty($result)) {
             return null;

@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecord
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -59,6 +60,6 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
     }
 }

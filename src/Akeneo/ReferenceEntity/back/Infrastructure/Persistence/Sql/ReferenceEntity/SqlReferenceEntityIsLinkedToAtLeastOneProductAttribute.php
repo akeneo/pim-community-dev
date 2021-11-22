@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -59,7 +60,7 @@ SQL;
         );
 
         $results = $statement->fetchAllAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $results;
     }
@@ -71,7 +72,7 @@ SQL;
         $linkedEntities = [];
 
         foreach ($results as $result) {
-            $properties = Type::getType(Type::TARRAY)->convertToPhpValue($result['properties'], $platform);
+            $properties = Type::getType(Types::ARRAY)->convertToPhpValue($result['properties'], $platform);
             $linkedEntities[] = $properties['reference_data_name'];
         }
 

@@ -8,6 +8,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -55,14 +56,14 @@ abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 
     private function convertCommonProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform);
-        $row['reference_entity_identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $platform);
-        $row['code'] = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform);
+        $row['identifier'] = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform);
+        $row['reference_entity_identifier'] = Type::getType(Types::STRING)->convertToPHPValue($row['reference_entity_identifier'], $platform);
+        $row['code'] = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $platform);
         $row['labels'] = json_decode($row['labels'], true);
-        $row['attribute_order'] = Type::getType(Type::INTEGER)->convertToPHPValue($row['attribute_order'], $platform);
-        $row['is_required'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_required'], $platform);
-        $row['value_per_channel'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_channel'], $platform);
-        $row['value_per_locale'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_locale'], $platform);
+        $row['attribute_order'] = Type::getType(Types::INTEGER)->convertToPHPValue($row['attribute_order'], $platform);
+        $row['is_required'] = Type::getType(Types::BOOLEAN)->convertToPHPValue($row['is_required'], $platform);
+        $row['value_per_channel'] = Type::getType(Types::BOOLEAN)->convertToPHPValue($row['value_per_channel'], $platform);
+        $row['value_per_locale'] = Type::getType(Types::BOOLEAN)->convertToPHPValue($row['value_per_locale'], $platform);
         $row['additional_properties'] = json_decode($row['additional_properties'], true);
 
         return $row;

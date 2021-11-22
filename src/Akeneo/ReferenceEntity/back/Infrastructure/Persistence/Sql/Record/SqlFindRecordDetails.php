@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -86,9 +87,9 @@ SQL;
             'reference_entity_identifier' => (string) $referenceEntityIdentifier,
         ]);
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
-        return $result ? $result : [];
+        return $result ?: [];
     }
 
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
@@ -96,7 +97,7 @@ SQL;
         if (!isset($result['reference_entity_identifier'])) {
             throw new \LogicException('The record should have a reference entity identifier');
         }
-        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedReferenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );

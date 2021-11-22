@@ -44,11 +44,11 @@ class RecordHydrator implements RecordHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): Record {
-        $recordIdentifier = Type::getType(Type::STRING)
+        $recordIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);

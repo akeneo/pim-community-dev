@@ -24,7 +24,7 @@ class IndexRecordsByReferenceEntityHandler
 
     public function __invoke(IndexRecordsByReferenceEntityCommand $command) :void
     {
-        $refenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
-        $this->recordIndexer->indexByReferenceEntity($refenceEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
+        $this->recordIndexer->indexByReferenceEntity($referenceEntityIdentifier);
     }
 }

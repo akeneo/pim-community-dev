@@ -37,8 +37,8 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
-        $result = $statement->fetchColumn();
-        $statement->closeCursor();
+        $result = $statement->fetchOne();
+        $statement->free();
 
         return null === $result ? AttributeOrder::fromInteger(0) : AttributeOrder::fromInteger(((int) $result + 1));
     }

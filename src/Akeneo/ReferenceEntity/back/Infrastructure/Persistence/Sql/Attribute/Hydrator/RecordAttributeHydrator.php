@@ -16,6 +16,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -30,7 +31,7 @@ class RecordAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['record_type'] = Type::getType(Type::STRING)->convertToPHPValue($row['additional_properties']['record_type'], $platform);
+        $row['record_type'] = Type::getType(Types::STRING)->convertToPHPValue($row['additional_properties']['record_type'], $platform);
 
         return $row;
     }

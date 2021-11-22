@@ -49,14 +49,14 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): RecordDetails {
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
-        $recordIdentifier = Type::getType(Type::STRING)
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsImage = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $this->platform);
+        $recordIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $recordCode = Type::getType(Type::STRING)
+        $recordCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
             ->convertToPHPValue($row['created_at'], $this->platform);

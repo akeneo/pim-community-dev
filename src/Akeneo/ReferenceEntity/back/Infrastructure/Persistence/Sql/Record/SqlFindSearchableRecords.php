@@ -10,6 +10,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindSearchableRecordsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -78,12 +79,12 @@ SQL;
     ): SearchableRecordItem {
         $platform = $this->connection->getDatabasePlatform();
 
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+        $referenceEntityIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($referenceEntityIdentifier, $platform);
-        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
-        $updatedAt = Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($code, $platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($attributeAsLabel, $platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
 
         $recordItem = new SearchableRecordItem();
         $recordItem->identifier = $identifier;

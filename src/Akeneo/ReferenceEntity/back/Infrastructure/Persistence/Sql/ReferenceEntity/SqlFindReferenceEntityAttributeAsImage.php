@@ -38,8 +38,8 @@ SQL;
             'identifier' => (string) $referenceEntityIdentifier,
         ]);
 
-        $attributeAsImage = $statement->fetchColumn();
-        $statement->closeCursor();
+        $attributeAsImage = $statement->fetchOne();
+        $statement->free();
 
         return false === $attributeAsImage ?
             AttributeAsImageReference::noReference() :

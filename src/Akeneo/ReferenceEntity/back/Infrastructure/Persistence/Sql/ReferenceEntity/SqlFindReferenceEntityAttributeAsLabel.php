@@ -38,8 +38,8 @@ SQL;
             'identifier' => (string) $referenceEntityIdentifier,
         ]);
 
-        $attributeAsLabel = $statement->fetchColumn();
-        $statement->closeCursor();
+        $attributeAsLabel = $statement->fetchOne();
+        $statement->free();
 
         return false === $attributeAsLabel ?
             AttributeAsLabelReference::noReference() :
