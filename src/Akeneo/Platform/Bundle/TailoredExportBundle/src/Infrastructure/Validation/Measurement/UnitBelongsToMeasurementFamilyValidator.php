@@ -29,7 +29,7 @@ class UnitBelongsToMeasurementFamilyValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($unitCode, Constraint $constraint)
+    public function validate($unitCode, Constraint $constraint): void
     {
         if (!$constraint instanceof UnitBelongsToMeasurementFamily) {
             throw new \InvalidArgumentException('Invalid constraint');

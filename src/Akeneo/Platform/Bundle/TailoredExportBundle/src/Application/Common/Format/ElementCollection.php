@@ -15,6 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Format;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, ElementInterface>
+ */
 class ElementCollection implements \IteratorAggregate
 {
     /** @var ElementInterface[] */

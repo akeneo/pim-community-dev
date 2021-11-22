@@ -10,12 +10,12 @@ final class InMemoryFindRecordLabels implements FindRecordLabelsInterface
 {
     private array $recordLabels;
 
-    public function addRecordLabel(string $attributeCode, string $optionCode, string $locale, string $optionTranslation)
+    public function addRecordLabel(string $attributeCode, string $optionCode, string $locale, string $optionTranslation): void
     {
         $this->recordLabels[$attributeCode][$optionCode][$locale] = $optionTranslation;
     }
 
-    public function byReferenceEntityCodeAndRecordCodes(string $referenceEntityCode, array $recordCodes, $locale): array
+    public function byReferenceEntityCodeAndRecordCodes(string $referenceEntityCode, array $recordCodes, string $locale): array
     {
         return array_reduce($recordCodes, function ($carry, $recordCode) use ($referenceEntityCode, $locale) {
             $carry[$recordCode] = $this->recordLabels[$referenceEntityCode][$recordCode][$locale] ?? null;

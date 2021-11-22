@@ -52,7 +52,7 @@ class SourcesValidator extends ConstraintValidator
         $this->propertyConstraints = $propertyConstraints;
     }
 
-    public function validate($sources, Constraint $constraint)
+    public function validate($sources, Constraint $constraint): void
     {
         if (empty($sources)) {
             return;
@@ -84,7 +84,7 @@ class SourcesValidator extends ConstraintValidator
         }
     }
 
-    private function validateSource(ValidatorInterface $validator, $source): void
+    private function validateSource(ValidatorInterface $validator, array $source): void
     {
         switch ($source['type']) {
             case PropertySource::TYPE:
@@ -104,7 +104,7 @@ class SourcesValidator extends ConstraintValidator
         }
     }
 
-    private function validatePropertySource(ValidatorInterface $validator, $source): void
+    private function validatePropertySource(ValidatorInterface $validator, array $source): void
     {
         $constraint = $this->propertyConstraints[$source['code']] ?? null;
 
@@ -116,7 +116,7 @@ class SourcesValidator extends ConstraintValidator
         $this->buildViolations($violations, $source);
     }
 
-    private function validateAssociationTypeSource(ValidatorInterface $validator, $source): void
+    private function validateAssociationTypeSource(ValidatorInterface $validator, array $source): void
     {
         $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
         $associationType = $associationTypes[$source['code']] ?? null;
@@ -138,7 +138,7 @@ class SourcesValidator extends ConstraintValidator
         $this->buildViolations($violations, $source);
     }
 
-    private function validateAttributeSource(ValidatorInterface $validator, $source): void
+    private function validateAttributeSource(ValidatorInterface $validator, array $source): void
     {
         $attribute = $this->getAttributes->forCode($source['code']);
 
@@ -165,7 +165,7 @@ class SourcesValidator extends ConstraintValidator
         $this->buildViolations($violations, $source);
     }
 
-    private function buildViolations(ConstraintViolationListInterface $violations, $source): void
+    private function buildViolations(ConstraintViolationListInterface $violations, array $source): void
     {
         foreach ($violations as $violation) {
             $builder = $this->context->buildViolation(

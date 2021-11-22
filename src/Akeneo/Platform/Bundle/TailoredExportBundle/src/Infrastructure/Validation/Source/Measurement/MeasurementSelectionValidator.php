@@ -36,7 +36,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
         $this->availableDecimalSeparator = $availableDecimalSeparator;
     }
 
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, new Collection(

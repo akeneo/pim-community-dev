@@ -39,6 +39,9 @@ class PropertyValueHydrator
         $this->findQualityScores = $findQualityScores;
     }
 
+    /**
+     * @param ProductInterface|ProductModelInterface $productOrProductModel
+     */
     public function hydrate(PropertySource $source, $productOrProductModel): SourceValueInterface
     {
         if (

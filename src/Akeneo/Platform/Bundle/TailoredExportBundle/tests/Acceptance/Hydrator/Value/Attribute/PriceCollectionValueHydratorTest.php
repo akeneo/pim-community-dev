@@ -24,7 +24,7 @@ class PriceCollectionValueHydratorTest extends AbstractAttributeValueHydratorTes
     /**
      * @test
      */
-    public function it_hydrates_a_price_collection_value_from_product_value()
+    public function it_hydrates_a_price_collection_value_from_product_value(): void
     {
         $expectedValue = new PriceCollectionValue([
             new Price('12', 'EUR'),

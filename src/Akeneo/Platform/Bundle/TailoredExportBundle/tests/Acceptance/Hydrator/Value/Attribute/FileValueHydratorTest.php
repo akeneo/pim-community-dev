@@ -22,7 +22,7 @@ class FileValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_file_value_from_product_value()
+    public function it_hydrates_a_file_value_from_product_value(): void
     {
         $fileInfo = new FileInfo();
         $fileInfo->setOriginalFilename('original_filename');
@@ -46,7 +46,7 @@ class FileValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_file_value_from_localizable_and_scopable_product_value()
+    public function it_hydrates_a_file_value_from_localizable_and_scopable_product_value(): void
     {
         $fileInfo = new FileInfo();
         $fileInfo->setOriginalFilename('original_filename');

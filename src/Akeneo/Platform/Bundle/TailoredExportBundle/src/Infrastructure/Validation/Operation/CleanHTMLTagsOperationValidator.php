@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class CleanHTMLTagsOperationValidator extends ConstraintValidator
 {
-    public function validate($operation, Constraint $constraint)
+    public function validate($operation, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
 

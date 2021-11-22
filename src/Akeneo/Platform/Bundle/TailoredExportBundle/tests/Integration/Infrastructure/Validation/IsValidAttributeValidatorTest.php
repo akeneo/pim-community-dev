@@ -15,7 +15,6 @@ namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validat
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAttribute;
 use Akeneo\Test\Integration\Configuration;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -39,7 +38,7 @@ final class IsValidAttributeValidatorTest extends AbstractValidationTest
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value
-    ) {
+    ): void {
         $violations = $this->getValidator()->validate($value, new IsValidAttribute());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);

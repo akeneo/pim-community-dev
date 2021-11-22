@@ -10,7 +10,7 @@ final class InMemoryFindFamilyVariantLabel implements FindFamilyVariantLabelInte
 {
     private array $familyVariantLabels = [];
 
-    public function addFamilyVariantLabel(string $familyVariantCode, string $locale, string $label)
+    public function addFamilyVariantLabel(string $familyVariantCode, string $locale, string $label): void
     {
         $this->familyVariantLabels[$familyVariantCode][$locale] = $label;
     }

@@ -25,7 +25,7 @@ class CodeValueHydratorTest extends AbstractPropertyValueHydratorTest
     /**
      * @test
      */
-    public function it_returns_value_properties_from_product()
+    public function it_returns_value_properties_from_product(): void
     {
         $productModel = new ProductModel();
         $productModel->setCode('a_code');
@@ -41,7 +41,7 @@ class CodeValueHydratorTest extends AbstractPropertyValueHydratorTest
         $this->assertEquals(new CodeValue('a_code'), $valueHydrated);
     }
 
-    public function it_returns_null_value_when_value_is_empty()
+    public function it_returns_null_value_when_value_is_empty(): void
     {
         $this->assertEquals(new NullValue(), $this->getHydrator()->hydrate(new PropertySource(
             'uuid',

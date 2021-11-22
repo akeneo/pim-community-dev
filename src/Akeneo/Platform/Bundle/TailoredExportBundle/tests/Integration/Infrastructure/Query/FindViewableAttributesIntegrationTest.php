@@ -30,7 +30,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_batches_results()
+    public function it_batches_results(): void
     {
         $this->logAs('admin');
         $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, null);
@@ -63,7 +63,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_only_returns_viewable_attributes_for_the_current_user()
+    public function it_only_returns_viewable_attributes_for_the_current_user(): void
     {
         $this->logAs('admin');
         $viewableAttributesResult = $this->getQuery()->execute('en_US', 10, 0, null);
@@ -93,7 +93,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_filter_not_viewable_attributes_and_return_the_real_offset()
+    public function it_filter_not_viewable_attributes_and_return_the_real_offset(): void
     {
         $this->logAs('mary');
         $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, null);
@@ -108,7 +108,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_only_returns_attribute_corresponding_to_search()
+    public function it_only_returns_attribute_corresponding_to_search(): void
     {
         $this->logAs('admin');
         $viewableAttributesResult = $this->getQuery()->execute('en_US', 3, 0, 'by_admin_and_manager');
@@ -122,12 +122,12 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
     private function assertResultContainAttributeCodes(
         array $expectedAttributeCodes,
         ViewableAttributesResult $viewableAttributesResult
-    ) {
+    ): void {
         $actualAttributeCodes = array_map(static fn ($attribute) => $attribute->getCode(), $viewableAttributesResult->getAttributes());
         $this->assertEquals($expectedAttributeCodes, $actualAttributeCodes);
     }
 
-    private function loadData()
+    private function loadData(): void
     {
         $this->createUser('admin', 'IT support');
         $this->createUser('mary', 'Manager');
@@ -222,7 +222,7 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
         );
     }
 
-    private function createAttribute(array $normalizedAttribute)
+    private function createAttribute(array $normalizedAttribute): void
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $normalizedAttribute);

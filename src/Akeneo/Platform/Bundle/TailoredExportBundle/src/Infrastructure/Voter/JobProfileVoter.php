@@ -88,7 +88,7 @@ class JobProfileVoter extends Voter implements VoterInterface
         return in_array($subject->getJobName(), $this->tailoredExportJobNames);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         if (!$user instanceof UserInterface) {

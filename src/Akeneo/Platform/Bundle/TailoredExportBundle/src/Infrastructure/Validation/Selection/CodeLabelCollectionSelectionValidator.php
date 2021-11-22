@@ -32,7 +32,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
         $this->availableCollectionSeparator = $availableCollectionSeparator;
     }
 
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, [

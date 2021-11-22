@@ -22,7 +22,7 @@ class AssetCollectionValueHydratorTest extends AbstractAttributeValueHydratorTes
     /**
      * @test
      */
-    public function it_hydrates_an_asset_collection_value_from_product_value()
+    public function it_hydrates_an_asset_collection_value_from_product_value(): void
     {
         $expectedValue = new AssetCollectionValue(
             ['an_asset_code', 'another_asset_code'],
@@ -45,7 +45,7 @@ class AssetCollectionValueHydratorTest extends AbstractAttributeValueHydratorTes
     /**
      * @test
      */
-    public function it_hydrates_an_asset_collection_value_from_localizable_and_scopable_product_value()
+    public function it_hydrates_an_asset_collection_value_from_localizable_and_scopable_product_value(): void
     {
         $expectedValue = new AssetCollectionValue(
             ['an_asset_code', 'another_asset_code'],

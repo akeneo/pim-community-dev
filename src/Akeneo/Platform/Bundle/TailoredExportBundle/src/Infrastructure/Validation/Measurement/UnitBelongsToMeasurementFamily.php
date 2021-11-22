@@ -20,7 +20,7 @@ class UnitBelongsToMeasurementFamily extends Constraint
     public const FAMILY_DOES_NOT_EXIST = 'akeneo.tailored_export.validation.measurement.family.does_not_exist';
     public const UNIT_DOES_NOT_EXIST = 'akeneo.tailored_export.validation.measurement.unit.does_not_exist';
 
-    public $measurementFamilyCode;
+    public string $measurementFamilyCode;
 
     public function getRequiredOptions(): array
     {

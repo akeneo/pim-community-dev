@@ -10,7 +10,7 @@ final class InMemoryFindUnitLabel implements FindUnitLabelInterface
 {
     private array $unitLabels = [];
 
-    public function addUnitLabel(string $familyCode, string $unitCode, string $locale, string $label)
+    public function addUnitLabel(string $familyCode, string $unitCode, string $locale, string $label): void
     {
         $this->unitLabels[$familyCode][$unitCode][$locale] = $label;
     }

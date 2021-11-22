@@ -10,13 +10,16 @@ final class InMemoryFindAssetMainMediaData implements FindAssetMainMediaDataInte
 {
     private array $assetMainMediaData = [];
 
+    /**
+     * @param mixed $data
+     */
     public function addAssetMainMediaData(
         string $assetFamilyIdentifier,
         string $assetCode,
         ?string $channel,
         ?string $locale,
         $data
-    ) {
+    ): void {
         $this->assetMainMediaData[$assetFamilyIdentifier][$assetCode][$channel ?? 'null'][$locale ?? 'null'] = $data;
     }
 

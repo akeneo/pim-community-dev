@@ -38,7 +38,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
      * @dataProvider valuePropertiesProvider
      * @test
      */
-    public function it_returns_value_properties_from_product(PropertySource $source, SourceValueInterface $expectedValue)
+    public function it_returns_value_properties_from_product(PropertySource $source, SourceValueInterface $expectedValue): void
     {
         $this->loadQualityScores();
 
@@ -135,7 +135,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         ];
     }
 
-    public function it_returns_null_value_when_value_is_empty()
+    public function it_returns_null_value_when_value_is_empty(): void
     {
         $this->assertEquals(new NullValue(), $this->getHydrator()->hydrate($this->getPropertySource('family'), new Product()));
         $this->assertEquals(new NullValue(), $this->getHydrator()->hydrate($this->getPropertySource('family_variant'), new Product()));
@@ -143,14 +143,14 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $this->assertEquals(new NullValue(), $this->getHydrator()->hydrate($this->getPropertySource('parent'), new Product()));
     }
 
-    public function it_throws_an_exception_when_property_is_not_supported()
+    public function it_throws_an_exception_when_property_is_not_supported(): void
     {
         $this->expectErrorMessage('Unsupported property name "unknown_property"');
 
         $this->getHydrator()->hydrate($this->getPropertySource('unknown_property'), new Product());
     }
 
-    private function loadQualityScores()
+    private function loadQualityScores(): void
     {
         $inMemoryFindQualityScores = static::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
         $inMemoryFindQualityScores->addQualityScore('product_code', [

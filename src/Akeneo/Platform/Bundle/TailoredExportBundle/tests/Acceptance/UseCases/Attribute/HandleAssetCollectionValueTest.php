@@ -122,14 +122,14 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
         ];
     }
 
-    private function loadAssetLabels()
+    private function loadAssetLabels(): void
     {
         /** @var InMemoryFindAssetLabels $assetLabelsRepository */
         $assetLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface');
         $assetLabelsRepository->addAssetLabel('packshot', 'packshot_0', 'en_US', 'Packshot 0');
     }
 
-    private function loadAssetMainMediaData()
+    private function loadAssetMainMediaData(): void
     {
         /** @var InMemoryFindAssetMainMediaData $assetMainMediaDataRepository */
         $assetMainMediaDataRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface');

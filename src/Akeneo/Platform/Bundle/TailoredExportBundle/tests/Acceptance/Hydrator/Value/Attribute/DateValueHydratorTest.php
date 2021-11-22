@@ -21,7 +21,7 @@ class DateValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_date_value_from_product_value()
+    public function it_hydrates_a_date_value_from_product_value(): void
     {
         $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00');
 

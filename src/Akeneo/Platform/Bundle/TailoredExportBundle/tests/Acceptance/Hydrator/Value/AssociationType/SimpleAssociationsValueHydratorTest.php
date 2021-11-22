@@ -25,7 +25,7 @@ class SimpleAssociationsValueHydratorTest extends AbstractAssociationTypeValueHy
     /**
      * @test
      */
-    public function it_hydrates_a_simple_associations_value_from_empty_product_associations()
+    public function it_hydrates_a_simple_associations_value_from_empty_product_associations(): void
     {
         $product = new Product();
 
@@ -37,7 +37,7 @@ class SimpleAssociationsValueHydratorTest extends AbstractAssociationTypeValueHy
     /**
      * @test
      */
-    public function it_hydrates_a_simple_associations_value_from_product_associations()
+    public function it_hydrates_a_simple_associations_value_from_product_associations(): void
     {
         $product = new Product();
 

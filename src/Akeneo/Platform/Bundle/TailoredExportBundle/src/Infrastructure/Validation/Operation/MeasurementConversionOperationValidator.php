@@ -31,7 +31,7 @@ class MeasurementConversionOperationValidator extends ConstraintValidator
         $this->getAttributes = $getAttributes;
     }
 
-    public function validate($operation, Constraint $constraint)
+    public function validate($operation, Constraint $constraint): void
     {
         if (!$constraint instanceof MeasurementConversionOperationConstraint) {
             throw new \InvalidArgumentException('Invalid constraint');
