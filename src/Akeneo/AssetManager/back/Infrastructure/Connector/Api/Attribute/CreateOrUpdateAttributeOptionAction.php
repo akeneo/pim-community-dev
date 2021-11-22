@@ -18,17 +18,15 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Attrib
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
@@ -55,10 +53,6 @@ class CreateOrUpdateAttributeOptionAction
 
     private SecurityFacade $securityFacade;
 
-    private TokenStorageInterface $tokenStorage;
-
-    private LoggerInterface $apiAclLogger;
-
     public function __construct(
         Router $router,
         AttributeOptionValidator $jsonSchemaValidator,
@@ -70,9 +64,7 @@ class CreateOrUpdateAttributeOptionAction
         AttributeRepositoryInterface $attributeRepository,
         EditAttributeOptionHandler $editAttributeOptionHandler,
         AppendAttributeOptionHandler $appendAttributeOptionHandler,
-        SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $apiAclLogger
+        SecurityFacade $securityFacade
     ) {
         $this->router = $router;
         $this->jsonSchemaValidator = $jsonSchemaValidator;
@@ -85,8 +77,6 @@ class CreateOrUpdateAttributeOptionAction
         $this->editAttributeOptionHandler = $editAttributeOptionHandler;
         $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
         $this->securityFacade = $securityFacade;
-        $this->tokenStorage = $tokenStorage;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode, string $optionCode): Response
@@ -225,31 +215,8 @@ class CreateOrUpdateAttributeOptionAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_asset_family_edit';
-
-        if (!$this->securityFacade->isGranted($acl)) {
-            /**
-             * TODO CXP-922: throw instead of logging
-             */
-            $token = $this->tokenStorage->getToken();
-            if (null === $token) {
-                throw new \LogicException('An user must be authenticated if ACLs are required');
-            }
-
-            $user = $token->getUser();
-            if (!$user instanceof UserInterface) {
-                throw new \LogicException(sprintf(
-                    'An instance of "%s" is expected if ACLs are required',
-                    UserInterface::class
-                ));
-            }
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
+        if (!$this->securityFacade->isGranted('pim_api_asset_family_edit')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update asset families.');
         }
     }
 }

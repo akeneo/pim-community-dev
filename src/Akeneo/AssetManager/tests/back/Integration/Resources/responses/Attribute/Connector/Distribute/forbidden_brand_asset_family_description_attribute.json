@@ -8,23 +8,10 @@
     }
   },
   "response": {
-    "status": 200,
+    "status": 403,
     "body": {
-        "code": "description",
-        "labels": {
-          "en_US": "Description",
-          "fr_FR": "Description"
-        },
-        "type": "text",
-        "value_per_locale": true,
-        "value_per_channel": false,
-        "is_required_for_completeness": true,
-        "is_read_only": false,
-        "max_characters": 155,
-        "is_textarea": false,
-        "is_rich_text_editor": false,
-        "validation_rule": null,
-        "validation_regexp": null
+      "code": 403,
+      "message": "Access forbidden. You are not allowed to list asset families."
     }
   }
 }

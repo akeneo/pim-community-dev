@@ -74,8 +74,6 @@ class CreateOrUpdateAttributeContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         OauthAuthenticatedClientFactory $clientFactory,
@@ -83,8 +81,7 @@ class CreateOrUpdateAttributeContext implements Context
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->clientFactory = $clientFactory;
@@ -93,7 +90,6 @@ class CreateOrUpdateAttributeContext implements Context
         $this->activatedLocales = $activatedLocales;
         $this->findConnectorAttribute = $findConnectorAttribute;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -679,16 +675,9 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAttributeFromTheErpToSynchronizeItWithThePim()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . "forbidden_preview_asset_family_attribute_update.json"
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 }

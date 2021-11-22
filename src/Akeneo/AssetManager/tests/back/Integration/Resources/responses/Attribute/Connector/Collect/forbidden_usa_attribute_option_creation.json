@@ -16,10 +16,10 @@
     }
   },
   "response": {
-    "status": 201,
-    "body": "",
-    "headers": {
-      "location": "http://localhost/api/rest/v1/asset-families/brand_4/attributes/sales_area/options/usa"
+    "status": 403,
+    "body": {
+      "code": 403,
+      "message": "Access forbidden. You are not allowed to create or update asset families."
     }
   }
 }

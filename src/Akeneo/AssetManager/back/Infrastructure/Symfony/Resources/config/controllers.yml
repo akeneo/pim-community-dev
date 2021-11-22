@@ -276,8 +276,6 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.connector.api.search_filters_validator'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamilyAction
@@ -285,8 +283,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
             - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_families.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamiliesAction
@@ -296,8 +292,6 @@ services:
             - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
             - '%asset_family_connector_asset_families_limit_per_page%'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\CreateOrUpdateAssetFamilyAction
@@ -311,8 +305,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetAction
@@ -330,16 +322,12 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
         arguments:
             - '@akeneo_assetmanager.application.asset.delete_asset_handler'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetsAction
@@ -360,8 +348,6 @@ services:
             - '%asset_family_connector_maximum_assets_to_process_per_request%'
             - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\BatchAssetsToLink
@@ -377,8 +363,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - '@akeneo_assetmanager.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeAction
@@ -386,8 +370,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction
@@ -406,8 +388,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.connector.api.edit.attribute_edition_validator'
             - '@akeneo_assetmanager.infrastructure.connector.validate_attribute_properties_immutability'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction
@@ -423,8 +403,6 @@ services:
             - '@akeneo_assetmanager.application.attribute.edit_attribute_option_handler'
             - '@akeneo_assetmanager.application.attribute.append_attribute_option_handler'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_option.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
@@ -432,8 +410,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option'
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.media_file_download:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile\DownloadMediaFileAction
@@ -441,8 +417,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attribute_options.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionsAction
@@ -452,8 +426,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_assetmanager.domain.persistence.query.attribute_supports_options'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.infrastructure.connector.action.media_file_upload:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile\UploadMediaFileAction
@@ -461,5 +433,3 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@router'
             - '@oro_security.security_facade'
-            - '@security.token_storage'
-            - '@monolog.logger.pim_api_acl'

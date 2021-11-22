@@ -54,7 +54,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteAssetContext implements Context
@@ -89,8 +88,6 @@ class DeleteAssetContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -103,8 +100,7 @@ class DeleteAssetContext implements Context
         InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         InMemoryAttributeRepository $attributeRepository,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -118,7 +114,6 @@ class DeleteAssetContext implements Context
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -283,16 +278,9 @@ class DeleteAssetContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForDeletingThisAsset()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_iphone_asset_delete.json'
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_remove"'),
-            'Expected warning not found in the logs.'
         );
     }
 }

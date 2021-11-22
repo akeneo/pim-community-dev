@@ -28,15 +28,13 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -61,10 +59,6 @@ class GetConnectorAssetsAction
 
     private SecurityFacade $securityFacade;
 
-    private TokenStorageInterface $tokenStorage;
-
-    private LoggerInterface $apiAclLogger;
-
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         SearchConnectorAsset $searchConnectorAsset,
@@ -73,9 +67,7 @@ class GetConnectorAssetsAction
         int $limit,
         ValidatorInterface $validator,
         SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $apiAclLogger
+        SecurityFacade $securityFacade
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->searchConnectorAsset = $searchConnectorAsset;
@@ -85,8 +77,6 @@ class GetConnectorAssetsAction
         $this->validator = $validator;
         $this->searchFiltersValidator = $searchFiltersValidator;
         $this->securityFacade = $securityFacade;
-        $this->tokenStorage = $tokenStorage;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -229,31 +219,8 @@ class GetConnectorAssetsAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_asset_list';
-
-        if (!$this->securityFacade->isGranted($acl)) {
-            /**
-             * TODO CXP-922: throw instead of logging
-             */
-            $token = $this->tokenStorage->getToken();
-            if (null === $token) {
-                throw new \LogicException('An user must be authenticated if ACLs are required');
-            }
-
-            $user = $token->getUser();
-            if (!$user instanceof UserInterface) {
-                throw new \LogicException(sprintf(
-                    'An instance of "%s" is expected if ACLs are required',
-                    UserInterface::class
-                ));
-            }
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
+        if (!$this->securityFacade->isGranted('pim_api_asset_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list assets.');
         }
     }
 }
