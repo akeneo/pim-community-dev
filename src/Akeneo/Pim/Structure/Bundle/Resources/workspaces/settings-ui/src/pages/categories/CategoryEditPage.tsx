@@ -6,7 +6,7 @@ import {
   Dropdown,
   IconButton,
   MoreIcon,
-  Placeholder,
+  SkeletonPlaceholder,
   TabBar,
   useBooleanState,
   useTabBar,
@@ -129,9 +129,11 @@ const CategoryEditPage: FC = () => {
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
             <Breadcrumb.Step onClick={followCategoryTree}>
-              {treeLabel || <Placeholder as="span">{categoryId}</Placeholder>}
+              {treeLabel || <SkeletonPlaceholder as="span">{categoryId}</SkeletonPlaceholder>}
             </Breadcrumb.Step>
-            <Breadcrumb.Step>{categoryLabel || <Placeholder as="span">{categoryId}</Placeholder>}</Breadcrumb.Step>
+            <Breadcrumb.Step>
+              {categoryLabel || <SkeletonPlaceholder as="span">{categoryId}</SkeletonPlaceholder>}
+            </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>

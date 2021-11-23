@@ -60,11 +60,11 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
-      <Modal.TopRightButtons>
+      <Modal.TopLeftButtons>
         <Button level={'tertiary'} onClick={handleBack}>
           {translate('pim_common.previous')}
         </Button>
-      </Modal.TopRightButtons>
+      </Modal.TopLeftButtons>
       <Modal.SectionTitle color="brand">
         {translate('pim_enrich.entity.attribute.module.create.button')}
       </Modal.SectionTitle>

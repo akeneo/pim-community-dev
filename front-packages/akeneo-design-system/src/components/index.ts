@@ -21,6 +21,7 @@ export * from './Modal/Modal';
 export * from './Navigation';
 export * from './Pagination/Pagination';
 export * from './Pill/Pill';
+export * from './Placeholder/Placeholder';
 export * from './Preview/Preview';
 export * from './ProgressBar/ProgressBar';
 export * from './ProgressIndicator/ProgressIndicator';
