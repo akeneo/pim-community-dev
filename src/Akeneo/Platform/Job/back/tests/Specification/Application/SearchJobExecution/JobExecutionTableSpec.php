@@ -32,7 +32,6 @@ class JobExecutionTableSpec extends ObjectBehavior
                     1,
                     2,
                     true,
-                    true
                 ),
             ],
             1,
@@ -54,7 +53,6 @@ class JobExecutionTableSpec extends ObjectBehavior
                         'total_step' => 2,
                     ],
                     'is_stoppable' => true,
-                    'is_visible' => true
                 ],
             ],
             'matches_count' => 1,

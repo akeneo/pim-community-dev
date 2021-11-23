@@ -43,7 +43,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
@@ -57,7 +56,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
         ];
 
@@ -80,7 +78,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 1,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -94,7 +91,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
         ];
 
@@ -125,7 +121,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
         ];
 
@@ -156,7 +151,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
@@ -170,7 +164,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
         ];
 
@@ -201,7 +194,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[1],
@@ -215,7 +207,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 1,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -229,7 +220,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
         ];
 
@@ -323,7 +313,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -337,7 +326,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
         ];
 
@@ -369,7 +357,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -383,7 +370,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
         ];
 
@@ -415,7 +401,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[1],
@@ -429,7 +414,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 1,
                 3,
                 true,
-                true
             ),
         ];
 
@@ -460,7 +444,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 1,
                 3,
                 true,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -474,7 +457,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
         ];
 
@@ -506,7 +488,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
-                true
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
@@ -520,7 +501,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 0,
                 3,
                 true,
-                true
             ),
         ];
 

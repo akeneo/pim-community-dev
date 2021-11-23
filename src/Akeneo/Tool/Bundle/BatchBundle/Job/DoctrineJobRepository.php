@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
+use Akeneo\Tool\Component\Batch\Job\VisibleJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -111,7 +112,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $jobExecution->setJobParameters($jobParameters);
         $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
         $jobExecution->setStepCount($job instanceof JobWithStepsInterface ? count($job->getSteps()) : null);
-        $jobExecution->setIsVisible($job instanceof JobWithStepsInterface ? count($job->getSteps()) : null);
+        $jobExecution->setIsVisible($job instanceof VisibleJobInterface ? $job->isVisible() : null);
 
         $this->updateJobExecution($jobExecution);
 

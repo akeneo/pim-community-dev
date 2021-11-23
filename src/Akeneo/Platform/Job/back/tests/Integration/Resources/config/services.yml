@@ -21,7 +21,3 @@ services:
     tags:
       - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'data_quality_insights' }
       - name: akeneo_batch.job.not_visible_test
-
-  Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry:
-    arguments:
-      - !tagged akeneo_batch.job.not_visible_test

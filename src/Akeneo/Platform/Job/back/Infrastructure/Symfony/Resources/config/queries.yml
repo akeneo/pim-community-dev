@@ -3,7 +3,6 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Query\FindJobTypes
         arguments:
             - '@database_connection'
-            - '@Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry'
 
     Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\FindJobUsers
@@ -15,4 +14,3 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
         arguments:
             - '@database_connection'
-            - '@Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry'

@@ -71,6 +71,10 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             type: integer
             column: step_count
             nullable: true
+        isVisible:
+            type: boolean
+            column: is_visible
+            nullable: true
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution

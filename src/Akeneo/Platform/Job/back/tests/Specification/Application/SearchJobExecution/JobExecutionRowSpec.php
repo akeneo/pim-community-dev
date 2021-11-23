@@ -23,7 +23,6 @@ class JobExecutionRowSpec extends ObjectBehavior
             1,
             3,
             true,
-            true
         );
     }
 
@@ -48,7 +47,6 @@ class JobExecutionRowSpec extends ObjectBehavior
                 'total_step' => 3,
             ],
             'is_stoppable' => true,
-            'is_visible' => true
         ]);
     }
 
@@ -65,8 +63,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             0,
             1,
             1,
-            false
-            false
+            false,
         );
 
         $this->normalize()->shouldReturn([
@@ -83,7 +80,6 @@ class JobExecutionRowSpec extends ObjectBehavior
                 'total_step' => 1,
             ],
             'is_stoppable' => false,
-            'is_visible' => false
         ]);
     }
 }
