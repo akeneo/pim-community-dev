@@ -11,7 +11,9 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
 final class ExportProductModelTableValuesIntegration extends TestCase
@@ -44,10 +46,13 @@ CSV;
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table_values');
         \file_put_contents($tmpfile, $bin);
 
-        $reader = ReaderFactory::create('xlsx');
+        $reader = ReaderFactory::createFromType(Type::XLSX);
         $reader->open($tmpfile);
-        $sheet = current(iterator_to_array($reader->getSheetIterator()));
-        $rows = \array_values(iterator_to_array($sheet->getRowIterator()));
+        $sheet = \current(\iterator_to_array($reader->getSheetIterator()));
+        $actualRows = \array_map(
+            fn (Row $row): array => $row->toArray(),
+            \iterator_to_array($sheet->getRowIterator())
+        );
         $reader->close();
         if (\is_file($tmpfile)) {
             \unlink($tmpfile);
@@ -61,7 +66,7 @@ CSV;
             ['111111', 'nutrition-en_US-ecommerce', 'egg', '1', '20', '', 'C'],
         ];
 
-        Assert::assertSame($expected, $rows);
+        Assert::assertSame($expected, \array_values($actualRows));
     }
 
     protected function getConfiguration(): Configuration

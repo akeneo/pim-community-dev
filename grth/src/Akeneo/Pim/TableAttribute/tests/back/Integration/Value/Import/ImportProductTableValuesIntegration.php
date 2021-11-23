@@ -22,7 +22,10 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use PHPUnit\Framework\Assert;
 
 final class ImportProductTableValuesIntegration extends TestCase
@@ -191,14 +194,17 @@ CSV;
     public function it_imports_table_attributes_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType(Type::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
-            [
-                ['product', 'attribute', 'ingredient', 'quantity', 'allergen', 'additional_info', 'nutrition_score'],
-                ['111111', 'nutrition-en_US-ecommerce', 'salt', '20', '1', 'text', 'A'],
-                ['111112', 'nutrition-en_US-mobile', 'sugar', '12', '0', 'text2', 'C'],
-            ]
+            \array_map(
+                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                [
+                    ['product', 'attribute', 'ingredient', 'quantity', 'allergen', 'additional_info', 'nutrition_score'],
+                    ['111111', 'nutrition-en_US-ecommerce', 'salt', '20', '1', 'text', 'A'],
+                    ['111112', 'nutrition-en_US-mobile', 'sugar', '12', '0', 'text2', 'C'],
+                ]
+            )
         );
         $writer->close();
 
