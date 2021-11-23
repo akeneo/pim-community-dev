@@ -17,6 +17,7 @@ final class Version_6_0_20211117163832_add_required_for_completeness_column exte
     public function up(Schema $schema): void
     {
         if ($this->columnExists()) {
+            $this->disableMigrationWarning();
             return;
         }
 
@@ -56,5 +57,14 @@ final class Version_6_0_20211117163832_add_required_for_completeness_column exte
         ]);
 
         return false !== $statement->fetchOne();
+    }
+
+    /**
+     * Function that does a non altering operation on the DB using SQL to hide the doctrine warning stating that no
+     * sql query has been made to the db during the migration process.
+     */
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 }

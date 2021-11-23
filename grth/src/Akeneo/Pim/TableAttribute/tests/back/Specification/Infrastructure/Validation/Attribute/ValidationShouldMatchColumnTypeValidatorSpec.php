@@ -39,7 +39,7 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
         $context->buildViolation(
             Argument::type('string'),
             [
-                '{{ expected }}' => 'max_length, required_for_completeness',
+                '{{ expected }}' => 'max_length',
                 '{{ given }}' => 'min',
                 '{{ columnType }}' => 'text'
             ]
@@ -49,6 +49,21 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
         $this->validate(
             ['data_type' => 'text', 'code' => 'test', 'validations' => ['min' => 0]],
+            new ValidationShouldMatchColumnType()
+        );
+    }
+
+    function it_adds_a_violation_when_column_type_does_not_allow_any_validation(
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $context->buildViolation(Argument::type('string'), ['{{ given }}' => 'min', '{{ columnType }}' => 'boolean'])->shouldBeCalled()->willReturn(
+            $violationBuilder
+        );
+        $violationBuilder->atPath('validations')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+        $this->validate(
+            ['data_type' => 'boolean', 'code' => 'test', 'validations' => ['min' => 0]],
             new ValidationShouldMatchColumnType()
         );
     }
@@ -86,7 +101,7 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
     ) {
         $context->buildViolation(
             Argument::type('string'),
-            ['{{ expected }}' => 'max_length, required_for_completeness', '{{ given }}' => 'min, max, decimals_allowed', '{{ columnType }}' => 'text']
+            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min, max, decimals_allowed', '{{ columnType }}' => 'text']
         )->shouldBeCalledOnce()->willReturn($violationBuilder);
 
         $violationBuilder->atPath('validations')->shouldBeCalledOnce()->willReturn($violationBuilder);
