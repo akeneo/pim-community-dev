@@ -77,6 +77,7 @@ class JobExecution
     /** @var array */
     private $rawParameters;
     private ?bool $isStoppable = null;
+    private ?int $stepCount = null;
 
     /**
      * Constructor
@@ -237,10 +238,10 @@ class JobExecution
     }
 
     /**
-      * Gets the time this execution has been health checked
-      *
-      * @return \DateTime time this execution has been health checked
-      */
+     * Gets the time this execution has been health checked
+     *
+     * @return \DateTime time this execution has been health checked
+     */
     public function getHealthCheckTime(): ?\DateTime
     {
         return $this->healthCheckTime;
@@ -255,7 +256,7 @@ class JobExecution
      */
     public function setHealthcheckTime(\DateTime $healthCheckTime): JobExecution
     {
-        $this->healthCheckTime= $healthCheckTime;
+        $this->healthCheckTime = $healthCheckTime;
 
         return $this;
     }
@@ -639,5 +640,15 @@ class JobExecution
     public function isStoppable(): bool
     {
         return $this->isStoppable === true;
+    }
+
+    public function setStepCount(?int $stepCount): void
+    {
+        $this->stepCount = $stepCount;
+    }
+
+    public function getStepCount(): int
+    {
+        return $this->stepCount ?? 1;
     }
 }
