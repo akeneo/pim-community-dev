@@ -8,6 +8,7 @@ import {
   LoaderIcon,
   Modal,
   Pagination,
+  Placeholder,
   Search,
   SectionTitle,
   Table,
@@ -18,7 +19,7 @@ import {
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
-import {CenteredHelper, FieldsList} from '../shared';
+import {FieldsList} from '../shared';
 import styled from 'styled-components';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
@@ -421,17 +422,18 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                     </ManageOptionsBody>
                   </Table>
                   {filteredOptions.length === 0 && searchValue !== '' && (
-                    <CenteredHelper illustration={<AddingValueIllustration />}>
-                      <CenteredHelper.Title>
-                        {translate('pim_table_attribute.form.attribute.no_options')}
-                      </CenteredHelper.Title>
+                    <Placeholder
+                      illustration={<AddingValueIllustration />}
+                      title={translate('pim_table_attribute.form.attribute.no_options')}
+                    >
                       {translate('pim_table_attribute.form.attribute.please_try_again')}
-                    </CenteredHelper>
+                    </Placeholder>
                   )}
                   {filteredOptions.length === 0 && searchValue === '' && (
-                    <CenteredHelper illustration={<AddingValueIllustration />}>
-                      {translate('pim_table_attribute.form.attribute.no_options_helper')}
-                    </CenteredHelper>
+                    <Placeholder
+                      illustration={<AddingValueIllustration />}
+                      title={translate('pim_table_attribute.form.attribute.no_options_helper')}
+                    />
                   )}
                 </TableContainer>
               </>
