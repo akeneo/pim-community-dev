@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class CountJobExecutionTest extends IntegrationTestCase
@@ -16,9 +17,7 @@ class CountJobExecutionTest extends IntegrationTestCase
 
     public function test_it_counts_job(): void
     {
-        $countJobQuery = $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
-
-        $this->assertEquals(1, $countJobQuery->all());
+        $this->assertEquals(1, $this->getQuery()->all());
 
         $jobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_new_product_import',
@@ -28,6 +27,11 @@ class CountJobExecutionTest extends IntegrationTestCase
         ]);
         $this->fixturesJobHelper->createJobExecution(['job_instance_id' => $jobInstanceId]);
 
-        $this->assertEquals(2, $countJobQuery->all());
+        $this->assertEquals(2, $this->getQuery()->all());
+    }
+
+    private function getQuery(): CountJobExecutionInterface
+    {
+        return $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
     }
 }

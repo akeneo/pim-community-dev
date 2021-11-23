@@ -12,15 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const ROUTE = 'akeneo_job_index_action';
-    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
-        $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
         $this->fixturesLoader->loadFixtures();
+        $this->logAs('peter');
     }
 
     public function test_it_returns_job_total_count(): void

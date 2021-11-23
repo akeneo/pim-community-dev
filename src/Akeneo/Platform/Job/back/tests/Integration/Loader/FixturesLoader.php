@@ -15,14 +15,17 @@ final class FixturesLoader
 {
     private Connection $dbalConnection;
     private FixturesJobHelper $fixturesJobHelper;
-    private array $users;
+    private FixturesUserHelper $fixturesUserHelper;
     private array $jobInstances;
-    private array $jobExecutions;
 
-    public function __construct(Connection $dbalConnection, FixturesJobHelper $fixturesJobHelper)
-    {
+    public function __construct(
+        Connection $dbalConnection,
+        FixturesJobHelper $fixturesJobHelper,
+        FixturesUserHelper $fixturesUserHelper
+    ) {
         $this->dbalConnection = $dbalConnection;
         $this->fixturesJobHelper = $fixturesJobHelper;
+        $this->fixturesUserHelper = $fixturesUserHelper;
     }
 
     public function resetFixtures(): void
@@ -33,6 +36,9 @@ final class FixturesLoader
             DELETE FROM akeneo_batch_job_instance;
             DELETE FROM akeneo_batch_job_execution;
             DELETE FROM akeneo_batch_step_execution;
+            DELETE FROM oro_user;
+            DELETE FROM oro_user_access_role;
+            DELETE FROM oro_access_role;
 
             SET foreign_key_checks = 1;
 SQL;
@@ -46,10 +52,26 @@ SQL;
         $this->loadJobExecutions();
     }
 
-
     private function loadUsers(): void
     {
-        $this->users = [];
+        $this->fixturesUserHelper->createRole('ROLE_NO_ACL', []);
+        $this->fixturesUserHelper->createRole('ROLE_ADMINISTRATOR', [
+            'pim_enrich_job_tracker_view_all_jobs',
+            'pim_enrich_job_tracker_index',
+            'pim_importexport_stop_job'
+        ]);
+
+        $this->fixturesUserHelper->createRole('ROLE_IMPORT_EXPORT_VIEWER', [
+            'pim_importexport_import_execution_show'
+        ]);
+
+        $this->fixturesUserHelper->createRole('PROCESS_TRACKER_VIEWER', [
+            'pim_enrich_job_tracker_index',
+        ]);
+
+        $this->fixturesUserHelper->createUser('peter', ['ROLE_ADMINISTRATOR']);
+        $this->fixturesUserHelper->createUser('mary', ['ROLE_IMPORT_EXPORT_VIEWER', 'PROCESS_TRACKER_VIEWER']);
+        $this->fixturesUserHelper->createUser('betty', ['ROLE_NO_ACL']);
     }
 
     private function loadJobInstances(): void
@@ -90,11 +112,9 @@ SQL;
 
     private function loadJobExecutions(): void
     {
-        $this->jobExecutions = [
-            'a_job_execution' => $this->fixturesJobHelper->createJobExecution([
-                'user' => 'admin',
-                'job_instance_id' => $this->jobInstances['a_product_import'],
-            ]),
-        ];
+        $this->fixturesJobHelper->createJobExecution([
+            'user' => 'admin',
+            'job_instance_id' => $this->jobInstances['a_product_import'],
+        ]);
     }
 }

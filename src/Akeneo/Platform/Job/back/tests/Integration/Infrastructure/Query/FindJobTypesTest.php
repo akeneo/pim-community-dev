@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobTypesTest extends IntegrationTestCase
@@ -16,13 +17,16 @@ class FindJobTypesTest extends IntegrationTestCase
 
     public function test_it_find_job_types(): void
     {
-        $findJobTypesQuery = $this->get('Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface');
-
         $expectedJobTypes = [
             'import',
             'export'
         ];
 
-        $this->assertEqualsCanonicalizing($expectedJobTypes, $findJobTypesQuery->visible());
+        $this->assertEqualsCanonicalizing($expectedJobTypes, $this->getQuery()->visible());
+    }
+
+    private function getQuery(): FindJobTypesInterface
+    {
+        return $this->get('Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface');
     }
 }
