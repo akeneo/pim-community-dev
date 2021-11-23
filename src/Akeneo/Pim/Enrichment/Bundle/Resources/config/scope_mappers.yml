@@ -1,0 +1,4 @@
+services:
+    Akeneo\Pim\Enrichment\Component\Security\CategoriesScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper, entity: 'categories' }
