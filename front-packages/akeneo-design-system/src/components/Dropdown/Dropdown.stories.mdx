@@ -7,7 +7,6 @@ import {SpaceBetweenContainer, SpaceContainer, useSelection, fakeFetcher} from '
 import {ArrowDownIcon, LinkIcon} from '../../icons';
 import {IconButton} from '../IconButton/IconButton';
 import {action} from '@storybook/addon-actions';
-import {Surtitle} from './Surtitle/Surtitle';
 
 <Meta
   title="Components/Dropdown"
@@ -405,25 +404,25 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 <Dropdown.ItemCollection>
                   <Dropdown.Item title="Item 1">
                     <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
-                    <Surtitle label="Item 1 Annotation">
+                    <Dropdown.Surtitle label="Item 1 Annotation">
                       Item 1
-                    </Surtitle>
+                    </Dropdown.Surtitle>
                     <Badge>100%</Badge>
                     <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
                   </Dropdown.Item>
                   <Dropdown.Item title="Item 2">
                     <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
-                    <Surtitle label="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+                    <Dropdown.Surtitle label="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
                       Item 2
-                    </Surtitle>
+                    </Dropdown.Surtitle>
                     <Badge level="danger">50%</Badge>
                     <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
                   </Dropdown.Item>
                   <Dropdown.Item title="Item 3">
                     <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />
-                    <Surtitle label="Item 3 Annotation">
+                    <Dropdown.Surtitle label="Item 3 Annotation">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </Surtitle>
+                    </Dropdown.Surtitle>
                     <Badge level="warning">80%</Badge>
                     <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
                   </Dropdown.Item>

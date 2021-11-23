@@ -20,6 +20,7 @@ const sizeMap = {
   big: 44,
   bigger: 64,
 };
+
 const ItemContainer = styled.div<
   {size: 'default' | 'big' | 'bigger'; disabled: boolean; isActive: boolean} & AkeneoThemedProps
 >`
