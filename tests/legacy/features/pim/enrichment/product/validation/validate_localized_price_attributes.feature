@@ -63,7 +63,7 @@ Feature: Validate localized price attributes of a product
     And I save the product
     Then I should see validation tooltip "L'attribut tax requiert une valeur numérique et la valeur bar soumise ne l'est pas."
     Then I should see validation tooltip "L'attribut tax requiert une valeur numérique et la valeur qux soumise ne l'est pas."
-    Then I should see validation tooltip "L'attribut tax requiert une valeur supérieure ou égale à 10"
+    Then I should see validation tooltip "L'attribut tax requiert une valeur inférieure ou égale à 100."
     And there should be 3 errors in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of price attribute
