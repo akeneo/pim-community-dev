@@ -3,10 +3,12 @@
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -16,10 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 class GetJobTypesAction
 {
     private FindJobTypesInterface $findJobTypes;
+    private SecurityFacade $securityFacade;
 
-    public function __construct(FindJobTypesInterface $findJobTypes)
+    public function __construct(FindJobTypesInterface $findJobTypes, SecurityFacade $securityFacade)
     {
         $this->findJobTypes = $findJobTypes;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -28,8 +32,16 @@ class GetJobTypesAction
             return new RedirectResponse('/');
         }
 
+        $this->denyAccessUnlessAclIsGranted();
         $jobTypes = $this->findJobTypes->visible();
 
         return new JsonResponse($jobTypes);
+    }
+
+    private function denyAccessUnlessAclIsGranted()
+    {
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_index')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list job types.');
+        }
     }
 }
