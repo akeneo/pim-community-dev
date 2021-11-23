@@ -89,7 +89,7 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
             ]
         );
 
-        return (int)$this->connection->lastInsertId();
+        return (int) $this->connection->lastInsertId();
     }
 
     private function createJobInstance(string $label): int

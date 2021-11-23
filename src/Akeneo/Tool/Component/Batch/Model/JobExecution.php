@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class JobExecution
 {
-    /** @var integer */
+    /** @var int */
     private $id;
 
     /** @var ArrayCollection */
@@ -29,13 +29,13 @@ class JobExecution
     /** @var JobInstance */
     private $jobInstance;
 
-    /** @var integer Process Identifier */
+    /** @var int Process Identifier */
     private $pid;
 
     /** @var string|null The user who launched the job */
     private $user;
 
-    /** @var integer */
+    /** @var int */
     private $status;
 
     /** @var \DateTime */
@@ -111,7 +111,7 @@ class JobExecution
 
     /**
      * Get Id
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -264,7 +264,7 @@ class JobExecution
     /**
      * Returns the process identifier of the batch job
      *
-     * @return integer
+     * @return int
      */
     public function getPid()
     {
@@ -274,7 +274,7 @@ class JobExecution
     /**
      * Sets the process identifier of the batch job
      *
-     * @param integer $pid
+     * @param int $pid
      *
      * @return JobExecution
      */
