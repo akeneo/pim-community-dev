@@ -32,7 +32,7 @@ final class FixturesLoader
     {
         $resetQuery = <<<SQL
             SET foreign_key_checks = 0;
-            
+
             DELETE FROM akeneo_batch_job_instance;
             DELETE FROM akeneo_batch_job_execution;
             DELETE FROM akeneo_batch_step_execution;

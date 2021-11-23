@@ -45,7 +45,7 @@ final class FixturesUserHelper
     {
         /** @var User $user */
         $user = $this->userFactory->create();
-        $user->setId(uniqid());
+        $user->setId(hexdec(uniqid()));
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
         $user->setPassword('fake');
