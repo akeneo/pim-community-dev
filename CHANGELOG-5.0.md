@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.58 (2021-11-23)
+
 ## Bug fixes
 
 - PIM-10162: Not all locales are displayed when using compare/translate feature on product
