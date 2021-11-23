@@ -15,12 +15,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class DateFormatValidator extends ConstraintValidator
 {
-    /** @var DateFactory */
-    protected $factory;
+    protected DateFactory $factory;
 
-    /**
-     * @param DateFactory $factory
-     */
     public function __construct(DateFactory $factory)
     {
         $this->factory = $factory;
@@ -28,9 +24,14 @@ class DateFormatValidator extends ConstraintValidator
 
     /**
      * {@inheritdoc}
+     * @param DateFormat $constraint
      */
     public function validate($date, Constraint $constraint)
     {
+        if (null === $date) {
+            return;
+        }
+
         $formatter = $this->factory->create(['date_format' => $constraint->dateFormat]);
         $formatter->setLenient(false);
 

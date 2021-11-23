@@ -59,32 +59,17 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         $this->jobStopper = $jobStopper;
     }
 
-    /**
-     * Get reader
-     *
-     * @return ItemReaderInterface
-     */
-    public function getReader()
+    public function getReader(): ?ItemReaderInterface
     {
         return $this->reader;
     }
 
-    /**
-     * Get processor
-     *
-     * @return ItemProcessorInterface
-     */
-    public function getProcessor()
+    public function getProcessor(): ?ItemProcessorInterface
     {
         return $this->processor;
     }
 
-    /**
-     * Get writer
-     *
-     * @return ItemWriterInterface
-     */
-    public function getWriter()
+    public function getWriter(): ?ItemWriterInterface
     {
         return $this->writer;
     }
@@ -165,9 +150,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         $this->flushStepElements();
     }
 
-    /**
-     * @param StepExecution $stepExecution
-     */
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
@@ -181,9 +163,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
     }
 
-    /**
-     * Flushes step elements
-     */
     public function flushStepElements()
     {
         foreach ($this->getStepElements() as $element) {
@@ -259,12 +238,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         );
     }
 
-    /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    protected function getStepElements()
+    protected function getStepElements(): array
     {
         return [
             'reader'    => $this->reader,
