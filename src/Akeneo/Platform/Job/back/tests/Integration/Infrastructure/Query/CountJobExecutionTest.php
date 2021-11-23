@@ -17,7 +17,7 @@ class CountJobExecutionTest extends IntegrationTestCase
 
     public function test_it_counts_job(): void
     {
-        $this->assertEquals(1, $this->getQuery()->all());
+        $this->assertEquals(2, $this->getQuery()->all());
 
         $jobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_new_product_import',
@@ -25,9 +25,11 @@ class CountJobExecutionTest extends IntegrationTestCase
             'label' => 'a_new_product_import',
             'type' => 'import',
         ]);
-        $this->fixturesJobHelper->createJobExecution(['job_instance_id' => $jobInstanceId]);
+        $this->fixturesJobHelper->createJobExecution([
+            'job_instance_id' => $jobInstanceId,
+        ]);
 
-        $this->assertEquals(2, $this->getQuery()->all());
+        $this->assertEquals(3, $this->getQuery()->all());
     }
 
     private function getQuery(): CountJobExecutionInterface

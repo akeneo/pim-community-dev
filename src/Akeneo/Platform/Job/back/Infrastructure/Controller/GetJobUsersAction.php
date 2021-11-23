@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -17,10 +19,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetJobUsersAction
 {
+    private Security $security;
+    private SecurityFacade $securityFacade;
     private FindJobUsersInterface $findJobUsers;
 
-    public function __construct(FindJobUsersInterface $findJobUsers)
-    {
+    public function __construct(
+        Security $security,
+        SecurityFacade $securityFacade,
+        FindJobUsersInterface $findJobUsers
+    ) {
+        $this->security = $security;
+        $this->securityFacade = $securityFacade;
         $this->findJobUsers = $findJobUsers;
     }
 
@@ -30,8 +39,11 @@ class GetJobUsersAction
             return new RedirectResponse('/');
         }
 
-        $page = (int) $request->get('page', 1);
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
+            return new JsonResponse([$this->security->getUser()->getUserIdentifier()]);
+        }
 
+        $page = (int) $request->get('page', 1);
         $jobUsers = $this->findJobUsers->search($page);
 
         return new JsonResponse($jobUsers);

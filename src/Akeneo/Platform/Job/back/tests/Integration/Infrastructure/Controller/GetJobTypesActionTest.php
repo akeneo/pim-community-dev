@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Test\Integration\ControllerIntegrationTestCase;
-use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
