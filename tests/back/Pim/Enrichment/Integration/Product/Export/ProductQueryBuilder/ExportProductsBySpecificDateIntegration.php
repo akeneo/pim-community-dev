@@ -34,7 +34,7 @@ CSV;
                     [
                         'field'    => 'updated',
                         'operator' => 'SINCE LAST JOB',
-                        'value'    => 'csv_product_export'
+                        'value'    => 'csv_product_export',
                     ]
                 ],
                 'structure' => [
