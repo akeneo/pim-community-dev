@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
 
@@ -18,15 +19,18 @@ class CreateAccessToken implements CreateAccessTokenInterface
     private IOAuth2GrantCode $storage;
     private ClientProviderInterface $clientProvider;
     private RandomCodeGeneratorInterface $randomCodeGenerator;
+    private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery;
 
     public function __construct(
         IOAuth2GrantCode $storage,
         ClientProviderInterface $clientProvider,
-        RandomCodeGeneratorInterface $randomCodeGenerator
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
     ) {
         $this->storage = $storage;
         $this->clientProvider = $clientProvider;
         $this->randomCodeGenerator = $randomCodeGenerator;
+        $this->getConnectedAppScopesQuery = $getConnectedAppScopesQuery;
     }
 
     /**
@@ -52,9 +56,12 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
         $this->storage->markAuthCodeAsUsed($code);
 
+        $scopes = $this->getConnectedAppScopesQuery->execute($clientId);
+
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
+            'scope' => \implode(' ', $scopes),
         ];
     }
 }

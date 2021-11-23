@@ -58,12 +58,6 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
-        tags:
-            - { name: validator.constraint_validator }
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'

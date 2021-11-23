@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGeneratorInterface;
@@ -18,9 +19,10 @@ class CreateAccessTokenSpec extends ObjectBehavior
     public function let(
         IOAuth2GrantCode $storage,
         ClientProviderInterface $clientProvider,
-        RandomCodeGeneratorInterface $randomCodeGenerator
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
     ): void {
-        $this->beConstructedWith($storage, $clientProvider, $randomCodeGenerator);
+        $this->beConstructedWith($storage, $clientProvider, $randomCodeGenerator, $getConnectedAppScopesQuery);
     }
 
     public function it_is_a_create_access_token(): void
@@ -34,17 +36,20 @@ class CreateAccessTokenSpec extends ObjectBehavior
         Client $client,
         IOAuth2AuthCode $authCode,
         ClientProviderInterface $clientProvider,
-        RandomCodeGeneratorInterface $randomCodeGenerator
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')->willReturn($client);
         $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
         $randomCodeGenerator->generate()->willReturn('generated_token_123');
+        $getConnectedAppScopesQuery->execute('client_id_1234')->willReturn(['scope1', 'scope2']);
 
         $authCode->getData()->willReturn([]);
         $authCode->getScope()->willReturn('delete_products');
         $token = [
             'access_token' => 'generated_token_123',
             'token_type' => 'bearer',
+            'scope' => 'scope1 scope2',
         ];
 
         $storage->createAccessToken(
