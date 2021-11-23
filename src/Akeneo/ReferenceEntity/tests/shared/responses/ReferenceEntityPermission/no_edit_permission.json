@@ -49,7 +49,11 @@
                     "targets": "class",
                     "defaultOption": null,
                     "requiredOptions": [],
-                    "payload": null
+                    "payload": null,
+                    "groups": [
+                        "Default",
+                        "SetReferenceEntityPermissionsCommand"
+                    ]
                 },
                 "cause": null,
                 "code": null

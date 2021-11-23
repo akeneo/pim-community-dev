@@ -39,7 +39,8 @@ $rules = [
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Webmozart\Assert\Assert',
             'Doctrine\DBAL\Connection',
-            'Box\Spout\Writer\WriterFactory',
+            'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
+            'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
 
             'Akeneo\Platform\TailoredExport\Application',

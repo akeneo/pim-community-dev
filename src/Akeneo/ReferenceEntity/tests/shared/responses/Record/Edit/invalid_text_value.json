@@ -272,9 +272,12 @@
         "constraint": {
           "targets": "class",
           "defaultOption": null,
-          "requiredOptions": [
-          ],
-          "payload": null
+          "requiredOptions": [],
+          "payload": null,
+          "groups": [
+            "Default",
+            "EditRecordCommand"
+          ]
         },
         "cause": null,
         "code": "57c2f299-1154-4870-89bb-ef3b1f5ad229"

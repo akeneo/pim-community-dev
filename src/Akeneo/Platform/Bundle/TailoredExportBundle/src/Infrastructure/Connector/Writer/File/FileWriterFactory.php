@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 
 class FileWriterFactory
@@ -27,7 +27,7 @@ class FileWriterFactory
 
     public function build(array $options): WriterInterface
     {
-        $writer = WriterFactory::create($this->type);
+        $writer = WriterFactory::createFromType($this->type);
         foreach ($options as $name => $option) {
             $setter = 'set' . ucfirst($name);
             if (!method_exists($writer, $setter)) {

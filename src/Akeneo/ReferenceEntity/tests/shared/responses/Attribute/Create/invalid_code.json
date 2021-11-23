@@ -47,7 +47,11 @@
           "defaultOption": null,
           "requiredOptions": [],
           "targets": "property",
-          "payload": null
+          "payload": null,
+          "groups": [
+            "Default",
+            "CreateTextAttributeCommand"
+          ]
         },
         "cause": null,
         "code": null
