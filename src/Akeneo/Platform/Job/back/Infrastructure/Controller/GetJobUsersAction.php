@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -37,6 +38,10 @@ class GetJobUsersAction
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_index')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list job users.');
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
