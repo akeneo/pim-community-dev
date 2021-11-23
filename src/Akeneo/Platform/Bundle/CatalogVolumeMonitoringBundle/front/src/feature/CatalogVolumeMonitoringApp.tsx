@@ -34,7 +34,7 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
         {axes.map(axis => (
           <Section key={axis.name}>
             <SectionTitle>
-              <SectionTitle.Title>{axis.name}</SectionTitle.Title>
+              <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
             </SectionTitle>
             <KeyFigureGrid>
               {axis.catalogVolumes.map(catalogVolume => {
