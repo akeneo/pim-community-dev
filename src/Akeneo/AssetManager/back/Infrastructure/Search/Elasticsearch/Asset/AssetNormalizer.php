@@ -31,6 +31,7 @@ class AssetNormalizer implements AssetNormalizerInterface
     private const ASSET_CODE_LABEL_SEARCH = 'asset_code_label_search';
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
     private const VALUES_FIELD = 'values';
+    private const ES_TERM_MAX_LENGTH = 32766;
 
     private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
 
@@ -136,7 +137,13 @@ class AssetNormalizer implements AssetNormalizerInterface
         $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
 
-        return sprintf('%s %s', $searchableAssetItem->code, $cleanedData);
+        $prefixedData = sprintf('%s %s', $searchableAssetItem->code, $cleanedData);
+
+        if (strlen($prefixedData) > self::ES_TERM_MAX_LENGTH) {
+            $prefixedData = substr($prefixedData, 0, self::ES_TERM_MAX_LENGTH);
+        }
+
+        return $prefixedData;
     }
 
     private function generateFilledValueKeys(SearchableAssetItem $searchableAssetItem): array

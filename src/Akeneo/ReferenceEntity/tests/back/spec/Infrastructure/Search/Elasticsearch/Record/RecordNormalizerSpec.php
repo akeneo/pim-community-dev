@@ -160,4 +160,58 @@ class RecordNormalizerSpec extends ObjectBehavior
 
         $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
     }
+
+    function it_truncates_record_full_text_search(
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        SqlFindSearchableRecords $findSearchableRecords,
+        \Iterator $searchableRecordItemIterator
+    ) {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $stark = new SearchableRecordItem();
+        $stark->identifier = 'designer_stark_fingerprint';
+        $stark->referenceEntityIdentifier = 'designer';
+        $stark->code = 'stark';
+        $stark->labels = ['fr_FR' => 'Philippe Stark'];
+        $stark->values = [
+            'name'                     => [
+                'data' => str_repeat('é', 40000),
+            ],
+            'description_mobile_en_US' => [
+                'data' => 'Bio',
+            ],
+        ];
+
+        $coco = new SearchableRecordItem();
+        $coco->identifier = 'designer_coco_fingerprint';
+        $coco->referenceEntityIdentifier = 'designer';
+        $coco->code = 'coco';
+        $coco->labels = ['fr_FR' => 'Coco Chanel'];
+        $coco->values = [
+            'ecommerce' => [
+                'fr_FR' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+            ],
+            'mobile'    => [
+                'en_US' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+            ],
+        ];
+        $findSearchableRecords
+            ->byReferenceEntityIdentifier($referenceEntityIdentifier)
+            ->willReturn($searchableRecordItemIterator);
+        $searchableRecordItemIterator->valid()->willReturn(true, true, false);
+        $searchableRecordItemIterator->current()->willReturn($stark, $coco);
+
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
+            ->willReturn(
+                [
+                    'ecommerce' => [
+                        'fr_FR' => ['name'],
+                    ],
+                    'mobile'    => [
+                        'en_US' => ['name'],
+                    ],
+                ]
+            );
+
+        $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
+    }
 }

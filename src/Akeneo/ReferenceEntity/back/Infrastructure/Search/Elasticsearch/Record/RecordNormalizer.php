@@ -32,6 +32,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
     private const VALUES_FIELD = 'values';
+    private const ES_TERM_MAX_LENGTH = 32766;
 
     private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
     private SqlFindSearchableRecords $findSearchableRecords;
@@ -124,7 +125,13 @@ class RecordNormalizer implements RecordNormalizerInterface
         $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
 
-        return sprintf('%s %s', $searchableRecordItem->code, $cleanedData);
+        $prefixedData = sprintf('%s %s', $searchableRecordItem->code, $cleanedData);
+
+        if (strlen($prefixedData) > self::ES_TERM_MAX_LENGTH) {
+            $prefixedData = substr($prefixedData, 0, self::ES_TERM_MAX_LENGTH);
+        }
+
+        return $prefixedData;
     }
 
     private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem): array
