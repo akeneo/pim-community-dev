@@ -243,28 +243,28 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_does_not_counts_not_visible_job_executions()
     {
-        $aVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
             'job_name' => 'a_product_import',
             'label' => 'A product import',
             'type' => 'import',
         ]);
 
-        $aNonVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aNonVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'prepare_evaluation',
             'job_name' => 'a_non_visible_job',
             'label' => 'A non visible job',
             'type' => 'data_quality_insights',
         ]);
 
-        $this->fixturesLoader->createJobExecution([
+        $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
             'status' => BatchStatus::COMPLETED,
         ]);
 
-        $this->fixturesLoader->createJobExecution([
+        $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aNonVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
@@ -512,14 +512,14 @@ class SearchJobExecutionTest extends IntegrationTestCase
      */
     public function it_does_not_returns_not_visible_job_executions()
     {
-        $aNonVisibleJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aNonVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'prepare_evaluation',
             'job_name' => 'a_non_visible_job',
             'label' => 'A non visible job',
             'type' => 'data_quality_insights',
         ]);
 
-        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aNonVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
@@ -569,28 +569,28 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
     private function loadFixtures()
     {
-        $aProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
             'job_name' => 'a_product_import',
             'label' => 'A product import',
             'type' => 'import',
         ]);
 
-        $anotherProductImportJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $anotherProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'another_product_import',
             'job_name' => 'another_product_import',
             'label' => 'Another product import',
             'type' => 'import',
         ]);
 
-        $aProductExportJobInstanceId = $this->fixturesLoader->createJobInstance([
+        $aProductExportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_export',
             'job_name' => 'a_product_export',
             'label' => 'A product export',
             'type' => 'export',
         ]);
 
-        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
@@ -598,40 +598,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'is_stoppable' => false,
         ]);
 
-        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
             'user' => 'peter',
             'status' => BatchStatus::STARTED,
         ]);
 
-        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => null,
             'status' => BatchStatus::STARTING,
         ]);
 
-        $this->jobExecutionIds[] = $this->fixturesLoader->createJobExecution([
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductExportJobInstanceId,
             'start_time' => null,
             'status' => BatchStatus::STARTING,
         ]);
 
-        $this->fixturesLoader->createStepExecution([
+        $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
         ]);
 
-        $this->fixturesLoader->createStepExecution([
+        $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
         ]);
 
-        $this->fixturesLoader->createStepExecution([
+        $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
         ]);
 
-        $this->fixturesLoader->createStepExecution([
+        $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[1],
             'errors' => [
                 'an_error' => 'a backtrace',
