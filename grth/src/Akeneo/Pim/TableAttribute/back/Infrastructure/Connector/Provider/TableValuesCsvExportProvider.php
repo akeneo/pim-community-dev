@@ -85,6 +85,12 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
                             ],
                         ]
                     ),
+                    'with_label' => new Type(
+                        [
+                            'type'   => 'bool',
+                            'groups' => ['Default', 'FileConfiguration'],
+                        ]
+                    ),
                 ],
             ]
         );
@@ -113,6 +119,7 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
             'filters' => [
                 'table_attribute_code' => null,
             ],
+            'with_label' => false,
         ];
     }
 }

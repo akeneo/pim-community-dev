@@ -70,6 +70,12 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
                             ],
                         ]
                     ),
+                    'with_label' => new Type(
+                        [
+                            'type'   => 'bool',
+                            'groups' => ['Default', 'FileConfiguration'],
+                        ]
+                    ),
                 ],
             ]
         );
@@ -97,6 +103,7 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
             'filters' => [
                 'table_attribute_code' => null,
             ],
+            'with_label' => false,
         ];
     }
 }
