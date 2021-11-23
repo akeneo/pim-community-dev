@@ -1,4 +1,5 @@
 import {transformVolumesToAxis} from './catalogVolumeWrapper';
+import {GetCatalogVolumeInterface} from '../hooks/useCatalogVolumeByAxis';
 
 const volumes = {
   count_attributes: {value: 77, has_warning: false, type: 'count'},
@@ -31,7 +32,7 @@ const volumes = {
   },
 };
 
-const getMockCatalogVolume = () => {
+const getMockCatalogVolume: GetCatalogVolumeInterface = async () => {
   return transformVolumesToAxis(volumes);
 };
 

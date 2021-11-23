@@ -5,13 +5,13 @@ import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCata
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
 
 interface Props {
-  getCatalogVolume: GetCatalogVolumeInterface;
+  getCatalogVolumes: GetCatalogVolumeInterface;
 }
 
-const CatalogVolumeMonitoringApp = ({getCatalogVolume}: Props) => {
+const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
-  const [axes] = useCatalogVolumeByAxis(getCatalogVolume);
+  const [axes] = useCatalogVolumeByAxis(getCatalogVolumes);
 
   return (
     <>

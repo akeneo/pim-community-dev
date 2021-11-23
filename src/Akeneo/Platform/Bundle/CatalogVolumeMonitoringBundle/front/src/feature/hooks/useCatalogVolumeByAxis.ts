@@ -1,17 +1,22 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Axis} from '../model/catalog-volume';
-// TODO: import {useRoute} from '@akeneo-pim-community/shared';
+import {Router, useRouter} from '@akeneo-pim-community/shared';
 
 interface GetCatalogVolumeInterface {
-  (): Axis[];
+  (router: Router): Promise<Axis[]>;
 }
 
 const useCatalogVolumeByAxis = (getCatalogVolume: GetCatalogVolumeInterface) => {
-  // TODO : const route = useRoute('pim_volume_monitoring_get_volumes');
+  const router = useRouter();
   const [axes, setAxes] = useState<Axis[]>([]);
+  const fetchAxes = useCallback(async () => {
+    const axisList = await getCatalogVolume(router);
+    setAxes(axisList);
+  }, [getCatalogVolume, router]);
+
   useEffect(() => {
-    setAxes(getCatalogVolume());
-  }, [getCatalogVolume]);
+    (async () => fetchAxes())();
+  }, [fetchAxes]);
 
   return [axes] as const;
 };

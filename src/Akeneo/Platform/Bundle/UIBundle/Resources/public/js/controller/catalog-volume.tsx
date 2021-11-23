@@ -22,7 +22,7 @@ class CatalogVolumeController extends ReactController {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CatalogVolumeMonitoringApp getCatalogVolumeInterface={getCatalogVolume}/>
+          <CatalogVolumeMonitoringApp getCatalogVolumes={getCatalogVolume}/>
         </ThemeProvider>
       </DependenciesProvider>
     );

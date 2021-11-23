@@ -16,11 +16,10 @@ const transformVolumesToAxis = (rawCatalogVolumes: any): Axis[] => {
     axesCatalogVolumes.push({
       name: axisName,
       catalogVolumes: catalogVolumes.map(volumeName => {
-        const rawVolume = rawCatalogVolumes[volumeName];
         return {
           name: volumeName,
-          type: rawVolume.type,
-          value: rawVolume.value,
+          type: rawCatalogVolumes[volumeName].type,
+          value: rawCatalogVolumes[volumeName].value,
         };
       }),
     });
