@@ -14,11 +14,12 @@ abstract class ControllerIntegrationTestCase extends IntegrationTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
+        self::ensureKernelShutdown();
         $this->client = static::createClient(['debug' => false]);
         $this->client->disableReboot();
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
-
-        parent::setUp();
     }
 
     protected function logAs(string $username): void
