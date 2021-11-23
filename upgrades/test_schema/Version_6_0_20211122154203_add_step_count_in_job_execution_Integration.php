@@ -37,8 +37,8 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
     {
         $this->dropColumnIfExists();
 
-        $stoppableJobInstanceId = $this->createJobInstance('csv_user_group_export');
-        $this->createJobExecution($stoppableJobInstanceId);
+        $jobInstanceId = $this->createJobInstance('csv_user_group_export');
+        $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertEquals(true, $this->columnExists());
