@@ -12,7 +12,6 @@ const volumesKeyFigures: {[volumeName: string]: string[]} = {
 const transformVolumesToAxis = (rawCatalogVolumes: any): Axis[] => {
   let axesCatalogVolumes: Axis[] = [];
   for (const [axisName, catalogVolumes] of Object.entries(volumesKeyFigures)) {
-    // fixme: don't add empty axes
     axesCatalogVolumes.push({
       name: axisName,
       catalogVolumes: catalogVolumes.map(volumeName => {
