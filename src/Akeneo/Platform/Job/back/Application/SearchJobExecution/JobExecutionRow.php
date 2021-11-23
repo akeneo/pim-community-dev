@@ -22,6 +22,7 @@ final class JobExecutionRow
     private int $currentStep;
     private int $totalStep;
     private bool $isStoppable;
+    private bool $isVisible;
 
     public function __construct(
         int $jobExecutionId,
@@ -34,7 +35,8 @@ final class JobExecutionRow
         int $errorCount,
         int $currentStep,
         int $totalStep,
-        bool $isStoppable
+        bool $isStoppable,
+        bool $isVisible
     ) {
         $this->jobExecutionId = $jobExecutionId;
         $this->jobName = $jobName;
@@ -47,6 +49,7 @@ final class JobExecutionRow
         $this->currentStep = $currentStep;
         $this->totalStep = $totalStep;
         $this->isStoppable = $isStoppable;
+        $this->isVisible = $isVisible;
     }
 
     public function normalize(): array
@@ -65,6 +68,7 @@ final class JobExecutionRow
                 'total_step' => $this->totalStep,
             ],
             'is_stoppable' => $this->isStoppable,
+            'is_visible' => $this->isVisible,
         ];
     }
 }

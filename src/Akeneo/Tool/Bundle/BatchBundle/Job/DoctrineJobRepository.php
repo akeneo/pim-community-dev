@@ -111,6 +111,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $jobExecution->setJobParameters($jobParameters);
         $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
         $jobExecution->setStepCount($job instanceof JobWithStepsInterface ? count($job->getSteps()) : null);
+        $jobExecution->setIsVisible($job instanceof JobWithStepsInterface ? count($job->getSteps()) : null);
 
         $this->updateJobExecution($jobExecution);
 
