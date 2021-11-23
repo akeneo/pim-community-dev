@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -20,13 +21,18 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 final class IndexAction
 {
-    private SearchJobExecutionHandler $searchJobExecutionHandler;
+    private Security $security;
     private SecurityFacade $securityFacade;
+    private SearchJobExecutionHandler $searchJobExecutionHandler;
 
-    public function __construct(SearchJobExecutionHandler $searchJobExecutionHandler, SecurityFacade $securityFacade)
-    {
-        $this->searchJobExecutionHandler = $searchJobExecutionHandler;
+    public function __construct(
+        Security $security,
+        SecurityFacade $securityFacade,
+        SearchJobExecutionHandler $searchJobExecutionHandler
+    ) {
+        $this->security = $security;
         $this->securityFacade = $securityFacade;
+        $this->searchJobExecutionHandler = $searchJobExecutionHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -36,6 +42,10 @@ final class IndexAction
         }
 
         $this->denyAccessUnlessAclIsGranted();
+        $users = $request->get('users', []);
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
+            $users = [$this->security->getUser()->getUserIdentifier()];
+        }
 
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
         $searchJobExecutionQuery->page = (int) $request->get('page', 1);
@@ -44,6 +54,7 @@ final class IndexAction
         $searchJobExecutionQuery->sortColumn = $sort['column'] ?? 'started_at';
         $searchJobExecutionQuery->sortDirection = $sort['direction'] ?? 'DESC';
         $searchJobExecutionQuery->type = $request->get('type', []);
+        $searchJobExecutionQuery->users = $users;
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');
 
