@@ -5,8 +5,7 @@ import {pimTheme} from 'akeneo-design-system';
 import React from 'react';
 import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
-import {CatalogVolumeMonitoringApp} from '@akeneo-pim-community/catalog-volume-monitoring';
-import {getCatalogVolume} from "@akeneo-pim-community/catalog-volume-monitoring/lib/fetcher/getCatalogVolume";
+import {CatalogVolumeMonitoringApp, getCatalogVolume} from '@akeneo-pim-community/catalog-volume-monitoring';
 
 const mediator = require('oro/mediator');
 const featureFlags = require('pim/feature-flags');
@@ -22,7 +21,7 @@ class CatalogVolumeController extends ReactController {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CatalogVolumeMonitoringApp getCatalogVolumes={getCatalogVolume}/>
+          <CatalogVolumeMonitoringApp getCatalogVolumes={getCatalogVolume} />
         </ThemeProvider>
       </DependenciesProvider>
     );

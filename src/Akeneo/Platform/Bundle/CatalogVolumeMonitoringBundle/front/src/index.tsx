@@ -7,8 +7,8 @@ import {routes} from './routes.json';
 import translations from './translations.json';
 import {CatalogVolumeMonitoringApp} from './feature';
 import {FakePIM} from './FakePIM';
-// import {getMockCatalogVolume} from './feature/fetcher/getMockCatalogVolume';
-import {getCatalogVolume} from './feature/fetcher/getCatalogVolume';
+// import {getMockCatalogVolume} from './feature';
+import {getCatalogVolume} from './feature';
 
 ReactDOM.render(
   <React.StrictMode>
